@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'Futura PT Book';
+  src: url('./fonts/FuturaPTBook.otf');
+  src: url('./fonts/FuturaPTBook.otf#iefix') format('embedded-opentype'),
+    url('./fonts/FuturaPTBook.otf') format('opentype');
+  /* url('FuturaPT-Book.woff') format('woff'),
+      url('FuturaPT-Book.ttf') format('truetype'),
+      url('FuturaPT-Book.svg#FuturaPT-Book') format('svg'); */
+  font-weight: normal;
+  font-style: normal;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  font-size: 14px;
+}
+
+html {
+  font-family: 'futura-pt', '"Futura PT"', 'Roboto', 'Arial', 'sans-serif';
+  font-size: 62.5%;
+}
+
+body {
+  box-sizing: border-box;
+}

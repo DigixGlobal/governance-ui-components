@@ -23,7 +23,7 @@ export const CloseMenu = styled.div`
 
   div {
     position:relative;
-    top:9px;
+    top:7px;
   }
 
 
@@ -54,6 +54,6 @@ export const MenuList = styled.ul `
 `;
 
 export const MenuItem = styled.li`
-  padding-top: 15px;
+  padding-top: 20px;
   text-transform:uppercase;
 `;

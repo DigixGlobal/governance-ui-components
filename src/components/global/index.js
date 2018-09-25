@@ -1,7 +1,7 @@
-const white = '#fff';
-const blueBackground = '#101E34';
+const secondary = '#fff';
+const primary = '#101E34';
 
 export const colors = {
-  white,
-  blueBackground
+  secondary,
+  primary
 }

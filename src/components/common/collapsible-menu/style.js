@@ -6,19 +6,19 @@ export const MenuContainer = styled.div`
   width: 243px;
   height: 100vh;
   padding: 25px;
-  background-color: ${colors.blueBackground};
-  color: ${colors.white};
+  background-color: ${colors.primary};
+  color: ${colors.secondary};
 
 `;
 
 export const CloseMenu = styled.div`
   float: right;
   text-transform: uppercase;
-  color: ${colors.white};
+  color: ${colors.secondary};
 
 
   svg {
-    fill: ${colors.white}
+    fill: ${colors.secondary}
   }
 
   div {

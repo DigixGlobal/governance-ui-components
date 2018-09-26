@@ -7,14 +7,10 @@ export const Button = styled.button`
   border: 1px solid ${props => props.theme.textColor};
 
   width:  ${props => (props.fullWidth ? '100%' : '')};
-  height: ${props => (props.fullWidth ? '50px' : '36px')};
-  border-radius: ${props => (props.fullWidth ? '30px' : '5px')};
-  //color: ${props => (!props.secondary ? colors.secondary : colors.primary)};
+  height: ${props => (props.fullWidth ? '5rem' : '3.6rem')};
+  border-radius: ${props => (props.fullWidth ? '3rem' : '.5rem')};
   text-transform: ${props => (props.secondary ? 'none' : 'uppercase')};
-  padding: 5px 15px;
+  padding: .5rem 1.5rem;
   font-size: 110%;
-  /* min-width: 150px; */
-
-
-  /* ${props => (props.fullWidth ? '3px' : '1px')} solid ${colors.primary}; */
+  font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
 `;

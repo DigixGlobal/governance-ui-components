@@ -7,7 +7,7 @@ export const MenuContainer = styled.div`
   height: 100vh;
   padding: 2.5rem;
   background-color: ${colors.primary};
-  color: ${colors.white};
+  color: ${colors.secondary};
   font-size: 1.6rem;
 
 `;

@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 
-import { colors } from '../../global';
-
 export const MenuContainer = styled.div`
   width: 24.3rem;
   height: 100vh;
   padding: 2.5rem;
-  background-color: ${colors.primary};
-  color: ${colors.secondary};
+  background-color: ${props => props.theme.primary};
+  color: ${props => props.theme.textColor};
   font-size: 1.6rem;
 
 `;
@@ -15,11 +13,11 @@ export const MenuContainer = styled.div`
 export const CloseMenu = styled.div`
   float: right;
   text-transform: uppercase;
-  color: ${colors.secondary};
+  color: ${props => props.theme.textColor};
 
 
   svg {
-    fill: ${colors.secondary}
+    fill: ${props => props.theme.textColor}
   }
 
   div {

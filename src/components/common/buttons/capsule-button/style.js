@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { colors } from '../../../global';
 
 export const Button = styled.button`
-  background: ${props => props.theme.primary};
+  background: ${props => props.secondary ? props.theme.secondary : props.theme.primary};
   color: ${props => props.theme.textColor};
   border: 1px solid ${props => props.theme.textColor};
 

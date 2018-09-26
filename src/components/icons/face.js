@@ -9,8 +9,8 @@ const FaceIcon = props => (
 );
 
 FaceIcon.defaultProps = {
-  width: '50px',
-  height: '50px',
+  width: '5rem',
+  height: '5rem',
 };
 
 export default FaceIcon;

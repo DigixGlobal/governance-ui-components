@@ -11,7 +11,7 @@ class CollapsibleMenu extends React.Component {
   render() {
     return (<MenuContainer>
       <CloseMenu>
-        <span>close</span> <Icon width='24px' height='24px' kind='close'/>
+        close <Icon width='3rem' height='3rem' kind='close'/>
       </CloseMenu>
       <div style={{clear:'both'}}></div>
       <ProfileContainer>

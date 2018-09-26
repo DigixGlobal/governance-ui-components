@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { colors } from '../../global';
 
 export const MenuContainer = styled.div`
-  width: 243px;
+  width: 24.3rem;
   height: 100vh;
-  padding: 25px;
+  padding: 2.5rem;
   background-color: ${colors.blueBackground};
   color: ${colors.white};
+  font-size: 1.6rem;
 
 `;
 
@@ -23,14 +24,14 @@ export const CloseMenu = styled.div`
 
   div {
     position:relative;
-    top:7px;
+    top:1rem;
   }
 
 
 `;
 
 export const ProfileContainer = styled.div`
-  margin-top: 50px;
+  margin-top: 5rem;
 
   img {
     display:block;
@@ -38,22 +39,22 @@ export const ProfileContainer = styled.div`
 `;
 
 export const Welcome = styled.p`
-  margin-top: 20px;
+  margin-top: 2rem;
   text-transform:uppercase;
 
 `;
 
 export const UserType = styled.p`
-  margin-top: 5px;
+  margin-top: .5rem;
   color: #4A90E2;
 `;
 
 export const MenuList = styled.ul `
-  margin-top:50px;
+  margin-top:5rem;
   list-style: none;
 `;
 
 export const MenuItem = styled.li`
-  padding-top: 20px;
+  padding-top: 2rem;
   text-transform:uppercase;
 `;

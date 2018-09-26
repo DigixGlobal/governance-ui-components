@@ -24,3 +24,8 @@ body {
   box-sizing: border-box;
   font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
 }
+
+input {
+  font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
+  outline: none;
+}

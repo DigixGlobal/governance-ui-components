@@ -12,5 +12,6 @@ export const Button = styled.button`
   text-transform: ${props => (props.secondary ? 'none' : 'uppercase')};
   padding: .5rem 1.5rem;
   font-size: 110%;
+  outline: none;
   font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
 `;

@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react';
+import { ThemeProvider } from 'styled-components';
 
 import LeftMenu from '../components/common/collapsible-menu';
 import Button from '../components/common/buttons';
-import { ThemeProvider } from 'styled-components';
+import Input from '../components/common/textfield';
+
 import LightTheme from '../theme/light';
 
 class App extends Component {
@@ -34,6 +36,12 @@ class App extends Component {
             <Button kind="capsule" fullWidth secondary>
               Already have an account? Log in
             </Button>
+          </div>
+          <div style={{ width: '25%', margin: '10px' }}>
+            <Input type="text" placeholder="default textbox style" />
+          </div>
+          <div style={{ width: '25%', margin: '10px' }}>
+            <Input type="text" rounded/>
           </div>
         </Fragment>
       </ThemeProvider>

@@ -8,7 +8,7 @@ export const Container = styled.div`
   :hover{
     border-radius: 50%;
     background-color: #284b82;
-    transition: background-color .4s ease ;
+    transition: background-color .4s ease;
   }
   > svg {
     color: ${props => props.color};

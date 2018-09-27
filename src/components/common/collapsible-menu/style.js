@@ -4,7 +4,7 @@ export const MenuContainer = styled.div`
   width: 24.3rem;
   height: 100vh;
   padding: 2.5rem;
-  background-color: ${props => props.theme.primary};
+  background-color: ${props => props.theme.primary.lighter.toString()};
   color: ${props => props.theme.textColor};
   font-size: 1.6rem;
 `;

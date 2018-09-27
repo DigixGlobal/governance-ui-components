@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Button = styled.a`
   background: ${props => props.backGround || '#fff'};
-  color: ${props => props.theme.primary};
+  color: ${props => props.theme.borderColor};
   border: 1px solid ${props => props.theme.borderColor};
   min-width: 10rem;
   width: ${props => props.width || '10rem'};

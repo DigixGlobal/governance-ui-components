@@ -36,7 +36,7 @@ const gray = {
 };
 
 const ErrorMessage = {
-  backgroundColor: grayLight,
+  backgroundColor: gray,
   padding: '1em',
 };
 

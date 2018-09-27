@@ -1,9 +1,15 @@
+const white = '#fff';
+const black = '#000';
+const blue = '#243961';
+const gold = '#E4C88E';
+const grayLight = '#fcfcfc';
+
 const LightTheme = {
-  backgroundColor: '#fcfcfc',
-  primary: '#243961',
-  secondary: '#C4A159',
-  textColor: '#fff',
-  borderColor: '#d8d8d8',
+  backgroundColor: grayLight,
+  primary: blue,
+  secondary: gold,
+  textColor: black,
+  borderColor: grayLight,
 };
 
 export default LightTheme;

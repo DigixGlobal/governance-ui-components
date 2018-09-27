@@ -5,12 +5,13 @@ import LeftMenu from '../components/common/collapsible-menu';
 import Button from '../components/common/buttons';
 import Input from '../components/common/textfield';
 
-import LightTheme from '../theme/light';
+import lightTheme from '../theme/light';
 
 class App extends Component {
   render() {
+    console.log(lightTheme.primary.toString());
     return (
-      <ThemeProvider theme={LightTheme}>
+      <ThemeProvider theme={lightTheme}>
         <Fragment>
           <LeftMenu />
           <div

@@ -5,8 +5,10 @@ import { Button } from './style';
 
 const CapsuleButton = props => <Button {...props}>{props.children}</Button>;
 
+const { object, string, node, oneOfType } = PropTypes;
+
 CapsuleButton.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: oneOfType([object, string, node]).isRequired,
 };
 
 export default CapsuleButton;

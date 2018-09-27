@@ -21,19 +21,19 @@ class App extends Component {
               float: 'left',
             }}
           >
-            <Button kind="capsule">create proposal</Button>
+            <Button>create proposal</Button>
             &nbsp;
-            <Button kind="capsule" secondary>
-              PARTICIPATE
+            <Button secondary>PARTICIPATE</Button>
+            &nbsp;
+            <Button kind="tag" uppercase href="/#">
+              finance
             </Button>
           </div>
           <div style={{ width: '25%', margin: '10px' }}>
-            <Button kind="capsule" fullWidth>
-              sign up &mdash; it's free!
-            </Button>
+            <Button fullWidth>sign up &mdash; it's free!</Button>
           </div>
           <div style={{ width: '25%', margin: '10px' }}>
-            <Button kind="capsule" fullWidth secondary>
+            <Button fullWidth secondary>
               Already have an account? Log in
             </Button>
           </div>
@@ -41,7 +41,7 @@ class App extends Component {
             <Input type="text" placeholder="default textbox style" />
           </div>
           <div style={{ width: '25%', margin: '10px' }}>
-            <Input type="text" rounded/>
+            <Input type="text" rounded />
           </div>
         </Fragment>
       </ThemeProvider>

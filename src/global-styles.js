@@ -1,4 +1,4 @@
-import styled, { injectGlobal, css } from 'styled-components';
+import { injectGlobal, css } from 'styled-components';
 
 import FuturaPTBook from './assets/fonts/FuturaPTBook.otf';
 import FuturaPTExtraBold from './assets/fonts/FuturaPTExtraBold.otf';
@@ -71,24 +71,6 @@ const breakpoints = {
   large: 1024,
   xlarge: 1440,
 };
-
-export const H1 = styled.h1`
-  color: ${props => props.color || props.theme.primary};
-  font-size: 2rem;
-  margin: 0;
-`;
-
-export const H2 = styled.h2`
-  color: ${props => props.color || props.theme.primary};
-  font-size: 1.6rem;
-  margin: 0;
-`;
-
-export const H3 = styled.h3`
-  color: ${props => props.color || props.theme.primary};
-  font-size: 1rem;
-  margin: 0;
-`;
 
 export const mq = Object.keys(breakpoints).reduce((accumulator, label) => {
   const prefix = typeof breakpoints[label] === 'string' ? '' : 'max-width:';

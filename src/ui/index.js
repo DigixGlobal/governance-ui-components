@@ -4,12 +4,13 @@ import { ThemeProvider } from 'styled-components';
 import LeftMenu from '../components/common/collapsible-menu';
 import Button from '../components/common/buttons';
 import Input from '../components/common/textfield';
+import StyledSwitch from '../components/common/switch';
 
 import lightTheme from '../theme/light';
 
 class App extends Component {
   render() {
-    console.log(lightTheme.primary.toString());
+    console.log(lightTheme.secondary);
     return (
       <ThemeProvider theme={lightTheme}>
         <Fragment>
@@ -43,6 +44,7 @@ class App extends Component {
           </div>
           <div style={{ width: '25%', margin: '10px' }}>
             <Input type="text" rounded />
+            <StyledSwitch theme={lightTheme.secondary} />
           </div>
         </Fragment>
       </ThemeProvider>

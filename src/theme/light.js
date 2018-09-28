@@ -12,8 +12,8 @@ const blueHex = Color('#243961');
 
 const blue = {
   default: blueHex,
-  darker: blueHex.darken(0.05),
-  lighter: blueHex.lighten(0.05),
+  darker: blueHex.darken(1),
+  lighter: blueHex.lighten(0.1),
   raw: blueHex,
 };
 
@@ -41,7 +41,13 @@ const ErrorMessage = {
 };
 
 const LightTheme = {
-  backgroundColor: gray.default,
+  mainBackgroundColor: gold.default,
+  headerBackgroundColor: gray.default,
+  sidePanelBgColor: gray.default,
+
+  timelineBgColor: gold.lighter,
+  timelineCurrentBgColor: gold.darker,
+
   primary: blue,
   secondary: gold,
   textColor: black,

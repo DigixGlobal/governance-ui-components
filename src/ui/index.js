@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { ThemeProvider } from 'styled-components';
 
+import Header from '../components/common/template/header';
 import LeftMenu from '../components/common/collapsible-menu';
 import Button from '../components/common/buttons';
 import Input from '../components/common/textfield';
@@ -14,6 +15,7 @@ class App extends Component {
     return (
       <ThemeProvider theme={lightTheme}>
         <Fragment>
+          <Header>Create Proposal | Wallet</Header>
           <LeftMenu />
           <div
             style={{

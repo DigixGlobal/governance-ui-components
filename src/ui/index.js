@@ -2,10 +2,14 @@ import React, { Component, Fragment } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import Header from '../components/common/template/header';
+// import Select from '@material-ui/core/Select';
+// import MenuItem from '@material-ui/core/MenuItem';
+
 import LeftMenu from '../components/common/collapsible-menu';
 import Button from '../components/common/buttons';
 import Input from '../components/common/textfield';
 import StyledSwitch from '../components/common/switch';
+import StyledSelect from '../components/common/select';
 
 import lightTheme from '../theme/light';
 
@@ -47,6 +51,12 @@ class App extends Component {
           <div style={{ width: '25%', margin: '10px' }}>
             <Input type="text" rounded />
             <StyledSwitch theme={lightTheme.secondary} />
+          </div>
+          <div style={{ width: '25%', margin: '10px' }}>
+            <StyledSelect
+              id="test"
+              items={[{ text: 'RECENTLY UPDATED', value: '1' }, { text: 'test 2', value: '2' }]}
+            />
           </div>
         </Fragment>
       </ThemeProvider>

@@ -41,13 +41,7 @@ const ErrorMessage = {
 };
 
 const LightTheme = {
-  mainBackgroundColor: gold.default,
-  headerBackgroundColor: gray.default,
-  sidePanelBgColor: gray.default,
-
-  timelineBgColor: gold.lighter,
-  timelineCurrentBgColor: gold.darker,
-
+  backgroundColor: gray,
   primary: blue,
   secondary: gold,
   textColor: black,

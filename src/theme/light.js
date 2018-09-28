@@ -36,7 +36,7 @@ const gray = {
 };
 
 const LightTheme = {
-  backgroundColor: gray.default,
+  backgroundColor: gray,
   primary: blue,
   secondary: gold,
   textColor: black,

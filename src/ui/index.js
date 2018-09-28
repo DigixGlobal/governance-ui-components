@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { ThemeProvider } from 'styled-components';
 
+import Header from '../components/common/template/header';
 // import Select from '@material-ui/core/Select';
 // import MenuItem from '@material-ui/core/MenuItem';
 

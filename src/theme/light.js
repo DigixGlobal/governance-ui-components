@@ -12,8 +12,8 @@ const blueHex = Color('#243961');
 
 const blue = {
   default: blueHex,
-  darker: blueHex.darken(0.05),
-  lighter: blueHex.lighten(0.05),
+  darker: blueHex.darken(1),
+  lighter: blueHex.lighten(0.1),
   raw: blueHex,
 };
 
@@ -35,12 +35,28 @@ const gray = {
   raw: grayHex,
 };
 
+const white = '#fff';
+
+const ErrorMessage = {
+  backgroundColor: gray,
+  padding: '1em',
+};
+
 const LightTheme = {
   backgroundColor: gray,
+  mainBackgroundColor: gold.default,
+  headerBackgroundColor: gray.default,
+  sidePanelBgColor: gray.default,
+
+  timelineBgColor: gold.lighter,
+  timelineCurrentBgColor: gold.darker,
   primary: blue,
   secondary: gold,
   textColor: black,
+  textColorInverted: white,
   borderColor: gray,
+
+  ErrorMessage,
 };
 
 export default LightTheme;

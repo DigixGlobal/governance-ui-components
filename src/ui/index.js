@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { ThemeProvider } from 'styled-components';
 
+import Header from '../components/common/blocks/header';
 // import Select from '@material-ui/core/Select';
 // import MenuItem from '@material-ui/core/MenuItem';
 
@@ -20,9 +21,10 @@ class App extends Component {
     return (
       <ThemeProvider theme={lightTheme}>
         <Fragment>
+          <Header>Create Proposal | Wallet</Header>
           <LeftMenu />
           <Container>
-            <Button>create proposal</Button>
+            <Button primary>create proposal</Button>
             &nbsp;
             <Button secondary>PARTICIPATE</Button>
             &nbsp;

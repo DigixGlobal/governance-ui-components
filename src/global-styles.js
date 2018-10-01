@@ -48,9 +48,11 @@ injectGlobal`
   box-sizing: inherit;
 }
 
+html {
+  font-size: 62.5%; }
 
-html, body {
-  font-size: 10px;
+body {
+
   font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
   box-sizing: border-box;
 }

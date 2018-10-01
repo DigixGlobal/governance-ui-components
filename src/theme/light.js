@@ -35,6 +35,8 @@ const gray = {
   raw: grayHex,
 };
 
+const white = '#fff';
+
 const ErrorMessage = {
   backgroundColor: gray,
   padding: '1em',
@@ -51,6 +53,7 @@ const LightTheme = {
   primary: blue,
   secondary: gold,
   textColor: black,
+  textColorInverted: white,
   borderColor: gray,
 
   ErrorMessage,

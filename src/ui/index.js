@@ -29,7 +29,7 @@ class App extends Component {
               float: 'left',
             }}
           >
-            <Button lg>create proposal</Button>
+            <Button primary>create proposal</Button>
             &nbsp;
             <Button secondary>PARTICIPATE</Button>
             &nbsp;

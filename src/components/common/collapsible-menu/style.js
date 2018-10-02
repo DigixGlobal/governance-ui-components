@@ -5,17 +5,17 @@ export const MenuContainer = styled.div`
   height: 100vh;
   padding: 2.5rem;
   background-color: ${props => props.theme.primary.lighter.toString()};
-  color: ${props => props.theme.textColor};
+  color: ${props => props.theme.textColorInverted.default.toString()};
   font-size: 1.6rem;
 `;
 
 export const CloseMenu = styled.div`
   float: right;
   text-transform: uppercase;
-  color: ${props => props.theme.textColor};
+  color: ${props => props.theme.textColorInverted.default.toString()};
 
   svg {
-    fill: ${props => props.theme.textColor};
+    fill: ${props => props.theme.textColorInverted.default.toString()};
   }
 
   div {

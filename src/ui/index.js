@@ -11,6 +11,8 @@ import Input from '../components/common/textfield';
 import StyledSwitch from '../components/common/switch';
 import StyledSelect from '../components/common/select';
 import { Row, Col1Of3 } from '../components/common/grid/style';
+import Dashboard from '../components/dashboard';
+import ProposalCard from '../components/proposal-card';
 
 import lightTheme from '../theme/light';
 
@@ -60,6 +62,19 @@ class App extends Component {
               <Col1Of3>Column 3</Col1Of3>
             </Row>
           </Container>
+          <Container width="100%">
+            <Dashboard
+              items={[
+                { count: 385, label: 'total proposals submitted' },
+                { count: 102, label: 'total proposals funded' },
+                { count: 56, label: 'total proposals disbursed' },
+              ]}
+            />
+          </Container>
+          <Container width="100%">
+            <ProposalCard />
+          </Container>
+          <Container width="100%">&nbsp;</Container>
         </Fragment>
       </ThemeProvider>
     );

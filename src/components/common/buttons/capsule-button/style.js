@@ -7,7 +7,9 @@ export const Button = styled.button`
   border: 1px solid ${props => props.theme.primary.default};
   border-radius: 3px;
   color: ${props =>
-    props.primary ? props.theme.textColorInverted : props.theme.textColor.default};
+    props.primary
+      ? props.theme.textColorInverted.default.toString()
+      : props.theme.textColor.default.toString()};
   cursor: pointer;
   display: inline-block;
   font-weight: 500;

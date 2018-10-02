@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export const Button = styled.a`
-  background: ${props => props.backGround || '#fff'};
-  color: ${props => props.theme.borderColor};
-  border: 1px solid ${props => props.theme.borderColor};
+  background: ${props => props.theme.backgroundColor.default.toString() || '#fff'};
+  color: ${props => props.theme.borderColor.darker.toString()};
+  border: 1px solid ${props => props.theme.borderColor.default.toString()};
   min-width: 10rem;
   width: ${props => props.width || '10rem'};
   height: 1.5rem;

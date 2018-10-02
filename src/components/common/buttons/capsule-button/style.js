@@ -3,13 +3,11 @@ import styled, { css } from 'styled-components';
 export const Button = styled.button`
   transition: all 0.3s ease;
   background: ${props =>
-    props.primary
-      ? props.theme.primary.default.toString()
-      : props.theme.secondary.default.toString()};
-  border: 1px solid ${props => props.theme.primary.default.toString()};
+    props.primary ? props.theme.primary.default : props.theme.secondary.default};
+  border: 1px solid ${props => props.theme.primary.default};
   border-radius: 3px;
   color: ${props =>
-    props.primary ? props.theme.textColorInverted : props.theme.textColor.default.toString()};
+    props.primary ? props.theme.textColorInverted : props.theme.textColor.default};
   cursor: pointer;
   display: inline-block;
   font-weight: 500;
@@ -21,17 +19,17 @@ export const Button = styled.button`
 
   &:hover {
     background: transparent;
-    color: ${props => props.theme.textColor.default.toString()};
+    color: ${props => props.theme.textColor.default};
   }
 
   ${props =>
     props.text &&
     css`
-      color: ${props.theme.secondary.default.toString()};
+      color: ${props.theme.secondary.default};
       background: transparent;
       border: none;
       &:hover {
-        color: ${props.theme.primary.lighter.toString()};
+        color: ${props.theme.primary.lighter};
       }
     `};
   ${props =>

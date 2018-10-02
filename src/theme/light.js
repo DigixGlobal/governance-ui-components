@@ -24,11 +24,17 @@ const gold = {
 };
 
 const grayHex = Color('#fcfcfc');
+const darkerGrayHex = Color('#E3E3E3');
 
 const gray = {
   default: grayHex,
   darker: grayHex.darken(0.5),
   lighter: grayHex.lighten(0.05),
+};
+const darkerGray = {
+  default: darkerGrayHex,
+  darker: darkerGrayHex.darken(0.5),
+  lighter: darkerGrayHex.lighten(0.05),
 };
 
 const whiteHex = Color('#fff');
@@ -56,7 +62,7 @@ const LightTheme = {
   secondary: gold,
   textColor: black,
   textColorInverted: white,
-  borderColor: gray,
+  borderColor: darkerGray,
 
   ErrorMessage,
 };

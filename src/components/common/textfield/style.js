@@ -4,7 +4,7 @@ export const SyledInput = styled.input`
   border-radius: ${props => (props.rounded ? '3rem' : '.5rem')};
   height: 5rem;
   min-width: ${props => props.width || '30rem'};
-  border: 0.1rem solid ${props => props.theme.borderColor.darker.toString()};
+  border: 0.1rem solid ${props => props.theme.borderColor.default.toString()};
   padding: 1rem 2rem;
   font-size: 1.6rem;
   background-color: ${props => props.theme.backgroundColor.default.toString()};
@@ -12,7 +12,7 @@ export const SyledInput = styled.input`
   font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
   opacity: 1 transparent;
   ::placeholder {
-    color: ${props => props.theme.borderColor.darker.toString()};
+    color: ${props => props.theme.borderColor.default.toString()};
     text-align: center;
   }
 

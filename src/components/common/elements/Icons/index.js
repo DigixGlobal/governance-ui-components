@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Close from './close';
-import Face from './face';
-import Dashboard from './dashboard';
-import DigixLogo from './digix-logo';
-import Magnifier from './magnifier';
-import Menu from './menu';
-import Notification from './notification';
-import Ribbon from './ribbon';
+import Close from './Close';
+import Face from './Face';
+import Dashboard from './Dashboard';
+import DigixLogo from './Brand';
+import Magnifier from './Magnifier';
+import Menu from './Menu';
+import Notification from './Notification';
+import Ribbon from './Ribbon';
 
 const icons = {
   close: Close,

@@ -12,7 +12,7 @@ import {
 } from './style';
 import { Avatar } from '../common-styles';
 
-import Icon from '../../icons/icon';
+import Icon from '../elements/Icons/';
 import profilePic from '../../../assets/images/realtor-1.jpeg';
 
 class CollapsibleMenu extends React.Component {

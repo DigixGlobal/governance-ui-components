@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import Header from '../components/common/blocks/header';
+import NavBar from '../components/common/blocks/NavBar';
 // import Select from '@material-ui/core/Select';
 // import MenuItem from '@material-ui/core/MenuItem';
 
@@ -10,7 +10,7 @@ import Button from '../components/common/buttons';
 import Input from '../components/common/textfield';
 import StyledSwitch from '../components/common/switch';
 import StyledSelect from '../components/common/select';
-import { Row, Col1Of2, Col1Of3 } from '../components/common/grid/style';
+import { Row, Col1Of3 } from '../components/common/grid/style';
 
 import lightTheme from '../theme/light';
 
@@ -21,7 +21,7 @@ class App extends Component {
     return (
       <ThemeProvider theme={lightTheme}>
         <Fragment>
-          <Header>Create Proposal | Wallet</Header>
+          <NavBar />
           <LeftMenu />
           <Container>
             <Button primary>create proposal</Button>

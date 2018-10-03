@@ -3,42 +3,46 @@ import Color from 'color';
 const blackHex = Color('#000');
 const black = {
   default: blackHex,
-  darker: blackHex.darken(0.05),
-  lighter: blackHex.lighten(0.05),
+  darker: blackHex.darken(0.5),
+  lighter: blackHex.lighten(0.5),
 };
 
 const blueHex = Color('#243961');
-
 const blue = {
   default: blueHex,
   darker: blueHex.darken(1),
   lighter: blueHex.lighten(0.1),
 };
 
-const goldHex = Color('#E4C88E');
+const darkBlueHex = Color('#464E5B');
+const darkBlue = {
+  default: darkBlueHex,
+  darker: darkBlueHex.darken(1),
+  lighter: darkBlueHex.lighten(0.1),
+};
 
+const goldHex = Color('#E4C88E');
 const gold = {
   default: goldHex,
   darker: goldHex.darken(0.05),
   lighter: goldHex.lighten(0.05),
 };
 
-const grayHex = Color('#fcfcfc');
-const darkerGrayHex = Color('#E3E3E3');
-
+const grayHex = Color('#E8ECF2');
 const gray = {
   default: grayHex,
-  darker: grayHex.darken(0.5),
-  lighter: grayHex.lighten(0.05),
+  darker: grayHex.darken(0.1),
+  lighter: grayHex.fade(0.8),
 };
-const darkerGray = {
-  default: darkerGrayHex,
-  darker: darkerGrayHex.darken(0.5),
-  lighter: darkerGrayHex.lighten(0.05),
-};
+
+const darkerGrayHex = Color('#E3E3E3');
+// const darkerGray = {
+//   default: darkerGrayHex,
+//   darker: darkerGrayHex.darken(0.5),
+//   lighter: darkerGrayHex.lighten(0.05),
+// };
 
 const whiteHex = Color('#fff');
-
 const white = {
   default: whiteHex,
   darker: whiteHex.darken(0.05),
@@ -55,16 +59,20 @@ const LightTheme = {
   secondary: gold,
 
   backgroundColor: gray,
-  mainBackgroundColor: gold.default,
-  headerBackgroundColor: gray.default,
-  sidePanelBgColor: gray.default,
+  mainBackgroundColor: gray.lighter,
+
+  headerBackgroundColor: white.default,
+  headerBorderColor: gray.default,
+
+  sidePanelBgColor: blue.default,
 
   timelineBgColor: gold.lighter,
   timelineCurrentBgColor: gold.darker,
 
   textColor: black,
+  defaultTextColor: darkBlue.default,
   textColorInverted: white,
-  borderColor: darkerGray,
+  borderColor: gray,
 
   ErrorMessage,
 };

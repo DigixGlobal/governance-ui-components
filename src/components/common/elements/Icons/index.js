@@ -14,7 +14,7 @@ import Activity from './Activity';
 import Wallet from './Wallet';
 import Profile from './Profile';
 import Help from './Help';
-import Product from './Product-tour';
+import Product from './product-tour';
 
 const icons = {
   close: Close,

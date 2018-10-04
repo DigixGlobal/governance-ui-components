@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Container } from './Style';
 
 const HomeIcon = props => (
@@ -23,6 +24,12 @@ const HomeIcon = props => (
   </Container>
 );
 
+const { string, object } = PropTypes;
+HomeIcon.propTypes = {
+  theme: object.isRequired,
+  width: string,
+  height: string,
+};
 HomeIcon.defaultProps = {
   width: '2.8rem',
   height: '2.8rem',

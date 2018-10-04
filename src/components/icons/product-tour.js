@@ -3,13 +3,7 @@ import { Container } from './style';
 
 const ProductTourIcon = props => (
   <Container {...props}>
-    <svg
-      width="26px"
-      height="27px"
-      viewBox="0 0 26 27"
-      version="1.1"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
       <desc>Created with Sketch.</desc>
       <defs />
       <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">

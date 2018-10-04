@@ -9,6 +9,8 @@ import Magnifier from './magnifier';
 import Menu from './menu';
 import Notification from './notification';
 import Ribbon from './ribbon';
+import Home from './home';
+import Product from './product-tour';
 
 const icons = {
   close: Close,
@@ -19,6 +21,8 @@ const icons = {
   menu: Menu,
   notification: Notification,
   ribbon: Ribbon,
+  home: Home,
+  product: Product,
 };
 
 const Icon = props => {

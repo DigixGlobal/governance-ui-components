@@ -7,7 +7,7 @@ const black = {
   lighter: blackHex.lighten(0.05),
 };
 
-const blueHex = Color('#243961');
+const blueHex = Color('#233960');
 
 const blue = {
   default: blueHex,
@@ -23,8 +23,8 @@ const gold = {
   lighter: goldHex.lighten(0.05),
 };
 
-const grayHex = Color('#fcfcfc');
-const darkerGrayHex = Color('#E3E3E3');
+const grayHex = Color('#E8EBF2');
+const darkerGrayHex = Color('#727272');
 
 const gray = {
   default: grayHex,
@@ -51,7 +51,7 @@ const ErrorMessage = {
 };
 
 const LightTheme = {
-  backgroundColor: gray,
+  backgroundColor: white,
   mainBackgroundColor: gold.default,
   headerBackgroundColor: gray.default,
   sidePanelBgColor: gray.default,
@@ -60,9 +60,9 @@ const LightTheme = {
   timelineCurrentBgColor: gold.darker,
   primary: blue,
   secondary: gold,
-  textColor: black,
+  textColor: darkerGray,
   textColorInverted: white,
-  borderColor: darkerGray,
+  borderColor: gray,
 
   ErrorMessage,
 };

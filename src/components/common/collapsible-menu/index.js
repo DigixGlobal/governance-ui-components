@@ -1,9 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+
+import lightTheme from '../../../../src/theme/light';
 
 import {
   MenuContainer,
-  CloseMenu,
+  // CloseMenu,
   ProfileContainer,
   Welcome,
   UserType,
@@ -17,35 +19,45 @@ import profilePic from '../../../assets/images/realtor-1.jpeg';
 
 class CollapsibleMenu extends React.Component {
   render() {
-    const { closeText } = this.props;
+    // const { closeText } = this.props;
     return (
       <MenuContainer>
-        <CloseMenu>
-          {closeText || 'close'} <Icon width="3rem" height="3rem" kind="close" />
-        </CloseMenu>
-        <div style={{ clear: 'both' }} />
         <ProfileContainer>
-          <Avatar src={profilePic} />
-          <Welcome>Welcome, John Doe</Welcome>
+          <Welcome>
+            Welcome <span>0x9f56f330bceb9d4e756be94581298673e94ed592</span>
+          </Welcome>
           <UserType>Badge Holder</UserType>
         </ProfileContainer>
         <MenuList>
-          <MenuItem>dash board</MenuItem>
-          <MenuItem>preliminary ideas</MenuItem>
-          <MenuItem>draft phase</MenuItem>
-          <MenuItem>voting phase</MenuItem>
-          <MenuItem>interim voting phase</MenuItem>
-          <MenuItem>wallet</MenuItem>
-          <MenuItem>rewards</MenuItem>
+          <MenuItem>
+            <Icon kind="home" theme={lightTheme} />
+            <span>Home</span>
+          </MenuItem>
+          <MenuItem>
+            <Icon kind="home" theme={lightTheme} />
+            <span>Activity</span>
+          </MenuItem>
+          <MenuItem>
+            <Icon kind="home" theme={lightTheme} />
+            <span>Wallet</span>
+          </MenuItem>
+          <MenuItem>
+            <Icon kind="home" theme={lightTheme} />
+            <span>Profile</span>
+          </MenuItem>
+          <MenuItem>
+            <Icon kind="product" theme={lightTheme} />
+            <span>Help / DAO Tour</span>
+          </MenuItem>
         </MenuList>
       </MenuContainer>
     );
   }
 }
 
-const { string } = PropTypes;
+// const { string } = PropTypes;
 CollapsibleMenu.propTypes = {
-  closeText: string,
+  // closeText: string,
 };
 
 CollapsibleMenu.defaultProps = {

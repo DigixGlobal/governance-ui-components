@@ -1,21 +1,19 @@
 import React from 'react';
 // import Router, { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import SearchIcon from '../../elements/Icons/Magnifier';
+import Icon from '../../elements/Icons/index';
 
 const StyledLink = styled.a`
   display: flex;
   align-items: center;
-  color: ${props => props.theme.headerBackgroundColor};
+  color: ${props => props.theme.defaultTextColor.toString()};
   text-decoration: none;
   padding: 0 2em;
   text-transform: uppercase;
-  line-height: 30px;
 
   svg {
-    height: 30px;
-    width: 30px;
-    border: 1px solid #ccc;
+    display: inline-block;
+    vertical-align: middle;
   }
 `;
 
@@ -23,14 +21,15 @@ const MenuWrapper = styled.div`
   display: inline-flex;
 `;
 
-function Menu() {
+function Search() {
   return (
     <MenuWrapper>
       <StyledLink href="./">
-        <SearchIcon /> Search
+        <Icon kind="magnifier" />
+        <span>Search</span>
       </StyledLink>
     </MenuWrapper>
   );
 }
 
-export default Menu;
+export default Search;

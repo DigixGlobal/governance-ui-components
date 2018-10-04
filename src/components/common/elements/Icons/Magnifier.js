@@ -20,8 +20,8 @@ const MagnifierIcon = props => (
 );
 
 MagnifierIcon.defaultProps = {
-  width: '5rem',
-  height: '5rem',
+  width: '2.8rem',
+  height: '2.8rem',
 };
 
 export default MagnifierIcon;

@@ -7,6 +7,7 @@ export const MenuContainer = styled.div`
   background-color: ${props => props.theme.sidePanelBgColor.toString()};
   color: ${props => props.theme.textColorInverted.default.toString()};
   font-size: 1.6rem;
+  box-shadow: 1rem 0.9rem 2.1rem rgba(128, 152, 213, 0.2);
 `;
 
 export const CloseMenu = styled.div`
@@ -32,14 +33,26 @@ export const ProfileContainer = styled.div`
   }
 `;
 
-export const Welcome = styled.p`
-  margin-top: 2rem;
-  text-transform: uppercase;
+export const Welcome = styled.div`
+  margin: 2rem 0;
+  font-size: 1.4rem;
+  font-family: 'Futura PT Medium';
+  color: ${props => props.theme.primary.default.toString()};
+  span {
+    font-family: 'Futura PT Light';
+    display: block;
+    font-size: 1.2rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 `;
 
 export const UserType = styled.p`
   margin-top: 0.5rem;
-  color: #4a90e2;
+  font-size: 1.4rem;
+  color: #c19f58;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid ${props => props.theme.borderColor.default.toString()};
 `;
 
 export const MenuList = styled.ul`
@@ -49,5 +62,14 @@ export const MenuList = styled.ul`
 
 export const MenuItem = styled.li`
   padding-top: 2rem;
-  text-transform: uppercase;
+  color: ${props => props.theme.primary.default.toString()};
+  /* text-transform: uppercase; */
+  position: relative;
+
+  > span {
+    display: inline-block;
+    position: absolute;
+    top: 2.5rem;
+    padding-left: 1rem;
+  }
 `;

@@ -21,13 +21,13 @@ const Wrapper = styled.section`
     padding-left: 0.8em;
     padding-right: 0.8em;
     &:nth-child(1) {
-      width: 5%;
+      width: 6%;
     }
     &:nth-child(2) {
       width: 50%;
     }
     &:nth-child(3) {
-      width: 20%;
+      width: 19%;
     }
     &:nth-child(4) {
       width: 10%;

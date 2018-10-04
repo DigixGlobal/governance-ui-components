@@ -1,13 +1,22 @@
 import React from 'react';
 // import Router, { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Icon from '../../elements/Icons/index';
 
 const StyledLink = styled.a`
   display: inline-flex;
-  color: ${props => props.theme.headerBackgroundColor};
+  align-self: center;
   text-decoration: none;
-  padding: 0 2em;
+  padding: 0 1.5em;
   text-transform: uppercase;
+  height: 50px;
+
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    height: 50px;
+    width: 50px;
+  }
 `;
 
 const MenuWrapper = styled.div`
@@ -17,7 +26,9 @@ const MenuWrapper = styled.div`
 function Menu() {
   return (
     <MenuWrapper>
-      <StyledLink href="./">Menu</StyledLink>
+      <StyledLink href="./">
+        <Icon kind="menu" />
+      </StyledLink>
     </MenuWrapper>
   );
 }

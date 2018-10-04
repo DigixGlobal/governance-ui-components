@@ -9,6 +9,11 @@ import Magnifier from './Magnifier';
 import Menu from './Menu';
 import Notification from './Notification';
 import Ribbon from './Ribbon';
+import Home from './Home';
+import Activity from './Activity';
+import Wallet from './Wallet';
+import Profile from './Profile';
+import Help from './Help';
 
 const icons = {
   close: Close,
@@ -19,6 +24,11 @@ const icons = {
   menu: Menu,
   notification: Notification,
   ribbon: Ribbon,
+  home: Home,
+  activity: Activity,
+  wallet: Wallet,
+  profile: Profile,
+  help: Help,
 };
 
 const Icon = props => {

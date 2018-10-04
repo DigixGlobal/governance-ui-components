@@ -35,7 +35,7 @@ const gray = {
   lighter: grayHex.fade(0.8),
 };
 
-const darkerGrayHex = Color('#E3E3E3');
+// const darkerGrayHex = Color('#E3E3E3');
 // const darkerGray = {
 //   default: darkerGrayHex,
 //   darker: darkerGrayHex.darken(0.5),

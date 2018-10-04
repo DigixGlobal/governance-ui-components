@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-import lightTheme from '../../../../src/theme/light';
+import lightTheme from '../../../theme/light';
 
 import {
   MenuContainer,
@@ -14,7 +14,7 @@ import {
 } from './style';
 import { Avatar } from '../common-styles';
 
-import Icon from '../../icons/icon';
+import Icon from '../elements/Icons/';
 import profilePic from '../../../assets/images/realtor-1.jpeg';
 
 class CollapsibleMenu extends React.Component {
@@ -34,15 +34,15 @@ class CollapsibleMenu extends React.Component {
             <span>Home</span>
           </MenuItem>
           <MenuItem>
-            <Icon kind="home" theme={lightTheme} />
+            <Icon kind="activity" theme={lightTheme} />
             <span>Activity</span>
           </MenuItem>
           <MenuItem>
-            <Icon kind="home" theme={lightTheme} />
+            <Icon kind="wallet" theme={lightTheme} />
             <span>Wallet</span>
           </MenuItem>
           <MenuItem>
-            <Icon kind="home" theme={lightTheme} />
+            <Icon kind="profile" theme={lightTheme} />
             <span>Profile</span>
           </MenuItem>
           <MenuItem>

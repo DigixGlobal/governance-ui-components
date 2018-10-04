@@ -4,9 +4,8 @@ export const MenuContainer = styled.div`
   width: 24.3rem;
   height: 100vh;
   padding: 2.5rem;
-  background-color: ${props => props.theme.backgroundColor.default.toString()};
-  border: 0 1px 1px 1px solid ${props => props.theme.borderColor.default.toString()};
-  color: ${props => props.theme.textColor.default.toString()};
+  background-color: ${props => props.theme.sidePanelBgColor.toString()};
+  color: ${props => props.theme.textColorInverted.default.toString()};
   font-size: 1.6rem;
   box-shadow: 1rem 0.9rem 2.1rem rgba(128, 152, 213, 0.2);
 `;
@@ -63,6 +62,7 @@ export const MenuList = styled.ul`
 
 export const MenuItem = styled.li`
   padding-top: 2rem;
+  color: ${props => props.theme.primary.default.toString()};
   /* text-transform: uppercase; */
   position: relative;
 

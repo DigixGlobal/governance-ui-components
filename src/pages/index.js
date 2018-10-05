@@ -3,7 +3,6 @@ import { ThemeProvider } from 'styled-components';
 
 import NavBar from '../components/common/blocks/NavBar';
 import LeftMenu from '../components/common/collapsible-menu';
-// import Button from '../components/common/buttons';
 
 import lightTheme from '../theme/light';
 

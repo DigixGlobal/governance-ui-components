@@ -16,7 +16,7 @@ import {
 import Icon from '../elements/Icons/';
 
 const mockMenu = [
-  { kind: 'home', caption: 'Home' },
+  { kind: 'home', caption: 'Homes' },
   { kind: 'activity', caption: 'Activity' },
   { kind: 'wallet', caption: 'Wallet' },
   { kind: 'profile', caption: 'Profile' },
@@ -36,7 +36,7 @@ class CollapsibleMenu extends React.Component {
         </ProfileContainer>
         <MenuList>
           {menu.map(item => (
-            <MenuItem>
+            <MenuItem key={item.caption}>
               <Icon kind={item.kind} theme={theme || lightTheme} />
               <span>{item.caption}</span>
             </MenuItem>

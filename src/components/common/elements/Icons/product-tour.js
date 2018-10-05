@@ -64,7 +64,7 @@ const ProductTourIcon = props => (
 
 ProductTourIcon.defaultProps = {
   width: '2.7rem',
-  height: '2.7rem',
+  height: '2.8rem',
 };
 
 export default ProductTourIcon;

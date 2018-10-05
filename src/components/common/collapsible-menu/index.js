@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import lightTheme from '../../../theme/light';
 
@@ -12,56 +12,54 @@ import {
   MenuList,
   MenuItem,
 } from './style';
-// import { Avatar } from '../common-styles';
 
 import Icon from '../elements/Icons/';
-// import profilePic from '../../../assets/images/realtor-1.jpeg';
 
+const mockMenu = [
+  { kind: 'home', caption: 'Homes' },
+  { kind: 'activity', caption: 'Activity' },
+  { kind: 'wallet', caption: 'Wallet' },
+  { kind: 'profile', caption: 'Profile' },
+  { kind: 'product', caption: 'Help / DAO Tour' },
+];
 class CollapsibleMenu extends React.Component {
   render() {
-    // const { closeText } = this.props;
+    const { address, menuItems, theme, userType } = this.props;
+    const menu = menuItems || mockMenu;
     return (
       <MenuContainer>
         <ProfileContainer>
           <Welcome>
-            Welcome <span>0x9f56f330bceb9d4e756be94581298673e94ed592</span>
+            Welcome <span>{address}</span>
           </Welcome>
-          <UserType>Badge Holder</UserType>
+          <UserType>{userType}</UserType>
         </ProfileContainer>
         <MenuList>
-          <MenuItem>
-            <Icon kind="home" theme={lightTheme} />
-            <span>Home</span>
-          </MenuItem>
-          <MenuItem>
-            <Icon kind="activity" theme={lightTheme} />
-            <span>Activity</span>
-          </MenuItem>
-          <MenuItem>
-            <Icon kind="wallet" theme={lightTheme} />
-            <span>Wallet</span>
-          </MenuItem>
-          <MenuItem>
-            <Icon kind="profile" theme={lightTheme} />
-            <span>Profile</span>
-          </MenuItem>
-          <MenuItem>
-            <Icon kind="product" theme={lightTheme} />
-            <span>Help / DAO Tour</span>
-          </MenuItem>
+          {menu.map(item => (
+            <MenuItem key={item.caption}>
+              <Icon kind={item.kind} theme={theme || lightTheme} />
+              <span>{item.caption}</span>
+            </MenuItem>
+          ))}
         </MenuList>
       </MenuContainer>
     );
   }
 }
 
-// const { string } = PropTypes;
+const { string, array, object } = PropTypes;
 CollapsibleMenu.propTypes = {
-  // closeText: string,
+  address: string,
+  userType: string,
+  menuItems: array,
+  theme: object,
 };
 
 CollapsibleMenu.defaultProps = {
-  // closeText: 'close',
+  address: '0x9f56f330bceb9d4e756be94581298673e94ed592',
+  userType: 'Badge Holder',
+  menuItems: mockMenu,
+  theme: lightTheme,
 };
 
 export default CollapsibleMenu;

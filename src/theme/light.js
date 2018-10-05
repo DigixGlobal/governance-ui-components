@@ -32,7 +32,7 @@ const grayHex = Color('#E8ECF2');
 const gray = {
   default: grayHex,
   darker: grayHex.darken(0.1),
-  lighter: grayHex.fade(0.8),
+  lighter: grayHex.lighten(0.08),
 };
 
 // const darkerGrayHex = Color('#E3E3E3');

@@ -12,10 +12,10 @@ import {
   MenuList,
   MenuItem,
 } from './style';
-import { Avatar } from '../common-styles';
+// import { Avatar } from '../common-styles';
 
 import Icon from '../elements/Icons/';
-import profilePic from '../../../assets/images/realtor-1.jpeg';
+// import profilePic from '../../../assets/images/realtor-1.jpeg';
 
 class CollapsibleMenu extends React.Component {
   render() {
@@ -61,7 +61,7 @@ CollapsibleMenu.propTypes = {
 };
 
 CollapsibleMenu.defaultProps = {
-  closeText: 'close',
+  // closeText: 'close',
 };
 
 export default CollapsibleMenu;

@@ -6,6 +6,7 @@ import NavBar from '../components/common/blocks/NavBar';
 // import MenuItem from '@material-ui/core/MenuItem';
 
 import LeftMenu from '../components/common/collapsible-menu';
+import Timeline from '../components/common/blocks/timeline';
 // import Button from '../components/common/buttons';
 import Input from '../components/common/textfield';
 import StyledSwitch from '../components/common/switch';
@@ -24,6 +25,7 @@ class App extends Component {
       <ThemeProvider theme={lightTheme}>
         <Fragment>
           <NavBar />
+          <Timeline />
           <LeftMenu />
           <Container>
             {/* <Button primary>create proposal</Button>

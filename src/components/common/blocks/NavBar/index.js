@@ -5,7 +5,7 @@ import Menu from './Menu';
 import Search from './Search';
 import Wallet from './Wallet';
 import Utility from './Utility';
-import Brand from './Brand';
+import Brand from '../../elements/Icons/Brand';
 
 const Wrapper = styled.section`
   display: flex;

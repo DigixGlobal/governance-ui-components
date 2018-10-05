@@ -1,5 +1,5 @@
 {
-  "name": "governance-ui-components",
+  "name": "@digix/governance-ui-components",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

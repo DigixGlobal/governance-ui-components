@@ -27,7 +27,7 @@
     "babel-plugin-styled-components": "^1.7.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-with-prettier": "^4.2.0",
-    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.9.1",

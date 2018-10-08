@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 
 export const MenuContainer = styled.div`
-  width: 24.3rem;
+  // width: 24.3rem;
   height: 100vh;
   padding: 2.5rem;
   background-color: ${props => props.theme.sidePanelBgColor.toString()};
   color: ${props => props.theme.textColorInverted.default.toString()};
   font-size: 1.6rem;
   box-shadow: 1rem 0.9rem 2.1rem rgba(128, 152, 213, 0.2);
+  flex: 1 0 0;
 `;
 
 export const CloseMenu = styled.div`

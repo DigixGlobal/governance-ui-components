@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 80%;
-  margin: 0 auto;
+  margin: 2em auto;
   padding: 2rem 4rem;
   font-size: 1.5rem;
   text-transform: uppercase;

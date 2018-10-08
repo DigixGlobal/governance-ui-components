@@ -1,10 +1,10 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Menu from './Menu';
-import Search from './Search';
-import Wallet from './Wallet';
-import Utility from './Utility';
+import Menu from './menu';
+import Search from './search';
+import Wallet from './wallet';
+import Utility from './utility';
 import Brand from '../../elements/Icons/Brand';
 
 const Wrapper = styled.section`

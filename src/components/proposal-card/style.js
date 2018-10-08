@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 
 export const ProposalContainer = styled.div`
-  /* padding: 2rem; */
   position: relative;
-  max-width: 50.4rem;
-  width: 50.4rem;
   min-height: 36.6rem;
   height: 36.6rem;
   max-height: 36.6rem;
@@ -25,7 +22,7 @@ export const TagsContainer = styled.div`
 
 export const ProposalDetail = styled.div`
   text-align: justify;
-  max-width: 33.4rem;
+
   padding: 3rem 3rem;
   height: 36.6rem;
   font-size: 1.6rem;

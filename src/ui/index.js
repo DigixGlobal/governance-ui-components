@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
-import NavBar from '../components/common/blocks/NavBar';
+import NavBar from '../components/common/blocks/navbar';
 // import Select from '@material-ui/core/Select';
 // import MenuItem from '@material-ui/core/MenuItem';
 
 import LeftMenu from '../components/common/collapsible-menu';
 import Timeline from '../components/common/blocks/timeline';
-// import Button from '../components/common/buttons';
-import Input from '../components/common/textfield';
+import DashboardStats from '../components/common/blocks/user-DAO-stats/index';
+
 import StyledSwitch from '../components/common/switch';
 import StyledSelect from '../components/common/select';
 import { Row, Col1Of3 } from '../components/common/grid/style';
@@ -19,14 +19,26 @@ import lightTheme from '../theme/light';
 
 import { Container } from './style';
 
+const ContentWrapper = styled.div`
+  flex: 5 0 0;
+  padding: 5em;
+`;
+
 class App extends Component {
   render() {
     return (
       <ThemeProvider theme={lightTheme}>
         <Fragment>
           <NavBar />
-          <Timeline />
-          <LeftMenu />
+          <Container>
+            <LeftMenu />
+            <ContentWrapper>
+              <Timeline />
+              <DashboardStats />
+              <ProposalCard />
+            </ContentWrapper>
+          </Container>
+
           <Container>
             {/* <Button primary>create proposal</Button>
             &nbsp;
@@ -36,17 +48,8 @@ class App extends Component {
               finance
             </Button> */}
           </Container>
-          <Container>{/* <Button fullWidth>sign up &mdash; it's free!</Button> */}</Container>
+
           <Container>
-            {/* <Button fullWidth secondary>
-              Already have an account? Log in
-            </Button> */}
-          </Container>
-          <Container>
-            <Input type="text" placeholder="default textbox style" />
-          </Container>
-          <Container>
-            <Input type="text" rounded />
             <StyledSwitch theme={lightTheme.secondary} />
           </Container>
           <Container>
@@ -71,9 +74,7 @@ class App extends Component {
               ]}
             /> */}
           </Container>
-          <Container width="100%">
-            <ProposalCard />
-          </Container>
+
           <Container width="100%">&nbsp;</Container>
         </Fragment>
       </ThemeProvider>

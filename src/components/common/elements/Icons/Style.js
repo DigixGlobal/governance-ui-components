@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: ${props => props.width || '3rem'};
   height: ${props => props.height || '3rem'};
 
@@ -11,11 +13,9 @@ export const Container = styled.div`
     transition: background-color 0.4s ease;
   } */
   > svg {
-    color: ${props => props.theme.primary.default.toString()};
-    fill: ${props => props.theme.primary.default.toString()};
-    stroke: ${props => props.theme.primary.default.toString()};
-    /* display: inline-block; */
-    padding: 0.5rem;
+    color: ${props => props.theme.iconColor.toString()};
+    fill: ${props => props.theme.iconColor.toString()};
+    stroke: ${props => props.theme.iconColor.toString()};
 
     width: 100%;
     height: 100%;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from './Style';
+import { Container } from './style';
 
 const MenuIcon = props => (
   <Container {...props}>
@@ -10,8 +10,8 @@ const MenuIcon = props => (
 );
 
 MenuIcon.defaultProps = {
-  width: '1.6rem',
-  height: '1.6rem',
+  width: '4.5rem',
+  height: '4.5rem',
 };
 
 export default MenuIcon;

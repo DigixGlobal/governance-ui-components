@@ -62,6 +62,10 @@ input {
   outline: none;
 }
 
+h2 {
+  font-size: 3em;
+}
+
 `;
 
 const breakpoints = {

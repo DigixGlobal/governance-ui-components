@@ -1,24 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon from '../../elements/Icons';
+import Icon from '../../elements/icons';
 
 const StyledLink = styled.a`
-  display: inline-flex;
-  align-self: center;
   text-decoration: none;
-  padding: 0 1.5em;
-  text-transform: uppercase;
-  height: 50px;
-
-  svg {
-    display: inline-block;
-    vertical-align: middle;
-    height: 50px;
-    width: 50px;
-  }
 `;
 
 const MenuWrapper = styled.div`
+  flex: 0.5 0 0;
   display: inline-flex;
 `;
 

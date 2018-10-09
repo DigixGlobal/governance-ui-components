@@ -1,44 +1,52 @@
 import styled from 'styled-components';
 
-export const ProposalContainer = styled.div`
-  position: relative;
-  min-height: 36.6rem;
-  height: 36.6rem;
-  max-height: 36.6rem;
-  background-color: ${props => props.theme.backgroundColor.default.toString()};
-  float: left;
-  border: 1px solid ${props => props.theme.borderColor.default.toString()};
+export const ProposalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
-  > div {
-    float: left;
-  }
+`;
+
+export const ProposalContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  height: 36.6rem;
+  background-color: ${props => props.theme.mainBackgroundColor.toString()};
+  border: 1px solid ${props => props.theme.borderColor.default.toString()};
+`;
+
+export const ProposalDetail = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  align-items: space-between;
+  flex: 4 0 0;
+
+  padding: 2em 3em;
+  font-size: 1.6rem;
 `;
 
 export const TagsContainer = styled.div`
+  margin-bottom: 1em;
   > a {
     margin-right: 0.5rem;
   }
 `;
 
-export const ProposalDetail = styled.div`
-  text-align: justify;
-
-  padding: 3rem 3rem;
-  height: 36.6rem;
-  font-size: 1.6rem;
-
-  > h2 {
-    margin: 2rem 0;
-    font-size: 3.2rem;
-    text-align: left;
+export const Description = styled.div`
+  p {
+    margin-bottom: 2em;
   }
 `;
-
-export const MileStones = styled.div`
-  text-transform: uppercase;
+export const PostedBy = styled.div`
+  border-top: 1px solid #ccc;
+  padding: 1em 0;
 `;
 
 export const Stats = styled.div`
+  flex: 1 0 0;
+  border-left: 1px solid ${props => props.theme.borderColor.default.toString()};
+  border-right: 1px solid ${props => props.theme.borderColor.default.toString()};
   width: 16.8rem;
   text-transform: uppercase;
   margin: 0 auto;
@@ -51,7 +59,6 @@ export const Stats = styled.div`
 `;
 
 export const StatItem = styled.div`
-  border-left: 1px solid ${props => props.theme.borderColor.default.toString()};
   padding-top: 4rem;
   height: 12.12rem;
   font-size: 1.6rem;
@@ -63,6 +70,11 @@ export const StatItem = styled.div`
     /* height: 4rem; */
   }
 `;
+
+export const Milestones = styled.div`
+  flex: 2 0 0;
+`;
+
 export const ProgressContainer = styled.div`
   position: relative;
   background-color: #b8c5d0;

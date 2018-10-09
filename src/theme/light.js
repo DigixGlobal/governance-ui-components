@@ -74,6 +74,8 @@ const LightTheme = {
   textColorInverted: white,
   borderColor: gray,
 
+  iconColor: blue.default,
+
   ErrorMessage,
 };
 

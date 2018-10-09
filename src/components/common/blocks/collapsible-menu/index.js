@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import lightTheme from '../../../theme/light';
+import lightTheme from '../../../../theme/light';
 
 import {
   MenuContainer,
@@ -13,7 +13,7 @@ import {
   MenuItem,
 } from './style';
 
-import Icon from '../elements/Icons/';
+import Icon from '../../elements/icons/';
 
 const mockMenu = [
   { kind: 'home', caption: 'Homes' },

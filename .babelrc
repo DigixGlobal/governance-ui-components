@@ -1,4 +1,8 @@
 {
   "presets": ["env", "react"],
-  "plugins": ["styled-components", "transform-object-rest-spread"]
+  "plugins": [
+    "styled-components",
+    "transform-object-rest-spread",
+    "transform-class-properties"
+  ]
 }

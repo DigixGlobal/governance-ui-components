@@ -18,11 +18,18 @@ export const Button = styled.button`
   text-decoration: none;
   text-transform: uppercase;
   font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
+  outline: none;
+  margin: 1rem 0;
 
   &:hover {
     background: transparent;
     color: ${props => props.theme.textColor.default};
   }
+  ${props =>
+    props.fullWidth &&
+    css`
+      width: 100%;
+    `};
 
   ${props =>
     props.text &&

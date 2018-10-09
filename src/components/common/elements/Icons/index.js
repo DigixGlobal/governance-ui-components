@@ -1,20 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Close from './close';
-import Face from './face';
-import Dashboard from './dashboard';
+import Close from './Close';
+import Face from './Face';
+import Dashboard from './Dashboard';
 // import DigixLogo from './Brand';
-import Magnifier from './magnifier';
-import Menu from './menu';
-import Notification from './notification';
-import Ribbon from './ribbon';
-import Home from './home';
-import Activity from './activity';
-import Wallet from './wallet';
-import Profile from './profile';
-import Help from './help';
+import Magnifier from './Magnifier';
+import Menu from './Menu';
+import Notification from './Notification';
+import Ribbon from './Ribbon';
+import Home from './Home';
+import Activity from './Activity';
+import Wallet from './Wallet';
+import Profile from './Profile';
+import Help from './Help';
 import Product from './product-tour';
+import JsonWallet from './JsonWallet';
+import Ledger from './Ledger';
+import Metamask from './Metamask';
+import Trezor from './Trezor';
+import ImToken from './ImToken';
 
 const icons = {
   close: Close,
@@ -31,6 +36,11 @@ const icons = {
   profile: Profile,
   help: Help,
   product: Product,
+  json: JsonWallet,
+  ledger: Ledger,
+  metamask: Metamask,
+  trezor: Trezor,
+  imtoken: ImToken,
 };
 
 const Icon = props => {

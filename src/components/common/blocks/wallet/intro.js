@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from '../../../common/elements/buttons/index'; // '../../elements/buttons';
 import { A } from '../../common-styles';
-import Icon from '../../../common/elements/Icons';
+import Icon from '../../../common/elements/icons';
 
 import { IntroContainer, Header, CloseButton } from './style';
 import { Stage } from './constants';

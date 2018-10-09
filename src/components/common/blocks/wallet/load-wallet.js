@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '../../../common/elements/buttons/index'; //
-import Icon from '../../../common/elements/Icons';
+import Icon from '../../../common/elements/icons';
 
 import { InnerContainer, Header, CloseButtonWithHeader, Wallets, WalletItem } from './style';
 import { Stage } from './constants';

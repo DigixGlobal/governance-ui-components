@@ -8,14 +8,28 @@ import LeftMenu from '../components/common/blocks/collapsible-menu';
 
 import lightTheme from '../theme/light';
 
+import { ContentWrapper } from '../components/common/common-styles';
+import { Container } from './style';
+
+import ProposalCard from '../components/proposal-card';
+import Timeline from '../components/common/blocks/timeline';
+import DashboardStats from '../components/common/blocks/user-DAO-stats/index';
+
 class App extends Component {
   render() {
     return (
       <ThemeProvider theme={lightTheme}>
         <Fragment>
-          <NavBar />
-          <LeftMenu />
           <WalletContainer />
+          <NavBar />
+          <Container>
+            <LeftMenu />
+            <ContentWrapper>
+              <Timeline />
+              <DashboardStats />
+              <ProposalCard />
+            </ContentWrapper>
+          </Container>
         </Fragment>
       </ThemeProvider>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import { Container, TransparentOverlay, WalletContainer } from './style';
 import Intro from './intro';
@@ -20,6 +20,8 @@ export default class Wallet extends React.Component {
   };
   render() {
     const { stage } = this.state;
+    const { show } = this.props;
+    if (!show) return null;
     return (
       <Container>
         <TransparentOverlay>overlay</TransparentOverlay>
@@ -31,3 +33,11 @@ export default class Wallet extends React.Component {
     );
   }
 }
+
+Wallet.propTypes = {
+  show: PropTypes.bool,
+};
+
+Wallet.defaultProps = {
+  show: true,
+};

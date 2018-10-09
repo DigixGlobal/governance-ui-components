@@ -40,3 +40,8 @@ export const A = styled.a`
       color: #c4a159;
     `};
 `;
+
+export const ContentWrapper = styled.div`
+  flex: 5 0 0;
+  padding: 5em;
+`;

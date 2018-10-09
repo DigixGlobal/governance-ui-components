@@ -15,15 +15,18 @@ export const ProposalContainer = styled.div`
   border: 1px solid ${props => props.theme.borderColor.default.toString()};
 `;
 
-export const ProposalDetail = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  align-items: space-between;
-  flex: 4 0 0;
+export const ProposaDetaillWrapper = styled.div`
+  flex: 4 1 0;
 
   padding: 2em 3em;
   font-size: 1.6rem;
+`;
+
+export const ProposalDetail = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1 1 0;
 `;
 
 export const TagsContainer = styled.div`

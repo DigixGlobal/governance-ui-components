@@ -14,13 +14,8 @@ export const H1 = styled.h1`
 
 const H2 = styled.h2`
   color: ${props => props.color || props.theme.primary};
-<<<<<<< HEAD
   font-size: 2.4rem;
-  margin: 1em 0;
-=======
-  font-size: 3.5rem;
-  margin: 0;
->>>>>>> 83555225e5c87da1d11df2d01695de8e40d4656f
+  margin-bottom: 1rem;
 `;
 export default H2;
 

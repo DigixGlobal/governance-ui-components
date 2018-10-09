@@ -26,11 +26,18 @@ export const ProposalDetail = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  flex: 1 1 0;
+  height: 100%;
+  > div {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 `;
 
 export const TagsContainer = styled.div`
-  margin-bottom: 1em;
+  //margin-bottom: 1em;
   > a {
     margin-right: 0.5rem;
   }
@@ -38,7 +45,7 @@ export const TagsContainer = styled.div`
 
 export const Description = styled.div`
   p {
-    margin-bottom: 2em;
+    // margin-bottom: 2em;
   }
 `;
 export const PostedBy = styled.div`

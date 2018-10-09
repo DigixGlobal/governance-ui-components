@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Input from '../../textfield';
+import Input from '../../elements/textfield/';
 
 const WalletWrapper = styled.div`
   flex: 3 0 0;

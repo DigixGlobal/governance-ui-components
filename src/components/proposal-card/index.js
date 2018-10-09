@@ -2,7 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 
 import { H2 } from '../common/common-styles';
-import Button from '../common/buttons';
+import Button from '../common/elements/buttons/index';
 
 import {
   ProposalWrapper,

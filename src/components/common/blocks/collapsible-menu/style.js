@@ -71,6 +71,6 @@ export const MenuItem = styled.li`
     display: inline-block;
     position: absolute;
     top: 2.5rem;
-    padding-left: 1rem;
+    margin-left: 3.5rem;
   }
 `;

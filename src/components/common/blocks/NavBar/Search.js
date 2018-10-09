@@ -1,23 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon from '../../elements/Icons';
+import Icon from '../../elements/icons';
+
+const MenuWrapper = styled.div`
+  display: inline-flex;
+  justify-content: flex-start;
+`;
 
 const StyledLink = styled.a`
   display: flex;
   align-items: center;
   color: ${props => props.theme.defaultTextColor.toString()};
   text-decoration: none;
-  padding: 0 2em;
   text-transform: uppercase;
-
-  svg {
-    display: inline-block;
-    vertical-align: middle;
-  }
-`;
-
-const MenuWrapper = styled.div`
-  display: inline-flex;
 `;
 
 function Search() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from './Style';
+import { Container } from './style';
 
 const WalletIcon = props => (
   <Container {...props}>
@@ -25,8 +25,8 @@ const WalletIcon = props => (
 );
 
 WalletIcon.defaultProps = {
-  width: '2.8rem',
-  height: '2.8rem',
+  width: '2.5rem',
+  height: '2.5rem',
 };
 
 export default WalletIcon;

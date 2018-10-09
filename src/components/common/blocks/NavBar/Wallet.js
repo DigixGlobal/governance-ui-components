@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import Input from '../../textfield';
 
 const WalletWrapper = styled.div`
+  flex: 3 0 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2em !important;
+  // padding: 2em !important;
   //   width: 300px;
   border-left: 0 !important;
 `;

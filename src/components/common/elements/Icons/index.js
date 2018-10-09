@@ -1,26 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Close from './Close';
-import Face from './Face';
-import Dashboard from './Dashboard';
-import DigixLogo from './Brand';
-import Magnifier from './Magnifier';
-import Menu from './Menu';
-import Notification from './Notification';
-import Ribbon from './Ribbon';
-import Home from './Home';
-import Activity from './Activity';
-import Wallet from './Wallet';
-import Profile from './Profile';
-import Help from './Help';
+import Close from './close';
+import Face from './face';
+import Dashboard from './dashboard';
+// import DigixLogo from './Brand';
+import Magnifier from './magnifier';
+import Menu from './menu';
+import Notification from './notification';
+import Ribbon from './ribbon';
+import Home from './home';
+import Activity from './activity';
+import Wallet from './wallet';
+import Profile from './profile';
+import Help from './help';
 import Product from './product-tour';
 
 const icons = {
   close: Close,
   face: Face,
   dasboard: Dashboard,
-  digixLogo: DigixLogo,
+  // digixLogo: DigixLogo,
   magnifier: Magnifier,
   menu: Menu,
   notification: Notification,

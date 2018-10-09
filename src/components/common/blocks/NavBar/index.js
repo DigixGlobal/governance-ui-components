@@ -5,12 +5,14 @@ import Menu from './menu';
 import Search from './search';
 import Wallet from './wallet';
 import Utility from './utility';
-import Brand from '../../elements/Icons/Brand';
+import Brand from '../../elements/icons/brand';
 
-const Wrapper = styled.section`
+const HeaderWrapper = styled.section`
   display: flex;
   flex-direction: row;
-  //justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
+  height: 68px;
   background-color: ${props => props.theme.headerBackgroundColor.toString()};
   color: ${props => props.theme.defaultTextColor.toString()};
   border-bottom: 1px solid ${props => props.theme.headerBorderColor.toString()};
@@ -18,22 +20,22 @@ const Wrapper = styled.section`
 
   & > div {
     border-left: 1px solid ${props => props.theme.headerBorderColor.toString()};
-    padding-left: 0.8em;
-    padding-right: 0.8em;
+    flex: 1 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 2em;
+
     &:nth-child(1) {
-      width: 6%;
+      flex: 0.5 0 0;
     }
     &:nth-child(2) {
-      width: 50%;
+      justify-content: flex-start;
+      flex: 4 0 0;
     }
     &:nth-child(3) {
-      width: 19%;
-    }
-    &:nth-child(4) {
-      width: 10%;
-    }
-    &:nth-child(5) {
-      width: 15%;
+      flex: 3 0 0;
     }
   }
 `;
@@ -41,13 +43,13 @@ const Wrapper = styled.section`
 class NavBar extends React.Component {
   render() {
     return (
-      <Wrapper>
+      <HeaderWrapper>
         <Menu />
         <Search />
         <Wallet />
         <Utility />
-        <Brand href="/">Digix</Brand>
-      </Wrapper>
+        <Brand />
+      </HeaderWrapper>
     );
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from './Style';
+import { Container } from './style';
 
 const MagnifierIcon = props => (
   <Container {...props}>
@@ -21,7 +21,7 @@ const MagnifierIcon = props => (
 
 MagnifierIcon.defaultProps = {
   width: '2.8rem',
-  height: '2.8rem',
+  height: '2rem',
 };
 
 export default MagnifierIcon;

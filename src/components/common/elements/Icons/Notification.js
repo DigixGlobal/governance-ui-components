@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from './Style';
+import { Container } from './style';
 
 const NotificationsIcon = props => (
   <Container {...props}>
@@ -13,8 +13,8 @@ const NotificationsIcon = props => (
 );
 
 NotificationsIcon.defaultProps = {
-  width: '2.8rem',
-  height: '2.8rem',
+  width: '2rem',
+  height: '2rem',
 };
 
 export default NotificationsIcon;

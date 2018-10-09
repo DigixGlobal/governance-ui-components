@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Input from '../../elements/textfield';
+import Button from '../../elements/buttons/';
 
 const WalletWrapper = styled.div`
   flex: 3 0 0;
@@ -17,7 +17,7 @@ class Wallet extends React.Component {
   render() {
     return (
       <WalletWrapper>
-        <Input rounded type="text" placeholder="0x70A0f6FD3B14ec4ea67E1…" />
+        <Button kind="capsule">0x70A0f6FD3B14ec4ea67E1…</Button>
       </WalletWrapper>
     );
   }

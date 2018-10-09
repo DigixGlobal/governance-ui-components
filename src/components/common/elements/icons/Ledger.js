@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from './Style';
+import { Container } from './style';
 
 const LedgerIcon = props => (
   <Container {...props}>

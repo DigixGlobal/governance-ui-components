@@ -5,7 +5,7 @@ import Menu from './menu';
 import Search from './search';
 import Wallet from './wallet';
 import Utility from './utility';
-import Brand from '../../elements/icons/brand';
+import Brand from '../../elements/Icons/Brand';
 
 const HeaderWrapper = styled.section`
   display: flex;

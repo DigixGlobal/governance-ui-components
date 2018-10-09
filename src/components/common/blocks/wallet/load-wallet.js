@@ -7,6 +7,28 @@ import Icon from '../../../common/elements/Icons';
 import { InnerContainer, Header, CloseButtonWithHeader, Wallets, WalletItem } from './style';
 import { Stage } from './constants';
 
+const wallets = [
+  {
+    icon: 'metamask',
+    caption: 'Metamask',
+  },
+  {
+    icon: 'ledger',
+    caption: 'Ledger',
+  },
+  {
+    icon: 'trezor',
+    caption: 'Trezor',
+  },
+  {
+    icon: 'imtoken',
+    caption: 'ImToken',
+  },
+  {
+    icon: 'json',
+    caption: 'Json File',
+  },
+];
 export default class LoadWallet extends React.Component {
   handleCloseButtonClick = () => {
     const { onChangeStage } = this.props;
@@ -23,36 +45,14 @@ export default class LoadWallet extends React.Component {
           <Icon kind="close" onClick={this.handleCloseButtonClick} />
         </CloseButtonWithHeader>
         <Wallets>
-          <WalletItem>
-            <Button fullWidth>
-              <Icon kind="close" />
-              Metamask
-            </Button>
-          </WalletItem>
-          <WalletItem>
-            <Button fullWidth>
-              <Icon kind="close" />
-              Ledger
-            </Button>
-          </WalletItem>
-          <WalletItem>
-            <Button fullWidth>
-              <Icon kind="close" />
-              Trezor
-            </Button>
-          </WalletItem>
-          <WalletItem>
-            <Button fullWidth>
-              <Icon kind="close" />
-              IMTOKEN
-            </Button>
-          </WalletItem>
-          <WalletItem>
-            <Button fullWidth>
-              <Icon kind="close" />
-              JSON FILE
-            </Button>
-          </WalletItem>
+          {wallets.map(item => (
+            <WalletItem key={item.icon}>
+              <Button fullWidth>
+                <Icon kind={item.icon} />
+                {item.caption}
+              </Button>
+            </WalletItem>
+          ))}
         </Wallets>
       </InnerContainer>
     );

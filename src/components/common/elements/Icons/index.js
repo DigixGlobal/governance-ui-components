@@ -15,6 +15,11 @@ import Wallet from './Wallet';
 import Profile from './Profile';
 import Help from './Help';
 import Product from './product-tour';
+import JsonWallet from './JsonWallet';
+import Ledger from './Ledger';
+import Metamask from './Metamask';
+import Trezor from './Trezor';
+import ImToken from './ImToken';
 
 const icons = {
   close: Close,
@@ -31,6 +36,11 @@ const icons = {
   profile: Profile,
   help: Help,
   product: Product,
+  json: JsonWallet,
+  ledger: Ledger,
+  metamask: Metamask,
+  trezor: Trezor,
+  imtoken: ImToken,
 };
 
 const Icon = props => {

@@ -16,10 +16,11 @@ class Intro extends React.Component {
     }
   };
   render() {
+    const { onClose } = this.props;
     return (
       <IntroContainer>
         <CloseButton>
-          <Icon kind="close" />
+          <Icon kind="close" onClick={onClose} />
         </CloseButton>
         <Header>Hello there!</Header>
         <p>
@@ -40,7 +41,10 @@ class Intro extends React.Component {
   }
 }
 
+const { func } = PropTypes;
+
 Intro.propTypes = {
-  onChangeStage: PropTypes.func.isRequired,
+  onChangeStage: func.isRequired,
+  onClose: func.isRequired,
 };
 export default Intro;

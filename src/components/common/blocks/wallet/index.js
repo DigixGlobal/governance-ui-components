@@ -20,13 +20,13 @@ export default class Wallet extends React.Component {
   };
   render() {
     const { stage } = this.state;
-    const { show } = this.props;
+    const { show, onClose } = this.props;
     if (!show) return null;
     return (
       <Container>
         <TransparentOverlay>overlay</TransparentOverlay>
         <WalletContainer>
-          {stage === Stage.Intro && <Intro onChangeStage={this.updateStage} />}
+          {stage === Stage.Intro && <Intro onClose={onClose} onChangeStage={this.updateStage} />}
           {stage === Stage.LoadingWallet && <LoadWallet onChangeStage={this.updateStage} />}
         </WalletContainer>
       </Container>
@@ -34,10 +34,12 @@ export default class Wallet extends React.Component {
   }
 }
 
+const { func, bool } = PropTypes;
 Wallet.propTypes = {
-  show: PropTypes.bool,
+  show: bool,
+  onClose: func.isRequired,
 };
 
 Wallet.defaultProps = {
-  show: true,
+  show: false,
 };

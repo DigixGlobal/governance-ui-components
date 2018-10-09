@@ -16,12 +16,24 @@ import Timeline from '../components/common/blocks/timeline';
 import DashboardStats from '../components/common/blocks/user-DAO-stats/index';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showWallet: false,
+    };
+  }
+
+  handleWalletClick = () => {
+    this.setState({ showWallet: !this.state.showWallet });
+  };
+
   render() {
+    const { showWallet } = this.state;
     return (
       <ThemeProvider theme={lightTheme}>
         <Fragment>
-          <WalletContainer />
-          <NavBar />
+          <WalletContainer show={showWallet} onClose={this.handleWalletClick} />
+          <NavBar onWalletClick={this.handleWalletClick} />
           <Container>
             <LeftMenu />
             <ContentWrapper>

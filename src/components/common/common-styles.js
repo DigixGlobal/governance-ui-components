@@ -12,11 +12,12 @@ export const H1 = styled.h1`
   margin: 0;
 `;
 
-export const H2 = styled.h2`
+const H2 = styled.h2`
   color: ${props => props.color || props.theme.primary};
-  font-size: 1.6rem;
-  margin: 0;
+  font-size: 2.4rem;
+  margin: 1em 0;
 `;
+export default H2;
 
 export const H3 = styled.h3`
   color: ${props => props.color || props.theme.primary};

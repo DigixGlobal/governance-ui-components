@@ -66,6 +66,10 @@ h2 {
   font-size: 3em;
 }
 
+p {
+  margin-bottom: 1em;
+}
+
 `;
 
 const breakpoints = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon from '../../elements/icons';
+import Icon from '../../elements/Icons';
 
 const StyledLink = styled.a`
   text-decoration: none;

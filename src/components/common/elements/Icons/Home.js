@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container } from './style';
+import { Container } from './Style';
 
 const HomeIcon = props => (
   <Container {...props}>

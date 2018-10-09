@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon from '../../elements/icons';
+import Icon from '../../elements/Icons';
 
 const MenuWrapper = styled.div`
   display: inline-flex;

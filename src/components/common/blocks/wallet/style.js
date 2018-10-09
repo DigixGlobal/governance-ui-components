@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { H4 } from '../../common-styles';
-import { Button } from '../../buttons/capsule-button/style';
+import { Button } from '../../../common/elements/buttons/capsule-button/style'; //
 
 export const Container = styled.div`
   position: fixed;

@@ -13,7 +13,7 @@ import {
   MenuItem,
 } from './style';
 
-import Icon from '../../elements/icons/';
+import Icon from '../../elements/Icons/';
 
 const mockMenu = [
   { kind: 'home', caption: 'Homes' },

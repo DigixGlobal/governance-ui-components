@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import NavBar from '../components/common/blocks/navbar';
 import WalletContainer from '../components/common/blocks/wallet';
 
-import LeftMenu from '../components/common/collapsible-menu';
+import LeftMenu from '../components/common/blocks/collapsible-menu';
 
 import lightTheme from '../theme/light';
 

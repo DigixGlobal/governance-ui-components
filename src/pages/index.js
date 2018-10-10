@@ -40,6 +40,7 @@ class App extends Component {
               <Timeline />
               <DashboardStats />
               <ProposalCard />
+              <ProposalCard />
             </ContentWrapper>
           </Container>
         </Fragment>

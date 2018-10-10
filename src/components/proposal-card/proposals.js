@@ -8,7 +8,9 @@ import {
   ProposalDetail,
   TagsContainer,
   Description,
+  ProposalFooter,
   PostedBy,
+  UpVote,
 } from './style';
 
 export default class ProposalCard extends React.Component {
@@ -28,11 +30,12 @@ export default class ProposalCard extends React.Component {
               ea mea. At saepe everti constituam sit, libris epicurei te eum, summo ocurreret te
               vim. Ei vim postulant rationibus.
             </p>
-            <p>
-              <a href=".">View Project</a>
-            </p>
+            <a href=".">View Project</a>
           </Description>
-          <PostedBy>BY DGX TO THE MOON</PostedBy>
+          <ProposalFooter>
+            <PostedBy>BY DGX TO THE MOON</PostedBy>
+            <UpVote>LIKE</UpVote>
+          </ProposalFooter>
         </ProposalDetail>
       </ProposaDetaillWrapper>
     );

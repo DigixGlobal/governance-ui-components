@@ -1,12 +1,12 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import Proposals from './proposals';
+import Milestones from './milestones';
 
 import {
   ProposalWrapper,
   ProposalContainer,
   Stats,
-  Milestones,
   ProgressContainer,
   Progress,
   StatItem,
@@ -32,7 +32,7 @@ export default class ProposalCard extends React.Component {
               <span>111</span>
             </StatItem>
           </Stats>
-          <Milestones>asasd</Milestones>
+          <Milestones />
         </ProposalContainer>
         <ProgressContainer>
           <Progress />

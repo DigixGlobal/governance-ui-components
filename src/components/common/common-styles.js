@@ -44,5 +44,5 @@ export const A = styled.a`
 
 export const ContentWrapper = styled.div`
   flex: 5 0 0;
-  padding: 5em;
+  padding: 8em 10em;
 `;

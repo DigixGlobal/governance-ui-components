@@ -49,6 +49,13 @@ const white = {
   lighter: whiteHex.lighten(0.05),
 };
 
+const redHex = Color('#D0021B');
+const red = {
+  default: redHex,
+  darker: redHex.darken(0.05),
+  lighter: redHex.lighten(0.05),
+};
+
 const ErrorMessage = {
   backgroundColor: gray,
   padding: '1em',
@@ -75,6 +82,7 @@ const LightTheme = {
   borderColor: gray,
 
   iconColor: blue.default,
+  tagColor: red.default,
 
   ErrorMessage,
 };

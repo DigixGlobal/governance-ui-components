@@ -55,6 +55,7 @@ body {
 
   font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
   box-sizing: border-box;
+  letter-spacing: 0.05em;
 }
 
 input {
@@ -68,6 +69,7 @@ h2 {
 
 p {
   margin-bottom: 1em;
+  font-weight: 300;
 }
 
 `;

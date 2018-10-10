@@ -4,6 +4,7 @@ export const ProposalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+  margin-bottom: 3em;
 `;
 
 export const ProposalContainer = styled.div`
@@ -24,33 +25,50 @@ export const ProposaDetaillWrapper = styled.div`
 
 export const ProposalDetail = styled.div`
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  align-items: flex-start;
+
   height: 100%;
   > div {
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 100%;
   }
 `;
 
 export const TagsContainer = styled.div`
-  //margin-bottom: 1em;
-  > a {
-    margin-right: 0.5rem;
-  }
+  margin-bottom: 1em;
 `;
 
 export const Description = styled.div`
+  margin-bottom: 3em;
   p {
-    // margin-bottom: 2em;
+    margin-bottom: 3em;
   }
 `;
-export const PostedBy = styled.div`
-  border-top: 1px solid #ccc;
+
+export const ProposalFooter = styled.div`
+  border-top: 1px solid ${props => props.theme.borderColor.default.toString()};
   padding: 1em 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const PostedBy = styled.div``;
+
+export const UpVote = styled.div``;
+
+export const Label = styled.div`
+  color: ${props => props.theme.defaultTextColor.toString()};
+
+  margin-bottom: 0.8em;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+`;
+export const Data = styled.div`
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.3rem;
 `;
 
 export const Stats = styled.div`
@@ -77,28 +95,54 @@ export const StatItem = styled.div`
   > span {
     font-size: 2.5rem;
     display: block;
-    /* height: 4rem; */
   }
 `;
 
-export const Milestones = styled.div`
+export const MilestonesWrapper = styled.div`
   flex: 2 0 0;
 `;
 
+export const Milestones = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & > div {
+    padding: 3.5em 0;
+    text-align: center;
+    flex: 1;
+  }
+`;
+
+export const MilestoneStatus = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  ul {
+    width: 60%;
+    margin: 0 auto;
+  }
+  li {
+    display: inline-block;
+    list-style: none;
+    background: ${props => props.theme.primary.default.toString()};
+    height: 8px;
+    width: 47%;
+    &:first-child {
+      margin-right: 5px;
+    }
+  }
+`;
+export const Deadline = styled.div``;
+export const CallToAction = styled.div``;
+
 export const ProgressContainer = styled.div`
-  position: relative;
   background-color: #b8c5d0;
-  height: 1rem;
-  width: 50.4rem;
-  z-index: 5;
+  height: 0.8rem;
 `;
 
 export const Progress = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 30%;
-  z-index: 10;
-  height: 1rem;
+  width: 70%;
+  height: 0.8rem;
   background-color: #243961;
 `;

@@ -1,34 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '../../../common/elements/buttons/index'; //
 import Icon from '../../../common/elements/icons';
 
-import { InnerContainer, Header, CloseButtonWithHeader, Wallets, WalletItem } from './style';
+import { InnerContainer, Header, CloseButtonWithHeader, Wallets } from './style';
 import { Stage } from './constants';
 
-const wallets = [
-  {
-    icon: 'metamask',
-    caption: 'Metamask',
-  },
-  {
-    icon: 'ledger',
-    caption: 'Ledger',
-  },
-  {
-    icon: 'trezor',
-    caption: 'Trezor',
-  },
-  {
-    icon: 'imtoken',
-    caption: 'ImToken',
-  },
-  {
-    icon: 'json',
-    caption: 'Json File',
-  },
-];
+import V3 from './json';
+import Metamask from './metamask';
+import Ledger from './ledger';
+import Trezor from './trezor';
+import ImToken from './imtoken';
+
 export default class LoadWallet extends React.Component {
   handleCloseButtonClick = () => {
     const { onChangeStage } = this.props;
@@ -38,6 +21,8 @@ export default class LoadWallet extends React.Component {
   };
 
   render() {
+    const { createKeystore } = this.props;
+
     return (
       <InnerContainer>
         <CloseButtonWithHeader>
@@ -45,14 +30,11 @@ export default class LoadWallet extends React.Component {
           <Icon kind="close" onClick={this.handleCloseButtonClick} />
         </CloseButtonWithHeader>
         <Wallets>
-          {wallets.map(item => (
-            <WalletItem key={item.icon}>
-              <Button fullWidth>
-                <Icon kind={item.icon} />
-                {item.caption}
-              </Button>
-            </WalletItem>
-          ))}
+          <Metamask createKeystore={createKeystore} />
+          <Ledger createKeystore={createKeystore} />
+          <Trezor createKeystore={createKeystore} />
+          <ImToken createKeystore={createKeystore} />
+          <V3 createKeystore={createKeystore} />
         </Wallets>
       </InnerContainer>
     );
@@ -61,4 +43,5 @@ export default class LoadWallet extends React.Component {
 
 LoadWallet.propTypes = {
   onChangeStage: PropTypes.func.isRequired,
+  createKeystore: PropTypes.func.isRequired,
 };

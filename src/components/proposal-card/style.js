@@ -71,27 +71,34 @@ export const Data = styled.div`
   font-size: 1.3rem;
 `;
 
-export const Stats = styled.div`
+export const StatsWrapper = styled.div`
+  min-height: 100%;
   flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Stats = styled.div`
   border-left: 1px solid ${props => props.theme.borderColor.default.toString()};
   border-right: 1px solid ${props => props.theme.borderColor.default.toString()};
-  width: 16.8rem;
+
   text-transform: uppercase;
-  margin: 0 auto;
-  position: relative;
+
   text-align: center;
-  height: 36.5rem;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   > div:not(:last-child) {
     border-bottom: 1px solid ${props => props.theme.borderColor.default.toString()};
   }
 `;
 
 export const StatItem = styled.div`
-  padding-top: 4rem;
-  height: 12.12rem;
   font-size: 1.6rem;
-  vertical-align: middle;
-
+  padding: 3rem 0;
   > span {
     font-size: 2.5rem;
     display: block;

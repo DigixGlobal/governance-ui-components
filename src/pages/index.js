@@ -14,6 +14,7 @@ import { Container } from './style';
 import ProposalCard from '../components/proposal-card';
 import Timeline from '../components/common/blocks/timeline';
 import DashboardStats from '../components/common/blocks/user-DAO-stats/index';
+import ProposalFilter from '../components/common/blocks/filter/index';
 
 class App extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class App extends Component {
             <ContentWrapper>
               <Timeline />
               <DashboardStats />
+              <ProposalFilter />
               <ProposalCard />
               <ProposalCard />
             </ContentWrapper>

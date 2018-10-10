@@ -2,15 +2,9 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import Proposals from './proposals';
 import Milestones from './milestones';
+import Stats from './stats';
 
-import {
-  ProposalWrapper,
-  ProposalContainer,
-  Stats,
-  ProgressContainer,
-  Progress,
-  StatItem,
-} from './style';
+import { ProposalWrapper, ProposalContainer, ProgressContainer, Progress } from './style';
 
 export default class ProposalCard extends React.Component {
   render() {
@@ -18,20 +12,7 @@ export default class ProposalCard extends React.Component {
       <ProposalWrapper>
         <ProposalContainer>
           <Proposals />
-          <Stats>
-            <StatItem>
-              funding amount
-              <span>150 eth</span>
-            </StatItem>
-            <StatItem>
-              upvote
-              <span>68%</span>
-            </StatItem>
-            <StatItem>
-              participants
-              <span>111</span>
-            </StatItem>
-          </Stats>
+          <Stats />
           <Milestones />
         </ProposalContainer>
         <ProgressContainer>

@@ -23,6 +23,7 @@ export default class ProposalCard extends React.Component {
             <ul>
               <li />
               <li />
+              <li />
             </ul>
           </MilestoneStatus>
           <Deadline>
@@ -30,7 +31,7 @@ export default class ProposalCard extends React.Component {
             <Data>DD/MM/YYYY</Data>
           </Deadline>
           <CallToAction>
-            <Button kind="capsule">Participate</Button>
+            <Button kind="round">Participate</Button>
           </CallToAction>
         </Milestones>
       </MilestonesWrapper>

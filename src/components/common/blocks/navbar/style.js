@@ -29,6 +29,7 @@ export const HeaderWrapper = styled.section`
     }
     &:nth-child(3) {
       flex: 3 0 0;
+      justify-content: flex-end;
     }
   }
 `;

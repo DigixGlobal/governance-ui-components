@@ -26,13 +26,13 @@ export const Button = styled.button`
     color: ${props => props.theme.defaultTextColor.toString()};
   }
   ${props =>
-    props.fullWidth &&
+    props.fluid &&
     css`
       width: 100%;
     `};
 
   ${props =>
-    props.text &&
+    props.ghost &&
     css`
       color: ${props.theme.secondary.default};
       background: transparent;
@@ -40,12 +40,5 @@ export const Button = styled.button`
       &:hover {
         color: ${props.theme.primary.lighter};
       }
-    `};
-  ${props =>
-    props.lg &&
-    css`
-      padding: 1.5rem;
-      font-size: 1.2rem;
-      color: #fff;
     `};
 `;

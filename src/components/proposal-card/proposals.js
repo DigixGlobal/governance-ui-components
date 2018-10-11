@@ -5,7 +5,7 @@ import Button from '../common/elements/buttons/index';
 
 import {
   ProposaDetaillWrapper,
-  ProposalDetail,
+  ProposalCard,
   TagsContainer,
   Description,
   ProposalFooter,
@@ -13,11 +13,11 @@ import {
   UpVote,
 } from './style';
 
-export default class ProposalCard extends React.Component {
+export default class Proposal extends React.Component {
   render() {
     return (
       <ProposaDetaillWrapper>
-        <ProposalDetail>
+        <ProposalCard>
           <TagsContainer>
             <Button kind="tag" uppercase href="/#">
               IDEA
@@ -36,7 +36,7 @@ export default class ProposalCard extends React.Component {
             <PostedBy>BY DGX TO THE MOON</PostedBy>
             <UpVote>LIKE</UpVote>
           </ProposalFooter>
-        </ProposalDetail>
+        </ProposalCard>
       </ProposaDetaillWrapper>
     );
   }

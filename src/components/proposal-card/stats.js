@@ -9,16 +9,16 @@ export default class ProposalCard extends React.Component {
       <StatsWrapper>
         <Stats>
           <StatItem>
-            funding amount
+            Funding
             <span>150 eth</span>
           </StatItem>
           <StatItem>
-            upvote
-            <span>68%</span>
+            Approval
+            <span>2%</span>
           </StatItem>
           <StatItem>
-            participants
-            <span>111</span>
+            Participants
+            <span>8</span>
           </StatItem>
         </Stats>
       </StatsWrapper>

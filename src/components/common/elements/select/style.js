@@ -1,62 +1,27 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
-  position: relative;
-  /*Don't really need this just for demo styling*/
-
-  float: left;
-  min-width: 18rem;
-  /* margin: 50px 33%; */
-  /* padding-right: 2rem; */
-
-  :after {
-    content: '>';
-    transform: rotate(90deg);
-    font-family: 'Futura PT Light';
-    font-size: 2rem;
-    color: #000;
-    right: 1rem;
-    top: 0.5rem;
-    height: 3rem;
-    padding: 2rem 0px 2rem 0.8rem;
-    border-left: none;
-    position: absolute;
-    top: -0.3rem;
-    pointer-events: none;
-  }
-
-  /* IE11 hide native button (thanks Matt!) */
-  select::-ms-expand {
-    display: none;
-  }
-
   select {
+    background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+      linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
+    background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
+      calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+    border: 1px solid ${props => props.theme.borderColor.default.toString()};
+    border-radius: ${props => (props.rounded ? '2rem' : '.5rem')};
+    color: ${props => props.color || props.theme.defaultTextColor.toString()};
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    width: 150px;
+
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
-    outline: none;
-    /* Add some styling */
-
-    display: block;
-    width: 100%;
-    max-width: 32rem;
-    height: 3rem;
-    float: right;
-    margin: 0.5rem 0px;
-    padding: 0px 1.4rem;
-    font-size: 1.5rem;
-    line-height: 1.75;
-    color: #333;
-    background-color: #ffffff;
-    background-image: none;
-    border: none;
-    -ms-word-break: normal;
-    word-break: normal;
-    font-family: 'Futura PT Light';
-  }
-
-  select > option {
-    font-family: 'Futura PT Light';
   }
 `;
 

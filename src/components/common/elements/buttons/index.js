@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 
 import CapsuleButton from './capsule-button';
 import TagButton from './tag-button';
+import RoundButton from './round-button';
 
-const buttons = { capsule: CapsuleButton, tag: TagButton };
+const buttons = { round: RoundButton, capsule: CapsuleButton, tag: TagButton };
 
 const Button = props => {
   const ButtonComponent = buttons[props.kind];

@@ -23,7 +23,7 @@ export const ProposaDetaillWrapper = styled.div`
   font-size: 1.6rem;
 `;
 
-export const ProposalDetail = styled.div`
+export const ProposalCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -60,7 +60,7 @@ export const UpVote = styled.div``;
 export const Label = styled.div`
   color: ${props => props.theme.defaultTextColor.toString()};
 
-  margin-bottom: 0.8em;
+  margin-bottom: 1.2em;
   text-align: center;
   text-transform: uppercase;
   font-size: 1.3rem;
@@ -100,7 +100,8 @@ export const StatItem = styled.div`
   font-size: 1.6rem;
   padding: 3rem 0;
   > span {
-    font-size: 2.5rem;
+    font-family: 'Futura PT Medium';
+    font-size: 2.8rem;
     display: block;
   }
 `;
@@ -133,10 +134,12 @@ export const MilestoneStatus = styled.div`
     display: inline-block;
     list-style: none;
     background: ${props => props.theme.primary.default.toString()};
-    height: 8px;
-    width: 47%;
-    &:first-child {
+    height: 10px;
+    width: 20%;
+    margin-right: 5px;
+    &:last-child {
       margin-right: 5px;
+      background: ${props => props.theme.backgroundColor.default.toString()};
     }
   }
 `;

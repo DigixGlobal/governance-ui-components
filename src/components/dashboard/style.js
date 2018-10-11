@@ -4,7 +4,7 @@ export const DashBoardContainer = styled.div`
   text-align: center;
   /* font-weight: bold; */
 
-  color: ${props => props.theme.textColor.default.toString()};
+  color: ${props => props.theme.defaultTextColor.default.toString()};
 `;
 
 export const DashBoardItem = styled.div`

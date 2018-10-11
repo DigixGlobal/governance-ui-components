@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const MenuContainer = styled.div`
   padding: 2.5rem;
+  padding-right: 0;
   background-color: ${props => props.theme.sidePanelBgColor.toString()};
   color: ${props => props.theme.textColorInverted.default.toString()};
   font-size: 1.6rem;
@@ -57,18 +58,34 @@ export const UserType = styled.p`
 export const MenuList = styled.ul`
   margin-top: 5rem;
   list-style: none;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const MenuItem = styled.li`
-  padding-top: 2rem;
-  color: ${props => props.theme.primary.default.toString()};
+  /* padding-top: 2rem; */
+  color: ${props =>
+    props.selected
+      ? props.theme.secondary.default.toString()
+      : props.theme.primary.default.toString()};
   /* text-transform: uppercase; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 1rem 0;
   position: relative;
-
+  cursor: pointer;
+  border-right: 3px solid
+    ${props => (!props.selected ? 0 : props.theme.secondary.default.toString())};
   > span {
     display: inline-block;
     position: absolute;
-    top: 2.5rem;
+    top: 0.5rem;
     margin-left: 3.5rem;
+  }
+  > svg {
+    fill: orangered;
+    color: orangered;
+    stroke: orangered;
   }
 `;

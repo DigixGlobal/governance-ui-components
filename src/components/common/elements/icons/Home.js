@@ -10,7 +10,11 @@ const HomeIcon = props => (
           id="sidepanel"
           transform="translate(-25.000000, -290.000000)"
           fillRule="nonzero"
-          stroke={props.theme.primary.default.toString()}
+          stroke={
+            props.selected
+              ? props.theme.secondary.default.toString()
+              : props.theme.primary.default.toString()
+          }
         >
           <g id="Home-Icon" transform="translate(25.000000, 291.000000)">
             <polygon

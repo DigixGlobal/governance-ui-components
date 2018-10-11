@@ -7,7 +7,7 @@ export const SyledInput = styled.input`
   padding: 0.8rem 2rem;
   font-size: 1.2rem;
   font-weight: 500;
-  width: 100%;
+  width: ${props => props.width || '100%'};
 
   ::placeholder {
     color: ${props => props.theme.defaultTextColor.toString()};

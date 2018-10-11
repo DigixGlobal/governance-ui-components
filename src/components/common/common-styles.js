@@ -32,6 +32,12 @@ export const H4 = styled.h4`
   margin: 0;
 `;
 
+export const H5 = styled.h5`
+  color: ${props => props.color || props.theme.primary};
+  font-size: 1.4rem;
+  margin: 0;
+`;
+
 export const A = styled.a`
   color: ${props => props.theme.primary};
 
@@ -45,4 +51,10 @@ export const A = styled.a`
 export const ContentWrapper = styled.div`
   flex: 5 0 0;
   padding: 8em 10em;
+`;
+
+export const HR = styled.hr`
+  border: 0.5px solid ${props => props.theme.backgroundColor.default.toString()};
+  width: 100%;
+  margin: 2rem 0;
 `;

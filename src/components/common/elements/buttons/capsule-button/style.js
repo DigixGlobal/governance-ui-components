@@ -1,15 +1,28 @@
 import styled, { css } from 'styled-components';
-
+/* eslint-disable */
 export const Button = styled.button`
   transition: all 0.3s ease;
+
   background: ${props =>
-    props.primary ? props.theme.primary.default : props.theme.secondary.default};
-  border: 1px solid ${props => props.theme.primary.default};
+    props.primary
+      ? props.nobg
+        ? '#fff'
+        : props.theme.primary.default.toString()
+      : props.theme.textColorInverted.default.toString()};
+  border: 1px solid
+    ${props =>
+      props.primary
+        ? props.theme.primary.default.toString()
+        : props.theme.backgroundColor.darker.toString()};
   border-radius: 3px;
   color: ${props =>
     props.primary
-      ? props.theme.textColorInverted.default.toString()
-      : props.theme.textColor.default.toString()};
+      ? props.nobg
+        ? props.theme.primary.default.toString()
+        : props.theme.textColorInverted.default.toString()
+      : props.disabled ? props.theme.backgroundColor.default.toString() : props.theme.textColor.default.toString()};
+
+
   cursor: pointer;
   display: inline-block;
   font-weight: 500;
@@ -23,7 +36,7 @@ export const Button = styled.button`
 
   &:hover {
     background: transparent;
-    color: ${props => props.theme.textColor.default};
+    color: ${props => props.disabled ? props.theme.backgroundColor.default.toString() : props.theme.textColor.default.toString()};
   }
   ${props =>
     props.fullWidth &&
@@ -34,11 +47,11 @@ export const Button = styled.button`
   ${props =>
     props.text &&
     css`
-      color: ${props.theme.secondary.default};
+      color: ${props.theme.secondary.default.toString()};
       background: transparent;
       border: none;
       &:hover {
-        color: ${props.theme.primary.lighter};
+        color: ${props.theme.primary.lighter.toString()};
       }
     `};
   ${props =>
@@ -49,3 +62,5 @@ export const Button = styled.button`
       color: #fff;
     `};
 `;
+
+  /* eslint-enable */

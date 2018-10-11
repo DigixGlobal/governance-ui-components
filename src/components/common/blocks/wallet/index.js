@@ -15,6 +15,7 @@ import {
 import { Container, TransparentOverlay, WalletContainer } from './style';
 import Intro from './intro';
 import LoadWallet from './load-wallet';
+import ConnectedWallet from './connected-wallet';
 
 import { Stage } from './constants';
 
@@ -32,14 +33,17 @@ export class Wallet extends React.Component {
   render() {
     const { stage } = this.state;
     const { show, onClose, defaultAddress, ...rest } = this.props;
+
     if (!show) return null;
     return (
       <Container>
         <TransparentOverlay>overlay</TransparentOverlay>
         <WalletContainer>
           {stage === Stage.Intro && <Intro onClose={onClose} onChangeStage={this.updateStage} />}
-          {stage === Stage.LoadingWallet && (
-            <LoadWallet {...rest} onChangeStage={this.updateStage} />
+          {stage === Stage.LoadingWallet &&
+            !defaultAddress && <LoadWallet {...rest} onChangeStage={this.updateStage} />}
+          {defaultAddress && (
+            <ConnectedWallet {...rest} onClose={onClose} address={defaultAddress} />
           )}
         </WalletContainer>
       </Container>

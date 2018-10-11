@@ -20,6 +20,8 @@ import Ledger from './Ledger';
 import Metamask from './Metamask';
 import Trezor from './Trezor';
 import ImToken from './ImToken';
+import Ethereum from './Ethereum';
+import Dgd from './DGD';
 
 const icons = {
   close: Close,
@@ -41,6 +43,8 @@ const icons = {
   metamask: Metamask,
   trezor: Trezor,
   imtoken: ImToken,
+  ethereum: Ethereum,
+  dgd: Dgd,
 };
 
 const Icon = props => {

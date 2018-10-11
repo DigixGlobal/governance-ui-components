@@ -42,3 +42,17 @@ export const WalletWrapper = styled.div`
   //   width: 300px;
   border-left: 0 !important;
 `;
+
+export const AddressLabel = styled.div`
+  margin-left: auto;
+  border-radius: 3rem;
+  border: 1px solid ${props => props.theme.borderColor.default.toString()};
+  border-radius: 2rem;
+  color: ${props => props.theme.primary.default.toString()};
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;

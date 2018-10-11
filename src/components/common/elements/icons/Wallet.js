@@ -14,9 +14,43 @@ const WalletIcon = props => (
       >
         <g id="sidepanel">
           <g id="Save-icon" transform="translate(21.000000, 421.000000)">
-            <rect id="Rectangle-2" stroke="#767676" x="16.5" y="8.5" width="11" height="7" />
-            <rect id="Rectangle-2" fill="#767676" x="18" y="11" width="3" height="3" />
-            <rect id="Rectangle-9" stroke="#767676" x="4.5" y="0.5" width="23" height="23" rx="2" />
+            <rect
+              id="Rectangle-2"
+              stroke={
+                props.selected
+                  ? props.theme.secondary.default.toString()
+                  : props.theme.primary.default.toString()
+              }
+              x="16.5"
+              y="8.5"
+              width="11"
+              height="7"
+            />
+            <rect
+              id="Rectangle-2"
+              fill={
+                props.selected
+                  ? props.theme.secondary.default.toString()
+                  : props.theme.primary.default.toString()
+              }
+              x="18"
+              y="11"
+              width="3"
+              height="3"
+            />
+            <rect
+              id="Rectangle-9"
+              stroke={
+                props.selected
+                  ? props.theme.secondary.default.toString()
+                  : props.theme.primary.default.toString()
+              }
+              x="4.5"
+              y="0.5"
+              width="23"
+              height="23"
+              rx="2"
+            />
           </g>
         </g>
       </g>

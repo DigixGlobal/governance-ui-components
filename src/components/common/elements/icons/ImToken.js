@@ -30,7 +30,7 @@ const ImTokenIcon = props => (
 );
 
 ImTokenIcon.defaultProps = {
-  width: '5.1rem',
+  width: '4.1rem',
   height: '3.6rem',
 };
 

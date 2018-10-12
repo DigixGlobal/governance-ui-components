@@ -58,3 +58,62 @@ export const HR = styled.hr`
   width: 100%;
   margin: 2rem 0;
 `;
+
+const Button = {
+  transition: 'all 0.3s ease',
+  cursor: 'pointer',
+  textAlign: 'center',
+  textDecoration: 'none',
+  textTransform: 'uppercase',
+  fontFamily: '"Futura PT Light", Roboto, sans-serif',
+  outline: 'none',
+  padding: '1em 2em',
+  margin: '1rem',
+};
+
+export const ButtonStyles = css`
+  ${Button};
+  background: ${props =>
+    props.primary
+      ? props.theme.buttonBgPrimary.toString()
+      : props.theme.buttonBgSecondary.toString()};
+  color: ${props =>
+    props.primary
+      ? props.theme.buttonTextPrimaryReverse.toString()
+      : props.theme.buttonTextSecondaryReverse.toString()};
+  border: 2px solid
+    ${props =>
+      props.primary
+        ? props.theme.buttonBorderPrimary.toString()
+        : props.theme.buttonBorderSecondary.toString()};
+  &:hover {
+    background-color: transparent;
+    color: ${props =>
+      props.primary
+        ? props.theme.buttonTextPrimary.toString()
+        : props.theme.buttonTextSecondaryReverse.toString()};
+  }
+`;
+
+export const GhostBtn = css`
+  background-color: transparent;
+  color: ${props =>
+    props.primary
+      ? props.theme.buttonTextPrimary.toString()
+      : props.theme.buttonTextSecondaryReverse.toString()};
+
+  &:hover {
+    background: ${props =>
+      props.primary
+        ? props.theme.buttonBgPrimary.toString()
+        : props.theme.buttonBgSecondary.toString()};
+    color: ${props =>
+      props.primary
+        ? props.theme.buttonTextPrimaryReverse.toString()
+        : props.theme.buttonTextSecondaryReverse.toString()};
+  }
+`;
+
+export const DisabledBtn = css`
+  border-color: ${props => props.theme.buttonBorderDisabled.toString()};
+`;

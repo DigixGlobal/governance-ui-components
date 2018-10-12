@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 export const Button = styled.button`
   transition: all 0.3s ease;
   background: ${props =>
-    props.primary ? props.theme.primary.default : props.theme.secondary.default};
+    props.primary ? props.theme.primary.default : props.theme.secondary.default.toString()};
   border: 2px solid ${props => props.theme.primary.default.toString()};
   border-radius: 3px;
   color: ${props =>
@@ -34,11 +34,11 @@ export const Button = styled.button`
   ${props =>
     props.ghost &&
     css`
-      color: ${props.theme.secondary.default};
+      color: ${props.theme.secondary.default.toString()};
       background: transparent;
       border: none;
       &:hover {
-        color: ${props.theme.primary.lighter};
+        color: ${props.theme.primary.lighter.toString()};
       }
     `};
 `;

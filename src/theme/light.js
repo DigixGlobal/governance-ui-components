@@ -11,15 +11,15 @@ const blueHex = Color('#243961');
 const blue = {
   default: blueHex,
   darker: blueHex.darken(1),
-  lighter: blueHex.lighten(0.1),
+  lighter: blueHex.lighten(2),
 };
 
-const darkBlueHex = Color('#111E36');
-const darkBlue = {
-  default: darkBlueHex,
-  darker: darkBlueHex.darken(1),
-  lighter: darkBlueHex.lighten(0.1),
-};
+// const darkBlueHex = Color('#111E36');
+// const darkBlue = {
+//   default: darkBlueHex,
+//   darker: darkBlueHex.darken(1),
+//   lighter: darkBlueHex.lighten(0.1),
+// };
 
 const goldHex = Color('#E4C88E');
 const gold = {
@@ -46,7 +46,7 @@ const darkGrayHex = Color('#464E5B');
 const darkGray = {
   default: darkGrayHex,
   darker: darkGrayHex.darken(0.5),
-  lighter: darkGrayHex.lighten(0.05),
+  lighter: darkGrayHex.lighten(1.5),
 };
 
 const whiteHex = Color('#fff');
@@ -62,6 +62,9 @@ const red = {
   darker: redHex.darken(0.05),
   lighter: redHex.lighten(0.05),
 };
+
+const primaryColor = blue;
+const secondaryColor = gold;
 
 const ErrorMessage = {
   backgroundColor: gray,
@@ -84,7 +87,7 @@ const LightTheme = {
   timelineCurrentBgColor: gold.darker,
 
   // textColor: black,
-  defaultTextColor: darkBlue.default,
+  defaultTextColor: primaryColor.default,
   textColorInverted: white,
   borderColor: gray,
 
@@ -92,6 +95,16 @@ const LightTheme = {
   tagColor: red.default,
   filterActive: gold.default,
   filterCount: darkGray.default,
+
+  buttonBgPrimary: primaryColor.default,
+  buttonBgSecondary: secondaryColor.default,
+  buttonTextPrimary: primaryColor.default,
+  buttonTextPrimaryReverse: white.default,
+  buttonTextSecondary: secondaryColor.default,
+  buttonTextSecondaryReverse: white.default,
+  buttonBorderPrimary: primaryColor.default,
+  buttonBorderSecondary: secondaryColor.default,
+  buttonBorderDisabled: darkGray.lighter,
 
   ErrorMessage,
 };

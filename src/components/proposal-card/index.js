@@ -4,7 +4,7 @@ import Proposals from './proposals';
 import Milestones from './milestones';
 import Stats from './stats';
 
-import { ProposalWrapper, ProposalContainer, ProgressContainer, Progress } from './style';
+import { ProposalWrapper, ProposalContainer } from './style';
 
 export default class ProposalCard extends React.Component {
   render() {
@@ -15,9 +15,9 @@ export default class ProposalCard extends React.Component {
           <Stats />
           <Milestones />
         </ProposalContainer>
-        <ProgressContainer>
+        {/* <ProgressContainer>
           <Progress />
-        </ProgressContainer>
+        </ProgressContainer> */}
       </ProposalWrapper>
     );
   }

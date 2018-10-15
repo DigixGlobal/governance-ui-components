@@ -146,13 +146,13 @@ export const MilestoneStatus = styled.div`
 export const Deadline = styled.div``;
 export const CallToAction = styled.div``;
 
-export const ProgressContainer = styled.div`
-  background-color: #b8c5d0;
-  height: 0.8rem;
-`;
+// export const ProgressContainer = styled.div`
+//   background-color: #b8c5d0;
+//   height: 0.8rem;
+// `;
 
-export const Progress = styled.div`
-  width: 70%;
-  height: 0.8rem;
-  background-color: #243961;
-`;
+// export const Progress = styled.div`
+//   width: 70%;
+//   height: 0.8rem;
+//   background-color: #243961;
+// `;

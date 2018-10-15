@@ -17,7 +17,7 @@ class UserDAOStats extends React.Component {
         </Point>
         <Point>
           My Stake
-          <span>{stake || 65.75} DGD</span>
+          <span>{stake || 65.75}</span>
         </Point>
       </Container>
     );

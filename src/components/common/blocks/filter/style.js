@@ -28,7 +28,7 @@ export const CategoryItems = styled.a`
   margin-right: 3em;
   cursor: pointer;
 
-  padding-bottom: 1.5em;
+  padding-bottom: 1em;
   text-transform: uppercase;
 
   span {

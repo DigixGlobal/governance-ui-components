@@ -14,11 +14,13 @@ class Wallet extends React.Component {
     return (
       <WalletWrapper>
         {!defaultAddress && (
-          <Button kind="capsule" onClick={onWalletClick}>
+          <Button kind="capsule" ghostBtnSm onClick={onWalletClick}>
             {'Load Wallet'}
           </Button>
         )}
-        {defaultAddress && <AddressLabel>{defaultAddress.address}</AddressLabel>}
+        {defaultAddress && (
+          <AddressLabel>{defaultAddress.address}</AddressLabel>
+        )}
       </WalletWrapper>
     );
   }
@@ -40,5 +42,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  {},
 )(Wallet);

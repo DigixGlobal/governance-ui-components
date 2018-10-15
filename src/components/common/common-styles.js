@@ -77,10 +77,12 @@ export const ButtonStyles = css`
     props.primary
       ? props.theme.buttonBgPrimary.toString()
       : props.theme.buttonBgSecondary.toString()};
+
   color: ${props =>
     props.primary
       ? props.theme.buttonTextPrimaryReverse.toString()
       : props.theme.buttonTextSecondaryReverse.toString()};
+
   border: 2px solid
     ${props =>
       props.primary
@@ -91,16 +93,17 @@ export const ButtonStyles = css`
     color: ${props =>
       props.primary
         ? props.theme.buttonTextPrimary.toString()
-        : props.theme.buttonTextSecondaryReverse.toString()};
+        : props.theme.buttonTextSecondary.toString()};
   }
 `;
 
 export const GhostBtn = css`
   background-color: transparent;
-  color: ${props =>
-    props.primary
+  color: ${props => {
+    return props.primary
       ? props.theme.buttonTextPrimary.toString()
-      : props.theme.buttonTextSecondaryReverse.toString()};
+      : props.theme.buttonTextSecondary.toString();
+  }};
 
   &:hover {
     background: ${props =>
@@ -115,5 +118,10 @@ export const GhostBtn = css`
 `;
 
 export const DisabledBtn = css`
+  background-color: transparent;
   border-color: ${props => props.theme.buttonBorderDisabled.toString()};
+  color: ${props =>
+    props.primary
+      ? props.theme.buttonTextPrimary.toString()
+      : props.theme.buttonTextSecondary.toString()};
 `;

@@ -92,7 +92,7 @@ const LightTheme = {
   borderColor: gray,
 
   iconColor: blue.default,
-  tagColor: red.default,
+
   filterActive: gold.default,
   filterCount: darkGray.default,
 
@@ -105,6 +105,7 @@ const LightTheme = {
   buttonBorderPrimary: primaryColor.default,
   buttonBorderSecondary: secondaryColor.default,
   buttonBorderDisabled: darkGray.lighter,
+  buttonTagColor: red.default,
 
   ErrorMessage,
 };

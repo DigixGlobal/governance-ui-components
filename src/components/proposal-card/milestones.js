@@ -31,7 +31,7 @@ export default class ProposalCard extends React.Component {
             <Data>DD/MM/YYYY</Data>
           </Deadline>
           <CallToAction>
-            <Button kind="capsule" secondary ghost>
+            <Button kind="round" primary ghost>
               Participate
             </Button>
           </CallToAction>

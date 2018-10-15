@@ -17,7 +17,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  kind: 'capsule',
+  kind: 'round',
 };
 
 export default Button;

@@ -13,7 +13,7 @@ export default class ProposalCard extends React.Component {
         </Heading>
         <Filter>
           <Category />
-          <Pulldown>asd</Pulldown>
+          <Pulldown />
         </Filter>
       </FilterWrapper>
     );

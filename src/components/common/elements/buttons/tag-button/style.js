@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Button = styled.a`
   color: ${props => props.theme.tagColor.toString()};
@@ -6,7 +6,11 @@ export const Button = styled.a`
   font-size: 1.3rem;
   text-decoration: none;
 
-  ::before {
+  ${props =>
+    props.uppercase &&
+    css`
+      text-transform: uppercase;
+    `} ::before {
     content: '● ';
     color: ${props => props.theme.tagColor.toString()};
     font-size: 130%;

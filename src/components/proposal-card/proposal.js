@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import H2 from '../common/common-styles';
 import Button from '../common/elements/buttons/index';
 
@@ -15,25 +15,22 @@ import {
 
 export default class ProposalCard extends React.Component {
   render() {
+    const { details } = this.props;
     return (
       <ProposaDetaillWrapper>
         <ProposalDetail>
           <TagsContainer>
             <Button kind="tag" uppercase href="/#">
-              IDEA
+              {details.stage}
             </Button>
           </TagsContainer>
           <Description>
-            <H2>DGD holders offline meetup in Seattle</H2>
-            <p>
-              Lorem ipsum dolor sit amet, quis maiorum sit at, solum assum ex usu. Tation gloriatur
-              ea mea. At saepe everti constituam sit, libris epicurei te eum, summo ocurreret te
-              vim. Ei vim postulant rationibus.
-            </p>
+            <H2>{details.proposalVersions[0].title}</H2>
+            <p>{details.proposalVersions[0].description}</p>
             <a href=".">View Project</a>
           </Description>
           <ProposalFooter>
-            <PostedBy>BY DGX TO THE MOON</PostedBy>
+            <PostedBy>BY {details.proposer}</PostedBy>
             <UpVote>LIKE</UpVote>
           </ProposalFooter>
         </ProposalDetail>
@@ -41,3 +38,7 @@ export default class ProposalCard extends React.Component {
     );
   }
 }
+
+ProposalCard.propTypes = {
+  details: PropTypes.object.isRequired,
+};

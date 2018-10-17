@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import PropTypes from 'prop-types';
+
 const TimelineWrapper = styled.div`
   margin: 2em auto;
   display: flex;
@@ -54,6 +56,7 @@ const Status = styled.div`
 
 class Timeline extends React.Component {
   render() {
+    const { stats } = this.props;
     return (
       <TimelineWrapper>
         <Quarter>Q2</Quarter>
@@ -62,7 +65,9 @@ class Timeline extends React.Component {
             <div>STAKING PHASE</div>
             <div>
               <div>MAIN PHASE</div>
-              <div>DAY 56 / 90 | 83423.45 STAKED</div>
+              <div>
+                DAY 56 / 90 | {stats.data ? stats.data.totalDgdsLocked / 1e9 : 83423.45} DGD LOCKED
+              </div>
             </div>
           </TimelineLabel>
 
@@ -75,4 +80,9 @@ class Timeline extends React.Component {
   }
 }
 
+const { object } = PropTypes;
+
+Timeline.propTypes = {
+  stats: object.isRequired,
+};
 export default Timeline;

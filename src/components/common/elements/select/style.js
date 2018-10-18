@@ -14,7 +14,7 @@ const Container = styled.div`
     padding: 0.8rem 2rem;
     font-size: 1.2rem;
     width: 150px;
-
+    outline: none;
     margin: 0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;

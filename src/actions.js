@@ -45,6 +45,6 @@ export function getAddressDetails(address) {
   return fetchData(`${INFO_SERVER}/address/${address}`, actions.GET_ADDRESS_DETAILS);
 }
 
-export function getProposals(stage = 'proposal') {
+export function getProposals(stage = 'all') {
   return fetchData(`${INFO_SERVER}/proposals/${stage}`, actions.GET_PROPOSALS);
 }

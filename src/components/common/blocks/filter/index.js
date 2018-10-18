@@ -1,11 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Category from './category';
 import StyledSelect from '../../elements/select/index';
 
 import { Heading, FilterWrapper, Filter, Pulldown } from './style';
 
-export default class ProposalCard extends React.Component {
+export default class ProposalCardFilter extends React.Component {
+  handleChange = e => {
+    const { onOrderChange } = this.props;
+    if (onOrderChange) onOrderChange(e.target.value);
+  };
   render() {
     return (
       <FilterWrapper>
@@ -13,11 +18,12 @@ export default class ProposalCard extends React.Component {
           <h1>Projects</h1>
         </Heading>
         <Filter>
-          <Category />
+          <Category {...this.props} />
           <Pulldown>
             <StyledSelect
               id="test"
-              items={[{ text: 'Latest', value: '1' }, { text: 'Oldest', value: '2' }]}
+              items={[{ text: 'Latest', value: 'latest' }, { text: 'Oldest', value: 'oldest' }]}
+              onChange={this.handleChange}
             />
           </Pulldown>
         </Filter>
@@ -25,3 +31,9 @@ export default class ProposalCard extends React.Component {
     );
   }
 }
+
+const { func } = PropTypes;
+
+ProposalCardFilter.propTypes = {
+  onOrderChange: func.isRequired,
+};

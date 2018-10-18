@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const FilterWrapper = styled.div`
   margin-bottom: 3em;
@@ -24,7 +24,7 @@ export const Category = styled.div`
   flex-direction: row;
   justify-content: flex-start;
 `;
-export const CategoryItems = styled.a`
+export const CategoryItem = styled.a`
   margin-right: 3em;
   cursor: pointer;
 
@@ -46,13 +46,14 @@ export const CategoryItems = styled.a`
     border: 1px solid ${props => props.theme.filterCount.toString()};
   }
 
-  &:nth-child(1) {
-    border-bottom: 5px solid ${props => props.theme.filterActive.toString()};
-
-    span {
-      background-color: ${props => props.theme.filterActive.toString()};
-      border: 1px solid ${props => props.theme.filterActive.toString()};
-    }
-  }
+  ${props =>
+    props.active &&
+    css`
+      border-bottom: 5px solid ${props.theme.filterActive.toString()};
+      span {
+        background-color: ${props.theme.filterActive.toString()};
+        border: 1px solid ${props.theme.filterActive.toString()};
+      }
+    `};
 `;
 export const Pulldown = styled.div``;

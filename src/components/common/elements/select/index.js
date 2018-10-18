@@ -5,10 +5,10 @@ import Container from './style';
 
 class StyledSelect extends React.Component {
   render() {
-    const { items, id } = this.props;
+    const { items, id, ...rest } = this.props;
     return (
       <Container>
-        <select id={id}>
+        <select id={id} {...rest}>
           {items.map(item => (
             <option key={item.value} value={item.value}>
               {item.text}

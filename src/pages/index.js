@@ -33,6 +33,7 @@ class App extends Component {
     super(props);
     this.state = {
       showWallet: false,
+      order: 'latest',
     };
   }
 
@@ -48,14 +49,27 @@ class App extends Component {
     // this.props.getDaoDetails().then(result => console.log(result));
   };
 
+  onOrderChange = order => {
+    this.setState({ order });
+  };
+
   handleWalletClick = () => {
     this.setState({ showWallet: !this.state.showWallet });
   };
 
   render() {
-    const { showWallet } = this.state;
+    const { showWallet, order } = this.state;
     const { DaoDetails, Proposals } = this.props;
     const hasProposals = Proposals.data && Proposals.data.length > 0;
+    let orderedProposals = [];
+    if (hasProposals) {
+      orderedProposals = Proposals.data.sort(
+        (a, b) =>
+          order === 'latest' ? b.timeCreated - a.timeCreated : a.timeCreated - b.timeCreated
+      );
+
+      console.log('ordered', orderedProposals);
+    }
     return (
       <ThemeProvider theme={lightTheme}>
         <Fragment>
@@ -66,9 +80,12 @@ class App extends Component {
             <ContentWrapper>
               <Timeline stats={DaoDetails} />
               <DashboardStats />
-              <ProposalFilter />
+              <ProposalFilter
+                onStageChange={this.props.getProposalsAction}
+                onOrderChange={this.onOrderChange}
+              />
               {hasProposals &&
-                Proposals.data.map(proposal => (
+                orderedProposals.map(proposal => (
                   <ProposalCard key={proposal._id} proposal={proposal} />
                 ))}
             </ContentWrapper>

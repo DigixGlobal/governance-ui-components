@@ -19,12 +19,17 @@ const defaultState = {
     error: null,
     fetching: null,
   },
+  ProposalsCount: {
+    history: [],
+    data: {},
+    error: null,
+    fetching: null,
+  },
 };
 
 export default function(state = defaultState, action) {
   switch (action.type) {
     case actions.GET_DAO_DETAILS:
-      console.log('payload', action.payload);
       return {
         ...state,
         DaoDetails: {
@@ -52,7 +57,7 @@ export default function(state = defaultState, action) {
             ? state.AddressDetails.history
             : [
                 {
-                  price: action.payload.data[0].weidgxmg,
+                  ...action.payload.data,
                   updated: action.payload.updated,
                 },
               ]
@@ -70,11 +75,29 @@ export default function(state = defaultState, action) {
             ? state.Proposals.history
             : [
                 {
-                  price: action.payload.data[0].weidgxmg,
+                  ...action.payload.data,
                   updated: action.payload.updated,
                 },
               ]
                 .concat(state.Proposals.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_PROPOSALS_COUNT:
+      return {
+        ...state,
+        ProposalsCount: {
+          ...state.ProposalsCount,
+          ...action.payload,
+          history: !action.payload.data
+            ? state.ProposalsCount.history
+            : [
+                {
+                  ...action.payload.data,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.ProposalsCount.history)
                 .slice(0, 100),
         },
       };

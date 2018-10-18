@@ -46,7 +46,6 @@ class App extends Component {
     if (fetching === null || error) {
       Promise.all([getDaoDetailsAction(), getProposalsAction()]);
     }
-    // this.props.getDaoDetails().then(result => console.log(result));
   };
 
   onOrderChange = order => {
@@ -67,8 +66,6 @@ class App extends Component {
         (a, b) =>
           order === 'latest' ? b.timeCreated - a.timeCreated : a.timeCreated - b.timeCreated
       );
-
-      console.log('ordered', orderedProposals);
     }
     return (
       <ThemeProvider theme={lightTheme}>

@@ -1,15 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import { Category, CategoryItem } from './style';
 
-export default class CategoryGroup extends React.Component {
+import { getProposalsCount } from '../../../../actions';
+
+export class CategoryGroup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       stage: 'all',
     };
   }
+
+  componentWillMount = () => {
+    const {
+      ProposalsCount: { error, fetching },
+      getProposalsCountAction,
+    } = this.props;
+    if (fetching === null || error) {
+      getProposalsCountAction();
+    }
+  };
+
   handleClick = param => {
     const { onStageChange } = this.props;
     if (onStageChange) {
@@ -17,8 +31,10 @@ export default class CategoryGroup extends React.Component {
       onStageChange(param);
     }
   };
+
   render() {
     const { stage } = this.state;
+    const { ProposalsCount } = this.props;
 
     return (
       <Category stage={stage}>
@@ -26,51 +42,60 @@ export default class CategoryGroup extends React.Component {
           onClick={() => this.handleClick('all')}
           active={stage.toLowerCase() === 'all'}
         >
-          All <span>16</span>
+          All <span>{ProposalsCount.data.all || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('idea')}
           active={stage.toLowerCase() === 'idea'}
         >
-          Idea <span>4</span>
+          Idea <span>{ProposalsCount.data.idea || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('draft')}
           active={stage.toLowerCase() === 'draft'}
         >
-          Draft <span>4</span>
+          Draft <span>{ProposalsCount.data.draft || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('proposal')}
           active={stage.toLowerCase() === 'proposal'}
         >
-          Proposal <span>4</span>
+          Proposal <span>{ProposalsCount.data.proposal || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('ongoing')}
           active={stage.toLowerCase() === 'ongoing'}
         >
-          Ongoing <span>4</span>
+          Ongoing <span>{ProposalsCount.data.ongoing || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('review')}
           active={stage.toLowerCase() === 'review'}
         >
-          Review <span>4</span>
+          Review <span>{ProposalsCount.data.review}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('archived')}
           active={stage.toLowerCase() === 'archived'}
         >
-          Archived <span>4</span>
+          Archived <span>{ProposalsCount.data.draft || '0'}</span>
         </CategoryItem>
       </Category>
     );
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 
 CategoryGroup.propTypes = {
+  ProposalsCount: object.isRequired,
   onStageChange: func.isRequired,
+  getProposalsCountAction: func.isRequired,
 };
+
+export default connect(
+  ({ governance: { ProposalsCount } }) => ({ ProposalsCount }),
+  {
+    getProposalsCountAction: getProposalsCount,
+  }
+)(CategoryGroup);

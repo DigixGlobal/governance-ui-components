@@ -6,13 +6,15 @@ export const Button = styled.a`
   font-size: 1.3rem;
   text-decoration: none;
 
+  ::before {
+    content: '● ';
+    color: ${props => props.theme.buttonTagColor.toString()};
+    font-size: 130%;
+  }
+
   ${props =>
     props.uppercase &&
     css`
       text-transform: uppercase;
-    `} ::before {
-    content: '● ';
-    color: ${props => props.theme.tagColor.toString()};
-    font-size: 130%;
-  }
+    `};
 `;

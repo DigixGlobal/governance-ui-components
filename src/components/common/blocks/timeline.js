@@ -66,7 +66,7 @@ class Timeline extends React.Component {
             <div>
               <div>MAIN PHASE</div>
               <div>
-                DAY 56 / 90 | {stats.data ? stats.data.totalDgdsLocked / 1e9 : 83423.45} DGD LOCKED
+                DAY 56 / 90 | {stats.data ? stats.data.totalDgdsLocked / 1e9 : 83423.45} STAKE
               </div>
             </div>
           </TimelineLabel>

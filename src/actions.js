@@ -4,6 +4,7 @@ export const actions = {
   GET_DAO_DETAILS: `${REDUX_PREFIX}GET_DAO_DETAILS`,
   GET_ADDRESS_DETAILS: `${REDUX_PREFIX}GET_ADDRESS_DETAILS`,
   GET_PROPOSALS: `${REDUX_PREFIX}GET_PROPOSALS`,
+  GET_PROPOSALS_COUNT: `${REDUX_PREFIX}GET_PROPOSALS_COUNT`,
 };
 
 function fetchData(url, type) {
@@ -47,4 +48,8 @@ export function getAddressDetails(address) {
 
 export function getProposals(stage = 'all') {
   return fetchData(`${INFO_SERVER}/proposals/${stage}`, actions.GET_PROPOSALS);
+}
+
+export function getProposalsCount() {
+  return fetchData(`${INFO_SERVER}/proposals/count`, actions.GET_PROPOSALS_COUNT);
 }

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  background-color: ${props => props.theme.defaultBgColor.default.toString()};
   margin-bottom: 4rem;
   padding: 2rem 4rem;
   font-size: 1.5rem;
@@ -9,7 +10,7 @@ export const Container = styled.div`
   border: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
   max-height: 10.2rem;
   height: 10.2rem;
-  box-shadow: -1rem 0.3rem 3.1rem rgba(128, 152, 213, 0.2);
+  box-shadow: 0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6);
 `;
 
 export const Point = styled.div`

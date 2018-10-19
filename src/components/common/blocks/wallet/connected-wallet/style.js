@@ -44,7 +44,7 @@ export const TokenValue = styled.div`
   font-family: 'Futura PT Medium';
   & > span {
     margin-left: 0.5rem;
-    color: ${props => props.theme.backgroundColor.darker.toString()};
+    color: ${props => props.theme.defaultBgColor.darker.toString()};
     font-family: 'Futura PT Light';
   }
 `;
@@ -53,7 +53,7 @@ export const UsdEquivalent = styled.div`
   font-family: 'Futura PT Light';
   font-size: 1rem;
   & > span {
-    color: ${props => props.theme.backgroundColor.darker.toString()};
+    color: ${props => props.theme.defaultBgColor.darker.toString()};
     margin-left: 0.5rem;
   }
 `;

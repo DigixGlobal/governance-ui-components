@@ -7,7 +7,7 @@ import Color from 'color';
 //   lighter: blackHex.lighten(0.5),
 // };
 
-const blueHex = Color('#243961');
+const blueHex = Color('#111E36');
 const blue = {
   default: blueHex,
   darker: blueHex.darken(1),
@@ -42,7 +42,7 @@ const grayHex = Color('#E8ECF2');
 const gray = {
   default: grayHex,
   darker: grayHex.darken(0.1),
-  lighter: grayHex.lighten(0.08),
+  light: grayHex.lighten(0.0599),
 };
 
 const darkGrayHex = Color('#464E5B');
@@ -71,6 +71,8 @@ const red = {
 const primaryColor = blue;
 const secondaryColor = gold;
 
+const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
+
 const ErrorMessage = {
   // backgroundColor: gray,
   // padding: '1em',
@@ -80,13 +82,14 @@ const LightTheme = {
   primary: blue,
   secondary: gold,
 
-  backgroundColor: gray,
-  mainBackgroundColor: gray.lighter,
+  boxShadow: boxShadowStyle,
+
+  defaultBgColor: white,
+  mainBgColor: gray,
+  leftPanelBgColor: white,
 
   headerBackgroundColor: white.default,
   headerBorderColor: gray.default,
-
-  sidePanelBgColor: gray,
 
   timelineBgColor: darkGray,
   timelineCurrentBgColor: primaryColor,
@@ -97,7 +100,7 @@ const LightTheme = {
   cardBorderColor: darkGray,
   borderColor: darkGray,
 
-  iconColor: blue.default,
+  iconColor: primaryColor.default,
 
   filterActive: gold.default,
   filterCount: darkGray,

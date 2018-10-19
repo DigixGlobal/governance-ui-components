@@ -3,10 +3,11 @@ import styled from 'styled-components';
 export const MenuContainer = styled.div`
   padding: 2.5rem;
   padding-right: 0;
-  /* background-color: ${props => props.theme.sidePanelBgColor.default.toString()}; */
+  background: ${props => props.theme.leftPanelBgColor.default.toString()};
+  border-right: ${props => props.theme.borderColor.lightest.toString()};
   color: ${props => props.theme.textColorInverted.default.toString()};
   font-size: 1.6rem;
-  box-shadow: 1rem 0.9rem 2.1rem rgba(128, 152, 213, 0.2);
+  box-shadow: ${props => props.theme.boxShadow};
   flex: 1 0 0;
   height: 100vh;
 `;

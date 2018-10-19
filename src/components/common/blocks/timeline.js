@@ -30,22 +30,28 @@ const TimelineLabel = styled.div`
 
   & > div {
     color: ${props => props.theme.primary.default.toString()};
-    &:first-child {
-      width: 15%;
-      border-right: 1px dashed ${props => props.theme.borderColor.lighter.toString()};
-      font-weight: 600 !important;
-    }
-    &:last-child {
-      color: ${props => props.theme.primary.default.toString()};
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      padding-left: 1em;
+  }
+`;
 
-      & > div:last-child {
-        color: ${props => props.theme.defaultTextColor.lighter.toString()};
-      }
+const StakingPhase = styled.div`
+  width: 15%;
+  border-right: 1px dashed ${props => props.theme.borderColor.lighter.toString()};
+  font-weight: 600 !important;
+`;
+
+const MainPhase = styled.div`
+  color: ${props => props.theme.primary.default.toString()};
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 1em;
+
+  & > div:last-child {
+    color: ${props => props.theme.defaultTextColor.lighter.toString()};
+    letter-spacing: 0.2em;
+    span {
+      margin: 0 2em;
     }
   }
 `;
@@ -68,13 +74,15 @@ class Timeline extends React.Component {
         <Quarter>Q2</Quarter>
         <TimelineBar>
           <TimelineLabel>
-            <div>STAKING PHASE</div>
-            <div>
+            <StakingPhase>STAKING PHASE</StakingPhase>
+
+            <MainPhase>
               <div>MAIN PHASE</div>
               <div>
-                DAY 56 / 90 | {stats.data ? stats.data.totalDgdsLocked / 1e9 : 83423.45} STAKE
+                DAY 56 / 90 <span>|</span>{' '}
+                {stats.data ? stats.data.totalDgdsLocked / 1e9 : 83423.45} STAKE
               </div>
-            </div>
+            </MainPhase>
           </TimelineLabel>
 
           <TimelineDay>

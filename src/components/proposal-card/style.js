@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const ProposalWrapper = styled.div`
+  background-color: ${props => props.theme.defaultBgColor.default.toString()};
   display: flex;
   flex-direction: column;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+  box-shadow: ${props => props.theme.boxShadow};
   margin-bottom: 3em;
 `;
 
@@ -13,7 +14,6 @@ export const ProposalContainer = styled.div`
   flex-direction: row;
 
   height: 36.6rem;
-  background-color: ${props => props.theme.mainBackgroundColor.toString()};
   border: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
 `;
 
@@ -180,7 +180,7 @@ export const MilestoneStatus = styled.div`
     margin-right: 5px;
     &:last-child {
       margin-right: 5px;
-      background: ${props => props.theme.backgroundColor.default.toString()};
+      background: ${props => props.theme.defaultBgColor.default.toString()};
     }
   }
 `;

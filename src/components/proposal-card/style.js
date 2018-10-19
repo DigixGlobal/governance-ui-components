@@ -8,25 +8,24 @@ export const ProposalWrapper = styled.div`
 `;
 
 export const ProposalContainer = styled.div`
+  color: ${props => props.theme.defaultTextColor.default.toString()};
   display: flex;
   flex-direction: row;
 
   height: 36.6rem;
   background-color: ${props => props.theme.mainBackgroundColor.toString()};
-  border: 1px solid ${props => props.theme.borderColor.default.toString()};
+  border: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
 `;
 
 export const ProposaDetaillWrapper = styled.div`
   flex: 4 1 0;
-
   padding: 2em 3em;
-  font-size: 1.6rem;
 `;
 
 export const ProposalCard = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: space-between;
 
   height: 100%;
   > div {
@@ -35,19 +34,34 @@ export const ProposalCard = styled.div`
 `;
 
 export const TagsContainer = styled.div`
-  margin-bottom: 1em;
+  flex: 0.5 0 0;
 `;
 
 export const Description = styled.div`
-  margin-bottom: 3em;
+  flex: 3 0 0;
+
   p {
     margin-bottom: 3em;
+    color: ${props => props.theme.defaultTextColor.light.toString()};
+  }
+`;
+
+export const ProposalLink = styled.a`
+  font-family: 'Futura PT Medium', sans-serif;
+
+  &:link,
+  &:visited {
+    text-decoration: underline;
+  }
+
+  &:hover {
+    text-decoration: none;
   }
 `;
 
 export const ProposalFooter = styled.div`
-  border-top: 1px solid ${props => props.theme.borderColor.default.toString()};
-  padding: 1em 0;
+  border-top: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+  padding-top: 1.5em;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -55,11 +69,34 @@ export const ProposalFooter = styled.div`
 
 export const PostedBy = styled.div``;
 
-export const UpVote = styled.div``;
+export const PostedByLink = styled.a`
+  color: ${props => props.theme.secondary.default.toString()};
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 600;
+`;
+
+export const UpVote = styled.div`
+  a {
+    font-family: 'Futura PT Medium';
+    &:visited {
+      color: ${props => props.theme.defaultTextColor.default.toString()};
+    }
+    &::before {
+      content: '';
+      display: inline-block;
+      height: 16px;
+      width: 20px;
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="16" height="14" viewBox="0 0 16 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path d="M.667 5.667h2.666v8H.667v-8zm5.333 8h6c.553 0 1.027-.334 1.227-.814l2.013-4.7c.06-.153.093-.313.093-.486V6.333C15.333 5.6 14.733 5 14 5H9.793l.634-3.047.02-.213c0-.273-.114-.527-.294-.707l-.706-.7-4.394 4.394c-.24.24-.386.573-.386.94v6.666c0 .734.6 1.334 1.333 1.334zm0-8l2.893-2.894L8 6.333h6v1.334l-2 4.666H6V5.667z" id="a"/></defs><g fill="none" fill-rule="evenodd"><mask id="b" fill="#fff"><use xlink:href="#a"/></mask><g mask="url(#b)" fill="#000" fill-opacity=".54"><path d="M0-1h16v16H0z"/></g></g></svg>');
+      background-repeat: no-repeat;
+      // background-position: -16px 0px;
+      vertical-align: middle;
+      margin-right: 0.25em;
+    }
+  }
+`;
 
 export const Label = styled.div`
-  color: ${props => props.theme.defaultTextColor.toString()};
-
   margin-bottom: 1.2em;
   text-align: center;
   text-transform: uppercase;
@@ -79,29 +116,33 @@ export const StatsWrapper = styled.div`
 `;
 
 export const Stats = styled.div`
-  border-left: 1px solid ${props => props.theme.borderColor.default.toString()};
-  border-right: 1px solid ${props => props.theme.borderColor.default.toString()};
-
-  text-transform: uppercase;
-
-  text-align: center;
   flex: 1;
-
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: space-between;
+
+  border-left: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+  border-right: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+  height: 100%;
+  text-transform: uppercase;
 
   > div:not(:last-child) {
-    border-bottom: 1px solid ${props => props.theme.borderColor.default.toString()};
+    border-bottom: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
   }
 `;
 
 export const StatItem = styled.div`
-  font-size: 1.6rem;
-  padding: 3rem 0;
+  font-size: 1.4rem;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   > span {
-    font-family: 'Futura PT Medium';
-    font-size: 2.8rem;
+    font-family: 'Futura PT Heavy';
+    font-size: 2.6rem;
     display: block;
   }
 `;

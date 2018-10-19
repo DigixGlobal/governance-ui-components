@@ -8,12 +8,13 @@ export const Avatar = styled.img`
 
 export const H1 = styled.h1`
   color: ${props => props.color || props.theme.primary};
-  font-size: 5rem;
+  font-family: 'Futura PT Book';
+  font-size: 4.6rem;
   margin: 0;
 `;
 
 const H2 = styled.h2`
-  color: ${props => props.color || props.theme.primary};
+  color: ${props => props.color || props.theme.defaultTextColor.default.toString()};
   font-size: 2.4rem;
   margin-bottom: 1rem;
 `;
@@ -60,19 +61,19 @@ export const HR = styled.hr`
 `;
 
 const Button = {
-  transition: 'all 0.3s ease',
   cursor: 'pointer',
   textAlign: 'center',
   textDecoration: 'none',
   textTransform: 'uppercase',
-  fontFamily: '"Futura PT Light", Roboto, sans-serif',
   outline: 'none',
   padding: '1em 2em',
   margin: '1rem',
+  transition: 'all 0.3s ease',
 };
 
 export const ButtonStyles = css`
   ${Button};
+
   background: ${props =>
     props.primary
       ? props.theme.buttonBgPrimary.toString()
@@ -99,11 +100,10 @@ export const ButtonStyles = css`
 
 export const GhostBtn = css`
   background-color: transparent;
-  color: ${props => {
-    return props.primary
+  color: ${props =>
+    props.primary
       ? props.theme.buttonTextPrimary.toString()
-      : props.theme.buttonTextSecondary.toString();
-  }};
+      : props.theme.buttonTextSecondary.toString()};
 
   &:hover {
     background: ${props =>

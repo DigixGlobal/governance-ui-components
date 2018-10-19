@@ -8,8 +8,10 @@ import {
   ProposalCard,
   TagsContainer,
   Description,
+  ProposalLink,
   ProposalFooter,
   PostedBy,
+  PostedByLink,
   UpVote,
 } from './style';
 
@@ -20,18 +22,22 @@ export default class Proposal extends React.Component {
       <ProposaDetaillWrapper>
         <ProposalCard>
           <TagsContainer>
-            <Button kind="tag" uppercase href="/#">
+            <Button kind="flat" href="/#">
               {details.stage}
             </Button>
           </TagsContainer>
           <Description>
             <H2>{details.proposalVersions[0].title}</H2>
             <p>{details.proposalVersions[0].description}</p>
-            <a href=".">View Project</a>
+            <ProposalLink href="./">View Project</ProposalLink>
           </Description>
           <ProposalFooter>
-            <PostedBy>BY {details.proposer}</PostedBy>
-            <UpVote>LIKE</UpVote>
+            <PostedBy>
+              BY <PostedByLink>{details.proposer}</PostedByLink>
+            </PostedBy>
+            <UpVote>
+              <a href="./">LIKE</a>
+            </UpVote>
           </ProposalFooter>
         </ProposalCard>
       </ProposaDetaillWrapper>

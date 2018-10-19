@@ -54,8 +54,9 @@ html {
 body {
 
   font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
-  box-sizing: border-box;
+  font-size: 1.4rem;
   letter-spacing: 0.05em;
+  box-sizing: border-box;
 }
 
 input {
@@ -63,8 +64,12 @@ input {
   outline: none;
 }
 
-h2 {
-  font-size: 3em;
+a {
+  cursor: pointer;
+  text-decoration: none;
+  &:hover, &:visited:hover {
+    text-decoration: none;
+  }
 }
 
 p {

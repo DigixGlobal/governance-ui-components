@@ -21,11 +21,14 @@ const blue = {
 //   lighter: darkBlueHex.lighten(0.1),
 // };
 
-const goldHex = Color('#E4C88E');
+// const goldHex = Color('#E4C88E');
+const goldHex = Color('#C19F58');
 const gold = {
   default: goldHex,
   darker: goldHex.darken(0.05),
+  light: goldHex.lighten(0.05),
   lighter: goldHex.lighten(0.05),
+  lightest: goldHex.lighten(0.05),
 };
 
 // const darkGoldHex = Color('#C4A159');
@@ -46,7 +49,9 @@ const darkGrayHex = Color('#464E5B');
 const darkGray = {
   default: darkGrayHex,
   darker: darkGrayHex.darken(0.5),
-  lighter: darkGrayHex.lighten(1.5),
+  light: darkGrayHex.lighten(0.5),
+  lighter: darkGrayHex.lighten(1),
+  lightest: darkGrayHex.lighten(1.9),
 };
 
 const whiteHex = Color('#fff');
@@ -67,8 +72,8 @@ const primaryColor = blue;
 const secondaryColor = gold;
 
 const ErrorMessage = {
-  backgroundColor: gray,
-  padding: '1em',
+  // backgroundColor: gray,
+  // padding: '1em',
 };
 
 const LightTheme = {
@@ -83,18 +88,19 @@ const LightTheme = {
 
   sidePanelBgColor: gray,
 
-  timelineBgColor: gold.lighter,
-  timelineCurrentBgColor: gold.darker,
+  timelineBgColor: darkGray,
+  timelineCurrentBgColor: primaryColor,
 
   // textColor: black,
-  defaultTextColor: primaryColor.default,
+  defaultTextColor: darkGray,
   textColorInverted: white,
-  borderColor: gray,
+  cardBorderColor: darkGray,
+  borderColor: darkGray,
 
   iconColor: blue.default,
 
   filterActive: gold.default,
-  filterCount: darkGray.default,
+  filterCount: darkGray,
 
   buttonBgPrimary: primaryColor.default,
   buttonBgSecondary: secondaryColor.default,
@@ -105,7 +111,8 @@ const LightTheme = {
   buttonBorderPrimary: primaryColor.default,
   buttonBorderSecondary: secondaryColor.default,
   buttonBorderDisabled: darkGray.lighter,
-  buttonTagColor: red.default,
+  buttonFlatColor: red.default,
+  transition: 'all 0.3s ease',
 
   ErrorMessage,
 };

@@ -47,15 +47,17 @@ export const RoundBtn = styled.button`
     `};
 `;
 
-export const TagBtn = styled.a`
-  color: ${props => props.theme.buttonTagColor.toString()};
-  font-weight: 600;
-  font-size: 1.3rem;
+export const FlatBtn = styled.a`
+  color: ${props => props.theme.buttonFlatColor.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  font-size: 1.1rem;
   text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 
   ::before {
     content: '● ';
-    color: ${props => props.theme.buttonTagColor.toString()};
-    font-size: 130%;
+    color: ${props => props.theme.buttonFlatColor.toString()};
+    font-size: 140%;
   }
 `;

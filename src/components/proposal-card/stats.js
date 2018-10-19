@@ -10,7 +10,7 @@ export default class ProposalCardStats extends React.Component {
       <StatsWrapper>
         <Stats>
           <StatItem>
-            funding amount
+            Funding
             <span>{details.proposalVersions[0].totalFunding / 1e18} eth</span>
           </StatItem>
           <StatItem>
@@ -18,7 +18,7 @@ export default class ProposalCardStats extends React.Component {
             <span>2%</span>
           </StatItem>
           <StatItem>
-            participants
+            Participants
             <span>{details.votingRounds[0].totalVoterCount}</span>
           </StatItem>
         </Stats>

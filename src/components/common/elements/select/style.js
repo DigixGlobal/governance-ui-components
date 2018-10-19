@@ -8,9 +8,9 @@ const Container = styled.div`
       calc(100% - 2.5em) 0.5em;
     background-size: 5px 5px, 5px 5px, 1px 1.5em;
     background-repeat: no-repeat;
-    border: 1px solid ${props => props.theme.borderColor.default.toString()};
+    border: 1px solid ${props => props.theme.borderColor.lightest.toString()};
     border-radius: ${props => (props.rounded ? '2rem' : '.5rem')};
-    color: ${props => props.color || props.theme.defaultTextColor.toString()};
+    color: ${props => props.color || props.theme.defaultTextColor.default.toString()};
     padding: 0.8rem 2rem;
     font-size: 1.2rem;
     width: 150px;

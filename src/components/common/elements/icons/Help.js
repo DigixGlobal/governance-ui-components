@@ -11,12 +11,20 @@ const HelpIcon = props => (
               <path
                 d="M18.3513796,11.9941684 L2.87220732,19.4956134 C1.87820916,19.9773202 0.681913924,19.562026 0.200207124,18.5680278 C0.0684489799,18.2961459 -1.83195104e-15,17.9979462 -1.33226763e-15,17.6958205 L-8.8817842e-16,0.893137593 C-1.02344917e-15,-0.211431907 0.8954305,-1.10686241 2,-1.10686241 C2.30212575,-1.10686241 2.60032543,-1.03841343 2.87220732,-0.906655283 L18.3513796,6.59478973 C19.8423768,7.31734993 20.4653181,9.11179278 19.7427579,10.60279 C19.4485819,11.2098199 18.9584094,11.6999923 18.3513796,11.9941684 Z"
                 id="Triangle-Copy"
-                stroke="#767676"
+                stroke={
+                  props.selected
+                    ? props.theme.iconSecondaryColor.default.toString()
+                    : props.theme.iconDefaultColor.default.toString()
+                }
               />
               <path
                 d="M24.1428571,10.5 L24.1428571,14.5"
                 id="Line-3"
-                stroke="#767676"
+                stroke={
+                  props.selected
+                    ? props.theme.iconSecondaryColor.default.toString()
+                    : props.theme.iconDefaultColor.default.toString()
+                }
                 strokeLinecap="square"
               />
               <path
@@ -27,25 +35,41 @@ const HelpIcon = props => (
               <path
                 d="M8.04761905,14.5 L8.04761905,17.5"
                 id="Line-7"
-                stroke="#767676"
+                stroke={
+                  props.selected
+                    ? props.theme.iconSecondaryColor.default.toString()
+                    : props.theme.iconDefaultColor.default.toString()
+                }
                 strokeLinecap="square"
               />
               <path
                 d="M8.04761905,10.5 L24.1428571,10.5"
                 id="Line-5"
-                stroke="#767676"
+                stroke={
+                  props.selected
+                    ? props.theme.iconSecondaryColor.default.toString()
+                    : props.theme.iconDefaultColor.default.toString()
+                }
                 strokeLinecap="square"
               />
               <path
                 d="M8.04761905,14.5 L24.1428571,14.5"
                 id="Line-5"
-                stroke="#767676"
+                stroke={
+                  props.selected
+                    ? props.theme.iconSecondaryColor.default.toString()
+                    : props.theme.iconDefaultColor.default.toString()
+                }
                 strokeLinecap="square"
               />
               <path
                 d="M8.04761905,20.5 L8.04761905,21.5"
                 id="Line-8"
-                stroke="#767676"
+                stroke={
+                  props.selected
+                    ? props.theme.iconSecondaryColor.default.toString()
+                    : props.theme.iconDefaultColor.default.toString()
+                }
                 strokeLinecap="square"
               />
             </g>
@@ -57,8 +81,8 @@ const HelpIcon = props => (
 );
 
 HelpIcon.defaultProps = {
-  width: '2.8rem',
-  height: '2.8rem',
+  width: '2.2rem',
+  height: '2.2rem',
 };
 
 export default HelpIcon;

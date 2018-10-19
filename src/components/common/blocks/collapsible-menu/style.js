@@ -65,25 +65,24 @@ export const MenuList = styled.ul`
 `;
 
 export const MenuItem = styled.li`
-  /* padding-top: 2rem; */
   color: ${props =>
     props.selected
       ? props.theme.textSecondary.default.toString()
-      : props.theme.textPrimary.default.toString()};
-  /* text-transform: uppercase; */
+      : props.theme.textDefault.default.toString()};
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  margin: 1rem 0;
+  margin-bottom: 3rem;
   position: relative;
   cursor: pointer;
-  border-right: 3px solid
-    ${props => (!props.selected ? 0 : props.theme.textSecondary.default.toString())};
+  border-right: 4px solid
+    ${props => (!props.selected ? 0 : props.theme.backgroundSecondary.default.toString())};
   > span {
+    font-family: 'Futura PT Book';
     display: inline-block;
     position: absolute;
-    top: 0.5rem;
-    margin-left: 3.5rem;
+    top: 0rem;
+    margin-left: 4.5rem;
   }
   > svg {
     fill: orangered;

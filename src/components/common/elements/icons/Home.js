@@ -35,8 +35,8 @@ HomeIcon.propTypes = {
   height: string,
 };
 HomeIcon.defaultProps = {
-  width: '2.8rem',
-  height: '2.8rem',
+  width: '2.5rem',
+  height: '2.5rem',
 };
 
 export default HomeIcon;

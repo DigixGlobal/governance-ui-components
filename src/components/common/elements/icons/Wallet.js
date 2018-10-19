@@ -18,8 +18,8 @@ const WalletIcon = props => (
               id="Rectangle-2"
               stroke={
                 props.selected
-                  ? props.theme.backgroundSecondary.default.toString()
-                  : props.theme.backgroundPrimary.default.toString()
+                  ? props.theme.iconSecondaryColor.default.toString()
+                  : props.theme.iconDefaultColor.default.toString()
               }
               x="16.5"
               y="8.5"
@@ -30,8 +30,8 @@ const WalletIcon = props => (
               id="Rectangle-2"
               fill={
                 props.selected
-                  ? props.theme.backgroundSecondary.default.toString()
-                  : props.theme.backgroundPrimary.default.toString()
+                  ? props.theme.iconSecondaryColor.default.toString()
+                  : props.theme.iconDefaultColor.default.toString()
               }
               x="18"
               y="11"
@@ -42,8 +42,8 @@ const WalletIcon = props => (
               id="Rectangle-9"
               stroke={
                 props.selected
-                  ? props.theme.backgroundSecondary.default.toString()
-                  : props.theme.backgroundPrimary.default.toString()
+                  ? props.theme.iconSecondaryColor.default.toString()
+                  : props.theme.iconDefaultColor.default.toString()
               }
               x="4.5"
               y="0.5"
@@ -59,8 +59,8 @@ const WalletIcon = props => (
 );
 
 WalletIcon.defaultProps = {
-  width: '2.5rem',
-  height: '2.5rem',
+  width: '2.2rem',
+  height: '2.2rem',
 };
 
 export default WalletIcon;

@@ -70,6 +70,7 @@ const red = {
 
 const primaryColor = blue;
 const secondaryColor = gold;
+const tertiaryColor = darkGray;
 
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
 
@@ -101,26 +102,26 @@ const LightTheme = {
 
   headerBorderColor: gray.default,
 
-  timelineBgColor: darkGray,
+  timelineBgColor: tertiaryColor,
   timelineCurrentBgColor: primaryColor,
 
   textWhite: white,
   textBlack: black,
-  textDefault: darkGray,
+  textDefault: tertiaryColor,
   textPrimary: primaryColor,
   textSecondary: secondaryColor,
   textContrast: white,
 
-  cardBorderColor: darkGray,
-  borderColor: darkGray,
+  cardBorderColor: tertiaryColor,
+  borderColor: tertiaryColor,
 
-  iconPrimary: primaryColor,
-  iconSecondary: secondaryColor,
-  iconDefault: gray,
+  iconPrimaryColor: primaryColor,
+  iconSecondaryColor: secondaryColor,
+  iconDefaultColor: tertiaryColor,
   iconColor: primaryColor.default,
 
   filterActive: gold.default,
-  filterCount: darkGray,
+  filterCount: tertiaryColor,
 
   ErrorMessage,
 };

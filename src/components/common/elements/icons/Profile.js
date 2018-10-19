@@ -21,8 +21,8 @@ const ProfileIcon = props => (
               <rect
                 stroke={
                   props.selected
-                    ? props.theme.backgroundSecondary.default.toString()
-                    : props.theme.backgroundPrimary.default.toString()
+                    ? props.theme.iconSecondaryColor.default.toString()
+                    : props.theme.iconDefaultColor.default.toString()
                 }
                 mask="url(#mask-2)"
                 x="0.5"
@@ -38,8 +38,8 @@ const ProfileIcon = props => (
               fillRule="nonzero"
               stroke={
                 props.selected
-                  ? props.theme.backgroundSecondary.default.toString()
-                  : props.theme.backgroundPrimary.default.toString()
+                  ? props.theme.iconSecondaryColor.default.toString()
+                  : props.theme.iconDefaultColor.default.toString()
               }
             >
               <path

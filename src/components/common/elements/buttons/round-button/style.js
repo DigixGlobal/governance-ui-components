@@ -3,13 +3,15 @@ import styled, { css } from 'styled-components';
 export const Button = styled.button`
   transition: all 0.3s ease;
   background: ${props =>
-    props.primary ? props.theme.primary.default : props.theme.secondary.default.toString()};
-  border: 2px solid ${props => props.theme.primary.default.toString()};
+    props.primary
+      ? props.theme.backgroundPrimary.default
+      : props.theme.backgroundSecondary.default.toString()};
+  border: 2px solid ${props => props.theme.buttonBorderPrimary.default.toString()};
   border-radius: 3px;
   color: ${props =>
     props.primary
-      ? props.theme.textColorInverted.default.toString()
-      : props.theme.defaultTextColor.toString()};
+      ? props.theme.textContrast.default.toString()
+      : props.theme.textDefault.toString()};
   cursor: pointer;
   display: inline-block;
   font-weight: 500;
@@ -23,7 +25,7 @@ export const Button = styled.button`
 
   &:hover {
     background: transparent;
-    color: ${props => props.theme.defaultTextColor.toString()};
+    color: ${props => props.theme.textDefault.toString()};
   }
   ${props =>
     props.fluid &&
@@ -34,11 +36,11 @@ export const Button = styled.button`
   ${props =>
     props.ghost &&
     css`
-      color: ${props.theme.secondary.default.toString()};
+      color: ${props.theme.textSecondary.default.toString()};
       background: transparent;
       border: none;
       &:hover {
-        color: ${props.theme.primary.lighter.toString()};
+        color: ${props.theme.textPrimary.lighter.toString()};
       }
     `};
 `;

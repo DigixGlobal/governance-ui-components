@@ -10,7 +10,7 @@ const TimelineWrapper = styled.div`
   margin-bottom: 5em;
 `;
 const Quarter = styled.div`
-  color: ${props => props.theme.primary.default.toString()};
+  color: ${props => props.theme.textPrimary.default.toString()};
   font-family: 'Futura PT Medium';
   font-size: 6em;
   margin-right: 20px;
@@ -29,7 +29,7 @@ const TimelineLabel = styled.div`
   height: 48px;
 
   & > div {
-    color: ${props => props.theme.primary.default.toString()};
+    color: ${props => props.theme.textPrimary.default.toString()};
   }
 `;
 
@@ -40,7 +40,7 @@ const StakingPhase = styled.div`
 `;
 
 const MainPhase = styled.div`
-  color: ${props => props.theme.primary.default.toString()};
+  color: ${props => props.theme.textPrimary.default.toString()};
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -48,7 +48,7 @@ const MainPhase = styled.div`
   padding-left: 1em;
 
   & > div:last-child {
-    color: ${props => props.theme.defaultTextColor.lighter.toString()};
+    color: ${props => props.theme.textDefault.lighter.toString()};
     letter-spacing: 0.2em;
     span {
       margin: 0 2em;

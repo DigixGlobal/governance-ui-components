@@ -45,7 +45,7 @@ export const CategoryItem = styled.a`
     props.active &&
     css`
       font-family: 'Futura PT Medium';
-      color: ${props.theme.secondary.default.toString()};
+      color: ${props.theme.textSecondary.default.toString()};
       border-bottom: 5px solid ${props.theme.filterActive.toString()};
       span {
         font-family: 'Futura PT Book';

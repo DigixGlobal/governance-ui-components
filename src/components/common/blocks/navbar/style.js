@@ -6,8 +6,8 @@ export const HeaderWrapper = styled.section`
   align-items: center;
   justify-content: center;
   height: 68px;
-  background-color: ${props => props.theme.headerBackgroundColor.toString()};
-  color: ${props => props.theme.defaultTextColor.toString()};
+  background-color: ${props => props.theme.backgroundHeader.default.toString()};
+  color: ${props => props.theme.textDefault.toString()};
   border-bottom: 1px solid ${props => props.theme.headerBorderColor.toString()};
   padding: 0;
 
@@ -49,7 +49,7 @@ export const AddressLabel = styled.div`
   border-radius: 3rem;
   border: 1px solid ${props => props.theme.borderColor.default.toString()};
   border-radius: 2rem;
-  color: ${props => props.theme.primary.default.toString()};
+  color: ${props => props.theme.textPrimary.default.toString()};
   padding: 0.8rem 2rem;
   font-size: 1.2rem;
   font-weight: 500;

@@ -17,8 +17,8 @@ const ProductTourIcon = props => (
                     id="Triangle-Copy"
                     stroke={
                       props.selected
-                        ? props.theme.secondary.default.toString()
-                        : props.theme.primary.default.toString()
+                        ? props.theme.backgroundSecondary.default.toString()
+                        : props.theme.backgroundPrimary.default.toString()
                     }
                   />
                   <path
@@ -26,8 +26,8 @@ const ProductTourIcon = props => (
                     id="Line-3"
                     stroke={
                       props.selected
-                        ? props.theme.secondary.default.toString()
-                        : props.theme.primary.default.toString()
+                        ? props.theme.backgroundSecondary.default.toString()
+                        : props.theme.backgroundPrimary.default.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -41,8 +41,8 @@ const ProductTourIcon = props => (
                     id="Line-7"
                     stroke={
                       props.selected
-                        ? props.theme.secondary.default.toString()
-                        : props.theme.primary.default.toString()
+                        ? props.theme.backgroundSecondary.default.toString()
+                        : props.theme.backgroundPrimary.default.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -51,8 +51,8 @@ const ProductTourIcon = props => (
                     id="Line-5"
                     stroke={
                       props.selected
-                        ? props.theme.secondary.default.toString()
-                        : props.theme.primary.default.toString()
+                        ? props.theme.backgroundSecondary.default.toString()
+                        : props.theme.backgroundPrimary.default.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -61,8 +61,8 @@ const ProductTourIcon = props => (
                     id="Line-5"
                     stroke={
                       props.selected
-                        ? props.theme.secondary.default.toString()
-                        : props.theme.primary.default.toString()
+                        ? props.theme.backgroundSecondary.default.toString()
+                        : props.theme.backgroundPrimary.default.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -71,8 +71,8 @@ const ProductTourIcon = props => (
                     id="Line-8"
                     stroke={
                       props.selected
-                        ? props.theme.secondary.default.toString()
-                        : props.theme.primary.default.toString()
+                        ? props.theme.backgroundSecondary.default.toString()
+                        : props.theme.backgroundPrimary.default.toString()
                     }
                     strokeLinecap="square"
                   />

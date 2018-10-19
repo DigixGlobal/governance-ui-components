@@ -1,11 +1,11 @@
 import Color from 'color';
 
-// const blackHex = Color('#000');
-// const black = {
-//   default: blackHex,
-//   darker: blackHex.darken(0.5),
-//   lighter: blackHex.lighten(0.5),
-// };
+const blackHex = Color('#000');
+const black = {
+  default: blackHex,
+  darker: blackHex.darken(0.5),
+  lighter: blackHex.lighten(0.5),
+};
 
 const blueHex = Color('#111E36');
 const blue = {
@@ -79,31 +79,14 @@ const ErrorMessage = {
 };
 
 const LightTheme = {
-  primary: blue,
-  secondary: gold,
+  backgroundDefault: white,
+  backgroundPrimary: primaryColor,
+  backgroundSecondary: secondaryColor,
+  backgroundLayout: gray,
+  backgroundLeftPanel: white,
+  backgroundHeader: white,
 
   boxShadow: boxShadowStyle,
-
-  defaultBgColor: white,
-  mainBgColor: gray,
-  leftPanelBgColor: white,
-
-  headerBackgroundColor: white.default,
-  headerBorderColor: gray.default,
-
-  timelineBgColor: darkGray,
-  timelineCurrentBgColor: primaryColor,
-
-  // textColor: black,
-  defaultTextColor: darkGray,
-  textColorInverted: white,
-  cardBorderColor: darkGray,
-  borderColor: darkGray,
-
-  iconColor: primaryColor.default,
-
-  filterActive: gold.default,
-  filterCount: darkGray,
 
   buttonBgPrimary: primaryColor.default,
   buttonBgSecondary: secondaryColor.default,
@@ -115,7 +98,29 @@ const LightTheme = {
   buttonBorderSecondary: secondaryColor.default,
   buttonBorderDisabled: darkGray.lighter,
   buttonFlatColor: red.default,
-  transition: 'all 0.3s ease',
+
+  headerBorderColor: gray.default,
+
+  timelineBgColor: darkGray,
+  timelineCurrentBgColor: primaryColor,
+
+  textWhite: white,
+  textBlack: black,
+  textDefault: darkGray,
+  textPrimary: primaryColor,
+  textSecondary: secondaryColor,
+  textContrast: white,
+
+  cardBorderColor: darkGray,
+  borderColor: darkGray,
+
+  iconPrimary: primaryColor,
+  iconSecondary: secondaryColor,
+  iconDefault: gray,
+  iconColor: primaryColor.default,
+
+  filterActive: gold.default,
+  filterCount: darkGray,
 
   ErrorMessage,
 };

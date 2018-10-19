@@ -14,11 +14,17 @@ export const Container = styled.div`
   } */
   > svg {
     color: ${props =>
-      props.selected ? props.theme.secondary.default.toString() : props.theme.iconColor.toString()};
+      props.selected
+        ? props.theme.textSecondary.default.toString()
+        : props.theme.iconColor.toString()};
     fill: ${props =>
-      props.selected ? props.theme.secondary.default.toString() : props.theme.iconColor.toString()};
+      props.selected
+        ? props.theme.textSecondary.default.toString()
+        : props.theme.iconColor.toString()};
     stroke: ${props =>
-      props.selected ? props.theme.secondary.default.toString() : props.theme.iconColor.toString()};
+      props.selected
+        ? props.theme.textSecondary.default.toString()
+        : props.theme.iconColor.toString()};
 
     width: 100%;
     height: 100%;

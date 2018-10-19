@@ -4,7 +4,7 @@ export const DashBoardContainer = styled.div`
   text-align: center;
   /* font-weight: bold; */
 
-  color: ${props => props.theme.defaultTextColor.default.toString()};
+  color: ${props => props.theme.textDefault.default.toString()};
 `;
 
 export const DashBoardItem = styled.div`
@@ -12,7 +12,7 @@ export const DashBoardItem = styled.div`
   text-align: center;
   display: inline-block;
   text-transform: uppercase;
-  border: 1px solid ${props => props.theme.secondary.default.toString()};
+  border: 1px solid ${props => props.theme.backgroundSecondary.default.toString()};
 `;
 
 export const Count = styled.div`

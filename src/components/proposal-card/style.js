@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ProposalWrapper = styled.div`
-  background-color: ${props => props.theme.defaultBgColor.default.toString()};
+  background-color: ${props => props.theme.backgroundDefault.default.toString()};
   display: flex;
   flex-direction: column;
   box-shadow: ${props => props.theme.boxShadow};
@@ -9,7 +9,7 @@ export const ProposalWrapper = styled.div`
 `;
 
 export const ProposalContainer = styled.div`
-  color: ${props => props.theme.defaultTextColor.default.toString()};
+  color: ${props => props.theme.textDefault.default.toString()};
   display: flex;
   flex-direction: row;
 
@@ -42,7 +42,7 @@ export const Description = styled.div`
 
   p {
     margin-bottom: 3em;
-    color: ${props => props.theme.defaultTextColor.light.toString()};
+    color: ${props => props.theme.textDefault.light.toString()};
   }
 `;
 
@@ -70,7 +70,7 @@ export const ProposalFooter = styled.div`
 export const PostedBy = styled.div``;
 
 export const PostedByLink = styled.a`
-  color: ${props => props.theme.secondary.default.toString()};
+  color: ${props => props.theme.textSecondary.default.toString()};
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 600;
@@ -80,7 +80,7 @@ export const UpVote = styled.div`
   a {
     font-family: 'Futura PT Medium';
     &:visited {
-      color: ${props => props.theme.defaultTextColor.default.toString()};
+      color: ${props => props.theme.textDefault.default.toString()};
     }
     &::before {
       content: '';
@@ -174,13 +174,12 @@ export const MilestoneStatus = styled.div`
   li {
     display: inline-block;
     list-style: none;
-    background: ${props => props.theme.primary.default.toString()};
+    background: ${props => props.theme.backgroundPrimary.default.toString()};
     height: 10px;
     width: 20%;
     margin-right: 5px;
     &:last-child {
       margin-right: 5px;
-      background: ${props => props.theme.defaultBgColor.default.toString()};
     }
   }
 `;

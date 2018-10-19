@@ -13,7 +13,7 @@ class UserDAOStats extends React.Component {
           <span>{quarterPoints || 82}</span>
         </Point>
         <Point>
-          Repuation Points <span>{repurationPoints || 134}</span>
+          Reputation Points <span>{repurationPoints || 134}</span>
         </Point>
         <Point>
           My Stake

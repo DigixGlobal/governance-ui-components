@@ -10,7 +10,7 @@ const MenuWrapper = styled.div`
 const StyledLink = styled.a`
   display: flex;
   align-items: center;
-  color: ${props => props.theme.defaultTextColor.toString()};
+  color: ${props => props.theme.textDefault.toString()};
   text-decoration: none;
   text-transform: uppercase;
 `;

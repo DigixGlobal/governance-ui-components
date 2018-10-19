@@ -17,8 +17,8 @@ const ActivityIcon = props => (
             id="Rectangle-9"
             stroke={
               props.selected
-                ? props.theme.secondary.default.toString()
-                : props.theme.primary.default.toString()
+                ? props.theme.backgroundSecondary.default.toString()
+                : props.theme.backgroundPrimary.default.toString()
             }
             x="0.5"
             y="2.5"
@@ -30,8 +30,8 @@ const ActivityIcon = props => (
             id="Rectangle"
             fill={
               props.selected
-                ? props.theme.secondary.default.toString()
-                : props.theme.primary.default.toString()
+                ? props.theme.backgroundSecondary.default.toString()
+                : props.theme.backgroundPrimary.default.toString()
             }
             x="6"
             y="12"
@@ -42,8 +42,8 @@ const ActivityIcon = props => (
             id="Rectangle-Copy"
             fill={
               props.selected
-                ? props.theme.secondary.default.toString()
-                : props.theme.primary.default.toString()
+                ? props.theme.backgroundSecondary.default.toString()
+                : props.theme.backgroundPrimary.default.toString()
             }
             x="11"
             y="9"
@@ -54,8 +54,8 @@ const ActivityIcon = props => (
             id="Rectangle-Copy-2"
             fill={
               props.selected
-                ? props.theme.secondary.default.toString()
-                : props.theme.primary.default.toString()
+                ? props.theme.backgroundSecondary.default.toString()
+                : props.theme.backgroundPrimary.default.toString()
             }
             x="16"
             y="15"
@@ -71,8 +71,8 @@ const ActivityIcon = props => (
             id="Rectangle-28"
             fill={
               props.selected
-                ? props.theme.secondary.default.toString()
-                : props.theme.primary.default.toString()
+                ? props.theme.backgroundSecondary.default.toString()
+                : props.theme.backgroundPrimary.default.toString()
             }
             x="18"
             y="2"
@@ -83,8 +83,8 @@ const ActivityIcon = props => (
             id="Rectangle-28-Copy"
             fill={
               props.selected
-                ? props.theme.secondary.default.toString()
-                : props.theme.primary.default.toString()
+                ? props.theme.backgroundSecondary.default.toString()
+                : props.theme.backgroundPrimary.default.toString()
             }
             x="14"
             y="6"

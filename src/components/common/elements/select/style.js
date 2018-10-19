@@ -10,7 +10,7 @@ const Container = styled.div`
     background-repeat: no-repeat;
     border: 1px solid ${props => props.theme.borderColor.lightest.toString()};
     border-radius: ${props => (props.rounded ? '2rem' : '.5rem')};
-    color: ${props => props.color || props.theme.defaultTextColor.default.toString()};
+    color: ${props => props.color || props.theme.textDefault.default.toString()};
     padding: 0.8rem 2rem;
     font-size: 1.2rem;
     width: 150px;

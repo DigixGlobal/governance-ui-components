@@ -3,9 +3,9 @@ import styled from 'styled-components';
 export const MenuContainer = styled.div`
   padding: 2.5rem;
   padding-right: 0;
-  background: ${props => props.theme.leftPanelBgColor.default.toString()};
+  background: ${props => props.theme.backgroundLeftPanel.default.toString()};
   border-right: ${props => props.theme.borderColor.lightest.toString()};
-  color: ${props => props.theme.textColorInverted.default.toString()};
+  color: ${props => props.theme.textContrast.default.toString()};
   font-size: 1.6rem;
   box-shadow: ${props => props.theme.boxShadow};
   flex: 1 0 0;
@@ -15,10 +15,10 @@ export const MenuContainer = styled.div`
 export const CloseMenu = styled.div`
   float: right;
   text-transform: uppercase;
-  color: ${props => props.theme.textColorInverted.default.toString()};
+  color: ${props => props.theme.textContrast.default.toString()};
 
   svg {
-    fill: ${props => props.theme.textColorInverted.default.toString()};
+    fill: ${props => props.theme.textContrast.default.toString()};
   }
 
   div {
@@ -39,7 +39,7 @@ export const Welcome = styled.div`
   margin: 2rem 0;
   font-size: 1.4rem;
   font-family: 'Futura PT Medium';
-  color: ${props => props.theme.primary.default.toString()};
+  color: ${props => props.theme.textPrimary.default.toString()};
   span {
     font-family: 'Futura PT Light';
     display: block;
@@ -68,8 +68,8 @@ export const MenuItem = styled.li`
   /* padding-top: 2rem; */
   color: ${props =>
     props.selected
-      ? props.theme.secondary.default.toString()
-      : props.theme.primary.default.toString()};
+      ? props.theme.textSecondary.default.toString()
+      : props.theme.textPrimary.default.toString()};
   /* text-transform: uppercase; */
   display: flex;
   justify-content: flex-start;
@@ -78,7 +78,7 @@ export const MenuItem = styled.li`
   position: relative;
   cursor: pointer;
   border-right: 3px solid
-    ${props => (!props.selected ? 0 : props.theme.secondary.default.toString())};
+    ${props => (!props.selected ? 0 : props.theme.textSecondary.default.toString())};
   > span {
     display: inline-block;
     position: absolute;

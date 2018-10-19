@@ -35,7 +35,7 @@ export const WalletContainer = styled.div`
 `;
 
 export const InnerContainer = styled.div`
-  color: ${props => props.theme.primary.default.toString()};
+  color: ${props => props.theme.textPrimary.default.toString()};
 `;
 
 export const IntroContainer = styled(InnerContainer)`

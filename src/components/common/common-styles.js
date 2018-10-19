@@ -14,7 +14,7 @@ export const H1 = styled.h1`
 `;
 
 const H2 = styled.h2`
-  color: ${props => props.color || props.theme.defaultTextColor.default.toString()};
+  color: ${props => props.color || props.theme.textDefault.default.toString()};
   font-size: 2.4rem;
   margin-bottom: 1rem;
 `;

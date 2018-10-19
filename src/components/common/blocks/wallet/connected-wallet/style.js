@@ -15,7 +15,7 @@ export const AddressInfo = styled(H5)`
   font-size: 1.2rem;
   text-transform: uppercase;
   > span {
-    color: ${props => props.theme.primary.default.toString()};
+    color: ${props => props.theme.textPrimary.default.toString()};
     display: block;
   }
 `;
@@ -25,7 +25,7 @@ export const TokenInfo = styled.div`
   align-items: center;
   border: 1px solid ${props => props.theme.borderColor.darker.toString()};
   padding: 2rem;
-  background-color: ${props => props.theme.textColorInverted.default.toString()};
+  background-color: ${props => props.theme.textContrast.default.toString()};
   margin: 1rem 0;
 `;
 
@@ -44,7 +44,7 @@ export const TokenValue = styled.div`
   font-family: 'Futura PT Medium';
   & > span {
     margin-left: 0.5rem;
-    color: ${props => props.theme.defaultBgColor.darker.toString()};
+    color: ${props => props.theme.backgroundDefault.darker.toString()};
     font-family: 'Futura PT Light';
   }
 `;
@@ -53,7 +53,7 @@ export const UsdEquivalent = styled.div`
   font-family: 'Futura PT Light';
   font-size: 1rem;
   & > span {
-    color: ${props => props.theme.defaultBgColor.darker.toString()};
+    color: ${props => props.theme.backgroundDefault.darker.toString()};
     margin-left: 0.5rem;
   }
 `;

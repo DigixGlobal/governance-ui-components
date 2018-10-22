@@ -55,7 +55,7 @@ export const ContentWrapper = styled.div`
 `;
 
 export const HR = styled.hr`
-  border: 0.5px solid ${props => props.theme.backgroundColor.default.toString()};
+  border: 0.5px solid ${props => props.theme.backgroundLayout.default.toString()};
   width: 100%;
   margin: 2rem 0;
 `;

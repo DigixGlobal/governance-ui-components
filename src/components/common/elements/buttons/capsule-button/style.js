@@ -13,6 +13,6 @@ export const Button = styled.button`
   ${props =>
     props.disabled &&
     css`
-      ${DisabledBtn};
+      background-color:orangered;
     `};
 `;

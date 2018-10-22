@@ -19,6 +19,8 @@ import ConnectedWallet from './connected-wallet';
 
 import { Stage } from './constants';
 
+import { getAddressDetails } from '../../../../actions';
+
 export class Wallet extends React.Component {
   constructor(props) {
     super(props);
@@ -27,13 +29,26 @@ export class Wallet extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {
+      defaultAddress,
+      AddressDetails: { error, fetching },
+      getAddressDetailsAction,
+    } = nextProps;
+
+    if ((fetching === null && defaultAddress) || (error && defaultAddress)) {
+      getAddressDetailsAction(defaultAddress.address);
+    }
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props !== nextProps || this.state !== nextState;
+  }
   updateStage = stage => {
     this.setState({ stage });
   };
   render() {
     const { stage } = this.state;
     const { show, onClose, defaultAddress, ...rest } = this.props;
-
     if (!show) return null;
     return (
       <Container>
@@ -55,6 +70,7 @@ const { func, bool } = PropTypes;
 Wallet.propTypes = {
   show: bool,
   onClose: func.isRequired,
+  getAddressDetailsAction: func.isRequired,
 };
 
 Wallet.defaultProps = {
@@ -65,11 +81,13 @@ const actions = {
   createKeystore,
   updateKeystore,
   deleteKeystore,
+  getAddressDetailsAction: getAddressDetails,
 };
 
 const mapStateToProps = state => ({
   // networks: getNetworks(state),
   defaultAddress: getDefaultAddress(state),
+  AddressDetails: state.governance.AddressDetails,
 });
 
 export default web3Connect(

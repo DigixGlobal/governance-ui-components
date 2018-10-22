@@ -43,7 +43,7 @@ export function getDaoDetails() {
 }
 
 export function getAddressDetails(address) {
-  return fetchData(`${INFO_SERVER}/address/${address}`, actions.GET_ADDRESS_DETAILS);
+  return fetchData(`${INFO_SERVER}/address/${address.toUpperCase()}`, actions.GET_ADDRESS_DETAILS);
 }
 
 export function getProposals(stage = 'all') {

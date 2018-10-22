@@ -5,29 +5,28 @@ import { Container, Point } from './style';
 
 class UserDAOStats extends React.Component {
   render() {
-    const { quarterPoints, repurationPoints, stake } = this.props;
+    const { stats } = this.props;
+    console.log(stats);
     return (
       <Container>
         <Point>
           Quarter Points
-          <span>{quarterPoints || 82}</span>
+          <span>{stats.data.quarterPoint || 0}</span>
         </Point>
         <Point>
-          Reputation Points <span>{repurationPoints || 134}</span>
+          Reputation Points <span>{stats.data.reputationPoint || 0}</span>
         </Point>
         <Point>
           My Stake
-          <span>{stake || 65.75}</span>
+          <span>{stats.data.lockedDgdStake || 0}</span>
         </Point>
       </Container>
     );
   }
 }
 
-const { number } = PropTypes;
+const { object } = PropTypes;
 UserDAOStats.propTypes = {
-  quarterPoints: number,
-  repurationPoints: number,
-  stake: number,
+  stats: object.isRequired,
 };
 export default UserDAOStats;

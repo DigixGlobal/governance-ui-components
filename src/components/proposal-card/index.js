@@ -24,6 +24,8 @@ export default class ProposalCard extends React.Component {
   }
 }
 
+const { object } = PropTypes;
 ProposalCard.propTypes = {
-  proposal: PropTypes.object.isRequired,
+  proposal: object.isRequired,
+  userDetails: object.isRequired,
 };

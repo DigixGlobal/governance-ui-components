@@ -58,7 +58,7 @@ class App extends Component {
 
   render() {
     const { showWallet, order } = this.state;
-    const { DaoDetails, Proposals } = this.props;
+    const { DaoDetails, Proposals, AddressDetails } = this.props;
     const hasProposals = Proposals.data && Proposals.data.length > 0;
     let orderedProposals = [];
     if (hasProposals) {
@@ -76,14 +76,18 @@ class App extends Component {
             <LeftMenu />
             <ContentWrapper>
               <Timeline stats={DaoDetails} />
-              <DashboardStats />
+              <DashboardStats stats={AddressDetails} />
               <ProposalFilter
                 onStageChange={this.props.getProposalsAction}
                 onOrderChange={this.onOrderChange}
               />
               {hasProposals &&
                 orderedProposals.map(proposal => (
-                  <ProposalCard key={proposal._id} proposal={proposal} />
+                  <ProposalCard
+                    key={proposal._id}
+                    proposal={proposal}
+                    userDetails={AddressDetails}
+                  />
                 ))}
             </ContentWrapper>
           </Container>
@@ -96,13 +100,18 @@ class App extends Component {
 const { object, func } = PropTypes;
 App.propTypes = {
   DaoDetails: object.isRequired,
+  AddressDetails: object.isRequired,
   Proposals: object.isRequired,
   getDaoDetailsAction: func.isRequired,
   getProposalsAction: func.isRequired,
 };
 
 export default connect(
-  ({ governance: { DaoDetails, Proposals } }) => ({ DaoDetails, Proposals }),
+  ({ governance: { DaoDetails, Proposals, AddressDetails } }) => ({
+    DaoDetails,
+    Proposals,
+    AddressDetails,
+  }),
   {
     getDaoDetailsAction: getDaoDetails,
     getProposalsAction: getProposals,

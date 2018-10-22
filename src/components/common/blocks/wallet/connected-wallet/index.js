@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { ERC20_ABI } from 'spectrum-lightsuite/src/helpers/constants';
+import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+
 import Button from '../../../elements/buttons/index';
 import Icon from '../../../elements/icons';
 import { HR } from '../../../../common/common-styles';
+import { DEFAULT_NETWORK, DGD_ADDRESS } from '../../../../../constants';
 
 import { InnerContainer, Header, CloseButtonWithHeader } from '../style';
 import {
@@ -19,8 +23,38 @@ import {
 } from './style';
 
 class ConnectedWallet extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dgdBalance: 0,
+      ethBalance: 0,
+    };
+  }
+  componentWillMount() {
+    Promise.all([this.getEthBalance(), this.getDgdbalance()]).then(([eth, dgd]) =>
+      this.setState({ dgdBalance: dgd, ethBalance: eth })
+    );
+  }
+
+  getDgdbalance() {
+    const { address: ethAddress, web3Redux } = this.props;
+
+    const { web3 } = web3Redux.networks[DEFAULT_NETWORK];
+    const contract = web3.eth.contract(ERC20_ABI).at(DGD_ADDRESS);
+    return contract.balanceOf.call(ethAddress.address).then(balance => parseBigNumber(balance, 9));
+  }
+
+  getEthBalance() {
+    const { address: ethAddress, web3Redux } = this.props;
+    const { web3 } = web3Redux.networks[DEFAULT_NETWORK];
+    if (ethAddress) {
+      return web3.eth.getBalance(ethAddress.address).then(balance => parseBigNumber(balance, 18));
+    }
+  }
+
   render() {
     const { address: ethAddress } = this.props;
+    const { dgdBalance, ethBalance } = this.state;
     return (
       <InnerContainer>
         <CloseButtonWithHeader>
@@ -29,7 +63,7 @@ class ConnectedWallet extends React.Component {
         </CloseButtonWithHeader>
         <Container>
           <AddressInfo>
-            Account #1
+            Selected Address
             <span>{ethAddress.address}</span>
           </AddressInfo>
           <TokenInfo>
@@ -38,7 +72,7 @@ class ConnectedWallet extends React.Component {
             </TokenIcon>
             <TokenDetails>
               <TokenValue>
-                0.000232
+                {ethBalance || 0}
                 <span>ETH</span>
               </TokenValue>
               <UsdEquivalent>
@@ -53,8 +87,8 @@ class ConnectedWallet extends React.Component {
             </TokenIcon>
             <TokenDetails>
               <TokenValue>
-                0.000232
-                <span>ETH</span>
+                {dgdBalance || 0}
+                <span>DGD</span>
               </TokenValue>
               <UsdEquivalent>0.0 USD</UsdEquivalent>
             </TokenDetails>
@@ -98,6 +132,7 @@ const { object, func } = PropTypes;
 ConnectedWallet.propTypes = {
   onClose: func.isRequired,
   address: object.isRequired,
+  web3Redux: object.isRequired,
 };
 
 export default ConnectedWallet;

@@ -30,7 +30,7 @@ export const TransparentOverlay = styled.div`
 
 export const WalletContainer = styled.div`
   padding: 2rem;
-  background-color: ${props => props.theme.mainBgColor.toString()};
+  background-color: ${props => props.theme.backgroundLayout.default.toString()};
   width: 20%;
 `;
 

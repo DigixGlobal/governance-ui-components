@@ -42,9 +42,29 @@ const determineDeadline = proposal => {
 
   return deadline;
 };
+
+const disableParticipateWhen = (proposal, user) => {
+  if (!proposal || !user) return true;
+  switch (proposal.stage.toLowerCase()) {
+    case 'idea':
+      return true;
+    case 'draft' && user.data.isModerator:
+      return false;
+    case 'proposal' && user.data.isParticipant:
+      return false;
+    case 'ongoing':
+      return true;
+    case 'review' && user.data.isParticipant:
+      return false;
+    case 'archived':
+      return true;
+    default:
+      return false;
+  }
+};
 export default class ProposalCardMilestone extends React.Component {
   render() {
-    const { details } = this.props;
+    const { details, userDetails } = this.props;
     const { currentMilestone } = details;
     const mileStones = Object.keys(currentMilestone);
     return (
@@ -60,7 +80,12 @@ export default class ProposalCardMilestone extends React.Component {
             <Data>{determineDeadline(details)}</Data>
           </Deadline>
           <CallToAction>
-            <Button kind="round" primary ghost>
+            <Button
+              kind="round"
+              primary
+              ghost
+              disabled={() => disableParticipateWhen(details, userDetails)}
+            >
               Participate
             </Button>
           </CallToAction>
@@ -72,4 +97,5 @@ export default class ProposalCardMilestone extends React.Component {
 
 ProposalCardMilestone.propTypes = {
   details: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
 };

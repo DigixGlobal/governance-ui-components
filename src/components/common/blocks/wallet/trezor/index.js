@@ -37,7 +37,7 @@ class Trezor extends React.Component {
           allowedKeystoreTypes={['trezor']}
           trigger={
             <WalletItem>
-              <Button fullWidth>
+              <Button primary ghost fluid>
                 <Icon kind="trezor" />
                 Trezor
               </Button>

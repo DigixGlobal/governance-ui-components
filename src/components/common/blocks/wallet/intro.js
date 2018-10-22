@@ -27,7 +27,7 @@ class Intro extends React.Component {
           You will need to load a wallet and lock some DGD in before you can browse projects and
           vote in DigixDAO
         </p>
-        <Button fullWidth onClick={this.handleButtonClick}>
+        <Button kind="round" primary ghost fluid onClick={this.handleButtonClick}>
           load wallet
         </Button>
 

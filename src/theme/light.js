@@ -73,6 +73,7 @@ const secondaryColor = gold;
 const tertiaryColor = darkGray;
 
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
+const transitionStyle = 'all 300ms ease';
 
 const ErrorMessage = {
   backgroundColor: gray,
@@ -97,7 +98,7 @@ const LightTheme = {
   buttonTextSecondaryReverse: white.default,
   buttonBorderPrimary: primaryColor.default,
   buttonBorderSecondary: secondaryColor.default,
-  buttonBorderDisabled: darkGray.lighter,
+  buttonBorderDisabled: darkGray.lightest,
   buttonFlatColor: red.default,
 
   headerBorderColor: gray.default,
@@ -119,6 +120,7 @@ const LightTheme = {
   textPrimary: primaryColor,
   textSecondary: secondaryColor,
   textContrast: white,
+  transition: transitionStyle,
 
   cardBorderColor: tertiaryColor,
   borderColor: tertiaryColor,

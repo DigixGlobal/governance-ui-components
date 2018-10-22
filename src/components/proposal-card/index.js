@@ -8,13 +8,13 @@ import { ProposalWrapper, ProposalContainer } from './style';
 
 export default class ProposalCard extends React.Component {
   render() {
-    const { proposal } = this.props;
+    const { proposal, userDetails } = this.props;
     return (
       <ProposalWrapper>
         <ProposalContainer>
           <Proposal details={proposal} />
           <Stats details={proposal} />
-          <Milestones details={proposal} />
+          <Milestones details={proposal} userDetails={userDetails} />
         </ProposalContainer>
         {/* <ProgressContainer>
           <Progress />

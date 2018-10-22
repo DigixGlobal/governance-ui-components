@@ -44,7 +44,7 @@ const determineDeadline = proposal => {
 };
 
 const disableParticipateWhen = (proposal, user) => {
-  console.log(proposal, user);
+  console.log(proposal, <user />);
   if (!proposal || !user) return true;
   switch (proposal.stage.toLowerCase()) {
     case 'idea':
@@ -68,6 +68,7 @@ export default class ProposalCardMilestone extends React.Component {
     const { details, userDetails } = this.props;
     const { currentMilestone } = details;
     const mileStones = Object.keys(currentMilestone);
+    const disabledParticipate = disableParticipateWhen(details, userDetails);
     return (
       <MilestonesWrapper>
         <Milestones>
@@ -81,12 +82,7 @@ export default class ProposalCardMilestone extends React.Component {
             <Data>{determineDeadline(details)}</Data>
           </Deadline>
           <CallToAction>
-            <Button
-              kind="round"
-              primary
-              ghost
-              disabled={() => disableParticipateWhen(details, userDetails)}
-            >
+            <Button kind="round" primary ghost disabled={disabledParticipate}>
               Participate
             </Button>
           </CallToAction>

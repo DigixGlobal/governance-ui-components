@@ -6,7 +6,7 @@ import { Container, Point } from './style';
 class UserDAOStats extends React.Component {
   render() {
     const { stats } = this.props;
-    console.log(stats);
+
     return (
       <Container>
         <Point>

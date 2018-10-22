@@ -59,7 +59,7 @@ const disableParticipateWhen = (proposal, user) => {
     case 'archived':
       return true;
     default:
-      return false;
+      return true;
   }
 };
 export default class ProposalCardMilestone extends React.Component {

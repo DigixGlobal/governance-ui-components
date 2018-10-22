@@ -36,7 +36,7 @@ class ImToken extends React.Component {
           allowedKeystoreTypes={['imtoken']}
           trigger={
             <WalletItem>
-              <Button fullWidth>
+              <Button primary ghost fluid>
                 <Icon kind="imtoken" />
                 ImToken
               </Button>

@@ -45,6 +45,14 @@ export const RoundBtn = styled.button`
     css`
       ${DisabledBtn};
     `};
+
+  ${props =>
+    props.fluid &&
+    css`
+      margin-left: 0;
+      margin-right: 0;
+      width: 100%;
+    `};
 `;
 
 export const FlatBtn = styled.a`

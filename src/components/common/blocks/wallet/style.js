@@ -24,30 +24,28 @@ export const CloseButtonWithHeader = styled.div`
 
 export const TransparentOverlay = styled.div`
   background-color: #000;
-  opacity: 0.5;
-  width: 80%;
+  opacity: 0.75;
+  width: 75%;
+  transition: ${props => props.theme.transition};
 `;
 
 export const WalletContainer = styled.div`
-  padding: 2rem;
-  background-color: ${props => props.theme.backgroundLayout.default.toString()};
-  width: 20%;
+  background-color: ${props => props.theme.backgroundDefault.default.toString()};
+  padding: 5rem;
+
+  width: 25%;
 `;
 
 export const InnerContainer = styled.div`
   color: ${props => props.theme.textPrimary.default.toString()};
+  transition: ${props => props.theme.transition};
 `;
 
 export const IntroContainer = styled(InnerContainer)`
-  > p {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-  }
+  font-size: 1.6rem;
 `;
 
 export const Header = styled(H4)`
-  font-size: 1.4rem;
-  margin-bottom: 1.5rem;
   text-transform: ${props => (props.uppercase ? 'uppercase' : 'none')};
 `;
 
@@ -56,10 +54,8 @@ export const Wallets = styled.ul`
 `;
 
 export const WalletItem = styled.li`
-  ${Button} {
-    font-family: 'Futura PT Medium';
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  font-family: 'Futura PT Medium';
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

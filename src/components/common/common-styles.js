@@ -30,7 +30,7 @@ export const H4 = styled.h4`
   font-family: 'Futura PT Medium';
   color: ${props => props.color || props.theme.primary};
   font-size: 1.6rem;
-  margin: 0;
+  margin-bottom: 1.5rem;
 `;
 
 export const H5 = styled.h5`
@@ -120,8 +120,10 @@ export const GhostBtn = css`
 export const DisabledBtn = css`
   background-color: transparent;
   border-color: ${props => props.theme.buttonBorderDisabled.toString()};
-  color: ${props =>
-    props.primary
-      ? props.theme.buttonTextPrimary.toString()
-      : props.theme.buttonTextSecondary.toString()};
+  color: ${props => props.theme.textDefault.lightest.toString()};
+  &:hover {
+    background-color: transparent;
+    border-color: ${props => props.theme.buttonBorderDisabled.toString()};
+    color: ${props => props.theme.textDefault.lightest.toString()};
+  }
 `;

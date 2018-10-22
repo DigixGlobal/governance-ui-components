@@ -75,11 +75,6 @@ const tertiaryColor = darkGray;
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
 const transitionStyle = 'all 300ms ease';
 
-const ErrorMessage = {
-  backgroundColor: gray,
-  padding: '1em',
-};
-
 const LightTheme = {
   backgroundDefault: white,
   backgroundPrimary: primaryColor,
@@ -107,6 +102,7 @@ const LightTheme = {
   iconSecondaryColor: secondaryColor,
   iconDefaultColor: tertiaryColor,
   iconColor: primaryColor.default,
+  iconColorReverse: white,
 
   filterActive: gold.default,
   filterCount: tertiaryColor,
@@ -125,7 +121,10 @@ const LightTheme = {
   cardBorderColor: tertiaryColor,
   borderColor: tertiaryColor,
 
-  ErrorMessage,
+  ErrorMessage: {
+    backgroundColor: gray,
+    padding: '1em',
+  },
 };
 
 export default LightTheme;

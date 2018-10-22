@@ -3,20 +3,9 @@ import { Container } from './style';
 
 const LedgerIcon = props => (
   <Container {...props}>
-    <svg
-      width="36px"
-      height="36px"
-      viewBox="0 0 36 36"
-      version="1.1"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-        <g
-          id="02.-Wallet-Popup---&gt;"
-          transform="translate(-1298.000000, -127.000000)"
-          fill="#243961"
-          fillRule="nonzero"
-        >
+    <svg width="36px" height="36px" viewBox="0 0 36 36">
+      <g id="Page-1" stroke="none" strokeWidth="1">
+        <g id="02.-Wallet-Popup---&gt;" transform="translate(-1298.000000, -127.000000)">
           <g id="01.-Access-Wallet" transform="translate(973.000000, 31.000000)">
             <g id="ledge-icon" transform="translate(325.000000, 96.000000)">
               <path

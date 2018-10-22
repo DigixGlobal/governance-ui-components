@@ -3,9 +3,7 @@ import { Container } from './style';
 
 const MetamaskIcon = props => (
   <Container {...props}>
-    <svg id="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 399.75 383.38">
-      <defs />
-      <title>image2vector (1)</title>
+    <svg id="svg" viewBox="0 0 399.75 383.38">
       <g id="svgg">
         <path id="path0" className="cls-1" d="M0,0" transform="translate(0 0)" />
         <path

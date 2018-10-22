@@ -53,6 +53,27 @@ export const RoundBtn = styled.button`
       margin-right: 0;
       width: 100%;
     `};
+
+  ${props =>
+    props.icon &&
+    css`
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.4rem;
+
+      svg {
+        fill: ${props => props.theme.iconColor.toString()};
+        width: 30px;
+        height: 30px;
+      }
+
+      :hover {
+        svg {
+          fill: ${props => props.theme.iconColorReverse.default.toString()};
+        }
+      }
+    `};
 `;
 
 export const FlatBtn = styled.a`

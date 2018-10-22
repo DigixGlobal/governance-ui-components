@@ -102,7 +102,7 @@ class ConnectedWallet extends React.Component {
             Locking your DGD in DigixDAO helps us know you are committed to the growth of the
             community and of course gives you voting power on the proposals you love to support
           </p>
-          <Button fullWidth disabled>
+          <Button fullWidth disabled={!dgdBalance || dgdBalance <= 0}>
             lock DGD
           </Button>
           <DevNote>[DEV NOTE] Disabled when DGD is not sufficient</DevNote>

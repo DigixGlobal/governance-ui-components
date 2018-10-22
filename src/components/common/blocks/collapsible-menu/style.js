@@ -9,7 +9,6 @@ export const MenuContainer = styled.div`
   font-size: 1.6rem;
   box-shadow: ${props => props.theme.boxShadow};
   flex: 1 0 0;
-  height: 100vh;
 `;
 
 export const CloseMenu = styled.div`

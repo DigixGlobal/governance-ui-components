@@ -81,8 +81,8 @@ const HelpIcon = props => (
 );
 
 HelpIcon.defaultProps = {
-  width: '2.2rem',
-  height: '2.2rem',
+  width: '2rem',
+  height: '2rem',
 };
 
 export default HelpIcon;

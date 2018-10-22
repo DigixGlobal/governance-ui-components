@@ -7,8 +7,8 @@ export const Avatar = styled.img`
 `;
 
 export const H1 = styled.h1`
-  color: ${props => props.color || props.theme.primary};
-  font-family: 'Futura PT Book';
+  color: ${props => props.color || props.theme.textDefault.default.toString()};
+
   font-size: 4.6rem;
   margin: 0;
 `;

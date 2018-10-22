@@ -25,17 +25,23 @@ export const Category = styled.div`
   justify-content: flex-start;
 `;
 export const CategoryItem = styled.a`
+  display: flex;
+  align-content: center;
+  font-family: 'Futura PT Book';
   margin-right: 2em;
   text-transform: uppercase;
 
   span {
-    display: inline-block;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 3px;
     color: #fff;
-    margin-left: 0.3em;
+    margin-left: 0.8em;
 
-    min-width: 1.5em;
-    text-align: center;
+    width: 22px;
+    height: 20px;
 
     background-color: ${props => props.theme.filterCount.default.toString()};
     border: 1px solid ${props => props.theme.filterCount.default.toString()};
@@ -44,11 +50,9 @@ export const CategoryItem = styled.a`
   ${props =>
     props.active &&
     css`
-      font-family: 'Futura PT Medium';
       color: ${props.theme.textSecondary.default.toString()};
       border-bottom: 5px solid ${props.theme.filterActive.toString()};
       span {
-        font-family: 'Futura PT Book';
         background-color: ${props.theme.filterActive.toString()};
         border: 1px solid ${props.theme.filterActive.toString()};
       }

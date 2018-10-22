@@ -51,7 +51,7 @@ const MainPhase = styled.div`
     color: ${props => props.theme.textDefault.lighter.toString()};
     letter-spacing: 0.2em;
     span {
-      margin: 0 2em;
+      margin: 0 1.5em;
     }
   }
 `;
@@ -79,7 +79,7 @@ class Timeline extends React.Component {
             <MainPhase>
               <div>MAIN PHASE</div>
               <div>
-                DAY 56 / 90 <span>|</span>{' '}
+                DAY 56 / 90 <span>|</span>
                 {stats.data ? stats.data.totalDgdsLocked / 1e9 : 83423.45} STAKE
               </div>
             </MainPhase>

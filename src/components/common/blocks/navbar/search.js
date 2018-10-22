@@ -12,7 +12,7 @@ const StyledLink = styled.a`
   align-items: center;
   color: ${props => props.theme.textDefault.toString()};
   text-decoration: none;
-  text-transform: uppercase;
+  font-family: 'Futura Pt Medium';
 `;
 
 function Search() {

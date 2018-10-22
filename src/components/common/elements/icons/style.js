@@ -6,6 +6,7 @@ export const Container = styled.div`
   justify-content: center;
   width: ${props => props.width || '3rem'};
   height: ${props => props.height || '3rem'};
+  margin-right: 1rem;
 
   /* :hover {
     border-radius: 50%;

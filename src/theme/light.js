@@ -26,9 +26,9 @@ const goldHex = Color('#C19F58');
 const gold = {
   default: goldHex,
   darker: goldHex.darken(0.05),
-  light: goldHex.lighten(0.05),
-  lighter: goldHex.lighten(0.05),
-  lightest: goldHex.lighten(0.05),
+  light: goldHex.lighten(0.5),
+  lighter: goldHex.lighten(1),
+  lightest: goldHex.lighten(1.9),
 };
 
 // const darkGoldHex = Color('#C4A159');
@@ -42,7 +42,7 @@ const grayHex = Color('#E8ECF2');
 const gray = {
   default: grayHex,
   darker: grayHex.darken(0.1),
-  light: grayHex.lighten(0.0599),
+  light: grayHex.lighten(0.05),
 };
 
 const darkGrayHex = Color('#464E5B');
@@ -75,8 +75,8 @@ const tertiaryColor = darkGray;
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
 
 const ErrorMessage = {
-  // backgroundColor: gray,
-  // padding: '1em',
+  backgroundColor: gray,
+  padding: '1em',
 };
 
 const LightTheme = {
@@ -102,6 +102,14 @@ const LightTheme = {
 
   headerBorderColor: gray.default,
 
+  iconPrimaryColor: primaryColor,
+  iconSecondaryColor: secondaryColor,
+  iconDefaultColor: tertiaryColor,
+  iconColor: primaryColor.default,
+
+  filterActive: gold.default,
+  filterCount: tertiaryColor,
+
   timelineBgColor: tertiaryColor,
   timelineCurrentBgColor: primaryColor,
 
@@ -114,14 +122,6 @@ const LightTheme = {
 
   cardBorderColor: tertiaryColor,
   borderColor: tertiaryColor,
-
-  iconPrimaryColor: primaryColor,
-  iconSecondaryColor: secondaryColor,
-  iconDefaultColor: tertiaryColor,
-  iconColor: primaryColor.default,
-
-  filterActive: gold.default,
-  filterCount: tertiaryColor,
 
   ErrorMessage,
 };

@@ -31,7 +31,7 @@ export const CapsuleBtn = styled.button`
 `;
 
 export const RoundBtn = styled.button`
-  border-radius: 2px;
+  border-radius: 3px;
   ${ButtonStyles};
 
   ${props =>

@@ -13,8 +13,7 @@ import LeftMenu from '../components/common/blocks/collapsible-menu';
 
 import lightTheme from '../theme/light';
 
-import { ContentWrapper } from '../components/common/common-styles';
-import { Container } from './style';
+import { Container, ContentWrapper } from './style';
 
 import ProposalCard from '../components/proposal-card';
 import Timeline from '../components/common/blocks/timeline';

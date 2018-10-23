@@ -22,21 +22,25 @@ export default class Proposal extends React.Component {
       <ProposaDetaillWrapper>
         <ProposalCard>
           <TagsContainer>
-            <Button kind="flat" href="/#">
+            <Button kind="flat" style={{ pointerEvents: 'none' }}>
               {details.stage}
             </Button>
           </TagsContainer>
           <Description>
             <H2>{details.proposalVersions[0].title}</H2>
             <p>{details.proposalVersions[0].description}</p>
-            <ProposalLink href="./">View Project</ProposalLink>
+            <ProposalLink href="./" style={{ pointerEvents: 'none' }}>
+              View Project
+            </ProposalLink>
           </Description>
           <ProposalFooter>
             <PostedBy>
-              BY <PostedByLink>{details.proposer}</PostedByLink>
+              BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
             </PostedBy>
             <UpVote>
-              <a href="./">LIKE</a>
+              <a href="./" style={{ pointerEvents: 'none' }}>
+                LIKE
+              </a>
             </UpVote>
           </ProposalFooter>
         </ProposalCard>

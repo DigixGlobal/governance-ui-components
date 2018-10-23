@@ -4,7 +4,16 @@ export const FilterWrapper = styled.div`
   margin-bottom: 3em;
   border-bottom: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
 `;
-export const Heading = styled.h1``;
+export const Heading = styled.div`
+  display: flex;
+  flex-direction: row;
+  div:first-child {
+    flex: 0.7;
+  }
+  div:last-child {
+    flex: 5 0 0;
+  }
+`;
 export const Filter = styled.div`
   display: flex;
   flex-direction: row;

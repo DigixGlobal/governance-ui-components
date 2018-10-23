@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 
 export const MenuContainer = styled.div`
-  padding: 2.5rem;
+  position: fixed;
+  height: 100%;
+  width: 15%;
+  padding: 8rem 2.5rem;
   padding-right: 0;
   background: ${props => props.theme.backgroundLeftPanel.default.toString()};
   border-right: ${props => props.theme.borderColor.lightest.toString()};
   color: ${props => props.theme.textContrast.default.toString()};
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   box-shadow: ${props => props.theme.boxShadow};
   flex: 1 0 0;
 `;
@@ -27,7 +30,7 @@ export const CloseMenu = styled.div`
 `;
 
 export const ProfileContainer = styled.div`
-  margin-top: 5rem;
+  margin: 5rem 2.5rem 0 0;
 
   img {
     display: block;
@@ -70,22 +73,13 @@ export const MenuItem = styled.li`
       : props.theme.textDefault.default.toString()};
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 3rem;
   position: relative;
-  cursor: pointer;
   border-right: 4px solid
     ${props => (!props.selected ? 0 : props.theme.backgroundSecondary.default.toString())};
   > span {
-    font-family: 'Futura PT Book';
+    font-family: 'Futura PT Medium';
     display: inline-block;
-    position: absolute;
-    top: 0rem;
-    margin-left: 4.5rem;
-  }
-  > svg {
-    fill: orangered;
-    color: orangered;
-    stroke: orangered;
   }
 `;

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '../../../common/elements/buttons/index'; // '../../elements/buttons';
-import { A } from '../../common-styles';
+import { Link } from '../../common-styles';
 import Icon from '../../../common/elements/icons';
 
 import { IntroContainer, Header, CloseButton } from './style';
@@ -32,9 +32,9 @@ class Intro extends React.Component {
         </Button>
 
         <p>
-          <A href="#" secondary>
+          <Link href="#" secondary>
             Don't have a wallet?
-          </A>
+          </Link>
         </p>
       </IntroContainer>
     );

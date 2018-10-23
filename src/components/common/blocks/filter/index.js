@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import Category from './category';
 import StyledSelect from '../../elements/select/index';
-// import Button from '../../elements/buttons/index';
+import Button from '../../elements/buttons/index';
+import Icon from '../../elements/icons/Plus';
 
 import { Heading, FilterWrapper, Filter, Pulldown } from './style';
 import { H1 } from '../../common-styles';
@@ -17,10 +18,15 @@ export default class ProposalCardFilter extends React.Component {
     return (
       <FilterWrapper>
         <Heading>
-          <H1>Projects</H1>
-          {/* <Button king="round" primary ghost>
-            Create
-          </Button> */}
+          <div>
+            <H1>Projects</H1>
+          </div>
+          <div>
+            <Button primary ghost icon>
+              <Icon kind="plus" />
+              Create
+            </Button>
+          </div>
         </Heading>
         <Filter>
           <Category {...this.props} />

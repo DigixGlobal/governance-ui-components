@@ -5,3 +5,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
+export const ContentWrapper = styled.div`
+  flex: 5 0 0;
+  padding: 8em 10em;
+  margin-left: 15%;
+`;

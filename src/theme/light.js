@@ -11,6 +11,7 @@ const blueHex = Color('#111E36');
 const blue = {
   default: blueHex,
   darker: blueHex.darken(1),
+  light: blueHex.lighten(0.75),
   lighter: blueHex.lighten(2),
 };
 
@@ -98,11 +99,15 @@ const LightTheme = {
 
   headerBorderColor: gray.default,
 
+  iconDefaultColor: tertiaryColor,
   iconPrimaryColor: primaryColor,
   iconSecondaryColor: secondaryColor,
-  iconDefaultColor: tertiaryColor,
   iconColor: primaryColor.default,
   iconColorReverse: white,
+
+  linkDefaultColor: tertiaryColor,
+  linkPrimaryColor: primaryColor,
+  linkSecondaryColor: secondaryColor,
 
   filterActive: gold.default,
   filterCount: tertiaryColor,

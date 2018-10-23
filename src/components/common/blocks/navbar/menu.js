@@ -14,7 +14,7 @@ const MenuWrapper = styled.div`
 function Menu() {
   return (
     <MenuWrapper>
-      <StyledLink href="./">
+      <StyledLink href="./" style={{ pointerEvents: 'none' }}>
         <Icon kind="menu" />
       </StyledLink>
     </MenuWrapper>

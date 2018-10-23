@@ -10,6 +10,9 @@ export const HeaderWrapper = styled.section`
   color: ${props => props.theme.textDefault.toString()};
   border-bottom: 1px solid ${props => props.theme.headerBorderColor.toString()};
   padding: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 99;
 
   & > div {
     border-left: 1px solid ${props => props.theme.headerBorderColor.toString()};

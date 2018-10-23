@@ -52,6 +52,7 @@ export const ProposalLink = styled.a`
   &:link,
   &:visited {
     text-decoration: underline;
+    color: ${props => props.theme.linkPrimaryColor.light.toString()};
   }
 
   &:hover {
@@ -66,7 +67,6 @@ export const ProposalFooter = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
-
 export const PostedBy = styled.div``;
 
 export const PostedByLink = styled.a`
@@ -74,6 +74,10 @@ export const PostedByLink = styled.a`
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 600;
+  a:link,
+  &:visited {
+    color: ${props => props.theme.linkPrimaryColor.default.toString()};
+  }
 `;
 
 export const UpVote = styled.div`

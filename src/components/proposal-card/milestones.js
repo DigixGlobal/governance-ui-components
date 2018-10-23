@@ -81,7 +81,13 @@ export default class ProposalCardMilestone extends React.Component {
             <Data>{determineDeadline(details)}</Data>
           </Deadline>
           <CallToAction>
-            <Button kind="round" primary ghost disabled={disabledParticipate}>
+            <Button
+              kind="round"
+              primary
+              ghost
+              disabled={disabledParticipate}
+              style={{ pointerEvents: 'none' }}
+            >
               Participate
             </Button>
           </CallToAction>

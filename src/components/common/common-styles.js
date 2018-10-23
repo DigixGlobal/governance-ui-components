@@ -39,19 +39,9 @@ export const H5 = styled.h5`
   margin: 0;
 `;
 
-export const A = styled.a`
-  color: ${props => props.theme.primary};
-
-  ${props =>
-    props.secondary &&
-    css`
-      color: #c4a159;
-    `};
-`;
-
-export const ContentWrapper = styled.div`
-  flex: 5 0 0;
-  padding: 8em 10em;
+export const Link = styled.a`
+  color: ${props => props.theme.linkDefaultColor.default.toString()};
+  font-family: 'Futura PT Medium';
 `;
 
 export const HR = styled.hr`

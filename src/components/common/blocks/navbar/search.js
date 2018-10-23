@@ -10,7 +10,7 @@ const MenuWrapper = styled.div`
 const StyledLink = styled.a`
   display: flex;
   align-items: center;
-  color: ${props => props.theme.textDefault.toString()};
+  color: ${props => props.theme.linkDefaultColor.default.toString()};
   text-decoration: none;
   font-family: 'Futura Pt Medium';
 `;
@@ -18,7 +18,7 @@ const StyledLink = styled.a`
 function Search() {
   return (
     <MenuWrapper>
-      <StyledLink href="./">
+      <StyledLink href="./" style={{ pointerEvents: 'none' }}>
         <Icon kind="magnifier" />
         <span>Search</span>
       </StyledLink>

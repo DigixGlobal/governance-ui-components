@@ -7,7 +7,7 @@ export const Button = styled.button`
       ? props.theme.backgroundPrimary.default
       : props.theme.backgroundSecondary.default.toString()};
   border: 2px solid ${props => props.theme.buttonBorderPrimary.default.toString()};
-  border-radius: 3px;
+  border-radius: 4px;
   color: ${props =>
     props.primary
       ? props.theme.textContrast.default.toString()

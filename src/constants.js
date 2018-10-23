@@ -10,8 +10,8 @@ export const DEFAULT_NETWORK =
 
 export const DGD_ADDRESS =
   (process.env.ENVIRONMENT === 'production' && '0xe0b7927c4af23765cb51314a0e0521a9645f0e2a') ||
-  (process.env.ENVIRONMENT === 'kovan' && '0x0825c96db02b08dce25c67037d68b8bf83593e71') ||
-  '0x0825c96db02b08dce25c67037d68b8bf83593e71';
+  (process.env.ENVIRONMENT === 'kovan' && '0x55e7ef7edc78421db3221974efbe82238b74a734') ||
+  '0x55e7ef7edc78421db3221974efbe82238b74a734';
 
 export const REDUX_PREFIX = 'DIGIX_GOVERNANCE_';
 

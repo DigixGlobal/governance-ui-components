@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 const TimelineWrapper = styled.div`
   display: flex;
@@ -69,6 +70,9 @@ const Status = styled.div`
 class Timeline extends React.Component {
   render() {
     const { stats } = this.props;
+    const now = moment(Date.now());
+    const start = moment(new Date(stats.data.startOfQuarter * 1000));
+    const ellapsed = now.diff(start, 'days');
     return (
       <TimelineWrapper>
         <Quarter>Q2</Quarter>
@@ -79,7 +83,7 @@ class Timeline extends React.Component {
             <MainPhase>
               <div>MAIN PHASE</div>
               <div>
-                DAY 56 / 90 <span>|</span>
+                DAY {ellapsed} / 90 <span>|</span>
                 {stats.data ? stats.data.totalDgdsLocked / 1e9 : 83423.45} STAKE
               </div>
             </MainPhase>

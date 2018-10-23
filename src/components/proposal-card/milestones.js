@@ -14,9 +14,11 @@ import Button from '../common/elements/buttons/index';
 
 const determineDeadline = proposal => {
   let deadline = Date.now();
+  const mileStone = proposal.currentMilestone + 1; // > 0 ? proposal.currentMilestone : 0;
+
   switch (proposal.stage.toLowerCase()) {
     case 'draft':
-      deadline = proposal.votingRounds[0].votingDeadline;
+      deadline = proposal.draftVoting.votingDeadline;
       break;
     case 'proposal':
       if (Date.now() < proposal.votingRounds[0].commitDeadline) {
@@ -28,38 +30,37 @@ const determineDeadline = proposal => {
       return undefined;
 
     case 'review':
-      if (Date.now() < proposal.votingRounds[proposal.currentMilestone + 1].commitDeadline) {
-        deadline = proposal.votingRounds[proposal.currentMilestone + 1].commitDeadline;
+      if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
+        deadline = proposal.votingRounds[mileStone].commitDeadline;
       }
-      deadline = proposal.votingRounds[proposal.currentMilestone + 1].revealDeadline;
-      return;
+      deadline = proposal.votingRounds[mileStone].revealDeadline;
+      break;
     default:
       deadline = proposal.votingRounds[0].commitDeadline;
       break;
   }
 
   if (deadline) return new Intl.DateTimeFormat('en-US').format(deadline * 1000);
-
+  // console.log(moment(new Date(deadline * 1000)).format('MM/DD/YYYY'));
   return deadline;
 };
 
 const disableParticipateWhen = (proposal, user) => {
-  if (!proposal || !user) return true;
   switch (proposal.stage.toLowerCase()) {
     case 'idea':
       return true;
-    case 'draft' && user.data.isModerator:
-      return false;
-    case 'proposal' && user.data.isParticipant:
-      return false;
+    case 'draft':
+      return !user.data.isModerator;
+    case 'proposal':
+      return !user.data.isParticipant;
     case 'ongoing':
       return true;
-    case 'review' && user.data.isParticipant:
-      return false;
+    case 'review':
+      return !user.data.isParticipant;
     case 'archived':
       return true;
     default:
-      return false;
+      return true;
   }
 };
 export default class ProposalCardMilestone extends React.Component {
@@ -78,7 +79,7 @@ export default class ProposalCardMilestone extends React.Component {
           </MilestoneStatus>
           <Deadline>
             <Label>Voting Deadline</Label>
-            <Data>{determineDeadline(details)}</Data>
+            <Data>{determineDeadline(details) || 'N/A'} </Data>
           </Deadline>
           <CallToAction>
             <Button kind="round" primary ghost disabled={disabledParticipate}>

@@ -51,6 +51,10 @@ injectGlobal`
 html {
   font-size: 62.5%; }
 
+body.modal-is-open {
+    overflow: hidden;
+  }
+
 body {
 
   font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';

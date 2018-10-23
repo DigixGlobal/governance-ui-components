@@ -52,6 +52,11 @@ class App extends Component {
   };
 
   handleWalletClick = () => {
+    if (!this.state.showWallet) {
+      document.body.classList.toggle('modal-is-open');
+    } else {
+      document.body.classList.remove('modal-is-open');
+    }
     this.setState({ showWallet: !this.state.showWallet });
   };
 

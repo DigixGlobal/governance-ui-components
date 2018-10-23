@@ -82,9 +82,10 @@ export const PostedByLink = styled.a`
 
 export const UpVote = styled.div`
   a {
+    color: ${props => props.theme.linkDefaultColor.default.toString()};
     font-family: 'Futura PT Medium';
     &:visited {
-      color: ${props => props.theme.textDefault.default.toString()};
+      color: ${props => props.theme.linkDefaultColor.default.toString()};
     }
     &::before {
       content: '';

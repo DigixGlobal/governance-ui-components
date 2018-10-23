@@ -59,11 +59,19 @@ const MainPhase = styled.div`
 
 const TimelineDay = styled.div`
   background: ${props => props.theme.timelineBgColor.lightest.toString()};
+  display: flex;
+  flex-direction: row;
 `;
 
-const Status = styled.div`
+const StakingPhaseStatus = styled.div`
   background: ${props => props.theme.timelineCurrentBgColor.default.toString()};
-  width: 33%;
+  width: 10%;
+  height: 8px;
+`;
+
+const MainPhaseStatus = styled.div`
+  background: ${props => props.theme.timelineCurrentBgColor.default.toString()};
+  width: 80%;
   height: 8px;
 `;
 
@@ -90,7 +98,8 @@ class Timeline extends React.Component {
           </TimelineLabel>
 
           <TimelineDay>
-            <Status />
+            <StakingPhaseStatus />
+            <MainPhaseStatus />
           </TimelineDay>
         </TimelineBar>
       </TimelineWrapper>

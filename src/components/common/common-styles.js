@@ -41,7 +41,17 @@ export const H5 = styled.h5`
 
 export const Link = styled.a`
   color: ${props => props.theme.linkDefaultColor.default.toString()};
-  font-family: 'Futura PT Medium';
+
+  ${props =>
+    props.secondary &&
+    css`
+      color: ${props => props.theme.linkSecondaryColor.default.toString()};
+    `};
+`;
+
+export const ContentWrapper = styled.div`
+  flex: 5 0 0;
+  padding: 8em 10em;
 `;
 
 export const HR = styled.hr`

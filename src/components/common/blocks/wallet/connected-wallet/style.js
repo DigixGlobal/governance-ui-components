@@ -4,6 +4,8 @@ import { H5 } from '../../../common-styles';
 
 import { DGD } from '../../../../common/elements/icons/DGD';
 
+import { Container as IconContainer } from '../../../../common/elements/icons/style.js';
+
 export const Container = styled.div`
   padding: 1rem 0;
   display: flex;
@@ -33,7 +35,15 @@ export const TokenIcon = styled.div`
   border: 3px solid ${props => props.theme.borderColor.darker.toString()};
   border-radius: 50%;
   margin-right: 1rem;
+  height: 3.2rem;
+  width: 3.2rem;
   padding: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${IconContainer} {
+    margin-right: 0;
+  }
 `;
 
 export const TokenDetails = styled.div`
@@ -44,7 +54,7 @@ export const TokenValue = styled.div`
   font-family: 'Futura PT Medium';
   & > span {
     margin-left: 0.5rem;
-    color: ${props => props.theme.backgroundDefault.darker.toString()};
+    color: ${props => props.theme.borderColor.default.toString()};
     font-family: 'Futura PT Light';
   }
 `;

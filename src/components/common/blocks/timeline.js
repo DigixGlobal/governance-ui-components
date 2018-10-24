@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+import ProgressBar from '../blocks/progress-bar';
+
 const TimelineWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -27,7 +29,7 @@ const TimelineLabel = styled.div`
   font-family: 'Futura PT Medium';
   display: flex;
   flex-direction: row;
-  height: 48px;
+  height: 5.2rem;
 
   & > div {
     color: ${props => props.theme.textPrimary.default.toString()};
@@ -38,17 +40,6 @@ const StakingPhase = styled.div`
   width: 15%;
   border-right: 1px dashed ${props => props.theme.borderColor.lighter.toString()};
   font-weight: 600 !important;
-
-  :after {
-    content: '';
-    display: block;
-    background-color: ${props => props.theme.textPrimary.default.toString()};
-    width: ${props => props.statusWidth};
-    position: relative;
-    top: 3rem;
-    height: 0.8rem;
-    z-index: 1;
-  }
 `;
 
 const MainPhase = styled.div`
@@ -66,40 +57,28 @@ const MainPhase = styled.div`
       margin: 0 1.5em;
     }
   }
-  :before {
-    content: '';
-    display: block;
-    background-color: ${props => props.theme.textPrimary.default.toString()};
-    width: ${props => props.statusWidth};
-    position: absolute;
-    top: 16rem;
-    height: 0.8rem;
-    left: 65.8rem;
-    z-index: 1;
-  }
 `;
 
 const MainPhaseValue = styled.div``;
 
 const TimelineDay = styled.div`
-  background: ${props => props.theme.timelineBgColor.lightest.toString()};
+  /* background: ${props => props.theme.timelineBgColor.lightest.toString()}; */
   display: flex;
   flex-direction: row;
   position: relative;
 `;
 
 const StakingPhaseStatus = styled.div`
-  background: ${props => props.theme.timelineCurrentBgColor.default.toString()};
-  width: ${props => props.width};
+  /* background: ${props => props.theme.timelineCurrentBgColor.default.toString()}; */
+  width:131.938px;
   height: 8px;
   position: relative;
 `;
 
 const MainPhaseStatus = styled.div`
-  background: ${props => props.theme.timelineCurrentBgColor.default.toString()};
+  /* background: ${props => props.theme.timelineCurrentBgColor.default.toString()}; */
   position: relative;
-  left: 3rem;
-  width: ${props => props.width};
+  width:880.578px;
   height: 8px;
 `;
 
@@ -109,19 +88,16 @@ class Timeline extends React.Component {
     const now = moment(Date.now());
     const start = moment(new Date(stats.data.startOfQuarter * 1000));
     const ellapsed = now.diff(start, 'days');
-    const mainPhaseWidth = 880.578;
-    const stakingPhaseWidth = 131.938;
-    const mainPhase = mainPhaseWidth * (ellapsed / 90);
-    const stakingPhase = stakingPhaseWidth * (1 / 9);
-    console.log({ mainPhase, stakingPhase });
+    const mainPhase = 100 * (ellapsed / 90);
+    const stakingPhase = 100 * (1 / 9);
     return (
       <TimelineWrapper>
         <Quarter>Q2</Quarter>
         <TimelineBar>
           <TimelineLabel>
-            <StakingPhase statusWidth={`${stakingPhase}px` || '0px'}>STAKING PHASE</StakingPhase>
+            <StakingPhase>STAKING PHASE</StakingPhase>
 
-            <MainPhase statusWidth={`${mainPhase}px` || '0px'}>
+            <MainPhase>
               <div>MAIN PHASE</div>
               <MainPhaseValue>
                 DAY {ellapsed} / 90 <span>|</span>
@@ -131,8 +107,12 @@ class Timeline extends React.Component {
           </TimelineLabel>
 
           <TimelineDay>
-            <StakingPhaseStatus width="0px" />
-            <MainPhaseStatus width="0px" />
+            <StakingPhaseStatus>
+              <ProgressBar value={stakingPhase} />
+            </StakingPhaseStatus>
+            <MainPhaseStatus>
+              <ProgressBar value={mainPhase} />
+            </MainPhaseStatus>
           </TimelineDay>
         </TimelineBar>
       </TimelineWrapper>

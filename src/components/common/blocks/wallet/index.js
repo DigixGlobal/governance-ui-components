@@ -19,7 +19,7 @@ import ConnectedWallet from './connected-wallet';
 
 import { Stage } from './constants';
 
-import { getAddressDetails } from '../../../../actions';
+import { getAddressDetails } from '../../../../reducers/info-server/actions';
 
 export class Wallet extends React.Component {
   constructor(props) {
@@ -87,7 +87,7 @@ const actions = {
 const mapStateToProps = state => ({
   // networks: getNetworks(state),
   defaultAddress: getDefaultAddress(state),
-  AddressDetails: state.governance.AddressDetails,
+  AddressDetails: state.infoServer.AddressDetails,
 });
 
 export default web3Connect(

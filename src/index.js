@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
 
 import './global-styles';
-import reducer from './reducer';
+import infoServerReducer from './reducers/info-server';
 
 import LandingPage from './pages';
 import Proposals from './pages/proposal';
@@ -13,7 +13,7 @@ import Proposals from './pages/proposal';
 import lightTheme from './theme/light';
 
 registerReducers({
-  governance: { src: reducer },
+  infoServer: { src: infoServerReducer },
 });
 
 export default class Governance extends React.Component {

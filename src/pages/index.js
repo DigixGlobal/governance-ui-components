@@ -19,13 +19,8 @@ import Timeline from '../components/common/blocks/timeline';
 import DashboardStats from '../components/common/blocks/user-DAO-stats/index';
 import ProposalFilter from '../components/common/blocks/filter/index';
 
-import { getDaoDetails, getProposals } from '../actions';
+import { getDaoDetails, getProposals } from '../reducers/info-server/actions';
 
-// import reducer from '../reducer';
-
-// registerReducers({
-//   governance: { src: reducer },
-// });
 class LandingPage extends Component {
   constructor(props) {
     super(props);
@@ -104,7 +99,7 @@ LandingPage.propTypes = {
 };
 
 export default connect(
-  ({ governance: { DaoDetails, Proposals, AddressDetails } }) => ({
+  ({ infoServer: { DaoDetails, Proposals, AddressDetails } }) => ({
     DaoDetails,
     Proposals,
     AddressDetails,

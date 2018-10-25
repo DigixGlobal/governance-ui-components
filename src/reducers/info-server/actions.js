@@ -39,6 +39,7 @@ function fetchData(url, type) {
 }
 
 export function getDaoDetails() {
+  console.log('getting dao details');
   return fetchData(`${INFO_SERVER}/daoinfo`, actions.GET_DAO_DETAILS);
 }
 

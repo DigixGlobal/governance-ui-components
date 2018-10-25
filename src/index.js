@@ -8,7 +8,7 @@ import './global-styles';
 import reducer from './reducer';
 
 import LandingPage from './pages';
-import Proposals from './pages/proposal';
+import Proposals from './pages/proposals';
 
 import lightTheme from './theme/light';
 

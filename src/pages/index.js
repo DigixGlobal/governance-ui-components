@@ -1,17 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
+// import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
 
 import NavBar from '../components/common/blocks/navbar';
 import WalletContainer from '../components/common/blocks/wallet';
 
 import LeftMenu from '../components/common/blocks/collapsible-menu';
 
-import lightTheme from '../theme/light';
+// import lightTheme from '../theme/light';
 
 import { Container, ContentWrapper } from './style';
 
@@ -22,12 +21,12 @@ import ProposalFilter from '../components/common/blocks/filter/index';
 
 import { getDaoDetails, getProposals } from '../actions';
 
-import reducer from '../reducer';
+// import reducer from '../reducer';
 
-registerReducers({
-  governance: { src: reducer },
-});
-class App extends Component {
+// registerReducers({
+//   governance: { src: reducer },
+// });
+class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -72,37 +71,31 @@ class App extends Component {
       );
     }
     return (
-      <ThemeProvider theme={lightTheme}>
-        <Fragment>
-          <WalletContainer show={showWallet} onClose={this.handleWalletClick} />
-          <NavBar onWalletClick={this.handleWalletClick} />
-          <Container>
-            <LeftMenu />
-            <ContentWrapper>
-              <Timeline stats={DaoDetails} />
-              <DashboardStats stats={AddressDetails} />
-              <ProposalFilter
-                onStageChange={this.props.getProposalsAction}
-                onOrderChange={this.onOrderChange}
-              />
-              {hasProposals &&
-                orderedProposals.map(proposal => (
-                  <ProposalCard
-                    key={proposal._id}
-                    proposal={proposal}
-                    userDetails={AddressDetails}
-                  />
-                ))}
-            </ContentWrapper>
-          </Container>
-        </Fragment>
-      </ThemeProvider>
+      <Fragment>
+        <WalletContainer show={showWallet} onClose={this.handleWalletClick} />
+        <NavBar onWalletClick={this.handleWalletClick} />
+        <Container>
+          <LeftMenu />
+          <ContentWrapper>
+            <Timeline stats={DaoDetails} />
+            <DashboardStats stats={AddressDetails} />
+            <ProposalFilter
+              onStageChange={this.props.getProposalsAction}
+              onOrderChange={this.onOrderChange}
+            />
+            {hasProposals &&
+              orderedProposals.map(proposal => (
+                <ProposalCard key={proposal._id} proposal={proposal} userDetails={AddressDetails} />
+              ))}
+          </ContentWrapper>
+        </Container>
+      </Fragment>
     );
   }
 }
 
 const { object, func } = PropTypes;
-App.propTypes = {
+LandingPage.propTypes = {
   DaoDetails: object.isRequired,
   AddressDetails: object.isRequired,
   Proposals: object.isRequired,
@@ -120,4 +113,4 @@ export default connect(
     getDaoDetailsAction: getDaoDetails,
     getProposalsAction: getProposals,
   }
-)(App);
+)(LandingPage);

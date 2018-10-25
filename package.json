@@ -1,5 +1,6 @@
 {
   "name": "@digix/governance-ui-components",
+  "main": "src/index.jsx",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

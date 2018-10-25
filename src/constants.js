@@ -3,6 +3,11 @@ export const INFO_SERVER =
   (process.env.ENVIRONMENT === 'kovan' && 'https://info.digixdev.com') ||
   'http://localhost:3001';
 
+export const DAO_SERVER =
+  (process.env.ENVIRONMENT === 'production' && 'https://digix.global/app/#/marketplace') ||
+  (process.env.ENVIRONMENT === 'kovan' && 'https://info.digixdev.com') ||
+  'http://localhost:3005';
+
 export const DEFAULT_NETWORK =
   (process.env.ENVIRONMENT === 'production' && 'eth-mainnet') ||
   (process.env.ENVIRONMENT === 'kovan' && 'eth-kovan') ||

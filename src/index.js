@@ -6,6 +6,7 @@ import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
 
 import './global-styles';
 import infoServerReducer from './reducers/info-server';
+import daoServerReducer from './reducers/dao-server';
 
 import LandingPage from './pages';
 import Proposals from './pages/proposal';
@@ -14,6 +15,7 @@ import lightTheme from './theme/light';
 
 registerReducers({
   infoServer: { src: infoServerReducer },
+  daoServer: { src: daoServerReducer },
 });
 
 export default class Governance extends React.Component {

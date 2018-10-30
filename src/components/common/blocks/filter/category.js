@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { Category, CategoryItem } from './style';
 
-import { getProposalsCount } from '../../../../actions';
+import { getProposalsCount } from '../../../../reducers/info-server/actions';
 
 export class CategoryGroup extends React.Component {
   constructor(props) {
@@ -94,7 +94,7 @@ CategoryGroup.propTypes = {
 };
 
 export default connect(
-  ({ governance: { ProposalsCount } }) => ({ ProposalsCount }),
+  ({ infoServer: { ProposalsCount } }) => ({ ProposalsCount }),
   {
     getProposalsCountAction: getProposalsCount,
   }

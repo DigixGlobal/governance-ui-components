@@ -5,15 +5,19 @@ import { ThemeProvider } from 'styled-components';
 import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
 
 import './global-styles';
-import reducer from './reducer';
+import infoServerReducer from './reducers/info-server';
+import daoServerReducer from './reducers/dao-server';
 
 import LandingPage from './pages';
 import Proposals from './pages/proposals';
 
 import lightTheme from './theme/light';
 
+import withHeaderAndPanel from './hocs/withHeaderAndPanel';
+
 registerReducers({
-  governance: { src: reducer },
+  infoServer: { src: infoServerReducer },
+  daoServer: { src: daoServerReducer },
 });
 
 export default class Governance extends React.Component {
@@ -22,8 +26,8 @@ export default class Governance extends React.Component {
       <HashRouter>
         <ThemeProvider theme={lightTheme}>
           <Switch>
-            <Route path="/proposals" component={Proposals} />
-            <Route path="/" component={LandingPage} />
+            <Route path="/proposals" component={withHeaderAndPanel(Proposals)} />
+            <Route path="/" component={withHeaderAndPanel(LandingPage)} />
           </Switch>
         </ThemeProvider>
       </HashRouter>

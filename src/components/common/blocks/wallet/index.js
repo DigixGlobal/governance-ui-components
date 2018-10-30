@@ -27,6 +27,7 @@ export class Wallet extends React.Component {
     super(props);
     this.state = {
       stage: Stage.Intro,
+      showSigning: false,
     };
   }
 
@@ -37,6 +38,7 @@ export class Wallet extends React.Component {
       Challenge,
       getAddressDetailsAction,
       getChallengeAction,
+      ChallengeProof,
     } = nextProps;
 
     if ((fetching === null && defaultAddress) || (error && defaultAddress)) {
@@ -45,6 +47,12 @@ export class Wallet extends React.Component {
       if (Challenge.fetching === null || Challenge.error) {
         getChallengeAction(data.address);
       }
+    }
+
+    if ((Challenge.data.challenge && ChallengeProof.fetching === null) || ChallengeProof.error) {
+      this.setState({ showSigning: true });
+    } else {
+      this.setState({ showSigning: false });
     }
   }
 
@@ -62,9 +70,12 @@ export class Wallet extends React.Component {
     } = this.props;
     const network = defaultNetworks[0];
 
-    console.log(Challenge.data);
     const message = Challenge.data.challenge.challenge;
-    return showSigningModal({ txData: message, network }).then(signature => {
+    const signMessage = new Promise(resolve =>
+      resolve(showSigningModal({ txData: { txData: message }, network }))
+    );
+
+    return signMessage.then(signature => {
       const {
         data: { address },
       } = AddressDetails;
@@ -78,10 +89,10 @@ export class Wallet extends React.Component {
   };
 
   render() {
-    const { stage } = this.state;
-    const { show, onClose, Challenge, defaultAddress, ...rest } = this.props;
+    const { stage, showSigning } = this.state;
+    const { show, onClose, Challenge, ChallengeProof, defaultAddress, ...rest } = this.props;
     if (!show) return null;
-    if (Challenge.data.challenge) this.renderChallenge();
+    if (showSigning) this.renderChallenge();
     return (
       <Container>
         <TransparentOverlay>overlay</TransparentOverlay>
@@ -126,6 +137,7 @@ const mapStateToProps = state => ({
   defaultNetworks: getDefaultNetworks(state),
   AddressDetails: state.infoServer.AddressDetails,
   Challenge: state.daoServer.Challenge,
+  ChallengeProof: state.daoServer.ChallengeProof,
 });
 
 export default web3Connect(

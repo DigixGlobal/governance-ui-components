@@ -38,7 +38,7 @@ export default function(state = defaultState, action) {
     case actions.PROVE_CHALLENGE:
       return {
         ...state,
-        Challenge: {
+        ChallengeProof: {
           ...state.ChallengeProof,
           ...action.payload,
           history: !action.payload

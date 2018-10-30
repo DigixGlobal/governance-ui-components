@@ -9,7 +9,7 @@ import infoServerReducer from './reducers/info-server';
 import daoServerReducer from './reducers/dao-server';
 
 import LandingPage from './pages';
-import Proposals from './pages/proposal';
+import Proposals from './pages/proposals';
 
 import lightTheme from './theme/light';
 

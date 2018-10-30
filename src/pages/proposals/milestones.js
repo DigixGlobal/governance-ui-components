@@ -1,8 +1,14 @@
 import React from 'react';
-import { DetailsContainer } from './style';
+import Accordion from '../../components/common/elements/accordion/index';
+import { MilestonesContainer, SubTitle } from './style';
 
 export default class Milestones extends React.Component {
   render() {
-    return <DetailsContainer>asdas test</DetailsContainer>;
+    return (
+      <MilestonesContainer>
+        <SubTitle>Milestones</SubTitle>
+        <Accordion />
+      </MilestonesContainer>
+    );
   }
 }

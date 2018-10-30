@@ -11,8 +11,8 @@ const blueHex = Color('#111E36');
 const blue = {
   default: blueHex,
   darker: blueHex.darken(1),
-  light: blueHex.lighten(0.75),
-  lighter: blueHex.lighten(2),
+  light: blueHex.lighten(0.5),
+  lighter: blueHex.lighten(0.75),
 };
 
 // const darkBlueHex = Color('#111E36');

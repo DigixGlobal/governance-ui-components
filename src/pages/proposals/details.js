@@ -1,5 +1,5 @@
 import React from 'react';
-import { DetailsContainer, ShortDescription, TrackActivity, Details } from './style';
+import { DetailsContainer, ShortDescription, TrackActivity, Details, SubTitle } from './style';
 
 export default class ProjectDetails extends React.Component {
   render() {
@@ -23,8 +23,9 @@ export default class ProjectDetails extends React.Component {
             mel, clita accusam nominati vis ex. In duo simul
           </p>
         </ShortDescription>
-        <TrackActivity>Track change from previous verion</TrackActivity>
+        <TrackActivity>Track change from previous version</TrackActivity>
         <Details>
+          <SubTitle>Project Details</SubTitle>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pharetra a lectus ac
             lobortis. Fusce eu sapien non mauris pharetra bibendum vulputate vitae quam. Donec purus

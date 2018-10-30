@@ -7,11 +7,12 @@ import {
   ProposalsWrapper,
   ProjectSummary,
   Header,
-  ProposalTitle,
+  Title,
   LatestActivity,
   SubmittedBy,
   FundingStatus,
   MilestonesStatus,
+  Reward,
   UpvoteStatus,
 } from './style';
 
@@ -23,7 +24,7 @@ const Proposal = () => (
           <Button kind="flat" style={{ pointerEvents: 'none' }}>
             IDEA
           </Button>
-          <ProposalTitle primary>Tokenize Silver</ProposalTitle>
+          <Title primary>Tokenize Silver</Title>
         </div>
         <div>
           <Button kind="round" ghost primary style={{ pointerEvents: 'none' }}>
@@ -41,6 +42,9 @@ const Proposal = () => (
         <MilestonesStatus>
           Milestones <span>2</span>
         </MilestonesStatus>
+        <Reward>
+          Reward <span>1 ETH</span>
+        </Reward>
         <UpvoteStatus>Like</UpvoteStatus>
       </LatestActivity>
     </ProjectSummary>

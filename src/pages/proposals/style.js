@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { H1 } from '../../components/common/common-styles';
+import { H1, H2 } from '../../components/common/common-styles';
 
 export const ProposalsWrapper = styled.div``;
 
@@ -9,9 +9,14 @@ export const Header = styled.div`
   justify-content: space-between;
 `;
 
-export const ProposalTitle = styled(H1)`
+export const Title = styled(H1)`
   font-size: 3.6rem;
   font-family: 'Futura PT Medium';
+`;
+
+export const SubTitle = styled(H2)`
+  font-family: 'Futura PT Medium';
+  color: ${props => props.theme.textPrimary.lighter.toString()};
 `;
 
 export const LatestActivity = styled.div`
@@ -34,7 +39,7 @@ export const LatestActivity = styled.div`
   }
 `;
 export const SubmittedBy = styled.div`
-  flex: 3;
+  flex: 2;
 `;
 export const FundingStatus = styled.div`
   flex: 1;
@@ -42,6 +47,11 @@ export const FundingStatus = styled.div`
 export const MilestonesStatus = styled.div`
   flex: 1;
 `;
+
+export const Reward = styled.div`
+  flex: 1;
+`;
+
 export const UpvoteStatus = styled.div`
   flex: 1;
 `;
@@ -61,3 +71,5 @@ export const TrackActivity = styled.div`
 `;
 
 export const Details = styled.div``;
+
+export const MilestonesContainer = styled.div``;

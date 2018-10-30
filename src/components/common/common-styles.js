@@ -16,17 +16,16 @@ export const H1 = styled.h1`
   margin: 0;
 `;
 
-const H2 = styled.h2`
+export const H2 = styled.h2`
   color: ${props => props.color || props.theme.textDefault.default.toString()};
-  font-size: 2.4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 `;
 export default H2;
 
 export const H3 = styled.h3`
   color: ${props => props.color || props.theme.primary};
-  font-size: 2rem;
-  margin: 0;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
 `;
 
 export const H4 = styled.h4`

@@ -13,6 +13,8 @@ import Proposals from './pages/proposals';
 
 import lightTheme from './theme/light';
 
+import withHeaderAndPanel from './hocs/withHeaderAndPanel';
+
 registerReducers({
   infoServer: { src: infoServerReducer },
   daoServer: { src: daoServerReducer },
@@ -24,8 +26,8 @@ export default class Governance extends React.Component {
       <HashRouter>
         <ThemeProvider theme={lightTheme}>
           <Switch>
-            <Route path="/proposals" component={Proposals} />
-            <Route path="/" component={LandingPage} />
+            <Route path="/proposals" component={withHeaderAndPanel(Proposals)} />
+            <Route path="/" component={withHeaderAndPanel(LandingPage)} />
           </Switch>
         </ThemeProvider>
       </HashRouter>

@@ -90,7 +90,7 @@ export class Wallet extends React.Component {
 
   render() {
     const { stage, showSigning } = this.state;
-    const { show, onClose, Challenge, ChallengeProof, defaultAddress, ...rest } = this.props;
+    const { show, onClose, defaultAddress, ...rest } = this.props;
     if (!show) return null;
     if (showSigning) this.renderChallenge();
     return (

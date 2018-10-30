@@ -3,17 +3,6 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-// import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
-
-import NavBar from '../components/common/blocks/navbar';
-import WalletContainer from '../components/common/blocks/wallet';
-
-import LeftMenu from '../components/common/blocks/collapsible-menu';
-
-// import lightTheme from '../theme/light';
-
-import { Container, ContentWrapper } from './style';
-
 import ProposalCard from '../components/proposal-card';
 import Timeline from '../components/common/blocks/timeline';
 import DashboardStats from '../components/common/blocks/user-DAO-stats/index';
@@ -25,7 +14,6 @@ class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showWallet: false,
       order: 'latest',
     };
   }
@@ -45,17 +33,8 @@ class LandingPage extends Component {
     this.setState({ order });
   };
 
-  handleWalletClick = () => {
-    if (!this.state.showWallet) {
-      document.body.classList.toggle('modal-is-open');
-    } else {
-      document.body.classList.remove('modal-is-open');
-    }
-    this.setState({ showWallet: !this.state.showWallet });
-  };
-
   render() {
-    const { showWallet, order } = this.state;
+    const { order } = this.state;
     const { DaoDetails, Proposals, AddressDetails } = this.props;
     const hasProposals = Proposals.data && Proposals.data.length > 0;
     let orderedProposals = [];
@@ -67,23 +46,16 @@ class LandingPage extends Component {
     }
     return (
       <Fragment>
-        <WalletContainer show={showWallet} onClose={this.handleWalletClick} />
-        <NavBar onWalletClick={this.handleWalletClick} />
-        <Container>
-          <LeftMenu />
-          <ContentWrapper>
-            <Timeline stats={DaoDetails} />
-            <DashboardStats stats={AddressDetails} />
-            <ProposalFilter
-              onStageChange={this.props.getProposalsAction}
-              onOrderChange={this.onOrderChange}
-            />
-            {hasProposals &&
-              orderedProposals.map(proposal => (
-                <ProposalCard key={proposal._id} proposal={proposal} userDetails={AddressDetails} />
-              ))}
-          </ContentWrapper>
-        </Container>
+        <Timeline stats={DaoDetails} />
+        <DashboardStats stats={AddressDetails} />
+        <ProposalFilter
+          onStageChange={this.props.getProposalsAction}
+          onOrderChange={this.onOrderChange}
+        />
+        {hasProposals &&
+          orderedProposals.map(proposal => (
+            <ProposalCard key={proposal._id} proposal={proposal} userDetails={AddressDetails} />
+          ))}
       </Fragment>
     );
   }

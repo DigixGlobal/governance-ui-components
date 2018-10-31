@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const ProposalWrapper = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
@@ -46,7 +47,7 @@ export const Description = styled.div`
   }
 `;
 
-export const ProposalLink = styled.a`
+export const ProposalLink = styled(Link)`
   font-family: 'Futura PT Medium', sans-serif;
 
   &:link,

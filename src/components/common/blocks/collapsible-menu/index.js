@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 
@@ -20,11 +21,11 @@ import {
 import Icon from '../../elements/icons/';
 
 const mockMenu = [
-  { kind: 'home', caption: 'Home', selected: true },
-  { kind: 'activity', caption: 'Activity' },
-  { kind: 'wallet', caption: 'Wallet' },
-  { kind: 'profile', caption: 'Profile' },
-  { kind: 'product', caption: 'Help / DAO Tour' },
+  { kind: 'home', caption: 'Home', selected: true, url: '/' },
+  { kind: 'activity', caption: 'Activity', url: '/' },
+  { kind: 'wallet', caption: 'Wallet', url: '/' },
+  { kind: 'profile', caption: 'Profile', url: '/' },
+  { kind: 'product', caption: 'Help / DAO Tour', url: '/' },
 ];
 class CollapsibleMenu extends React.Component {
   render() {
@@ -43,8 +44,10 @@ class CollapsibleMenu extends React.Component {
         <MenuList>
           {menu.map(item => (
             <MenuItem key={item.caption} selected={item.selected}>
-              <Icon kind={item.kind} theme={theme || lightTheme} selected={item.selected} />
-              <span>{item.caption}</span>
+              <Link to={item.url} href={item.url}>
+                <Icon kind={item.kind} theme={theme || lightTheme} selected={item.selected} />
+                <span>{item.caption}</span>
+              </Link>
             </MenuItem>
           ))}
         </MenuList>

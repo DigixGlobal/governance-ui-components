@@ -67,19 +67,21 @@ export const MenuList = styled.ul`
 `;
 
 export const MenuItem = styled.li`
-  color: ${props =>
-    props.selected
-      ? props.theme.textSecondary.default.toString()
-      : props.theme.textDefault.default.toString()};
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 3rem;
-  position: relative;
-  border-right: 4px solid
-    ${props => (!props.selected ? 0 : props.theme.backgroundSecondary.default.toString())};
-  > span {
-    font-family: 'Futura PT Medium';
-    display: inline-block;
+  & > a {
+    color: ${props =>
+      props.selected
+        ? props.theme.textSecondary.default.toString()
+        : props.theme.textDefault.default.toString()};
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 3rem;
+    position: relative;
+    border-right: 4px solid
+      ${props => (!props.selected ? 0 : props.theme.backgroundSecondary.default.toString())};
+    > span {
+      font-family: 'Futura PT Medium';
+      display: inline-block;
+    }
   }
 `;

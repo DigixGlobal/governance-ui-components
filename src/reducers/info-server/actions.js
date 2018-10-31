@@ -5,6 +5,7 @@ export const actions = {
   GET_ADDRESS_DETAILS: `${REDUX_PREFIX}GET_ADDRESS_DETAILS`,
   GET_PROPOSALS: `${REDUX_PREFIX}GET_PROPOSALS`,
   GET_PROPOSALS_COUNT: `${REDUX_PREFIX}GET_PROPOSALS_COUNT`,
+  GET_PROPOSAL_DETAILS: `${REDUX_PREFIX}GET_PROPOSAL_DETAILS`,
 };
 
 function fetchData(url, type) {
@@ -52,4 +53,8 @@ export function getProposals(stage = 'all') {
 
 export function getProposalsCount() {
   return fetchData(`${INFO_SERVER}/proposals/count`, actions.GET_PROPOSALS_COUNT);
+}
+
+export function getProposalDetails(proposalId) {
+  return fetchData(`${INFO_SERVER}/proposals/details/${proposalId}`, actions.GET_PROPOSAL_DETAILS);
 }

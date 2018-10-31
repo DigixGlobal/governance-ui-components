@@ -25,6 +25,12 @@ const defaultState = {
     error: null,
     fetching: null,
   },
+  ProposalDetails: {
+    history: [],
+    data: {},
+    error: null,
+    fetching: null,
+  },
 };
 
 export default function(state = defaultState, action) {
@@ -98,6 +104,24 @@ export default function(state = defaultState, action) {
                 },
               ]
                 .concat(state.ProposalsCount.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_PROPOSAL_DETAILS:
+      return {
+        ...state,
+        ProposalDetails: {
+          ...state.ProposalDetails,
+          ...action.payload,
+          history: !action.payload.data
+            ? state.ProposalDetails.history
+            : [
+                {
+                  ...action.payload.data,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.ProposalDetails.history)
                 .slice(0, 100),
         },
       };

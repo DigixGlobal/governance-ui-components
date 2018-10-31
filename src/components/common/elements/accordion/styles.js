@@ -1,23 +1,14 @@
 import styled from 'styled-components';
 import { H3 } from '../../common-styles';
 
-export const AccordionWrapper = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  perspective: 900;
-
-  position: relative;
-  overflow: hidden;
-  transition: all 0.25s ease-in-out;
-  opacity: 1;
-  transform: translate(0, 0);
-`;
-
 export const AccordionItem = styled.div`
   position: relative;
-  padding: 2rem;
-  margin: 5px 0;
+  padding: 2rem 3rem;
+  margin: 0.5rem 0;
+  background: ${props =>
+    props.isOpen
+      ? props.theme.backgroundDefault.default.toString()
+      : props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lightest.toString()};
   animation: flipdown 0.5s ease both;
 
@@ -36,8 +27,8 @@ export const AccordionItem = styled.div`
   i {
     position: absolute;
     transform: translate(-6px, 0);
-    margin-top: 16px;
-    right: 0;
+    margin-top: 8px;
+    right: 2rem;
 
     &:before,
     &:after {
@@ -65,6 +56,11 @@ export const AccordionItem = styled.div`
   }
 `;
 
-export const Header = styled(H3)``;
+export const Header = styled(H3)`
+  margin-bottom: 0;
+`;
 
-export const Content = styled.div``;
+export const Content = styled.div`
+  margin-top: 2rem;
+  transition: all 0.25s ease-in-out;
+`;

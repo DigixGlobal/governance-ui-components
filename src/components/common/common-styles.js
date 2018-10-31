@@ -19,12 +19,17 @@ export const H1 = styled.h1`
 export const H2 = styled.h2`
   color: ${props => props.color || props.theme.textDefault.default.toString()};
   margin-bottom: 2rem;
+  margin-top: 3rem;
 `;
 export default H2;
 
 export const H3 = styled.h3`
-  color: ${props => props.color || props.theme.primary};
+  color: ${props =>
+    props.primary
+      ? props.theme.textPrimary.light.toString()
+      : props.theme.textDefault.default.toString()};
   font-size: 1.8rem;
+
   margin-bottom: 1.5rem;
 `;
 

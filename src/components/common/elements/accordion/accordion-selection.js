@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header } from '../../common-styles';
+import { AccordionItem, Header, Content } from './styles';
 
 export default class AccordionSelection extends React.Component {
   static propTypes = {
@@ -21,14 +21,13 @@ export default class AccordionSelection extends React.Component {
     } = this;
 
     return (
-      <div isOpen>
+      <AccordionItem>
         <Header onClick={onClick} style={{ cursor: 'pointer' }}>
           {label}
-
           <i />
         </Header>
-        {isOpen && <div>{this.props.children}</div>}
-      </div>
+        {isOpen && <Content>{this.props.children}</Content>}
+      </AccordionItem>
     );
   }
 }

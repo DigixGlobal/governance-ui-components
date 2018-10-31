@@ -1,10 +1,13 @@
 import React from 'react';
+import PreviousVersion from './previous';
+import NextVersion from './next';
 import ProjectDetails from './details';
 import Milestones from './milestones';
 import Button from '../../components/common/elements/buttons/index';
 
 import {
   ProposalsWrapper,
+  BrowseVersionHistory,
   ProjectSummary,
   Header,
   Title,
@@ -19,6 +22,11 @@ import {
 const Proposal = () => (
   <ProposalsWrapper>
     <ProjectSummary>
+      <BrowseVersionHistory>
+        <PreviousVersion />
+        <div>2nd Version</div>
+        <NextVersion />
+      </BrowseVersionHistory>
       <Header>
         <div>
           <Button kind="flat" style={{ pointerEvents: 'none' }}>

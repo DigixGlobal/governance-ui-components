@@ -11,7 +11,7 @@ export const BrowseVersionHistory = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 3rem;
-  padding: 1.5rem 2.5rem;
+  padding: 2rem 2.5rem;
   position: relative;
 
   & > div {
@@ -19,7 +19,6 @@ export const BrowseVersionHistory = styled.div`
     display: flex;
     align-items: center;
     font-family: 'Futura PT Book';
-    text-transform: uppercase;
 
     &:nth-of-type(1) {
       flex: 1;
@@ -39,21 +38,47 @@ export const BrowseVersionHistory = styled.div`
       flex: 1;
       justify-content: flex-end;
     }
+
+    i {
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      color: #c00;
+      box-sizing: border-box;
+      &:after,
+      &:before {
+        content: '';
+        box-sizing: border-box;
+        display: block;
+        margin-top: -6px;
+      }
+      &:before {
+        width: 0;
+        height: 0;
+        border-bottom: 9px solid ${props => props.theme.borderColor.default.toString()};
+        border-left: 9px solid transparent;
+        border-right: 9px solid transparent;
+      }
+    }
   }
 `;
 
-export const PreviousWrapper = styled.div`
+export const PreviousWrapper = styled.a`
+  text-transform: uppercase;
   i {
-    position: absolute;
-    transform: translate(-6px, 0);
-    margin-top: 8px;
-
     &:before {
-      content: '';
-      position: absolute;
-      background-color: #000;
-      width: 3px;
-      height: 9px;
+      transform: rotate(-90deg);
+      margin-right: 0.5rem;
+    }
+  }
+`;
+
+export const NextWrapper = styled.a`
+  text-transform: uppercase;
+  i {
+    &:before {
+      transform: rotate(90deg);
+      margin-left: 0.5rem;
     }
   }
 `;
@@ -94,7 +119,7 @@ export const LatestActivity = styled.div`
   }
 `;
 export const SubmittedBy = styled.div`
-  flex: 2;
+  flex: 4;
 `;
 export const FundingStatus = styled.div`
   flex: 1;
@@ -117,12 +142,17 @@ export const ShortDescription = styled.div`
   border-top: 1px solid ${props => props.theme.borderColor.lightest.toString()};
   border-bottom: 1px solid ${props => props.theme.borderColor.lightest.toString()};
   padding: 3rem 0 2em 0;
+  margin-bottom: 3rem;
 `;
 
 export const ProjectSummary = styled.div``;
 
-export const TrackActivity = styled.div`
-  margin: 3rem auto;
+export const TrackActivity = styled.label`
+  padding: 3rem auto;
+
+  input {
+    margin-right: 1rem;
+  }
 `;
 
 export const Details = styled.div``;

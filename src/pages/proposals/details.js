@@ -23,7 +23,10 @@ export default class ProjectDetails extends React.Component {
             mel, clita accusam nominati vis ex. In duo simul
           </p>
         </ShortDescription>
-        <TrackActivity>Track change from previous version</TrackActivity>
+        <TrackActivity>
+          <input type="checkbox" />
+          Track change from previous version
+        </TrackActivity>
         <Details>
           <SubTitle>Project Details</SubTitle>
           <p>

@@ -1,8 +1,8 @@
 import React from 'react';
-import PreviousVersion from './previous';
-import NextVersion from './next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import PreviousVersion from './previous';
+import NextVersion from './next';
 
 import ProjectDetails from './details';
 import Milestones from './milestones';

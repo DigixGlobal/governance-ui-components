@@ -95,7 +95,7 @@ export class Wallet extends React.Component {
     if (showSigning) this.renderChallenge();
     return (
       <Container>
-        <TransparentOverlay>overlay</TransparentOverlay>
+        <TransparentOverlay />
         <WalletContainer>
           {stage === Stage.Intro && <Intro onClose={onClose} onChangeStage={this.updateStage} />}
           {stage === Stage.LoadingWallet &&

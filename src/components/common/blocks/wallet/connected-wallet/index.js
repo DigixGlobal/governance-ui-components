@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import { ERC20_ABI } from 'spectrum-lightsuite/src/helpers/constants';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+
+import { showHideLockDgdOverlay } from '../../../../../reducers/gov-ui/actions';
 
 import Button from '../../../elements/buttons/index';
 import Icon from '../../../elements/icons';
@@ -52,8 +55,14 @@ class ConnectedWallet extends React.Component {
     }
   }
 
+  showLockDgdOverlay = () => {
+    const { onClose, showHideLockDgdOverlayAction } = this.props;
+    onClose();
+    showHideLockDgdOverlayAction(true);
+  };
+
   render() {
-    const { address: ethAddress } = this.props;
+    const { address: ethAddress, showHideLockDgdOverlayAction } = this.props;
     const { dgdBalance, ethBalance } = this.state;
     return (
       <InnerContainer>
@@ -102,7 +111,11 @@ class ConnectedWallet extends React.Component {
             Locking your DGD in DigixDAO helps us know you are committed to the growth of the
             community and of course gives you voting power on the proposals you love to support
           </p>
-          <Button fullWidth disabled={!dgdBalance || dgdBalance <= 0}>
+          <Button
+            fullWidth
+            disabled={!dgdBalance || dgdBalance <= 0}
+            onClick={this.showLockDgdOverlay}
+          >
             lock DGD
           </Button>
           <DevNote>[DEV NOTE] Disabled when DGD is not sufficient</DevNote>
@@ -133,6 +146,14 @@ ConnectedWallet.propTypes = {
   onClose: func.isRequired,
   address: object.isRequired,
   web3Redux: object.isRequired,
+  showHideLockDgdOverlayAction: func.isRequired,
 };
 
-export default ConnectedWallet;
+export default connect(
+  ({ govUI: { LockDgdOverlay } }) => ({
+    lockDgdOverlay: LockDgdOverlay,
+  }),
+  {
+    showHideLockDgdOverlayAction: showHideLockDgdOverlay,
+  }
+)(ConnectedWallet);

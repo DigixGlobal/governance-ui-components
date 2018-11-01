@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { H4 } from '../../common-styles';
+import { SyledInput } from '../../elements/textfield/style';
 
 export const Container = styled.div`
   position: fixed;
@@ -13,7 +14,8 @@ export const Container = styled.div`
 
 export const CloseButton = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin-bottom: 3rem;
 `;
 export const CloseButtonWithHeader = styled.div`
   display: flex;
@@ -30,7 +32,7 @@ export const TransparentOverlay = styled.div`
 
 export const WalletContainer = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
-  padding: 5rem;
+  padding: 3rem;
 
   width: 25%;
 `;
@@ -40,21 +42,43 @@ export const InnerContainer = styled.div`
   transition: ${props => props.theme.transition};
 `;
 
-export const IntroContainer = styled(InnerContainer)`
-  font-size: 1.6rem;
-`;
-
 export const Header = styled(H4)`
   text-transform: ${props => (props.uppercase ? 'uppercase' : 'none')};
 `;
 
-export const Wallets = styled.ul`
-  list-style: none;
+export const LockDgdBox = styled.div`
+  text-align: center;
+  background-color: rgba(226, 206, 152, 0.2);
+  padding: 1.5rem 2.5rem;
+  border: 1px solid #c4a159;
+  color: #c4a159;
+  margin-bottom: 4rem;
+  font-family: 'Futura PT Medium';
+  border-radius: 0.5rem;
+  box-shadow: ${props => props.theme.boxShadow};
 `;
 
-export const WalletItem = styled.li`
-  font-family: 'Futura PT Medium';
+export const InputDgxBox = styled.div`
   display: flex;
-  justify-content: space-between;
+  text-align: center;
+  border: 1px solid ${props => props.theme.backgroundPrimary.default.toString()};
+  border-radius: 0.5rem;
   align-items: center;
+  padding-right: 1rem;
+  font-size: 2rem;
+  box-shadow: ${props => props.theme.boxShadow};
+  ${SyledInput} {
+    height: 5rem;
+    font-size: 3rem;
+    border: none;
+  }
+`;
+
+export const TextCaption = styled.p`
+  font-family: 'Futura PT Medium';
+`;
+
+export const StakeCaption = styled.p`
+  margin-top: 0.5rem;
+  color: ${props => props.theme.textDefault.default.toString()};
 `;

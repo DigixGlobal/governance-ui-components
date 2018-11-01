@@ -134,6 +134,7 @@ export const Reward = styled.div`
 
 export const UpvoteStatus = styled.div`
   flex: 1;
+  justify-content: flex-end;
 `;
 
 export const DetailsContainer = styled.div``;

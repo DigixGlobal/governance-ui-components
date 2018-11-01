@@ -66,7 +66,7 @@ const redHex = Color('#D0021B');
 const red = {
   default: redHex,
   darker: redHex.darken(0.05),
-  lighter: redHex.lighten(0.05),
+  lighter: redHex.lighten(0.5),
 };
 
 const primaryColor = blue;

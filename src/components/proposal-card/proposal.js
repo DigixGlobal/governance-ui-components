@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { H2 } from '../common/common-styles';
 import Button from '../common/elements/buttons/index';
+import Vote from '../common/elements/vote/index';
 
 import {
   ProposaDetaillWrapper,
@@ -12,7 +13,6 @@ import {
   ProposalFooter,
   PostedBy,
   PostedByLink,
-  UpVote,
 } from './style';
 
 export default class Proposal extends React.Component {
@@ -40,11 +40,7 @@ export default class Proposal extends React.Component {
             <PostedBy>
               BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
             </PostedBy>
-            <UpVote>
-              <a href="./" style={{ pointerEvents: 'none' }}>
-                LIKE
-              </a>
-            </UpVote>
+            <Vote hasVoted />
           </ProposalFooter>
         </ProposalCard>
       </ProposaDetaillWrapper>

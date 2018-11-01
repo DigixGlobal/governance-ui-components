@@ -7,6 +7,7 @@ import NextVersion from './next';
 import ProjectDetails from './details';
 import Milestones from './milestones';
 import Button from '../../components/common/elements/buttons/index';
+import Vote from '../../components/common/elements/vote/index';
 
 import { getProposalDetails } from '../../reducers/info-server/actions';
 
@@ -86,7 +87,9 @@ class Proposal extends React.Component {
             <Reward>
               Reward <span>{proposalVersion.finalReward / 1e18} ETH</span>
             </Reward>
-            <UpvoteStatus>Like</UpvoteStatus>
+            <UpvoteStatus>
+              <Vote hasVoted />
+            </UpvoteStatus>
           </LatestActivity>
         </ProjectSummary>
         <ProjectDetails details={proposalVersion} />

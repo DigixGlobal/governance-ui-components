@@ -58,6 +58,28 @@ export const LockDgdBox = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
 `;
 
+export const ConfirmationBox = styled.div`
+  text-align: center;
+  background-color: rgba(226, 206, 152, 0.2);
+  padding: 1.5rem 2.5rem;
+  border: 1px solid #c4a159;
+  /* color: #c4a159; */
+  margin-bottom: 4rem;
+  font-family: 'Futura PT Book';
+  border-radius: 0.5rem;
+  box-shadow: ${props => props.theme.boxShadow};
+
+  > h2 {
+    color: #c4a159;
+  }
+  > div {
+    margin: 2rem;
+  }
+  > div > a {
+    color: #c4a159;
+  }
+`;
+
 export const InputDgxBox = styled.div`
   display: flex;
   text-align: center;
@@ -81,4 +103,16 @@ export const TextCaption = styled.p`
 export const StakeCaption = styled.p`
   margin-top: 0.5rem;
   color: ${props => props.theme.textDefault.default.toString()};
+`;
+
+export const ErrorCaption = styled.div`
+  text-align: center;
+  background-color: rgba(208, 2, 27, 0.2);
+  padding: 1.5rem 2.5rem;
+  border: 1px solid #d0021b;
+  color: #d0021b;
+  margin-bottom: 4rem;
+  font-family: 'Futura PT Medium';
+  border-radius: 0.5rem;
+  box-shadow: ${props => props.theme.boxShadow};
 `;

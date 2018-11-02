@@ -6,7 +6,7 @@ export const DAO_SERVER =
 export const DEFAULT_NETWORK =
   (process.env.ENVIRONMENT === 'production' && 'eth-mainnet') ||
   (process.env.ENVIRONMENT === 'kovan' && 'eth-kovan') ||
-  'eth-kovan';
+  'testrpc';
 
 export const DGD_ADDRESS =
   (process.env.ENVIRONMENT === 'production' && '0xe0b7927c4af23765cb51314a0e0521a9645f0e2a') ||

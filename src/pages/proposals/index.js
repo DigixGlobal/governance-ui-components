@@ -35,7 +35,6 @@ class Proposal extends React.Component {
     if ((fetching === null || error) && location.pathname) {
       const path = location.pathname.split('/');
       const proposalId = path[2];
-      console.log({ path, proposalId });
       if (proposalId) getProposalDetailsAction(proposalId);
     }
   };

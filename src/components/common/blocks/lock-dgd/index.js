@@ -8,9 +8,10 @@ import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLockin
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { getDefaultAddress, getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
+import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
-import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
+// import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
 
 import { showHideLockDgdOverlay } from '../../../../reducers/gov-ui/actions';
 
@@ -19,6 +20,8 @@ import TextField from '../../elements/textfield';
 import Button from '../../../common/elements/buttons';
 
 import getContract from '../../../../utils/contracts';
+
+import { DEFAULT_GAS } from '../../../../constants';
 
 import {
   Container,
@@ -35,7 +38,11 @@ import {
 } from './style';
 import Icon from '../../../common/elements/icons';
 
+import LockDgdTx from './tx-ui';
+
 const network = SpectrumConfig.defaultNetworks[0];
+
+registerUIs({ lockDgd: { component: LockDgdTx } });
 
 const etherscanUrl =
   network === 'eth-mainnet' ? 'https://etherscan.io/tx/' : 'https://kovan.etherscan.io/tx/';
@@ -73,7 +80,7 @@ class LockDgd extends React.Component {
     });
 
   handleButtonClick = () => {
-    const { web3Redux, defaultAddress, addresses, networks } = this.props;
+    const { web3Redux, defaultAddress } = this.props;
     const { dgd, gasPrice } = this.state;
     const { abi, address } = getContract(DaoStakeLocking, network);
     const contract = web3Redux
@@ -82,18 +89,18 @@ class LockDgd extends React.Component {
       .at(address);
 
     // const userAddress = addresses.find(a => a.address === defaultAddress.address);
-    const userAddress = defaultAddress.address;
+    // const userAddress = defaultAddress.address;
     // const {
     //   keystore: {
     //     type: { id: keystoreType },
     //   },
     // } = userAddress;
 
-    const web3Params = { gasPrice: gasPrice * 1e9, gas: 50e4 };
+    const web3Params = { gasPrice: gasPrice * 1e9, gas: DEFAULT_GAS };
 
     const ui = {
       dgd,
-      type: 'lockDGD',
+      type: 'lockDgd',
     };
 
     this.setError();
@@ -194,6 +201,7 @@ class LockDgd extends React.Component {
           ghost
           fluid
           onClick={this.handleButtonClick}
+          disabled={!dgd && dgd <= 0}
           style={{ marginTop: '4rem' }}
         >
           Lock DGD
@@ -217,11 +225,11 @@ class LockDgd extends React.Component {
   }
 }
 
-const { object, func } = PropTypes;
+const { object } = PropTypes;
 
 LockDgd.propTypes = {
   lockDgdOverlay: object.isRequired,
-  showTxSigningModal: func.isRequired,
+  // showTxSigningModal: func.isRequired,
   showHideLockDgdOverlay: PropTypes.func.isRequired,
   web3Redux: object.isRequired,
   defaultAddress: object.isRequired,

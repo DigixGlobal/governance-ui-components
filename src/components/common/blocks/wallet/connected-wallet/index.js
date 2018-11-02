@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { ERC20_ABI } from 'spectrum-lightsuite/src/helpers/constants';
+// import { ERC20_ABI } from 'spectrum-lightsuite/src/helpers/constants';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 
@@ -49,7 +49,6 @@ class ConnectedWallet extends React.Component {
   getDgdbalance() {
     const { address: ethAddress, web3Redux } = this.props;
     const { address: contractAddress, abi } = getContract(DGDAddress);
-    console.log(DGDAddress);
     const { web3 } = web3Redux.networks[network];
     const contract = web3.eth.contract(abi).at(contractAddress);
     return contract.balanceOf.call(ethAddress.address).then(balance => parseBigNumber(balance, 9));
@@ -70,7 +69,7 @@ class ConnectedWallet extends React.Component {
   };
 
   render() {
-    const { address: ethAddress, showHideLockDgdOverlayAction } = this.props;
+    const { address: ethAddress } = this.props;
     const { dgdBalance, ethBalance } = this.state;
     return (
       <InnerContainer>

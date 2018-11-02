@@ -14,6 +14,7 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 // import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
 
 import { showHideLockDgdOverlay } from '../../../../reducers/gov-ui/actions';
+import { sendTransactionToDaoServer } from '../../../../reducers/dao-server/actions';
 
 import TextField from '../../elements/textfield';
 
@@ -79,8 +80,19 @@ class LockDgd extends React.Component {
       openError: !!error,
     });
 
+  handleCloseLockDgd = () => {
+    this.setState({ txHash: undefined }, () => {
+      this.props.showHideLockDgdOverlay(false);
+    });
+  };
+
   handleButtonClick = () => {
-    const { web3Redux, defaultAddress } = this.props;
+    const {
+      web3Redux,
+      defaultAddress,
+      sendTransactionToDaoServer: sendTransactionToDaoServerAction,
+      ChallengeProof,
+    } = this.props;
     const { dgd, gasPrice } = this.state;
     const { abi, address } = getContract(DaoStakeLocking, network);
     const contract = web3Redux
@@ -137,7 +149,15 @@ class LockDgd extends React.Component {
         ...web3Params,
       })
       .then(txHash => {
-        this.setState({ txHash });
+        this.setState({ txHash }, () => {
+          sendTransactionToDaoServerAction({
+            txHash,
+            title: 'Lock DGD',
+            token: ChallengeProof.data['access-token'],
+            client: ChallengeProof.data.client,
+            uid: ChallengeProof.data.uid,
+          });
+        });
       })
       .catch(this.setError);
   };
@@ -148,7 +168,7 @@ class LockDgd extends React.Component {
       <WalletContainer>
         <CloseButton>
           <Header>CONFIRMATION</Header>
-          <Icon kind="close" onClick={() => this.props.showHideLockDgdOverlay(false)} />
+          <Icon kind="close" onClick={this.handleCloseLockDgd} />
         </CloseButton>
         <ConfirmationBox>
           <h2>Congratulations!</h2>
@@ -169,7 +189,7 @@ class LockDgd extends React.Component {
           primary
           ghost
           fluid
-          onClick={() => this.props.showHideLockDgdOverlay(false)}
+          onClick={this.handleCloseLockDgd}
           style={{ marginTop: '4rem' }}
         >
           Get Started
@@ -225,13 +245,15 @@ class LockDgd extends React.Component {
   }
 }
 
-const { object } = PropTypes;
+const { object, func } = PropTypes;
 
 LockDgd.propTypes = {
   lockDgdOverlay: object.isRequired,
   // showTxSigningModal: func.isRequired,
-  showHideLockDgdOverlay: PropTypes.func.isRequired,
+  showHideLockDgdOverlay: func.isRequired,
+  sendTransactionToDaoServer: func.isRequired,
   web3Redux: object.isRequired,
+  ChallengeProof: object.isRequired,
   defaultAddress: object.isRequired,
 };
 
@@ -251,6 +273,7 @@ export default web3Connect(
     {
       showTxSigningModal,
       showHideLockDgdOverlay,
+      sendTransactionToDaoServer,
     }
   )(LockDgd)
 );

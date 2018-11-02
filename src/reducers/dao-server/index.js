@@ -13,6 +13,12 @@ const defaultState = {
     error: null,
     fetching: null,
   },
+  AddTransaction: {
+    history: [],
+    data: {},
+    error: null,
+    fetching: null,
+  },
 };
 
 export default function(state = defaultState, action) {
@@ -53,7 +59,25 @@ export default function(state = defaultState, action) {
                 .slice(0, 100),
         },
       };
-
+    case actions.ADD_TRANSACTION:
+      console.log('ADD TRANSACTION');
+      return {
+        ...state,
+        AddTransaction: {
+          ...state.AddTransaction,
+          ...action.payload,
+          history: !action.payload
+            ? state.AddTransaction.history
+            : [
+                {
+                  ...action.payload,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.AddTransaction.history)
+                .slice(0, 100),
+        },
+      };
     default:
       return state;
   }

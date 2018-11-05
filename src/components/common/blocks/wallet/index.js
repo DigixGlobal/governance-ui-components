@@ -20,7 +20,11 @@ import ConnectedWallet from './connected-wallet';
 import { Stage } from './constants';
 
 import { getAddressDetails } from '../../../../reducers/info-server/actions';
-import { getChallenge, proveChallenge } from '../../../../reducers/dao-server/actions';
+import {
+  getChallenge,
+  proveChallenge,
+  getTransactions,
+} from '../../../../reducers/dao-server/actions';
 
 export class Wallet extends React.Component {
   constructor(props) {
@@ -53,6 +57,14 @@ export class Wallet extends React.Component {
       this.setState({ showSigning: true });
     } else {
       this.setState({ showSigning: false });
+    }
+
+    if (ChallengeProof.data) {
+      this.props.getTransactions({
+        token: ChallengeProof.data['access-token'],
+        client: ChallengeProof.data.client,
+        uid: ChallengeProof.data.uid,
+      });
     }
   }
 
@@ -129,6 +141,7 @@ const actions = {
   getChallengeAction: getChallenge,
   proveChallengeAction: proveChallenge,
   showSigningModal: showMsgSigningModal,
+  getTransactions,
 };
 
 const mapStateToProps = state => ({

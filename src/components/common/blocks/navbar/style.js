@@ -60,3 +60,74 @@ export const AddressLabel = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+
+export const UtilityWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  padding: 0;
+`;
+
+export const Notification = styled.div`
+  height: 20rem;
+  width: 20rem;
+  position: absolute;
+  overflow: hidden;
+  top: 5rem;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #c4a159;
+  color: #c4a159;
+  margin-bottom: 4rem;
+  font-family: 'Futura PT Medium';
+  border-radius: 0.5rem;
+  box-shadow: ${props => props.theme.boxShadow};
+`;
+
+export const NotificationHeader = styled.div`
+  height: 2rem;
+  background-color: #c4a159;
+  border-bottom: 1px solid #c4a159;
+  color: #fff;
+`;
+
+export const NotificationCount = styled.div`
+  text-align: center;
+  font-size: 1rem;
+  top: 1rem;
+  margin-left: 0.5rem;
+  color: #fff;
+  position: absolute;
+  display: inline-block;
+  background-color: #c4a159;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+}
+`;
+export const NotificationContent = styled.div`
+  overflow: auto;
+  padding: 1rem;
+  padding: 0.5rem 1rem;
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const NotificationItem = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const TxHash = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  width: 13rem;
+`;
+
+export const TxStatus = styled.span`
+  width: 2rem;
+  display: inline-block;
+`;

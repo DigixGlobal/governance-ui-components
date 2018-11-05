@@ -4,6 +4,8 @@ export const actions = {
   GET_CHALLENGE: `${REDUX_PREFIX}GET_CHALLENGE`,
   PROVE_CHALLENGE: `${REDUX_PREFIX}PROVE_CHALLENGE`,
   ADD_TRANSACTION: `${REDUX_PREFIX}ADD_TRANSACTION`,
+  GET_TRANSACTIONS: `${REDUX_PREFIX}GET_TRANSACTIONS`,
+  GET_TRANSACION_STATUS: `${REDUX_PREFIX}GET_TRANSACION_STATUS`,
 };
 
 function fetchData(url, type) {
@@ -79,41 +81,6 @@ function postData(url, type, data, authToken, client, uid) {
         throw json;
       })
       .catch(error => dispatch({ type, payload: { fetching: false, error } }));
-    // return fetch(url, {
-    //   method: 'POST',
-    //   mode: '*same-origin',
-    //   headers: {
-    //     'access-token': authToken,
-    //     'Content-Type': 'application/json',
-    //     client,
-    //     uid,
-    //   },
-    //   body: JSON.stringify(data),
-    // })
-    //   .then(res =>
-    //     res
-    //       .json()
-    //       .then(json => ({ json, res }))
-    //       .catch(() => {
-    //         throw res.statusText;
-    //       })
-    //   )
-    //   .then(({ json, res }) => {
-    //     if (res.status === 200) {
-    //       return dispatch({
-    //         type,
-    //         payload: {
-    //           data: json,
-    //           fetching: false,
-    //           error: null,
-    //           updated: new Date(),
-    //         },
-    //       });
-    //     }
-
-    //     throw json;
-    //   })
-    //   .catch(error => dispatch({ type, payload: { fetching: false, error } }));
   };
 }
 
@@ -126,6 +93,22 @@ export function proveChallenge(payload) {
   return fetchData(
     `${DAO_SERVER}/prove?address=${address}&challenge_id=${challenge}&message=${message}&signature=${signature}`,
     actions.PROVE_CHALLENGE
+  );
+}
+
+export function getTransactionStatus(payload) {
+  return fetchData(`${DAO_SERVER}/status?txhash=${payload}`, actions.GET_TRANSACION_STATUS);
+}
+
+export function getTransactions(payload) {
+  const { token, client, uid } = payload;
+  return postData(
+    `${DAO_SERVER}/transactions/list`,
+    actions.GET_TRANSACTIONS,
+    undefined,
+    token,
+    client,
+    uid
   );
 }
 

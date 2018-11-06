@@ -54,7 +54,11 @@ class LandingPage extends Component {
         />
         {hasProposals &&
           orderedProposals.map(proposal => (
-            <ProposalCard key={proposal._id} proposal={proposal} userDetails={AddressDetails} />
+            <ProposalCard
+              key={proposal.proposalId}
+              proposal={proposal}
+              userDetails={AddressDetails}
+            />
           ))}
       </Fragment>
     );

@@ -254,9 +254,12 @@ LockDgd.propTypes = {
   sendTransactionToDaoServer: func.isRequired,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
-  defaultAddress: object.isRequired,
+  defaultAddress: object,
 };
 
+LockDgd.defaultProps = {
+  defaultAddress: undefined,
+};
 const mapStateToProps = state => ({
   // networks: getNetworks(state),
   defaultAddress: getDefaultAddress(state),

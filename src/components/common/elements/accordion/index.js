@@ -56,8 +56,9 @@ export default class Accordion extends React.Component {
     } = this;
     return (
       <div>
-        {children.map(child => (
+        {children.map((child, i) => (
           <AccordionSelection
+            key={`acc-${i + 1}`}
             isOpen={!!openSections[child.props.label]}
             label={child.props.label}
             onClick={onClick}

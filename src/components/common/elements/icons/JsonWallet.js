@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container } from './style';
+import { ProposaDetaillWrapper } from '../../../proposal-card/style';
 
 const JsonWalletIcon = props => (
   <Container {...props}>

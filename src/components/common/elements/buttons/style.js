@@ -55,7 +55,7 @@ export const RoundBtn = styled.button`
     `};
 
   ${props =>
-    props.icon &&
+    props.iconButton &&
     css`
       display: flex;
       justify-content: space-between;

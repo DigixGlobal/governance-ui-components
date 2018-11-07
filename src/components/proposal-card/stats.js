@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { StatsWrapper, Stats, StatItem } from './style';
 
+// import { ProposalStages } from '../../utils/constants';
+
 export default class ProposalCardStats extends React.Component {
   render() {
     const { details } = this.props;
@@ -20,7 +22,7 @@ export default class ProposalCardStats extends React.Component {
           </StatItem>
           <StatItem>
             Participants
-            <span>{details.votingRounds[0].totalVoterCount}</span>
+            <span>{details.votingRounds ? details.votingRounds[0].totalVoterCount : 0}</span>
           </StatItem>
         </Stats>
       </StatsWrapper>

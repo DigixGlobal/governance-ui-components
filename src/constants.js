@@ -25,3 +25,12 @@ export const ONE_BILLION = 1000000000;
 export const CONVERSIONS = {
   XAUUSD: 1 / 31.1035,
 };
+
+export const ProposalStages = {
+  idea: 'idea',
+  draft: 'draft',
+  proposal: 'proposal',
+  ongoing: 'ongoing',
+  review: 'review',
+  archived: 'archived',
+};

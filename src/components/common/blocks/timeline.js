@@ -85,6 +85,7 @@ const MainPhaseStatus = styled.div`
 class Timeline extends React.Component {
   render() {
     const { stats } = this.props;
+    if (stats.fetching || stats.fetching === null) return null;
     const now = moment(Date.now());
     const start = moment(new Date(stats.data.startOfQuarter * 1000));
     const ellapsed = now.diff(start, 'days');
@@ -108,10 +109,10 @@ class Timeline extends React.Component {
 
           <TimelineDay>
             <StakingPhaseStatus>
-              <ProgressBar value={stakingPhase} />
+              <ProgressBar variant="determinate" value={stakingPhase > 0 ? stakingPhase : -1} />
             </StakingPhaseStatus>
             <MainPhaseStatus>
-              <ProgressBar value={mainPhase} />
+              <ProgressBar variant="determinate" value={mainPhase > 0 ? mainPhase : -1} />
             </MainPhaseStatus>
           </TimelineDay>
         </TimelineBar>

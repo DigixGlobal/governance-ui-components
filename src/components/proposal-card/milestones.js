@@ -22,7 +22,7 @@ const determineDeadline = proposal => {
       break;
     case 'proposal':
       if (Date.now() < proposal.votingRounds[0].commitDeadline) {
-        deadline = proposal.votingRounds[0].commitDeadline;
+        deadline = proposal.votingRounds[0].commitDeadline || undefined;
       }
       deadline = proposal.votingRounds[0].revealDeadline;
       break;
@@ -31,12 +31,12 @@ const determineDeadline = proposal => {
 
     case 'review':
       if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
-        deadline = proposal.votingRounds[mileStone].commitDeadline;
+        deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
       }
       deadline = proposal.votingRounds[mileStone].revealDeadline;
       break;
     default:
-      deadline = proposal.votingRounds[0].commitDeadline;
+      deadline = proposal.votingRounds ? proposal.votingRounds[0].commitDeadline : undefined;
       break;
   }
 

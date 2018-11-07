@@ -1,13 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import { ERC20_ABI } from 'spectrum-lightsuite/src/helpers/constants';
+// import { ERC20_ABI } from 'spectrum-lightsuite/src/helpers/constants';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
+
+import DGDAddress from '@digix/dao-contracts/build/contracts/MockDgd.json';
+
+import { showHideLockDgdOverlay } from '../../../../../reducers/gov-ui/actions';
 
 import Button from '../../../elements/buttons/index';
 import Icon from '../../../elements/icons';
 import { HR } from '../../../../common/common-styles';
-import { DEFAULT_NETWORK, DGD_ADDRESS } from '../../../../../constants';
+
+// import { DEFAULT_NETWORK, DGD_ADDRESS } from '../../../../../constants';
+
+import getContract from '../../../../../utils/contracts';
 
 import { InnerContainer, Header, CloseButtonWithHeader } from '../style';
 import {
@@ -22,6 +31,7 @@ import {
   Notes,
 } from './style';
 
+const network = SpectrumConfig.defaultNetworks[0];
 class ConnectedWallet extends React.Component {
   constructor(props) {
     super(props);
@@ -38,19 +48,25 @@ class ConnectedWallet extends React.Component {
 
   getDgdbalance() {
     const { address: ethAddress, web3Redux } = this.props;
-
-    const { web3 } = web3Redux.networks[DEFAULT_NETWORK];
-    const contract = web3.eth.contract(ERC20_ABI).at(DGD_ADDRESS);
+    const { address: contractAddress, abi } = getContract(DGDAddress);
+    const { web3 } = web3Redux.networks[network];
+    const contract = web3.eth.contract(abi).at(contractAddress);
     return contract.balanceOf.call(ethAddress.address).then(balance => parseBigNumber(balance, 9));
   }
 
   getEthBalance() {
     const { address: ethAddress, web3Redux } = this.props;
-    const { web3 } = web3Redux.networks[DEFAULT_NETWORK];
+    const { web3 } = web3Redux.networks[network];
     if (ethAddress) {
       return web3.eth.getBalance(ethAddress.address).then(balance => parseBigNumber(balance, 18));
     }
   }
+
+  showLockDgdOverlay = () => {
+    const { onClose, showHideLockDgdOverlayAction } = this.props;
+    onClose();
+    showHideLockDgdOverlayAction(true);
+  };
 
   render() {
     const { address: ethAddress } = this.props;
@@ -102,7 +118,11 @@ class ConnectedWallet extends React.Component {
             Locking your DGD in DigixDAO helps us know you are committed to the growth of the
             community and of course gives you voting power on the proposals you love to support
           </p>
-          <Button fullWidth disabled={!dgdBalance || dgdBalance <= 0}>
+          <Button
+            fullWidth
+            disabled={!dgdBalance || dgdBalance <= 0}
+            onClick={this.showLockDgdOverlay}
+          >
             lock DGD
           </Button>
           <DevNote>[DEV NOTE] Disabled when DGD is not sufficient</DevNote>
@@ -133,6 +153,14 @@ ConnectedWallet.propTypes = {
   onClose: func.isRequired,
   address: object.isRequired,
   web3Redux: object.isRequired,
+  showHideLockDgdOverlayAction: func.isRequired,
 };
 
-export default ConnectedWallet;
+export default connect(
+  ({ govUI: { LockDgdOverlay } }) => ({
+    lockDgdOverlay: LockDgdOverlay,
+  }),
+  {
+    showHideLockDgdOverlayAction: showHideLockDgdOverlay,
+  }
+)(ConnectedWallet);

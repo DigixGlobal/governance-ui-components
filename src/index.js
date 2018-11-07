@@ -7,6 +7,7 @@ import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
 import './global-styles';
 import infoServerReducer from './reducers/info-server';
 import daoServerReducer from './reducers/dao-server';
+import govUiReducer from './reducers/gov-ui';
 
 import LandingPage from './pages';
 import Proposals from './pages/proposals';
@@ -18,6 +19,7 @@ import withHeaderAndPanel from './hocs/withHeaderAndPanel';
 registerReducers({
   infoServer: { src: infoServerReducer },
   daoServer: { src: daoServerReducer },
+  govUI: { src: govUiReducer },
 });
 
 export default class Governance extends React.Component {

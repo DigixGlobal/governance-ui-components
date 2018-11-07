@@ -4,6 +4,7 @@ import NavBar from '../components/common/blocks/navbar';
 import WalletContainer from '../components/common/blocks/wallet';
 
 import LeftMenu from '../components/common/blocks/collapsible-menu';
+import LockDgdOverlay from '../components/common/blocks/lock-dgd';
 
 import { Container, ContentWrapper } from './style';
 
@@ -29,6 +30,7 @@ function withHeaderAndPanel(WrappedComponent) {
       const { showWallet } = this.state;
       return (
         <Fragment>
+          <LockDgdOverlay />
           <WalletContainer show={showWallet} onClose={this.handleWalletClick} />
           <NavBar onWalletClick={this.handleWalletClick} />
           <Container>

@@ -9,6 +9,24 @@ const defaultState = {
   },
   ChallengeProof: {
     history: [],
+    data: undefined,
+    error: null,
+    fetching: null,
+  },
+  AddTransaction: {
+    history: [],
+    data: {},
+    error: null,
+    fetching: null,
+  },
+  Transactions: {
+    history: [],
+    data: {},
+    error: null,
+    fetching: null,
+  },
+  TransactionStatus: {
+    history: [],
     data: {},
     error: null,
     fetching: null,
@@ -53,7 +71,60 @@ export default function(state = defaultState, action) {
                 .slice(0, 100),
         },
       };
-
+    case actions.ADD_TRANSACTION:
+      return {
+        ...state,
+        AddTransaction: {
+          ...state.AddTransaction,
+          ...action.payload,
+          history: !action.payload
+            ? state.AddTransaction.history
+            : [
+                {
+                  ...action.payload,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.AddTransaction.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_TRANSACION_STATUS:
+      return {
+        ...state,
+        TransactionStatus: {
+          ...state.TransactionStatus,
+          ...action.payload,
+          history: !action.payload
+            ? state.TransactionStatus.history
+            : [
+                {
+                  ...action.payload,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.TransactionStatus.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_TRANSACTIONS:
+      return {
+        ...state,
+        Transactions: {
+          ...state.Transactions,
+          ...action.payload,
+          history: !action.payload
+            ? state.Transactions.history
+            : [
+                {
+                  ...action.payload,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.Transactions.history)
+                .slice(0, 100),
+        },
+      };
     default:
       return state;
   }

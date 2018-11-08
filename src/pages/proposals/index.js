@@ -48,6 +48,7 @@ class Proposal extends React.Component {
     if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
     const proposalVersion =
       proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1];
+    const { dijixObject } = proposalVersion;
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -61,7 +62,7 @@ class Proposal extends React.Component {
               <Button kind="flat" style={{ pointerEvents: 'none' }}>
                 {proposalDetails.data.stage}
               </Button>
-              <Title primary>{proposalVersion.title}</Title>
+              <Title primary>{dijixObject.title}</Title>
             </div>
             <div>
               <Button kind="round" ghost primary style={{ pointerEvents: 'none' }}>
@@ -81,7 +82,7 @@ class Proposal extends React.Component {
               </span>
             </FundingStatus>
             <MilestonesStatus>
-              Milestones <span>{proposalDetails.data.currentMilestone}</span>
+              Milestones <span>{dijixObject.milestones.length || 0}</span>
             </MilestonesStatus>
             <Reward>
               Reward <span>{proposalVersion.finalReward / 1e18} ETH</span>
@@ -92,7 +93,7 @@ class Proposal extends React.Component {
           </LatestActivity>
         </ProjectSummary>
         <ProjectDetails details={proposalVersion} />
-        <Milestones />
+        <Milestones milestones={dijixObject.milestones || []} />
       </ProposalsWrapper>
     );
   }

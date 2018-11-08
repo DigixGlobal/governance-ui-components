@@ -56,5 +56,6 @@ export function getProposalsCount() {
 }
 
 export function getProposalDetails(proposalId) {
+  console.log(`${INFO_SERVER}/proposals/details/${proposalId}`);
   return fetchData(`${INFO_SERVER}/proposals/details/${proposalId}`, actions.GET_PROPOSAL_DETAILS);
 }

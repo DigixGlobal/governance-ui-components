@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { Link } from 'react-router-dom';
 import Category from './category';
 import Icon from '../../elements/icons/Plus';
 
@@ -22,10 +22,12 @@ export default class ProposalCardFilter extends React.Component {
             <H1>Projects</H1>
           </div>
           <div>
-            <Button primary ghost iconButton>
-              <Icon kind="plus" />
-              Create
-            </Button>
+            <Link to="/proposals/create" href="/proposals/create">
+              <Button primary ghost iconButton>
+                <Icon kind="plus" />
+                Create
+              </Button>
+            </Link>
           </div>
         </Heading>
         <Filter>

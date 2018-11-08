@@ -26,11 +26,6 @@ const mockMenu = [
   { kind: 'wallet', caption: 'Wallet', url: '/' },
   { kind: 'profile', caption: 'Profile', url: '/' },
   { kind: 'product', caption: 'Help / DAO Tour', url: '/' },
-  {
-    kind: 'product',
-    caption: 'Create Proposal (temp)',
-    url: '/proposals/create/index',
-  },
 ];
 class CollapsibleMenu extends React.Component {
   render() {

@@ -18,6 +18,7 @@ import {
 export default class Proposal extends React.Component {
   render() {
     const { details } = this.props;
+    const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
     return (
       <ProposaDetaillWrapper>
         <ProposalCard>
@@ -27,8 +28,8 @@ export default class Proposal extends React.Component {
             </Button>
           </TagsContainer>
           <Description>
-            <H2>{details.proposalVersions[0].title}</H2>
-            <p>{details.proposalVersions[0].description}</p>
+            <H2>{proposalVersion.dijixObject.title}</H2>
+            <p>{proposalVersion.dijixObject.description}</p>
             <ProposalLink
               href={`/proposals/${details.proposalId}`}
               to={`/proposals/${details.proposalId}`}

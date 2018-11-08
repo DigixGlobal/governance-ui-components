@@ -1,8 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import multihash from 'multi-hash';
 import { DetailsContainer, ShortDescription, TrackActivity, Details, SubTitle } from './style';
 
+export function decodeHash(hexHash) {
+  if (!hexHash) return null;
+  const parsedHash = hexHash.indexOf('0x') === 0 ? hexHash.substr(2) : hexHash;
+  if (parsedHash === '') return null;
+  return multihash.encode(parsedHash);
+}
 export default class ProjectDetails extends React.Component {
   render() {
+    const { details } = this.props;
+    console.log(decodeHash(details.docIpfsHash));
     return (
       <DetailsContainer>
         <ShortDescription>
@@ -80,3 +90,7 @@ export default class ProjectDetails extends React.Component {
     );
   }
 }
+
+ProjectDetails.propTypes = {
+  details: PropTypes.object.isRequired,
+};

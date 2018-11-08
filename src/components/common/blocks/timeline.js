@@ -102,7 +102,7 @@ class Timeline extends React.Component {
               <div>MAIN PHASE</div>
               <MainPhaseValue>
                 DAY {ellapsed} / 90 <span>|</span>
-                {stats.data ? stats.data.totalDgdsLocked / 1e9 : 83423.45} STAKE
+                {stats.data ? stats.data.totalLockedDgds / 1e9 : 83423.45} STAKE
               </MainPhaseValue>
             </MainPhase>
           </TimelineLabel>

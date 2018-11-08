@@ -1,29 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Container from './style';
+import StyledSelect from './style';
 
-class StyledSelect extends React.Component {
+class Select extends React.Component {
   render() {
     const { items, id, ...rest } = this.props;
     return (
-      <Container>
-        <select id={id} {...rest}>
-          {items.map(item => (
-            <option key={item.value} value={item.value}>
-              {item.text}
-            </option>
-          ))}
-        </select>
-      </Container>
+      <StyledSelect id={id} {...rest}>
+        {items.map(item => (
+          <option key={item.value} value={item.value}>
+            {item.text}
+          </option>
+        ))}
+      </StyledSelect>
     );
   }
 }
 
 const { array, string } = PropTypes;
 
-StyledSelect.propTypes = {
+Select.propTypes = {
   id: string.isRequired,
   items: array.isRequired,
 };
-export default StyledSelect;
+export default Select;

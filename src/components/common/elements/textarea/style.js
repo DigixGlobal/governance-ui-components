@@ -1,16 +1,13 @@
 import styled from 'styled-components';
 
-export const SyledInput = styled.input.attrs({
-  type: 'text',
-  //   size: props => (props.small ? 5 : undefined),
-})`
+export const SyledTextArea = styled.textarea`
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => (props.rounded ? '2rem' : '.5rem')};
   color: ${props => props.theme.textDefault.default.toString()};
-  padding: 2rem;
-  font-size: 1.4rem;
   margin: 1rem 0;
+  padding: 2rem;
   width: ${props => props.width || '100%'};
+  min-height: 30rem;
 
   ::placeholder {
     color: ${props => props.theme.textDefault.default.toString()};

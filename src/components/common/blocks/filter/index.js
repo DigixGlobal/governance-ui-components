@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Category from './category';
-import StyledSelect from '../../elements/select/index';
-import Button from '../../elements/buttons/index';
 import Icon from '../../elements/icons/Plus';
+
+import { Button, Select } from '../../index';
 
 import { Heading, FilterWrapper, Filter, Pulldown } from './style';
 import { H1 } from '../../common-styles';
@@ -31,7 +31,8 @@ export default class ProposalCardFilter extends React.Component {
         <Filter>
           <Category {...this.props} />
           <Pulldown>
-            <StyledSelect
+            <Select
+              small
               id="test"
               items={[{ text: 'Latest', value: 'latest' }, { text: 'Oldest', value: 'oldest' }]}
               onChange={this.handleChange}

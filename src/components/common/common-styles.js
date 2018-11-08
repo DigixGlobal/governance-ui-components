@@ -19,7 +19,7 @@ export const H1 = styled.h1`
 export const H2 = styled.h2`
   color: ${props => props.color || props.theme.textDefault.default.toString()};
   margin-bottom: 2rem;
-  margin-top: 3rem;
+  margin-top: 2rem;
 `;
 export default H2;
 
@@ -52,7 +52,7 @@ export const Link = styled.a`
   ${props =>
     props.secondary &&
     css`
-      color: ${props => props.theme.linkSecondaryColor.default.toString()};
+      color: ${props.theme.linkSecondaryColor.default.toString()};
     `};
 `;
 
@@ -60,6 +60,9 @@ export const ContentWrapper = styled.div`
   flex: 5 0 0;
   padding: 8em 10em;
 `;
+
+export const LeftPanel = css``;
+export const RightPanel = css``;
 
 export const HR = styled.hr`
   border: 0.5px solid ${props => props.theme.backgroundLayout.default.toString()};
@@ -134,3 +137,14 @@ export const DisabledBtn = css`
     color: ${props => props.theme.textDefault.lightest.toString()};
   }
 `;
+
+export const Container = css`
+  display: flex;
+  flex-direction: ${props => props.column && 'column'};
+`;
+
+export const FieldsetStyle = css`
+  margin-bottom: 8rem;
+`;
+
+export const LabelStyle = css``;

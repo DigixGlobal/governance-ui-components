@@ -13,6 +13,7 @@ const blue = {
   darker: blueHex.darken(1),
   light: blueHex.lighten(0.5),
   lighter: blueHex.lighten(0.75),
+  lightest: blueHex.lighten(1.9),
 };
 
 // const darkBlueHex = Color('#111E36');
@@ -44,6 +45,8 @@ const gray = {
   default: grayHex,
   darker: grayHex.darken(0.1),
   light: grayHex.lighten(0.05),
+  lighter: goldHex.lighten(1),
+  lightest: goldHex.lighten(1.9),
 };
 
 const darkGrayHex = Color('#464E5B');

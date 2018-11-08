@@ -11,6 +11,7 @@ import govUiReducer from './reducers/gov-ui';
 
 import LandingPage from './pages';
 import Proposals from './pages/proposals';
+import CreateProposals from './pages/proposals/create';
 
 import lightTheme from './theme/light';
 
@@ -28,6 +29,7 @@ export default class Governance extends React.Component {
       <HashRouter>
         <ThemeProvider theme={lightTheme}>
           <Switch>
+            <Route path="/proposals/create" component={withHeaderAndPanel(CreateProposals)} />
             <Route path="/proposals" component={withHeaderAndPanel(Proposals)} />
             <Route path="/" component={withHeaderAndPanel(LandingPage)} />
           </Switch>

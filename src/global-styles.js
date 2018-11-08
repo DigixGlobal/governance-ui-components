@@ -57,10 +57,11 @@ body.modal-is-open {
 
 body {
 
-  font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
+  font-family: 'Futura PT Book', 'Roboto', 'Arial', 'sans-serif';
   font-size: 1.4rem;
   letter-spacing: 0.05em;
   box-sizing: border-box;
+  color: #464E5B;
 }
 
 input {

@@ -34,9 +34,7 @@ export const ProposalCard = styled.div`
   }
 `;
 
-export const TagsContainer = styled.div`
-  flex: 0.5 0 0;
-`;
+export const TagsContainer = styled.div``;
 
 export const Description = styled.div`
   flex: 3 0 0;

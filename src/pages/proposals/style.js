@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import { H1, H2 } from '../../components/common/common-styles';
+import { H1, H2, Container } from '../../components/common/common-styles';
 
 export const ProposalsWrapper = styled.div``;
 
 export const BrowseVersionHistory = styled.div`
+  ${Container}
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lightest.toString()};
   box-shadow: ${props => props.theme.boxShadow};
-  display: flex;
-  flex-direction: row;
+  
   justify-content: space-between;
-  margin-bottom: 3rem;
+  margin-bottom: 7rem;
   padding: 2rem 2.5rem;
   position: relative;
 
@@ -135,6 +135,8 @@ export const Reward = styled.div`
 export const UpvoteStatus = styled.div`
   flex: 1;
   justify-content: flex-end;
+  align-items: flex-end;
+  margin-right: 2rem;
 `;
 
 export const DetailsContainer = styled.div``;

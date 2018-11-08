@@ -6,6 +6,7 @@ import { StatsWrapper, Stats, StatItem } from './style';
 export default class ProposalCardStats extends React.Component {
   render() {
     const { details } = this.props;
+    if (!details) return null;
     return (
       <StatsWrapper>
         <Stats>

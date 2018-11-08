@@ -22,7 +22,7 @@ export default class ProposalCardFilter extends React.Component {
             <H1>Projects</H1>
           </div>
           <div>
-            <Button primary ghost icon>
+            <Button primary ghost>
               <Icon kind="plus" />
               Create
             </Button>

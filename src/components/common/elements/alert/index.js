@@ -30,7 +30,7 @@ Alert.propTypes = {
 };
 
 Alert.defaultProps = {
-  alertData: '',
+  alertData: undefined,
 };
 
 export default connect(

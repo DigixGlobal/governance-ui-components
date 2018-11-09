@@ -75,7 +75,6 @@ export default class MultipleResolver extends Component {
     if (loading) {
       return this.props.renderLoading || null;
     }
-    console.log({ thumbnails });
     return this.props.renderResolved(thumbnails);
   }
 }

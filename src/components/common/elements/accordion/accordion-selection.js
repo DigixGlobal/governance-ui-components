@@ -3,13 +3,6 @@ import PropTypes from 'prop-types';
 import { AccordionItem, Header, Content } from './styles';
 
 export default class AccordionSelection extends React.Component {
-  static propTypes = {
-    children: PropTypes.instanceOf(Object).isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    label: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-  };
-
   onClick = () => {
     this.props.onClick(this.props.label);
   };
@@ -31,3 +24,11 @@ export default class AccordionSelection extends React.Component {
     );
   }
 }
+
+const { bool, string, func, object, node, oneOfType } = PropTypes;
+AccordionSelection.propTypes = {
+  children: oneOfType([object, node, string]).isRequired,
+  isOpen: bool.isRequired,
+  label: string.isRequired,
+  onClick: func.isRequired,
+};

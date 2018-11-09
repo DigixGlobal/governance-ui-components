@@ -11,7 +11,7 @@ export default class Milestones extends React.Component {
         <SubTitle>Milestones</SubTitle>
         <Accordion allowMultipleOpen>
           {milestones.map((milestone, i) => (
-            <div id={`ms-${i + 1}`} label={`Milestone ${i + 1}: ${milestone.title}`}>
+            <div key={`ms-${i + 1}`} label={`Milestone ${i + 1}: ${milestone.title}`}>
               {milestone.description}
             </div>
           ))}

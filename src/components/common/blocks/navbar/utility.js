@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getTransactions } from '../../../../reducers/dao-server/actions';
+import { getTransactions, getChallenge } from '../../../../reducers/dao-server/actions';
+import { getAddressDetails } from '../../../../reducers/info-server/actions';
 
 import Icon from '../../elements/icons';
 
@@ -26,8 +27,8 @@ class Utility extends React.Component {
   }
 
   componentDidMount = () => {
+    const { challengeProof } = this.props;
     this.interval = setInterval(() => {
-      const { challengeProof } = this.props;
       if (challengeProof.data) {
         this.props.getTransactions({
           token: challengeProof.data['access-token'],
@@ -36,6 +37,16 @@ class Utility extends React.Component {
         });
       }
     }, 1000 * 60);
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { challengeProof } = this.props;
+    const { userAddress } = nextProps;
+    if (!challengeProof.data && userAddress) {
+      this.proofInterval = setInterval(() => {
+        this.props.getChallenge(userAddress.address);
+      }, 1000 * 60);
+    }
   };
 
   showHideNotifications = () => {
@@ -75,17 +86,21 @@ Utility.propTypes = {
   transactions: array,
   challengeProof: object,
   getTransactions: func.isRequired,
+  getChallenge: func.isRequired,
+  userAddress: object,
 };
 
 Utility.defaultProps = {
   transactions: undefined,
   challengeProof: undefined,
+  userAddress: undefined,
 };
 
 export default connect(
-  ({ daoServer: { Transactions, ChallengeProof } }) => ({
+  ({ daoServer: { Transactions, ChallengeProof }, govUI: { UserAddress } }) => ({
     transactions: Transactions.data.transactions,
     challengeProof: ChallengeProof,
+    userAddress: UserAddress,
   }),
-  { getTransactions }
+  { getTransactions, getAddressDetails, getChallenge }
 )(Utility);

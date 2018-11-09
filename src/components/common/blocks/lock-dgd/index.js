@@ -13,7 +13,7 @@ import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 // import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
 
-import { showHideLockDgdOverlay } from '../../../../reducers/gov-ui/actions';
+import { showHideLockDgdOverlay, showHideAlert } from '../../../../reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '../../../../reducers/dao-server/actions';
 
 import TextField from '../../elements/textfield';
@@ -149,15 +149,21 @@ class LockDgd extends React.Component {
         ...web3Params,
       })
       .then(txHash => {
-        this.setState({ txHash }, () => {
-          sendTransactionToDaoServerAction({
-            txHash,
-            title: 'Lock DGD',
-            token: ChallengeProof.data['access-token'],
-            client: ChallengeProof.data.client,
-            uid: ChallengeProof.data.uid,
+        if (ChallengeProof.data) {
+          this.setState({ txHash }, () => {
+            sendTransactionToDaoServerAction({
+              txHash,
+              title: 'Lock DGD',
+              token: ChallengeProof.data['access-token'],
+              client: ChallengeProof.data.client,
+              uid: ChallengeProof.data.uid,
+            });
           });
-        });
+        } else {
+          this.setState({ txHash }, () => {
+            this.props.showHideAlert({ message: txHash });
+          });
+        }
       })
       .catch(this.setError);
   };
@@ -255,6 +261,7 @@ LockDgd.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   defaultAddress: object,
+  showHideAlert: func.isRequired,
 };
 
 LockDgd.defaultProps = {
@@ -277,6 +284,7 @@ export default web3Connect(
       showTxSigningModal,
       showHideLockDgdOverlay,
       sendTransactionToDaoServer,
+      showHideAlert,
     }
   )(LockDgd)
 );

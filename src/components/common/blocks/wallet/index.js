@@ -20,6 +20,7 @@ import ConnectedWallet from './connected-wallet';
 import { Stage } from './constants';
 
 import { getAddressDetails } from '../../../../reducers/info-server/actions';
+import { setUserAddress, showHideAlert } from '../../../../reducers/gov-ui/actions';
 import {
   getChallenge,
   proveChallenge,
@@ -51,6 +52,10 @@ export class Wallet extends React.Component {
       if (Challenge.fetching === null || Challenge.error) {
         getChallengeAction(data.address);
       }
+    }
+
+    if (defaultAddress) {
+      this.props.setUserAddress(defaultAddress.address);
     }
 
     if ((Challenge.data.challenge && ChallengeProof.fetching === null) || ChallengeProof.error) {
@@ -126,7 +131,8 @@ Wallet.propTypes = {
   show: bool,
   onClose: func.isRequired,
   getAddressDetailsAction: func.isRequired,
-  showSigningModal: PropTypes.func.isRequired,
+  showSigningModal: func.isRequired,
+  showHideAlert: func.isRequired,
 };
 
 Wallet.defaultProps = {
@@ -141,6 +147,8 @@ const actions = {
   getChallengeAction: getChallenge,
   proveChallengeAction: proveChallenge,
   showSigningModal: showMsgSigningModal,
+  showHideAlert,
+  setUserAddress,
   getTransactions,
 };
 

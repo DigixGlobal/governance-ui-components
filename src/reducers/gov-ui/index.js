@@ -4,6 +4,8 @@ const defaultState = {
   LockDgdOverlay: {
     show: false,
   },
+  UserAddress: undefined,
+  Alert: undefined,
 };
 
 export default function(state = defaultState, action) {
@@ -13,6 +15,23 @@ export default function(state = defaultState, action) {
         ...state,
         LockDgdOverlay: {
           ...state.LockDgdOverlay,
+          ...action.payload,
+        },
+      };
+    case actions.SET_USER_ADDRESS:
+      return {
+        ...state,
+        UserAddress: {
+          ...state.UserAddress,
+          ...action.payload,
+        },
+      };
+    case actions.SHOW_ALERT:
+      console.log(action.payload);
+      return {
+        ...state,
+        Alert: {
+          ...state.Alert,
           ...action.payload,
         },
       };

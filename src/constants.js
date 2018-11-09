@@ -18,7 +18,7 @@ export const REDUX_PREFIX = 'DIGIX_GOVERNANCE_';
 export const DEFAULT_GAS =
   (process.env.ENVIRONMENT === 'production' && 25e4) ||
   (process.env.ENVIRONMENT === 'kovan' && 25e4) ||
-  50e4;
+  60e4;
 
 export const ONE_BILLION = 1000000000;
 

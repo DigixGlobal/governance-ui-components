@@ -8,23 +8,24 @@ import { showHideAlert } from '../../../../reducers/gov-ui/actions';
 import { Container } from './style';
 
 class Alert extends React.Component {
-  // componentDidMount = () => {
-  //   const { alertData } = this.props;
-  //   if (alertData && alertData.message) {
-  //     this.interval = setInterval(()=>{
-  //       this.props.showHideAlert(undefined);
-  //     })
-  //   }
-  // };
+  componentWillReceiveProps = nextProps => {
+    console.log({ nextProps });
+    const { alertData } = nextProps;
+    if (alertData && alertData.message) {
+      this.interval = setInterval(() => {
+        this.props.showHideAlert({ message: undefined });
+      }, 1000 * 30);
+    }
+  };
 
   render() {
     const { alertData } = this.props;
-
-    return alertData && <Container>{alertData.message}</Container>;
+    if (!alertData || !alertData.message) return null;
+    return alertData.message && <Container>{alertData.message}</Container>;
   }
 }
 Alert.propTypes = {
-  alertData: PropTypes.string,
+  alertData: PropTypes.object,
   showHideAlert: PropTypes.func.isRequired,
 };
 

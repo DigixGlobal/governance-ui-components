@@ -66,7 +66,7 @@ class Utility extends React.Component {
             <NotificationContent>
               {transactions &&
                 transactions.map(t => (
-                  <NotificationItem id={t.id}>
+                  <NotificationItem key={t.id}>
                     <TxHash>{t.txhash}</TxHash>
                     <TxStatus>{t.status}</TxStatus>
                   </NotificationItem>

@@ -22,7 +22,7 @@ import Button from '../../../common/elements/buttons';
 
 import getContract from '../../../../utils/contracts';
 
-import { DEFAULT_GAS } from '../../../../constants';
+import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '../../../../constants';
 
 import {
   Container,
@@ -108,7 +108,7 @@ class LockDgd extends React.Component {
     //   },
     // } = userAddress;
 
-    const web3Params = { gasPrice: gasPrice * 1e9, gas: DEFAULT_GAS };
+    const web3Params = { gasPrice: DEFAULT_GAS_PRICE, gas: DEFAULT_GAS };
 
     const ui = {
       dgd,

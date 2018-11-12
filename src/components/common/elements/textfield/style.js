@@ -13,7 +13,7 @@ export const SyledInput = styled.input.attrs({
   width: ${props => props.width || '100%'};
 
   ::placeholder {
-    color: ${props => props.theme.textDefault.default.toString()};
+    color: ${props => props.theme.textDefault.lighter.toString()};
   }
 
   :focus {

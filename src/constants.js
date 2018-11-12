@@ -18,8 +18,9 @@ export const REDUX_PREFIX = 'DIGIX_GOVERNANCE_';
 export const DEFAULT_GAS =
   (process.env.ENVIRONMENT === 'production' && 25e4) ||
   (process.env.ENVIRONMENT === 'kovan' && 25e4) ||
-  60e4;
+  50e4;
 
+export const DEFAULT_GAS_PRICE = 30 * 1e9;
 export const ONE_BILLION = 1000000000;
 
 export const CONVERSIONS = {

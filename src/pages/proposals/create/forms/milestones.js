@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TextArea, Input, Select } from '../../../../components/common/elements/index';
 import { Fieldset, FormItem, Label, CreateMilestone } from '../style';
 
 class Milestones extends React.Component {
   render() {
+    const { onChange } = this.props;
     return (
       <Fieldset>
         <FormItem>
@@ -32,4 +34,9 @@ class Milestones extends React.Component {
   }
 }
 
+const { func } = PropTypes;
+
+Milestones.propTypes = {
+  onChange: func.isRequired,
+};
 export default Milestones;

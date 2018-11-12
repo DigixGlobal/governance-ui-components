@@ -8,9 +8,9 @@ export const SyledTextArea = styled.textarea`
   padding: 2rem;
   width: ${props => props.width || '100%'};
   min-height: 30rem;
-
+  outline: none;
   ::placeholder {
-    color: ${props => props.theme.textDefault.default.toString()};
+    color: ${props => props.theme.textDefault.lighter.toString()};
   }
 
   :focus {

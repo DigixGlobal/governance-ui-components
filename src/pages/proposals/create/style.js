@@ -78,3 +78,5 @@ export const CreateMilestone = styled.div`
   border-radius: 3px;
   padding: 2rem;
 `;
+
+export const PreviewWrapper = styled.div``;

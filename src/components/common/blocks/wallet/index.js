@@ -58,13 +58,16 @@ export class Wallet extends React.Component {
       this.props.setUserAddress(defaultAddress.address);
     }
 
-    if ((Challenge.data.challenge && ChallengeProof.fetching === null) || ChallengeProof.error) {
+    if (
+      (Challenge.data && Challenge.data.challenge && ChallengeProof.fetching === null) ||
+      ChallengeProof.error
+    ) {
       this.setState({ showSigning: true });
     } else {
       this.setState({ showSigning: false });
     }
 
-    if (ChallengeProof.data) {
+    if (ChallengeProof.data && !ChallengeProof.fetching) {
       this.props.getTransactions({
         token: ChallengeProof.data['access-token'],
         client: ChallengeProof.data.client,

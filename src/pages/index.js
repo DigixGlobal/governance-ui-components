@@ -51,6 +51,7 @@ class LandingPage extends Component {
         <ProposalFilter
           onStageChange={this.props.getProposalsAction}
           onOrderChange={this.onOrderChange}
+          addressDetails={AddressDetails}
         />
         {hasProposals &&
           orderedProposals.map(proposal => (

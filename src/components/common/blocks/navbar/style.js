@@ -99,7 +99,9 @@ export const NotificationCount = styled.div`
   margin-left: 0.5rem;
   color: #fff;
   position: absolute;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: #c4a159;
   height: 2rem;
   width: 2rem;

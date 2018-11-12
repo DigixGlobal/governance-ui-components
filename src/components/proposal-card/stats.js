@@ -16,7 +16,7 @@ export default class ProposalCardStats extends React.Component {
             Funding
             <span>{details.proposalVersions[0].totalFunding / 1e18} eth</span>
           </StatItem>
-          <StatItem>
+          <StatItem stage={details.stage}>
             Approval
             <span>2%</span>
           </StatItem>

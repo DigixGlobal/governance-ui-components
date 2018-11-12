@@ -3,7 +3,7 @@ import { actions } from './actions';
 const defaultState = {
   Challenge: {
     history: [],
-    data: {},
+    data: undefined,
     error: null,
     fetching: null,
   },
@@ -15,7 +15,7 @@ const defaultState = {
   },
   AddTransaction: {
     history: [],
-    data: {},
+    data: undefined,
     error: null,
     fetching: null,
   },
@@ -27,7 +27,7 @@ const defaultState = {
   },
   TransactionStatus: {
     history: [],
-    data: {},
+    data: undefined,
     error: null,
     fetching: null,
   },

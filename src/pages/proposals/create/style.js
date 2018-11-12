@@ -16,6 +16,7 @@ export const MenuItem = styled.div`
   padding-bottom: 1rem;
   margin-bottom: 2rem;
   text-transform: uppercase;
+  cursor: pointer;
 
   ${props =>
     props.active &&
@@ -77,4 +78,11 @@ export const CreateMilestone = styled.div`
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: 3px;
   padding: 2rem;
+`;
+
+export const EditorContainer = styled.div`
+  & > div {
+    height: 20rem;
+  }
+  border: none;
 `;

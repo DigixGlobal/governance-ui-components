@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const ProposalWrapper = styled.div`
@@ -117,8 +117,12 @@ export const Stats = styled.div`
 export const StatItem = styled.div`
   font-size: 1.4rem;
   flex: 1;
-
-  display: flex;
+  ${props =>
+    props.stage &&
+    props.stage.toLowerCase() === 'idea' &&
+    css`
+      color: ${props.theme.textDefault.lightest.toString()};
+    `} display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;

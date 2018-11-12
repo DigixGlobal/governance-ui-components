@@ -1,31 +1,77 @@
 import React from 'react';
 
-import { Button, Input, TextArea, Select } from '../../../components/common/elements/index';
-import {
-  CreateWrapper,
-  TabPanel,
-  MenuItem,
-  Header,
-  LeftCol,
-  RightCol,
-  Heading,
-  Fieldset,
-  FormItem,
-  Label,
-  MediaUploader,
-  ImageHolder,
-  CreateMilestone,
-} from './style';
+import { Button } from '../../../components/common/elements/index';
+import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
+
+import Details from './forms/details';
+import Milestones from './forms/milestones';
+import Multimedia from './forms/multimedia';
+import Overview from './forms/overview';
+import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions';
+
+const steps = [Overview, Details, Multimedia, Milestones];
 
 class CreateProposal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentStep: 0,
+      canMoveNext: true,
+      canMovePrevious: false,
+    };
+  }
+
+  onNextButtonClick = () => {
+    const { currentStep } = this.state;
+    const nextStep = currentStep + 1;
+    if (nextStep < steps.length - 1) {
+      this.setState({ currentStep: nextStep, canMovePrevious: true });
+    } else if (nextStep === steps.length - 1) {
+      this.setState({ currentStep: nextStep, canMoveNext: false, canMovePrevious: true });
+    }
+  };
+
+  onPreviousButtonClick = () => {
+    const { currentStep } = this.state;
+    const prevStep = currentStep - 1;
+    if (prevStep > 0) {
+      this.setState({ currentStep: prevStep, canMoveNext: true });
+    } else {
+      this.setState({ currentStep: prevStep, canMoveNext: true, canMovePrevious: false });
+    }
+  };
+
+  useStep = step => {
+    this.setState({
+      currentStep: step,
+      canMovePrevious: step > 0,
+      canMoveNext: step < steps.length - 1,
+    });
+  };
+
+  renderStep = () => {
+    const { currentStep } = this.state;
+    const Step = steps[currentStep];
+    return <Step />;
+  };
+
   render() {
+    const { currentStep, canMoveNext, canMovePrevious } = this.state;
     return (
       <CreateWrapper>
         <TabPanel>
-          <MenuItem active>Overview</MenuItem>
-          <MenuItem>Project Detail</MenuItem>
-          <MenuItem>Multimedia</MenuItem>
-          <MenuItem>Milestone</MenuItem>
+          <MenuItem active={currentStep === 0} onClick={() => this.useStep(0)}>
+            Overview
+          </MenuItem>
+          <MenuItem active={currentStep === 1} onClick={() => this.useStep(1)}>
+            Project Detail
+          </MenuItem>
+          <MenuItem active={currentStep === 2} onClick={() => this.useStep(2)}>
+            Multimedia
+          </MenuItem>
+          <MenuItem active={currentStep === 3} onClick={() => this.useStep(3)}>
+            Milestone
+          </MenuItem>
         </TabPanel>
         <Header>
           <LeftCol>
@@ -33,83 +79,15 @@ class CreateProposal extends React.Component {
           </LeftCol>
           <RightCol>
             <Button secondary>Preview</Button>
-            <Button primary ghost>
+            <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
+              Previous
+            </Button>
+            <Button disabled={!canMoveNext} primary ghost onClick={this.onNextButtonClick}>
               Next
             </Button>
           </RightCol>
         </Header>
-        <Fieldset>
-          <FormItem>
-            <Label>Project Title</Label>
-            <Input placeholder="Implementation of Silver tokens" />
-          </FormItem>
-          <FormItem>
-            <Label>Short Description</Label>
-            <TextArea placeholder="Max 200 characters" />
-          </FormItem>
-        </Fieldset>
-        <Fieldset>
-          <FormItem>
-            <Label>Project Information</Label>
-            <TextArea placeholder="TO DO (Dev): Update this component to a simple text editor." />
-          </FormItem>
-        </Fieldset>
-        <Fieldset>
-          <FormItem>
-            <Label>Number of Image(s)</Label>
-            <Select id="test" items={[{ text: '1', value: '1' }, { text: '2', value: '2' }]} />
-          </FormItem>
-          <FormItem>
-            <Label>Image 1</Label>
-            <Input placeholder="Max 200 characters" />
-            <MediaUploader>
-              <LeftCol>
-                <Button primary ghost>
-                  Upload Image
-                </Button>
-              </LeftCol>
-              <RightCol>
-                <ImageHolder>&nbsp;</ImageHolder>
-              </RightCol>
-            </MediaUploader>
-          </FormItem>
-          <FormItem>
-            <Label>Image 2</Label>
-            <MediaUploader>
-              <LeftCol>
-                <Button primary ghost>
-                  Upload Image
-                </Button>
-              </LeftCol>
-              <RightCol>
-                <ImageHolder>&nbsp;</ImageHolder>
-              </RightCol>
-            </MediaUploader>
-          </FormItem>
-        </Fieldset>
-        <Fieldset>
-          <FormItem>
-            <Label>Reward Expected</Label>
-            <Input placeholder="Insert amnount of reward expected in ETH for completion of project." />
-          </FormItem>
-          <FormItem>
-            <Label>Number of Milestone(s)</Label>
-            <Select id="test2" items={[{ text: '1', value: '1' }, { text: '2', value: '2' }]} />
-          </FormItem>
-
-          <CreateMilestone>
-            <FormItem>
-              <Label>Funds Required for This Milestone</Label>
-              <Input placeholder="Insert anount of fund expected in ETH for completion of milestone" />
-            </FormItem>
-            <FormItem>
-              <FormItem>
-                <Label>Description of Milestone</Label>
-                <TextArea placeholder="Explain what will be in this milestone" />
-              </FormItem>
-            </FormItem>
-          </CreateMilestone>
-        </Fieldset>
+        {this.renderStep()}
       </CreateWrapper>
     );
   }

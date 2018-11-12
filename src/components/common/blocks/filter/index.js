@@ -15,12 +15,15 @@ export default class ProposalCardFilter extends React.Component {
     if (onOrderChange) onOrderChange(e.target.value);
   };
   render() {
+    const { addressDetails } = this.props;
+    const canCreate = addressDetails && addressDetails.data.isParticipant;
     return (
       <FilterWrapper>
         <Heading>
           <div>
             <H1>Projects</H1>
           </div>
+          {/* {canCreate && ( */}
           <div>
             <Link to="/proposals/create" href="/proposals/create">
               <Button primary ghost iconButton>
@@ -29,6 +32,7 @@ export default class ProposalCardFilter extends React.Component {
               </Button>
             </Link>
           </div>
+          {/* )} */}
         </Heading>
         <Filter>
           <Category {...this.props} />
@@ -46,8 +50,9 @@ export default class ProposalCardFilter extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 
 ProposalCardFilter.propTypes = {
   onOrderChange: func.isRequired,
+  addressDetails: object.isRequired,
 };

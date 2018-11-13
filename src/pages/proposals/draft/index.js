@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ProjectDetails from '../details';
-import Milestones from '../milestones';
+// import ProjectDetails from '../details';
+// import Milestones from '../milestones';
 import { Button, Vote } from '../../../components/common/elements/index';
 
 import {
@@ -52,8 +52,8 @@ class Draft extends React.Component {
             </UpvoteStatus>
           </LatestActivity>
         </ProjectSummary>
-        <ProjectDetails />
-        <Milestones />
+        {/* <ProjectDetails /> */}
+        {/* <Milestones /> */}
       </ProposalsWrapper>
     );
   }

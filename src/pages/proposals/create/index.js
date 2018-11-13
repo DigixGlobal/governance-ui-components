@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Button, Input, TextArea, Select } from '../../../components/common/elements/index';
 import {
   CreateWrapper,
@@ -32,7 +31,9 @@ class CreateProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button secondary>Preview</Button>
+            <Button secondary onClick={this.showModal}>
+              Preview
+            </Button>
             <Button primary ghost>
               Next
             </Button>

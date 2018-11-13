@@ -16,7 +16,7 @@ import Milestones from './forms/milestones';
 import Multimedia from './forms/multimedia';
 import Overview from './forms/overview';
 // import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions';
-import { dijix } from '../../../utils/dijix';
+import { dijix, uploadProofsToIpfs } from '../../../utils/dijix';
 import { encodeHash } from '../../../utils/helpers';
 
 import getContract from '../../../utils/contracts';
@@ -97,12 +97,17 @@ class CreateProposal extends React.Component {
 
   createAttestation = () => {
     const { form } = this.state;
+    const { title, description, details, milestones, proofs } = form;
+
     return dijix
       .create('attestation', {
         attestation: {
-          ...form,
+          title,
+          description,
+          details,
+          milestones,
         },
-        // proofs: [...proofs],
+        proofs: [...proofs],
       })
       .then(({ ipfsHash }) => {
         const encodedHash = encodeHash(ipfsHash);
@@ -112,7 +117,10 @@ class CreateProposal extends React.Component {
 
   handleSubmit = () => {
     const { web3Redux, ChallengeProof } = this.props;
+    const { form } = this.state;
     const proposalEth = toBigNumber(2 * 1e18);
+    const { milestoneFundings } = form;
+    const funds = milestoneFundings.map(eth => toBigNumber(parseInt(eth, 0) * 1e18));
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -132,16 +140,17 @@ class CreateProposal extends React.Component {
       ui,
     };
 
-    this.createAttestation().then(ipfsHash =>
+    this.createAttestation().then(ipfsHash => {
       contract.submitPreproposal
         .sendTransaction(
           ipfsHash,
-          [2000000000000000000, 2000000000000000000],
-          2000000000000000000,
+          funds,
+          toBigNumber(parseInt(form.finalReward, 0) * 1e18),
           web3Params
         )
 
         .then(txHash => {
+          console.log(txHash);
           if (ChallengeProof.data) {
             this.setState({ txHash }, () => {
               this.props.sendTransactionToDaoServer({
@@ -158,8 +167,8 @@ class CreateProposal extends React.Component {
             });
           }
         })
-        .catch(this.setError)
-    );
+        .catch(this.setError);
+    });
   };
 
   renderStep = () => {

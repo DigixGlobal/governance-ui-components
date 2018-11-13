@@ -71,6 +71,13 @@ export const ImageHolder = styled.div`
   border-radius: 3px;
   min-width: 500px;
   height: 200px;
+  padding: 0.5rem;
+  overflow: auto;
+  & > img {
+    height: 17rem;
+    width: 20.5rem;
+    margin: 2px;
+  }
 `;
 
 export const CreateMilestone = styled.div`
@@ -78,6 +85,7 @@ export const CreateMilestone = styled.div`
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: 3px;
   padding: 2rem;
+  margin-top: 2rem;
 `;
 
 export const EditorContainer = styled.div`

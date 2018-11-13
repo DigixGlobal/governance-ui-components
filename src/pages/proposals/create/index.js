@@ -7,10 +7,9 @@ import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
 
-import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
+import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 
 import { Button } from '../../../components/common/elements/index';
-import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
 
 import Details from './forms/details';
 import Milestones from './forms/milestones';
@@ -22,9 +21,16 @@ import { encodeHash } from '../../../utils/helpers';
 
 import getContract from '../../../utils/contracts';
 
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE, ONE_BILLION } from '../../../constants';
+import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '../../../constants';
 
-// import LockDgdTx from './tx-ui';
+import TxVisualization from '../../../components/common/blocks/tx-visualization';
+
+import { showHideAlert } from '../../../reducers/gov-ui/actions';
+import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions';
+
+import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
+
+registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
 
@@ -36,6 +42,9 @@ class CreateProposal extends React.Component {
     this.state = {
       form: {},
       currentStep: 0,
+      txHash: undefined,
+      error: undefined,
+      openError: false,
       canMoveNext: true,
       canMovePrevious: false,
     };
@@ -63,7 +72,6 @@ class CreateProposal extends React.Component {
 
   onChangeHandler = (e, value) => {
     const { form } = this.state;
-    console.log({ e });
     if (e.target && e.target.id) {
       form[e.target.id] = e.target.value;
     } else if (e && value) {
@@ -72,6 +80,12 @@ class CreateProposal extends React.Component {
 
     this.setState({ form: { ...form } });
   };
+
+  setError = error =>
+    this.setState({
+      error: JSON.stringify((error && error.message) || error),
+      openError: !!error,
+    });
 
   useStep = step => {
     this.setState({
@@ -97,7 +111,8 @@ class CreateProposal extends React.Component {
   };
 
   handleSubmit = () => {
-    const { web3Redux, defaultAddress, ChallengeProof } = this.props;
+    const { web3Redux, ChallengeProof } = this.props;
+    const proposalEth = toBigNumber(2 * 1e18);
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -105,63 +120,46 @@ class CreateProposal extends React.Component {
       .eth.contract(abi)
       .at(address);
 
-    const web3Params = { gasPrice: DEFAULT_GAS_PRICE, gas: DEFAULT_GAS };
-
     const ui = {
-      value: toBigNumber(2 * 1e18),
-      type: 'lockDgd',
+      caption: 'Requires 2 ETH to Submit Proposal',
+      header: 'Proposal',
+      type: 'txVisualization',
+    };
+    const web3Params = {
+      gasPrice: DEFAULT_GAS_PRICE,
+      gas: DEFAULT_GAS,
+      value: proposalEth,
+      ui,
     };
 
     this.createAttestation().then(ipfsHash =>
       contract.submitPreproposal
         .sendTransaction(
           ipfsHash,
-          [toBigNumber(2 * 1e18), toBigNumber(3 * 1e18)],
-          toBigNumber(2 * 1e18),
-          {
-            from: defaultAddress.address,
-            value: 2 * 1e18,
-            ui,
-            ...web3Params,
-          }
+          [2000000000000000000, 2000000000000000000],
+          2000000000000000000,
+          web3Params
         )
 
         .then(txHash => {
-          console.log(txHash);
-          // if (ChallengeProof.data) {
-          //   this.setState({ txHash }, () => {
-          //     sendTransactionToDaoServerAction({
-          //       txHash,
-          //       title: 'Lock DGD',
-          //       token: ChallengeProof.data['access-token'],
-          //       client: ChallengeProof.data.client,
-          //       uid: ChallengeProof.data.uid,
-          //     });
-          //   });
-          // } else {
-          //   this.setState({ txHash }, () => {
-          //     this.props.showHideAlert({ message: txHash });
-          //   });
-          // }
+          if (ChallengeProof.data) {
+            this.setState({ txHash }, () => {
+              this.props.sendTransactionToDaoServer({
+                txHash,
+                title: 'Submit Proposal',
+                token: ChallengeProof.data['access-token'],
+                client: ChallengeProof.data.client,
+                uid: ChallengeProof.data.uid,
+              });
+            });
+          } else {
+            this.setState({ txHash }, () => {
+              this.props.showHideAlert({ message: txHash });
+            });
+          }
         })
-        .catch(err => {
-          console.log(err);
-          console.log({
-            ipfsHash,
-            fundings: [2 * 1e18, 3 * 1e18],
-            reward: toBigNumber(3 * ONE_BILLION),
-            address: defaultAddress.address,
-          });
-        })
+        .catch(this.setError)
     );
-
-    // this.setError();
-
-    // console.log({
-    //   ipfshHash,
-    //   fund: [toBigNumber(2 * ONE_BILLION)],
-    //   reward: toBigNumber(3 * ONE_BILLION),
-    // });
   };
 
   renderStep = () => {
@@ -213,23 +211,21 @@ class CreateProposal extends React.Component {
   }
 }
 
-const { object } = PropTypes;
+const { object, func } = PropTypes;
 CreateProposal.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
-  defaultAddress: object,
+  showHideAlert: func.isRequired,
+  sendTransactionToDaoServer: func.isRequired,
 };
 
-CreateProposal.defaultProps = {
-  defaultAddress: undefined,
-};
 const mapStateToProps = state => ({
-  defaultAddress: getDefaultAddress(state),
   ChallengeProof: state.daoServer.ChallengeProof,
 });
 
-// export default web3Connect(conect(mapStateToProps)CreateProposal);
-
-export default web3Connect(connect(mapStateToProps)(CreateProposal));
-
-// export default CreateProposal;
+export default web3Connect(
+  connect(
+    mapStateToProps,
+    { showHideAlert, sendTransactionToDaoServer }
+  )(CreateProposal)
+);

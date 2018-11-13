@@ -24,7 +24,7 @@ import { setUserAddress, showHideAlert } from '../../../../reducers/gov-ui/actio
 import {
   getChallenge,
   proveChallenge,
-  getTransactions,
+  // getTransactions,
 } from '../../../../reducers/dao-server/actions';
 
 export class Wallet extends React.Component {
@@ -65,14 +65,6 @@ export class Wallet extends React.Component {
       this.setState({ showSigning: true });
     } else {
       this.setState({ showSigning: false });
-    }
-
-    if (ChallengeProof.data && !ChallengeProof.fetching) {
-      this.props.getTransactions({
-        token: ChallengeProof.data['access-token'],
-        client: ChallengeProof.data.client,
-        uid: ChallengeProof.data.uid,
-      });
     }
   }
 
@@ -152,7 +144,7 @@ const actions = {
   showSigningModal: showMsgSigningModal,
   showHideAlert,
   setUserAddress,
-  getTransactions,
+  // getTransactions,
 };
 
 const mapStateToProps = state => ({

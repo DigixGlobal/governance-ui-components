@@ -27,9 +27,17 @@ class Utility extends React.Component {
     };
   }
 
+  componentWillMount = () => {
+    const { transactions } = this.props;
+    this.interval = setInterval(() => {
+      if (!transactions.fetching || transactions.fetching === null) {
+        this.getNotifications();
+      }
+    }, 1000 * 60);
+  };
+
   componentWillReceiveProps = nextProps => {
     if (!_.isEqual(nextProps, this.props)) {
-      const { challengeProof } = this.props;
       const { userAddress } = nextProps;
       if (!this.props.challenge.data && userAddress) {
         this.getDetailsInterval = setInterval(() => {
@@ -44,23 +52,25 @@ class Utility extends React.Component {
         if (this.props.challenge.fetching === null || !this.props.challenge.fetching)
           this.props.getChallenge(userAddress.address);
       }
-
-      this.interval = setInterval(() => {
-        if (challengeProof.data) {
-          this.props.getTransactions({
-            token: challengeProof.data['access-token'],
-            client: challengeProof.data.client,
-            uid: challengeProof.data.uid,
-          });
-        }
-      }, 1000 * 60);
     }
   };
 
-  // shouldComponentUpdate = (nextProps, nextState) =>
-  //   !_.isEqual(nextState, this.state) && !_.isEqual(nextProps, this.props);
+  getNotifications = () => {
+    const {
+      challengeProof,
+      transactions: { fetching },
+    } = this.props;
+    if (challengeProof.data && !fetching) {
+      this.props.getTransactions({
+        token: challengeProof.data['access-token'],
+        client: challengeProof.data.client,
+        uid: challengeProof.data.uid,
+      });
+    }
+  };
 
   showHideNotifications = () => {
+    if (!this.state.showNotice) this.getNotifications();
     this.setState({ showNotice: !this.state.showNotice });
   };
   render() {
@@ -70,13 +80,15 @@ class Utility extends React.Component {
     return (
       <UtilityWrapper>
         <Icon kind="notification" onClick={this.showHideNotifications} />
-        {transactions && <NotificationCount>{transactions.length}</NotificationCount>}
+        {transactions.data.transactions && (
+          <NotificationCount>{transactions.data.transactions.length}</NotificationCount>
+        )}
         {showNotice && (
           <Notification>
             <NotificationHeader>Notifications</NotificationHeader>
             <NotificationContent>
-              {transactions &&
-                transactions.map(t => (
+              {transactions.data.transactions &&
+                transactions.data.transactions.map(t => (
                   <NotificationItem key={t.id}>
                     <TxHash>{t.txhash}</TxHash>
                     <TxStatus>{t.status}</TxStatus>
@@ -91,10 +103,10 @@ class Utility extends React.Component {
   }
 }
 
-const { array, func, object } = PropTypes;
+const { func, object } = PropTypes;
 
 Utility.propTypes = {
-  transactions: array,
+  transactions: object,
   challenge: object,
   challengeProof: object,
   getTransactions: func.isRequired,
@@ -111,7 +123,7 @@ Utility.defaultProps = {
 
 export default connect(
   ({ daoServer: { Transactions, ChallengeProof, Challenge }, govUI: { UserAddress } }) => ({
-    transactions: Transactions.data.transactions,
+    transactions: Transactions,
     challengeProof: ChallengeProof,
     challenge: Challenge,
     userAddress: UserAddress,

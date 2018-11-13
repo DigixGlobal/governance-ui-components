@@ -9,7 +9,6 @@ import { Container } from './style';
 
 class Alert extends React.Component {
   componentWillReceiveProps = nextProps => {
-    console.log({ nextProps });
     const { alertData } = nextProps;
     if (alertData && alertData.message) {
       this.interval = setInterval(() => {

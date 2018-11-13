@@ -82,10 +82,15 @@ class CreateProposal extends React.Component {
   };
 
   setError = error =>
-    this.setState({
-      error: JSON.stringify((error && error.message) || error),
-      openError: !!error,
-    });
+    this.setState(
+      {
+        error: JSON.stringify((error && error.message) || error),
+        openError: !!error,
+      },
+      () => {
+        this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
+      }
+    );
 
   useStep = step => {
     this.setState({
@@ -107,7 +112,7 @@ class CreateProposal extends React.Component {
           details,
           milestones,
         },
-        proofs: [...proofs],
+        proofs: proofs ? [...proofs] : undefined,
       })
       .then(({ ipfsHash }) => {
         const encodedHash = encodeHash(ipfsHash);
@@ -150,20 +155,19 @@ class CreateProposal extends React.Component {
         )
 
         .then(txHash => {
-          console.log(txHash);
           if (ChallengeProof.data) {
+            console.log(txHash);
             this.setState({ txHash }, () => {
-              this.props.sendTransactionToDaoServer({
-                txHash,
-                title: 'Submit Proposal',
-                token: ChallengeProof.data['access-token'],
-                client: ChallengeProof.data.client,
-                uid: ChallengeProof.data.uid,
-              });
-            });
-          } else {
-            this.setState({ txHash }, () => {
-              this.props.showHideAlert({ message: txHash });
+              Promise.all([
+                this.props.sendTransactionToDaoServer({
+                  txHash,
+                  title: 'Submit Proposal',
+                  token: ChallengeProof.data['access-token'],
+                  client: ChallengeProof.data.client,
+                  uid: ChallengeProof.data.uid,
+                }),
+                this.props.showHideAlert({ message: 'Proposal Submitted' }),
+              ]);
             });
           }
         })

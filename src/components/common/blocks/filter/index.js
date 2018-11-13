@@ -23,16 +23,16 @@ export default class ProposalCardFilter extends React.Component {
           <div>
             <H1>Projects</H1>
           </div>
-          {/* {canCreate && ( */}
-          <div>
-            <Link to="/proposals/create" href="/proposals/create">
-              <Button primary ghost iconButton>
-                <Icon kind="plus" />
-                Create
-              </Button>
-            </Link>
-          </div>
-          {/* )} */}
+          {canCreate && (
+            <div>
+              <Link to="/proposals/create" href="/proposals/create">
+                <Button primary ghost iconButton>
+                  <Icon kind="plus" />
+                  Create
+                </Button>
+              </Link>
+            </div>
+          )}
         </Heading>
         <Filter>
           <Category {...this.props} />

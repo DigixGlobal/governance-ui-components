@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ProjectDetails from '../details';
-// import Milestones from '../milestones';
-import { Button, Vote } from '../../../components/common/elements/index';
+import Milestones from '../milestones';
+import { Button } from '../../../components/common/elements/index';
 
 import {
   ProposalsWrapper,
@@ -14,12 +14,11 @@ import {
   FundingStatus,
   MilestonesStatus,
   Reward,
-  UpvoteStatus,
 } from '../style';
 
 class Preview extends React.Component {
   render() {
-    const { form } = this.props;
+    const { form, proposer } = this.props;
     if (!form) return null;
 
     return (
@@ -38,7 +37,7 @@ class Preview extends React.Component {
           </Header>
           <LatestActivity>
             <SubmittedBy>
-              Submitted By <span>proposer</span>
+              Submitted By <span>{proposer}</span>
             </SubmittedBy>
             <FundingStatus>
               Funding
@@ -50,13 +49,10 @@ class Preview extends React.Component {
             <Reward>
               Reward <span>{form.finalReward}</span>
             </Reward>
-            {/* <UpvoteStatus>
-              <Vote hasVoted />
-            </UpvoteStatus> */}
           </LatestActivity>
         </ProjectSummary>
-        <ProjectDetails project={form} />
-        {/* <Milestones /> */}
+        <ProjectDetails project={form} preview />
+        <Milestones milestones={form.milestones || []} />
       </ProposalsWrapper>
     );
   }
@@ -67,7 +63,7 @@ const { object, func } = PropTypes;
 Preview.propTypes = {
   form: object.isRequired,
   onContinueEditing: func.isRequired,
-  userAddress: object.isRequired,
+  proposer: object.isRequired,
 };
 
 export default Preview;

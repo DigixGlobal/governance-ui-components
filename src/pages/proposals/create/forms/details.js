@@ -10,24 +10,18 @@ import './quill.css';
 import { Fieldset, FormItem, Label, EditorContainer } from '../style';
 
 class Details extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   // this.state = { text: '' }; // You can also pass a Quill Delta here
-  //   // this.handleChange = this.handleChange.bind(this);
-  // }
-
-  // handleChange(value) {
-  //   this.setState({ text: value });
-  // }
-
   render() {
-    const { onChange } = this.props;
+    const { onChange, form } = this.props;
     return (
       <Fieldset>
         <FormItem>
           <Label>Project Information</Label>
           <EditorContainer>
-            <ReactQuill id="details" onChange={value => onChange('details', value)} />
+            <ReactQuill
+              id="details"
+              value={form.details || ''}
+              onChange={value => onChange('details', value)}
+            />
           </EditorContainer>
         </FormItem>
       </Fieldset>
@@ -35,10 +29,11 @@ class Details extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 
 Details.propTypes = {
   onChange: func.isRequired,
+  form: object.isRequired,
 };
 
 export default Details;

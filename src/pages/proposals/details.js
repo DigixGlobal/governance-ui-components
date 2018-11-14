@@ -1,9 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
+import PropTypes, { bool } from 'prop-types';
+import ReactMarkdown from 'react-markdown';
 import { dijix } from '../../utils/dijix';
 
-import { DetailsContainer, ShortDescription, TrackActivity, Details, SubTitle } from './style';
+import {
+  DetailsContainer,
+  ShortDescription,
+  TrackActivity,
+  Details,
+  SubTitle,
+  ImageHolder,
+} from './style';
 
 import ImageViewer from '../../components/common/ipfs-viewer';
 
@@ -15,8 +22,14 @@ export default class ProjectDetails extends React.Component {
     return this.renderImages(documents);
   }
 
+  renderImages = proofs => {
+    if (!proofs) return null;
+    const images = proofs.map((img, i) => <img key={`img-${i + 1}`} alt="" src={img.src} />);
+    return <ImageHolder>{images}</ImageHolder>;
+  };
+
   render() {
-    const { project } = this.props;
+    const { project, preview } = this.props;
     const imageHashes = project.images || project.proofs;
     return (
       <DetailsContainer>
@@ -27,13 +40,16 @@ export default class ProjectDetails extends React.Component {
         </TrackActivity>
         <Details>
           <SubTitle>Project Details</SubTitle>
-          {project.details}
-          <ImageViewer
-            thumbnailSize="512"
-            hashes={[imageHashes]}
-            renderLoading={null}
-            renderResolved={thumbnails => this.renderDocuments(thumbnails)}
-          />
+          <ReactMarkdown source={project.details} escapeHtml={false} />
+          {!preview && (
+            <ImageViewer
+              thumbnailSize="512"
+              hashes={[imageHashes]}
+              renderLoading={null}
+              renderResolved={thumbnails => this.renderDocuments(thumbnails)}
+            />
+          )}
+          {preview && this.renderImages(project.proofs)}
         </Details>
       </DetailsContainer>
     );
@@ -42,4 +58,9 @@ export default class ProjectDetails extends React.Component {
 
 ProjectDetails.propTypes = {
   project: PropTypes.object.isRequired,
+  preview: PropTypes.bool,
+};
+
+ProjectDetails.defaultProps = {
+  preview: false,
 };

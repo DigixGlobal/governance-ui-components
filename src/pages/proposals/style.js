@@ -8,7 +8,7 @@ export const BrowseVersionHistory = styled.div`
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lightest.toString()};
   box-shadow: ${props => props.theme.boxShadow};
-  
+
   justify-content: space-between;
   margin-bottom: 7rem;
   padding: 2rem 2.5rem;
@@ -155,6 +155,20 @@ export const TrackActivity = styled.label`
 
   input {
     margin-right: 1rem;
+  }
+`;
+
+export const ImageHolder = styled.div`
+  border-radius: 3px;
+  min-width: 500px;
+  height: 40rem;
+  padding: 0.5rem;
+  overflow: auto;
+  & > img {
+    height: 30rem;
+    width: 33rem;
+    margin: 1rem;
+    border: 2px solid ${props => props.theme.borderColor.default.toString()};
   }
 `;
 

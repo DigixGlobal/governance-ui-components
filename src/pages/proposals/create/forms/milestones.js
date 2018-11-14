@@ -88,7 +88,7 @@ class Milestones extends React.Component {
   };
 
   render() {
-    const { onChange } = this.props;
+    const { onChange, form } = this.props;
     // const { milestones } = this.state;
     return (
       <Fieldset>
@@ -97,6 +97,7 @@ class Milestones extends React.Component {
           <Input
             type="number"
             id="finalReward"
+            value={form.finalReward || ''}
             onChange={onChange}
             placeholder="Insert amnount of reward expected in ETH for completion of project."
           />
@@ -105,7 +106,7 @@ class Milestones extends React.Component {
         <FormItem>
           <Label>Number of Milestone(s)</Label>
           <Select
-            id="test2"
+            value={form.milestones ? form.milestones.length : '1'}
             items={[{ text: '1', value: '1' }, { text: '2', value: '2' }]}
             onChange={this.handleMilestoneCountChange}
           />
@@ -116,9 +117,10 @@ class Milestones extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 
 Milestones.propTypes = {
   onChange: func.isRequired,
+  form: object.isRequired,
 };
 export default Milestones;

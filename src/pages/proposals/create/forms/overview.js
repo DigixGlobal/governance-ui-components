@@ -7,13 +7,15 @@ import { Fieldset, FormItem, Label } from '../style';
 class OverView extends React.Component {
   render() {
     // console.log(decodeHash('0x9fa5c38478b3cb4a24ca3a6ca41eb0457d78a62e29039ee9b17484e32429fd95'));
-    const { onChange } = this.props;
+
+    const { onChange, form } = this.props;
     return (
       <Fieldset>
         <FormItem>
           <Label>Project Title</Label>
           <Input
             id="title"
+            value={form.title || ''}
             onChange={onChange}
             placeholder="i.e. Implementation of Silver tokens"
           />
@@ -21,6 +23,7 @@ class OverView extends React.Component {
         <FormItem>
           <Label>Short Description</Label>
           <TextArea
+            value={form.description || ''}
             id="description"
             onChange={onChange}
             placeholder="Short description of your project"
@@ -31,9 +34,10 @@ class OverView extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 
 OverView.propTypes = {
   onChange: func.isRequired,
+  form: object.isRequired,
 };
 export default OverView;

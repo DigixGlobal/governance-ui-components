@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { string } from 'prop-types';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
@@ -182,14 +182,21 @@ class CreateProposal extends React.Component {
   };
 
   renderStep = () => {
-    const { currentStep } = this.state;
+    const { currentStep, form } = this.state;
     const Step = steps[currentStep];
-    return <Step onChange={this.onChangeHandler} />;
+    return <Step onChange={this.onChangeHandler} form={form} />;
   };
 
-  renderPreview = () => (
-    <Preview form={this.state.form} onContinueEditing={this.handleShowPreview} />
-  );
+  renderPreview = () => {
+    const { address } = this.props;
+    return (
+      <Preview
+        form={this.state.form}
+        onContinueEditing={this.handleShowPreview}
+        proposer={address.address}
+      />
+    );
+  };
 
   renderCreate = () => {
     const { currentStep, canMoveNext, canMovePrevious } = this.state;
@@ -247,10 +254,12 @@ CreateProposal.propTypes = {
   ChallengeProof: object.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
+  address: object.isRequired,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
+  address: state.govUI.UserAddress,
 });
 
 export default web3Connect(

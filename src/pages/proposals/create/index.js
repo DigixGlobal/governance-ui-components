@@ -52,6 +52,7 @@ class CreateProposal extends React.Component {
       canMovePrevious: false,
       showPreview: false,
       showConfirmPage: false,
+      validForm: false,
     };
   }
 
@@ -83,7 +84,9 @@ class CreateProposal extends React.Component {
       form[e] = value;
     }
 
-    this.setState({ form: { ...form } });
+    const validForm = form.milestones && form.milestones.length > 0;
+
+    this.setState({ form: { ...form }, validForm });
   };
 
   setError = error =>
@@ -215,7 +218,7 @@ class CreateProposal extends React.Component {
   );
 
   renderCreate = () => {
-    const { currentStep, canMoveNext, canMovePrevious } = this.state;
+    const { currentStep, canMoveNext, canMovePrevious, validForm } = this.state;
     return (
       <CreateWrapper>
         <TabPanel>
@@ -248,11 +251,12 @@ class CreateProposal extends React.Component {
                 Next
               </Button>
             )}
-            {!canMoveNext && (
-              <Button primary ghost onClick={this.handleShowConfirmPage}>
-                Create Now
-              </Button>
-            )}
+            {!canMoveNext &&
+              validForm && (
+                <Button primary ghost onClick={this.handleShowConfirmPage}>
+                  Create Now
+                </Button>
+              )}
           </RightCol>
         </Header>
         {this.renderStep()}

@@ -16,20 +16,21 @@ export default class ProjectDetails extends React.Component {
   }
 
   render() {
-    const { details } = this.props;
+    const { project } = this.props;
+    const imageHashes = project.images || project.proofs;
     return (
       <DetailsContainer>
-        <ShortDescription>{details.dijixObject.description}</ShortDescription>
+        <ShortDescription>{project.description}</ShortDescription>
         <TrackActivity>
           <input type="checkbox" />
           Track change from previous version
         </TrackActivity>
         <Details>
           <SubTitle>Project Details</SubTitle>
-          {details.dijixObject.details}
+          {project.details}
           <ImageViewer
             thumbnailSize="512"
-            hashes={[details.dijixObject.images]}
+            hashes={[imageHashes]}
             renderLoading={null}
             renderResolved={thumbnails => this.renderDocuments(thumbnails)}
           />
@@ -40,5 +41,5 @@ export default class ProjectDetails extends React.Component {
 }
 
 ProjectDetails.propTypes = {
-  details: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired,
 };

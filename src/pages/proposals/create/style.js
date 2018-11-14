@@ -94,3 +94,5 @@ export const EditorContainer = styled.div`
   }
   border: none;
 `;
+
+export const PreviewWrapper = styled.div``;

@@ -92,7 +92,7 @@ class Proposal extends React.Component {
             </UpvoteStatus>
           </LatestActivity>
         </ProjectSummary>
-        <ProjectDetails details={proposalVersion} />
+        <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
       </ProposalsWrapper>
     );

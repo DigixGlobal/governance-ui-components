@@ -15,8 +15,9 @@ import Details from './forms/details';
 import Milestones from './forms/milestones';
 import Multimedia from './forms/multimedia';
 import Overview from './forms/overview';
+import Preview from './preview';
 // import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions';
-import { dijix, uploadProofsToIpfs } from '../../../utils/dijix';
+import { dijix } from '../../../utils/dijix';
 import { encodeHash } from '../../../utils/helpers';
 
 import getContract from '../../../utils/contracts';
@@ -47,6 +48,7 @@ class CreateProposal extends React.Component {
       openError: false,
       canMoveNext: true,
       canMovePrevious: false,
+      showPreview: false,
     };
   }
 
@@ -120,6 +122,10 @@ class CreateProposal extends React.Component {
       });
   };
 
+  handleShowPreview = () => {
+    this.setState({ showPreview: !this.state.showPreview });
+  };
+
   handleSubmit = () => {
     const { web3Redux, ChallengeProof } = this.props;
     const { form } = this.state;
@@ -181,7 +187,11 @@ class CreateProposal extends React.Component {
     return <Step onChange={this.onChangeHandler} />;
   };
 
-  render() {
+  renderPreview = () => (
+    <Preview form={this.state.form} onContinueEditing={this.handleShowPreview} />
+  );
+
+  renderCreate = () => {
     const { currentStep, canMoveNext, canMovePrevious } = this.state;
     return (
       <CreateWrapper>
@@ -204,7 +214,9 @@ class CreateProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button secondary>Preview</Button>
+            <Button secondary onClick={this.handleShowPreview}>
+              Preview
+            </Button>
             <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
               Previous
             </Button>
@@ -221,6 +233,11 @@ class CreateProposal extends React.Component {
         </LeftCol>
       </CreateWrapper>
     );
+  };
+  render() {
+    const { showPreview } = this.state;
+    if (!showPreview) return this.renderCreate();
+    if (showPreview) return this.renderPreview();
   }
 }
 

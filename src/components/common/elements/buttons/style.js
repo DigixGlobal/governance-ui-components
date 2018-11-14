@@ -63,14 +63,14 @@ export const RoundBtn = styled.button`
       font-size: 1.4rem;
 
       svg {
-        fill: ${props => props.theme.iconColor.toString()};
+        fill: ${props.theme.iconColor.toString()};
         width: 30px;
         height: 30px;
       }
 
       :hover {
         svg {
-          fill: ${props => props.theme.iconColorReverse.default.toString()};
+          fill: ${props.theme.iconColorReverse.default.toString()};
         }
       }
     `};

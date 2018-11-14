@@ -3,6 +3,7 @@ export { default as Button } from './elements/buttons/index';
 export { default as Icon } from './elements/icons/index';
 export { default as Input } from './elements/textfield/index';
 export { default as Label } from './elements/label/index';
+export { default as Modal } from './elements/modal/index';
 export { default as Select } from './elements/select/index';
 export { default as TextArea } from './elements/textarea/index';
 

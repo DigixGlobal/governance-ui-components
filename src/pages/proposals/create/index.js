@@ -16,6 +16,8 @@ import Milestones from './forms/milestones';
 import Multimedia from './forms/multimedia';
 import Overview from './forms/overview';
 import Preview from './preview';
+import Confirm from '../confirm';
+
 // import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions';
 import { dijix } from '../../../utils/dijix';
 import { encodeHash } from '../../../utils/helpers';
@@ -49,6 +51,7 @@ class CreateProposal extends React.Component {
       canMoveNext: true,
       canMovePrevious: false,
       showPreview: false,
+      showConfirmPage: false,
     };
   }
 
@@ -126,6 +129,10 @@ class CreateProposal extends React.Component {
     this.setState({ showPreview: !this.state.showPreview });
   };
 
+  handleShowConfirmPage = () => {
+    this.setState({ showConfirmPage: !this.state.showConfirmPage });
+  };
+
   handleSubmit = () => {
     const { web3Redux, ChallengeProof } = this.props;
     const { form } = this.state;
@@ -173,6 +180,7 @@ class CreateProposal extends React.Component {
                   uid: ChallengeProof.data.uid,
                 }),
                 this.props.showHideAlert({ message: 'Proposal Submitted' }),
+                this.setState({ form: undefined }),
               ]);
             });
           }
@@ -193,10 +201,18 @@ class CreateProposal extends React.Component {
       <Preview
         form={this.state.form}
         onContinueEditing={this.handleShowPreview}
-        proposer={address.address}
+        proposer={address ? address.address : ''}
       />
     );
   };
+
+  renderConfirmPage = () => (
+    <Confirm
+      form={this.state.form}
+      onBack={this.handleShowConfirmPage}
+      onSubmit={this.handleSubmit}
+    />
+  );
 
   renderCreate = () => {
     const { currentStep, canMoveNext, canMovePrevious } = this.state;
@@ -227,9 +243,16 @@ class CreateProposal extends React.Component {
             <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
               Previous
             </Button>
-            <Button disabled={!canMoveNext} primary ghost onClick={this.onNextButtonClick}>
-              Next
-            </Button>
+            {canMoveNext && (
+              <Button disabled={!canMoveNext} primary ghost onClick={this.onNextButtonClick}>
+                Next
+              </Button>
+            )}
+            {!canMoveNext && (
+              <Button primary ghost onClick={this.handleShowConfirmPage}>
+                Create Now
+              </Button>
+            )}
           </RightCol>
         </Header>
         {this.renderStep()}
@@ -242,9 +265,12 @@ class CreateProposal extends React.Component {
     );
   };
   render() {
-    const { showPreview } = this.state;
-    if (!showPreview) return this.renderCreate();
-    if (showPreview) return this.renderPreview();
+    const { showPreview, showConfirmPage } = this.state;
+    if (!showConfirmPage) {
+      if (!showPreview) return this.renderCreate();
+      if (showPreview) return this.renderPreview();
+    }
+    if (showConfirmPage) return this.renderConfirmPage();
   }
 }
 

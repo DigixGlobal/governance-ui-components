@@ -28,7 +28,6 @@ class Milestones extends React.Component {
     } else {
       currentField = field === 'title' ? { title: value } : { description: value };
     }
-    // const data = field === 'title' ? { title: value } : { description: value };
 
     milestones[i] = currentField;
     this.setState({ milestones: [...milestones] }, () => {
@@ -49,10 +48,14 @@ class Milestones extends React.Component {
   };
 
   renderMilestoneForm = () => {
-    const { milestoneCount } = this.state;
+    const { milestoneCount, milestoneFundings, milestones } = this.state;
+    const { form } = this.props;
+    const count = milestoneCount || form.milestones.length - 1;
+    const createdMilesones = form.milestones || milestones;
     const fields = [];
     // eslint-disable-next-line
-    for (let index = 0; index < milestoneCount; index++)
+    for (let index = 0; index < count; index++){
+      console.log(createdMilesones[index]);
       fields.push(
         <CreateMilestone key={index}>
           <FormItem>
@@ -60,6 +63,7 @@ class Milestones extends React.Component {
             <Input
               name={index}
               type="number"
+              value={milestoneFundings[index]}
               onChange={e => this.handleFundChange(e, index)}
               placeholder="Insert anount of fund expected in ETH for completion of milestone"
             />
@@ -68,6 +72,7 @@ class Milestones extends React.Component {
             <Label>Title This Milestone</Label>
             <Input
               name={index}
+              value={createdMilesones[index] ? createdMilesones[index].title : ''}
               onChange={e => this.handleChange(e, index, 'title')}
               placeholder="Insert anount of fund expected in ETH for completion of milestone"
             />
@@ -77,6 +82,7 @@ class Milestones extends React.Component {
               <Label>Description of Milestone</Label>
               <TextArea
                 name={index}
+                value={createdMilesones[index] ? createdMilesones[index].description : ''}
                 onChange={e => this.handleChange(e, index, 'description')}
                 placeholder="Explain what will be in this milestone"
               />
@@ -84,11 +90,13 @@ class Milestones extends React.Component {
           </FormItem>
         </CreateMilestone>
       );
+    }
     return fields;
   };
 
   render() {
     const { onChange, form } = this.props;
+    const noOfMilestones = this.state.milestoneCount || form.milestones.length;
     // const { milestones } = this.state;
     return (
       <Fieldset>
@@ -106,7 +114,8 @@ class Milestones extends React.Component {
         <FormItem>
           <Label>Number of Milestone(s)</Label>
           <Select
-            value={form.milestones ? form.milestones.length : '1'}
+            id="noOfMilestones"
+            value={noOfMilestones}
             items={[{ text: '1', value: '1' }, { text: '2', value: '2' }]}
             onChange={this.handleMilestoneCountChange}
           />

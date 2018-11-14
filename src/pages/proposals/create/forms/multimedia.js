@@ -27,13 +27,6 @@ class Multimedia extends React.Component {
       if (item === '.pdf') supported.push('application/pdf');
       else supported.push(item);
     });
-    // this.setState({ proofs: [], thumbnails: [], files: [], error: undefined });
-
-    // if (onChange) {
-    //   onChange({ value: undefined });
-    // } else {
-    //   formChange({ name, value: undefined });
-    // }
 
     if (e.target.files.length > 0) {
       const proofsArray = [];
@@ -50,7 +43,6 @@ class Multimedia extends React.Component {
 
           if (supported.findIndex(item => item === file.type) === -1) {
             error = `Unsupported ${file.type} file type`;
-            // this.setState({ proofs: [], thumbnails: [], files: [], error });
             return;
           }
 
@@ -87,6 +79,8 @@ class Multimedia extends React.Component {
 
   render() {
     const { thumbnails } = this.state;
+    const { proofs } = this.props.form;
+    const images = thumbnails || proofs;
     return (
       <Fieldset>
         {/* <FormItem>
@@ -113,10 +107,8 @@ class Multimedia extends React.Component {
             </LeftCol>
             <RightCol>
               <ImageHolder>
-                {thumbnails &&
-                  thumbnails.map(image => (
-                    <img key={image.name} alt={image.name} src={image.src} />
-                  ))}
+                {images &&
+                  images.map(image => <img key={image.name} alt={image.name} src={image.src} />)}
               </ImageHolder>
             </RightCol>
           </MediaUploader>
@@ -126,9 +118,10 @@ class Multimedia extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 
 Multimedia.propTypes = {
   onChange: func.isRequired,
+  form: object.isRequired,
 };
 export default Multimedia;

@@ -44,7 +44,7 @@ class Preview extends React.Component {
               <span>{form.finalReward} ETH</span>
             </FundingStatus>
             <MilestonesStatus>
-              Milestones <span>{form.milestones.length}</span>
+              Milestones <span>{form.milestones ? form.milestones.length : 0}</span>
             </MilestonesStatus>
             <Reward>
               Reward <span>{form.finalReward}</span>

@@ -42,4 +42,8 @@ export const ImageHolder = styled.div`
   border-radius: 3px;
   min-width: 500px;
   height: 200px;
+  & > img {
+    max-width: 500px;
+    max-height: 200px;
+  }
 `;

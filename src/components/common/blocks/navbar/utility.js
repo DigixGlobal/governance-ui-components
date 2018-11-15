@@ -119,6 +119,7 @@ Utility.defaultProps = {
   transactions: undefined,
   challengeProof: undefined,
   userAddress: undefined,
+  challenge: undefined,
 };
 
 export default connect(

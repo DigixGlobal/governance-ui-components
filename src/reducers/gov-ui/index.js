@@ -6,6 +6,7 @@ const defaultState = {
   },
   UserAddress: undefined,
   Alert: undefined,
+  SignChallenge: undefined,
 };
 
 export default function(state = defaultState, action) {
@@ -31,6 +32,14 @@ export default function(state = defaultState, action) {
         ...state,
         Alert: {
           ...state.Alert,
+          ...action.payload,
+        },
+      };
+    case actions.SHOW_SIGN_CHALLENGE:
+      return {
+        ...state,
+        SignChallenge: {
+          ...state.SignChallenge,
           ...action.payload,
         },
       };

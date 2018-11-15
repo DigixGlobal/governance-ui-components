@@ -32,7 +32,6 @@ class Milestones extends React.Component {
       milestoneFundings.splice(milestoneFundings.length - 1);
     }
 
-    console.log(milestoneFundings);
     this.setState(
       {
         milestoneCount: e.target.value,
@@ -82,10 +81,8 @@ class Milestones extends React.Component {
     const createdMilestones = form.milestones || milestones;
     const fields = [];
 
-    console.log({ count });
     // eslint-disable-next-line
     for (let index = 0; index < count; index++){
-      console.log(createdMilestones[index]);
       fields.push(
         <CreateMilestone key={index}>
           <FormItem>

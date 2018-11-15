@@ -172,7 +172,6 @@ class CreateProposal extends React.Component {
 
         .then(txHash => {
           if (ChallengeProof.data) {
-            console.log(txHash);
             this.setState({ txHash }, () => {
               Promise.all([
                 this.props.sendTransactionToDaoServer({

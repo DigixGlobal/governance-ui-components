@@ -16,11 +16,16 @@ import {
   Reward,
 } from '../style';
 
+const getTotalFunds = source => {
+  const sum = source.reduce((acc, currentValue) => Number(acc) + Number(currentValue), 0);
+
+  return sum;
+};
 class Preview extends React.Component {
   render() {
     const { form, proposer } = this.props;
     if (!form) return null;
-
+    const totalFunding = getTotalFunds(form.milestoneFundings);
     return (
       <ProposalsWrapper>
         <Button primary ghost onClick={this.props.onContinueEditing}>
@@ -41,7 +46,7 @@ class Preview extends React.Component {
             </SubmittedBy>
             <FundingStatus>
               Funding
-              <span>{form.finalReward} ETH</span>
+              <span>{totalFunding} ETH</span>
             </FundingStatus>
             <MilestonesStatus>
               Milestones <span>{form.milestones ? form.milestones.length : 0}</span>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
@@ -23,6 +23,12 @@ registerReducers({
   govUI: { src: govUiReducer },
 });
 
+const ParticipantsRoute = ({ component: Component, authenticated, ...rest }) => (
+  <Route
+    {...rest}
+    render={props => (authenticated ? <Component {...props} /> : <Redirect to="/login" />)}
+  />
+);
 export default class Governance extends React.Component {
   render() {
     return (

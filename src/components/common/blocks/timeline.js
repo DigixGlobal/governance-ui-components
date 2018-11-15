@@ -91,9 +91,14 @@ class Timeline extends React.Component {
     const ellapsed = now.diff(start, 'days');
     const mainPhase = 100 * (ellapsed / 90);
     const stakingPhase = 100 * (1 / 9);
+
+    const currentDate = Date.now();
+    const phase = currentDate > stats.data.startOfMainphase * 1000 ? 'MAIN' : 'STAKE';
+
+    console.log({ quart: stats });
     return (
       <TimelineWrapper>
-        <Quarter>Q2</Quarter>
+        <Quarter>Q{stats.data.currentQuarter}</Quarter>
         <TimelineBar>
           <TimelineLabel>
             <StakingPhase>STAKING PHASE</StakingPhase>
@@ -102,7 +107,7 @@ class Timeline extends React.Component {
               <div>MAIN PHASE</div>
               <MainPhaseValue>
                 DAY {ellapsed} / 90 <span>|</span>
-                {stats.data ? stats.data.totalLockedDgds / 1e9 : 83423.45} STAKE
+                {stats.data ? stats.data.totalLockedDgds / 1e9 : 83423.45} {phase}
               </MainPhaseValue>
             </MainPhase>
           </TimelineLabel>

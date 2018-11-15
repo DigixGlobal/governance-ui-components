@@ -259,11 +259,6 @@ class CreateProposal extends React.Component {
           </RightCol>
         </Header>
         {this.renderStep()}
-        <LeftCol>
-          <Button secondary onClick={this.handleSubmit}>
-            Submit
-          </Button>
-        </LeftCol>
       </CreateWrapper>
     );
   };

@@ -26,9 +26,17 @@ import {
 } from './style';
 
 class Proposal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      versions: undefined,
+      currentVersion: 0,
+    };
+  }
+
   componentWillMount = () => {
     const { getProposalDetailsAction, location } = this.props;
-
+    console.log(this.props.proposalDetails);
     if (location.pathname) {
       const path = location.pathname.split('/');
       const proposalId = path[2];
@@ -36,7 +44,21 @@ class Proposal extends React.Component {
     }
   };
 
+  componentWillReceiveProps = nextProps => {
+    const { proposalDetails } = nextProps;
+    if (!proposalDetails.fething && proposalDetails.data.proposalId) {
+      console.log(proposalDetails);
+      this.setState({
+        versions: proposalDetails.proposalVersions,
+        currentVersion: proposalDetails.proposalVersions
+          ? proposalDetails.proposalVersions.length - 1
+          : 0,
+      });
+    }
+  };
+
   render() {
+    const { currentVersion, versions } = this.state;
     const { proposalDetails } = this.props;
     if (proposalDetails.fething === null || proposalDetails.fething)
       return <div>Fetching Proposal Details</div>;
@@ -48,11 +70,15 @@ class Proposal extends React.Component {
     return (
       <ProposalsWrapper>
         <ProjectSummary>
-          <BrowseVersionHistory>
-            <PreviousVersion />
-            <div>2nd Version</div>
-            <NextVersion />
-          </BrowseVersionHistory>
+          {versions &&
+            versions.length >
+              1(
+                <BrowseVersionHistory>
+                  <PreviousVersion />
+                  <div>Version {currentVersion + 1} </div>
+                  <NextVersion />
+                </BrowseVersionHistory>
+              )}
           <Header>
             <div>
               <Button kind="flat" style={{ pointerEvents: 'none' }}>

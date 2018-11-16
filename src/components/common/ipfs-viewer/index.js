@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { fetchFromDijix } from '../../../utils/dijix';
 
 const initialState = {
-  data: {},
+  // data: {},
   loading: true,
   thumbnails: [],
 };
@@ -30,14 +30,19 @@ export default class MultipleResolver extends Component {
     const { hashes, thumbnailSize } = this.props;
 
     Promise.all(
-      hashes.map(hash =>
-        fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails)
-      )
+      hashes.map(hash => {
+        console.log(hash);
+        return fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails);
+      })
     ).then(images => {
       const thumbs = images.map(image => ({ src: image[thumbnailSize] }));
       this.setState({ thumbnails: thumbs, loading: false });
     });
   }
+
+  componentWillUnmount = () => {
+    this.setState({ loading: false, thumbnails: undefined });
+  };
 
   getTypeSrc(item) {
     const { thumbnailSize } = this.props;

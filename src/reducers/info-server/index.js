@@ -41,6 +41,7 @@ export default function(state = defaultState, action) {
         DaoDetails: {
           ...state.DaoDetails,
           ...action.payload,
+          // isMainPhase: Date.now() > action.payload.data.startOfMainphase * 1000,
           history: !action.payload.data
             ? state.DaoDetails.history
             : [

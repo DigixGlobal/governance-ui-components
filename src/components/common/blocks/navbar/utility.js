@@ -48,7 +48,12 @@ class Utility extends React.Component {
           }
         }, 1000 * 60);
       }
-      if (!this.props.challenge.data && userAddress.data && userAddress.data.isParticipant) {
+      if (
+        (!this.props.challenge.data ||
+          (this.props.challenge.data && this.props.challenge.data.errors)) &&
+        userAddress.data &&
+        userAddress.data.isParticipant
+      ) {
         if (this.props.challenge.fetching === null || !this.props.challenge.fetching)
           this.props.getChallenge(userAddress.address);
       }

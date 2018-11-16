@@ -27,13 +27,9 @@ import {
 
 class Proposal extends React.Component {
   componentWillMount = () => {
-    const {
-      proposalDetails: { error, fetching },
-      getProposalDetailsAction,
-      location,
-    } = this.props;
+    const { getProposalDetailsAction, location } = this.props;
 
-    if ((fetching === null || error) && location.pathname) {
+    if (location.pathname) {
       const path = location.pathname.split('/');
       const proposalId = path[2];
       if (proposalId) getProposalDetailsAction(proposalId);

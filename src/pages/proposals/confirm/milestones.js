@@ -13,7 +13,7 @@ export default class Milestones extends React.Component {
         <Title>Milestone</Title>
         <Content>
           <Heading>Reward Expected</Heading>
-          <DataContent>{form.finalReward || 0} ETH</DataContent>
+          <DataContent>{form ? form.finalReward : 0} ETH</DataContent>
           <HorizontalBar />
           {form.milestones &&
             form.milestones.map((ms, i) => (

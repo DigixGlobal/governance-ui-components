@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { getDefaultAddress, getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
@@ -20,7 +21,11 @@ import ConnectedWallet from './connected-wallet';
 import { Stage } from './constants';
 
 import { getAddressDetails } from '../../../../reducers/info-server/actions';
-import { setUserAddress, showHideAlert } from '../../../../reducers/gov-ui/actions';
+import {
+  setUserAddress,
+  showHideAlert,
+  showSignChallenge,
+} from '../../../../reducers/gov-ui/actions';
 import {
   getChallenge,
   proveChallenge,
@@ -32,39 +37,43 @@ export class Wallet extends React.Component {
     super(props);
     this.state = {
       stage: Stage.Intro,
-      showSigning: false,
+      signed: false,
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      defaultAddress,
-      AddressDetails: { error, fetching, data },
-      Challenge,
-      getAddressDetailsAction,
-      getChallengeAction,
-      ChallengeProof,
-    } = nextProps;
+    if (!_.isEqual(nextProps, this.props)) {
+      const {
+        defaultAddress,
+        AddressDetails: { error, fetching, data },
+        Challenge,
+        getAddressDetailsAction,
+        getChallengeAction,
+        ChallengeProof,
+      } = nextProps;
 
-    if ((fetching === null && defaultAddress) || (error && defaultAddress)) {
-      getAddressDetailsAction(defaultAddress.address);
-    } else if (data && data.isParticipant) {
-      if (Challenge.fetching === null || Challenge.error) {
-        getChallengeAction(data.address);
+      const hasChallenge = Challenge.data && Challenge.data.challenge;
+      const hasProof = (ChallengeProof.data && ChallengeProof.data.client) || this.state.signed;
+
+      if ((fetching === null && defaultAddress) || (error && defaultAddress)) {
+        getAddressDetailsAction(defaultAddress.address);
+      } else if (data && data.isParticipant) {
+        if (Challenge.fetching === null || Challenge.error) {
+          getChallengeAction(data.address);
+        }
       }
-    }
 
-    if (defaultAddress) {
-      this.props.setUserAddress(defaultAddress.address);
-    }
+      if (defaultAddress) {
+        this.props.setUserAddress(defaultAddress.address);
+      }
 
-    if (
-      (Challenge.data && Challenge.data.challenge && ChallengeProof.fetching === null) ||
-      ChallengeProof.error
-    ) {
-      this.setState({ showSigning: true });
-    } else {
-      this.setState({ showSigning: false });
+      if (hasChallenge && !hasProof) {
+        this.props.showSignChallenge(true);
+        // this.setState({ showSigning: true });
+      } else {
+        this.props.showSignChallenge(false);
+        // this.setState({ showSigning: false });
+      }
     }
   }
 
@@ -79,6 +88,7 @@ export class Wallet extends React.Component {
       defaultNetworks,
       proveChallengeAction,
       AddressDetails,
+      signChallenge,
     } = this.props;
     const network = defaultNetworks[0];
 
@@ -91,6 +101,8 @@ export class Wallet extends React.Component {
       const {
         data: { address },
       } = AddressDetails;
+
+      this.setState({ signed: true });
       return proveChallengeAction({
         address,
         challenge: Challenge.data.challenge.id,
@@ -101,10 +113,10 @@ export class Wallet extends React.Component {
   };
 
   render() {
-    const { stage, showSigning } = this.state;
-    const { show, onClose, defaultAddress, ...rest } = this.props;
+    const { stage, signed } = this.state;
+    const { show, onClose, defaultAddress, signChallenge, ...rest } = this.props;
+    if (signChallenge && signChallenge.show && !signed) this.renderChallenge();
     if (!show) return null;
-    if (showSigning) this.renderChallenge();
     return (
       <Container>
         <TransparentOverlay />
@@ -121,17 +133,20 @@ export class Wallet extends React.Component {
   }
 }
 
-const { func, bool } = PropTypes;
+const { func, bool, object } = PropTypes;
 Wallet.propTypes = {
   show: bool,
   onClose: func.isRequired,
+  signChallenge: object,
   getAddressDetailsAction: func.isRequired,
   showSigningModal: func.isRequired,
   showHideAlert: func.isRequired,
+  showSignChallenge: func.isRequired,
 };
 
 Wallet.defaultProps = {
   show: false,
+  signChallenge: undefined,
 };
 
 const actions = {
@@ -144,6 +159,7 @@ const actions = {
   showSigningModal: showMsgSigningModal,
   showHideAlert,
   setUserAddress,
+  showSignChallenge,
   // getTransactions,
 };
 
@@ -152,6 +168,7 @@ const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
   defaultNetworks: getDefaultNetworks(state),
   AddressDetails: state.infoServer.AddressDetails,
+  signChallenge: state.govUI.SignChallenge,
   Challenge: state.daoServer.Challenge,
   ChallengeProof: state.daoServer.ChallengeProof,
 });

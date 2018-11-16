@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { bool } from 'prop-types';
+import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { dijix } from '../../utils/dijix';
 
@@ -20,6 +20,7 @@ export default class ProjectDetails extends React.Component {
 
   renderDocuments(documents) {
     if (!documents) return null;
+
     return this.renderImages(documents);
   }
 
@@ -29,7 +30,7 @@ export default class ProjectDetails extends React.Component {
       <img
         key={`img-${i + 1}`}
         alt=""
-        src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}`}
+        src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
       />
     ));
     return <ImageHolder>{images}</ImageHolder>;
@@ -37,8 +38,6 @@ export default class ProjectDetails extends React.Component {
 
   render() {
     const { project, preview } = this.props;
-    const imageHashes = project.images || project.proofs;
-    console.log({ images: project.images, proofs: project.proofs });
     return (
       <DetailsContainer>
         <ShortDescription>{project.description}</ShortDescription>
@@ -52,7 +51,7 @@ export default class ProjectDetails extends React.Component {
           {!preview && (
             <ImageViewer
               thumbnailSize="512"
-              hashes={imageHashes}
+              hashes={project.images || project.proofs}
               renderLoading={null}
               renderResolved={thumbnails => this.renderDocuments(thumbnails)}
             />

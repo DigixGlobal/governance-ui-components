@@ -88,7 +88,6 @@ export class Wallet extends React.Component {
       defaultNetworks,
       proveChallengeAction,
       AddressDetails,
-      signChallenge,
     } = this.props;
     const network = defaultNetworks[0];
 

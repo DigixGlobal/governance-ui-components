@@ -27,53 +27,28 @@ export default class MultipleResolver extends Component {
   }
 
   componentWillMount() {
-    const { hashes, thumbnailSize } = this.props;
-
-    Promise.all(
-      hashes.map(hash => {
-        console.log(hash);
-        return fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails);
-      })
-    ).then(images => {
-      const thumbs = images.map(image => ({ src: image[thumbnailSize] }));
-      this.setState({ thumbnails: thumbs, loading: false });
-    });
+    this.fetchImages(this.props);
   }
+
+  componentWillReceiveProps = nextProps => {
+    this.fetchImages(nextProps);
+  };
 
   componentWillUnmount = () => {
     this.setState({ loading: false, thumbnails: undefined });
   };
 
-  getTypeSrc(item) {
-    const { thumbnailSize } = this.props;
-
-    // If item is not an object(meaning it is not an image/pdf)
-    if (typeof item !== 'object') {
-      return Promise.resolve(item);
-    }
-
-    const { type, data } = item;
-
-    if (type === 'image') {
-      return new Promise(resolve =>
-        resolve([{ src: data.src, thumbnail: data.thumbnails[thumbnailSize] }])
-      );
-    }
-
-    if (type === 'attestation') {
-      return Promise.resolve(data.attestation);
-    }
-
-    // PDF type handling
-    return Promise.all(
-      data.pages.map(pdfPageHash => fetchFromDijix(0, undefined, pdfPageHash))
-    ).then(pdfPagesHashes =>
-      pdfPagesHashes.map(pdf => ({
-        src: pdf.data.src,
-        thumbnail: pdf.data.thumbnails[thumbnailSize],
-      }))
-    );
-  }
+  fetchImages = props => {
+    const { hashes, thumbnailSize } = props;
+    Promise.all(
+      hashes.map(hash =>
+        fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails)
+      )
+    ).then(images => {
+      const thumbs = images.map(image => ({ src: image[thumbnailSize] }));
+      this.setState({ thumbnails: thumbs, loading: false });
+    });
+  };
 
   render() {
     const { loading, thumbnails } = this.state;

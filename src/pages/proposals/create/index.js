@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { string } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';

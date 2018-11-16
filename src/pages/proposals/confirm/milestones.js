@@ -20,7 +20,7 @@ export default class Milestones extends React.Component {
             form.milestones.map((ms, i) => (
               <div key={`ms-${i + 1}`}>
                 <Heading>{`Milestone ${i + 1}: ${ms.title}`}</Heading>
-                <DataContent>{form.milestoneFundings[i]} ETH</DataContent>
+                <DataContent>{ms.fund} ETH</DataContent>
                 <Heading>Milestone {i + 1}: Details</Heading>
                 <DataContent>{ms.description}</DataContent>
                 <HorizontalBar />

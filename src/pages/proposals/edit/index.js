@@ -33,13 +33,15 @@ import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions
 
 import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
 
+import { getProposalDetails } from '../../../reducers/info-server/actions';
+
 registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
 
 const steps = [Overview, Details, Multimedia, Milestones];
 
-class CreateProposal extends React.Component {
+class EditProposal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,9 +54,34 @@ class CreateProposal extends React.Component {
       canMovePrevious: false,
       showPreview: false,
       showConfirmPage: false,
-      validForm: false,
+      validForm: true,
+      proposalId: undefined,
     };
   }
+
+  componentWillMount = () => {
+    const { getProposalDetailsAction, location } = this.props;
+    if (location.pathname) {
+      const path = location.pathname.split('/');
+      const proposalId = path[path.length - 1];
+      if (proposalId) getProposalDetailsAction(proposalId);
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const { proposalDetails } = nextProps;
+    if (!proposalDetails.fething && proposalDetails.data.proposalId) {
+      const currentVersion = proposalDetails.data.proposalVersions
+        ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
+        : {};
+      const form = { ...currentVersion.dijixObject };
+      form.finalReward = currentVersion.finalReward;
+      this.setState({
+        form: { ...form },
+        proposalId: proposalDetails.data.proposalId,
+      });
+    }
+  };
 
   onNextButtonClick = () => {
     const { currentStep } = this.state;
@@ -123,7 +150,6 @@ class CreateProposal extends React.Component {
         proofs: proofs ? [...proofs] : undefined,
       })
       .then(({ ipfsHash }) => {
-        console.log(ipfsHash);
         const encodedHash = encodeHash(ipfsHash);
         return encodedHash;
       });
@@ -139,8 +165,7 @@ class CreateProposal extends React.Component {
 
   handleSubmit = () => {
     const { web3Redux, ChallengeProof } = this.props;
-    const { form } = this.state;
-    const proposalEth = toBigNumber(2 * 1e18);
+    const { form, proposalId } = this.state;
     const { milestones } = form;
     const funds = milestones.map(ms => toBigNumber(parseInt(ms.fund, 0) * 1e18));
 
@@ -158,18 +183,12 @@ class CreateProposal extends React.Component {
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
       gas: DEFAULT_GAS,
-      value: proposalEth,
       ui,
     };
 
     this.createAttestation().then(ipfsHash => {
-      contract.submitPreproposal
-        .sendTransaction(
-          ipfsHash,
-          funds,
-          toBigNumber(parseInt(form.finalReward, 0) * 1e18),
-          web3Params
-        )
+      contract.modifyProposal
+        .sendTransaction(proposalId, ipfsHash, funds, form.finalReward, web3Params)
 
         .then(txHash => {
           if (ChallengeProof.data) {
@@ -182,7 +201,7 @@ class CreateProposal extends React.Component {
                   client: ChallengeProof.data.client,
                   uid: ChallengeProof.data.uid,
                 }),
-                this.props.showHideAlert({ message: 'Proposal Submitted' }),
+                this.props.showHideAlert({ message: 'Proposal Updated' }),
                 this.setState({ form: undefined }),
               ]);
             });
@@ -219,6 +238,7 @@ class CreateProposal extends React.Component {
 
   renderCreate = () => {
     const { currentStep, canMoveNext, canMovePrevious, validForm } = this.state;
+    const { proposalDetails } = this.props;
     return (
       <CreateWrapper>
         <TabPanel>
@@ -254,7 +274,7 @@ class CreateProposal extends React.Component {
             {!canMoveNext &&
               validForm && (
                 <Button primary ghost onClick={this.handleShowConfirmPage}>
-                  Create Now
+                  Update Now
                 </Button>
               )}
           </RightCol>
@@ -274,22 +294,27 @@ class CreateProposal extends React.Component {
 }
 
 const { object, func } = PropTypes;
-CreateProposal.propTypes = {
+EditProposal.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   address: object.isRequired,
+
+  proposalDetails: object.isRequired,
+  getProposalDetailsAction: func.isRequired,
+  location: object.isRequired,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   address: state.govUI.UserAddress,
+  proposalDetails: state.infoServer.ProposalDetails,
 });
 
 export default web3Connect(
   connect(
     mapStateToProps,
-    { showHideAlert, sendTransactionToDaoServer }
-  )(CreateProposal)
+    { showHideAlert, sendTransactionToDaoServer, getProposalDetailsAction: getProposalDetails }
+  )(EditProposal)
 );

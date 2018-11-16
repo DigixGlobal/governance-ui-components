@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Select, Input } from '../../../../components/common/elements/index';
-import { Fieldset, FormItem, Label, MediaUploader, ImageHolder, LeftCol, RightCol } from '../style';
+import { Fieldset, FormItem, Label, MediaUploader, ImageHolder, LeftCol, RightCol } from './style';
 
-import { dijixImageConfig, dijixPdfConfig } from '../../../../utils/dijix';
+import { dijixImageConfig, dijixPdfConfig, dijix } from '../../../utils/dijix';
 import { UploadButtonContainer, UploadButton, UploadInput } from './multimediaStyles';
+import ImageViewer from '../../../components/common/ipfs-viewer';
 
 class Multimedia extends React.Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class Multimedia extends React.Component {
       thumbnails: undefined,
     };
   }
+
   handleUpload = e => {
     const { onChange } = this.props;
     const { accept } = e.target;
@@ -77,16 +78,30 @@ class Multimedia extends React.Component {
     }
   };
 
+  renderDocuments(documents) {
+    if (!documents) return null;
+
+    return this.renderImages(documents);
+  }
+
+  renderImages = (proofs, preview) => {
+    if (!proofs) return null;
+    const images = proofs.map((img, i) => (
+      <img
+        key={`img-${i + 1}`}
+        alt=""
+        src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
+      />
+    ));
+    return images;
+  };
+
   render() {
     const { thumbnails } = this.state;
     const { proofs } = this.props.form;
     const images = thumbnails || proofs;
     return (
       <Fieldset>
-        {/* <FormItem>
-          <Label>Number of Image(s)</Label>
-          <Select id="test" items={[{ text: '1', value: '1' }, { text: '2', value: '2' }]} />
-        </FormItem> */}
         <FormItem>
           <Label>Upload Project Images</Label>
           <MediaUploader>
@@ -109,6 +124,14 @@ class Multimedia extends React.Component {
               <ImageHolder>
                 {images &&
                   images.map(image => <img key={image.name} alt={image.name} src={image.src} />)}
+                {/* {imageHash && (
+                  <ImageViewer
+                    thumbnailSize="512"
+                    hashes={imageHash}
+                    renderLoading={null}
+                    renderResolved={thumbs => this.renderDocuments(thumbs)}
+                  />
+                )} */}
               </ImageHolder>
             </RightCol>
           </MediaUploader>

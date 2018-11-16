@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Input, TextArea } from '../../../../components/common/elements/index';
-import { Fieldset, FormItem, Label } from '../style';
+import { Input, TextArea } from '../../../components/common/elements/index';
+import { Fieldset, FormItem, Label } from './style';
 
 class OverView extends React.Component {
   render() {

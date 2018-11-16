@@ -8,6 +8,7 @@ import { Section, Title, Content, Heading, Media, LeftCol, RightCol, ImageHolder
 export default class MediaAssets extends React.Component {
   render() {
     const { form } = this.props;
+    if (!form) return null;
     return (
       <Section>
         <Title>Multimedia</Title>

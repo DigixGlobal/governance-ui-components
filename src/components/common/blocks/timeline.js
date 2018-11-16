@@ -88,11 +88,16 @@ class Timeline extends React.Component {
     if (stats.fetching || stats.fetching === null) return null;
     const now = moment(Date.now());
     const start = moment(new Date(stats.data.startOfQuarter * 1000));
+    const main = moment(new Date(stats.data.startOfMainphase * 1000));
+
+    const stakeDuration = main.diff(start, 'days');
+
     const ellapsed = now.diff(start, 'days');
     const mainPhase = 100 * (ellapsed / 90);
+
     // const startStake = moment(new Date(stats.data.startOfMainphase * 1000)).add(-10);
     // const stakeEllapsed =
-    const stakingPhase = 100 * (1 / 9);
+    const stakingPhase = stakeDuration > 0 ? stakeDuration : 100;
 
     const currentDate = Date.now();
     const phase = currentDate > stats.data.startOfMainphase * 1000 ? 'MAIN' : 'STAKE';

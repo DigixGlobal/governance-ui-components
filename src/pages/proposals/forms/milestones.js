@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextArea, Input, Select } from '../../../../components/common/elements/index';
-import { Fieldset, FormItem, Label, CreateMilestone } from '../style';
+import { TextArea, Input, Select } from '../../../components/common/elements/index';
+import { Fieldset, FormItem, Label, CreateMilestone } from './style';
 // import MilestoneList from '../../milestones';
 
 class Milestones extends React.Component {
@@ -26,21 +26,21 @@ class Milestones extends React.Component {
 
   handleMilestoneCountChange = e => {
     const { value } = e.target;
-    const { milestones, milestoneFundings } = this.state;
+    const { milestones } = this.state;
     if (milestones.length > 1 && milestones.length > Number(value)) {
       milestones.splice(milestones.length - 1);
-      milestoneFundings.splice(milestoneFundings.length - 1);
+      // milestoneFundings.splice(milestoneFundings.length - 1);
     }
 
     this.setState(
       {
         milestoneCount: e.target.value,
         milestones: [...milestones],
-        milestoneFundings: [...milestoneFundings],
+        // milestoneFundings: [...milestoneFundings],
       },
       () => {
         this.props.onChange('milestones', milestones);
-        this.props.onChange('milestoneFundings', milestoneFundings);
+        // this.props.onChange('milestoneFundings', milestoneFundings);
       }
     );
   };
@@ -50,10 +50,13 @@ class Milestones extends React.Component {
     const { onChange } = this.props;
     const { value } = e.target;
     let currentField = milestones[i];
+    // currentField[field] = value;
     if (currentField) {
       currentField[field] = value;
     } else {
-      currentField = field === 'title' ? { title: value } : { description: value };
+      currentField = {};
+      // currentField field === 'title' ? { title: value } : { description: value };
+      currentField[field] = value;
     }
 
     milestones[i] = currentField;
@@ -90,8 +93,10 @@ class Milestones extends React.Component {
             <Input
               name={index}
               type="number"
-              value={milestoneFundings[index]}
-              onChange={e => this.handleFundChange(e, index)}
+              // value={milestoneFundings[index]}
+              // onChange={e => this.handleFundChange(e, index)}
+              value={createdMilestones[index] ? createdMilestones[index].fund : ''}
+              onChange={e => this.handleChange(e, index, 'fund')}
               placeholder="Insert anount of fund expected in ETH for completion of milestone"
             />
           </FormItem>
@@ -133,7 +138,7 @@ class Milestones extends React.Component {
           <Input
             type="number"
             id="finalReward"
-            value={form.finalReward || ''}
+            value={form.finalReward / 1e18 || ''}
             onChange={onChange}
             placeholder="Insert amnount of reward expected in ETH for completion of project."
           />

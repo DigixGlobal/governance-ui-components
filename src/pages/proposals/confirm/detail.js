@@ -6,6 +6,7 @@ import { Section, Title, Content, Heading, DataContent } from './style';
 export default class ProjectDetail extends React.Component {
   render() {
     const { form } = this.props;
+    if (!form) return null;
     return (
       <Section>
         <Title>Project Detail</Title>

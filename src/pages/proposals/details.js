@@ -15,9 +15,6 @@ import {
 import ImageViewer from '../../components/common/ipfs-viewer';
 
 export default class ProjectDetails extends React.Component {
-  // renderImages = imgObj =>
-  //   imgObj.map(({ src }) => <img key={src} src={`${dijix.config.httpEndpoint}/${src}`} alt="" />);
-
   renderDocuments(documents) {
     if (!documents) return null;
 

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyles, GhostBtn } from '../../../../components/common/common-styles';
+import { ButtonStyles, GhostBtn } from '../../../components/common/common-styles';
 
 export const UploadButtonContainer = styled.div``;
 

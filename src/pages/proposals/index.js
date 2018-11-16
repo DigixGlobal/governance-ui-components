@@ -36,7 +36,6 @@ class Proposal extends React.Component {
 
   componentWillMount = () => {
     const { getProposalDetailsAction, location } = this.props;
-    console.log(this.props.proposalDetails);
     if (location.pathname) {
       const path = location.pathname.split('/');
       const proposalId = path[2];
@@ -47,7 +46,6 @@ class Proposal extends React.Component {
   componentWillReceiveProps = nextProps => {
     const { proposalDetails } = nextProps;
     if (!proposalDetails.fething && proposalDetails.data.proposalId) {
-      console.log(proposalDetails);
       this.setState({
         versions: proposalDetails.proposalVersions,
         currentVersion: proposalDetails.proposalVersions
@@ -57,13 +55,21 @@ class Proposal extends React.Component {
     }
   };
 
+  handleEditClick = () => {
+    const { history, proposalDetails } = this.props;
+    history.push(`/proposals/edit/${proposalDetails.data.proposalId}`);
+  };
+
   render() {
     const { currentVersion, versions } = this.state;
-    const { proposalDetails } = this.props;
+    const { proposalDetails, addressDetails } = this.props;
     if (proposalDetails.fething === null || proposalDetails.fething)
       return <div>Fetching Proposal Details</div>;
 
     if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
+
+    const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
+
     const proposalVersion =
       proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1];
     const { dijixObject } = proposalVersion;
@@ -87,9 +93,17 @@ class Proposal extends React.Component {
               <Title primary>{dijixObject.title}</Title>
             </div>
             <div>
-              <Button kind="round" ghost primary style={{ pointerEvents: 'none' }}>
-                Endorse
-              </Button>
+              {addressDetails.data &&
+                addressDetails.data.isModerator && (
+                  <Button kind="round" ghost primary style={{ pointerEvents: 'none' }}>
+                    Endorse
+                  </Button>
+                )}
+              {isProposer && (
+                <Button kind="round" ghost primary onClick={this.handleEditClick}>
+                  Edit
+                </Button>
+              )}
             </div>
           </Header>
           <LatestActivity>
@@ -126,12 +140,15 @@ const { object, func } = PropTypes;
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
   getProposalDetailsAction: func.isRequired,
+  addressDetails: object.isRequired,
   location: object.isRequired,
+  history: object.isRequired,
 };
 
 export default connect(
-  ({ infoServer: { ProposalDetails } }) => ({
+  ({ infoServer: { ProposalDetails, AddressDetails } }) => ({
     proposalDetails: ProposalDetails,
+    addressDetails: AddressDetails,
   }),
   {
     getProposalDetailsAction: getProposalDetails,

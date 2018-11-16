@@ -7,7 +7,7 @@ import './quill.css';
 
 // import PropTypes from 'prop-types';
 
-import { Fieldset, FormItem, Label, EditorContainer } from '../style';
+import { Fieldset, FormItem, Label, EditorContainer } from './style';
 
 class Details extends React.Component {
   render() {

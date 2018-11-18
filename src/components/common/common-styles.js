@@ -11,14 +11,16 @@ export const H1 = styled.h1`
     props.primary
       ? props.theme.textPrimary.light.toString()
       : props.theme.textDefault.default.toString()};
-
+  font-family: 'Futura PT Light';
   font-size: 4.6rem;
   margin: 0;
 `;
 
 export const H2 = styled.h2`
   color: ${props => props.color || props.theme.textDefault.default.toString()};
-  margin-bottom: 2rem;
+  font-family: 'Futura PT Light';
+  font-size: 2.4rem;
+  margin-bottom: 1.5rem;
   margin-top: 2rem;
 `;
 export default H2;

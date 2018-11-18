@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { H3 } from '../../common-styles';
 
 export const AccordionItem = styled.div`
@@ -41,11 +41,11 @@ export const AccordionItem = styled.div`
     }
 
     &:before {
-      transform: translate(-2px, 0) rotate(45deg);
+      transform: translate(-2px, 0) rotate(135deg);
     }
 
     &:after {
-      transform: translate(2px, 0) rotate(-45deg);
+      transform: translate(2px, 0) rotate(-135deg);
     }
   }
 
@@ -58,6 +58,11 @@ export const AccordionItem = styled.div`
 
 export const Header = styled(H3)`
   margin-bottom: 0;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 export const Content = styled.div`

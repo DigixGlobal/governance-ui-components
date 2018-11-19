@@ -6,7 +6,9 @@ export default class NextVersion extends React.Component {
   render() {
     return (
       <NextWrapper>
-        <Button kind="iconLabeled">See Next Version</Button>
+        <Button kind="iconLabeled" {...this.props}>
+          See Next Version
+        </Button>
         <i />
       </NextWrapper>
     );

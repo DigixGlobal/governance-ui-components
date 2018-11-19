@@ -8,7 +8,9 @@ export default class PreviousVersion extends React.Component {
       <div>
         <PreviousWrapper>
           <i />
-          <Button kind="iconLabeled">See Previous Version</Button>
+          <Button kind="iconLabeled" {...this.props}>
+            See Previous Version
+          </Button>
         </PreviousWrapper>
       </div>
     );

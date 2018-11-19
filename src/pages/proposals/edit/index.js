@@ -189,7 +189,13 @@ class EditProposal extends React.Component {
 
     this.createAttestation().then(ipfsHash => {
       contract.modifyProposal
-        .sendTransaction(proposalId, ipfsHash, funds, form.finalReward, web3Params)
+        .sendTransaction(
+          proposalId,
+          ipfsHash,
+          funds,
+          toBigNumber(parseInt(form.finalReward, 0) * 1e18),
+          web3Params
+        )
 
         .then(txHash => {
           if (ChallengeProof.data) {

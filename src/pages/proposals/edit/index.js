@@ -75,7 +75,8 @@ class EditProposal extends React.Component {
         ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
         : {};
       const form = { ...currentVersion.dijixObject };
-      form.finalReward = currentVersion.finalReward;
+      form.finalReward = Number(currentVersion.finalReward);
+      // console.log(form.finalReward, currentVersion.finalReward);
       this.setState({
         form: { ...form },
         proposalId: proposalDetails.data.proposalId,
@@ -137,7 +138,7 @@ class EditProposal extends React.Component {
 
   createAttestation = () => {
     const { form } = this.state;
-    const { title, description, details, milestones, proofs } = form;
+    const { title, description, details, milestones, proofs, images } = form;
 
     return dijix
       .create('attestation', {
@@ -147,7 +148,7 @@ class EditProposal extends React.Component {
           details,
           milestones,
         },
-        proofs: proofs ? [...proofs] : undefined,
+        proofs: images ? images.concat(proofs) : proofs,
       })
       .then(({ ipfsHash }) => {
         const encodedHash = encodeHash(ipfsHash);
@@ -202,7 +203,7 @@ class EditProposal extends React.Component {
                   uid: ChallengeProof.data.uid,
                 }),
                 this.props.showHideAlert({ message: 'Proposal Updated' }),
-                this.setState({ form: undefined }),
+                this.props.history.push('/proposals'),
               ]);
             });
           }
@@ -304,6 +305,7 @@ EditProposal.propTypes = {
   proposalDetails: object.isRequired,
   getProposalDetailsAction: func.isRequired,
   location: object.isRequired,
+  history: object.isRequired,
 };
 
 const mapStateToProps = state => ({

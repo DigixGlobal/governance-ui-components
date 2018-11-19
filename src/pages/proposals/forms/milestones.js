@@ -78,7 +78,7 @@ class Milestones extends React.Component {
   };
 
   renderMilestoneForm = () => {
-    const { milestoneCount, milestoneFundings, milestones } = this.state;
+    const { milestoneCount, milestones } = this.state;
     const { form } = this.props;
     const count = milestoneCount;
     const createdMilestones = form.milestones || milestones;
@@ -138,7 +138,7 @@ class Milestones extends React.Component {
           <Input
             type="number"
             id="finalReward"
-            value={form.finalReward / 1e18 || ''}
+            value={form.finalReward || ''}
             onChange={onChange}
             placeholder="Insert amnount of reward expected in ETH for completion of project."
           />

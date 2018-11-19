@@ -16,6 +16,7 @@ import ImageViewer from '../../components/common/ipfs-viewer';
 
 export default class ProjectDetails extends React.Component {
   renderDocuments(documents) {
+    console.log(documents);
     if (!documents) return null;
 
     return this.renderImages(documents);
@@ -35,6 +36,7 @@ export default class ProjectDetails extends React.Component {
 
   render() {
     const { project, preview } = this.props;
+    const hasImages = project.images && project.images.length > 0;
     return (
       <DetailsContainer>
         <ShortDescription>{project.description}</ShortDescription>
@@ -45,15 +47,17 @@ export default class ProjectDetails extends React.Component {
         <Details>
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
-          {!preview && (
-            <ImageViewer
-              thumbnailSize="512"
-              hashes={project.images || project.proofs}
-              renderLoading={null}
-              renderResolved={thumbnails => this.renderDocuments(thumbnails)}
-            />
+          {hasImages && (
+            <div>
+              <ImageViewer
+                thumbnailSize="512"
+                hashes={project.images || project.proofs}
+                renderLoading={null}
+                renderResolved={thumbnails => this.renderDocuments(thumbnails)}
+              />
+            </div>
           )}
-          {preview && this.renderImages(project.proofs, preview)}
+          {preview && this.renderImages(project.proofs || project.images, preview)}
         </Details>
       </DetailsContainer>
     );

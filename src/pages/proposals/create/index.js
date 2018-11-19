@@ -183,7 +183,7 @@ class CreateProposal extends React.Component {
                   uid: ChallengeProof.data.uid,
                 }),
                 this.props.showHideAlert({ message: 'Proposal Submitted' }),
-                this.setState({ form: undefined }),
+                this.props.history.push('/proposals'),
               ]);
             });
           }
@@ -280,6 +280,7 @@ CreateProposal.propTypes = {
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   address: object.isRequired,
+  history: object.isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -46,11 +46,12 @@ class Proposal extends React.Component {
   componentWillReceiveProps = nextProps => {
     const { proposalDetails } = nextProps;
     if (!proposalDetails.fething && proposalDetails.data.proposalId) {
+      const currentVersion = proposalDetails.data.proposalVersions
+        ? proposalDetails.data.proposalVersions.length - 1
+        : 0;
       this.setState({
-        versions: proposalDetails.proposalVersions,
-        currentVersion: proposalDetails.proposalVersions
-          ? proposalDetails.proposalVersions.length - 1
-          : 0,
+        versions: proposalDetails.data.proposalVersions,
+        currentVersion,
       });
     }
   };
@@ -73,18 +74,18 @@ class Proposal extends React.Component {
     const proposalVersion =
       proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1];
     const { dijixObject } = proposalVersion;
+    const versionCount = versions ? versions.length : 0;
     return (
       <ProposalsWrapper>
         <ProjectSummary>
           {versions &&
-            versions.length >
-              1(
-                <BrowseVersionHistory>
-                  <PreviousVersion />
-                  <div>Version {currentVersion + 1} </div>
-                  <NextVersion />
-                </BrowseVersionHistory>
-              )}
+            versions.length > 1 && (
+              <BrowseVersionHistory>
+                {currentVersion > 0 && <PreviousVersion />}
+                <div>Version {currentVersion + 1} </div>
+                {currentVersion + 1 < versionCount && <NextVersion />}
+              </BrowseVersionHistory>
+            )}
           <Header>
             <div>
               <Button kind="flat" style={{ pointerEvents: 'none' }}>

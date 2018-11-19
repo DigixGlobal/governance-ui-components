@@ -98,7 +98,7 @@ class Multimedia extends React.Component {
 
   render() {
     const { thumbnails } = this.state;
-    const { proofs } = this.props.form;
+    const { proofs, images: imageHash } = this.props.form;
     const images = thumbnails || proofs;
     return (
       <Fieldset>
@@ -124,14 +124,14 @@ class Multimedia extends React.Component {
               <ImageHolder>
                 {images &&
                   images.map(image => <img key={image.name} alt={image.name} src={image.src} />)}
-                {/* {imageHash && (
+                {imageHash && (
                   <ImageViewer
                     thumbnailSize="512"
                     hashes={imageHash}
                     renderLoading={null}
                     renderResolved={thumbs => this.renderDocuments(thumbs)}
                   />
-                )} */}
+                )}
               </ImageHolder>
             </RightCol>
           </MediaUploader>

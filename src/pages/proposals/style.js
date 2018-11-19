@@ -151,7 +151,8 @@ export const ShortDescription = styled.div`
 export const ProjectSummary = styled.div``;
 
 export const TrackActivity = styled.label`
-  padding: 3rem auto;
+  padding: 3rem 0;
+  margin-bottom: 1.5rem;
 
   input {
     margin-right: 1rem;
@@ -172,6 +173,8 @@ export const ImageHolder = styled.div`
   }
 `;
 
-export const Details = styled.div``;
+export const Details = styled.div`
+  padding-top: 2rem;
+`;
 
 export const MilestonesContainer = styled.div``;

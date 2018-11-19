@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const MenuContainer = styled.div`
   position: fixed;
   height: 100%;
-  width: 15%;
+  width: 280px;
+  max-width: 280px;
   padding: 8rem 2.5rem;
   padding-right: 0;
   background: ${props => props.theme.backgroundLeftPanel.default.toString()};
@@ -71,7 +72,7 @@ export const MenuItem = styled.li`
     color: ${props =>
       props.selected
         ? props.theme.textSecondary.default.toString()
-        : props.theme.textDefault.default.toString()};
+        : props.theme.textDefault.light.toString()};
     display: flex;
     justify-content: flex-start;
     align-items: center;

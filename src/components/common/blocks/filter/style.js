@@ -18,7 +18,7 @@ export const Filter = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 3em;
+  margin-top: 1.5em;
 
   div:first-child {
     flex: 6 0 0;
@@ -35,7 +35,7 @@ export const Category = styled.div`
 `;
 export const CategoryItem = styled.a`
   display: flex;
-  align-content: center;
+  align-items: center;
   font-family: 'Futura PT Book';
   margin-right: 2em;
   text-transform: uppercase;

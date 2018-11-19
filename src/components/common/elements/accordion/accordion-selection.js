@@ -1,31 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Icons from '../../elements/icons/Icons';
 import { AccordionItem, Header, Content } from './styles';
 
 export default class AccordionSelection extends React.Component {
-  onClick = () => {
+  onClickItemHandler = () => {
     this.props.onClick(this.props.label);
   };
 
   render() {
     const {
-      onClick,
-      props: { isOpen, label },
+      onClickItemHandler,
+      props: { children, isOpen, label },
     } = this;
+
+    const svgIcon = isOpen ? '#arrow_up' : '#arrow_down';
 
     return (
       <AccordionItem>
-        <Header onClick={onClick} style={{ cursor: 'pointer' }}>
+        <Header onClick={onClickItemHandler} style={{ cursor: 'pointer' }}>
           {label}
-          <i />
+          <div style={{ float: 'right', width: '18px', height: '18px' }}>
+            <Icons style={{ display: 'none' }} />
+            <span>
+              <svg>
+                <use xlinkHref={svgIcon} />
+              </svg>
+            </span>
+          </div>
         </Header>
-        {isOpen && <Content>{this.props.children}</Content>}
+        {isOpen && <Content>{children}</Content>}
       </AccordionItem>
     );
   }
 }
 
 const { bool, string, func, object, node, oneOfType } = PropTypes;
+
 AccordionSelection.propTypes = {
   children: oneOfType([object, node, string]).isRequired,
   isOpen: bool.isRequired,

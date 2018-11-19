@@ -7,7 +7,7 @@ const black = {
   lighter: blackHex.lighten(0.5),
 };
 
-const blueHex = Color('#111E36');
+const blueHex = Color('#243961');
 const blue = {
   default: blueHex,
   darker: blueHex.darken(1),
@@ -16,15 +16,16 @@ const blue = {
   lightest: blueHex.lighten(1.9),
 };
 
-// const darkBlueHex = Color('#111E36');
-// const darkBlue = {
-//   default: darkBlueHex,
-//   darker: darkBlueHex.darken(1),
-//   lighter: darkBlueHex.lighten(0.1),
-// };
+const darkBlueHex = Color('#131F35');
+const darkBlue = {
+  default: darkBlueHex,
+  darker: darkBlueHex.darken(1),
+  light: darkBlueHex.lighten(0.5),
+  lighter: darkBlueHex.lighten(0.75),
+  lightest: darkBlueHex.lighten(1.9),
+};
 
-// const goldHex = Color('#E4C88E');
-const goldHex = Color('#C19F58');
+const goldHex = Color('#E3C88E');
 const gold = {
   default: goldHex,
   darker: goldHex.darken(0.05),
@@ -33,18 +34,20 @@ const gold = {
   lightest: goldHex.lighten(1.9),
 };
 
-// const darkGoldHex = Color('#C4A159');
-// const darkGold = {
-//   default: darkGoldHex,
-//   darker: darkGoldHex.darken(0.05),
-//   lighter: darkGoldHex.lighten(0.05),
-// };
+const darkGoldHex = Color('#C2A059');
+const darkGold = {
+  default: darkGoldHex,
+  darker: darkGoldHex.darken(0.05),
+  light: darkGoldHex.lighten(0.5),
+  lighter: darkGoldHex.lighten(1),
+  lightest: darkGoldHex.lighten(1.9),
+};
 
 const grayHex = Color('#E8ECF2');
 const gray = {
   default: grayHex,
   darker: grayHex.darken(0.1),
-  light: grayHex.lighten(0.05),
+  light: grayHex.lighten(0.75),
   lighter: goldHex.lighten(1),
   lightest: goldHex.lighten(1.9),
 };
@@ -53,7 +56,7 @@ const darkGrayHex = Color('#464E5B');
 const darkGray = {
   default: darkGrayHex,
   darker: darkGrayHex.darken(0.5),
-  light: darkGrayHex.lighten(0.5),
+  light: darkGrayHex.lighten(0.25),
   lighter: darkGrayHex.lighten(1),
   lightest: darkGrayHex.lighten(1.9),
 };
@@ -72,8 +75,8 @@ const red = {
   lighter: redHex.lighten(0.5),
 };
 
-const primaryColor = blue;
-const secondaryColor = gold;
+const primaryColor = darkBlue;
+const secondaryColor = darkGold;
 const tertiaryColor = darkGray;
 
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
@@ -91,14 +94,15 @@ const LightTheme = {
 
   buttonBgPrimary: primaryColor.default,
   buttonBgSecondary: secondaryColor.default,
-  buttonTextPrimary: primaryColor.default,
-  buttonTextPrimaryReverse: white.default,
-  buttonTextSecondary: secondaryColor.default,
-  buttonTextSecondaryReverse: white.default,
   buttonBorderPrimary: primaryColor.default,
   buttonBorderSecondary: secondaryColor.default,
   buttonBorderDisabled: darkGray.lightest,
   buttonFlatColor: red.default,
+  buttonTextDefault: tertiaryColor.default,
+  buttonTextPrimary: primaryColor.default,
+  buttonTextPrimaryReverse: white.default,
+  buttonTextSecondary: secondaryColor.default,
+  buttonTextSecondaryReverse: white.default,
 
   headerBorderColor: gray.default,
 
@@ -112,7 +116,7 @@ const LightTheme = {
   linkPrimaryColor: primaryColor,
   linkSecondaryColor: secondaryColor,
 
-  filterActive: gold.default,
+  filterActive: secondaryColor.default,
   filterCount: tertiaryColor,
 
   timelineBgColor: tertiaryColor,

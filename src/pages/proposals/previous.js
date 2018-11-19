@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '../../components/common/elements/index';
 import { PreviousWrapper } from './style';
 
 export default class PreviousVersion extends React.Component {
@@ -7,7 +8,7 @@ export default class PreviousVersion extends React.Component {
       <div>
         <PreviousWrapper>
           <i />
-          <span>See Previous Version</span>
+          <Button kind="iconLabeled">See Previous Version</Button>
         </PreviousWrapper>
       </div>
     );

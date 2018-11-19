@@ -63,7 +63,7 @@ export const BrowseVersionHistory = styled.div`
   }
 `;
 
-export const PreviousWrapper = styled.a`
+export const PreviousWrapper = styled.div`
   text-transform: uppercase;
   i {
     &:before {
@@ -73,7 +73,7 @@ export const PreviousWrapper = styled.a`
   }
 `;
 
-export const NextWrapper = styled.a`
+export const NextWrapper = styled.div`
   text-transform: uppercase;
   i {
     &:before {

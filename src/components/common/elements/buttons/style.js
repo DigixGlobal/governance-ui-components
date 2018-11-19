@@ -90,3 +90,11 @@ export const FlatBtn = styled.a`
     font-size: 140%;
   }
 `;
+
+export const LabeledIconBtn = styled.a`
+  color: ${props => props.theme.buttonTextDefault.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  font-size: 1.4rem;
+  text-decoration: none;
+  text-transform: uppercase;
+`;

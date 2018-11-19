@@ -37,14 +37,14 @@ const TimelineLabel = styled.div`
 `;
 
 const StakingPhase = styled.div`
-  width: 15%;
+  width: 11.1111111%;
   border-right: 1px dashed ${props => props.theme.borderColor.lighter.toString()};
   font-weight: 600 !important;
 `;
 
 const MainPhase = styled.div`
   color: ${props => props.theme.textPrimary.default.toString()};
-  width: 100%;
+  width: 88.8888889%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -70,7 +70,8 @@ const TimelineDay = styled.div`
 
 const StakingPhaseStatus = styled.div`
   /* background: ${props => props.theme.timelineCurrentBgColor.default.toString()}; */
-  width:131.938px;
+  /* width:131.938px; */
+  width: 11.1111111%;
   height: 8px;
   position: relative;
 `;
@@ -78,7 +79,8 @@ const StakingPhaseStatus = styled.div`
 const MainPhaseStatus = styled.div`
   /* background: ${props => props.theme.timelineCurrentBgColor.default.toString()}; */
   position: relative;
-  width:880.578px;
+  /* width:880.578px; */
+  width: 88.8888889%;
   height: 8px;
 `;
 

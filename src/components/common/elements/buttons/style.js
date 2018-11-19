@@ -76,13 +76,14 @@ export const RoundBtn = styled.button`
     `};
 `;
 
-export const FlatBtn = styled.a`
+export const FlatBtn = styled.button`
   color: ${props => props.theme.buttonFlatColor.toString()};
   font-family: 'Futura PT Book', sans-serif;
   font-size: 1.1rem;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  border: 0;
 
   ::before {
     content: '● ';
@@ -91,10 +92,11 @@ export const FlatBtn = styled.a`
   }
 `;
 
-export const LabeledIconBtn = styled.a`
+export const LabeledIconBtn = styled.button`
   color: ${props => props.theme.buttonTextDefault.toString()};
   font-family: 'Futura PT Book', sans-serif;
   font-size: 1.4rem;
   text-decoration: none;
   text-transform: uppercase;
+  border: 0;
 `;

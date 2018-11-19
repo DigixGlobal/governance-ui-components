@@ -47,9 +47,9 @@ const grayHex = Color('#E8ECF2');
 const gray = {
   default: grayHex,
   darker: grayHex.darken(0.1),
-  light: grayHex.lighten(0.75),
-  lighter: goldHex.lighten(1),
-  lightest: goldHex.lighten(1.9),
+  light: grayHex.lighten(0.075),
+  lighter: goldHex.lighten(0.05),
+  lightest: goldHex.lighten(0.075),
 };
 
 const darkGrayHex = Color('#464E5B');
@@ -58,7 +58,7 @@ const darkGray = {
   darker: darkGrayHex.darken(0.5),
   light: darkGrayHex.lighten(0.25),
   lighter: darkGrayHex.lighten(1),
-  lightest: darkGrayHex.lighten(1.9),
+  lightest: darkGrayHex.lighten(2.1),
 };
 
 const whiteHex = Color('#fff');
@@ -86,9 +86,11 @@ const LightTheme = {
   backgroundDefault: white,
   backgroundPrimary: primaryColor,
   backgroundSecondary: secondaryColor,
-  backgroundLayout: gray,
+  backgroundLayout: tertiaryColor,
   backgroundLeftPanel: white,
   backgroundHeader: white,
+
+  borderColor: tertiaryColor,
 
   boxShadow: boxShadowStyle,
 
@@ -131,7 +133,6 @@ const LightTheme = {
   transition: transitionStyle,
 
   cardBorderColor: tertiaryColor,
-  borderColor: tertiaryColor,
 
   ErrorMessage: {
     backgroundColor: gray,

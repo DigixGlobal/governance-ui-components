@@ -17,10 +17,7 @@ import {
 } from '../style';
 
 const getTotalFunds = source => {
-  const sum = source.reduce((acc, currentValue) => {
-    console.log(acc, currentValue.fund);
-    return Number(acc) + Number(currentValue.fund);
-  }, 0);
+  const sum = source.reduce((acc, currentValue) => Number(acc) + Number(currentValue.fund), 0);
 
   return sum;
 };

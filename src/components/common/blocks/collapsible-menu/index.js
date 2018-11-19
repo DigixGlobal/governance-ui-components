@@ -27,9 +27,19 @@ const mockMenu = [
   { kind: 'profile', caption: 'Profile', url: '/' },
   { kind: 'product', caption: 'Help / DAO Tour', url: '/' },
 ];
+
+const getUserType = details => {
+  if (!details) return null;
+
+  if (details.data.isModerator) return 'Moderator';
+  if (details.data.isParticipant) return 'Participant';
+
+  return null;
+};
 class CollapsibleMenu extends React.Component {
   render() {
-    const { defaultAddress, menuItems, theme, userType } = this.props;
+    const { defaultAddress, menuItems, theme, addressDetails } = this.props;
+
     const menu = menuItems || mockMenu;
     return (
       <MenuContainer>
@@ -38,7 +48,7 @@ class CollapsibleMenu extends React.Component {
             <Welcome>
               Welcome <span>{defaultAddress.address}</span>
             </Welcome>
-            <UserType>{userType}</UserType>
+            <UserType>{getUserType(addressDetails)}</UserType>
           </ProfileContainer>
         )}
         <MenuList>
@@ -56,23 +66,24 @@ class CollapsibleMenu extends React.Component {
   }
 }
 
-const { string, array, object } = PropTypes;
+const { array, object } = PropTypes;
 CollapsibleMenu.propTypes = {
-  userType: string,
   menuItems: array,
   theme: object,
   defaultAddress: object,
+  addressDetails: object,
 };
 
 CollapsibleMenu.defaultProps = {
-  userType: 'Badge Holder',
   menuItems: mockMenu,
   theme: lightTheme,
   defaultAddress: undefined,
+  addressDetails: undefined,
 };
 
 const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
+  addressDetails: state.infoServer.AddressDetails,
 });
 
 export default connect(

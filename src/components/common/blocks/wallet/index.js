@@ -92,8 +92,10 @@ export class Wallet extends React.Component {
     const network = defaultNetworks[0];
 
     const message = Challenge.data.challenge.challenge;
+    const caption =
+      'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
     const signMessage = new Promise(resolve =>
-      resolve(showSigningModal({ txData: { txData: message }, network }))
+      resolve(showSigningModal({ txData: { message, caption }, network }))
     );
 
     return signMessage.then(signature => {

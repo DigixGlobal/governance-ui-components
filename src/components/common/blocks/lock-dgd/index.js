@@ -143,7 +143,7 @@ class LockDgd extends React.Component {
     // }
 
     return contract.lockDGD
-      .sendTransaction(dgd, {
+      .sendTransaction(dgd * 1e9, {
         from: defaultAddress.address,
         ui,
         ...web3Params,

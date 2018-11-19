@@ -88,13 +88,15 @@ class Proposal extends React.Component {
           {versions &&
             versions.length > 1 && (
               <BrowseVersionHistory>
-                {currentVersion > 0 && (
-                  <PreviousVersion onClick={this.handlePreviousVersionClick} />
-                )}
+                <PreviousVersion
+                  disabled={currentVersion === 0}
+                  onClick={this.handlePreviousVersionClick}
+                />
                 <div>Version {currentVersion + 1} </div>
-                {currentVersion + 1 < versionCount && (
-                  <NextVersion onClick={this.handleNextVersionClick} />
-                )}
+                <NextVersion
+                  disabled={currentVersion + 1 === versionCount}
+                  onClick={this.handleNextVersionClick}
+                />
               </BrowseVersionHistory>
             )}
           <Header>

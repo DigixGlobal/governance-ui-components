@@ -97,18 +97,10 @@ class Milestones extends React.Component {
               // onChange={e => this.handleFundChange(e, index)}
               value={createdMilestones[index] ? createdMilestones[index].fund : ''}
               onChange={e => this.handleChange(e, index, 'fund')}
-              placeholder="Insert anount of fund expected in ETH for completion of milestone"
+              placeholder="Insert amount of fund expected in ETH for completion of milestone"
             />
           </FormItem>
-          <FormItem>
-            <Label>Title This Milestone</Label>
-            <Input
-              name={index}
-              value={createdMilestones[index] ? createdMilestones[index].title : ''}
-              onChange={e => this.handleChange(e, index, 'title')}
-              placeholder="Insert anount of fund expected in ETH for completion of milestone"
-            />
-          </FormItem>
+
           <FormItem>
             <FormItem>
               <Label>Description of Milestone</Label>

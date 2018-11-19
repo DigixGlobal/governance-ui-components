@@ -94,14 +94,15 @@ const LightTheme = {
 
   buttonBgPrimary: primaryColor.default,
   buttonBgSecondary: secondaryColor.default,
-  buttonTextPrimary: primaryColor.default,
-  buttonTextPrimaryReverse: white.default,
-  buttonTextSecondary: secondaryColor.default,
-  buttonTextSecondaryReverse: white.default,
   buttonBorderPrimary: primaryColor.default,
   buttonBorderSecondary: secondaryColor.default,
   buttonBorderDisabled: darkGray.lightest,
   buttonFlatColor: red.default,
+  buttonTextDefault: tertiaryColor.default,
+  buttonTextPrimary: primaryColor.default,
+  buttonTextPrimaryReverse: white.default,
+  buttonTextSecondary: secondaryColor.default,
+  buttonTextSecondaryReverse: white.default,
 
   headerBorderColor: gray.default,
 

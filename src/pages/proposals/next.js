@@ -1,15 +1,14 @@
 import React from 'react';
+import { Button } from '../../components/common/elements/index';
 import { NextWrapper } from './style';
 
 export default class NextVersion extends React.Component {
   render() {
     return (
-      <div>
-        <NextWrapper>
-          <span>See Next Version</span>
-          <i />
-        </NextWrapper>
-      </div>
+      <NextWrapper>
+        <Button kind="iconLabeled">See Next Version</Button>
+        <i />
+      </NextWrapper>
     );
   }
 }

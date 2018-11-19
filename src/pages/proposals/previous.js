@@ -8,7 +8,7 @@ export default class PreviousVersion extends React.Component {
       <div>
         <PreviousWrapper>
           <i />
-          <Button kind="flat">See Previous Version</Button>
+          <Button kind="iconLabeled">See Previous Version</Button>
         </PreviousWrapper>
       </div>
     );

@@ -73,7 +73,7 @@ export const PreviousWrapper = styled.div`
   }
 `;
 
-export const NextWrapper = styled.a`
+export const NextWrapper = styled.div`
   text-transform: uppercase;
   i {
     &:before {

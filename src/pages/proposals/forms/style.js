@@ -53,6 +53,7 @@ export const FormItem = styled.div`
 export const Label = styled.label`
   ${LabelStyle};
   margin-bottom: 1rem;
+  display: inline-block;
   font-family: 'Futura PT Medium';
 `;
 
@@ -81,8 +82,8 @@ export const ImageHolder = styled.div`
 `;
 
 export const CreateMilestone = styled.div`
-  background: ${props => props.theme.backgroundLayout.default.toString()};
-  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  background: ${props => props.theme.backgroundLayout.lighter.toString()};
+  border: 1px solid ${props => props.theme.borderColor.light.toString()};
   border-radius: 3px;
   padding: 2rem;
   margin-top: 2rem;
@@ -93,6 +94,7 @@ export const EditorContainer = styled.div`
     height: 20rem;
   }
   border: none;
+  margin: 1rem 0;
 `;
 
 export const PreviewWrapper = styled.div``;

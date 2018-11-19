@@ -9,7 +9,7 @@ export const AccordionItem = styled.div`
     props.isOpen
       ? props.theme.backgroundDefault.default.toString()
       : props.theme.backgroundDefault.default.toString()};
-  border: 1px solid ${props => props.theme.borderColor.lightest.toString()};
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   animation: flipdown 0.5s ease both;
 
   &:nth-of-type(1) {

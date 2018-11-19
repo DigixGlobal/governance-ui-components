@@ -48,7 +48,6 @@ export const WalletWrapper = styled.div`
 `;
 
 export const AddressLabel = styled.div`
-  margin-left: auto;
   border-radius: 3rem;
   border: 1px solid ${props => props.theme.borderColor.default.toString()};
   border-radius: 2rem;

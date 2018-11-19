@@ -30,7 +30,7 @@ const StyledSelect = styled.select`
 
   background-size: 5px 5px, 5px 5px, 1px 80%;
   background-repeat: no-repeat;
-  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  border: 1px solid ${props => props.theme.borderColor.light.toString()};
   border-radius: ${props => (props.rounded ? '2rem' : '.5rem')};
   color: ${props => props.color || props.theme.textDefault.default.toString()};
   padding: ${props => (props.small ? '1rem' : '2rem')};

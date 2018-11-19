@@ -118,6 +118,9 @@ class Multimedia extends React.Component {
                 <UploadButton primary ghost htmlFor="image-upload">
                   Select Images to Upload
                 </UploadButton>
+                <div>
+                  Image must be in JPEG or PNG format &amp; file size must be lesser than 10MB.
+                </div>
               </UploadButtonContainer>
             </LeftCol>
             <RightCol>

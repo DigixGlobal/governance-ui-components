@@ -15,7 +15,7 @@ export const ProposalContainer = styled.div`
   flex-direction: row;
 
   height: 36.6rem;
-  border: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+  border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
 `;
 
 export const ProposaDetaillWrapper = styled.div`
@@ -60,7 +60,7 @@ export const ProposalLink = styled(Link)`
 `;
 
 export const ProposalFooter = styled.div`
-  border-top: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+  border-top: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   padding-top: 1.5em;
   display: flex;
   flex-direction: row;
@@ -104,13 +104,13 @@ export const Stats = styled.div`
   flex-direction: column;
   align-items: space-between;
 
-  border-left: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
-  border-right: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+  border-left: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+  border-right: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   height: 100%;
   text-transform: uppercase;
 
   > div:not(:last-child) {
-    border-bottom: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+    border-bottom: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   }
 `;
 
@@ -121,8 +121,9 @@ export const StatItem = styled.div`
     props.stage &&
     props.stage.toLowerCase() === 'idea' &&
     css`
-      color: ${props.theme.textDefault.lightest.toString()};
-    `} display: flex;
+      color: ${props.theme.textDefault.lighter.toString()};
+    `};
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;

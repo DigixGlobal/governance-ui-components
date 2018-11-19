@@ -51,7 +51,7 @@ const MainPhase = styled.div`
   padding-left: 1em;
 
   & > div:last-child {
-    color: ${props => props.theme.textDefault.lighter.toString()};
+    color: ${props => props.theme.textDefault.light.toString()};
     letter-spacing: 0.2em;
     span {
       margin: 0 1.5em;

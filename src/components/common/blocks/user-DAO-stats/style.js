@@ -7,7 +7,7 @@ export const Container = styled.div`
   padding: 2rem 4rem;
   text-transform: uppercase;
   text-align: center;
-  border: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+  border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   box-shadow: ${props => props.theme.boxShadow};
 `;
 
@@ -21,7 +21,7 @@ export const Point = styled.div`
     font-size: 3.6rem;
   }
 
-  border-right: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+  border-right: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
 
   :last-child {
     border-right: none;

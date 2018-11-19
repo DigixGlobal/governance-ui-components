@@ -85,7 +85,7 @@ class Milestones extends React.Component {
     const fields = [];
 
     // eslint-disable-next-line
-    for (let index = 0; index < count; index++){
+    for (let index = 0; index < count; index++) {
       fields.push(
         <CreateMilestone key={index}>
           <FormItem>
@@ -132,7 +132,7 @@ class Milestones extends React.Component {
             id="finalReward"
             value={form.finalReward || ''}
             onChange={onChange}
-            placeholder="Insert amnount of reward expected in ETH for completion of project."
+            placeholder="Insert the amount of reward expected in ETH for completion of project."
           />
         </FormItem>
         {/* <MilestoneList milestones={milestones} /> */}

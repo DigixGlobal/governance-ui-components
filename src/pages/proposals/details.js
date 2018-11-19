@@ -39,7 +39,11 @@ export default class ProjectDetails extends React.Component {
     const hasImages = project.images && project.images.length > 0;
     return (
       <DetailsContainer>
-        <ShortDescription>{project.description}</ShortDescription>
+        <ShortDescription>
+          {project.description
+            ? project.description
+            : 'No short description content has been created yet.'}
+        </ShortDescription>
         <TrackActivity>
           <input type="checkbox" />
           Track change from previous version

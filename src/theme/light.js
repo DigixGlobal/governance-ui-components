@@ -56,8 +56,8 @@ const darkGrayHex = Color('#464E5B');
 const darkGray = {
   default: darkGrayHex,
   darker: darkGrayHex.darken(0.5),
-  light: darkGrayHex.lighten(0.25),
-  lighter: darkGrayHex.lighten(1),
+  light: darkGrayHex.lighten(1),
+  lighter: darkGrayHex.lighten(1.9),
   lightest: darkGrayHex.lighten(2.1),
 };
 

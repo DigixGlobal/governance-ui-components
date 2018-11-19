@@ -29,6 +29,7 @@ export const MenuItem = styled.div`
 export const Header = styled.div`
   ${Container};
   background: ${props => props.theme.backgroundDefault.default.toString()};
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   justify-content: space-between;
   padding: 1rem 2rem;
   margin-bottom: 3rem;

@@ -12,16 +12,10 @@ export const CapsuleBtn = styled.button`
       ${GhostBtn};
     `};
   ${props =>
-    props.ghostBtnSm &&
+    props.sm &&
     css`
-      ${GhostBtn};
-      border: 1px solid #ccc;
-      padding: 0.8em 1.5em;
+      padding: 0.7em 1.25em;
       color: #ccc;
-      &:hover {
-        background: none;
-        color: #ccc;
-      }
     `};
   ${props =>
     props.disabled &&
@@ -99,4 +93,9 @@ export const LabeledIconBtn = styled.button`
   text-decoration: none;
   text-transform: uppercase;
   border: 0;
+  cursor: pointer;
+
+  :focus {
+    outline: none;
+  }
 `;

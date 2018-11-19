@@ -96,11 +96,11 @@ export const Title = styled(H1)`
 
 export const SubTitle = styled(H2)`
   font-family: 'Futura PT Medium';
-  color: ${props => props.theme.textPrimary.lighter.toString()};
+  color: ${props => props.theme.textPrimary.light.toString()};
 `;
 
 export const LatestActivity = styled.div`
-  color: ${props => props.theme.textDefault.lighter.toString()};
+  color: ${props => props.theme.textDefault.light.toString()};
   display: flex;
   flex-direction: row;
   margin: 3rem 0;
@@ -142,8 +142,8 @@ export const UpvoteStatus = styled.div`
 export const DetailsContainer = styled.div``;
 
 export const ShortDescription = styled.div`
-  border-top: 1px solid ${props => props.theme.borderColor.lightest.toString()};
-  border-bottom: 1px solid ${props => props.theme.borderColor.lightest.toString()};
+  border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   padding: 3rem 0 2em 0;
   margin-bottom: 3rem;
 `;

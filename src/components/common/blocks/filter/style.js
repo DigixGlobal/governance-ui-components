@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const FilterWrapper = styled.div`
   margin-bottom: 3em;
-  border-bottom: 1px solid ${props => props.theme.cardBorderColor.lightest.toString()};
+  border-bottom: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
 `;
 export const Heading = styled.div`
   display: flex;

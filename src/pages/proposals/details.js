@@ -16,7 +16,6 @@ import ImageViewer from '../../components/common/ipfs-viewer';
 
 export default class ProjectDetails extends React.Component {
   renderDocuments(documents) {
-    console.log(documents);
     if (!documents) return null;
 
     return this.renderImages(documents);

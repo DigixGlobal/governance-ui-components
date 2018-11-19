@@ -209,7 +209,7 @@ class EditProposal extends React.Component {
                   uid: ChallengeProof.data.uid,
                 }),
                 this.props.showHideAlert({ message: 'Proposal Updated' }),
-                this.props.history.push('/proposals'),
+                this.props.history.push('/'),
               ]);
             });
           }

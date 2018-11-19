@@ -123,7 +123,6 @@ class CreateProposal extends React.Component {
         proofs: proofs ? [...proofs] : undefined,
       })
       .then(({ ipfsHash }) => {
-        console.log(ipfsHash);
         const encodedHash = encodeHash(ipfsHash);
         return encodedHash;
       });
@@ -183,7 +182,7 @@ class CreateProposal extends React.Component {
                   uid: ChallengeProof.data.uid,
                 }),
                 this.props.showHideAlert({ message: 'Proposal Submitted' }),
-                this.props.history.push('/proposals'),
+                this.props.history.push('/'),
               ]);
             });
           }

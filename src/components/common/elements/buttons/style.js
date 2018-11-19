@@ -98,5 +98,8 @@ export const LabeledIconBtn = styled.button`
   font-size: 1.4rem;
   text-decoration: none;
   text-transform: uppercase;
+  ${props=>props.disabled && css`
+    color: #f2f2f2;
+  `}
   border: 0;
 `;

@@ -4,12 +4,13 @@ import { NextWrapper } from './style';
 
 export default class NextVersion extends React.Component {
   render() {
+    const { disabled } = this.props;
     return (
-      <NextWrapper>
+      <NextWrapper disabled={disabled}>
         <Button kind="iconLabeled" {...this.props}>
           See Next Version
         </Button>
-        <i />
+        <i disabled={disabled} />
       </NextWrapper>
     );
   }

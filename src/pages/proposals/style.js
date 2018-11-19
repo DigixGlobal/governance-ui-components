@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { H1, H2, Container } from '../../components/common/common-styles';
 
 export const ProposalsWrapper = styled.div``;
@@ -55,7 +55,8 @@ export const BrowseVersionHistory = styled.div`
       &:before {
         width: 0;
         height: 0;
-        border-bottom: 9px solid ${props => props.theme.borderColor.default.toString()};
+        border-bottom: 9px solid ${props =>
+          props.disabled ? '#f2f2f2' : props.theme.borderColor.default.toString()};
         border-left: 9px solid transparent;
         border-right: 9px solid transparent;
       }
@@ -69,6 +70,11 @@ export const PreviousWrapper = styled.div`
     &:before {
       transform: rotate(-90deg);
       margin-right: 0.5rem;
+      ${props =>
+        props.disabled &&
+        css`
+          border-bottom: 9px solid #f2f2f2 !important;
+        `};
     }
   }
 `;
@@ -79,6 +85,11 @@ export const NextWrapper = styled.div`
     &:before {
       transform: rotate(90deg);
       margin-left: 0.5rem;
+      ${props =>
+        props.disabled &&
+        css`
+          border-bottom: 9px solid #f2f2f2 !important;
+        `};
     }
   }
 `;

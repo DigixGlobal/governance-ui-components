@@ -4,9 +4,10 @@ import { PreviousWrapper } from './style';
 
 export default class PreviousVersion extends React.Component {
   render() {
+    const { disabled } = this.props;
     return (
       <div>
-        <PreviousWrapper>
+        <PreviousWrapper disabled={disabled}>
           <i />
           <Button kind="iconLabeled" {...this.props}>
             See Previous Version

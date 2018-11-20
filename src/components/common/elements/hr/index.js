@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const HR = styled.hr`
   border: none;
-  border-top: 1px solid ${props => props.theme.borderColor.lightest.toString()};
+  border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   margin: 3rem 0;
 `;
 

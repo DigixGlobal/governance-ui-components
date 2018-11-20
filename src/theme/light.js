@@ -98,7 +98,7 @@ const LightTheme = {
   buttonBgSecondary: secondaryColor.default,
   buttonBorderPrimary: primaryColor.default,
   buttonBorderSecondary: secondaryColor.default,
-  buttonBorderDisabled: darkGray.lightest,
+  buttonBorderDisabled: darkGray.lighter,
   buttonFlatColor: red.default,
   buttonTextDefault: tertiaryColor.default,
   buttonTextPrimary: primaryColor.default,

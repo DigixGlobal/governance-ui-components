@@ -30,8 +30,8 @@ export const H3 = styled.h3`
     props.primary
       ? props.theme.textPrimary.light.toString()
       : props.theme.textDefault.default.toString()};
+  font-family: 'Futura PT Light';
   font-size: 1.8rem;
-
   margin-bottom: 1.5rem;
 `;
 
@@ -132,11 +132,11 @@ export const GhostBtn = css`
 export const DisabledBtn = css`
   background-color: transparent;
   border-color: ${props => props.theme.buttonBorderDisabled.toString()};
-  color: ${props => props.theme.textDefault.lightest.toString()};
+  color: ${props => props.theme.textDefault.lighter.toString()};
   &:hover {
     background-color: transparent;
     border-color: ${props => props.theme.buttonBorderDisabled.toString()};
-    color: ${props => props.theme.textDefault.lightest.toString()};
+    color: ${props => props.theme.textDefault.lighter.toString()};
   }
 `;
 

@@ -144,7 +144,7 @@ export const Milestones = styled.div`
   flex-direction: column;
 
   & > div {
-    padding: 3.5em 0;
+    padding: 2.5em 0;
     text-align: center;
     flex: 1;
   }

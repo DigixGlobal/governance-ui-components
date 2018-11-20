@@ -11,30 +11,13 @@ import { Container, ContentWrapper } from './style';
 
 function withHeaderAndPanel(WrappedComponent) {
   return class TemplateContainer extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        showWallet: false,
-      };
-    }
-
-    handleWalletClick = () => {
-      if (!this.state.showWallet) {
-        document.body.classList.toggle('modal-is-open');
-      } else {
-        document.body.classList.remove('modal-is-open');
-      }
-      this.setState({ showWallet: !this.state.showWallet });
-    };
-
     render() {
-      const { showWallet } = this.state;
       return (
         <Fragment>
           <LockDgdOverlay />
           <Alert />
-          <WalletContainer show={showWallet} onClose={this.handleWalletClick} />
-          <NavBar onWalletClick={this.handleWalletClick} />
+          <WalletContainer />
+          <NavBar />
           <Container>
             <LeftMenu />
             <ContentWrapper>

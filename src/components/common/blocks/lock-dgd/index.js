@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import _ from 'lodash';
 
 import PropTypes from 'prop-types';
-
+import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
+import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { getDefaultAddress, getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
@@ -55,23 +57,46 @@ class LockDgd extends React.Component {
       dgd: 0,
       error: '',
       openError: false,
-      gasPrice: 30,
+      maxAllowance: 0,
       txHash: undefined,
       // txFee: 0,
     };
   }
   componentWillMount = () => {
-    const { lockDgdOverlay } = this.props;
+    const { lockDgdOverlay, defaultAddress } = this.props;
     if (!lockDgdOverlay || !lockDgdOverlay.show) {
       document.body.classList.remove('modal-is-open');
     } else {
       document.body.classList.toggle('modal-is-open');
     }
+
+    if (defaultAddress) {
+      this.getMaxAllowance();
+    }
   };
 
   onDgdInputChange = e => {
     const { value } = e.target;
-    this.setState({ dgd: value });
+    const { maxAllowance } = this.state;
+
+    if (Number(`${value}e9`) > Number(maxAllowance)) {
+      this.setError(`You can only stake up to ${maxAllowance} DGDs`);
+    } else this.setState({ dgd: value });
+  };
+
+  getMaxAllowance = () => {
+    const { defaultAddress, web3Redux } = this.props;
+
+    const { abi, address } = getContract(DgdToken, network);
+    const { address: DaoStakingContract } = getContract(DaoStakeLocking, network);
+    const contract = web3Redux
+      .web3(network)
+      .eth.contract(abi)
+      .at(address);
+
+    contract.allowance.call(defaultAddress.address, DaoStakingContract).then(result => {
+      this.setState({ maxAllowance: parseBigNumber(result, 9, false) });
+    });
   };
 
   setError = error =>
@@ -93,20 +118,12 @@ class LockDgd extends React.Component {
       sendTransactionToDaoServer: sendTransactionToDaoServerAction,
       ChallengeProof,
     } = this.props;
-    const { dgd, gasPrice } = this.state;
+    const { dgd } = this.state;
     const { abi, address } = getContract(DaoStakeLocking, network);
     const contract = web3Redux
       .web3(network)
       .eth.contract(abi)
       .at(address);
-
-    // const userAddress = addresses.find(a => a.address === defaultAddress.address);
-    // const userAddress = defaultAddress.address;
-    // const {
-    //   keystore: {
-    //     type: { id: keystoreType },
-    //   },
-    // } = userAddress;
 
     const web3Params = { gasPrice: DEFAULT_GAS_PRICE, gas: DEFAULT_GAS };
 

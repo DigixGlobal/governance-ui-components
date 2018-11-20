@@ -7,6 +7,7 @@ const defaultState = {
   UserAddress: undefined,
   Alert: undefined,
   SignChallenge: undefined,
+  ShowWallet: undefined,
 };
 
 export default function(state = defaultState, action) {
@@ -32,6 +33,14 @@ export default function(state = defaultState, action) {
         ...state,
         Alert: {
           ...state.Alert,
+          ...action.payload,
+        },
+      };
+    case actions.SHOW_WALLET:
+      return {
+        ...state,
+        ShowWallet: {
+          ...state.ShowWallet,
           ...action.payload,
         },
       };

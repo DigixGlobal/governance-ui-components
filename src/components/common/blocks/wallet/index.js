@@ -25,6 +25,7 @@ import {
   setUserAddress,
   showHideAlert,
   showSignChallenge,
+  showHideWalletOverlay,
 } from '../../../../reducers/gov-ui/actions';
 import {
   getChallenge,
@@ -115,18 +116,28 @@ export class Wallet extends React.Component {
 
   render() {
     const { stage, signed } = this.state;
-    const { show, onClose, defaultAddress, signChallenge, ...rest } = this.props;
+    const { showWallet, defaultAddress, signChallenge, ...rest } = this.props;
     if (signChallenge && signChallenge.show && !signed) this.renderChallenge();
-    if (!show) return null;
+    if (!showWallet || !showWallet.show) return null;
     return (
       <Container>
         <TransparentOverlay />
         <WalletContainer>
-          {stage === Stage.Intro && <Intro onClose={onClose} onChangeStage={this.updateStage} />}
+          {stage === Stage.Intro &&
+            !defaultAddress && (
+              <Intro
+                onClose={() => this.props.showHideWalletOverlay(!showWallet)}
+                onChangeStage={this.updateStage}
+              />
+            )}
           {stage === Stage.LoadingWallet &&
             !defaultAddress && <LoadWallet {...rest} onChangeStage={this.updateStage} />}
           {defaultAddress && (
-            <ConnectedWallet {...rest} onClose={onClose} address={defaultAddress} />
+            <ConnectedWallet
+              {...rest}
+              onClose={() => this.props.showHideWalletOverlay(!showWallet)}
+              address={defaultAddress}
+            />
           )}
         </WalletContainer>
       </Container>
@@ -136,7 +147,7 @@ export class Wallet extends React.Component {
 
 const { func, bool, object } = PropTypes;
 Wallet.propTypes = {
-  show: bool,
+  // show: bool,
   onClose: func.isRequired,
   signChallenge: object,
   getAddressDetailsAction: func.isRequired,
@@ -146,7 +157,7 @@ Wallet.propTypes = {
 };
 
 Wallet.defaultProps = {
-  show: false,
+  // show: false,
   signChallenge: undefined,
 };
 
@@ -161,6 +172,7 @@ const actions = {
   showHideAlert,
   setUserAddress,
   showSignChallenge,
+  showHideWalletOverlay,
   // getTransactions,
 };
 
@@ -172,6 +184,7 @@ const mapStateToProps = state => ({
   signChallenge: state.govUI.SignChallenge,
   Challenge: state.daoServer.Challenge,
   ChallengeProof: state.daoServer.ChallengeProof,
+  showWallet: state.govUI.ShowWallet,
 });
 
 export default web3Connect(

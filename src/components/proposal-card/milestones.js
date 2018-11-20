@@ -10,7 +10,7 @@ import {
   Data,
   CallToAction,
 } from './style';
-import Button from '../common/elements/buttons/index';
+import { Button } from '../common/elements/index';
 
 const determineDeadline = proposal => {
   let deadline = Date.now();
@@ -73,8 +73,8 @@ export default class ProposalCardMilestone extends React.Component {
       <MilestonesWrapper>
         <Milestones>
           <MilestoneStatus>
-            {mileStones.length > 0 && <Label>Milestones Completed</Label>}
-
+            {/* {mileStones.length > 0 && <Label>Milestones Completed</Label>} */}
+            <Label>Milestones</Label>
             <ul>{mileStones && mileStones.map(milestone => <li key={milestone} />)}</ul>
           </MilestoneStatus>
           <Deadline>

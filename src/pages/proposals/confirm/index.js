@@ -8,7 +8,7 @@ import ProjectDetail from './detail';
 import MediaAssets from './media';
 import Milestones from './milestones';
 
-import { PreviewWrapper } from './style';
+import { PreviewWrapper, CTA, LeftCol, RightCol } from './style';
 
 export default class ProjectConfirmation extends React.Component {
   render() {
@@ -19,12 +19,19 @@ export default class ProjectConfirmation extends React.Component {
         <ProjectDetail form={form} />
         <MediaAssets form={form} />
         <Milestones form={form} />
-        <Button primary ghost onClick={onBack}>
-          Back
-        </Button>
-        <Button primary ghost onClick={onSubmit}>
-          Submit
-        </Button>
+
+        <CTA>
+          <LeftCol>
+            <Button primary ghost onClick={onBack}>
+              Back
+            </Button>
+          </LeftCol>
+          <RightCol>
+            <Button primary ghost onClick={onSubmit}>
+              Submit
+            </Button>
+          </RightCol>
+        </CTA>
       </PreviewWrapper>
     );
   }

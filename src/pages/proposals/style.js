@@ -174,7 +174,7 @@ export const ImageHolder = styled.div`
   border-radius: 3px;
   min-width: 500px;
   height: 40rem;
-  padding: 0.5rem;
+  padding: 0rem;
   overflow: auto;
   & > img {
     height: 30rem;

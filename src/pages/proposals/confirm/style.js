@@ -9,13 +9,15 @@ export const Title = styled.div`
   margin-bottom: 1rem;
 `;
 export const Content = styled.div`
-  border: 1px solid #ccc;
+  background: ${props => props.theme.backgroundDefault.default.toString()};
+  border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   border-radius: 4px;
   padding: 2rem;
   margin-bottom: 5rem;
+  box-shadow: ${props => props.theme.boxShadow};
 `;
 export const Heading = styled.div`
-  color: ${props => props.theme.textDefault.lighter.toString()};
+  color: ${props => props.theme.textDefault.light.toString()};
   font-family: 'Futura PT Medium';
   margin-bottom: 2rem;
 `;
@@ -46,4 +48,8 @@ export const ImageHolder = styled.div`
     max-width: 500px;
     max-height: 200px;
   }
+`;
+export const CTA = styled.div`
+  ${Container};
+  justify-content: space-between;
 `;

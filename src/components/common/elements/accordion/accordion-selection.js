@@ -21,7 +21,7 @@ export default class AccordionSelection extends React.Component {
         <Header onClick={onClickItemHandler} style={{ cursor: 'pointer' }}>
           {label}
           <div style={{ float: 'right', width: '18px', height: '18px' }}>
-            <Icons style={{ display: 'none' }} />
+            <Icons />
             <span>
               <svg>
                 <use xlinkHref={svgIcon} />

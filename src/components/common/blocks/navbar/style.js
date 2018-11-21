@@ -84,7 +84,7 @@ export const Notification = styled.div`
 
 export const NotificationHeader = styled.div`
   background-color: ${props => props.theme.backgroundSecondary.default.toString()};
-  border-bottom: 1px solid #c4a159;
+  border-bottom: 1px solid ${props => props.theme.backgroundSecondary.default.toString()};
   color: #fff;
   padding: 0.5rem 0;
   text-transform: uppercase;
@@ -100,11 +100,10 @@ export const NotificationCount = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #c4a159;
+  background-color: ${props => props.theme.backgroundSecondary.default.toString()};
   height: 2rem;
   width: 2rem;
   border-radius: 50%;
-}
 `;
 export const NotificationContent = styled.div`
   padding: 2rem;
@@ -112,7 +111,7 @@ export const NotificationContent = styled.div`
 
 export const NotificationItem = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 0.75rem;
 `;
 
@@ -120,6 +119,8 @@ export const TxHash = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 10rem;
+  margin-right: 2rem;
+  text-align: left;
 `;
 
 export const TxStatus = styled.span`

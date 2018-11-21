@@ -5,11 +5,17 @@ import _ from 'lodash';
 
 import PropTypes from 'prop-types';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
+
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-import { getDefaultAddress, getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
+import {
+  getDefaultAddress,
+  getAddresses,
+  getDefaultNetworks,
+} from 'spectrum-lightsuite/src/selectors';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
@@ -117,6 +123,7 @@ class LockDgd extends React.Component {
       defaultAddress,
       sendTransactionToDaoServer: sendTransactionToDaoServerAction,
       ChallengeProof,
+      addresses,
     } = this.props;
     const { dgd } = this.state;
     const { abi, address } = getContract(DaoStakeLocking, network);
@@ -132,32 +139,39 @@ class LockDgd extends React.Component {
       type: 'lockDgd',
     };
 
+    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+
+    const {
+      keystore: {
+        type: { id: keystoreType },
+      },
+    } = sourceAddress;
     this.setError();
 
-    // if (keystoreType === 'metamask' || keystoreType === 'imtoken') {
-    //   const selectedNetwork = networks.find(({ id }) => id === network);
-    //   const data = contract.vote.getData([correctDgxReward, minDgd]);
-    //   return this.props
-    //     .showTxSigningModal({
-    //       address: userAddress,
-    //       network: selectedNetwork,
-    //       txData: sanitizeData(
-    //         {
-    //           ...web3Params,
-    //           from: defaultAddress.address,
-    //           data,
-    //           to: contract.address,
-    //         },
-    //         selectedNetwork
-    //       ),
-    //       ui,
-    //     })
-    //     .then(txHash => {
-    //       console.log(txHash);
-    //       // this.setState({ txHash, openTracker: true, broadcast: new Date() });
-    //     })
-    //     .catch(this.setError);
-    // }
+    if (keystoreType === 'metamask' || keystoreType === 'imtoken') {
+      const data = contract.lockDGD.getData(dgd * 1e9);
+      console.log(data, this.props.showTxSigningModal);
+      return this.props
+        .showTxSigningModal({
+          address: defaultAddress.address,
+          network,
+          txData: sanitizeData(
+            {
+              ...web3Params,
+              from: defaultAddress.address,
+              data,
+              to: contract.address,
+            },
+            network
+          ),
+          ui,
+        })
+        .then(txHash => {
+          console.log(txHash);
+          // this.setState({ txHash, openTracker: true, broadcast: new Date() });
+        })
+        .catch(this.setError);
+    }
 
     return contract.lockDGD
       .sendTransaction(dgd * 1e9, {
@@ -272,7 +286,7 @@ const { object, func } = PropTypes;
 
 LockDgd.propTypes = {
   lockDgdOverlay: object.isRequired,
-  // showTxSigningModal: func.isRequired,
+  showTxSigningModal: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   web3Redux: object.isRequired,
@@ -287,6 +301,7 @@ LockDgd.defaultProps = {
 const mapStateToProps = state => ({
   // networks: getNetworks(state),
   defaultAddress: getDefaultAddress(state),
+  addresses: getAddresses(state),
   networks: getDefaultNetworks(state),
   AddressDetails: state.infoServer.AddressDetails,
   Challenge: state.daoServer.Challenge,

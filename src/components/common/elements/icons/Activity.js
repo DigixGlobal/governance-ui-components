@@ -18,7 +18,7 @@ const ActivityIcon = props => (
             stroke={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="0.5"
             y="2.5"
@@ -31,7 +31,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="6"
             y="12"
@@ -43,7 +43,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="11"
             y="9"
@@ -55,7 +55,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="16"
             y="15"
@@ -72,7 +72,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="18"
             y="2"
@@ -84,7 +84,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="14"
             y="6"

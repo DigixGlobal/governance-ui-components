@@ -91,8 +91,13 @@ export const InputDgxBox = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
   ${SyledInput} {
     height: 5rem;
-    font-size: 3rem;
+    font-size: 2rem;
     border: none;
+    font-family: 'Futura PT Book';
+    &:focus {
+      box-shadow: none;
+      border-color: #fff;
+    }
   }
 `;
 
@@ -115,4 +120,8 @@ export const ErrorCaption = styled.div`
   font-family: 'Futura PT Medium';
   border-radius: 0.5rem;
   box-shadow: ${props => props.theme.boxShadow};
+`;
+
+export const Note = styled.span`
+  margin: 2rem;
 `;

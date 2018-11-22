@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const SyledTextArea = styled.textarea`
-  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  border: 1px solid ${props => props.theme.borderColor.light.toString()};
   border-radius: ${props => (props.rounded ? '2rem' : '.5rem')};
   color: ${props => props.theme.textDefault.default.toString()};
   margin: 1rem 0;

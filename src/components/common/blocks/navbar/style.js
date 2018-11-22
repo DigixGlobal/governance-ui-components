@@ -55,7 +55,7 @@ export const AddressLabel = styled.div`
   padding: 0.8rem 2rem;
   font-size: 1.2rem;
   font-weight: 500;
-  width: 60%;
+  width: 23rem;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
@@ -69,26 +69,25 @@ export const UtilityWrapper = styled.div`
 `;
 
 export const Notification = styled.div`
-  height: 20rem;
-  width: 20rem;
+  max-height: 21rem;
+  width: 23rem;
   position: absolute;
-  overflow: hidden;
+  // overflow: hidden;
   top: 5rem;
   text-align: center;
   background-color: #fff;
   border: 1px solid #c4a159;
   color: #c4a159;
-  margin-bottom: 4rem;
-  font-family: 'Futura PT Medium';
   border-radius: 0.5rem;
   box-shadow: ${props => props.theme.boxShadow};
 `;
 
 export const NotificationHeader = styled.div`
-  height: 2rem;
-  background-color: #c4a159;
-  border-bottom: 1px solid #c4a159;
+  background-color: ${props => props.theme.backgroundSecondary.default.toString()};
+  border-bottom: 1px solid ${props => props.theme.backgroundSecondary.default.toString()};
   color: #fff;
+  padding: 0.5rem 0;
+  text-transform: uppercase;
 `;
 
 export const NotificationCount = styled.div`
@@ -101,34 +100,29 @@ export const NotificationCount = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #c4a159;
+  background-color: ${props => props.theme.backgroundSecondary.default.toString()};
   height: 2rem;
   width: 2rem;
   border-radius: 50%;
-}
 `;
 export const NotificationContent = styled.div`
-  overflow: auto;
-  padding: 1rem;
-  padding: 0.5rem 1rem;
-  text-align: justify;
-  display: flex;
-  flex-direction: column;
+  padding: 2rem;
 `;
 
 export const NotificationItem = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 0.75rem;
 `;
 
 export const TxHash = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
-  display: inline-block;
-  width: 13rem;
+  width: 10rem;
+  margin-right: 2rem;
+  text-align: left;
 `;
 
 export const TxStatus = styled.span`
-  width: 2rem;
-  display: inline-block;
+  // width: 2rem;
 `;

@@ -17,8 +17,12 @@ import {
 
 export default class Proposal extends React.Component {
   render() {
-    const { details } = this.props;
+    const { details, userDetails } = this.props;
+
     const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
+    const canCreate = userDetails && userDetails.data.isParticipant;
+
+    console.log(canCreate, userDetails);
     return (
       <ProposaDetaillWrapper>
         <ProposalCard>
@@ -30,12 +34,23 @@ export default class Proposal extends React.Component {
           <Description>
             <H2>{proposalVersion.dijixObject.title}</H2>
             <p>{proposalVersion.dijixObject.description}</p>
-            <ProposalLink
-              href={`/proposals/${details.proposalId}`}
-              to={`/proposals/${details.proposalId}`}
-            >
-              View Project
-            </ProposalLink>
+
+            {canCreate ? (
+              <ProposalLink
+                href={`/proposals/${details.proposalId}`}
+                to={`/proposals/${details.proposalId}`}
+              >
+                View Project
+              </ProposalLink>
+            ) : (
+              <ProposalLink
+                href={`/proposals/${details.proposalId}`}
+                to={`/proposals/${details.proposalId}`}
+                style={{ pointerEvents: 'none' }}
+              >
+                View Project
+              </ProposalLink>
+            )}
           </Description>
           <ProposalFooter>
             <PostedBy>
@@ -51,4 +66,5 @@ export default class Proposal extends React.Component {
 
 Proposal.propTypes = {
   details: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
 };

@@ -71,6 +71,7 @@ export const RoundBtn = styled.button`
 `;
 
 export const FlatBtn = styled.button`
+  background-color: transparent;
   color: ${props => props.theme.buttonFlatColor.toString()};
   font-family: 'Futura PT Book', sans-serif;
   font-size: 1.1rem;
@@ -92,9 +93,16 @@ export const LabeledIconBtn = styled.button`
   font-size: 1.4rem;
   text-decoration: none;
   text-transform: uppercase;
-  ${props=>props.disabled && css`
-    color: #f2f2f2;
-  `}
+  ${props =>
+    props.disabled &&
+    css`
+      color: #f2f2f2;
+    `};
+  ${props =>
+    props.ghost &&
+    css`
+      ${GhostBtn};
+    `};
   border: 0;
   cursor: pointer;
 

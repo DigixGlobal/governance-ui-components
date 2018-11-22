@@ -19,7 +19,7 @@ const WalletIcon = props => (
               stroke={
                 props.selected
                   ? props.theme.iconSecondaryColor.default.toString()
-                  : props.theme.iconDefaultColor.default.toString()
+                  : props.theme.iconDefaultColor.light.toString()
               }
               x="16.5"
               y="8.5"
@@ -31,7 +31,7 @@ const WalletIcon = props => (
               fill={
                 props.selected
                   ? props.theme.iconSecondaryColor.default.toString()
-                  : props.theme.iconDefaultColor.default.toString()
+                  : props.theme.iconDefaultColor.light.toString()
               }
               x="18"
               y="11"
@@ -43,7 +43,7 @@ const WalletIcon = props => (
               stroke={
                 props.selected
                   ? props.theme.iconSecondaryColor.default.toString()
-                  : props.theme.iconDefaultColor.default.toString()
+                  : props.theme.iconDefaultColor.light.toString()
               }
               x="4.5"
               y="0.5"

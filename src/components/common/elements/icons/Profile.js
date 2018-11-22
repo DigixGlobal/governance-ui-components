@@ -22,7 +22,7 @@ const ProfileIcon = props => (
                 stroke={
                   props.selected
                     ? props.theme.iconSecondaryColor.default.toString()
-                    : props.theme.iconDefaultColor.default.toString()
+                    : props.theme.iconDefaultColor.light.toString()
                 }
                 mask="url(#mask-2)"
                 x="0.5"
@@ -39,7 +39,7 @@ const ProfileIcon = props => (
               stroke={
                 props.selected
                   ? props.theme.iconSecondaryColor.default.toString()
-                  : props.theme.iconDefaultColor.default.toString()
+                  : props.theme.iconDefaultColor.light.toString()
               }
             >
               <path

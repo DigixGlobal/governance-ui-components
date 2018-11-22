@@ -18,7 +18,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                   />
                   <path
@@ -27,7 +27,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -42,7 +42,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -52,7 +52,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -62,7 +62,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -72,7 +72,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />

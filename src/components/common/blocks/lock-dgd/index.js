@@ -36,7 +36,7 @@ import {
   StakeCaption,
   ErrorCaption,
   ConfirmationBox,
-  Note
+  Note,
 } from './style';
 import Icon from '../../../common/elements/icons';
 
@@ -222,7 +222,11 @@ class LockDgd extends React.Component {
           DGD
         </InputDgxBox>
         <Note>
-        {dgd > 0 && <StakeCaption>This will give you <strong>{dgd} STAKE</strong> in DigixDAO</StakeCaption>}
+          {dgd > 0 && (
+            <StakeCaption>
+              This will give you <strong>{dgd} STAKE</strong> in DigixDAO
+            </StakeCaption>
+          )}
         </Note>
         <Button
           kind="round"

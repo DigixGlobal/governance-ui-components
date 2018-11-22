@@ -11,9 +11,7 @@ class Alert extends React.Component {
   componentWillReceiveProps = nextProps => {
     const { alertData } = nextProps;
     if (alertData && alertData.message) {
-      console.log('test');
       this.interval = setInterval(() => {
-        console.log('test');
         this.props.showHideAlert({ message: undefined });
       }, 1000 * 10);
     }

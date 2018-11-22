@@ -151,7 +151,6 @@ class LockDgd extends React.Component {
 
     if (keystoreType === 'metamask' || keystoreType === 'imtoken') {
       const data = contract.lockDGD.getData(dgd * 1e9);
-      console.log(data, this.props.showTxSigningModal);
       return this.props
         .showTxSigningModal({
           address: defaultAddress.address,

@@ -18,6 +18,7 @@ class Milestones extends React.Component {
     const { form } = this.props;
     if (form.milestones && form.milestones.length > 0) {
       this.setState({
+        milestones: form.milestones,
         milestoneCount: form.milestones.length,
         milestoneFundings: form.milestoneFundings,
       });

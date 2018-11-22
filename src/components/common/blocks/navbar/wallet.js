@@ -12,8 +12,7 @@ import { WalletWrapper, AddressLabel } from './style';
 
 class WalletButton extends React.Component {
   render() {
-    const { onWalletClick, defaultAddress, addressDetails, showHideLockDgd } = this.props;
-    const canLockDgd = defaultAddress && addressDetails.data !== 'notFound';
+    const { onWalletClick, defaultAddress, showHideLockDgd, canLockDgd } = this.props;
     return (
       <WalletWrapper>
         {!defaultAddress && (
@@ -21,7 +20,7 @@ class WalletButton extends React.Component {
             {'Load Wallet'}
           </Button>
         )}
-        {canLockDgd && (
+        {canLockDgd && canLockDgd.show && (
           <Button kind="capsule" primary sm onClick={showHideLockDgd}>
             {'Lock DGD'}
           </Button>
@@ -38,16 +37,19 @@ WalletButton.propTypes = {
   showHideLockDgd: func.isRequired,
   defaultAddress: oneOfType([string, object]),
   addressDetails: object,
+  canLockDgd: object,
 };
 
 WalletButton.defaultProps = {
   defaultAddress: undefined,
   addressDetails: undefined,
+  canLockDgd: undefined,
 };
 
 const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
   addressDetails: state.infoServer.AddressDetails,
+  canLockDgd: state.govUI.CanLockDgd,
 });
 
 export default connect(

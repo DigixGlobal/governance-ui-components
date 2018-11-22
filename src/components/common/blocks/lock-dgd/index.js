@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import _ from 'lodash';
 
-import PropTypes from 'prop-types';
+import PropTypes, { array } from 'prop-types';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
 
@@ -44,7 +44,7 @@ import {
   StakeCaption,
   ErrorCaption,
   ConfirmationBox,
-  Note
+  Note,
 } from './style';
 import Icon from '../../../common/elements/icons';
 
@@ -88,7 +88,7 @@ class LockDgd extends React.Component {
 
     if (Number(`${value}e9`) > Number(maxAllowance)) {
       this.setError(`You can only stake up to ${maxAllowance} DGDs`);
-    } else this.setState({ dgd: value });
+    } else this.setState({ dgd: value, error: undefined, openError: false });
   };
 
   getMaxAllowance = () => {
@@ -113,7 +113,7 @@ class LockDgd extends React.Component {
     });
 
   handleCloseLockDgd = () => {
-    this.setState({ txHash: undefined }, () => {
+    this.setState({ txHash: undefined, error: undefined, openError: false, dgd: undefined }, () => {
       this.props.showHideLockDgdOverlay(false);
     });
   };
@@ -182,7 +182,7 @@ class LockDgd extends React.Component {
       })
       .then(txHash => {
         if (ChallengeProof.data) {
-          this.setState({ txHash }, () => {
+          this.setState({ txHash, dgd: undefined }, () => {
             sendTransactionToDaoServerAction({
               txHash,
               title: 'Lock DGD',
@@ -193,7 +193,7 @@ class LockDgd extends React.Component {
           });
         } else {
           this.setState({ txHash }, () => {
-            this.props.showHideAlert({ message: txHash });
+            this.props.showHideAlert({ message: txHash, dgd: undefined });
           });
         }
       })
@@ -238,11 +238,12 @@ class LockDgd extends React.Component {
 
   renderLockDgd = () => {
     const { dgd, openError, error } = this.state;
+    const invalidDgd = !dgd || Number(dgd) <= 0;
     return (
       <WalletContainer>
         <CloseButton>
           <Header>LOCK DGD</Header>
-          <Icon kind="close" onClick={() => this.props.showHideLockDgdOverlay(false)} />
+          <Icon kind="close" onClick={this.handleCloseLockDgd} />
         </CloseButton>
         <LockDgdBox>You are now locking DGD in the staking Phase</LockDgdBox>
         <TextCaption>
@@ -253,7 +254,11 @@ class LockDgd extends React.Component {
           DGD
         </InputDgxBox>
         <Note>
-        {dgd > 0 && <StakeCaption>This will give you <strong>{dgd} STAKE</strong> in DigixDAO</StakeCaption>}
+          {dgd > 0 && (
+            <StakeCaption>
+              This will give you <strong>{dgd} STAKE</strong> in DigixDAO
+            </StakeCaption>
+          )}
         </Note>
         <Button
           kind="round"
@@ -261,7 +266,7 @@ class LockDgd extends React.Component {
           ghost
           fluid
           onClick={this.handleButtonClick}
-          disabled={!dgd && dgd <= 0}
+          disabled={invalidDgd}
           style={{ marginTop: '4rem' }}
         >
           Lock DGD
@@ -296,10 +301,12 @@ LockDgd.propTypes = {
   ChallengeProof: object.isRequired,
   defaultAddress: object,
   showHideAlert: func.isRequired,
+  addresses: array,
 };
 
 LockDgd.defaultProps = {
   defaultAddress: undefined,
+  addresses: undefined,
 };
 const mapStateToProps = state => ({
   // networks: getNetworks(state),

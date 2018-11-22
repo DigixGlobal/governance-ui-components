@@ -141,7 +141,7 @@ class CreateProposal extends React.Component {
     const { form } = this.state;
     const proposalEth = toBigNumber(2 * 1e18);
     const { milestones } = form;
-    const funds = milestones.map(ms => toBigNumber(parseInt(ms.fund, 0) * 1e18));
+    const funds = milestones.map(ms => toBigNumber(parseFloat(ms.fund, 0) * 1e18));
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -166,7 +166,7 @@ class CreateProposal extends React.Component {
         .sendTransaction(
           ipfsHash,
           funds,
-          toBigNumber(parseInt(form.finalReward, 0) * 1e18),
+          toBigNumber(parseFloat(form.finalReward, 0) * 1e18),
           web3Params
         )
         .then(txHash => {
@@ -187,12 +187,6 @@ class CreateProposal extends React.Component {
           }
         })
         .catch(error => {
-          console.log({
-            ipfsHash,
-            funds,
-            reward: toBigNumber(parseInt(form.finalReward, 0) * 1e18),
-            address,
-          });
           this.setError(error);
         });
     });

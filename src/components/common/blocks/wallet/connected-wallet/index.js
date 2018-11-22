@@ -8,7 +8,7 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 
 import DGDAddress from '@digix/dao-contracts/build/contracts/MockDgd.json';
 
-import { showHideLockDgdOverlay } from '../../../../../reducers/gov-ui/actions';
+import { showHideLockDgdOverlay, canLockDgd } from '../../../../../reducers/gov-ui/actions';
 
 import Button from '../../../elements/buttons/index';
 import Icon from '../../../elements/icons';
@@ -40,18 +40,22 @@ class ConnectedWallet extends React.Component {
       ethBalance: 0,
     };
   }
+
   componentWillMount() {
-    Promise.all([this.getEthBalance(), this.getDgdbalance()]).then(([eth, dgd]) =>
+    Promise.all([this.getEthBalance(), this.getDgdBalance()]).then(([eth, dgd]) =>
       this.setState({ dgdBalance: dgd, ethBalance: eth })
     );
   }
 
-  getDgdbalance() {
+  getDgdBalance() {
     const { address: ethAddress, web3Redux } = this.props;
     const { address: contractAddress, abi } = getContract(DGDAddress);
     const { web3 } = web3Redux.networks[network];
     const contract = web3.eth.contract(abi).at(contractAddress);
-    return contract.balanceOf.call(ethAddress.address).then(balance => parseBigNumber(balance, 9));
+    return contract.balanceOf.call(ethAddress.address).then(balance => {
+      this.props.canLockDgd(parseInt(parseBigNumber(balance, 9), 0) > 0);
+      return parseBigNumber(balance, 9);
+    });
   }
 
   getEthBalance() {
@@ -154,6 +158,7 @@ ConnectedWallet.propTypes = {
   address: object.isRequired,
   web3Redux: object.isRequired,
   showHideLockDgdOverlayAction: func.isRequired,
+  canLockDgd: func.isRequired,
 };
 
 export default connect(
@@ -162,5 +167,6 @@ export default connect(
   }),
   {
     showHideLockDgdOverlayAction: showHideLockDgdOverlay,
+    canLockDgd,
   }
 )(ConnectedWallet);

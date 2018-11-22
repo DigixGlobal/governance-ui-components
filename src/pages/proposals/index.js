@@ -72,6 +72,7 @@ class Proposal extends React.Component {
   render() {
     const { currentVersion, versions } = this.state;
     const { proposalDetails, addressDetails } = this.props;
+
     if (proposalDetails.fething === null || proposalDetails.fething)
       return <div>Fetching Proposal Details</div>;
 
@@ -85,20 +86,19 @@ class Proposal extends React.Component {
     return (
       <ProposalsWrapper>
         <ProjectSummary>
-          {versions &&
-            versions.length > 1 && (
-              <BrowseVersionHistory>
-                <PreviousVersion
-                  disabled={currentVersion === 0}
-                  onClick={this.handlePreviousVersionClick}
-                />
-                <div>Version {currentVersion + 1} </div>
-                <NextVersion
-                  disabled={currentVersion + 1 === versionCount}
-                  onClick={this.handleNextVersionClick}
-                />
-              </BrowseVersionHistory>
-            )}
+          {versions && versions.length > 1 && (
+            <BrowseVersionHistory>
+              <PreviousVersion
+                disabled={currentVersion === 0}
+                onClick={this.handlePreviousVersionClick}
+              />
+              <div>Version {currentVersion + 1} </div>
+              <NextVersion
+                disabled={currentVersion + 1 === versionCount}
+                onClick={this.handleNextVersionClick}
+              />
+            </BrowseVersionHistory>
+          )}
           <Header>
             <div>
               <Button kind="flat" style={{ pointerEvents: 'none' }}>
@@ -107,12 +107,11 @@ class Proposal extends React.Component {
               <Title primary>{dijixObject.title}</Title>
             </div>
             <div>
-              {addressDetails.data &&
-                addressDetails.data.isModerator && (
-                  <Button kind="round" ghost primary style={{ pointerEvents: 'none' }}>
-                    Endorse
-                  </Button>
-                )}
+              {addressDetails.data && addressDetails.data.isModerator && (
+                <Button kind="round" ghost primary style={{ pointerEvents: 'none' }}>
+                  Endorse
+                </Button>
+              )}
               {isProposer && (
                 <Button kind="round" ghost primary onClick={this.handleEditClick}>
                   Edit

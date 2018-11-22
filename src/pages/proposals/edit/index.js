@@ -168,7 +168,7 @@ class EditProposal extends React.Component {
     const { web3Redux, ChallengeProof } = this.props;
     const { form, proposalId } = this.state;
     const { milestones } = form;
-    const funds = milestones.map(ms => toBigNumber(parseInt(ms.fund, 0) * 1e18));
+    const funds = milestones.map(ms => toBigNumber(parseFloat(ms.fund, 0) * 1e18));
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -193,7 +193,7 @@ class EditProposal extends React.Component {
           proposalId,
           ipfsHash,
           funds,
-          toBigNumber(parseInt(form.finalReward, 0) * 1e18),
+          toBigNumber(parseFloat(form.finalReward, 0) * 1e18),
           web3Params
         )
 

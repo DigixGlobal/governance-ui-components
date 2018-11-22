@@ -8,6 +8,7 @@ const defaultState = {
   Alert: undefined,
   SignChallenge: undefined,
   ShowWallet: undefined,
+  CanLockDgd: undefined,
 };
 
 export default function(state = defaultState, action) {
@@ -17,6 +18,14 @@ export default function(state = defaultState, action) {
         ...state,
         LockDgdOverlay: {
           ...state.LockDgdOverlay,
+          ...action.payload,
+        },
+      };
+    case actions.CAN_LOCK_DGD:
+      return {
+        ...state,
+        CanLockDgd: {
+          ...state.CanLockDgd,
           ...action.payload,
         },
       };

@@ -6,11 +6,18 @@ export const actions = {
   SHOW_ALERT: `${REDUX_PREFIX}SHOW_ALERT`,
   SHOW_SIGN_CHALLENGE: `${REDUX_PREFIX}SHOW_SIGN_CHALLENGE`,
   SHOW_WALLET: `${REDUX_PREFIX}SHOW_WALLET`,
+  CAN_LOCK_DGD: `${REDUX_PREFIX}CAN_LOCK_DGD`,
 };
 
 export function showHideLockDgdOverlay(show) {
   return dispatch => {
     dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show } });
+  };
+}
+
+export function canLockDgd(show) {
+  return dispatch => {
+    dispatch({ type: actions.CAN_LOCK_DGD, payload: { show } });
   };
 }
 

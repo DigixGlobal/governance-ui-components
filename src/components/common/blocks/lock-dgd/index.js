@@ -1,13 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import _ from 'lodash';
 
 import PropTypes from 'prop-types';
+import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
 
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
+import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-import { getDefaultAddress, getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
+import {
+  getDefaultAddress,
+  getAddresses,
+  getDefaultNetworks,
+} from 'spectrum-lightsuite/src/selectors';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
@@ -56,23 +64,46 @@ class LockDgd extends React.Component {
       dgd: 0,
       error: '',
       openError: false,
-      gasPrice: 30,
+      maxAllowance: 0,
       txHash: undefined,
       // txFee: 0,
     };
   }
   componentWillMount = () => {
-    const { lockDgdOverlay } = this.props;
+    const { lockDgdOverlay, defaultAddress } = this.props;
     if (!lockDgdOverlay || !lockDgdOverlay.show) {
       document.body.classList.remove('modal-is-open');
     } else {
       document.body.classList.toggle('modal-is-open');
     }
+
+    if (defaultAddress) {
+      this.getMaxAllowance();
+    }
   };
 
   onDgdInputChange = e => {
     const { value } = e.target;
-    this.setState({ dgd: value });
+    const { maxAllowance } = this.state;
+
+    if (Number(`${value}e9`) > Number(maxAllowance)) {
+      this.setError(`You can only stake up to ${maxAllowance} DGDs`);
+    } else this.setState({ dgd: value });
+  };
+
+  getMaxAllowance = () => {
+    const { defaultAddress, web3Redux } = this.props;
+
+    const { abi, address } = getContract(DgdToken, network);
+    const { address: DaoStakingContract } = getContract(DaoStakeLocking, network);
+    const contract = web3Redux
+      .web3(network)
+      .eth.contract(abi)
+      .at(address);
+
+    contract.allowance.call(defaultAddress.address, DaoStakingContract).then(result => {
+      this.setState({ maxAllowance: parseBigNumber(result, 9, false) });
+    });
   };
 
   setError = error =>
@@ -93,21 +124,14 @@ class LockDgd extends React.Component {
       defaultAddress,
       sendTransactionToDaoServer: sendTransactionToDaoServerAction,
       ChallengeProof,
+      addresses,
     } = this.props;
-    const { dgd, gasPrice } = this.state;
+    const { dgd } = this.state;
     const { abi, address } = getContract(DaoStakeLocking, network);
     const contract = web3Redux
       .web3(network)
       .eth.contract(abi)
       .at(address);
-
-    // const userAddress = addresses.find(a => a.address === defaultAddress.address);
-    // const userAddress = defaultAddress.address;
-    // const {
-    //   keystore: {
-    //     type: { id: keystoreType },
-    //   },
-    // } = userAddress;
 
     const web3Params = { gasPrice: DEFAULT_GAS_PRICE, gas: DEFAULT_GAS };
 
@@ -116,32 +140,39 @@ class LockDgd extends React.Component {
       type: 'lockDgd',
     };
 
+    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+
+    const {
+      keystore: {
+        type: { id: keystoreType },
+      },
+    } = sourceAddress;
     this.setError();
 
-    // if (keystoreType === 'metamask' || keystoreType === 'imtoken') {
-    //   const selectedNetwork = networks.find(({ id }) => id === network);
-    //   const data = contract.vote.getData([correctDgxReward, minDgd]);
-    //   return this.props
-    //     .showTxSigningModal({
-    //       address: userAddress,
-    //       network: selectedNetwork,
-    //       txData: sanitizeData(
-    //         {
-    //           ...web3Params,
-    //           from: defaultAddress.address,
-    //           data,
-    //           to: contract.address,
-    //         },
-    //         selectedNetwork
-    //       ),
-    //       ui,
-    //     })
-    //     .then(txHash => {
-    //       console.log(txHash);
-    //       // this.setState({ txHash, openTracker: true, broadcast: new Date() });
-    //     })
-    //     .catch(this.setError);
-    // }
+    if (keystoreType === 'metamask' || keystoreType === 'imtoken') {
+      const data = contract.lockDGD.getData(dgd * 1e9);
+      console.log(data, this.props.showTxSigningModal);
+      return this.props
+        .showTxSigningModal({
+          address: defaultAddress.address,
+          network,
+          txData: sanitizeData(
+            {
+              ...web3Params,
+              from: defaultAddress.address,
+              data,
+              to: contract.address,
+            },
+            network
+          ),
+          ui,
+        })
+        .then(txHash => {
+          console.log(txHash);
+          // this.setState({ txHash, openTracker: true, broadcast: new Date() });
+        })
+        .catch(this.setError);
+    }
 
     return contract.lockDGD
       .sendTransaction(dgd * 1e9, {
@@ -262,7 +293,7 @@ const { object, func } = PropTypes;
 
 LockDgd.propTypes = {
   lockDgdOverlay: object.isRequired,
-  // showTxSigningModal: func.isRequired,
+  showTxSigningModal: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   web3Redux: object.isRequired,
@@ -277,6 +308,7 @@ LockDgd.defaultProps = {
 const mapStateToProps = state => ({
   // networks: getNetworks(state),
   defaultAddress: getDefaultAddress(state),
+  addresses: getAddresses(state),
   networks: getDefaultNetworks(state),
   AddressDetails: state.infoServer.AddressDetails,
   Challenge: state.daoServer.Challenge,

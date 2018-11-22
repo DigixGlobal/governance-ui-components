@@ -1,22 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import { showHideWalletOverlay } from '../../../../reducers/gov-ui/actions';
 
 import Menu from './menu';
 import Search from './search';
-import Wallet from './wallet';
+import WalletButton from './wallet';
 import Utility from './utility';
 import Brand from '../../elements/icons/Brand';
 
 import { HeaderWrapper } from './style';
 
 class NavBar extends React.Component {
+  componentWillMount = () => {
+    this.fixScrollbar(this.props);
+  };
+  componentWillReceiveProps = nextProps => {
+    this.fixScrollbar(nextProps);
+  };
+
+  fixScrollbar = props => {
+    const { showWallet } = props;
+    if (showWallet && showWallet.show) {
+      document.body.classList.toggle('modal-is-open');
+    } else {
+      document.body.classList.remove('modal-is-open');
+    }
+  };
   render() {
-    const { onWalletClick } = this.props;
     return (
       <HeaderWrapper>
         <Menu />
         <Search />
-        <Wallet onWalletClick={onWalletClick} />
+        <WalletButton onWalletClick={() => this.props.showHideWalletOverlay(true)} />
         <Utility />
         <Brand />
       </HeaderWrapper>
@@ -24,9 +41,17 @@ class NavBar extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, bool } = PropTypes;
 
 NavBar.propTypes = {
-  onWalletClick: func.isRequired,
+  // onWalletClick: func.isRequired,
+  showWallet: bool.isRequired,
+  showHideWalletOverlay: func.isRequired,
 };
-export default NavBar;
+
+export default connect(
+  ({ govUI: { ShowWallet } }) => ({ showWallet: ShowWallet }),
+  {
+    showHideWalletOverlay,
+  }
+)(NavBar);

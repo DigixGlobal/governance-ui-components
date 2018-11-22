@@ -72,7 +72,7 @@ export class CategoryGroup extends React.Component {
           onClick={() => this.handleClick('review')}
           active={stage.toLowerCase() === 'review'}
         >
-          Review <span>{ProposalsCount.data.review}</span>
+          Review <span>{ProposalsCount.data.review || 0}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('archived')}

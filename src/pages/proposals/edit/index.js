@@ -75,7 +75,7 @@ class EditProposal extends React.Component {
         ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
         : {};
       const form = { ...currentVersion.dijixObject };
-      form.finalReward = Number(currentVersion.finalReward);
+      form.finalReward = Number(currentVersion.finalReward) / 1e18;
       // console.log(form.finalReward, currentVersion.finalReward);
       this.setState({
         form: { ...form },
@@ -221,7 +221,7 @@ class EditProposal extends React.Component {
   renderStep = () => {
     const { currentStep, form } = this.state;
     const Step = steps[currentStep];
-    return <Step onChange={this.onChangeHandler} form={form} />;
+    return <Step onChange={this.onChangeHandler} form={form} edit />;
   };
 
   renderPreview = () => {
@@ -278,12 +278,11 @@ class EditProposal extends React.Component {
                 Next
               </Button>
             )}
-            {!canMoveNext &&
-              validForm && (
-                <Button primary ghost onClick={this.handleShowConfirmPage}>
-                  Update Now
-                </Button>
-              )}
+            {!canMoveNext && validForm && (
+              <Button primary ghost onClick={this.handleShowConfirmPage}>
+                Update Now
+              </Button>
+            )}
           </RightCol>
         </Header>
         {this.renderStep()}

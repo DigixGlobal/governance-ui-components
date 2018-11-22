@@ -10,7 +10,7 @@ import Button from '../../elements/buttons/';
 
 import { WalletWrapper, AddressLabel } from './style';
 
-class Wallet extends React.Component {
+class WalletButton extends React.Component {
   render() {
     const { onWalletClick, defaultAddress, addressDetails, showHideLockDgd } = this.props;
     const canLockDgd = defaultAddress && addressDetails.data !== 'notFound';
@@ -33,14 +33,14 @@ class Wallet extends React.Component {
 }
 
 const { func, string, object, oneOfType } = PropTypes;
-Wallet.propTypes = {
+WalletButton.propTypes = {
   onWalletClick: func.isRequired,
   showHideLockDgd: func.isRequired,
   defaultAddress: oneOfType([string, object]),
   addressDetails: object,
 };
 
-Wallet.defaultProps = {
+WalletButton.defaultProps = {
   defaultAddress: undefined,
   addressDetails: undefined,
 };
@@ -53,4 +53,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { showHideLockDgd: showHideLockDgdOverlay }
-)(Wallet);
+)(WalletButton);

@@ -5,11 +5,18 @@ export const actions = {
   SET_USER_ADDRESS: `${REDUX_PREFIX}SET_USER_ADDRESS`,
   SHOW_ALERT: `${REDUX_PREFIX}SHOW_ALERT`,
   SHOW_SIGN_CHALLENGE: `${REDUX_PREFIX}SHOW_SIGN_CHALLENGE`,
+  SHOW_WALLET: `${REDUX_PREFIX}SHOW_WALLET`,
 };
 
 export function showHideLockDgdOverlay(show) {
   return dispatch => {
     dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show } });
+  };
+}
+
+export function showHideWalletOverlay(show) {
+  return dispatch => {
+    dispatch({ type: actions.SHOW_WALLET, payload: { show } });
   };
 }
 

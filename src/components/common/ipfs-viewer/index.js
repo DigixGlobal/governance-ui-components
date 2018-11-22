@@ -41,9 +41,11 @@ export default class MultipleResolver extends Component {
   fetchImages = props => {
     const { hashes, thumbnailSize } = props;
     Promise.all(
-      hashes.map(hash =>
-        fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails)
-      )
+      hashes.map(hash => {
+        if (hash === null) return undefined;
+
+        return fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails);
+      })
     ).then(images => {
       const thumbs = images.map(image => ({ src: image[thumbnailSize] }));
       this.setState({ thumbnails: thumbs, loading: false });

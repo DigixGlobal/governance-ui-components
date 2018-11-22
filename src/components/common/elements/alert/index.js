@@ -13,7 +13,7 @@ class Alert extends React.Component {
     if (alertData && alertData.message) {
       this.interval = setInterval(() => {
         this.props.showHideAlert({ message: undefined });
-      }, 1000 * 30);
+      }, 1000 * 10);
     }
   };
 

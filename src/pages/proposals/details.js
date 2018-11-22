@@ -36,6 +36,7 @@ export default class ProjectDetails extends React.Component {
   render() {
     const { project, preview } = this.props;
     const hasImages = project.images && project.images.length > 0;
+    console.log(project.images);
     return (
       <DetailsContainer>
         <ShortDescription>

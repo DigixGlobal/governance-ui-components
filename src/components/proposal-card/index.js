@@ -12,7 +12,7 @@ export default class ProposalCard extends React.Component {
     return (
       <ProposalWrapper>
         <ProposalContainer>
-          <Proposal details={proposal} />
+          <Proposal details={proposal} userDetails={userDetails} />
           <Stats details={proposal} />
           <Milestones details={proposal} userDetails={userDetails} />
         </ProposalContainer>

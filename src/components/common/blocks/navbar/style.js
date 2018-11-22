@@ -34,6 +34,10 @@ export const HeaderWrapper = styled.section`
       flex: 3 0 0;
       justify-content: flex-end;
     }
+    &:nth-child(4) {
+      flex: inherit;
+      width: 150px;
+    }
   }
 `;
 
@@ -66,10 +70,11 @@ export const UtilityWrapper = styled.div`
   justify-content: center;
   width: 150px;
   padding: 0;
+  flex: inherit;
 `;
 
 export const Notification = styled.div`
-  max-height: 21rem;
+  max-height: 25rem;
   width: 23rem;
   position: absolute;
   // overflow: hidden;
@@ -107,6 +112,8 @@ export const NotificationCount = styled.div`
 `;
 export const NotificationContent = styled.div`
   padding: 2rem;
+  overflow-y: scroll;
+  max-height: 22rem;
 `;
 
 export const NotificationItem = styled.div`

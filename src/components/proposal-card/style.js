@@ -51,7 +51,10 @@ export const ProposalLink = styled(Link)`
   &:link,
   &:visited {
     text-decoration: underline;
-    color: ${props => props.theme.linkPrimaryColor.light.toString()};
+    color: ${props =>
+      props.disabled
+        ? props.theme.linkDefaultColor.light.toString()
+        : props.theme.linkPrimaryColor.light.toString()};
   }
 
   &:hover {

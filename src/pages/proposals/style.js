@@ -179,8 +179,7 @@ export const ImageHolder = styled.div`
   & > img {
     height: 30rem;
     width: 33rem;
-    margin: 1rem;
-    border: 2px solid ${props => props.theme.borderColor.default.toString()};
+    margin: 2rem 2rem 0 0;
   }
 `;
 

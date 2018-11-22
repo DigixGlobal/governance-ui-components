@@ -14,7 +14,7 @@ const HelpIcon = props => (
                 stroke={
                   props.selected
                     ? props.theme.iconSecondaryColor.default.toString()
-                    : props.theme.iconDefaultColor.default.toString()
+                    : props.theme.iconDefaultColor.light.toString()
                 }
               />
               <path
@@ -23,7 +23,7 @@ const HelpIcon = props => (
                 stroke={
                   props.selected
                     ? props.theme.iconSecondaryColor.default.toString()
-                    : props.theme.iconDefaultColor.default.toString()
+                    : props.theme.iconDefaultColor.light.toString()
                 }
                 strokeLinecap="square"
               />
@@ -38,7 +38,7 @@ const HelpIcon = props => (
                 stroke={
                   props.selected
                     ? props.theme.iconSecondaryColor.default.toString()
-                    : props.theme.iconDefaultColor.default.toString()
+                    : props.theme.iconDefaultColor.light.toString()
                 }
                 strokeLinecap="square"
               />
@@ -48,7 +48,7 @@ const HelpIcon = props => (
                 stroke={
                   props.selected
                     ? props.theme.iconSecondaryColor.default.toString()
-                    : props.theme.iconDefaultColor.default.toString()
+                    : props.theme.iconDefaultColor.light.toString()
                 }
                 strokeLinecap="square"
               />
@@ -58,7 +58,7 @@ const HelpIcon = props => (
                 stroke={
                   props.selected
                     ? props.theme.iconSecondaryColor.default.toString()
-                    : props.theme.iconDefaultColor.default.toString()
+                    : props.theme.iconDefaultColor.light.toString()
                 }
                 strokeLinecap="square"
               />
@@ -68,7 +68,7 @@ const HelpIcon = props => (
                 stroke={
                   props.selected
                     ? props.theme.iconSecondaryColor.default.toString()
-                    : props.theme.iconDefaultColor.default.toString()
+                    : props.theme.iconDefaultColor.light.toString()
                 }
                 strokeLinecap="square"
               />

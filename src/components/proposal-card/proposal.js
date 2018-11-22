@@ -44,6 +44,7 @@ export default class Proposal extends React.Component {
               </ProposalLink>
             ) : (
               <ProposalLink
+                disabled
                 href={`/proposals/${details.proposalId}`}
                 to={`/proposals/${details.proposalId}`}
                 style={{ pointerEvents: 'none' }}

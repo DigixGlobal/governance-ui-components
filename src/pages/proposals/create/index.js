@@ -169,7 +169,6 @@ class CreateProposal extends React.Component {
           toBigNumber(parseInt(form.finalReward, 0) * 1e18),
           web3Params
         )
-
         .then(txHash => {
           if (ChallengeProof.data) {
             this.setState({ txHash }, () => {
@@ -187,7 +186,15 @@ class CreateProposal extends React.Component {
             });
           }
         })
-        .catch(this.setError);
+        .catch(error => {
+          console.log({
+            ipfsHash,
+            funds,
+            reward: toBigNumber(parseInt(form.finalReward, 0) * 1e18),
+            address,
+          });
+          this.setError(error);
+        });
     });
   };
 
@@ -250,12 +257,11 @@ class CreateProposal extends React.Component {
                 Next
               </Button>
             )}
-            {!canMoveNext &&
-              validForm && (
-                <Button primary ghost onClick={this.handleShowConfirmPage}>
-                  Create Now
-                </Button>
-              )}
+            {!canMoveNext && validForm && (
+              <Button primary ghost onClick={this.handleShowConfirmPage}>
+                Create Now
+              </Button>
+            )}
           </RightCol>
         </Header>
         {this.renderStep()}

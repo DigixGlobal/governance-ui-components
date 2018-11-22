@@ -35,7 +35,6 @@ const ParticipantsRoute = ({ component: Component, isParticipant, ...rest }) => 
 );
 export class Governance extends React.Component {
   render() {
-    console.count(1);
     const { addressDetails } = this.props;
     return (
       <HashRouter>
@@ -44,11 +43,13 @@ export class Governance extends React.Component {
             {addressDetails.data && [
               <ParticipantsRoute
                 path="/proposals/create"
+                key="r-1"
                 component={withHeaderAndPanel(CreateProposals)}
                 isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
               />,
               <ParticipantsRoute
                 path="/proposals/edit"
+                key="r-2"
                 component={withHeaderAndPanel(EditProposal)}
                 isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
               />,

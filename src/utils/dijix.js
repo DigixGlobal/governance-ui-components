@@ -49,6 +49,7 @@ export const dijixPdfConfig = new DijixPDF({
 });
 
 export function fetchFromDijix(id, hash, ipfsHash) {
+  if (hash === null || ipfsHash === null) return;
   const decodedHash =
     (ipfsHash && dgxHashToIPFSHash(ipfsHash)) || dgxHashToIPFSHash(decodeHash(hash));
   return dijix.fetch(decodedHash).catch(() => null);

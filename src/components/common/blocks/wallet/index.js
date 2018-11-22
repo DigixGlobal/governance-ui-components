@@ -39,6 +39,7 @@ export class Wallet extends React.Component {
     this.state = {
       stage: Stage.Intro,
       signed: false,
+      proving: false,
     };
   }
 
@@ -105,12 +106,13 @@ export class Wallet extends React.Component {
       } = AddressDetails;
 
       this.setState({ signed: true });
+      if (this.state.proving) return;
       return proveChallengeAction({
         address,
         challenge: Challenge.data.challenge.id,
         message,
         signature: signature.signedTx,
-      });
+      }).then(this.setState({ proving: true }));
     });
   };
 
@@ -123,15 +125,15 @@ export class Wallet extends React.Component {
       <Container>
         <TransparentOverlay />
         <WalletContainer>
-          {stage === Stage.Intro &&
-            !defaultAddress && (
-              <Intro
-                onClose={() => this.props.showHideWalletOverlay(!showWallet)}
-                onChangeStage={this.updateStage}
-              />
-            )}
-          {stage === Stage.LoadingWallet &&
-            !defaultAddress && <LoadWallet {...rest} onChangeStage={this.updateStage} />}
+          {stage === Stage.Intro && !defaultAddress && (
+            <Intro
+              onClose={() => this.props.showHideWalletOverlay(!showWallet)}
+              onChangeStage={this.updateStage}
+            />
+          )}
+          {stage === Stage.LoadingWallet && !defaultAddress && (
+            <LoadWallet {...rest} onChangeStage={this.updateStage} />
+          )}
           {defaultAddress && (
             <ConnectedWallet
               {...rest}
@@ -148,7 +150,7 @@ export class Wallet extends React.Component {
 const { func, bool, object } = PropTypes;
 Wallet.propTypes = {
   // show: bool,
-  onClose: func.isRequired,
+  // onClose: func.isRequired,
   signChallenge: object,
   getAddressDetailsAction: func.isRequired,
   showSigningModal: func.isRequired,

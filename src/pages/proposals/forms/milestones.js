@@ -93,8 +93,6 @@ class Milestones extends React.Component {
             <Input
               name={index}
               type="number"
-              // value={milestoneFundings[index]}
-              // onChange={e => this.handleFundChange(e, index)}
               value={createdMilestones[index] ? createdMilestones[index].fund : ''}
               onChange={e => this.handleChange(e, index, 'fund')}
               placeholder="Insert amount of fund expected in ETH for completion of milestone"
@@ -151,10 +149,14 @@ class Milestones extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, bool } = PropTypes;
 
 Milestones.propTypes = {
   onChange: func.isRequired,
   form: object.isRequired,
+};
+
+Milestones.defaultProps = {
+  edit: false,
 };
 export default Milestones;

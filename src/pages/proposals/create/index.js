@@ -120,7 +120,7 @@ class CreateProposal extends React.Component {
           details,
           milestones,
         },
-        proofs: proofs ? [...proofs] : undefined,
+        proofs: proofs && proofs.length > 0 ? [...proofs] : undefined,
       })
       .then(({ ipfsHash }) => {
         const encodedHash = encodeHash(ipfsHash);
@@ -171,19 +171,19 @@ class CreateProposal extends React.Component {
         )
         .then(txHash => {
           if (ChallengeProof.data) {
-            this.setState({ txHash }, () => {
-              Promise.all([
-                this.props.sendTransactionToDaoServer({
-                  txHash,
-                  title: 'Submit Proposal',
-                  token: ChallengeProof.data['access-token'],
-                  client: ChallengeProof.data.client,
-                  uid: ChallengeProof.data.uid,
-                }),
-                this.props.showHideAlert({ message: 'Proposal Submitted' }),
-                this.props.history.push('/'),
-              ]);
-            });
+            // this.setState({ txHash }, () => {
+            Promise.all([
+              this.props.sendTransactionToDaoServer({
+                txHash,
+                title: 'Submit Proposal',
+                token: ChallengeProof.data['access-token'],
+                client: ChallengeProof.data.client,
+                uid: ChallengeProof.data.uid,
+              }),
+              this.props.showHideAlert({ message: 'Proposal Submitted' }),
+              this.props.history.push('/?reload=true'),
+            ]);
+            // });
           }
         })
         .catch(error => {

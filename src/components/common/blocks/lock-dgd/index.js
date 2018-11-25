@@ -153,7 +153,7 @@ class LockDgd extends React.Component {
       const data = contract.lockDGD.getData(dgd * 1e9);
       return this.props
         .showTxSigningModal({
-          address: defaultAddress.address,
+          address: sourceAddress,
           network,
           txData: sanitizeData(
             {

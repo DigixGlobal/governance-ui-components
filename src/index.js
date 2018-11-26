@@ -71,18 +71,7 @@ Governance.defaultProps = {
   addressDetails: undefined,
 };
 
-const mapStateToProps = state => ({
-  addressDetails: state.infoServer.AddressDetails,
-});
-
-// export default Governance;
-
 export default connect(
   ({ infoServer: { AddressDetails } }) => ({ addressDetails: AddressDetails }),
   {}
 )(Governance);
-
-// export default connect(
-//   mapStateToProps,
-//   {}
-// )(Governance);

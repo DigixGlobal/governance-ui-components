@@ -71,7 +71,9 @@ class Proposal extends React.Component {
 
   render() {
     const { currentVersion, versions } = this.state;
-    const { proposalDetails, addressDetails } = this.props;
+    const { proposalDetails, addressDetails, challengeProof, history } = this.props;
+
+    if (!challengeProof.data) history.push('/');
 
     if (proposalDetails.fething === null || proposalDetails.fething)
       return <div>Fetching Proposal Details</div>;
@@ -154,14 +156,20 @@ Proposal.propTypes = {
   proposalDetails: object.isRequired,
   getProposalDetailsAction: func.isRequired,
   addressDetails: object.isRequired,
+  challengeProof: object,
   location: object.isRequired,
   history: object.isRequired,
 };
 
+Proposal.defaultProps = {
+  challengeProof: undefined,
+};
+
 export default connect(
-  ({ infoServer: { ProposalDetails, AddressDetails } }) => ({
+  ({ infoServer: { ProposalDetails, AddressDetails }, daoServer: { ChallengeProof } }) => ({
     proposalDetails: ProposalDetails,
     addressDetails: AddressDetails,
+    challengeProof: ChallengeProof,
   }),
   {
     getProposalDetailsAction: getProposalDetails,

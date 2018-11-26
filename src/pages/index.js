@@ -19,14 +19,9 @@ class LandingPage extends Component {
   }
 
   componentWillMount = () => {
-    const {
-      DaoDetails: { error, fetching },
-      getDaoDetailsAction,
-      getProposalsAction,
-    } = this.props;
-    if (fetching === null || error) {
-      Promise.all([getDaoDetailsAction(), getProposalsAction()]);
-    }
+    const { getDaoDetailsAction, getProposalsAction } = this.props;
+
+    Promise.all([getDaoDetailsAction(), getProposalsAction()]);
   };
 
   onOrderChange = order => {
@@ -39,9 +34,8 @@ class LandingPage extends Component {
     const hasProposals = Proposals.data && Proposals.data.length > 0;
     let orderedProposals = [];
     if (hasProposals) {
-      orderedProposals = Proposals.data.sort(
-        (a, b) =>
-          order === 'latest' ? b.timeCreated - a.timeCreated : a.timeCreated - b.timeCreated
+      orderedProposals = Proposals.data.sort((a, b) =>
+        order === 'latest' ? b.timeCreated - a.timeCreated : a.timeCreated - b.timeCreated
       );
     }
     return (

@@ -199,19 +199,19 @@ class EditProposal extends React.Component {
 
         .then(txHash => {
           if (ChallengeProof.data) {
-            this.setState({ txHash }, () => {
-              Promise.all([
-                this.props.sendTransactionToDaoServer({
-                  txHash,
-                  title: 'Submit Proposal',
-                  token: ChallengeProof.data['access-token'],
-                  client: ChallengeProof.data.client,
-                  uid: ChallengeProof.data.uid,
-                }),
-                this.props.showHideAlert({ message: 'Proposal Updated' }),
-                this.props.history.push('/'),
-              ]);
-            });
+            // this.setState({ txHash }, () =>
+            Promise.all([
+              this.props.showHideAlert({ message: 'Proposal Updated' }),
+              this.props.sendTransactionToDaoServer({
+                txHash,
+                title: 'Submit Proposal',
+                token: ChallengeProof.data['access-token'],
+                client: ChallengeProof.data.client,
+                uid: ChallengeProof.data.uid,
+              }),
+              this.props.history.push('/?reload=true'),
+            ]);
+            // );
           }
         })
         .catch(this.setError);

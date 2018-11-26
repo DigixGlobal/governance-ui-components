@@ -16,6 +16,12 @@ export const ProposalContainer = styled.div`
 
   height: 36.6rem;
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+
+  transition: ${props => props.theme.transition};
+
+  &:hover {
+    border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+  }
 `;
 
 export const ProposaDetaillWrapper = styled.div`

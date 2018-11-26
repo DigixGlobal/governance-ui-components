@@ -20,9 +20,9 @@ const darkBlueHex = Color('#131F35');
 const darkBlue = {
   default: darkBlueHex,
   darker: darkBlueHex.darken(1),
-  light: darkBlueHex.lighten(0.5),
-  lighter: darkBlueHex.lighten(0.75),
-  lightest: darkBlueHex.lighten(1.9),
+  light: darkBlueHex.lighten(1),
+  lighter: darkBlueHex.lighten(1.5),
+  lightest: darkBlueHex.lighten(2),
 };
 
 const goldHex = Color('#E3C88E');
@@ -133,6 +133,7 @@ const LightTheme = {
   transition: transitionStyle,
 
   cardBorderColor: tertiaryColor,
+  cardBorderColorHover: primaryColor,
 
   ErrorMessage: {
     backgroundColor: gray,

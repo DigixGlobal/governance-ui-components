@@ -4,10 +4,11 @@ import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 
 import PropTypes, { array } from 'prop-types';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
-import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
 
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
+
+import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import {
@@ -18,7 +19,6 @@ import {
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
-// import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
 
 import { showHideLockDgdOverlay, showHideAlert } from '../../../../reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '../../../../reducers/dao-server/actions';
@@ -120,7 +120,6 @@ class LockDgd extends React.Component {
   handleButtonClick = () => {
     const {
       web3Redux,
-      defaultAddress,
       sendTransactionToDaoServer: sendTransactionToDaoServerAction,
       ChallengeProof,
       addresses,
@@ -141,61 +140,38 @@ class LockDgd extends React.Component {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const {
-      keystore: {
-        type: { id: keystoreType },
-      },
-    } = sourceAddress;
+    const onSuccess = txHash => {
+      if (ChallengeProof.data) {
+        this.setState({ txHash, dgd: undefined }, () => {
+          sendTransactionToDaoServerAction({
+            txHash,
+            title: 'Lock DGD',
+            token: ChallengeProof.data['access-token'],
+            client: ChallengeProof.data.client,
+            uid: ChallengeProof.data.uid,
+          });
+        });
+      }
+    };
+
     this.setError();
 
-    if (keystoreType === 'metamask' || keystoreType === 'imtoken') {
-      const data = contract.lockDGD.getData(dgd * 1e9);
-      return this.props
-        .showTxSigningModal({
-          address: sourceAddress,
-          network,
-          txData: sanitizeData(
-            {
-              ...web3Params,
-              from: defaultAddress.address,
-              data,
-              to: contract.address,
-            },
-            network
-          ),
-          ui,
-        })
-        .then(txHash => {
-          console.log(txHash);
-          // this.setState({ txHash, openTracker: true, broadcast: new Date() });
-        })
-        .catch(this.setError);
-    }
+    const payload = {
+      address: sourceAddress,
+      contract,
+      func: contract.lockDGD,
+      params: dgd * 1e9,
+      onSuccess: txHash => {
+        onSuccess(txHash);
+      },
+      onFailure: this.setError,
+      network,
+      web3Params,
+      ui,
+      showTxSigningModal: this.props.showTxSigningModal,
+    };
 
-    return contract.lockDGD
-      .sendTransaction(dgd * 1e9, {
-        from: defaultAddress.address,
-        ui,
-        ...web3Params,
-      })
-      .then(txHash => {
-        if (ChallengeProof.data) {
-          this.setState({ txHash, dgd: undefined }, () => {
-            sendTransactionToDaoServerAction({
-              txHash,
-              title: 'Lock DGD',
-              token: ChallengeProof.data['access-token'],
-              client: ChallengeProof.data.client,
-              uid: ChallengeProof.data.uid,
-            });
-          });
-        } else {
-          this.setState({ txHash }, () => {
-            this.props.showHideAlert({ message: txHash, dgd: undefined });
-          });
-        }
-      })
-      .catch(this.setError);
+    return executeContractFunction(payload);
   };
 
   renderConfirmation = () => {

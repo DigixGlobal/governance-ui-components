@@ -8,6 +8,10 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
 
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
+import { getAddresses } from 'spectrum-lightsuite/src/selectors';
+
+import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
+import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import { Button } from '../../../components/common/elements/index';
 
@@ -137,7 +141,7 @@ class CreateProposal extends React.Component {
   };
 
   handleSubmit = () => {
-    const { web3Redux, ChallengeProof } = this.props;
+    const { web3Redux, ChallengeProof, addresses, sendTransactionToDaoServer } = this.props;
     const { form } = this.state;
     const proposalEth = toBigNumber(2 * 1e18);
     const { milestones } = form;
@@ -161,35 +165,71 @@ class CreateProposal extends React.Component {
       ui,
     };
 
-    this.createAttestation().then(ipfsHash => {
-      contract.submitPreproposal
-        .sendTransaction(
-          ipfsHash,
-          funds,
-          toBigNumber(parseFloat(form.finalReward, 0) * 1e18),
-          web3Params
-        )
-        .then(txHash => {
-          if (ChallengeProof.data) {
-            // this.setState({ txHash }, () => {
-            Promise.all([
-              this.props.sendTransactionToDaoServer({
-                txHash,
-                title: 'Submit Proposal',
-                token: ChallengeProof.data['access-token'],
-                client: ChallengeProof.data.client,
-                uid: ChallengeProof.data.uid,
-              }),
-              this.props.showHideAlert({ message: 'Proposal Submitted' }),
-              this.props.history.push('/?reload=true'),
-            ]);
-            // });
-          }
-        })
-        .catch(error => {
-          this.setError(error);
+    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+
+    const onSuccess = txHash => {
+      if (ChallengeProof.data) {
+        this.setState({ txHash }, () => {
+          sendTransactionToDaoServer({
+            txHash,
+            title: 'Submit Proposal',
+            token: ChallengeProof.data['access-token'],
+            client: ChallengeProof.data.client,
+            uid: ChallengeProof.data.uid,
+          });
         });
+      }
+    };
+
+    this.setError();
+    const finalReward = toBigNumber(parseFloat(form.finalReward, 0) * 1e18);
+    this.createAttestation().then(ipfsHash => {
+      const payload = {
+        address: sourceAddress,
+        contract,
+        func: contract.lockDGD,
+        params: { ...{ ipfsHash, funds, finalReward, web3Params } },
+        onSuccess: txHash => {
+          onSuccess(txHash);
+        },
+        onFailure: this.setError,
+        network,
+        web3Params,
+        ui,
+        showTxSigningModal: this.props.showTxSigningModal,
+      };
+      return executeContractFunction(payload);
     });
+
+    // this.createAttestation().then(ipfsHash => {
+    //   contract.submitPreproposal
+    //     .sendTransaction(
+    //       ipfsHash,
+    //       funds,
+    //       toBigNumber(parseFloat(form.finalReward, 0) * 1e18),
+    //       web3Params
+    //     )
+    //     .then(txHash => {
+    //       if (ChallengeProof.data) {
+    //         // this.setState({ txHash }, () => {
+    //         Promise.all([
+    //           this.props.sendTransactionToDaoServer({
+    //             txHash,
+    //             title: 'Submit Proposal',
+    //             token: ChallengeProof.data['access-token'],
+    //             client: ChallengeProof.data.client,
+    //             uid: ChallengeProof.data.uid,
+    //           }),
+    //           this.props.showHideAlert({ message: 'Proposal Submitted' }),
+    //           this.props.history.push('/?reload=true'),
+    //         ]);
+    //         // });
+    //       }
+    //     })
+    //     .catch(error => {
+    //       this.setError(error);
+    //     });
+    // });
   };
 
   renderStep = () => {
@@ -272,24 +312,32 @@ class CreateProposal extends React.Component {
   }
 }
 
-const { object, func } = PropTypes;
+const { object, func, array } = PropTypes;
 CreateProposal.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
+  showTxSigningModal: func.isRequired,
   address: object.isRequired,
-  history: object.isRequired,
+  history: object,
+  addresses: array,
+};
+
+CreateProposal.defaultProps = {
+  addresses: undefined,
+  history: undefined,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   address: state.govUI.UserAddress,
+  addresses: getAddresses(state),
 });
 
 export default web3Connect(
   connect(
     mapStateToProps,
-    { showHideAlert, sendTransactionToDaoServer }
+    { showHideAlert, sendTransactionToDaoServer, showTxSigningModal }
   )(CreateProposal)
 );

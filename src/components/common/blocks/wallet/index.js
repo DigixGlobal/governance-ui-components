@@ -147,10 +147,8 @@ export class Wallet extends React.Component {
   }
 }
 
-const { func, bool, object } = PropTypes;
+const { func, object } = PropTypes;
 Wallet.propTypes = {
-  // show: bool,
-  // onClose: func.isRequired,
   signChallenge: object,
   getAddressDetailsAction: func.isRequired,
   showSigningModal: func.isRequired,
@@ -159,7 +157,6 @@ Wallet.propTypes = {
 };
 
 Wallet.defaultProps = {
-  // show: false,
   signChallenge: undefined,
 };
 

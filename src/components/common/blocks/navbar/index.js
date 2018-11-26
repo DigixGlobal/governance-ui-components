@@ -41,11 +41,9 @@ class NavBar extends React.Component {
   }
 }
 
-const { func, bool } = PropTypes;
+const { func } = PropTypes;
 
 NavBar.propTypes = {
-  // onWalletClick: func.isRequired,
-  showWallet: bool.isRequired,
   showHideWalletOverlay: func.isRequired,
 };
 

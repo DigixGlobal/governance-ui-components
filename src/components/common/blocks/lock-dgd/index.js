@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-import _ from 'lodash';
 
 import PropTypes, { array } from 'prop-types';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';

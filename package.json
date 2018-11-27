@@ -36,8 +36,8 @@
   },
   "devDependencies": {
     "ajv": "^6.5.4",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-styled-components": "^1.7.1",
+    "babel-eslint": "7.2.3",
+    "babel-plugin-styled-components": "1.7.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-with-prettier": "^4.2.0",
     "eslint-plugin-import": "^2.14.0",

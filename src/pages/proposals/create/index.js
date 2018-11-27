@@ -141,7 +141,7 @@ class CreateProposal extends React.Component {
   };
 
   handleSubmit = () => {
-    const { web3Redux, ChallengeProof, addresses, sendTransactionToDaoServer } = this.props;
+    const { web3Redux, ChallengeProof, addresses } = this.props;
     const { form } = this.state;
     const proposalEth = toBigNumber(2 * 1e18);
     const { milestones } = form;
@@ -179,6 +179,7 @@ class CreateProposal extends React.Component {
           });
         });
       }
+      this.props.showHideAlert({ message: 'Proposal Created' });
     };
 
     this.setError();
@@ -200,36 +201,6 @@ class CreateProposal extends React.Component {
       };
       return executeContractFunction(payload);
     });
-
-    // this.createAttestation().then(ipfsHash => {
-    //   contract.submitPreproposal
-    //     .sendTransaction(
-    //       ipfsHash,
-    //       funds,
-    //       toBigNumber(parseFloat(form.finalReward, 0) * 1e18),
-    //       web3Params
-    //     )
-    //     .then(txHash => {
-    //       if (ChallengeProof.data) {
-    //         // this.setState({ txHash }, () => {
-    //         Promise.all([
-    //           this.props.sendTransactionToDaoServer({
-    //             txHash,
-    //             title: 'Submit Proposal',
-    //             token: ChallengeProof.data['access-token'],
-    //             client: ChallengeProof.data.client,
-    //             uid: ChallengeProof.data.uid,
-    //           }),
-    //           this.props.showHideAlert({ message: 'Proposal Submitted' }),
-    //           this.props.history.push('/?reload=true'),
-    //         ]);
-    //         // });
-    //       }
-    //     })
-    //     .catch(error => {
-    //       this.setError(error);
-    //     });
-    // });
   };
 
   renderStep = () => {

@@ -11,6 +11,9 @@ import Vote from '../../components/common/elements/vote/index';
 
 import { getProposalDetails } from '../../reducers/info-server/actions';
 
+import AbortButton from './proposal-buttons/abort';
+import FinalizeButton from './proposal-buttons/finalize';
+
 import {
   ProposalsWrapper,
   BrowseVersionHistory,
@@ -88,44 +91,46 @@ class Proposal extends React.Component {
     return (
       <ProposalsWrapper>
         <ProjectSummary>
-          {versions &&
-            versions.length > 1 && (
-              <BrowseVersionHistory>
-                <PreviousVersion
-                  disabled={currentVersion === 0}
-                  onClick={this.handlePreviousVersionClick}
-                />
-                <div>Version {currentVersion + 1} </div>
-                <NextVersion
-                  disabled={currentVersion + 1 === versionCount}
-                  onClick={this.handleNextVersionClick}
-                />
-              </BrowseVersionHistory>
-            )}
+          {versions && versions.length > 1 && (
+            <BrowseVersionHistory>
+              <PreviousVersion
+                disabled={currentVersion === 0}
+                onClick={this.handlePreviousVersionClick}
+              />
+              <div>Version {currentVersion + 1} </div>
+              <NextVersion
+                disabled={currentVersion + 1 === versionCount}
+                onClick={this.handleNextVersionClick}
+              />
+            </BrowseVersionHistory>
+          )}
           <Header>
             <div>
               <Button kind="flat">{proposalDetails.data.stage}</Button>
               <Title primary>{dijixObject.title}</Title>
             </div>
             <div>
-              {proposalDetails.data.stage === 'idea' &&
-                isProposer && (
-                  <Button kind="round" ghost primary>
-                    Abort
-                  </Button>
-                )}
-              {proposalDetails.data.stage === 'idea' &&
-                isProposer && (
-                  <Button kind="round" ghost primary>
-                    Finalize
-                  </Button>
-                )}
-              {addressDetails.data &&
-                addressDetails.data.isModerator && (
-                  <Button kind="round" ghost primary>
-                    Endorse
-                  </Button>
-                )}
+              <AbortButton
+                stage={proposalDetails.data.stage}
+                isProposer={isProposer}
+                proposalId={proposalDetails.data.proposalId}
+                finalVersionIpfsDoc={proposalDetails.data.finalVersionIpfsDoc}
+              />
+              <FinalizeButton
+                stage={proposalDetails.data.stage}
+                isProposer={isProposer}
+                proposalId={proposalDetails.data.proposalId}
+              />
+              {/* {proposalDetails.data.stage === 'idea' && isProposer && (
+                <Button kind="round" ghost primary>
+                  Finalize
+                </Button>
+              )} */}
+              {addressDetails.data && addressDetails.data.isModerator && (
+                <Button kind="round" ghost primary>
+                  Endorse
+                </Button>
+              )}
               {isProposer && (
                 <Button kind="round" ghost primary onClick={this.handleEditClick}>
                   Edit

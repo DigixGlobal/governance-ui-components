@@ -9,13 +9,14 @@ export const SyledTextArea = styled.textarea`
   width: ${props => props.width || '100%'};
   min-height: 30rem;
   outline: none;
-  ::placeholder {
+
+  &::placeholder {
     color: ${props => props.theme.textDefault.lighter.toString()};
   }
 
-  :focus {
+  &:focus {
     border: 1px solid ${props => props.theme.buttonBorderPrimary.toString()};
-    opacity: 1;
+    box-shadow: 0 0 1px ${props => props.theme.buttonBorderPrimary.toString()};
     transition: opacity 650ms ease, border 650ms ease;
   }
 `;

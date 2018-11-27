@@ -14,17 +14,17 @@ export const SyledInput = styled.input.attrs({
   transition: opacity 650ms ease, border 650ms ease;
 
   &::placeholder {
-    color: ${props => props.theme.textDefault.light.toString()};
+    color: ${props => props.theme.textDefault.default.toString()};
   }
 
   &:focus {
-    border-color: 1px solid ${props => props.theme.buttonBorderPrimary.toString()};
+    border: 1px solid ${props => props.theme.buttonBorderPrimary.toString()};
     box-shadow: 0 0 1px ${props => props.theme.buttonBorderPrimary.toString()};
   }
 
   &.error {
     &:focus {
-      border-color: 1px solid ${props => props.theme.buttonBorderPrimary.toString()};
+      border: 1px solid ${props => props.theme.buttonBorderPrimary.toString()};
       box-shadow: 0 0 1px ${props => props.theme.buttonBorderSecondary.toString()};
       color: ${props => props.theme.textDefault.default.toString()};
     }

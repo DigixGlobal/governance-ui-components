@@ -20,7 +20,7 @@ export const executeContractFunction = payload => {
   } = address;
   console.log(payload);
   if (keystoreType === 'metamask' || keystoreType === 'imtoken') {
-    const data = func.getData(params);
+    const data = func.getData(...params);
     return showTxSigningModal({
       address,
       network,
@@ -42,7 +42,7 @@ export const executeContractFunction = payload => {
   }
 
   return func
-    .sendTransaction(params, {
+    .sendTransaction(...params, {
       from: address.address,
       ui,
       ...web3Params,

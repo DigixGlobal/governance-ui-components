@@ -67,7 +67,7 @@ class FinalizeProjectButton extends React.PureComponent {
       address: sourceAddress,
       contract,
       func: contract.finalizeProposal,
-      params: proposalId,
+      params: [proposalId],
       onSuccess: txHash => {
         onSuccess(txHash);
       },

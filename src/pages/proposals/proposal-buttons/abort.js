@@ -67,7 +67,7 @@ class AbortProjectButton extends React.PureComponent {
       address: sourceAddress,
       contract,
       func: contract.closeProposal,
-      params: proposalId,
+      params: [proposalId],
       onSuccess: txHash => {
         onSuccess(txHash);
       },

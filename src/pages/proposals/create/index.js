@@ -188,8 +188,8 @@ class CreateProposal extends React.Component {
       const payload = {
         address: sourceAddress,
         contract,
-        func: contract.lockDGD,
-        params: { ...{ ipfsHash, funds, finalReward, web3Params } },
+        func: contract.submitPreproposal,
+        params: [ipfsHash, funds, finalReward, web3Params],
         onSuccess: txHash => {
           onSuccess(txHash);
         },

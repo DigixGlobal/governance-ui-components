@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import './quill.css';
+import { TextArea } from '../../../components/common/elements/index';
+// import ReactQuill from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
+// import './quill.css';
 
 // import PropTypes from 'prop-types';
 
@@ -17,11 +18,17 @@ class Details extends React.Component {
         <FormItem>
           <Label>Project Information</Label>
           <EditorContainer>
-            <ReactQuill
+            <TextArea
+              value={form.details || ''}
+              id="details"
+              onChange={onChange}
+              placeholder="Short description of your project"
+            />
+            {/* <ReactQuill
               id="details"
               value={form.details || ''}
               onChange={value => onChange('details', value)}
-            />
+            /> */}
           </EditorContainer>
         </FormItem>
       </Fieldset>

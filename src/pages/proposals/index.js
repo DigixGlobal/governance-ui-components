@@ -13,6 +13,7 @@ import { getProposalDetails } from '../../reducers/info-server/actions';
 
 import AbortButton from './proposal-buttons/abort';
 import FinalizeButton from './proposal-buttons/finalize';
+import EndorseButton from './proposal-buttons/endorse';
 
 import {
   ProposalsWrapper,
@@ -115,22 +116,23 @@ class Proposal extends React.Component {
                 isProposer={isProposer}
                 proposalId={proposalDetails.data.proposalId}
                 finalVersionIpfsDoc={proposalDetails.data.finalVersionIpfsDoc}
+                history={history}
               />
               <FinalizeButton
                 stage={proposalDetails.data.stage}
                 isProposer={isProposer}
                 proposalId={proposalDetails.data.proposalId}
+                history={history}
               />
-              {/* {proposalDetails.data.stage === 'idea' && isProposer && (
-                <Button kind="round" ghost primary>
-                  Finalize
-                </Button>
-              )} */}
-              {addressDetails.data && addressDetails.data.isModerator && (
-                <Button kind="round" ghost primary>
-                  Endorse
-                </Button>
-              )}
+
+              <EndorseButton
+                stage={proposalDetails.data.stage}
+                isModerator={addressDetails.data.isModerator}
+                endorser={proposalDetails.data.endorser}
+                proposalId={proposalDetails.data.proposalId}
+                history={history}
+              />
+
               {isProposer && (
                 <Button kind="round" ghost primary onClick={this.handleEditClick}>
                   Edit

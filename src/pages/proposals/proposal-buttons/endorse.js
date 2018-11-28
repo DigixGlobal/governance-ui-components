@@ -22,9 +22,9 @@ registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
 
-const emptyHash = '0x0000000000000000000000000000000000000000000000000000000000000000';
+const emptyHash = '0x0000000000000000000000000000000000000000';
 
-class FinalizeProjectButton extends React.PureComponent {
+class EndorseProjectButton extends React.PureComponent {
   setError = error =>
     this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
 
@@ -38,7 +38,7 @@ class FinalizeProjectButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Finalize Proposal',
+      caption: 'Endorse Proposal',
       header: 'Proposal',
       type: 'txVisualization',
     };
@@ -54,20 +54,20 @@ class FinalizeProjectButton extends React.PureComponent {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Finalize Proposal',
+          title: 'Endorse Proposal',
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Proposal Finalized' });
+      this.props.showHideAlert({ message: 'Proposal Endorsed' });
       if (this.props.history) this.props.history.push('/');
     };
 
     const payload = {
       address: sourceAddress,
       contract,
-      func: contract.finalizeProposal,
+      func: contract.endorseProposal,
       params: [proposalId],
       onSuccess: txHash => {
         onSuccess(txHash);
@@ -81,13 +81,13 @@ class FinalizeProjectButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
   render() {
-    const { stage, isProposer, finalVersionIpfsDoc } = this.props;
-    if (stage !== ProposalStages.idea || !isProposer || finalVersionIpfsDoc !== emptyHash)
+    const { stage, isModerator, endorser } = this.props;
+    if (stage !== ProposalStages.idea || !isModerator || (endorser && endorser !== emptyHash))
       return null;
 
     return (
       <Button kind="round" ghost primary onClick={this.handleSubmit}>
-        Finalize
+        Endorse
       </Button>
     );
   }
@@ -95,11 +95,11 @@ class FinalizeProjectButton extends React.PureComponent {
 
 const { string, bool, object, func, array } = PropTypes;
 
-FinalizeProjectButton.propTypes = {
+EndorseProjectButton.propTypes = {
   stage: string.isRequired,
-  finalVersionIpfsDoc: string,
+  endorser: string,
   proposalId: string.isRequired,
-  isProposer: bool,
+  isModerator: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   showHideAlert: func.isRequired,
@@ -109,9 +109,9 @@ FinalizeProjectButton.propTypes = {
   history: object.isRequired,
 };
 
-FinalizeProjectButton.defaultProps = {
-  isProposer: false,
-  finalVersionIpfsDoc: emptyHash,
+EndorseProjectButton.defaultProps = {
+  isModerator: false,
+  endorser: emptyHash,
 };
 
 const mapStateToProps = state => ({
@@ -123,5 +123,5 @@ export default web3Connect(
   connect(
     mapStateToProps,
     { showHideAlert, sendTransactionToDaoServer, showTxSigningModal }
-  )(FinalizeProjectButton)
+  )(EndorseProjectButton)
 );

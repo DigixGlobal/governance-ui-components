@@ -61,6 +61,7 @@ class AbortProjectButton extends React.PureComponent {
         });
       }
       this.props.showHideAlert({ message: 'Proposal Aborted' });
+      if (this.props.history) this.props.history.push('/');
     };
 
     const payload = {
@@ -105,6 +106,7 @@ AbortProjectButton.propTypes = {
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
+  history: object.isRequired,
 };
 
 AbortProjectButton.defaultProps = {

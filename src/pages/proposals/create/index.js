@@ -180,6 +180,7 @@ class CreateProposal extends React.Component {
         });
       }
       this.props.showHideAlert({ message: 'Proposal Created' });
+      if (this.props.history) this.props.history.push('/');
     };
 
     this.setError();

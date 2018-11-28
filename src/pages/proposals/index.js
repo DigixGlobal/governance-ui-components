@@ -76,7 +76,7 @@ class Proposal extends React.Component {
   render() {
     const { currentVersion, versions } = this.state;
     const { proposalDetails, addressDetails, challengeProof, history } = this.props;
-
+    const emptyHash = '0x0000000000000000000000000000000000000000';
     if (!challengeProof.data) history.push('/');
 
     if (proposalDetails.fething === null || proposalDetails.fething)
@@ -85,6 +85,7 @@ class Proposal extends React.Component {
     if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
 
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
+    const isEndorsed = proposalDetails.data.endorser !== emptyHash;
 
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
@@ -133,7 +134,7 @@ class Proposal extends React.Component {
                 history={history}
               />
 
-              {isProposer && (
+              {isProposer && !isEndorsed && (
                 <Button kind="round" ghost primary onClick={this.handleEditClick}>
                   Edit
                 </Button>

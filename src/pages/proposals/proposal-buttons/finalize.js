@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
+import DaoConfigStorage from '@digix/dao-contracts/build/contracts/MockDaoConfigsStorage.json';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
+import { parseBigNumberDate } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
@@ -25,6 +27,25 @@ const network = SpectrumConfig.defaultNetworks[0];
 const emptyHash = '0x0000000000000000000000000000000000000000000000000000000000000000';
 
 class FinalizeProjectButton extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      configDeadDuration: undefined,
+    };
+  }
+  componentWillMount = () => {
+    const { web3Redux } = this.props;
+    const { abi, address } = getContract(DaoConfigStorage, network);
+    const contract = web3Redux
+      .web3(network)
+      .eth.contract(abi)
+      .at(address);
+
+    contract.uintConfigs
+      .call('config_dead_duration')
+      .then(result => this.setState({ configDeadDuration: parseBigNumberDate(result) }));
+  };
+
   setError = error =>
     this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
 
@@ -81,9 +102,10 @@ class FinalizeProjectButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
   render() {
-    const { stage, isProposer, finalVersionIpfsDoc } = this.props;
-    if (stage !== ProposalStages.idea || !isProposer || finalVersionIpfsDoc !== emptyHash)
-      return null;
+    const { stage, isProposer } = this.props;
+    const { configDeadDuration } = this.state;
+    const canFinalize = new Date(configDeadDuration) > Date.now();
+    if (stage !== ProposalStages.idea || !isProposer || !canFinalize) return null;
 
     return (
       <Button kind="round" ghost primary onClick={this.handleSubmit}>

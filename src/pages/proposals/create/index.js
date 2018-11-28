@@ -170,7 +170,7 @@ class CreateProposal extends React.Component {
     const onSuccess = txHash => {
       if (ChallengeProof.data) {
         this.setState({ txHash }, () => {
-          sendTransactionToDaoServer({
+          this.props.sendTransactionToDaoServer({
             txHash,
             title: 'Submit Proposal',
             token: ChallengeProof.data['access-token'],

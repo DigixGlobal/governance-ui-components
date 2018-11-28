@@ -10,7 +10,7 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-import { parseBigNumberDate } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
@@ -43,7 +43,7 @@ class FinalizeProjectButton extends React.PureComponent {
 
     contract.uintConfigs
       .call('config_dead_duration')
-      .then(result => this.setState({ configDeadDuration: parseBigNumberDate(result) }));
+      .then(result => this.setState({ configDeadDuration: parseBigNumber(result, 0, false) }) );
   };
 
   setError = error =>
@@ -102,10 +102,16 @@ class FinalizeProjectButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
   render() {
-    const { stage, isProposer } = this.props;
+    const { stage, isProposer, timeCreated } = this.props;
     const { configDeadDuration } = this.state;
-    const canFinalize = new Date(configDeadDuration) > Date.now();
-    if (stage !== ProposalStages.idea || !isProposer || !canFinalize) return null;
+
+    // time is sent in seconds, not milliseconds
+    const finalizeDeadline = new Date((timeCreated + configDeadDuration) * 1000);
+    const canFinalize = finalizeDeadline > Date.now();
+
+    if (stage !== ProposalStages.idea || !isProposer || !canFinalize) {
+      return null;
+    }
 
     return (
       <Button kind="round" ghost primary onClick={this.handleSubmit}>
@@ -115,7 +121,7 @@ class FinalizeProjectButton extends React.PureComponent {
   }
 }
 
-const { string, bool, object, func, array } = PropTypes;
+const { string, bool, object, func, array, number } = PropTypes;
 
 FinalizeProjectButton.propTypes = {
   stage: string.isRequired,
@@ -129,6 +135,7 @@ FinalizeProjectButton.propTypes = {
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
+  timeCreated: number.isRequired,
 };
 
 FinalizeProjectButton.defaultProps = {

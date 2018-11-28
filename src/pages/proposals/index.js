@@ -124,6 +124,7 @@ class Proposal extends React.Component {
                 isProposer={isProposer}
                 proposalId={proposalDetails.data.proposalId}
                 history={history}
+                timeCreated={proposalDetails.data.timeCreated}
               />
 
               <EndorseButton

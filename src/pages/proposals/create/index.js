@@ -1,19 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
-
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
-import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
-
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
-
-import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
-import { Button } from '../../../components/common/elements/index';
+import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
+
+import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { dijix } from '@digix/gov-ui/utils/dijix';
+import { encodeHash } from '@digix/gov-ui/utils/helpers';
+import getContract from '@digix/gov-ui/utils/contracts';
+import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
+import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import Details from '../forms/details';
 import Milestones from '../forms/milestones';
@@ -21,19 +27,6 @@ import Multimedia from '../forms/multimedia';
 import Overview from '../forms/overview';
 import Preview from './preview';
 import Confirm from '../confirm';
-
-// import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions';
-import { dijix } from '../../../utils/dijix';
-import { encodeHash } from '../../../utils/helpers';
-
-import getContract from '../../../utils/contracts';
-
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '../../../constants';
-
-import TxVisualization from '../../../components/common/blocks/tx-visualization';
-
-import { showHideAlert } from '../../../reducers/gov-ui/actions';
-import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions';
 
 import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
 
@@ -49,9 +42,6 @@ class CreateProposal extends React.Component {
     this.state = {
       form: {},
       currentStep: 0,
-      txHash: undefined,
-      error: undefined,
-      openError: false,
       canMoveNext: true,
       canMovePrevious: false,
       showPreview: false,
@@ -94,15 +84,7 @@ class CreateProposal extends React.Component {
   };
 
   setError = error =>
-    this.setState(
-      {
-        error: JSON.stringify((error && error.message) || error),
-        openError: !!error,
-      },
-      () => {
-        this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
-      }
-    );
+    this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
 
   useStep = step => {
     this.setState({
@@ -169,18 +151,16 @@ class CreateProposal extends React.Component {
 
     const onSuccess = txHash => {
       if (ChallengeProof.data) {
-        this.setState({ txHash }, () => {
-          this.props.sendTransactionToDaoServer({
-            txHash,
-            title: 'Submit Proposal',
-            token: ChallengeProof.data['access-token'],
-            client: ChallengeProof.data.client,
-            uid: ChallengeProof.data.uid,
-          });
+        this.props.sendTransactionToDaoServer({
+          txHash,
+          title: 'Submit Proposal',
+          token: ChallengeProof.data['access-token'],
+          client: ChallengeProof.data.client,
+          uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Proposal Created' });
       if (this.props.history) this.props.history.push('/');
+      this.props.showHideAlert({ message: 'Proposal Created' });
     };
 
     this.setError();

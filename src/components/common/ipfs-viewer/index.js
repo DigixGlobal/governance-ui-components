@@ -47,6 +47,8 @@ export default class MultipleResolver extends Component {
         return fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails);
       })
     ).then(images => {
+      if (!images[0]) return undefined;
+      console.log(images);
       const thumbs = images.map(image => ({ src: image[thumbnailSize] }));
       this.setState({ thumbnails: thumbs, loading: false });
     });

@@ -120,6 +120,7 @@ class Proposal extends React.Component {
                 history={history}
               />
               <FinalizeButton
+                endorser={proposalDetails.data.endorser}
                 stage={proposalDetails.data.stage}
                 isProposer={isProposer}
                 proposalId={proposalDetails.data.proposalId}

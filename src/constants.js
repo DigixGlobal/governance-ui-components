@@ -27,6 +27,8 @@ export const CONVERSIONS = {
   XAUUSD: 1 / 31.1035,
 };
 
+export const EMPTY_HASH = '0x0000000000000000000000000000000000000000';
+
 export const ProposalStages = {
   idea: 'idea',
   draft: 'draft',

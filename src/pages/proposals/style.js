@@ -188,3 +188,16 @@ export const Details = styled.div`
 `;
 
 export const MilestonesContainer = styled.div``;
+
+export const VotingResultWrapper = styled.div`
+  ${Container};
+  flex-direction: column;
+`;
+
+export const QuorumContainer = styled.div``;
+export const QuorumBar = styled.div``;
+export const QuorumLabel = styled.div``;
+export const QuorumMinLabel = styled.div``;
+export const QuorumStatus = styled.div``;
+
+export const ApprovalRate = styled.div``;

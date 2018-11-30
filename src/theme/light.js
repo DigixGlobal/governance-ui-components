@@ -80,7 +80,7 @@ const secondaryColor = darkGold;
 const tertiaryColor = darkGray;
 
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
-const transitionStyle = 'all 300ms ease';
+const transitionStyle = 'all .25s ease';
 
 const LightTheme = {
   backgroundDefault: white,

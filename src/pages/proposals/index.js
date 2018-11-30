@@ -15,6 +15,7 @@ import AbortButton from './proposal-buttons/abort';
 import FinalizeButton from './proposal-buttons/finalize';
 import EndorseButton from './proposal-buttons/endorse';
 
+// Newly Added! Moderator Approval Buttons --> Ready for JS Coding
 import ApproveButton from './proposal-buttons/approve';
 import ClaimApprovalButton from './proposal-buttons/claim-approval';
 import ClaimFundingButton from './proposal-buttons/claim-funding';

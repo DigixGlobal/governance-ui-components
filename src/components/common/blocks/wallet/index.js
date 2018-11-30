@@ -172,7 +172,6 @@ const actions = {
   setUserAddress,
   showSignChallenge,
   showHideWalletOverlay,
-  // getTransactions,
 };
 
 const mapStateToProps = state => ({

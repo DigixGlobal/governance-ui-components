@@ -36,7 +36,7 @@ WalletButton.propTypes = {
   onWalletClick: func.isRequired,
   showHideLockDgd: func.isRequired,
   defaultAddress: oneOfType([string, object]),
-  addressDetails: object,
+  // addressDetails: object,
   canLockDgd: object,
 };
 

@@ -16,15 +16,16 @@ class WalletButton extends React.Component {
     return (
       <WalletWrapper>
         {!defaultAddress && (
-          <Button kind="capsule" primary sm onClick={onWalletClick}>
+          <Button kind="round" primary sm ghost onClick={onWalletClick}>
             {'Load Wallet'}
           </Button>
         )}
-        {canLockDgd && canLockDgd.show && (
-          <Button kind="capsule" primary sm onClick={showHideLockDgd}>
-            {'Lock DGD'}
-          </Button>
-        )}
+        {canLockDgd &&
+          canLockDgd.show && (
+            <Button kind="round" primary sm ghost onClick={showHideLockDgd}>
+              {'Lock DGD'}
+            </Button>
+          )}
         {defaultAddress && <AddressLabel>{defaultAddress.address}</AddressLabel>}
       </WalletWrapper>
     );

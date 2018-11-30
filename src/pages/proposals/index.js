@@ -15,6 +15,14 @@ import AbortButton from './proposal-buttons/abort';
 import FinalizeButton from './proposal-buttons/finalize';
 import EndorseButton from './proposal-buttons/endorse';
 
+import ApproveButton from './proposal-buttons/approve';
+import ClaimApprovalButton from './proposal-buttons/claim-approval';
+import ClaimFundingButton from './proposal-buttons/claim-funding';
+import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
+import ClaimResultsButton from './proposal-buttons/claim-results';
+
+import VotingResult from './voting-result';
+
 import {
   ProposalsWrapper,
   BrowseVersionHistory,
@@ -93,19 +101,20 @@ class Proposal extends React.Component {
     return (
       <ProposalsWrapper>
         <ProjectSummary>
-          {versions && versions.length > 1 && (
-            <BrowseVersionHistory>
-              <PreviousVersion
-                disabled={currentVersion === 0}
-                onClick={this.handlePreviousVersionClick}
-              />
-              <div>Version {currentVersion + 1} </div>
-              <NextVersion
-                disabled={currentVersion + 1 === versionCount}
-                onClick={this.handleNextVersionClick}
-              />
-            </BrowseVersionHistory>
-          )}
+          {versions &&
+            versions.length > 1 && (
+              <BrowseVersionHistory>
+                <PreviousVersion
+                  disabled={currentVersion === 0}
+                  onClick={this.handlePreviousVersionClick}
+                />
+                <div>Version {currentVersion + 1} </div>
+                <NextVersion
+                  disabled={currentVersion + 1 === versionCount}
+                  onClick={this.handleNextVersionClick}
+                />
+              </BrowseVersionHistory>
+            )}
           <Header>
             <div>
               <Button kind="flat">{proposalDetails.data.stage}</Button>
@@ -126,6 +135,11 @@ class Proposal extends React.Component {
                 history={history}
                 timeCreated={proposalDetails.data.timeCreated}
               />
+              <ApproveButton />
+              <ClaimApprovalButton />
+              <ClaimFundingButton />
+              <MilestoneCompletedButton />
+              <ClaimResultsButton />
 
               <EndorseButton
                 stage={proposalDetails.data.stage}
@@ -135,11 +149,12 @@ class Proposal extends React.Component {
                 history={history}
               />
 
-              {isProposer && !isEndorsed && (
-                <Button kind="round" ghost primary onClick={this.handleEditClick}>
-                  Edit
-                </Button>
-              )}
+              {isProposer &&
+                !isEndorsed && (
+                  <Button kind="round" ghost primary onClick={this.handleEditClick}>
+                    Edit
+                  </Button>
+                )}
             </div>
           </Header>
           <LatestActivity>
@@ -164,6 +179,7 @@ class Proposal extends React.Component {
             </UpvoteStatus>
           </LatestActivity>
         </ProjectSummary>
+        <VotingResult />
         <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
       </ProposalsWrapper>

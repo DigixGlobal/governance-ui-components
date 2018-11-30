@@ -15,22 +15,17 @@ export class CategoryGroup extends React.Component {
   }
 
   componentWillMount = () => {
-    const {
-      ProposalsCount: { error, fetching },
-      getProposalsCountAction,
-    } = this.props;
-    if (fetching === null || error) {
-      getProposalsCountAction();
-    }
+    this.props.getProposalsCountAction();
   };
 
-  handleClick = param => {
-    const { onStageChange } = this.props;
+  handleClick(param) {
+    const { onStageChange, getProposalsCountAction } = this.props;
     if (onStageChange) {
       this.setState({ stage: param });
       onStageChange(param);
+      getProposalsCountAction();
     }
-  };
+  }
 
   render() {
     const { stage } = this.state;

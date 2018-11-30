@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-// import { H4 } from '../../common-styles';
-// import { Container as IconContainer } from '../../../common/elements/icons/style';
 
 export const Container = styled.div`
   position: fixed;

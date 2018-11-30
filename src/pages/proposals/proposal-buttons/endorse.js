@@ -12,7 +12,7 @@ import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import { ProposalStages, DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { ProposalStages, DEFAULT_GAS, DEFAULT_GAS_PRICE, EMPTY_HASH } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
@@ -21,8 +21,6 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
-
-const emptyHash = '0x0000000000000000000000000000000000000000';
 
 class EndorseProjectButton extends React.PureComponent {
   setError = error =>
@@ -82,7 +80,7 @@ class EndorseProjectButton extends React.PureComponent {
   };
   render() {
     const { stage, isModerator, endorser } = this.props;
-    if (stage !== ProposalStages.idea || !isModerator || (endorser && endorser !== emptyHash))
+    if (stage !== ProposalStages.idea || !isModerator || (endorser && endorser !== EMPTY_HASH))
       return null;
 
     return (
@@ -111,7 +109,7 @@ EndorseProjectButton.propTypes = {
 
 EndorseProjectButton.defaultProps = {
   isModerator: false,
-  endorser: emptyHash,
+  endorser: EMPTY_HASH,
 };
 
 const mapStateToProps = state => ({

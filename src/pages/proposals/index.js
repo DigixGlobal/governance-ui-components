@@ -9,6 +9,7 @@ import Milestones from './milestones';
 import Button from '../../components/common/elements/buttons/index';
 import Vote from '../../components/common/elements/vote/index';
 
+import { EMPTY_HASH } from '@digix/gov-ui/constants';
 import { getProposalDetails } from '../../reducers/info-server/actions';
 
 import AbortButton from './proposal-buttons/abort';
@@ -76,7 +77,6 @@ class Proposal extends React.Component {
   render() {
     const { currentVersion, versions } = this.state;
     const { proposalDetails, addressDetails, challengeProof, history } = this.props;
-    const emptyHash = '0x0000000000000000000000000000000000000000';
     if (!challengeProof.data) history.push('/');
 
     if (proposalDetails.fething === null || proposalDetails.fething)
@@ -85,7 +85,7 @@ class Proposal extends React.Component {
     if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
 
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
-    const isEndorsed = proposalDetails.data.endorser !== emptyHash;
+    const isEndorsed = proposalDetails.data.endorser !== EMPTY_HASH;
 
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;

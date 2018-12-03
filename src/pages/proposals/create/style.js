@@ -22,7 +22,7 @@ export const MenuItem = styled.div`
     props.active &&
     css`
       color: ${props.theme.textSecondary.default.toString()};
-      border-bottom: 4px solid ${props.theme.buttonBorderSecondary.toString()};
+      border-bottom: 4px solid ${props.theme.buttonBorderSecondary.default.toString()};
     `};
 `;
 

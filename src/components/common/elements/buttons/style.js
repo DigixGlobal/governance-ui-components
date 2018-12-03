@@ -68,6 +68,76 @@ export const RoundBtn = styled.button`
         }
       }
     `};
+
+  ${props =>
+    props.medium &&
+    css`
+      font-size: 1.8rem;
+    `};
+
+  ${props =>
+    props.xlarge &&
+    css`
+      padding: 6rem;
+      font-size: 3.6rem;
+      font-family: 'Futura PT Heavy';
+    `};
+
+  ${props =>
+    props.yes &&
+    css`
+      &:hover,
+      &:focus {
+        color: ${props => props.theme.buttonResponseYes.default.toString()};
+        border-color: ${props =>
+          props.theme.buttonResponseYes.default.toString()};
+        background-color: ${props =>
+          props.theme.buttonResponseYes.fade.toString()};
+      }
+    `};
+  ${props =>
+    props.no &&
+    css`
+      &:hover,
+      &:focus {
+        color: ${props => props.theme.buttonResponseNo.default.toString()};
+        border-color: ${props =>
+          props.theme.buttonResponseNo.default.toString()};
+        background-color: ${props =>
+          props.theme.buttonResponseNo.fade.toString()};
+      }
+    `};
+
+  ${props =>
+    props.fill &&
+    css`
+      background-color: ${props => props.theme.buttonBgPrimary.fade.toString()};
+      color: ${props => props.theme.buttonTextPrimary.toString()};
+      font-size: 1.8rem;
+
+      &:hover,
+      &:focus {
+        background-color: ${props =>
+          props.theme.buttonBgPrimary.default.toString()};
+        color: ${props => props.theme.buttonTextPrimaryReverse.toString()};
+      }
+    `};
+
+  ${props =>
+    props.success &&
+    css`
+      background-color: ${props =>
+        props.theme.buttonBgSecondary.fade.toString()};
+      color: ${props => props.theme.buttonTextSecondary.toString()};
+      font-size: 1.8rem;
+
+      &:hover,
+      &:focus {
+        background-color: ${props =>
+          props.theme.buttonBgSecondary.default.toString()};
+        color: ${props => props.theme.buttonTextSecondaryReverse.toString()};
+      }
+    `};
 `;
 
 export const FlatBtn = styled.button`

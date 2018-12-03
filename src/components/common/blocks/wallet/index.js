@@ -54,7 +54,7 @@ export class Wallet extends React.Component {
         ChallengeProof,
       } = nextProps;
 
-      const hasChallenge = Challenge.data && Challenge.data.challenge;
+      const hasChallenge = Challenge.data;
       const hasProof = (ChallengeProof.data && ChallengeProof.data.client) || this.state.signed;
 
       if ((fetching === null && defaultAddress) || (error && defaultAddress)) {
@@ -93,7 +93,7 @@ export class Wallet extends React.Component {
     } = this.props;
     const network = defaultNetworks[0];
 
-    const message = Challenge.data.challenge.challenge;
+    const message = Challenge.data.challenge;
     const caption =
       'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
     const signMessage = new Promise(resolve =>
@@ -109,7 +109,7 @@ export class Wallet extends React.Component {
       if (this.state.proving) return;
       return proveChallengeAction({
         address,
-        challenge: Challenge.data.challenge.id,
+        challenge_id: Challenge.data.id,
         message,
         signature: signature.signedTx,
       }).then(this.setState({ proving: true }));

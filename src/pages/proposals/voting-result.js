@@ -1,4 +1,6 @@
 import React from 'react';
+import Countdown from 'react-countdown-now';
+
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 
 import {
@@ -13,6 +15,15 @@ import {
   ApprovalMinLabel,
 } from './style';
 
+// eslint-disable-next-line
+const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
+  if (completed) {
+    // Render a completed state
+    return `Voting is over!`;
+  }
+  // Render a countdown
+  return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
+};
 export default class VotingResult extends React.Component {
   render() {
     return (
@@ -30,7 +41,8 @@ export default class VotingResult extends React.Component {
             </div>
           </ProgressCol>
           <QuorumInfoCol>
-            1480000 DGD <span>|</span> 4D: 12H:34M:12S
+            1480000 DGD <span>|</span>{' '}
+            <Countdown date={Date.now() + 800000 * 1000} renderer={countdownRenderer} />,
           </QuorumInfoCol>
         </VotingResultContainer>
         <VotingResultContainer>

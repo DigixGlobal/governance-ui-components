@@ -24,8 +24,6 @@ registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
 
-const emptyHash = '0x0000000000000000000000000000000000000000000000000000000000000000';
-
 class FinalizeProjectButton extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -43,7 +41,7 @@ class FinalizeProjectButton extends React.PureComponent {
 
     contract.uintConfigs
       .call('config_dead_duration')
-      .then(result => this.setState({ configDeadDuration: parseBigNumber(result, 0, false) }) );
+      .then(result => this.setState({ configDeadDuration: parseBigNumber(result, 0, false) }));
   };
 
   setError = error =>
@@ -109,7 +107,7 @@ class FinalizeProjectButton extends React.PureComponent {
     const finalizeDeadline = new Date((timeCreated + configDeadDuration) * 1000);
     const canFinalize = finalizeDeadline > Date.now();
 
-    if (stage !== ProposalStages.idea || !isProposer || !canFinalize) {
+    if (stage !== ProposalStages.draft || !isProposer || !canFinalize) {
       return null;
     }
 
@@ -125,7 +123,6 @@ const { string, bool, object, func, array, number } = PropTypes;
 
 FinalizeProjectButton.propTypes = {
   stage: string.isRequired,
-  finalVersionIpfsDoc: string,
   proposalId: string.isRequired,
   isProposer: bool,
   web3Redux: object.isRequired,
@@ -140,7 +137,6 @@ FinalizeProjectButton.propTypes = {
 
 FinalizeProjectButton.defaultProps = {
   isProposer: false,
-  finalVersionIpfsDoc: emptyHash,
 };
 
 const mapStateToProps = state => ({

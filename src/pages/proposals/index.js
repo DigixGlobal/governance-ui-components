@@ -102,20 +102,19 @@ class Proposal extends React.Component {
     return (
       <ProposalsWrapper>
         <ProjectSummary>
-          {versions &&
-            versions.length > 1 && (
-              <BrowseVersionHistory>
-                <PreviousVersion
-                  disabled={currentVersion === 0}
-                  onClick={this.handlePreviousVersionClick}
-                />
-                <div>Version {currentVersion + 1} </div>
-                <NextVersion
-                  disabled={currentVersion + 1 === versionCount}
-                  onClick={this.handleNextVersionClick}
-                />
-              </BrowseVersionHistory>
-            )}
+          {versions && versions.length > 1 && (
+            <BrowseVersionHistory>
+              <PreviousVersion
+                disabled={currentVersion === 0}
+                onClick={this.handlePreviousVersionClick}
+              />
+              <div>Version {currentVersion + 1} </div>
+              <NextVersion
+                disabled={currentVersion + 1 === versionCount}
+                onClick={this.handleNextVersionClick}
+              />
+            </BrowseVersionHistory>
+          )}
           <Header>
             <div>
               <Button kind="flat">{proposalDetails.data.stage}</Button>
@@ -150,12 +149,11 @@ class Proposal extends React.Component {
                 history={history}
               />
 
-              {isProposer &&
-                !isEndorsed && (
-                  <Button kind="round" ghost primary onClick={this.handleEditClick}>
-                    Edit
-                  </Button>
-                )}
+              {isProposer && !isEndorsed && (
+                <Button kind="round" ghost primary onClick={this.handleEditClick}>
+                  Edit
+                </Button>
+              )}
             </div>
           </Header>
           <LatestActivity>

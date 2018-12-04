@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { EMPTY_HASH } from '@digix/gov-ui/constants';
+
 import PreviousVersion from './previous';
 import NextVersion from './next';
 
@@ -9,7 +11,6 @@ import Milestones from './milestones';
 import Button from '../../components/common/elements/buttons/index';
 import Vote from '../../components/common/elements/vote/index';
 
-import { EMPTY_HASH } from '@digix/gov-ui/constants';
 import { getProposalDetails } from '../../reducers/info-server/actions';
 
 import AbortButton from './proposal-buttons/abort';
@@ -133,6 +134,7 @@ class Proposal extends React.Component {
                 stage={proposalDetails.data.stage}
                 isProposer={isProposer}
                 proposalId={proposalDetails.data.proposalId}
+                finalVersionIpfsDoc={proposalDetails.data.finalVersionIpfsDoc}
                 history={history}
                 timeCreated={proposalDetails.data.timeCreated}
               />

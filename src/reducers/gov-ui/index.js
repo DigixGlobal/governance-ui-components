@@ -17,7 +17,6 @@ const defaultState = {
 };
 
 export default function(state = defaultState, action) {
-  console.log(action.type);
   switch (action.type) {
     case actions.SHOW_LOCK_DGD_OVERLAY:
       return {
@@ -68,7 +67,6 @@ export default function(state = defaultState, action) {
         },
       };
     case actions.SHOW_RIGHT_PANEL:
-      console.log('reducer', action.payload);
       return {
         ...state,
         ShowRightPanel: action.payload,

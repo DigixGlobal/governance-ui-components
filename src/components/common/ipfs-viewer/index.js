@@ -9,15 +9,13 @@ const initialState = {
   thumbnails: [],
 };
 
+// eslint-disable
 export default class MultipleResolver extends Component {
   static propTypes = {
-    thumbnailSize: PropTypes.string.isRequired,
-    hashes: PropTypes.array,
     renderResolved: PropTypes.func.isRequired,
     renderLoading: PropTypes.object,
   };
   static defaultProps = {
-    hashes: undefined,
     renderLoading: undefined,
   };
 
@@ -48,7 +46,6 @@ export default class MultipleResolver extends Component {
       })
     ).then(images => {
       if (!images[0]) return undefined;
-      console.log(images);
       const thumbs = images.map(image => ({ src: image[thumbnailSize] }));
       this.setState({ thumbnails: thumbs, loading: false });
     });

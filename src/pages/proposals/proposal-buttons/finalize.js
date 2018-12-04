@@ -53,7 +53,7 @@ class FinalizeProjectButton extends React.PureComponent {
     this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
 
   handleSubmit = () => {
-    const { web3Redux, ChallengeProof, addresses, proposalId } = this.props;
+    const { web3Redux, challengeProof, addresses, proposalId } = this.props;
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -75,13 +75,13 @@ class FinalizeProjectButton extends React.PureComponent {
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
     const onSuccess = txHash => {
-      if (ChallengeProof.data) {
+      if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
           title: 'Finalize Proposal',
-          token: ChallengeProof.data['access-token'],
-          client: ChallengeProof.data.client,
-          uid: ChallengeProof.data.uid,
+          token: challengeProof.data['access-token'],
+          client: challengeProof.data.client,
+          uid: challengeProof.data.uid,
         });
       }
       this.props.showHideAlert({ message: 'Proposal Finalized' });
@@ -105,14 +105,20 @@ class FinalizeProjectButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
   render() {
-    const { stage, endorser, isProposer, timeCreated } = this.props;
+    const { stage, endorser, isProposer, timeCreated, finalVersionIpfsDoc } = this.props;
     const { configDeadDuration } = this.state;
 
     // time is sent in seconds, not milliseconds
     const finalizeDeadline = new Date((timeCreated + configDeadDuration) * 1000);
     const canFinalize = finalizeDeadline > Date.now();
 
-    if (stage !== ProposalStages.draft || !isProposer || !canFinalize || endorser === EMPTY_HASH) {
+    if (
+      stage !== ProposalStages.draft ||
+      !isProposer ||
+      !canFinalize ||
+      endorser === EMPTY_HASH ||
+      (finalVersionIpfsDoc && !finalVersionIpfsDoc.includes(EMPTY_HASH))
+    ) {
       return null;
     }
 
@@ -130,9 +136,10 @@ FinalizeProjectButton.propTypes = {
   stage: string.isRequired,
   endorser: string,
   proposalId: string.isRequired,
+  finalVersionIpfsDoc: string.isRequired,
   isProposer: bool,
   web3Redux: object.isRequired,
-  ChallengeProof: object.isRequired,
+  challengeProof: object.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -147,7 +154,7 @@ FinalizeProjectButton.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  ChallengeProof: state.daoServer.ChallengeProof,
+  challengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
 });
 

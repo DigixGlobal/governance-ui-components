@@ -9,7 +9,6 @@ import { Container, TransparentOverlay, PanelContainer, CloseButton } from './st
 
 const PanelOverlay = props => {
   const { showPanel } = props;
-  console.log(showPanel);
   if (!showPanel || !showPanel.show) return null;
 
   const closePanel = () => {

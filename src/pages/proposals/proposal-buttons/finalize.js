@@ -14,7 +14,12 @@ import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import { ProposalStages, DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import {
+  ProposalStages,
+  DEFAULT_GAS,
+  DEFAULT_GAS_PRICE,
+  EMPTY_HASH,
+} from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
@@ -100,14 +105,14 @@ class FinalizeProjectButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
   render() {
-    const { stage, isProposer, timeCreated } = this.props;
+    const { stage, endorser, isProposer, timeCreated } = this.props;
     const { configDeadDuration } = this.state;
 
     // time is sent in seconds, not milliseconds
     const finalizeDeadline = new Date((timeCreated + configDeadDuration) * 1000);
     const canFinalize = finalizeDeadline > Date.now();
 
-    if (stage !== ProposalStages.draft || !isProposer || !canFinalize) {
+    if (stage !== ProposalStages.draft || !isProposer || !canFinalize || endorser === EMPTY_HASH) {
       return null;
     }
 
@@ -123,6 +128,7 @@ const { string, bool, object, func, array, number } = PropTypes;
 
 FinalizeProjectButton.propTypes = {
   stage: string.isRequired,
+  endorser: string,
   proposalId: string.isRequired,
   isProposer: bool,
   web3Redux: object.isRequired,
@@ -137,6 +143,7 @@ FinalizeProjectButton.propTypes = {
 
 FinalizeProjectButton.defaultProps = {
   isProposer: false,
+  endorser: EMPTY_HASH,
 };
 
 const mapStateToProps = state => ({

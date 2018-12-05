@@ -10,6 +10,8 @@ import ProposalFilter from '../components/common/blocks/filter/index';
 
 import { getDaoDetails, getProposals } from '../reducers/info-server/actions';
 
+// import CommentThread from './proposals/comment/index';
+
 class LandingPage extends Component {
   constructor(props) {
     super(props);
@@ -34,8 +36,9 @@ class LandingPage extends Component {
     const hasProposals = Proposals.data && Proposals.data.length > 0;
     let orderedProposals = [];
     if (hasProposals) {
-      orderedProposals = Proposals.data.sort((a, b) =>
-        order === 'latest' ? b.timeCreated - a.timeCreated : a.timeCreated - b.timeCreated
+      orderedProposals = Proposals.data.sort(
+        (a, b) =>
+          order === 'latest' ? b.timeCreated - a.timeCreated : a.timeCreated - b.timeCreated
       );
     }
     return (
@@ -55,6 +58,7 @@ class LandingPage extends Component {
               userDetails={AddressDetails}
             />
           ))}
+        {/* <CommentThread /> */}
       </Fragment>
     );
   }

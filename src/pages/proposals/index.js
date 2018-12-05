@@ -24,6 +24,8 @@ import ClaimResultsButton from './proposal-buttons/claim-results';
 
 import VotingResult from './voting-result';
 
+import CommentThread from './comment/index';
+
 import {
   ProposalsWrapper,
   BrowseVersionHistory,
@@ -183,6 +185,7 @@ class Proposal extends React.Component {
         <VotingResult />
         <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
+        <CommentThread />
       </ProposalsWrapper>
     );
   }

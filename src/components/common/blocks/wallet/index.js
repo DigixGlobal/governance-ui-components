@@ -14,8 +14,8 @@ import {
 } from 'spectrum-lightsuite/src/actions/keystore';
 
 import { Container, TransparentOverlay, WalletContainer } from './style';
-// import Intro from './intro';
-import Intro from '../overlay/vote-reveal';
+import Intro from './intro';
+// import Intro from '../overlay/vote-reveal';
 import LoadWallet from './load-wallet';
 import ConnectedWallet from './connected-wallet';
 

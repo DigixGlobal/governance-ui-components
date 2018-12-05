@@ -34,7 +34,7 @@ class ApproveProposalOverlay extends React.Component {
     const { ChallengeProof, history, showHideAlertAction, showRightPanelAction } = this.props;
 
     if (ChallengeProof.data) {
-      sendTransactionToDaoServer({
+      this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
         title: 'Approve Proposal',
         token: ChallengeProof.data['access-token'],
@@ -49,6 +49,11 @@ class ApproveProposalOverlay extends React.Component {
     });
 
     history.push('/');
+  };
+
+  setError = error => {
+    const message = JSON.stringify((error && error.message) || error);
+    return this.props.showHideAlert({ message });
   };
 
   setVote(vote) {
@@ -144,6 +149,7 @@ ApproveProposalOverlay.propTypes = {
   ChallengeProof: object.isRequired,
   history: object.isRequired,
   proposalId: string.isRequired,
+  sendTransactionToDaoServer: func.isRequired,
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
   web3Redux: object.isRequired,
@@ -158,6 +164,7 @@ export default web3Connect(
   connect(
     mapStateToProps,
     {
+      sendTransactionToDaoServer,
       showHideAlertAction: showHideAlert,
       showRightPanelAction: showRightPanel,
     }

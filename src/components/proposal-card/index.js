@@ -8,17 +8,14 @@ import { ProposalWrapper, ProposalContainer } from './style';
 
 export default class ProposalCard extends React.Component {
   render() {
-    const { proposal, userDetails } = this.props;
+    const { history, proposal, userDetails } = this.props;
     return (
       <ProposalWrapper>
         <ProposalContainer>
           <Proposal details={proposal} userDetails={userDetails} />
           <Stats details={proposal} />
-          <Milestones details={proposal} userDetails={userDetails} />
+          <Milestones details={proposal} history={history} userDetails={userDetails} />
         </ProposalContainer>
-        {/* <ProgressContainer>
-          <Progress />
-        </ProgressContainer> */}
       </ProposalWrapper>
     );
   }
@@ -26,6 +23,7 @@ export default class ProposalCard extends React.Component {
 
 const { object } = PropTypes;
 ProposalCard.propTypes = {
+  history: object.isRequired,
   proposal: object.isRequired,
   userDetails: object.isRequired,
 };

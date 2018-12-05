@@ -15,6 +15,7 @@ import {
 
 import { Container, TransparentOverlay, WalletContainer } from './style';
 import Intro from './intro';
+// import Intro from '../overlay/vote-reveal';
 import LoadWallet from './load-wallet';
 import ConnectedWallet from './connected-wallet';
 
@@ -125,15 +126,15 @@ export class Wallet extends React.Component {
       <Container>
         <TransparentOverlay />
         <WalletContainer>
-          {stage === Stage.Intro && !defaultAddress && (
-            <Intro
-              onClose={() => this.props.showHideWalletOverlay(!showWallet)}
-              onChangeStage={this.updateStage}
-            />
-          )}
-          {stage === Stage.LoadingWallet && !defaultAddress && (
-            <LoadWallet {...rest} onChangeStage={this.updateStage} />
-          )}
+          {stage === Stage.Intro &&
+            !defaultAddress && (
+              <Intro
+                onClose={() => this.props.showHideWalletOverlay(!showWallet)}
+                onChangeStage={this.updateStage}
+              />
+            )}
+          {stage === Stage.LoadingWallet &&
+            !defaultAddress && <LoadWallet {...rest} onChangeStage={this.updateStage} />}
           {defaultAddress && (
             <ConnectedWallet
               {...rest}

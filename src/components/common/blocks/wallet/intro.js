@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '../../../common/elements/buttons/index'; // '../../elements/buttons';
-import { Link } from '../../common-styles';
+import { IntroContainer, CloseButton, OverlayHeader as Header, Link } from '../../common-styles';
 import Icon from '../../../common/elements/icons';
 
-import { IntroContainer, Header, CloseButton } from './style';
 import { Stage } from './constants';
 
 class Intro extends React.Component {
@@ -27,7 +26,7 @@ class Intro extends React.Component {
           You will need to load a wallet and lock some DGD in before you can browse projects and
           vote in DigixDAO
         </p>
-        <Button kind="round" primary ghost fluid onClick={this.handleButtonClick}>
+        <Button kind="round" primary fill fluid onClick={this.handleButtonClick}>
           load wallet
         </Button>
 

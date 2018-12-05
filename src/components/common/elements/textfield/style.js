@@ -25,7 +25,7 @@ export const SyledInput = styled.input.attrs({
   &.error {
     &:focus {
       border: 1px solid ${props => props.theme.buttonBorderPrimary.toString()};
-      box-shadow: 0 0 1px ${props => props.theme.buttonBorderSecondary.toString()};
+      box-shadow: 0 0 1px ${props => props.theme.buttonBorderSecondary.default.toString()};
       color: ${props => props.theme.textDefault.default.toString()};
     }
   }

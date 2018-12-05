@@ -150,9 +150,10 @@ const LightTheme = {
   cardBorderColor: tertiaryColor,
   cardBorderColorHover: primaryColor,
 
-  ErrorMessage: {
-    backgroundColor: gray,
-    padding: '1em',
+  alerMessage: {
+    Success: secondaryColor,
+    Error: red,
+    Response: green,
   },
 };
 

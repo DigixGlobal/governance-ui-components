@@ -38,3 +38,7 @@ export const ProposalStages = {
   review: 'review',
   archived: 'archived',
 };
+
+export const VotingStages = {
+  draft: 'draftVoting',
+};

@@ -74,11 +74,13 @@ export const HR = styled.hr`
 
 const Button = {
   cursor: 'pointer',
+  fontFamily: 'Futura PT Medium',
+
   textAlign: 'center',
   textDecoration: 'none',
   textTransform: 'uppercase',
   outline: 'none',
-  padding: '1em 2em',
+  padding: '1rem 2rem',
   margin: '1rem',
   transition: 'all 0.3s ease',
 };
@@ -88,8 +90,8 @@ export const ButtonStyles = css`
 
   background: ${props =>
     props.primary
-      ? props.theme.buttonBgPrimary.toString()
-      : props.theme.buttonBgSecondary.toString()};
+      ? props.theme.buttonBgPrimary.default.toString()
+      : props.theme.buttonBgSecondary.default.toString()};
 
   color: ${props =>
     props.primary
@@ -100,7 +102,7 @@ export const ButtonStyles = css`
     ${props =>
       props.primary
         ? props.theme.buttonBorderPrimary.toString()
-        : props.theme.buttonBorderSecondary.toString()};
+        : props.theme.buttonBorderSecondary.default.toString()};
   &:hover {
     background-color: transparent;
     color: ${props =>
@@ -120,8 +122,8 @@ export const GhostBtn = css`
   &:hover {
     background: ${props =>
       props.primary
-        ? props.theme.buttonBgPrimary.toString()
-        : props.theme.buttonBgSecondary.toString()};
+        ? props.theme.buttonBgPrimary.default.toString()
+        : props.theme.buttonBgSecondary.default.toString()};
     color: ${props =>
       props.primary
         ? props.theme.buttonTextPrimaryReverse.toString()
@@ -150,3 +152,52 @@ export const FieldsetStyle = css`
 `;
 
 export const LabelStyle = css``;
+
+// * * * * * * * * * * * *
+// OVERLAY
+// * * * * * * * * * * * *
+export const InnerContainer = styled.div`
+  color: ${props => props.theme.textPrimary.default.toString()};
+  transition: ${props => props.theme.transition};
+`;
+
+export const IntroContainer = styled(InnerContainer)`
+  font-size: 1.6rem;
+  position: relative;
+`;
+
+export const CloseButton = styled.div`
+  position: absolute;
+  right: 0;
+  margin-right: -1rem;
+  cursor: pointer;
+`;
+
+export const OverlayHeader = styled(H4)`
+  text-transform: ${props => (props.uppercase ? 'uppercase' : 'none')};
+`;
+
+export const Note = styled.p`
+  color: ${props => props.theme.textSecondary.default.toString()};
+`;
+
+export const NoteContainer = styled.div`
+  background-color: ${props => props.theme.buttonBgSecondary.fade.toString()};
+  border: 1px solid ${props => props.theme.buttonBorderSecondary.default.toString()};
+  border-radius: 3px;
+  box-shadow: ${props => props.theme.boxShadow};
+  margin: 3rem 0;
+  padding: 3rem 4rem;
+  text-align: center;
+`;
+
+export const StatusNote = styled.p`
+  color: ${props => props.theme.textSecondary.default.toString()};
+  font-size: 2.4rem;
+
+  span {
+    display: block;
+    color: ${props => props.theme.buttonResponseYes.default.toString()};
+    font-family: 'Futura PT Heavy';
+  }
+`;

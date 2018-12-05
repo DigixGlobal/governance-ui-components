@@ -73,6 +73,17 @@ const red = {
   default: redHex,
   darker: redHex.darken(0.05),
   lighter: redHex.lighten(0.5),
+  fade: redHex.fade(0.8),
+};
+
+const greenHex = Color('#417505');
+const green = {
+  default: greenHex,
+  darker: greenHex.darken(2),
+  light: greenHex.lighten(0.5),
+  lighter: greenHex.lighten(0.5),
+  lightest: greenHex.lighten(0.5),
+  fade: greenHex.fade(0.8),
 };
 
 const primaryColor = darkBlue;
@@ -94,11 +105,13 @@ const LightTheme = {
 
   boxShadow: boxShadowStyle,
 
-  buttonBgPrimary: primaryColor.default,
-  buttonBgSecondary: secondaryColor.default,
+  buttonBgPrimary: primaryColor,
+  buttonBgSecondary: secondaryColor,
   buttonBorderPrimary: primaryColor.default,
-  buttonBorderSecondary: secondaryColor.default,
+  buttonBorderSecondary: secondaryColor,
   buttonBorderDisabled: darkGray.lighter,
+  buttonResponseYes: green,
+  buttonResponseNo: red,
   buttonFlatColor: red.default,
   buttonTextDefault: tertiaryColor.default,
   buttonTextPrimary: primaryColor.default,

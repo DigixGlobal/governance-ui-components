@@ -17,7 +17,6 @@ import AbortButton from './proposal-buttons/abort';
 import FinalizeButton from './proposal-buttons/finalize';
 import EndorseButton from './proposal-buttons/endorse';
 
-// Newly Added! Moderator Approval Buttons --> Ready for JS Coding
 import ApproveButton from './proposal-buttons/approve';
 import ClaimApprovalButton from './proposal-buttons/claim-approval';
 import ClaimFundingButton from './proposal-buttons/claim-funding';
@@ -138,11 +137,17 @@ class Proposal extends React.Component {
                 history={history}
                 timeCreated={proposalDetails.data.timeCreated}
               />
-              <ApproveButton />
-              <ClaimApprovalButton />
+              <ApproveButton
+                history={history}
+                isModerator={addressDetails.data.isModerator}
+                proposal={proposalDetails.data}
+                proposalId={proposalDetails.data.proposalId}
+              />
+              {/* TODO: add functionality for the following buttons */}
+              {/* <ClaimApprovalButton />
               <ClaimFundingButton />
               <MilestoneCompletedButton />
-              <ClaimResultsButton />
+              <ClaimResultsButton /> */}
 
               <EndorseButton
                 stage={proposalDetails.data.stage}

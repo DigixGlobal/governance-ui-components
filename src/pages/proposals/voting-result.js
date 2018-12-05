@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
@@ -24,8 +25,17 @@ const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
   // Render a countdown
   return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
 };
-export default class VotingResult extends React.Component {
+
+class VotingResult extends React.Component {
   render() {
+    const { draftVoting, daoInfo } = this.props;
+    if (!draftVoting) return null;
+    const minimumQuorom = ((draftVoting.quorum / daoInfo.totalModeratorLockedDgds) * 100).toFixed(
+      2
+    );
+
+    const quorumProgress = (draftVoting.totalVoterStake / daoInfo.totalModeratorLockedDgds) * 100;
+    const quotaProgress = draftVoting.currentResult * 100;
     return (
       <VotingResultWrapper>
         <VotingResultContainer>
@@ -33,16 +43,20 @@ export default class VotingResult extends React.Component {
             <Label>
               <QuorumLabel>Quorum</QuorumLabel>
               <QuorumMinLabel>
-                <span>Minimum Quorum Needed: 45%</span>
+                <span>Minimum Quorum Needed: {minimumQuorom}%</span>
               </QuorumMinLabel>
             </Label>
             <div>
-              <ProgressBar variant="determinate" />
+              <ProgressBar variant="determinate" value={quorumProgress > 0 ? quorumProgress : -1} />
             </div>
           </ProgressCol>
           <QuorumInfoCol>
-            1480000 DGD <span>|</span>{' '}
-            <Countdown date={Date.now() + 800000 * 1000} renderer={countdownRenderer} />,
+            {draftVoting.totalVoterCount} Votes <span>|</span>{' '}
+            <Countdown
+              date={new Date(draftVoting.votingDeadline * 1000) - Date.now()}
+              renderer={countdownRenderer}
+            />
+            ,
           </QuorumInfoCol>
         </VotingResultContainer>
         <VotingResultContainer>
@@ -50,18 +64,27 @@ export default class VotingResult extends React.Component {
             <Label>
               <ApprovalLabel>Current Approval Rate</ApprovalLabel>
               <ApprovalMinLabel>
-                <span>Minimum Approval Needed: 65%</span>
+                <span>Minimum Approval Needed: {draftVoting.quota}%</span>
               </ApprovalMinLabel>
             </Label>
             <div>
-              <ProgressBar variant="determinate" />
+              <ProgressBar variant="determinate" value={quotaProgress > 0 ? quotaProgress : -1} />
             </div>
           </ProgressCol>
           <QuorumInfoCol>
-            YES: 940000 DGD <span>|</span> NO: 540000 DGD
+            YES: {draftVoting.currentResult * draftVoting.totalVoterStake} <span>|</span> NO:{' '}
+            {(1 - draftVoting.currentResult) * draftVoting.totalVoterStake}
           </QuorumInfoCol>
         </VotingResultContainer>
       </VotingResultWrapper>
     );
   }
 }
+
+const { object } = PropTypes;
+
+VotingResult.propTypes = {
+  draftVoting: object.isRequired,
+  daoInfo: object.isRequired,
+};
+export default VotingResult;

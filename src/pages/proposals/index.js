@@ -86,7 +86,7 @@ class Proposal extends React.Component {
 
   render() {
     const { currentVersion, versions } = this.state;
-    const { proposalDetails, addressDetails, challengeProof, history } = this.props;
+    const { proposalDetails, addressDetails, challengeProof, history, daoInfo } = this.props;
     if (!challengeProof.data) history.push('/');
 
     if (proposalDetails.fething === null || proposalDetails.fething)
@@ -181,7 +181,7 @@ class Proposal extends React.Component {
             </UpvoteStatus>
           </LatestActivity>
         </ProjectSummary>
-        <VotingResult />
+        <VotingResult draftVoting={proposalDetails.data.draftVoting} daoInfo={daoInfo} />
         <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
       </ProposalsWrapper>
@@ -193,6 +193,7 @@ const { object, func } = PropTypes;
 
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
+  daoInfo: object.isRequired,
   getProposalDetailsAction: func.isRequired,
   addressDetails: object.isRequired,
   challengeProof: object,
@@ -205,10 +206,18 @@ Proposal.defaultProps = {
 };
 
 export default connect(
-  ({ infoServer: { ProposalDetails, AddressDetails }, daoServer: { ChallengeProof } }) => ({
+  ({
+    infoServer: {
+      ProposalDetails,
+      AddressDetails,
+      DaoDetails: { data },
+    },
+    daoServer: { ChallengeProof },
+  }) => ({
     proposalDetails: ProposalDetails,
     addressDetails: AddressDetails,
     challengeProof: ChallengeProof,
+    daoInfo: data,
   }),
   {
     getProposalDetailsAction: getProposalDetails,

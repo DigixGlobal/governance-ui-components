@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { toBigNumber, parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
+import DaoConfigStorage from '@digix/dao-contracts/build/contracts/MockDaoConfigsStorage.json';
 
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
@@ -47,8 +48,22 @@ class CreateProposal extends React.Component {
       showPreview: false,
       showConfirmPage: false,
       validForm: false,
+      proposalEth: undefined,
     };
   }
+
+  componentWillMount = () => {
+    const { web3Redux } = this.props;
+    const { abi, address } = getContract(DaoConfigStorage, network);
+    const contract = web3Redux
+      .web3(network)
+      .eth.contract(abi)
+      .at(address);
+
+    contract.uintConfigs
+      .call('config_preproposal_collateral')
+      .then(result => this.setState({ proposalEth: parseBigNumber(result, 0, false) }));
+  };
 
   onNextButtonClick = () => {
     const { currentStep } = this.state;
@@ -124,10 +139,10 @@ class CreateProposal extends React.Component {
 
   handleSubmit = () => {
     const { web3Redux, ChallengeProof, addresses } = this.props;
+    const { proposalEth } = this.state;
     const { form } = this.state;
-    const proposalEth = toBigNumber(2 * 1e18);
     const { milestones } = form;
-    const funds = milestones.map(ms => toBigNumber(parseFloat(ms.fund, 0) * 1e18));
+    const funds = milestones.map(ms => toBigNumber(ms.fund).times(toBigNumber(1e18)));
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -164,7 +179,7 @@ class CreateProposal extends React.Component {
     };
 
     this.setError();
-    const finalReward = toBigNumber(parseFloat(form.finalReward, 0) * 1e18);
+    const finalReward = toBigNumber(form.finalReward).times(toBigNumber(1e18));
     this.createAttestation().then(ipfsHash => {
       const payload = {
         address: sourceAddress,

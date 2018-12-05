@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import { EMPTY_HASH } from '@digix/gov-ui/constants';
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import Vote from '@digix/gov-ui/components/common/elements/vote/index';
+import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
 
 import PreviousVersion from './previous';
 import NextVersion from './next';
 
 import ProjectDetails from './details';
 import Milestones from './milestones';
-import Button from '../../components/common/elements/buttons/index';
-import Vote from '../../components/common/elements/vote/index';
-
-import { getProposalDetails } from '../../reducers/info-server/actions';
 
 import AbortButton from './proposal-buttons/abort';
 import FinalizeButton from './proposal-buttons/finalize';

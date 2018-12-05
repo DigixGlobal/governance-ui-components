@@ -148,7 +148,7 @@ class EditProposal extends React.Component {
     const { web3Redux, ChallengeProof, addresses } = this.props;
     const { form, proposalId } = this.state;
     const { milestones } = form;
-    const funds = milestones.map(ms => toBigNumber(parseFloat(ms.fund, 0) * 1e18));
+    const funds = milestones.map(ms => toBigNumber(ms.fund).times(toBigNumber(1e18)));
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux

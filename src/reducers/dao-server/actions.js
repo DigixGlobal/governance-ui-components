@@ -85,11 +85,11 @@ function sendData(method, url, type, data, authToken, client, uid) {
 }
 
 function putData(url, type, data, authToken, client, uid) {
-    return sendData('PUT', url, type, data, authToken, client, uid)
+  return sendData('PUT', url, type, data, authToken, client, uid);
 }
 
 function postData(url, type, data, authToken, client, uid) {
-    return sendData('POST', url, type, data, authToken, client, uid)
+  return sendData('POST', url, type, data, authToken, client, uid);
 }
 
 export function getChallenge(address) {
@@ -97,9 +97,9 @@ export function getChallenge(address) {
 }
 
 export function proveChallenge(payload) {
-  const { address, challenge, message, signature } = payload;
+  const { challengeId, address, message, signature } = payload;
   return putData(
-    `${DAO_SERVER}/authorization?address=${address}&challenge_id=${challenge}&message=${message}&signature=${signature}`,
+    `${DAO_SERVER}/authorization?address=${address}&challenge_id=${challengeId}&message=${message}&signature=${signature}`,
     actions.PROVE_CHALLENGE
   );
 }
@@ -123,12 +123,5 @@ export function getTransactions(payload) {
 export function sendTransactionToDaoServer(payload) {
   const { txHash, title, token, client, uid } = payload;
   const data = { txhash: txHash, title };
-  return postData(
-    `${DAO_SERVER}/transactions`,
-    actions.ADD_TRANSACTION,
-    data,
-    token,
-    client,
-    uid
-  );
+  return postData(`${DAO_SERVER}/transactions`, actions.ADD_TRANSACTION, data, token, client, uid);
 }

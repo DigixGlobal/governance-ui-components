@@ -15,22 +15,17 @@ export class CategoryGroup extends React.Component {
   }
 
   componentWillMount = () => {
-    const {
-      ProposalsCount: { error, fetching },
-      getProposalsCountAction,
-    } = this.props;
-    if (fetching === null || error) {
-      getProposalsCountAction();
-    }
+    this.props.getProposalsCountAction();
   };
 
-  handleClick = param => {
-    const { onStageChange } = this.props;
+  handleClick(param) {
+    const { onStageChange, getProposalsCountAction } = this.props;
     if (onStageChange) {
       this.setState({ stage: param });
       onStageChange(param);
+      getProposalsCountAction();
     }
-  };
+  }
 
   render() {
     const { stage } = this.state;
@@ -78,7 +73,7 @@ export class CategoryGroup extends React.Component {
           onClick={() => this.handleClick('archived')}
           active={stage.toLowerCase() === 'archived'}
         >
-          Archived <span>{ProposalsCount.data.draft || '0'}</span>
+          Archived <span>{ProposalsCount.data.archived || '0'}</span>
         </CategoryItem>
       </Category>
     );

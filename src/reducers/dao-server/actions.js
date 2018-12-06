@@ -21,11 +21,11 @@ function fetchData(url, type) {
           })
       )
       .then(({ json, res }) => {
-        if (res.status === 200) {
+        if (json.result) {
           return dispatch({
             type,
             payload: {
-              data: json,
+              data: json.result,
               fetching: false,
               error: null,
               updated: new Date(),
@@ -33,7 +33,7 @@ function fetchData(url, type) {
           });
         }
 
-        throw json;
+        throw json.error;
       })
       .catch(error => dispatch({ type, payload: { fetching: false, error } }));
   };
@@ -66,11 +66,11 @@ function sendData(method, url, type, data, authToken, client, uid) {
           })
       )
       .then(({ json, res }) => {
-        if (res.status === 200) {
+        if (json.result) {
           return dispatch({
             type,
             payload: {
-              data: json,
+              data: json.result,
               fetching: false,
               error: null,
               updated: new Date(),
@@ -78,7 +78,7 @@ function sendData(method, url, type, data, authToken, client, uid) {
           });
         }
 
-        throw json;
+        throw json.error;
       })
       .catch(error => dispatch({ type, payload: { fetching: false, error } }));
   };
@@ -93,12 +93,12 @@ function postData(url, type, data, authToken, client, uid) {
 }
 
 export function getChallenge(address) {
-  return putData(`${DAO_SERVER}/authorization?address=${address}`, actions.GET_CHALLENGE);
+  return postData(`${DAO_SERVER}/authorization?address=${address}`, actions.GET_CHALLENGE);
 }
 
 export function proveChallenge(payload) {
   const { address, challenge, message, signature } = payload;
-  return postData(
+  return putData(
     `${DAO_SERVER}/authorization?address=${address}&challenge_id=${challenge}&message=${message}&signature=${signature}`,
     actions.PROVE_CHALLENGE
   );

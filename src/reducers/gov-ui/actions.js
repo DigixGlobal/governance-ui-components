@@ -7,6 +7,7 @@ export const actions = {
   SHOW_SIGN_CHALLENGE: `${REDUX_PREFIX}SHOW_SIGN_CHALLENGE`,
   SHOW_WALLET: `${REDUX_PREFIX}SHOW_WALLET`,
   CAN_LOCK_DGD: `${REDUX_PREFIX}CAN_LOCK_DGD`,
+  SHOW_RIGHT_PANEL: `${REDUX_PREFIX}SHOW_RIGHT_PANEL`,
 };
 
 export function showHideLockDgdOverlay(show) {
@@ -42,5 +43,11 @@ export function setUserAddress(address) {
 export function showHideAlert(alert) {
   return dispatch => {
     dispatch({ type: actions.SHOW_ALERT, payload: { ...alert } });
+  };
+}
+
+export function showRightPanel(payload) {
+  return dispatch => {
+    dispatch({ type: actions.SHOW_RIGHT_PANEL, payload: { ...payload } });
   };
 }

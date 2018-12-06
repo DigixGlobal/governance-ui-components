@@ -18,7 +18,11 @@ const determineDeadline = proposal => {
 
   switch (proposal.stage.toLowerCase()) {
     case 'draft':
-      deadline = proposal.draftVoting.votingDeadline;
+      if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
+        deadline = proposal.draftVoting.votingDeadline;
+      } else {
+        return undefined;
+      }
       break;
     case 'proposal':
       if (Date.now() < proposal.votingRounds[0].commitDeadline) {

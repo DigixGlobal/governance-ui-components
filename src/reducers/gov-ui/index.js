@@ -9,6 +9,11 @@ const defaultState = {
   SignChallenge: undefined,
   ShowWallet: undefined,
   CanLockDgd: undefined,
+  ShowRightPanel: {
+    show: false,
+    component: undefined,
+    onClose: undefined,
+  },
 };
 
 export default function(state = defaultState, action) {
@@ -60,6 +65,11 @@ export default function(state = defaultState, action) {
           ...state.SignChallenge,
           ...action.payload,
         },
+      };
+    case actions.SHOW_RIGHT_PANEL:
+      return {
+        ...state,
+        ShowRightPanel: action.payload,
       };
     default:
       return state;

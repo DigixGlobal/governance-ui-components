@@ -160,7 +160,7 @@ class LockDgd extends React.Component {
       address: sourceAddress,
       contract,
       func: contract.lockDGD,
-      params: dgd * 1e9,
+      params: [dgd * 1e9],
       onSuccess: txHash => {
         onSuccess(txHash);
       },

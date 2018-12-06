@@ -1,15 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { EMPTY_HASH } from '@digix/gov-ui/constants';
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import Vote from '@digix/gov-ui/components/common/elements/vote/index';
+import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
+
 import PreviousVersion from './previous';
 import NextVersion from './next';
 
 import ProjectDetails from './details';
 import Milestones from './milestones';
-import Button from '../../components/common/elements/buttons/index';
-import Vote from '../../components/common/elements/vote/index';
 
-import { getProposalDetails } from '../../reducers/info-server/actions';
+import AbortButton from './proposal-buttons/abort';
+import FinalizeButton from './proposal-buttons/finalize';
+import EndorseButton from './proposal-buttons/endorse';
+
+import ApproveButton from './proposal-buttons/approve';
+import ClaimApprovalButton from './proposal-buttons/claim-approval';
+import ClaimFundingButton from './proposal-buttons/claim-funding';
+import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
+import ClaimResultsButton from './proposal-buttons/claim-results';
+
+import VotingResult from './voting-result';
 
 import {
   ProposalsWrapper,
@@ -71,8 +85,7 @@ class Proposal extends React.Component {
 
   render() {
     const { currentVersion, versions } = this.state;
-    const { proposalDetails, addressDetails, challengeProof, history } = this.props;
-
+    const { proposalDetails, addressDetails, challengeProof, history, daoInfo } = this.props;
     if (!challengeProof.data) history.push('/');
 
     if (proposalDetails.fething === null || proposalDetails.fething)
@@ -81,6 +94,7 @@ class Proposal extends React.Component {
     if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
 
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
+    const isEndorsed = proposalDetails.data.endorser !== EMPTY_HASH;
 
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
@@ -103,18 +117,47 @@ class Proposal extends React.Component {
           )}
           <Header>
             <div>
-              <Button kind="flat" style={{ pointerEvents: 'none' }}>
-                {proposalDetails.data.stage}
-              </Button>
+              <Button kind="flat">{proposalDetails.data.stage}</Button>
               <Title primary>{dijixObject.title}</Title>
             </div>
             <div>
-              {addressDetails.data && addressDetails.data.isModerator && (
-                <Button kind="round" ghost primary style={{ pointerEvents: 'none' }}>
-                  Endorse
-                </Button>
-              )}
-              {isProposer && (
+              <AbortButton
+                stage={proposalDetails.data.stage}
+                isProposer={isProposer}
+                proposalId={proposalDetails.data.proposalId}
+                finalVersionIpfsDoc={proposalDetails.data.finalVersionIpfsDoc}
+                history={history}
+              />
+              <FinalizeButton
+                endorser={proposalDetails.data.endorser}
+                stage={proposalDetails.data.stage}
+                isProposer={isProposer}
+                proposalId={proposalDetails.data.proposalId}
+                finalVersionIpfsDoc={proposalDetails.data.finalVersionIpfsDoc}
+                history={history}
+                timeCreated={proposalDetails.data.timeCreated}
+              />
+              <ApproveButton
+                history={history}
+                isModerator={addressDetails.data.isModerator}
+                proposal={proposalDetails.data}
+                proposalId={proposalDetails.data.proposalId}
+              />
+              {/* TODO: add functionality for the following buttons */}
+              {/* <ClaimApprovalButton />
+              <ClaimFundingButton />
+              <MilestoneCompletedButton />
+              <ClaimResultsButton /> */}
+
+              <EndorseButton
+                stage={proposalDetails.data.stage}
+                isModerator={addressDetails.data.isModerator}
+                endorser={proposalDetails.data.endorser}
+                proposalId={proposalDetails.data.proposalId}
+                history={history}
+              />
+
+              {isProposer && !isEndorsed && (
                 <Button kind="round" ghost primary onClick={this.handleEditClick}>
                   Edit
                 </Button>
@@ -143,6 +186,7 @@ class Proposal extends React.Component {
             </UpvoteStatus>
           </LatestActivity>
         </ProjectSummary>
+        <VotingResult draftVoting={proposalDetails.data.draftVoting} daoInfo={daoInfo} />
         <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
       </ProposalsWrapper>
@@ -154,6 +198,7 @@ const { object, func } = PropTypes;
 
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
+  daoInfo: object.isRequired,
   getProposalDetailsAction: func.isRequired,
   addressDetails: object.isRequired,
   challengeProof: object,
@@ -166,10 +211,18 @@ Proposal.defaultProps = {
 };
 
 export default connect(
-  ({ infoServer: { ProposalDetails, AddressDetails }, daoServer: { ChallengeProof } }) => ({
+  ({
+    infoServer: {
+      ProposalDetails,
+      AddressDetails,
+      DaoDetails: { data },
+    },
+    daoServer: { ChallengeProof },
+  }) => ({
     proposalDetails: ProposalDetails,
     addressDetails: AddressDetails,
     challengeProof: ChallengeProof,
+    daoInfo: data,
   }),
   {
     getProposalDetailsAction: getProposalDetails,

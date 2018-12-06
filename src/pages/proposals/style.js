@@ -153,13 +153,15 @@ export const UpvoteStatus = styled.div`
 export const DetailsContainer = styled.div``;
 
 export const ShortDescription = styled.div`
-  border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   padding: 3rem 0 2em 0;
   margin-bottom: 3rem;
 `;
 
-export const ProjectSummary = styled.div``;
+export const ProjectSummary = styled.div`
+  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  margin-bottom: 4rem;
+`;
 
 export const TrackActivity = styled.label`
   padding: 3rem 0;
@@ -188,3 +190,70 @@ export const Details = styled.div`
 `;
 
 export const MilestonesContainer = styled.div``;
+
+export const VotingResultWrapper = styled.div`
+  ${Container};
+  flex-direction: column;
+  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+`;
+
+export const VotingResultContainer = styled.div`
+  ${Container};
+  margin-bottom: 4rem;
+`;
+export const ProgressCol = styled.div`
+  flex-grow: 1;
+  margin-right: 2rem;
+`;
+
+export const Label = styled.div`
+  ${Container};
+  flex-wrap: nowrap;
+`;
+
+const LabelStyle = css`
+  color: ${props => props.theme.textPrimary.default.toString()};
+  font-family: 'Futura PT Heavy';
+  padding-bottom: 2rem;
+  text-transform: uppercase;
+  flex-basis: 100%;
+
+  &:last-child > span {
+    margin-left: 2rem;
+  }
+`;
+
+export const QuorumLabel = styled.div`
+  ${LabelStyle};
+  flex: 4.5;
+`;
+export const QuorumMinLabel = styled.div`
+  ${LabelStyle};
+  border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
+  flex: 5.5;
+`;
+
+export const ApprovalLabel = styled.div`
+  ${LabelStyle};
+  flex: 6.5;
+`;
+export const ApprovalMinLabel = styled.div`
+  ${LabelStyle};
+  border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
+  flex: 3.5;
+`;
+
+export const QuorumInfoCol = styled.div`
+  ${Container};
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-basis: 280px;
+
+  color: ${props => props.theme.textDefault.light.toString()};
+  font-family: 'Futura PT Medium';
+  text-transform: uppercase;
+
+  span {
+    margin: 0 1.5rem;
+  }
+`;

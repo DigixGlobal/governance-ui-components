@@ -225,22 +225,22 @@ const LabelStyle = css`
 
 export const QuorumLabel = styled.div`
   ${LabelStyle};
-  flex: 4.5;
+  flex: ${props => props.flexWidth};
 `;
 export const QuorumMinLabel = styled.div`
   ${LabelStyle};
   border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
-  flex: 5.5;
+  flex: ${props => props.flexWidth};
 `;
 
 export const ApprovalLabel = styled.div`
   ${LabelStyle};
-  flex: 6.5;
+  flex: ${props => props.flexWidth};
 `;
 export const ApprovalMinLabel = styled.div`
   ${LabelStyle};
   border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
-  flex: 3.5;
+  flex: ${props => props.flexWidth};
 `;
 
 export const QuorumInfoCol = styled.div`

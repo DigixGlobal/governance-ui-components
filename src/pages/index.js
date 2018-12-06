@@ -30,7 +30,7 @@ class LandingPage extends Component {
 
   render() {
     const { order } = this.state;
-    const { DaoDetails, Proposals, AddressDetails } = this.props;
+    const { history, DaoDetails, Proposals, AddressDetails } = this.props;
     const hasProposals = Proposals.data && Proposals.data.length > 0;
     let orderedProposals = [];
     if (hasProposals) {
@@ -50,6 +50,7 @@ class LandingPage extends Component {
         {hasProposals &&
           orderedProposals.map(proposal => (
             <ProposalCard
+              history={history}
               key={proposal.proposalId}
               proposal={proposal}
               userDetails={AddressDetails}
@@ -65,6 +66,7 @@ LandingPage.propTypes = {
   DaoDetails: object.isRequired,
   AddressDetails: object.isRequired,
   Proposals: object.isRequired,
+  history: object.isRequired,
   getDaoDetailsAction: func.isRequired,
   getProposalsAction: func.isRequired,
 };

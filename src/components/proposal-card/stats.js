@@ -1,28 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { StatsWrapper, Stats, StatItem } from './style';
-
-// import { ProposalStages } from '../../utils/constants';
+import { StatsWrapper, Stats, StatItem } from '@digix/gov-ui/components/proposal-card/style';
+import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
 export default class ProposalCardStats extends React.Component {
   render() {
     const { details } = this.props;
-    if (!details) return null;
+    if (!details) {
+      return null;
+    }
+
+    const { draftVoting } = details;
+
+    let approvalRating = 0;
+    if (draftVoting) {
+      const totalVotes = parseBigNumber(draftVoting.totalVoterStake, 0, false);
+      if (totalVotes) {
+        const votedYes = parseBigNumber(draftVoting.yes, 0, false);
+        approvalRating = ((votedYes * 100) / totalVotes).toFixed(2);
+      }
+    }
+
+    const funding = details.proposalVersions[0].totalFunding / 1e18;
+    const participantCount = draftVoting ? draftVoting.totalVoterCount : 0;
+
     return (
       <StatsWrapper>
         <Stats>
           <StatItem>
             Funding
-            <span>{details.proposalVersions[0].totalFunding / 1e18} eth</span>
+            <span>{funding} ETH</span>
           </StatItem>
           <StatItem stage={details.stage}>
             Approval
-            <span>2%</span>
+            <span>{approvalRating}%</span>
           </StatItem>
           <StatItem>
             Participants
-            <span>{details.votingRounds ? details.votingRounds[0].totalVoterCount : 0}</span>
+            <span>{participantCount}</span>
           </StatItem>
         </Stats>
       </StatsWrapper>

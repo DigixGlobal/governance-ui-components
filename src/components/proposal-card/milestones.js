@@ -68,6 +68,11 @@ const disableParticipateWhen = (proposal, user) => {
   }
 };
 export default class ProposalCardMilestone extends React.Component {
+  redirectToProposalPage = () => {
+    const { details, history } = this.props;
+    history.push(`/proposals/${details.proposalId}`);
+  };
+
   render() {
     const { details, userDetails } = this.props;
     const { currentMilestone } = details;
@@ -77,7 +82,6 @@ export default class ProposalCardMilestone extends React.Component {
       <MilestonesWrapper>
         <Milestones>
           <MilestoneStatus>
-            {/* {mileStones.length > 0 && <Label>Milestones Completed</Label>} */}
             <Label>Milestones</Label>
             <ul>{mileStones && mileStones.map(milestone => <li key={milestone} />)}</ul>
           </MilestoneStatus>
@@ -85,14 +89,8 @@ export default class ProposalCardMilestone extends React.Component {
             <Label>Voting Deadline</Label>
             <Data>{determineDeadline(details) || 'N/A'} </Data>
           </Deadline>
-          <CallToAction>
-            <Button
-              kind="round"
-              primary
-              ghost
-              disabled={disabledParticipate}
-              style={{ pointerEvents: 'none' }}
-            >
+          <CallToAction onClick={this.redirectToProposalPage}>
+            <Button kind="round" primary ghost disabled={disabledParticipate}>
               Participate
             </Button>
           </CallToAction>
@@ -104,5 +102,6 @@ export default class ProposalCardMilestone extends React.Component {
 
 ProposalCardMilestone.propTypes = {
   details: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   userDetails: PropTypes.object.isRequired,
 };

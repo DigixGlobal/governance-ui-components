@@ -82,7 +82,7 @@ export const ImageHolder = styled.div`
 `;
 
 export const CreateMilestone = styled.div`
-  background: ${props => props.theme.backgroundLayout.lighter.toString()};
+  background: ${props => props.theme.backgroundTertiary.lighter.toString()};
   border: 1px solid ${props => props.theme.borderColor.light.toString()};
   border-radius: 3px;
   padding: 2rem;

@@ -99,7 +99,7 @@ const LightTheme = {
   backgroundDefault: white,
   backgroundPrimary: primaryColor,
   backgroundSecondary: secondaryColor,
-  backgroundLayout: tertiaryColor,
+  backgroundTertiary: tertiaryColor,
   backgroundLeftPanel: white,
   backgroundHeader: white,
 
@@ -126,7 +126,7 @@ const LightTheme = {
   iconDefaultColor: tertiaryColor,
   iconPrimaryColor: primaryColor,
   iconSecondaryColor: secondaryColor,
-  iconColor: primaryColor.default,
+  iconColor: tertiaryColor.default,
   iconColorReverse: white,
 
   linkDefaultColor: tertiaryColor,

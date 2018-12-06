@@ -39,11 +39,11 @@ function fetchData(url, type) {
   };
 }
 
-function postData(url, type, data, authToken, client, uid) {
+function sendData(method, url, type, data, authToken, client, uid) {
   return dispatch => {
     dispatch({ type, payload: { fetching: true } });
     return fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      method,
       mode: 'cors', // no-cors, cors, *same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
@@ -84,26 +84,34 @@ function postData(url, type, data, authToken, client, uid) {
   };
 }
 
+function putData(url, type, data, authToken, client, uid) {
+    return sendData('PUT', url, type, data, authToken, client, uid)
+}
+
+function postData(url, type, data, authToken, client, uid) {
+    return sendData('POST', url, type, data, authToken, client, uid)
+}
+
 export function getChallenge(address) {
-  return fetchData(`${DAO_SERVER}/get_challenge?address=${address}`, actions.GET_CHALLENGE);
+  return putData(`${DAO_SERVER}/authorization?address=${address}`, actions.GET_CHALLENGE);
 }
 
 export function proveChallenge(payload) {
   const { address, challenge, message, signature } = payload;
-  return fetchData(
-    `${DAO_SERVER}/prove?address=${address}&challenge_id=${challenge}&message=${message}&signature=${signature}`,
+  return postData(
+    `${DAO_SERVER}/authorization?address=${address}&challenge_id=${challenge}&message=${message}&signature=${signature}`,
     actions.PROVE_CHALLENGE
   );
 }
 
 export function getTransactionStatus(payload) {
-  return fetchData(`${DAO_SERVER}/status?txhash=${payload}`, actions.GET_TRANSACION_STATUS);
+  return fetchData(`${DAO_SERVER}/transaction?txhash=${payload}`, actions.GET_TRANSACION_STATUS);
 }
 
 export function getTransactions(payload) {
   const { token, client, uid } = payload;
-  return postData(
-    `${DAO_SERVER}/transactions/list`,
+  return fetchData(
+    `${DAO_SERVER}/transactions`,
     actions.GET_TRANSACTIONS,
     undefined,
     token,
@@ -116,7 +124,7 @@ export function sendTransactionToDaoServer(payload) {
   const { txHash, title, token, client, uid } = payload;
   const data = { txhash: txHash, title };
   return postData(
-    `${DAO_SERVER}/transactions/new`,
+    `${DAO_SERVER}/transactions`,
     actions.ADD_TRANSACTION,
     data,
     token,

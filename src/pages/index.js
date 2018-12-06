@@ -10,8 +10,6 @@ import ProposalFilter from '../components/common/blocks/filter/index';
 
 import { getDaoDetails, getProposals } from '../reducers/info-server/actions';
 
-import CommentThread from './proposals/comment/index';
-
 class LandingPage extends Component {
   constructor(props) {
     super(props);

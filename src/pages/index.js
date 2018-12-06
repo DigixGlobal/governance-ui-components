@@ -42,7 +42,6 @@ class LandingPage extends Component {
     }
     return (
       <Fragment>
-        <CommentThread />
         <Timeline stats={DaoDetails} />
         <DashboardStats stats={AddressDetails} />
         <ProposalFilter

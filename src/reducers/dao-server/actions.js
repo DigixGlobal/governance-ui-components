@@ -8,6 +8,7 @@ export const actions = {
   GET_TRANSACION_STATUS: `${REDUX_PREFIX}GET_TRANSACION_STATUS`,
 };
 
+// TODO: remove (not being used)
 function fetchData(url, type) {
   return dispatch => {
     dispatch({ type, payload: { fetching: true } });
@@ -104,13 +105,15 @@ export function proveChallenge(payload) {
   );
 }
 
+// TODO: where is this used ?
 export function getTransactionStatus(payload) {
   return fetchData(`${DAO_SERVER}/transaction?txhash=${payload}`, actions.GET_TRANSACION_STATUS);
 }
 
 export function getTransactions(payload) {
   const { token, client, uid } = payload;
-  return fetchData(
+  return sendData(
+    'GET',
     `${DAO_SERVER}/transactions`,
     actions.GET_TRANSACTIONS,
     undefined,

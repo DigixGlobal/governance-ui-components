@@ -177,7 +177,7 @@ class Proposal extends React.Component {
             <FundingStatus>
               Funding
               <span>
-                {proposalVersion.totalFunding / 1e18}
+                {proposalVersion.totalFunding}
                 ETH
               </span>
             </FundingStatus>
@@ -185,7 +185,7 @@ class Proposal extends React.Component {
               Milestones <span>{dijixObject.milestones.length || 0}</span>
             </MilestonesStatus>
             <Reward>
-              Reward <span>{proposalVersion.finalReward / 1e18} ETH</span>
+              Reward <span>{proposalVersion.finalReward} ETH</span>
             </Reward>
             <UpvoteStatus>
               <Vote hasVoted />

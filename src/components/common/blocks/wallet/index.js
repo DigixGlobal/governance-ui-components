@@ -109,7 +109,7 @@ export class Wallet extends React.Component {
       if (this.state.proving) return;
       return proveChallengeAction({
         address,
-        challenge_id: Challenge.data.id,
+        challengeId: Challenge.data.id,
         message,
         signature: signature.signedTx,
       }).then(this.setState({ proving: true }));

@@ -19,9 +19,9 @@ import EndorseButton from './proposal-buttons/endorse';
 
 import ApproveButton from './proposal-buttons/approve';
 import ClaimApprovalButton from './proposal-buttons/claim-approval';
-import ClaimFundingButton from './proposal-buttons/claim-funding';
-import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
-import ClaimResultsButton from './proposal-buttons/claim-results';
+// import ClaimFundingButton from './proposal-buttons/claim-funding';
+// import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
+// import ClaimResultsButton from './proposal-buttons/claim-results';
 
 import VotingResult from './voting-result';
 
@@ -144,8 +144,14 @@ class Proposal extends React.Component {
                 proposalId={proposalDetails.data.proposalId}
               />
               {/* TODO: add functionality for the following buttons */}
-              {/* <ClaimApprovalButton />
-              <ClaimFundingButton />
+              <ClaimApprovalButton
+                isProposer={isProposer}
+                draftVoting={proposalDetails.data.draftVoting}
+                history={history}
+                votingStage={proposalDetails.data.votingStage}
+                proposalId={proposalDetails.data.proposalId}
+              />
+              {/* <ClaimFundingButton />
               <MilestoneCompletedButton />
               <ClaimResultsButton /> */}
 

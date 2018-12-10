@@ -6,8 +6,6 @@ import { Fieldset, FormItem, Label } from './style';
 
 class OverView extends React.Component {
   render() {
-    // console.log(decodeHash('0x9fa5c38478b3cb4a24ca3a6ca41eb0457d78a62e29039ee9b17484e32429fd95'));
-
     const { onChange, form } = this.props;
     return (
       <Fieldset>

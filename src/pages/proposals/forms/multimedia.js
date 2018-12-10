@@ -39,10 +39,6 @@ class Multimedia extends React.Component {
         reader.onloadend = () => {
           const { result } = reader;
 
-          if (error) {
-            return;
-          }
-
           if (supported.findIndex(item => item === file.type) === -1) {
             error = `Unsupported ${file.type} file type`;
             return;

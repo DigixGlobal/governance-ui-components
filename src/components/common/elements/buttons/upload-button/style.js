@@ -10,6 +10,11 @@ export const UploadButton = styled.label`
   display: inline-block;
   border-radius: 4px;
   ${ButtonStyles};
+  ${props =>
+    props.fullWidth &&
+    css`
+      width: 100%;
+    `}
 
   margin-left: 0;
   ${props =>

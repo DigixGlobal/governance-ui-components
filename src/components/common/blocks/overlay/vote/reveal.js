@@ -8,6 +8,7 @@ import {
   OverlayHeader as Header,
   NoteContainer,
   StatusNote,
+  ErrorCaption,
 } from '@digix/gov-ui/components/common/common-styles';
 
 import Dao from '@digix/dao-contracts/build/contracts/DaoVoting.json';
@@ -29,11 +30,11 @@ class RevealVote extends React.Component {
     this.state = {
       uploaded: false,
       voteObject: {},
+      error: undefined,
     };
   }
 
   onSuccessfulTransaction = txHash => {
-    console.log({ txHash });
     const { ChallengeProof, history, showHideAlertAction, showRightPanelAction } = this.props;
 
     if (ChallengeProof.data) {
@@ -56,7 +57,6 @@ class RevealVote extends React.Component {
 
   setError = error => {
     const message = JSON.stringify((error && error.message) || error);
-    console.log(message);
     return this.props.showHideAlertAction({ message });
   };
 
@@ -112,16 +112,23 @@ class RevealVote extends React.Component {
       const reader = new FileReader();
       reader.onloadend = () => {
         const { result } = reader;
-        if (error) {
-          return;
-        }
         if (file.type !== 'application/json') {
           error = `Unsupported ${file.type} file type`;
         }
         if (!error) {
-          console.log({ file, result });
           const json = atob(result.replace('data:application/json;base64,', ''));
-          this.setState({ voteObject: JSON.parse(json), uploaded: true });
+          const voteObject = JSON.parse(json);
+          if (voteObject.vote && voteObject.salt) {
+            this.setState({ voteObject, uploaded: true, error: false });
+          } else {
+            this.setState({
+              voteObject: undefined,
+              uploaded: false,
+              error: 'Invalid File Content, Please make sure you uploaded the correct file.',
+            });
+          }
+        } else {
+          this.setState({ error, uploaded: false });
         }
       };
       reader.readAsDataURL(file);
@@ -129,7 +136,7 @@ class RevealVote extends React.Component {
   };
 
   render() {
-    const { uploaded, voteObject } = this.state;
+    const { uploaded, voteObject, error } = this.state;
     return (
       <IntroContainer>
         <Header uppercase>Vote on Proposal (Reveal)</Header>
@@ -142,7 +149,8 @@ class RevealVote extends React.Component {
           Please note that if this step is not carried out, your vote will be voided and will not be
           counted.
         </p>
-        {uploaded && (
+        {error && <ErrorCaption>{error}</ErrorCaption>}
+        {uploaded && !error && (
           <NoteContainer>
             <StatusNote>
               Your vote is <span>{voteObject.vote ? 'YES' : 'NO'}</span>
@@ -160,6 +168,7 @@ class RevealVote extends React.Component {
             primary
             fill
             fluid
+            fullWidth
             id="json-upload"
             onChange={this.handleUpload}
             type="file"

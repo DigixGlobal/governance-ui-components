@@ -131,3 +131,15 @@ export const StatusNote = styled.p`
     font-family: 'Futura PT Heavy';
   }
 `;
+
+export const ErrorCaption = styled.div`
+  text-align: center;
+  background-color: rgba(208, 2, 27, 0.2);
+  padding: 1.5rem 2.5rem;
+  border: 1px solid #d0021b;
+  color: #d0021b;
+  margin-bottom: 4rem;
+  font-family: 'Futura PT Medium';
+  border-radius: 0.5rem;
+  box-shadow: ${props => props.theme.boxShadow};
+`;

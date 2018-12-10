@@ -15,6 +15,16 @@ const PanelOverlay = props => {
     props.showRightPanel({ show: false });
   };
 
+  const toggleBodyOverflow = () => {
+    if (!showPanel || !showPanel.show) {
+      document.body.classList.remove('modal-is-open');
+    } else {
+      document.body.classList.toggle('modal-is-open');
+    }
+  };
+
+  toggleBodyOverflow();
+
   return (
     <Container>
       <TransparentOverlay />

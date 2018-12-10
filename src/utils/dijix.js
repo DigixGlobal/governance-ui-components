@@ -92,7 +92,6 @@ export function createAttestation(attestation) {
   if (!attestation) return undefined;
 
   return dijix.create('attestation', attestation).then(({ ipfsHash }) => {
-    // console.log('ipfsHash', ipfsHash);
     const hex = encodeHash(ipfsHash);
     return hex;
   });

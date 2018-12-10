@@ -22,3 +22,6 @@ export function dgxHashToIPFSHash(string) {
   if (string.slice(0, 2) === 'Dg') return `Qm${string.slice(2)}`;
   return string;
 }
+
+export const buffer2Hex = buffer =>
+  Array.prototype.map.call(new Uint8Array(buffer), x => `00${x.toString(16)}`.slice(-2)).join('');

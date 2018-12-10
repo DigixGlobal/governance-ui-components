@@ -19,6 +19,7 @@ import EndorseButton from './proposal-buttons/endorse';
 
 import ApproveButton from './proposal-buttons/approve';
 import ClaimApprovalButton from './proposal-buttons/claim-approval';
+import VoteCommitButton from './proposal-buttons/vote-commit';
 // import ClaimFundingButton from './proposal-buttons/claim-funding';
 // import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
 // import ClaimResultsButton from './proposal-buttons/claim-results';
@@ -150,6 +151,13 @@ class Proposal extends React.Component {
                 history={history}
                 votingStage={proposalDetails.data.votingStage}
                 proposalId={proposalDetails.data.proposalId}
+              />
+              <VoteCommitButton
+                isParticipant={addressDetails.data.isParticipant}
+                history={history}
+                proposal={proposalDetails.data}
+                proposalId={proposalDetails.data.proposalId}
+                votingStage={proposalDetails.data.votingStage}
               />
               {/* <ClaimFundingButton />
               <MilestoneCompletedButton />

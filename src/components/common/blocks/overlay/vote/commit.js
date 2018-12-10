@@ -69,7 +69,7 @@ class CommitVote extends React.Component {
     this.setState({
       hasVoted: true,
       vote,
-      voteObject: { vote, salt: buffer2Hex(random) },
+      voteObject: { vote, salt: `0x${buffer2Hex(random)}` },
     });
   };
 

@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import web3Utils from 'web3-utils';
-import secureRandom from 'secure-random';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
-  Note,
   NoteContainer,
   StatusNote,
 } from '@digix/gov-ui/components/common/common-styles';
@@ -36,6 +33,7 @@ class RevealVote extends React.Component {
   }
 
   onSuccessfulTransaction = txHash => {
+    console.log({ txHash });
     const { ChallengeProof, history, showHideAlertAction, showRightPanelAction } = this.props;
 
     if (ChallengeProof.data) {

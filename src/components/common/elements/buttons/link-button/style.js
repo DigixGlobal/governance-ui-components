@@ -1,10 +1,14 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyles, DisabledBtn, GhostBtn } from '../../../common-styles';
+import {
+  ButtonStyles,
+  DisabledBtn,
+  GhostBtn,
+} from '@digix/gov-ui/components/common/elements/buttons/style';
 
 export const Button = styled.a`
   border-radius: 3px;
   ${ButtonStyles};
-
+  display: block;
   ${props =>
     props.ghost &&
     css`

@@ -67,79 +67,9 @@ export const LeftPanel = css``;
 export const RightPanel = css``;
 
 export const HR = styled.hr`
-  border: 0.5px solid ${props => props.theme.backgroundLayout.default.toString()};
+  border: 0.5px solid ${props => props.theme.backgroundTertiary.default.toString()};
   width: 100%;
   margin: 2rem 0;
-`;
-
-const Button = {
-  cursor: 'pointer',
-  fontFamily: 'Futura PT Medium',
-
-  textAlign: 'center',
-  textDecoration: 'none',
-  textTransform: 'uppercase',
-  outline: 'none',
-  padding: '1rem 2rem',
-  margin: '1rem',
-  transition: 'all 0.3s ease',
-};
-
-export const ButtonStyles = css`
-  ${Button};
-
-  background: ${props =>
-    props.primary
-      ? props.theme.buttonBgPrimary.default.toString()
-      : props.theme.buttonBgSecondary.default.toString()};
-
-  color: ${props =>
-    props.primary
-      ? props.theme.buttonTextPrimaryReverse.toString()
-      : props.theme.buttonTextSecondaryReverse.toString()};
-
-  border: 2px solid
-    ${props =>
-      props.primary
-        ? props.theme.buttonBorderPrimary.toString()
-        : props.theme.buttonBorderSecondary.default.toString()};
-  &:hover {
-    background-color: transparent;
-    color: ${props =>
-      props.primary
-        ? props.theme.buttonTextPrimary.toString()
-        : props.theme.buttonTextSecondary.toString()};
-  }
-`;
-
-export const GhostBtn = css`
-  background-color: transparent;
-  color: ${props =>
-    props.primary
-      ? props.theme.buttonTextPrimary.toString()
-      : props.theme.buttonTextSecondary.toString()};
-
-  &:hover {
-    background: ${props =>
-      props.primary
-        ? props.theme.buttonBgPrimary.default.toString()
-        : props.theme.buttonBgSecondary.default.toString()};
-    color: ${props =>
-      props.primary
-        ? props.theme.buttonTextPrimaryReverse.toString()
-        : props.theme.buttonTextSecondaryReverse.toString()};
-  }
-`;
-
-export const DisabledBtn = css`
-  background-color: transparent;
-  border-color: ${props => props.theme.buttonBorderDisabled.toString()};
-  color: ${props => props.theme.textDefault.lighter.toString()};
-  &:hover {
-    background-color: transparent;
-    border-color: ${props => props.theme.buttonBorderDisabled.toString()};
-    color: ${props => props.theme.textDefault.lighter.toString()};
-  }
 `;
 
 export const Container = css`

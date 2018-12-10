@@ -99,7 +99,7 @@ const LightTheme = {
   backgroundDefault: white,
   backgroundPrimary: primaryColor,
   backgroundSecondary: secondaryColor,
-  backgroundLayout: tertiaryColor,
+  backgroundTertiary: tertiaryColor,
   backgroundLeftPanel: white,
   backgroundHeader: white,
 
@@ -126,7 +126,7 @@ const LightTheme = {
   iconDefaultColor: tertiaryColor,
   iconPrimaryColor: primaryColor,
   iconSecondaryColor: secondaryColor,
-  iconColor: primaryColor.default,
+  iconColor: tertiaryColor.default,
   iconColorReverse: white,
 
   linkDefaultColor: tertiaryColor,
@@ -150,9 +150,10 @@ const LightTheme = {
   cardBorderColor: tertiaryColor,
   cardBorderColorHover: primaryColor,
 
-  ErrorMessage: {
-    backgroundColor: gray,
-    padding: '1em',
+  alerMessage: {
+    Success: secondaryColor,
+    Error: red,
+    Response: green,
   },
 };
 

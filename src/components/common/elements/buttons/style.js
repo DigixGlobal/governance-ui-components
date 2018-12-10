@@ -1,5 +1,99 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyles, DisabledBtn, GhostBtn } from '../../common-styles';
+// import { ButtonStyles, DisabledBtn, GhostBtn } from '../../common-styles';
+
+export const ButtonStyles = css`
+  background: ${props =>
+    props.primary
+      ? props.theme.buttonBgPrimary.default.toString()
+      : props.theme.buttonBgSecondary.default.toString()};
+
+  border: 2px solid
+    ${props =>
+      props.primary
+        ? props.theme.buttonBorderPrimary.toString()
+        : props.theme.buttonBorderSecondary.default.toString()};
+
+  color: ${props =>
+    props.primary
+      ? props.theme.buttonTextPrimaryReverse.toString()
+      : props.theme.buttonTextSecondaryReverse.toString()};
+
+  cursor: pointer;
+  font-family: 'Futura PT Medium';
+  margin: 1rem;
+  outline: none;
+  padding: 1rem 2rem;
+  text-align: center;
+  text-ecoration: none;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: transparent;
+    color: ${props =>
+      props.primary
+        ? props.theme.buttonTextPrimary.toString()
+        : props.theme.buttonTextSecondary.toString()};
+  }
+
+  ${props =>
+    props.xsmall &&
+    css`
+      padding: 0.5rem 1rem;
+      font-size: 1.4rem;
+      margin-right: 0.5rem;
+    `};
+
+  ${props =>
+    props.small &&
+    css`
+      padding: 0.5rem 1rem;
+      font-size: 1.4rem;
+      margin-right: 0.5rem;
+    `};
+
+  ${props =>
+    props.medium &&
+    css`
+      padding: 1rem 2rem;
+    `};
+
+  ${props =>
+    props.large &&
+    css`
+      padding: 1rem 2rem;
+    `};
+`;
+
+export const GhostBtn = css`
+  background-color: transparent;
+  color: ${props =>
+    props.primary
+      ? props.theme.buttonTextPrimary.toString()
+      : props.theme.buttonTextSecondary.toString()};
+
+  &:hover {
+    background: ${props =>
+      props.primary
+        ? props.theme.buttonBgPrimary.default.toString()
+        : props.theme.buttonBgSecondary.default.toString()};
+    color: ${props =>
+      props.primary
+        ? props.theme.buttonTextPrimaryReverse.toString()
+        : props.theme.buttonTextSecondaryReverse.toString()};
+  }
+`;
+
+export const DisabledBtn = css`
+  background-color: transparent;
+  border-color: ${props => props.theme.buttonBorderDisabled.toString()};
+  color: ${props => props.theme.textDefault.lighter.toString()};
+  &:hover {
+    background-color: transparent;
+    border-color: ${props => props.theme.buttonBorderDisabled.toString()};
+    color: ${props => props.theme.textDefault.lighter.toString()};
+  }
+`;
 
 /* eslint-disable */
 export const CapsuleBtn = styled.button`

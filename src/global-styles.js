@@ -59,7 +59,7 @@ body {
 
   font-family: 'Futura PT Book', 'Roboto', 'Arial', 'sans-serif';
   font-size: 1.4rem;
-  letter-spacing: 0.05em;
+  // letter-spacing: 0.05em;
   box-sizing: border-box;
   color: #464E5B;
 }

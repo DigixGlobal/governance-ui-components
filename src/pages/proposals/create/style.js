@@ -22,7 +22,7 @@ export const MenuItem = styled.div`
     props.active &&
     css`
       color: ${props.theme.textSecondary.default.toString()};
-      border-bottom: 4px solid ${props.theme.buttonBorderSecondary.toString()};
+      border-bottom: 4px solid ${props.theme.buttonBorderSecondary.default.toString()};
     `};
 `;
 
@@ -39,7 +39,10 @@ export const LeftCol = styled.div`
   display: flex;
   align-items: center;
 `;
-export const RightCol = styled.div``;
+export const RightCol = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 
 export const Heading = styled.h1``;
 
@@ -82,7 +85,7 @@ export const ImageHolder = styled.div`
 `;
 
 export const CreateMilestone = styled.div`
-  background: ${props => props.theme.backgroundLayout.default.toString()};
+  background: ${props => props.theme.backgroundTertiary.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: 3px;
   padding: 2rem;

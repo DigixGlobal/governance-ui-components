@@ -20,7 +20,7 @@ import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 
-import { showHideLockDgdOverlay, showHideAlert } from '../../../../reducers/gov-ui/actions';
+import { showHideLockDgdOverlay } from '../../../../reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '../../../../reducers/dao-server/actions';
 
 import TextField from '../../elements/textfield';
@@ -199,7 +199,7 @@ class LockDgd extends React.Component {
         <Button
           kind="round"
           primary
-          ghost
+          fill
           fluid
           onClick={this.handleCloseLockDgd}
           style={{ marginTop: '4rem' }}
@@ -274,7 +274,6 @@ LockDgd.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   defaultAddress: object,
-  showHideAlert: func.isRequired,
   addresses: array,
 };
 
@@ -300,7 +299,6 @@ export default web3Connect(
       showTxSigningModal,
       showHideLockDgdOverlay,
       sendTransactionToDaoServer,
-      showHideAlert,
     }
   )(LockDgd)
 );

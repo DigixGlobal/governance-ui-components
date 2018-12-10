@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { UploadButtonContainer, UploadButton, UploadInput } from './style';
 
 const UploadFileButton = props => (
-  <UploadButtonContainer>
+  <div>
     <UploadInput
       accept={props.accept ? props.accept : 'image/*'}
       id={props.id ? props.id : 'image-upload'}
@@ -16,7 +16,7 @@ const UploadFileButton = props => (
       {props.caption}
     </UploadButton>
     {props.children}
-  </UploadButtonContainer>
+  </div>
 );
 
 const { object, string, node, oneOfType, bool, func } = PropTypes;

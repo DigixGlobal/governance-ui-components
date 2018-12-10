@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyles, GhostBtn } from '../../../components/common/common-styles';
+import { ButtonStyles, GhostBtn } from '../../../components/common/elements/buttons/style';
 
 export const UploadButtonContainer = styled.div``;
 
@@ -10,12 +10,14 @@ export const UploadButton = styled.label`
   display: inline-block;
   border-radius: 4px;
   ${ButtonStyles};
+
   margin-left: 0;
   ${props =>
     props.ghost &&
     css`
       ${GhostBtn};
     `};
+
   ${props =>
     props.disabled &&
     css`

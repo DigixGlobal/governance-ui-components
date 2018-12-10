@@ -8,9 +8,10 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
+  Note,
+  NoteContainer,
+  StatusNote,
 } from '@digix/gov-ui/components/common/common-styles';
-
-import { buffer2Hex } from '@digix/gov-ui/utils/helpers';
 
 import Dao from '@digix/dao-contracts/build/contracts/DaoVoting.json';
 import getContract from '@digix/gov-ui/utils/contracts';
@@ -144,10 +145,15 @@ class RevealVote extends React.Component {
           counted.
         </p>
         {uploaded && (
-          <div>
-            Your vote is <br /> {voteObject.vote ? 'YES' : 'NO'} <br />
-            Your vote is only valid and counted as activity on the DigixDAO after your confirmation.
-          </div>
+          <NoteContainer>
+            <StatusNote>
+              Your vote is <span>{voteObject.vote ? 'YES' : 'NO'}</span>
+            </StatusNote>
+            <p>
+              Your vote is only valid and counted as activity on the DigixDAO after your
+              confirmation.
+            </p>
+          </NoteContainer>
         )}
         {!uploaded && (
           <Button
@@ -159,9 +165,8 @@ class RevealVote extends React.Component {
             id="json-upload"
             onChange={this.handleUpload}
             type="file"
-          >
-            Upload JSON File
-          </Button>
+            caption=" Upload JSON File"
+          />
         )}
         {uploaded && (
           <Button kind="round" primary fill fluid onClick={this.handleSubmit}>

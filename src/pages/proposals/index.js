@@ -27,6 +27,8 @@ import RevealButton from './proposal-buttons/reveal-button';
 
 import VotingResult from './voting-result';
 
+import CommentThread from './comment/index';
+
 import {
   ProposalsWrapper,
   BrowseVersionHistory,
@@ -212,6 +214,7 @@ class Proposal extends React.Component {
         <VotingResult draftVoting={proposalDetails.data.draftVoting} daoInfo={daoInfo} />
         <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
+        <CommentThread />
       </ProposalsWrapper>
     );
   }

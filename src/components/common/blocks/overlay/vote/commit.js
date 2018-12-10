@@ -8,6 +8,7 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
+  Note,
 } from '@digix/gov-ui/components/common/common-styles';
 
 import { buffer2Hex } from '@digix/gov-ui/utils/helpers';
@@ -157,7 +158,11 @@ class CommitVote extends React.Component {
           possible. You will need to download a JSON file when deciding your choice in the vote.
           Your choice will then be verified in the Reveal phase when you upload the same JSON file.
         </p>
-        <p>Please keep the file in a safe place as you will not be able to download it again.</p>
+        <Note>
+          <strong>
+            Please keep the file in a safe place as you will not be able to download it again.
+          </strong>
+        </Note>
         <ResponseButton voteValue>Yes</ResponseButton>
         <ResponseButton voteValue={false}>No</ResponseButton>
         {hasVoted && !downloaded && (
@@ -171,6 +176,11 @@ class CommitVote extends React.Component {
             href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
           >
             Download JSON File
+          </Button>
+        )}
+        {downloaded && (
+          <Button kind="round" secondary success fluid>
+            File Downloaded
           </Button>
         )}
         {downloaded && (

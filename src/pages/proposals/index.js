@@ -20,6 +20,7 @@ import EndorseButton from './proposal-buttons/endorse';
 import ApproveButton from './proposal-buttons/approve';
 import ClaimApprovalButton from './proposal-buttons/claim-approval';
 import VoteCommitButton from './proposal-buttons/vote-commit';
+import RevealButton from './proposal-buttons/reveal-button';
 // import ClaimFundingButton from './proposal-buttons/claim-funding';
 // import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
 // import ClaimResultsButton from './proposal-buttons/claim-results';
@@ -144,7 +145,7 @@ class Proposal extends React.Component {
                 proposal={proposalDetails.data}
                 proposalId={proposalDetails.data.proposalId}
               />
-              {/* TODO: add functionality for the following buttons */}
+
               <ClaimApprovalButton
                 isProposer={isProposer}
                 draftVoting={proposalDetails.data.draftVoting}
@@ -159,10 +160,18 @@ class Proposal extends React.Component {
                 proposalId={proposalDetails.data.proposalId}
                 votingStage={proposalDetails.data.votingStage}
               />
+              <RevealButton
+                isParticipant={addressDetails.data.isParticipant}
+                history={history}
+                proposal={proposalDetails.data}
+                proposalId={proposalDetails.data.proposalId}
+                votingStage={proposalDetails.data.votingStage}
+              />
               {/* <ClaimFundingButton />
               <MilestoneCompletedButton />
               <ClaimResultsButton /> */}
 
+              {/* TODO: add functionality for the following buttons */}
               <EndorseButton
                 stage={proposalDetails.data.stage}
                 isModerator={addressDetails.data.isModerator}

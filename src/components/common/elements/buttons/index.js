@@ -6,6 +6,7 @@ import FlatButton from './flat-button';
 import RoundButton from './round-button';
 import LabeledIconButton from './labeled-icon-button';
 import LinkButton from './link-button';
+import UploadButton from './upload-button';
 
 const buttons = {
   round: RoundButton,
@@ -13,6 +14,7 @@ const buttons = {
   flat: FlatButton,
   iconLabeled: LabeledIconButton,
   link: LinkButton,
+  upload: UploadButton,
 };
 
 const Button = props => {

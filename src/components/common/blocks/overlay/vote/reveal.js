@@ -25,13 +25,11 @@ import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/act
 
 const network = SpectrumConfig.defaultNetworks[0];
 
-class CommitVote extends React.Component {
+class RevealVote extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      vote: false,
-      hasVoted: false,
-      downloaded: false,
+      uploaded: false,
       voteObject: {},
     };
   }
@@ -42,7 +40,7 @@ class CommitVote extends React.Component {
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Vote on Proposal',
+        title: 'Reveal Vote',
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -51,7 +49,7 @@ class CommitVote extends React.Component {
 
     showRightPanelAction({ show: false });
     showHideAlertAction({
-      message: 'Vote Accepted',
+      message: 'Vote Revealed',
     });
 
     history.push('/');
@@ -59,21 +57,8 @@ class CommitVote extends React.Component {
 
   setError = error => {
     const message = JSON.stringify((error && error.message) || error);
+    console.log(message);
     return this.props.showHideAlertAction({ message });
-  };
-
-  setVote = vote => {
-    const random = secureRandom(32, { type: 'Uint8Array' });
-
-    this.setState({
-      hasVoted: true,
-      vote,
-      voteObject: { vote, salt: buffer2Hex(random) },
-    });
-  };
-
-  handleDownload = () => {
-    this.setState({ downloaded: true });
   };
 
   handleSubmit = () => {
@@ -81,16 +66,10 @@ class CommitVote extends React.Component {
     const {
       web3Redux,
       addresses,
-      proposalId,
-      proposal: { currentVotingRound },
+      proposal: { currentVotingRound, proposalId },
     } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
-    const hash = web3Utils.soliditySha3(
-      { t: 'address', v: sourceAddress.address },
-      { t: 'bool', v: voteObject.vote },
-      { t: 'bytes32', v: voteObject.salt }
-    );
 
     const contract = web3Redux
       .web3(network)
@@ -98,7 +77,7 @@ class CommitVote extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Commit Vote',
+      caption: 'Reveal Vote',
       header: 'Proposal',
       type: 'txVisualization',
     };
@@ -112,8 +91,8 @@ class CommitVote extends React.Component {
     const payload = {
       address: sourceAddress,
       contract,
-      func: contract.commitVoteOnProposal,
-      params: [proposalId, currentVotingRound, hash],
+      func: contract.revealVoteOnProposal,
+      params: [proposalId, currentVotingRound, voteObject.vote, voteObject.salt],
       onSuccess: txHash => {
         this.onSuccessfulTransaction(txHash);
       },
@@ -126,56 +105,67 @@ class CommitVote extends React.Component {
     return executeContractFunction(payload);
   };
 
+  handleUpload = e => {
+    let error;
+
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const { result } = reader;
+        if (error) {
+          return;
+        }
+        if (file.type !== 'application/json') {
+          error = `Unsupported ${file.type} file type`;
+        }
+        if (!error) {
+          console.log({ file, result });
+          const json = atob(result.replace('data:application/json;base64,', ''));
+          this.setState({ voteObject: JSON.parse(json), uploaded: true });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   render() {
-    const { hasVoted, vote, downloaded } = this.state;
-    const { proposalId, proposal } = this.props;
-    const { currentVotingRound } = proposal;
-    const votedYes = hasVoted && vote;
-    const votedNo = hasVoted && !vote;
-
-    const ResponseButton = props => (
-      <Button
-        {...props}
-        kind="round"
-        fluid
-        ghost
-        primary
-        xlarge
-        yes={props.voteValue}
-        no={!props.voteValue}
-        confirmedYes={votedYes && props.voteValue}
-        confirmedNo={votedNo && !props.voteValue}
-        onClick={() => this.setVote(props.voteValue)}
-      />
-    );
-
+    const { uploaded, voteObject } = this.state;
     return (
       <IntroContainer>
-        <Header uppercase>Vote on Proposal (Commit)</Header>
+        <Header uppercase>Vote on Proposal (Reveal)</Header>
         <p>
-          In the DigixDAO, we employ the Commit and Reveal scheme to keep your votes as unbiased as
-          possible. You will need to download a JSON file when deciding your choice in the vote.
-          Your choice will then be verified in the Reveal phase when you upload the same JSON file.
+          The Reveal phase is to verify the choice you made in the Commit phsae. Please upload the
+          JSON file that you received in the Commit phase. Your choice will then be verified and
+          counted in as a vote.
         </p>
-        <p>Please keep the file in a safe place as you will not be able to download it again.</p>
-        <ResponseButton voteValue>Yes</ResponseButton>
-        <ResponseButton voteValue={false}>No</ResponseButton>
-        {hasVoted && !downloaded && (
+        <p>
+          Please note that if this step is not carried out, your vote will be voided and will not be
+          counted.
+        </p>
+        {uploaded && (
+          <div>
+            Your vote is <br /> {voteObject.vote ? 'YES' : 'NO'} <br />
+            Your vote is only valid and counted as activity on the DigixDAO after your confirmation.
+          </div>
+        )}
+        {!uploaded && (
           <Button
-            kind="link"
+            kind="upload"
+            accept=".json"
             primary
             fill
             fluid
-            onClick={this.handleDownload}
-            download={`${proposalId}-${currentVotingRound}.json`}
-            href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
+            id="json-upload"
+            onChange={this.handleUpload}
+            type="file"
           >
-            Download JSON File
+            Upload JSON File
           </Button>
         )}
-        {downloaded && (
+        {uploaded && (
           <Button kind="round" primary fill fluid onClick={this.handleSubmit}>
-            Confirm Commit
+            Confirm My Vote
           </Button>
         )}
       </IntroContainer>
@@ -183,13 +173,13 @@ class CommitVote extends React.Component {
   }
 }
 
-const { array, func, object, string } = PropTypes;
+const { array, func, object } = PropTypes;
 
-CommitVote.propTypes = {
+RevealVote.propTypes = {
   addresses: array.isRequired,
   ChallengeProof: object.isRequired,
   history: object.isRequired,
-  proposalId: string.isRequired,
+  proposal: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
@@ -209,5 +199,5 @@ export default web3Connect(
       showHideAlertAction: showHideAlert,
       showRightPanelAction: showRightPanel,
     }
-  )(CommitVote)
+  )(RevealVote)
 );

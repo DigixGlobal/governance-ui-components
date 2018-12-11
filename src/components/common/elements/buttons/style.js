@@ -224,7 +224,7 @@ export const RoundBtn = styled.button`
     `};
 
   ${props =>
-    props.fill &&
+    props.filled &&
     css`
       background-color: ${props => props.theme.buttonBgPrimary.fade.toString()};
       color: ${props => props.theme.buttonTextPrimary.toString()};

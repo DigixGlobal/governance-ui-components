@@ -176,7 +176,7 @@ class RevealVote extends React.Component {
           />
         )}
         {uploaded && (
-          <Button kind="round" primary fill fluid onClick={this.handleSubmit}>
+          <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
             Confirm My Vote
           </Button>
         )}

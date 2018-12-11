@@ -59,7 +59,7 @@ export const Button = styled.a`
     `};
 
   ${props =>
-    props.fill &&
+    props.filled &&
     css`
       background-color: ${props.theme.buttonBgPrimary.fade.toString()};
       color: ${props.theme.buttonTextPrimary.toString()};

@@ -76,6 +76,7 @@ class ClaimResultsButton extends React.PureComponent {
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
     const onSuccess = txHash => {
+      console.log(txHash);
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,

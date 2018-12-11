@@ -85,25 +85,13 @@ class ClaimFundingButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
   render() {
-    const { voteClaimingDeadline } = this.state;
-    const {
-      isProposer,
-      proposal,
-      proposal: { currentVotingRound },
-    } = this.props;
+    const { isProposer, proposal } = this.props;
     if (
       !isProposer ||
       !proposal ||
       ((proposal && proposal.stage !== ProposalStages.ongoing) || proposal.claimableFunding <= 0)
     )
       return null;
-
-    const currentTime = Date.now();
-    const withinDeadline =
-      currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&
-      currentTime <
-        (proposal.votingRounds[currentVotingRound].revealDeadline + voteClaimingDeadline) * 1000;
-    if (!withinDeadline) return null;
 
     return (
       <Button kind="round" ghost primary onClick={this.handleSubmit}>

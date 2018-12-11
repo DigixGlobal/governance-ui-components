@@ -184,7 +184,7 @@ class CommitVote extends React.Component {
           </Button>
         )}
         {downloaded && (
-          <Button kind="round" primary fill fluid onClick={this.handleSubmit}>
+          <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
             Confirm Commit
           </Button>
         )}

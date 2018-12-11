@@ -13,26 +13,25 @@ import {
   deleteKeystore,
 } from 'spectrum-lightsuite/src/actions/keystore';
 
-import { Container, TransparentOverlay, WalletContainer } from './style';
-import Intro from './intro';
-// import Intro from '../overlay/vote-reveal';
-import LoadWallet from './load-wallet';
-import ConnectedWallet from './connected-wallet';
-
-import { Stage } from './constants';
-
-import { getAddressDetails } from '../../../../reducers/info-server/actions';
+import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import {
   setUserAddress,
   showHideAlert,
   showSignChallenge,
   showHideWalletOverlay,
-} from '../../../../reducers/gov-ui/actions';
+} from '@digix/gov-ui/reducers/gov-ui/actions';
 import {
   getChallenge,
   proveChallenge,
   // getTransactions,
-} from '../../../../reducers/dao-server/actions';
+} from '@digix/gov-ui/reducers/dao-server/actions';
+
+import { Container, TransparentOverlay, WalletContainer } from './style';
+import Intro from './intro';
+import LoadWallet from './load-wallet';
+import ConnectedWallet from './connected-wallet';
+
+import { Stage } from './constants';
 
 export class Wallet extends React.Component {
   constructor(props) {
@@ -43,42 +42,43 @@ export class Wallet extends React.Component {
       proving: false,
     };
   }
+  componentWillMount = () => {
+    console.count(1);
+  };
 
-  componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(nextProps, this.props)) {
-      const {
-        defaultAddress,
-        AddressDetails: { error, fetching, data },
-        Challenge,
-        getAddressDetailsAction,
-        getChallengeAction,
-        ChallengeProof,
-      } = nextProps;
+  // componentWillReceiveProps(nextProps) {
+  //   if (!_.isEqual(nextProps, this.props)) {
+  //     const {
+  //       defaultAddress,
+  //       AddressDetails: { error, fetching, data },
+  //       Challenge,
+  //       getAddressDetailsAction,
+  //       getChallengeAction,
+  //       ChallengeProof,
+  //     } = nextProps;
 
-      const hasChallenge = Challenge.data;
-      const hasProof = (ChallengeProof.data && ChallengeProof.data.client) || this.state.signed;
+  //     const hasChallenge = Challenge.data;
+  //     const hasProof = (ChallengeProof.data && ChallengeProof.data.client) || this.state.signed;
 
-      if ((fetching === null && defaultAddress) || (error && defaultAddress)) {
-        getAddressDetailsAction(defaultAddress.address);
-      } else if (data && data.isParticipant) {
-        if (Challenge.fetching === null || Challenge.error) {
-          getChallengeAction(data.address);
-        }
-      }
+  //     if ((fetching === null && defaultAddress) || (error && defaultAddress)) {
+  //       getAddressDetailsAction(defaultAddress.address);
+  //     } else if (data && data.isParticipant) {
+  //       if (Challenge.fetching === null || Challenge.error) {
+  //         getChallengeAction(data.address);
+  //       }
+  //     }
 
-      if (defaultAddress) {
-        this.props.setUserAddress(defaultAddress.address);
-      }
+  //     if (defaultAddress) {
+  //       this.props.setUserAddress(defaultAddress.address);
+  //     }
 
-      if (hasChallenge && !hasProof) {
-        this.props.showSignChallenge(true);
-        // this.setState({ showSigning: true });
-      } else {
-        this.props.showSignChallenge(false);
-        // this.setState({ showSigning: false });
-      }
-    }
-  }
+  //     if (hasChallenge && !hasProof) {
+  //       this.props.showSignChallenge(true);
+  //     } else {
+  //       this.props.showSignChallenge(false);
+  //     }
+  //   }
+  // }
 
   updateStage = stage => {
     this.setState({ stage });

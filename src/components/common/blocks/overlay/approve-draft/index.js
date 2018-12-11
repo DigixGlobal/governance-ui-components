@@ -133,7 +133,7 @@ class ApproveProposalOverlay extends React.Component {
         <ResponseButton voteValue>Yes</ResponseButton>
         <ResponseButton voteValue={false}>No</ResponseButton>
         {hasVoted && (
-          <Button kind="round" primary fill fluid onClick={this.handleSubmit}>
+          <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
             Confirm My Vote
           </Button>
         )}

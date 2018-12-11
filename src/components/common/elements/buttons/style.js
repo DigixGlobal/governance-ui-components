@@ -24,7 +24,7 @@ export const ButtonStyles = css`
   outline: none;
   padding: 1rem 2rem;
   text-align: center;
-  text-ecoration: none;
+  text-decoration: none;
   text-transform: uppercase;
   transition: all 0.3s ease;
 

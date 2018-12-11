@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { toBigNumber, parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
-
 import DaoFundingManager from '@digix/dao-contracts/build/contracts/DaoFundingManager.json';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';

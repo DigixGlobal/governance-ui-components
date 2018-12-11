@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const UpVote = styled.a`
+  display: flex;
+  align-content: center;
   color: ${props => props.theme.linkDefaultColor.default.toString()};
   font-family: 'Futura PT Medium';
   &:visited {

@@ -17,7 +17,10 @@ import Help from './Help';
 import Product from './product-tour';
 import JsonWallet from './JsonWallet';
 import Ledger from './Ledger';
+import Like from './Like';
 import Metamask from './Metamask';
+import Reply from './Reply';
+import Trash from './Trash';
 import Trezor from './Trezor';
 import ImToken from './ImToken';
 import Ethereum from './Ethereum';
@@ -40,7 +43,10 @@ const icons = {
   product: Product,
   json: JsonWallet,
   ledger: Ledger,
+  like: Like,
   metamask: Metamask,
+  reply: Reply,
+  trash: Trash,
   trezor: Trezor,
   imtoken: ImToken,
   ethereum: Ethereum,

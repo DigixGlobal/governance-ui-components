@@ -45,7 +45,6 @@ const determineDeadline = proposal => {
   }
 
   if (deadline) return new Intl.DateTimeFormat('en-US').format(deadline * 1000);
-  // console.log(moment(new Date(deadline * 1000)).format('MM/DD/YYYY'));
   return deadline;
 };
 

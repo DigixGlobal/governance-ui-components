@@ -15,6 +15,7 @@ import {
 
 import { Container, TransparentOverlay, WalletContainer } from './style';
 import Intro from './intro';
+// import Intro from '../overlay/vote-reveal';
 import LoadWallet from './load-wallet';
 import ConnectedWallet from './connected-wallet';
 

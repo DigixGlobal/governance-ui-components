@@ -22,7 +22,7 @@ export const MenuItem = styled.div`
     props.active &&
     css`
       color: ${props.theme.textSecondary.default.toString()};
-      border-bottom: 4px solid ${props.theme.buttonBorderSecondary.toString()};
+      border-bottom: 4px solid ${props.theme.buttonBorderSecondary.default.toString()};
     `};
 `;
 
@@ -82,7 +82,7 @@ export const ImageHolder = styled.div`
 `;
 
 export const CreateMilestone = styled.div`
-  background: ${props => props.theme.backgroundLayout.lighter.toString()};
+  background: ${props => props.theme.backgroundTertiary.lighter.toString()};
   border: 1px solid ${props => props.theme.borderColor.light.toString()};
   border-radius: 3px;
   padding: 2rem;

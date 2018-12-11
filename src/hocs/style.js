@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background: ${props => props.theme.backgroundLayout.lightest.toString()};
+  background: ${props => props.theme.backgroundTertiary.lightest.toString()};
 
   display: flex;
   flex-direction: row;

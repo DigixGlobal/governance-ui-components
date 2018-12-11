@@ -37,7 +37,7 @@ class Ledger extends React.Component {
           allowedKeystoreTypes={['ledger']}
           trigger={
             <WalletItem>
-              <Button primary ghost fluid iconButton>
+              <Button primary fill fluid iconButton>
                 <Icon kind="ledger" />
                 Ledger
               </Button>

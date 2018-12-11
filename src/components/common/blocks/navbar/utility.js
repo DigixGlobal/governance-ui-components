@@ -84,7 +84,11 @@ class Utility extends React.Component {
 
     return (
       <UtilityWrapper>
-        <Icon kind="notification" onClick={this.showHideNotifications} />
+        <Icon
+          kind="notification"
+          onClick={this.showHideNotifications}
+          style={{ cursor: 'pointer' }}
+        />
         {transactions.data.transactions && (
           <NotificationCount>{transactions.data.transactions.length}</NotificationCount>
         )}
@@ -117,7 +121,7 @@ Utility.propTypes = {
   getTransactions: func.isRequired,
   getChallenge: func.isRequired,
   getAddressDetails: func.isRequired,
-  userAddress: object,
+  userAddress: object, // eslint-disable-line
 };
 
 Utility.defaultProps = {

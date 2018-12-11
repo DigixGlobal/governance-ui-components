@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Fieldset, FormItem, Label, MediaUploader, ImageHolder, LeftCol, RightCol } from './style';
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 
-import { dijixImageConfig, dijixPdfConfig, dijix } from '../../../utils/dijix';
-import { UploadButtonContainer, UploadButton, UploadInput } from './multimediaStyles';
-import ImageViewer from '../../../components/common/ipfs-viewer';
+import { dijixImageConfig, dijixPdfConfig, dijix } from '@digix/gov-ui/utils/dijix';
+import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
+
+import { Fieldset, FormItem, Label, MediaUploader, ImageHolder, LeftCol, RightCol } from './style';
 
 class Multimedia extends React.Component {
   constructor(props) {
@@ -37,10 +38,6 @@ class Multimedia extends React.Component {
         const reader = new FileReader();
         reader.onloadend = () => {
           const { result } = reader;
-
-          if (error) {
-            return;
-          }
 
           if (supported.findIndex(item => item === file.type) === -1) {
             error = `Unsupported ${file.type} file type`;
@@ -106,22 +103,21 @@ class Multimedia extends React.Component {
           <Label>Upload Project Images</Label>
           <MediaUploader>
             <LeftCol>
-              <UploadButtonContainer>
-                <UploadInput
-                  accept="image/*"
-                  // className={classes.input}
-                  id="image-upload"
-                  multiple
-                  onChange={this.handleUpload}
-                  type="file"
-                />
-                <UploadButton primary ghost htmlFor="image-upload">
-                  Select Images to Upload
-                </UploadButton>
+              <Button
+                kind="upload"
+                accept="image/*"
+                primary
+                fluid
+                multiple
+                id="image-upload"
+                onChange={this.handleUpload}
+                type="file"
+                caption="Select Images to Upload"
+              >
                 <div>
                   Image must be in JPEG or PNG format &amp; file size must be lesser than 10MB.
                 </div>
-              </UploadButtonContainer>
+              </Button>
             </LeftCol>
             <RightCol>
               <ImageHolder>

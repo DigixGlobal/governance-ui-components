@@ -17,15 +17,14 @@ class WalletButton extends React.Component {
       <WalletWrapper>
         {!defaultAddress && (
           <Button kind="round" primary sm ghost onClick={onWalletClick}>
-            {'Load Wallet'}
+            Load Wallet
           </Button>
         )}
-        {canLockDgd &&
-          canLockDgd.show && (
-            <Button kind="round" primary sm ghost onClick={showHideLockDgd}>
-              {'Lock DGD'}
-            </Button>
-          )}
+        {canLockDgd && canLockDgd.show && (
+          <Button kind="round" primary sm ghost onClick={() => showHideLockDgd(true)}>
+            Lock DGD
+          </Button>
+        )}
         {defaultAddress && <AddressLabel>{defaultAddress.address}</AddressLabel>}
       </WalletWrapper>
     );
@@ -37,13 +36,11 @@ WalletButton.propTypes = {
   onWalletClick: func.isRequired,
   showHideLockDgd: func.isRequired,
   defaultAddress: oneOfType([string, object]),
-  // addressDetails: object,
   canLockDgd: object,
 };
 
 WalletButton.defaultProps = {
   defaultAddress: undefined,
-  addressDetails: undefined,
   canLockDgd: undefined,
 };
 

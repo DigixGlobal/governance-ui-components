@@ -21,13 +21,6 @@ const StyledSelect = styled.select`
   background-position: calc(100% - 20px) calc(2em + 2px), calc(100% - 15px) calc(2em + 2px),
     calc(100% - 3em) 0.5em;
 
-  ${props =>
-    props.small &&
-    css`
-      background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
-        calc(100% - 2.5em) 0.5em;
-    `};
-
   background-size: 5px 5px, 5px 5px, 1px 80%;
   background-repeat: no-repeat;
   border: 1px solid ${props => props.theme.borderColor.light.toString()};
@@ -44,6 +37,14 @@ const StyledSelect = styled.select`
 
   -webkit-appearance: none;
   -moz-appearance: none;
+
+  ${props =>
+    props.small &&
+    css`
+      background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
+        calc(100% - 2.5em) 0.5em;
+      max-width: 150px;
+    `};
 `;
 
 export default StyledSelect;

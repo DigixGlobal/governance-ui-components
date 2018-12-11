@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import Icon from '../../../common/elements/icons';
 
-import { InnerContainer, Header, CloseButtonWithHeader, Wallets } from './style';
+import { IntroContainer, CloseButton, OverlayHeader as Header } from '../../common-styles';
+import { Wallets } from './style';
 import { Stage } from './constants';
 
 import V3 from './json';
@@ -31,11 +32,11 @@ export default class LoadWallet extends React.Component {
     const { createKeystore } = this.props;
 
     return (
-      <InnerContainer>
-        <CloseButtonWithHeader>
-          <Header uppercase>load wallet </Header>
+      <IntroContainer>
+        <CloseButton>
           <Icon kind="close" onClick={this.handleCloseButtonClick} />
-        </CloseButtonWithHeader>
+        </CloseButton>
+        <Header uppercase>load wallet </Header>
         <Wallets>
           <Metamask createKeystore={createKeystore} onClose={this.handleWalletClose} />
           <Ledger createKeystore={createKeystore} onClose={this.handleWalletClose} />
@@ -43,7 +44,7 @@ export default class LoadWallet extends React.Component {
           <ImToken createKeystore={createKeystore} onClose={this.handleWalletClose} />
           <V3 createKeystore={createKeystore} onClose={this.handleWalletClose} />
         </Wallets>
-      </InnerContainer>
+      </IntroContainer>
     );
   }
 }

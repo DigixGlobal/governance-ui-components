@@ -39,6 +39,7 @@ class Utility extends React.Component {
   componentWillReceiveProps = nextProps => {
     if (!_.isEqual(nextProps, this.props)) {
       const { userAddress } = nextProps;
+      if (!userAddress) return;
       if (!this.props.challenge.data && userAddress) {
         this.getDetailsInterval = setInterval(() => {
           if (!this.props.challenge.data && userAddress) {

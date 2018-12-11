@@ -63,7 +63,7 @@ class ApproveProposalOverlay extends React.Component {
     });
   }
 
-  handleSubmit = vote => {
+  handleSubmit = () => {
     const { web3Redux, addresses, proposalId } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);

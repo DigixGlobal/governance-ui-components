@@ -58,7 +58,7 @@ class VotingResult extends React.Component {
                 <span>Minimum Quorum Needed: {minimumQuorum}%</span>
               </QuorumMinLabel>
             </Label>
-            <ProgressBar variant="determinate" value={quorumProgress} />
+            <ProgressBar variant="determinate" value={Number(quorumProgress)} />
           </ProgressCol>
           <QuorumInfoCol>
             {draftVoting.totalVoterCount} Votes
@@ -75,7 +75,7 @@ class VotingResult extends React.Component {
                 <span>Minimum Approval Needed: {minimumApproval}%</span>
               </ApprovalMinLabel>
             </Label>
-            <ProgressBar variant="determinate" value={approvalProgress} />
+            <ProgressBar variant="determinate" value={Number(approvalProgress)} />
           </ProgressCol>
           <QuorumInfoCol>
             YES:&nbsp;{draftVoting.yes} DGD

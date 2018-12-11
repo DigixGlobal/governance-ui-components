@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-import { getDefaultAddress, getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
+import { getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
 import { showMsgSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { connect } from 'react-redux';
 
@@ -20,11 +20,7 @@ import {
   showSignChallenge,
   showHideWalletOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
-import {
-  getChallenge,
-  proveChallenge,
-  // getTransactions,
-} from '@digix/gov-ui/reducers/dao-server/actions';
+import { getChallenge, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import { Container, TransparentOverlay, WalletContainer } from './style';
 import Intro from './intro';
@@ -42,43 +38,30 @@ export class Wallet extends React.Component {
       proving: false,
     };
   }
-  componentWillMount = () => {
-    console.count(1);
-  };
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (!_.isEqual(nextProps, this.props)) {
-  //     const {
-  //       defaultAddress,
-  //       AddressDetails: { error, fetching, data },
-  //       Challenge,
-  //       getAddressDetailsAction,
-  //       getChallengeAction,
-  //       ChallengeProof,
-  //     } = nextProps;
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(nextProps, this.props)) {
+      const { AddressDetails, Challenge, getChallengeAction, ChallengeProof } = nextProps;
+      if (!AddressDetails.data.address) return;
+      const hasChallenge = Challenge.data;
+      const hasProof = (ChallengeProof.data && ChallengeProof.data.client) || this.state.signed;
 
-  //     const hasChallenge = Challenge.data;
-  //     const hasProof = (ChallengeProof.data && ChallengeProof.data.client) || this.state.signed;
+      if (AddressDetails && AddressDetails.data) {
+        if (Challenge.fetching === null || Challenge.error) {
+          getChallengeAction(AddressDetails.data.address);
+        }
+      }
 
-  //     if ((fetching === null && defaultAddress) || (error && defaultAddress)) {
-  //       getAddressDetailsAction(defaultAddress.address);
-  //     } else if (data && data.isParticipant) {
-  //       if (Challenge.fetching === null || Challenge.error) {
-  //         getChallengeAction(data.address);
-  //       }
-  //     }
+      if (hasChallenge && !hasProof) {
+        this.props.showSignChallenge(true);
+      } else {
+        this.props.showSignChallenge(false);
+      }
+    }
+  }
 
-  //     if (defaultAddress) {
-  //       this.props.setUserAddress(defaultAddress.address);
-  //     }
-
-  //     if (hasChallenge && !hasProof) {
-  //       this.props.showSignChallenge(true);
-  //     } else {
-  //       this.props.showSignChallenge(false);
-  //     }
-  //   }
-  // }
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   updateStage = stage => {
     this.setState({ stage });
@@ -119,27 +102,27 @@ export class Wallet extends React.Component {
 
   render() {
     const { stage, signed } = this.state;
-    const { showWallet, defaultAddress, signChallenge, ...rest } = this.props;
+    const { showWallet, signChallenge, ...rest } = this.props;
     if (signChallenge && signChallenge.show && !signed) this.renderChallenge();
     if (!showWallet || !showWallet.show) return null;
+
     return (
       <Container>
         <TransparentOverlay />
         <WalletContainer>
-          {stage === Stage.Intro && !defaultAddress && (
+          {stage === Stage.Intro && (
             <Intro
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}
               onChangeStage={this.updateStage}
             />
           )}
-          {stage === Stage.LoadingWallet && !defaultAddress && (
+          {stage === Stage.LoadingWallet && (
             <LoadWallet {...rest} onChangeStage={this.updateStage} />
           )}
-          {defaultAddress && (
+          {stage === Stage.WalletLoaded && (
             <ConnectedWallet
               {...rest}
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}
-              address={defaultAddress}
             />
           )}
         </WalletContainer>
@@ -176,8 +159,6 @@ const actions = {
 };
 
 const mapStateToProps = state => ({
-  // networks: getNetworks(state),
-  defaultAddress: getDefaultAddress(state),
   defaultNetworks: getDefaultNetworks(state),
   AddressDetails: state.infoServer.AddressDetails,
   signChallenge: state.govUI.SignChallenge,

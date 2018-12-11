@@ -7,6 +7,7 @@ import { EMPTY_HASH } from '@digix/gov-ui/constants';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import Vote from '@digix/gov-ui/components/common/elements/vote/index';
 import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { clearDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import PreviousVersion from './previous';
 import NextVersion from './next';
@@ -51,16 +52,27 @@ class Proposal extends React.Component {
       versions: undefined,
       currentVersion: 0,
     };
+
+    const path = this.props.location.pathname.split('/');
+    const proposalId = path[2];
+    this.PROPOSAL_ID = proposalId;
   }
 
   componentWillMount = () => {
-    const { getProposalDetailsAction, location, challengeProof, history } = this.props;
+    const {
+      challengeProof,
+      clearDaoProposalDetailsAction,
+      getProposalDetailsAction,
+      history,
+      location,
+    } = this.props;
     if (!challengeProof.data) history.push('/');
 
     if (location.pathname) {
-      const path = location.pathname.split('/');
-      const proposalId = path[2];
-      if (proposalId) getProposalDetailsAction(proposalId);
+      clearDaoProposalDetailsAction();
+      if (this.PROPOSAL_ID) {
+        getProposalDetailsAction(this.PROPOSAL_ID);
+      }
     }
   };
 
@@ -106,6 +118,7 @@ class Proposal extends React.Component {
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
+
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -228,7 +241,7 @@ class Proposal extends React.Component {
         <VotingResult draftVoting={proposalDetails.data.draftVoting} daoInfo={daoInfo} />
         <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
-        <CommentThread />
+        <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>
     );
   }
@@ -239,6 +252,7 @@ const { object, func } = PropTypes;
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
   daoInfo: object.isRequired,
+  clearDaoProposalDetailsAction: func.isRequired,
   getProposalDetailsAction: func.isRequired,
   addressDetails: object.isRequired,
   challengeProof: object,
@@ -265,6 +279,7 @@ export default connect(
     daoInfo: data,
   }),
   {
+    clearDaoProposalDetailsAction: clearDaoProposalDetails,
     getProposalDetailsAction: getProposalDetails,
   }
 )(Proposal);

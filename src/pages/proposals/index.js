@@ -21,9 +21,9 @@ import ApproveButton from './proposal-buttons/approve';
 import ClaimApprovalButton from './proposal-buttons/claim-approval';
 import VoteCommitButton from './proposal-buttons/vote-commit';
 import RevealButton from './proposal-buttons/reveal-button';
-// import ClaimFundingButton from './proposal-buttons/claim-funding';
-// import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
-// import ClaimResultsButton from './proposal-buttons/claim-results';
+import ClaimResultsButton from './proposal-buttons/claim-results';
+import ClaimFundingButton from './proposal-buttons/claim-funding';
+import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
 
 import VotingResult from './voting-result';
 
@@ -141,6 +141,21 @@ class Proposal extends React.Component {
                 history={history}
                 timeCreated={proposalDetails.data.timeCreated}
               />
+              <ClaimResultsButton
+                isProposer={isProposer}
+                proposal={proposalDetails.data}
+                history={history}
+              />
+              <ClaimFundingButton
+                isProposer={isProposer}
+                proposal={proposalDetails.data}
+                history={history}
+              />
+              <MilestoneCompletedButton
+                isProposer={isProposer}
+                proposal={proposalDetails.data}
+                history={history}
+              />
               <ApproveButton
                 history={history}
                 isModerator={addressDetails.data.isModerator}
@@ -169,11 +184,7 @@ class Proposal extends React.Component {
                 proposalId={proposalDetails.data.proposalId}
                 votingStage={proposalDetails.data.votingStage}
               />
-              {/* <ClaimFundingButton />
-              <MilestoneCompletedButton />
-              <ClaimResultsButton /> */}
 
-              {/* TODO: add functionality for the following buttons */}
               <EndorseButton
                 stage={proposalDetails.data.stage}
                 isModerator={addressDetails.data.isModerator}

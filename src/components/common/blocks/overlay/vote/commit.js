@@ -169,7 +169,7 @@ class CommitVote extends React.Component {
           <Button
             kind="link"
             primary
-            fill
+            filled
             fluid
             onClick={this.handleDownload}
             download={`${proposalId}-${currentVotingRound}.json`}

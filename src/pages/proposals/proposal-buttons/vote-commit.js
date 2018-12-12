@@ -34,12 +34,6 @@ class CommitVoteButton extends React.PureComponent {
       currentTime < proposal.votingRounds[currentVotingRound].commitDeadline * 1000;
     if (!withinDeadline) return null;
 
-    // const approveDeadline = new Date(proposal.draftVoting.votingDeadline * 1000);
-    // const canApprove = approveDeadline > Date.now();
-    // if (!canApprove) {
-    //   return null;
-    // }
-
     return (
       <Button kind="round" ghost primary onClick={this.showOverlay}>
         Vote

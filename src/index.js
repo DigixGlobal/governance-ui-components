@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// import { connect } from 'react-redux';
 
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -53,7 +54,7 @@ export class Governance extends React.Component {
               component={withHeaderAndPanel(EditProposal)}
               isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
             />
-            ,{/* ]} */}
+            {/* , // ]} */}
             <Route path="/proposals" component={withHeaderAndPanel(Proposals)} />
             <Route path="/" component={withHeaderAndPanel(LandingPage)} />
           </Switch>

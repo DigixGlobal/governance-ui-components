@@ -58,7 +58,10 @@ class VotingResult extends React.Component {
                 <span>Minimum Quorum Needed: {minimumQuorum}%</span>
               </QuorumMinLabel>
             </Label>
-            <ProgressBar variant="determinate" value={Number(quorumProgress)} />
+            <ProgressBar
+              variant="determinate"
+              value={Number(quorumProgress) > 0 ? Number(quorumProgress) : -1}
+            />
           </ProgressCol>
           <QuorumInfoCol>
             {draftVoting.totalVoterCount} Votes
@@ -75,7 +78,10 @@ class VotingResult extends React.Component {
                 <span>Minimum Approval Needed: {minimumApproval}%</span>
               </ApprovalMinLabel>
             </Label>
-            <ProgressBar variant="determinate" value={Number(approvalProgress)} />
+            <ProgressBar
+              variant="determinate"
+              value={Number(approvalProgress) > 0 ? Number(approvalProgress) : -1}
+            />
           </ProgressCol>
           <QuorumInfoCol>
             YES:&nbsp;{draftVoting.yes} DGD
@@ -91,7 +97,12 @@ class VotingResult extends React.Component {
 const { object } = PropTypes;
 
 VotingResult.propTypes = {
-  draftVoting: object.isRequired,
+  draftVoting: object,
   daoInfo: object.isRequired,
 };
+
+VotingResult.defaultProps = {
+  draftVoting: undefined,
+};
+
 export default VotingResult;

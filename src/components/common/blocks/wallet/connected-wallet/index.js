@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
@@ -42,12 +43,17 @@ class ConnectedWallet extends React.Component {
 
   componentWillMount() {
     const { defaultAddress } = this.props;
-    Promise.all([
-      this.getEthBalance(),
-      this.getDgdBalance(),
-      this.props.getAddressDetails(defaultAddress.address),
-    ]).then(([eth, dgd]) => this.setState({ dgdBalance: dgd, ethBalance: eth }));
+    if (defaultAddress.address) {
+      Promise.all([
+        this.getEthBalance(),
+        this.getDgdBalance(),
+        this.props.getAddressDetails(defaultAddress.address),
+      ]).then(([eth, dgd]) => this.setState({ dgdBalance: dgd, ethBalance: eth }));
+    }
   }
+
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   getDgdBalance() {
     const { defaultAddress, web3Redux } = this.props;

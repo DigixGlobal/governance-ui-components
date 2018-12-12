@@ -33,7 +33,9 @@ class ClaimResultsButton extends React.PureComponent {
     };
   }
   componentWillMount = () => {
-    const { web3Redux } = this.props;
+    const { web3Redux, isProposer, proposal } = this.props;
+    if (!isProposer || !proposal || !proposal.votingRounds) return;
+
     const { abi, address } = getContract(DaoConfigStorage, network);
     const contract = web3Redux
       .web3(network)

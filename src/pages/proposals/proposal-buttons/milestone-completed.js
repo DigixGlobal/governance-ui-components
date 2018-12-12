@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import DaoFundingManager from '@digix/dao-contracts/build/contracts/DaoFundingManager.json';
+import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
@@ -35,7 +35,7 @@ class CompleteMilestoneButton extends React.PureComponent {
       proposal: { proposalId },
     } = this.props;
 
-    const { abi, address } = getContract(DaoFundingManager, network);
+    const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
       .web3(network)
       .eth.contract(abi)
@@ -71,7 +71,7 @@ class CompleteMilestoneButton extends React.PureComponent {
     const payload = {
       address: sourceAddress,
       contract,
-      func: contract.claimFunding,
+      func: contract.finishMilestone,
       params: [proposalId, proposal.currentMilestone - 1],
       onSuccess: txHash => {
         onSuccess(txHash);
@@ -89,7 +89,8 @@ class CompleteMilestoneButton extends React.PureComponent {
     if (
       !isProposer ||
       !proposal ||
-      ((proposal && proposal.stage !== ProposalStages.ongoing) || proposal.claimableFunding !== 0)
+      ((proposal && proposal.stage !== ProposalStages.ongoing) ||
+        Number(proposal.claimableFunding) !== 0)
     )
       return null;
 

@@ -70,8 +70,8 @@ class LockDgd extends React.Component {
     };
   }
   componentWillMount = () => {
-    const { defaultAddress } = this.props;
-    if (defaultAddress) {
+    const { defaultAddress, lockDgdOverlay } = this.props;
+    if (defaultAddress && lockDgdOverlay.show) {
       this.getMaxAllowance();
     }
   };

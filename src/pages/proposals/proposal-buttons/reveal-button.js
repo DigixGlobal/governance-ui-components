@@ -20,11 +20,20 @@ class RevealVoteButton extends React.PureComponent {
   };
 
   render() {
-    const { isParticipant, proposal } = this.props;
+    const {
+      isParticipant,
+      proposal,
+      proposal: { currentVotingRound },
+    } = this.props;
     if (!isParticipant || !proposal.draftVoting || proposal.votingStage !== VotingStages.commit) {
       return null;
     }
 
+    const currentTime = Date.now();
+    const withinDeadline =
+      proposal.votingRounds[currentVotingRound].commitDeadline * 1000 < currentTime &&
+      currentTime < proposal.votingRounds[currentVotingRound].revealDeadline * 1000;
+    if (!withinDeadline) return null;
     return (
       <Button kind="round" ghost primary onClick={this.showOverlay}>
         Reveal Vote

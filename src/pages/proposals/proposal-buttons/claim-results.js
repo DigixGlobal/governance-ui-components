@@ -113,12 +113,13 @@ class ClaimResultsButton extends React.PureComponent {
       proposal,
       proposal: { currentVotingRound },
     } = this.props;
-    if (!isProposer || !proposal) return null;
+    if (!isProposer || !proposal || !proposal.votingRounds) return null;
     const currentTime = Date.now();
     const withinDeadline =
       currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&
       currentTime <
         (proposal.votingRounds[currentVotingRound].revealDeadline + voteClaimingDeadline) * 1000;
+
     if (!withinDeadline) return null;
 
     return (

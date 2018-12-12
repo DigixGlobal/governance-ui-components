@@ -54,7 +54,9 @@ class Proposal extends React.Component {
   }
 
   componentWillMount = () => {
-    const { getProposalDetailsAction, location } = this.props;
+    const { getProposalDetailsAction, location, challengeProof, history } = this.props;
+    if (!challengeProof.data) history.push('/');
+
     if (location.pathname) {
       const path = location.pathname.split('/');
       const proposalId = path[2];
@@ -93,13 +95,12 @@ class Proposal extends React.Component {
 
   render() {
     const { currentVersion, versions } = this.state;
-    const { proposalDetails, addressDetails, challengeProof, history, daoInfo } = this.props;
-    if (!challengeProof.data) history.push('/');
+    const { proposalDetails, addressDetails, history, daoInfo } = this.props;
 
-    if (proposalDetails.fething === null || proposalDetails.fething)
+    if (proposalDetails.fetching === null || proposalDetails.fetching)
       return <div>Fetching Proposal Details</div>;
 
-    if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
+    // if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
 
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isEndorsed = proposalDetails.data.endorser !== EMPTY_HASH;

@@ -53,7 +53,30 @@ export class Wallet extends React.Component {
       }
 
       if (hasChallenge && !hasProof) {
-        this.props.showSignChallenge(true);
+        // this.props.showSignChallenge(true);
+        const message = Challenge.data.challenge;
+        const network = this.props.defaultNetworks[0];
+        const caption =
+          'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
+        const signMessage = new Promise(resolve =>
+          resolve(this.props.showSigningModal({ txData: { message, caption }, network }))
+        );
+        signMessage.then(signature => {
+          const {
+            data: { address },
+          } = AddressDetails;
+
+          this.setState({ signed: true });
+          if (this.state.proving) return;
+          return this.props
+            .proveChallengeAction({
+              address,
+              challengeId: Challenge.data.id,
+              message,
+              signature: signature.signedTx,
+            })
+            .then(this.setState({ proving: true }));
+        });
       } else {
         this.props.showSignChallenge(false);
       }
@@ -67,43 +90,9 @@ export class Wallet extends React.Component {
     this.setState({ stage });
   };
 
-  renderChallenge = () => {
-    const {
-      showSigningModal,
-      Challenge,
-      defaultNetworks,
-      proveChallengeAction,
-      AddressDetails,
-    } = this.props;
-    const network = defaultNetworks[0];
-
-    const message = Challenge.data.challenge;
-    const caption =
-      'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
-    const signMessage = new Promise(resolve =>
-      resolve(showSigningModal({ txData: { message, caption }, network }))
-    );
-
-    return signMessage.then(signature => {
-      const {
-        data: { address },
-      } = AddressDetails;
-
-      this.setState({ signed: true });
-      if (this.state.proving) return;
-      return proveChallengeAction({
-        address,
-        challengeId: Challenge.data.id,
-        message,
-        signature: signature.signedTx,
-      }).then(this.setState({ proving: true }));
-    });
-  };
-
   render() {
-    const { stage, signed } = this.state;
-    const { showWallet, signChallenge, ...rest } = this.props;
-    if (signChallenge && signChallenge.show && !signed) this.renderChallenge();
+    const { stage } = this.state;
+    const { showWallet, ...rest } = this.props;
     if (!showWallet || !showWallet.show) return null;
 
     return (

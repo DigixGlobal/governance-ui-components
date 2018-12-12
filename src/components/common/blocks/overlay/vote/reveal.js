@@ -57,6 +57,7 @@ class RevealVote extends React.Component {
 
   setError = error => {
     const message = JSON.stringify((error && error.message) || error);
+    console.log(message);
     return this.props.showHideAlertAction({ message });
   };
 
@@ -176,7 +177,7 @@ class RevealVote extends React.Component {
           />
         )}
         {uploaded && (
-          <Button kind="round" primary fill fluid onClick={this.handleSubmit}>
+          <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
             Confirm My Vote
           </Button>
         )}

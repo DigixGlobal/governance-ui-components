@@ -24,7 +24,7 @@ export default class LoadWallet extends React.Component {
   handleWalletClose = () => {
     const { onChangeStage } = this.props;
     if (onChangeStage) {
-      onChangeStage(Stage.LoadingWallet);
+      onChangeStage(Stage.WalletLoaded);
     }
   };
 

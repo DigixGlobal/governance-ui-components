@@ -29,7 +29,7 @@ const { object, string, node, oneOfType, bool, func } = PropTypes;
 UploadFileButton.propTypes = {
   caption: string.isRequired,
   id: string.isRequired,
-  multiple: bool.isRequired,
+  multiple: bool,
   accept: string.isRequired,
   onChange: func.isRequired,
   fullWidth: bool,
@@ -39,5 +39,6 @@ UploadFileButton.propTypes = {
 UploadFileButton.defaultProps = {
   fullWidth: false,
   children: null,
+  multiple: false,
 };
 export default UploadFileButton;

@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 
@@ -69,11 +70,14 @@ class LockDgd extends React.Component {
     };
   }
   componentWillMount = () => {
-    const { defaultAddress } = this.props;
-    if (defaultAddress) {
+    const { defaultAddress, lockDgdOverlay } = this.props;
+    if (defaultAddress && lockDgdOverlay.show) {
       this.getMaxAllowance();
     }
   };
+
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   onDgdInputChange = e => {
     const { value } = e.target;
@@ -108,10 +112,8 @@ class LockDgd extends React.Component {
   toggleBodyOverflow = () => {
     const { lockDgdOverlay } = this.props;
     if (!lockDgdOverlay || !lockDgdOverlay.show) {
-      console.log(lockDgdOverlay);
       document.body.classList.remove('modal-is-open');
     } else {
-      console.log('here');
       document.body.classList.toggle('modal-is-open');
     }
   };

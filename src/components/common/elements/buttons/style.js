@@ -24,7 +24,7 @@ export const ButtonStyles = css`
   outline: none;
   padding: 1rem 2rem;
   text-align: center;
-  text-ecoration: none;
+  text-decoration: none;
   text-transform: uppercase;
   transition: all 0.3s ease;
 
@@ -224,7 +224,7 @@ export const RoundBtn = styled.button`
     `};
 
   ${props =>
-    props.fill &&
+    props.filled &&
     css`
       background-color: ${props => props.theme.buttonBgPrimary.fade.toString()};
       color: ${props => props.theme.buttonTextPrimary.toString()};

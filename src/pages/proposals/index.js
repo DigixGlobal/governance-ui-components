@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { EMPTY_HASH } from '@digix/gov-ui/constants';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
@@ -21,9 +22,9 @@ import ApproveButton from './proposal-buttons/approve';
 import ClaimApprovalButton from './proposal-buttons/claim-approval';
 import VoteCommitButton from './proposal-buttons/vote-commit';
 import RevealButton from './proposal-buttons/reveal-button';
-// import ClaimFundingButton from './proposal-buttons/claim-funding';
-// import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
-// import ClaimResultsButton from './proposal-buttons/claim-results';
+import ClaimResultsButton from './proposal-buttons/claim-results';
+import ClaimFundingButton from './proposal-buttons/claim-funding';
+import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
 
 import VotingResult from './voting-result';
 
@@ -53,7 +54,9 @@ class Proposal extends React.Component {
   }
 
   componentWillMount = () => {
-    const { getProposalDetailsAction, location } = this.props;
+    const { getProposalDetailsAction, location, challengeProof, history } = this.props;
+    if (!challengeProof.data) history.push('/');
+
     if (location.pathname) {
       const path = location.pathname.split('/');
       const proposalId = path[2];
@@ -74,6 +77,9 @@ class Proposal extends React.Component {
     }
   };
 
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+
   handlePreviousVersionClick = () => {
     this.setState({ currentVersion: Number(this.state.currentVersion) - 1 });
   };
@@ -89,13 +95,12 @@ class Proposal extends React.Component {
 
   render() {
     const { currentVersion, versions } = this.state;
-    const { proposalDetails, addressDetails, challengeProof, history, daoInfo } = this.props;
-    if (!challengeProof.data) history.push('/');
+    const { proposalDetails, addressDetails, history, daoInfo } = this.props;
 
-    if (proposalDetails.fething === null || proposalDetails.fething)
+    if (proposalDetails.fetching === null || proposalDetails.fetching)
       return <div>Fetching Proposal Details</div>;
 
-    if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
+    // if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
 
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isEndorsed = proposalDetails.data.endorser !== EMPTY_HASH;
@@ -141,6 +146,21 @@ class Proposal extends React.Component {
                 history={history}
                 timeCreated={proposalDetails.data.timeCreated}
               />
+              <ClaimResultsButton
+                isProposer={isProposer}
+                proposal={proposalDetails.data}
+                history={history}
+              />
+              <ClaimFundingButton
+                isProposer={isProposer}
+                proposal={proposalDetails.data}
+                history={history}
+              />
+              <MilestoneCompletedButton
+                isProposer={isProposer}
+                proposal={proposalDetails.data}
+                history={history}
+              />
               <ApproveButton
                 history={history}
                 isModerator={addressDetails.data.isModerator}
@@ -169,11 +189,7 @@ class Proposal extends React.Component {
                 proposalId={proposalDetails.data.proposalId}
                 votingStage={proposalDetails.data.votingStage}
               />
-              {/* <ClaimFundingButton />
-              <MilestoneCompletedButton />
-              <ClaimResultsButton /> */}
 
-              {/* TODO: add functionality for the following buttons */}
               <EndorseButton
                 stage={proposalDetails.data.stage}
                 isModerator={addressDetails.data.isModerator}

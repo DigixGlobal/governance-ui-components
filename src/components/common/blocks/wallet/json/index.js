@@ -32,7 +32,7 @@ class V3Keystore extends React.Component {
           updateDefaultAddress
           trigger={
             <WalletItem>
-              <Button primary fill fluid iconButton>
+              <Button primary filled fluid iconButton>
                 <Icon kind="json" />
                 Json File
               </Button>

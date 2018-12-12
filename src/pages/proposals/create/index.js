@@ -53,7 +53,9 @@ class CreateProposal extends React.Component {
   }
 
   componentWillMount = () => {
-    const { web3Redux } = this.props;
+    const { web3Redux, history, ChallengeProof } = this.props;
+    if (!ChallengeProof.data) history.push('/');
+
     const { abi, address } = getContract(DaoConfigStorage, network);
     const contract = web3Redux
       .web3(network)

@@ -63,7 +63,7 @@ class ApproveProposalOverlay extends React.Component {
     });
   }
 
-  handleSubmit = vote => {
+  handleSubmit = () => {
     const { web3Redux, addresses, proposalId } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -133,7 +133,7 @@ class ApproveProposalOverlay extends React.Component {
         <ResponseButton voteValue>Yes</ResponseButton>
         <ResponseButton voteValue={false}>No</ResponseButton>
         {hasVoted && (
-          <Button kind="round" primary fill fluid onClick={this.handleSubmit}>
+          <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
             Confirm My Vote
           </Button>
         )}

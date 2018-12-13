@@ -64,7 +64,7 @@ class EditProposal extends React.Component {
         ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
         : {};
       const form = { ...currentVersion.dijixObject };
-      form.finalReward = Number(currentVersion.finalReward) / 1e18;
+      form.finalReward = Number(currentVersion.finalReward);
       this.setState({
         form: { ...form },
         proposalId: proposalDetails.data.proposalId,

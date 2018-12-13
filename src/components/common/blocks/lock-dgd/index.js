@@ -64,9 +64,8 @@ class LockDgd extends React.Component {
       dgd: 0,
       error: '',
       openError: false,
-      maxAllowance: 0,
+      maxAllowance: undefined,
       txHash: undefined,
-      // txFee: 0,
     };
   }
   componentWillMount = () => {
@@ -82,6 +81,8 @@ class LockDgd extends React.Component {
   onDgdInputChange = e => {
     const { value } = e.target;
     const { maxAllowance } = this.state;
+
+    if (!maxAllowance) this.getMaxAllowance();
 
     if (Number(`${value}e9`) > Number(maxAllowance)) {
       this.setError(`You can only stake up to ${maxAllowance} DGDs`);

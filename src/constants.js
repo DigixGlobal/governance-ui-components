@@ -42,4 +42,5 @@ export const ProposalStages = {
 export const VotingStages = {
   draft: 'draftVoting',
   commit: 'commit',
+  reveal: 'reveal',
 };

@@ -107,10 +107,12 @@ class ClaimApprovalButton extends React.Component {
   render() {
     const { voteClaimingDeadline } = this.state;
     const { draftVoting, isProposer, votingStage } = this.props;
+    const currentTime = Date.now();
     if (!draftVoting || !isProposer || votingStage !== VotingStages.draft || !voteClaimingDeadline)
       return null;
     const canClaim =
-      Date.now() < new Date((draftVoting.votingDeadline + voteClaimingDeadline) * 1000);
+      currentTime > draftVoting.votingDeadline * 1000 &&
+      currentTime < new Date((draftVoting.votingDeadline + voteClaimingDeadline) * 1000);
 
     if (!canClaim) return null;
     return (

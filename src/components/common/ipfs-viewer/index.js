@@ -43,13 +43,12 @@ export default class IpfsViewer extends Component {
     const { hashes, thumbnailSize } = props;
     Promise.all(
       hashes.map(hash => {
-        if (hash === null) return undefined;
-
+        if (hash === null || !hash) return undefined;
         return fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails);
       })
     ).then(images => {
       if (!images[0]) return undefined;
-      const thumbs = images.map(image => ({ src: image[thumbnailSize] }));
+      const thumbs = images.map(image => ({ src: image ? image[thumbnailSize] : undefined }));
       this.setState({ thumbnails: thumbs, loading: false });
     });
   };

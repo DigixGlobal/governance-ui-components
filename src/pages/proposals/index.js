@@ -14,17 +14,20 @@ import NextVersion from './next';
 import ProjectDetails from './details';
 import Milestones from './milestones';
 
-import AbortButton from './proposal-buttons/abort';
-import FinalizeButton from './proposal-buttons/finalize';
-import EndorseButton from './proposal-buttons/endorse';
+import ParticipantButtons from './proposal-buttons/participants';
+import ModeratorButtons from './proposal-buttons/moderators';
 
-import ApproveButton from './proposal-buttons/approve';
-import ClaimApprovalButton from './proposal-buttons/claim-approval';
-import VoteCommitButton from './proposal-buttons/vote-commit';
-import RevealButton from './proposal-buttons/reveal-button';
-import ClaimResultsButton from './proposal-buttons/claim-results';
-import ClaimFundingButton from './proposal-buttons/claim-funding';
-import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
+// import AbortButton from './proposal-buttons/abort';
+// import FinalizeButton from './proposal-buttons/finalize';
+// import EndorseButton from './proposal-buttons/endorse';
+
+// import ApproveButton from './proposal-buttons/approve';
+// import ClaimApprovalButton from './proposal-buttons/claim-approval';
+// import VoteCommitButton from './proposal-buttons/vote-commit';
+// import RevealButton from './proposal-buttons/reveal-button';
+// import ClaimResultsButton from './proposal-buttons/claim-results';
+// import ClaimFundingButton from './proposal-buttons/claim-funding';
+// import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
 
 import VotingResult from './voting-result';
 
@@ -128,7 +131,18 @@ class Proposal extends React.Component {
               <Title primary>{dijixObject.title}</Title>
             </div>
             <div>
-              <AbortButton
+              <ParticipantButtons
+                isProposer={isProposer}
+                proposal={proposalDetails}
+                addressDetails={addressDetails}
+                history={history}
+              />
+              <ModeratorButtons
+                proposal={proposalDetails}
+                addressDetails={addressDetails}
+                history={history}
+              />
+              {/* <AbortButton
                 stage={proposalDetails.data.stage}
                 isProposer={isProposer}
                 proposalId={proposalDetails.data.proposalId}
@@ -194,7 +208,7 @@ class Proposal extends React.Component {
                 endorser={proposalDetails.data.endorser}
                 proposalId={proposalDetails.data.proposalId}
                 history={history}
-              />
+              /> */}
 
               {isProposer && !isEndorsed && (
                 <Button kind="round" ghost primary onClick={this.handleEditClick}>
@@ -225,7 +239,11 @@ class Proposal extends React.Component {
             </UpvoteStatus>
           </LatestActivity>
         </ProjectSummary>
-        <VotingResult draftVoting={proposalDetails.data.draftVoting} daoInfo={daoInfo} />
+        <VotingResult
+          proposal={proposalDetails.data}
+          draftVoting={proposalDetails.data.draftVoting}
+          daoInfo={daoInfo}
+        />
         <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
         <CommentThread />

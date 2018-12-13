@@ -33,7 +33,14 @@ class ClaimResultsButton extends React.PureComponent {
     };
   }
   componentWillMount = () => {
-    const { web3Redux, isProposer, proposal } = this.props;
+    const {
+      web3Redux,
+      isProposer,
+      proposal,
+      proposal: { currentVotingRound },
+    } = this.props;
+    const currentTime = Date.now();
+
     if (!isProposer || !proposal || !proposal.votingRounds) return;
 
     const { abi, address } = getContract(DaoConfigStorage, network);
@@ -42,9 +49,13 @@ class ClaimResultsButton extends React.PureComponent {
       .eth.contract(abi)
       .at(address);
 
-    contract.uintConfigs
-      .call('config_claiming_deadline')
-      .then(result => this.setState({ voteClaimingDeadline: parseBigNumber(result, 0, false) }));
+    contract.uintConfigs.call('config_claiming_deadline').then(result => {
+      const deadline = parseBigNumber(result, 0, false);
+      const withinDeadline =
+        currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&
+        currentTime < (proposal.votingRounds[currentVotingRound].revealDeadline + deadline) * 1000;
+      if (withinDeadline) this.setState({ voteClaimingDeadline: deadline });
+    });
   };
 
   setError = error =>
@@ -115,7 +126,7 @@ class ClaimResultsButton extends React.PureComponent {
       proposal,
       proposal: { currentVotingRound },
     } = this.props;
-    if (!isProposer || !proposal || !proposal.votingRounds) return null;
+    if (!isProposer || !proposal || !proposal.votingRounds || !voteClaimingDeadline) return null;
     const currentTime = Date.now();
     const withinDeadline =
       currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&

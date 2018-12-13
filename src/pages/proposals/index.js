@@ -100,8 +100,6 @@ class Proposal extends React.Component {
     if (proposalDetails.fetching === null || proposalDetails.fetching)
       return <div>Fetching Proposal Details</div>;
 
-    // if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
-
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isEndorsed = proposalDetails.data.endorser !== EMPTY_HASH;
 

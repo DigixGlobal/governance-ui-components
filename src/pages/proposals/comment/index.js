@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Select } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Select } from '@digix/gov-ui/components/common/elements/index';
 import {
   CommentFilter,
   CommentList,
@@ -12,8 +12,8 @@ import {
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
 import ParentThread from '@digix/gov-ui/pages/proposals/comment/thread';
 
-import { getDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
 import { CommentsApi } from '@digix/gov-ui/api/comments';
+import { getDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 
@@ -21,36 +21,34 @@ class CommentThread extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      lastSeenId: 0,
+      sortBy: 'latest',
       threads: null,
     };
 
     this.FILTERS = [
       {
         text: 'Latest',
-        value: 'desc',
+        value: 'latest',
       },
       {
         text: 'Oldest',
-        value: 'asc',
+        value: 'oldest',
       },
     ];
-
-    this.DEFAULT_FETCH_PARAMS = {
-      sort_by: 'desc',
-    };
   }
 
   componentDidMount() {
     const { ChallengeProof, getDaoProposalDetailsActions, proposalId } = this.props;
-
     if (!ChallengeProof.data) {
       return;
     }
 
+    const { sortBy } = this.state;
     const payload = initializePayload(ChallengeProof);
     getDaoProposalDetailsActions({ proposalId, ...payload })
       .then(() => {
-        this.fetchThreads(this.DEFAULT_FETCH_PARAMS);
+        this.fetchThreads({ sort_by: sortBy }, true);
       })
       .catch(() => {
         this.setError(CommentsApi.ERROR_MESSAGES.fetch);
@@ -64,9 +62,9 @@ class CommentThread extends React.Component {
   };
 
   handleFilterChange = e => {
-    this.fetchThreads({
-      sort_by: e.target.value,
-    });
+    const sortBy = e.target.value;
+    this.fetchThreads({ sort_by: sortBy }, true);
+    this.setState({ sortBy });
   };
 
   addThread = body => {
@@ -94,26 +92,62 @@ class CommentThread extends React.Component {
       });
   };
 
-  fetchThreads = fetchParams => {
+  fetchThreads = (fetchParams, reset = false) => {
     const { ChallengeProof, rootCommentId } = this.props;
     if (!ChallengeProof.data || !rootCommentId) {
-      return;
+      return null;
     }
 
     const payload = initializePayload(ChallengeProof);
     CommentsApi.getThread(rootCommentId, fetchParams, payload)
-      .then(threads => {
-        this.setState({ threads });
+      .then(newThreads => {
+        let { threads } = this.state;
+        const newComments = newThreads.data;
+        const lastSeenId =
+          newThreads && newComments.length > 0
+            ? newComments[newComments.length - 1].id
+            : this.state.lastSeenId;
+
+        if (reset || !threads) {
+          threads = newThreads;
+        } else {
+          threads = {
+            ...threads,
+            hasMore: newThreads.hasMore,
+            data: threads.data.concat(newComments),
+          };
+        }
+
+        this.setState({ lastSeenId, threads });
+        return newThreads;
       })
       .catch(() => {
         this.setError(CommentsApi.ERROR_MESSAGES.fetch);
       });
+
+    return null;
+  };
+
+  loadMoreComments = () => {
+    const { lastSeenId, sortBy } = this.state;
+    this.fetchThreads({
+      last_seen_id: lastSeenId,
+      sort_by: sortBy,
+    });
   };
 
   renderThreads = threads => {
     const { uid } = this.props;
+    const { sortBy } = this.state;
+
     return threads.data.map(thread => (
-      <ParentThread key={thread.id} setError={this.setError} thread={thread} uid={uid} />
+      <ParentThread
+        key={thread.id}
+        setError={this.setError}
+        sortBy={sortBy}
+        thread={thread}
+        uid={uid}
+      />
     ));
   };
 
@@ -137,8 +171,12 @@ class CommentThread extends React.Component {
               />
             </CommentFilter>
             <CommentList>{this.renderThreads(threads)}</CommentList>
-            {threads.hasMore && <a href="#">Load more comments...</a>}
           </div>
+        )}
+        {threads && threads.hasMore && (
+          <Button kind="text" xsmall onClick={() => this.loadMoreComments()}>
+            Load more comments...
+          </Button>
         )}
       </ThreadedComments>
     );

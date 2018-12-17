@@ -19,6 +19,12 @@ const defaultState = {
     error: null,
     fetching: null,
   },
+  ProposalDaoDetails: {
+    history: [],
+    data: {},
+    error: null,
+    fetching: null,
+  },
   Transactions: {
     history: [],
     data: {},
@@ -94,6 +100,29 @@ export default function(state = defaultState, action) {
                 .concat(state.AddTransaction.history)
                 .slice(0, 100),
         },
+      };
+    case actions.GET_PROPOSAL_DETAILS:
+      return {
+        ...state,
+        ProposalDaoDetails: {
+          ...state.ProposalDaoDetails,
+          ...action.payload,
+          history: !action.payload.data
+            ? state.ProposalDaoDetails.history
+            : [
+                {
+                  ...action.payload.data,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.ProposalDaoDetails.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.CLEAR_PROPOSAL_DETAILS:
+      return {
+        ...state,
+        ProposalDaoDetails: defaultState.ProposalDaoDetails,
       };
     case actions.GET_TRANSACION_STATUS:
       return {

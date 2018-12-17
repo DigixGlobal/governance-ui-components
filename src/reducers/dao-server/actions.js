@@ -3,12 +3,14 @@ import { REDUX_PREFIX, DAO_SERVER } from './constants';
 export const actions = {
   GET_CHALLENGE: `${REDUX_PREFIX}GET_CHALLENGE`,
   PROVE_CHALLENGE: `${REDUX_PREFIX}PROVE_CHALLENGE`,
+
   ADD_TRANSACTION: `${REDUX_PREFIX}ADD_TRANSACTION`,
   GET_TRANSACTIONS: `${REDUX_PREFIX}GET_TRANSACTIONS`,
   GET_TRANSACION_STATUS: `${REDUX_PREFIX}GET_TRANSACION_STATUS`,
   GET_USER_PROPOSAL_LIKE_STATUS: `${REDUX_PREFIX}GET_USER_PROPOSAL_LIKE_STATUS`,
-  SET_USER_PROPOSAL_LIKE_STATUS: `${REDUX_PREFIX}SET_USER_PROPOSAL_LIKE_STATUS`,
-  SET_USER_PROPOSAL_UNLIKE_STATUS: `${REDUX_PREFIX}SET_USER_PROPOSAL_UNLIKE_STATUS`,
+
+  GET_PROPOSAL_DETAILS: `${REDUX_PREFIX}GET_PROPOSAL_DETAILS`,
+  CLEAR_PROPOSAL_DETAILS: `${REDUX_PREFIX}CLEAR_PROPOSAL_DETAILS`,
 };
 
 function fetchData(url, type, authToken, client, uid) {
@@ -134,6 +136,31 @@ export function getUserProposalLikeStatus(payload) {
   );
 }
 
+export function likeProposal(payload) {
+  const { proposalId, token, client, uid } = payload;
+  return postData(
+    `${DAO_SERVER}/proposals/${proposalId}/likes`,
+    actions.GET_USER_PROPOSAL_LIKE_STATUS,
+    undefined,
+    token,
+    client,
+    uid
+  );
+}
+
+export function unlikeProposal(payload) {
+  const { proposalId, token, client, uid } = payload;
+  return sendData(
+    'DELETE',
+    `${DAO_SERVER}/proposals/${proposalId}/likes`,
+    actions.GET_USER_PROPOSAL_LIKE_STATUS,
+    undefined,
+    token,
+    client,
+    uid
+  );
+}
+
 export function getTransactions(payload) {
   const { token, client, uid } = payload;
   return sendData(
@@ -151,4 +178,27 @@ export function sendTransactionToDaoServer(payload) {
   const { txHash, title, token, client, uid } = payload;
   const data = { txhash: txHash, title };
   return postData(`${DAO_SERVER}/transactions`, actions.ADD_TRANSACTION, data, token, client, uid);
+}
+
+/**
+ * Proposals
+ */
+
+export function clearDaoProposalDetails() {
+  return dispatch => {
+    dispatch({ type: actions.CLEAR_PROPOSAL_DETAILS, payload: {} });
+  };
+}
+
+export function getDaoProposalDetails(payload) {
+  const { client, proposalId, authToken, uid } = payload;
+  return sendData(
+    'GET',
+    `${DAO_SERVER}/proposals/${proposalId}`,
+    actions.GET_PROPOSAL_DETAILS,
+    undefined,
+    authToken,
+    client,
+    uid
+  );
 }

@@ -1,123 +1,176 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import '../forms/quill.css';
-
-import { Button, Icon, Select } from '../../../components/common/elements/index';
-
+import { Select } from '@digix/gov-ui/components/common/elements/index';
 import {
   CommentFilter,
-  Author,
-  EditorContainer,
-  ThreadedComments,
-  Title,
-  CommentEditor,
   CommentList,
-  ParentCommentItem,
-  CommentPost,
-  UserInfo,
-  ActionBar,
-  CommentReplyPost,
-} from './style';
+  ThreadedComments,
+} from '@digix/gov-ui/pages/proposals/comment/style';
+
+import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
+import ParentThread from '@digix/gov-ui/pages/proposals/comment/thread';
+
+import { getDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
+import { CommentsApi } from '@digix/gov-ui/api/comments';
+import { initializePayload } from '@digix/gov-ui/api';
+import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 class CommentThread extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      threads: null,
+    };
+
+    this.FILTERS = [
+      {
+        text: 'Latest',
+        value: 'desc',
+      },
+      {
+        text: 'Oldest',
+        value: 'asc',
+      },
+    ];
+
+    this.DEFAULT_FETCH_PARAMS = {
+      sort_by: 'desc',
+    };
+  }
+
+  componentDidMount() {
+    const { ChallengeProof, getDaoProposalDetailsActions, proposalId } = this.props;
+
+    if (!ChallengeProof.data) {
+      return;
+    }
+
+    const payload = initializePayload(ChallengeProof);
+    getDaoProposalDetailsActions({ proposalId, ...payload })
+      .then(() => {
+        this.fetchThreads(this.DEFAULT_FETCH_PARAMS);
+      })
+      .catch(() => {
+        this.setError(CommentsApi.ERROR_MESSAGES.fetch);
+      });
+  }
+
+  setError = error => {
+    const message = JSON.stringify((error && error.message) || error);
+    this.props.showHideAlert({ message });
+    document.body.scrollTop = 0;
+  };
+
+  handleFilterChange = e => {
+    this.fetchThreads({
+      sort_by: e.target.value,
+    });
+  };
+
+  addThread = body => {
+    let threads = { ...this.state.threads };
+    const { ChallengeProof, rootCommentId } = this.props;
+
+    if (!ChallengeProof || !rootCommentId) {
+      return;
+    }
+
+    const payload = initializePayload(ChallengeProof);
+    CommentsApi.create(rootCommentId, body, payload)
+      .then(newComment => {
+        if (!threads) {
+          threads = CommentsApi.generateNewThread(newComment);
+        } else {
+          threads.data.push(newComment);
+        }
+
+        this.setState({ threads });
+        window.scrollTo(0, document.body.scrollHeight);
+      })
+      .catch(() => {
+        this.setError(CommentsApi.ERROR_MESSAGES.createComment);
+      });
+  };
+
+  fetchThreads = fetchParams => {
+    const { ChallengeProof, rootCommentId } = this.props;
+    if (!ChallengeProof.data || !rootCommentId) {
+      return;
+    }
+
+    const payload = initializePayload(ChallengeProof);
+    CommentsApi.getThread(rootCommentId, fetchParams, payload)
+      .then(threads => {
+        this.setState({ threads });
+      })
+      .catch(() => {
+        this.setError(CommentsApi.ERROR_MESSAGES.fetch);
+      });
+  };
+
+  renderThreads = threads => {
+    const { uid } = this.props;
+    return threads.data.map(thread => (
+      <ParentThread key={thread.id} setError={this.setError} thread={thread} uid={uid} />
+    ));
+  };
+
   render() {
+    const { rootCommentId, uid } = this.props;
+    const { threads } = this.state;
+    const noComments = !rootCommentId || !threads || threads.data.length === 0;
+
     return (
       <ThreadedComments>
-        <Title>Discussion</Title>
-
-        <EditorContainer>
-          <Button kind="round" primary ghost>
-            Comment
-          </Button>
-          <CommentEditor>
-            <Author>
-              Comment as <span>0x7246DF13354a6a3222078fA948D682D81d83cAAe</span>
-            </Author>
-            <ReactQuill id="details" />
-          </CommentEditor>
-        </EditorContainer>
-        <CommentFilter>
-          <Select
-            small
-            id="test"
-            items={[{ text: 'Latest', value: 'latest' }, { text: 'Oldest', value: 'oldest' }]}
-          />
-        </CommentFilter>
-        <CommentList>
-          <ParentCommentItem>
-            <UserInfo>
-              0x7246DF13354a6a3222078fA948D682D81d83cAAe <span>•</span> Reputation Points: 123
-              <span>•</span> Quarter Points: 123
-            </UserInfo>
-            <CommentPost>
-              <p>
-                Lorem ipsum dolor sit amet, an augue vivendo referrentur usu, paulo zril epicurei id
-                per. Et vis tantas iriure quaestio. Ut habemus similique eum, quas voluptaria mei
-                cu. Vel ne zril gloriatur complectitur. No stet percipit nominati vis. Everti
-                pertinax assentior vis ea.
-              </p>
-              <p>
-                Has id utamur saperet insolens, suas augue inani et pro. Mea ex augue omittantur,
-                dicat postulant voluptaria an mei. Ad simul luptatum sea, quo ex corrumpit
-                reformidans, feugait denique no vix. Dicta evertitur reformidans ei quo, ad quo
-                doming oblique repudiare, ea laoreet mediocritatem eam.
-              </p>
-              <ActionBar>
-                <Button kind="text" xsmall>
-                  <Icon kind="reply" />
-                  Reply
-                </Button>
-                <Button kind="text" xsmall>
-                  <Icon kind="like" />
-                  Like
-                </Button>
-                <Button kind="text" xsmall>
-                  <Icon kind="trash" />
-                  Trash
-                </Button>
-              </ActionBar>
-            </CommentPost>
-            <CommentReplyPost>
-              <UserInfo>
-                0x7246DF13354a6a3222078fA948D682D81d83cAAe <span>•</span> Reputation Points: 123
-                <span>•</span> Quarter Points: 123
-              </UserInfo>
-              <CommentPost>
-                <p>
-                  Lorem ipsum dolor sit amet, an augue vivendo referrentur usu, paulo zril epicurei
-                  id per. Et vis tantas iriure quaestio. Ut habemus similique eum, quas voluptaria
-                  mei cu. Vel ne zril gloriatur complectitur. No stet percipit nominati vis. Everti
-                  pertinax assentior vis ea.
-                </p>
-                <p>
-                  Has id utamur saperet insolens, suas augue inani et pro. Mea ex augue omittantur,
-                  dicat postulant voluptaria an mei. Ad simul luptatum sea, quo ex corrumpit
-                  reformidans, feugait denique no vix. Dicta evertitur reformidans ei quo, ad quo
-                  doming oblique repudiare, ea laoreet mediocritatem eam.
-                </p>
-                <ActionBar>
-                  <Button kind="text" xsmall>
-                    <Icon kind="reply" />
-                    Reply
-                  </Button>
-                  <Button kind="text" xsmall>
-                    <Icon kind="like" />
-                    Like
-                  </Button>
-                  <Button kind="text" xsmall>
-                    <Icon kind="trash" />
-                    Trash
-                  </Button>
-                </ActionBar>
-              </CommentPost>
-            </CommentReplyPost>
-          </ParentCommentItem>
-        </CommentList>
+        <CommentTextEditor uid={uid} addComment={this.addThread} />
+        {noComments && <p>There are no comments to show.</p>}
+        {!noComments && (
+          <div>
+            <CommentFilter>
+              <Select
+                small
+                id="comment-filter"
+                items={this.FILTERS}
+                onChange={this.handleFilterChange}
+              />
+            </CommentFilter>
+            <CommentList>{this.renderThreads(threads)}</CommentList>
+            {threads.hasMore && <a href="#">Load more comments...</a>}
+          </div>
+        )}
       </ThreadedComments>
     );
   }
 }
 
-export default CommentThread;
+const { func, number, object, string } = PropTypes;
+
+CommentThread.propTypes = {
+  ChallengeProof: object,
+  getDaoProposalDetailsActions: func.isRequired,
+  proposalId: string.isRequired,
+  rootCommentId: number,
+  showHideAlert: func.isRequired,
+  uid: string,
+};
+
+CommentThread.defaultProps = {
+  ChallengeProof: undefined,
+  rootCommentId: 0,
+  uid: '',
+};
+
+const mapStateToProps = state => ({
+  ChallengeProof: state.daoServer.ChallengeProof,
+  rootCommentId: state.daoServer.ProposalDaoDetails.data.commentId,
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    getDaoProposalDetailsActions: getDaoProposalDetails,
+    showHideAlert,
+  }
+)(CommentThread);

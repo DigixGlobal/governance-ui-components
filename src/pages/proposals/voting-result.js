@@ -19,6 +19,9 @@ import {
   ApprovalMinLabel,
 } from './style';
 
+// should be string so <ProgressBar/> doesn't interpret the zero as false
+const EMPTY_PROGRESS_BAR_VALUE = '0';
+
 // eslint-disable-next-line
 const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
   if (completed) {
@@ -42,11 +45,18 @@ class VotingResult extends React.Component {
     const votes = draftVoting.totalVoterCount;
     const yesVotes = draftVoting.yes;
     const noVotes = draftVoting.no;
-    const minimumQuorum = this.formatPercentage(quorum / totalModeratorLockedDgds);
-    const quorumProgress = this.formatPercentage(totalVoterStake / totalModeratorLockedDgds);
+
+    const minimumQuorum = totalModeratorLockedDgds
+      ? this.formatPercentage(quorum / totalModeratorLockedDgds)
+      : EMPTY_PROGRESS_BAR_VALUE;
+    const quorumProgress = totalModeratorLockedDgds
+      ? this.formatPercentage(totalVoterStake / totalModeratorLockedDgds)
+      : EMPTY_PROGRESS_BAR_VALUE;
 
     const minimumApproval = this.formatPercentage(quota);
-    const approvalProgress = this.formatPercentage(draftVoting.yes / totalVoterStake);
+    const approvalProgress = totalVoterStake
+      ? this.formatPercentage(draftVoting.yes / totalVoterStake)
+      : EMPTY_PROGRESS_BAR_VALUE;
 
     return {
       votes,

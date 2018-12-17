@@ -5,9 +5,14 @@ import _ from 'lodash';
 
 import { EMPTY_HASH } from '@digix/gov-ui/constants';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
-import Vote from '@digix/gov-ui/components/common/elements/vote/index';
+import Like from '@digix/gov-ui/components/common/elements/like';
 import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
-import { getUserProposalLikeStatus } from '@digix/gov-ui/reducers/dao-server/actions';
+import {
+  getUserProposalLikeStatus,
+  likeProposal,
+  unlikeProposal,
+  clearDaoProposalDetails,
+} from '@digix/gov-ui/reducers/dao-server/actions';
 
 import PreviousVersion from './previous';
 import NextVersion from './next';
@@ -55,24 +60,27 @@ class Proposal extends React.Component {
       versions: undefined,
       currentVersion: 0,
     };
+
+    const path = this.props.location.pathname.split('/');
+    const proposalId = path[2];
+    this.PROPOSAL_ID = proposalId;
   }
 
   componentWillMount = () => {
-    const { location, challengeProof, history } = this.props;
+    const {
+      challengeProof,
+      clearDaoProposalDetailsAction,
+      getProposalDetailsAction,
+      history,
+      location,
+    } = this.props;
     if (!challengeProof.data) history.push('/');
 
     if (location.pathname) {
-      const path = location.pathname.split('/');
-      const proposalId = path[2];
-      if (proposalId) {
-        this.props.getProposalDetails(proposalId);
-        this.props.getUserProposalLikeStatus({
-          proposalId,
-          client: challengeProof.data.client,
-          title: 'Approve Proposal',
-          token: challengeProof.data['access-token'],
-          uid: challengeProof.data.uid,
-        });
+      clearDaoProposalDetailsAction();
+      if (this.PROPOSAL_ID) {
+        getProposalDetailsAction(this.PROPOSAL_ID);
+        this.getProposalLikes();
       }
     }
   };
@@ -93,6 +101,16 @@ class Proposal extends React.Component {
   shouldComponentUpdate = (nextProps, nextState) =>
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
+  getProposalLikes = () => {
+    const { getUserProposalLikeStatusAction, challengeProof } = this.props;
+    getUserProposalLikeStatusAction({
+      proposalId: this.PROPOSAL_ID,
+      client: challengeProof.data.client,
+      token: challengeProof.data['access-token'],
+      uid: challengeProof.data.uid,
+    });
+  };
+
   handlePreviousVersionClick = () => {
     this.setState({ currentVersion: Number(this.state.currentVersion) - 1 });
   };
@@ -104,6 +122,28 @@ class Proposal extends React.Component {
   handleEditClick = () => {
     const { history, proposalDetails } = this.props;
     history.push(`/proposals/edit/${proposalDetails.data.proposalId}`);
+  };
+
+  handleLikeClick = e => {
+    e.preventDefault();
+    const { likeProposalAction, challengeProof } = this.props;
+    likeProposalAction({
+      proposalId: this.PROPOSAL_ID,
+      client: challengeProof.data.client,
+      token: challengeProof.data['access-token'],
+      uid: challengeProof.data.uid,
+    });
+  };
+
+  handleUnlikeClick = e => {
+    e.preventDefault();
+    const { unlikeProposalAction, challengeProof } = this.props;
+    unlikeProposalAction({
+      proposalId: this.PROPOSAL_ID,
+      client: challengeProof.data.client,
+      token: challengeProof.data['access-token'],
+      uid: challengeProof.data.uid,
+    });
   };
 
   render() {
@@ -119,6 +159,7 @@ class Proposal extends React.Component {
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
+    const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -245,7 +286,10 @@ class Proposal extends React.Component {
               Reward <span>{proposalVersion.finalReward} ETH</span>
             </Reward>
             <UpvoteStatus>
-              <Vote hasVoted />
+              <Like
+                hasVoted={liked}
+                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
+              />
             </UpvoteStatus>
           </LatestActivity>
         </ProjectSummary>
@@ -256,7 +300,7 @@ class Proposal extends React.Component {
         />
         <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
-        <CommentThread />
+        <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>
     );
   }
@@ -267,8 +311,11 @@ const { object, func } = PropTypes;
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
   daoInfo: object.isRequired,
-  getProposalDetails: func.isRequired,
-  getUserProposalLikeStatus: func.isRequired,
+  getProposalDetailsAction: func.isRequired,
+  getUserProposalLikeStatusAction: func.isRequired,
+  clearDaoProposalDetailsAction: func.isRequired,
+  likeProposalAction: func.isRequired,
+  unlikeProposalAction: func.isRequired,
   addressDetails: object.isRequired,
   challengeProof: object,
   userProposalLike: object,
@@ -297,7 +344,10 @@ export default connect(
     userProposalLike: UserProposalLike,
   }),
   {
-    getProposalDetails,
-    getUserProposalLikeStatus,
+    getProposalDetailsAction: getProposalDetails,
+    getUserProposalLikeStatusAction: getUserProposalLikeStatus,
+    likeProposalAction: likeProposal,
+    unlikeProposalAction: unlikeProposal,
+    clearDaoProposalDetailsAction: clearDaoProposalDetails,
   }
 )(Proposal);

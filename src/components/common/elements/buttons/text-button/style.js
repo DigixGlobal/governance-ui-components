@@ -15,16 +15,34 @@ export const TextBtn = styled.button`
   background-color: transparent;
   border: 0;
   border-radius: 30px;
-  color: ${props => props.theme.buttonTextDefault.toString()};
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
 
+  color: ${props =>
+    props.active
+      ? props.theme.buttonBgSecondary.default.toString()
+      : props.theme.buttonTextDefault.toString()};
+
+  svg {
+    fill: ${props =>
+      props.active
+        ? props.theme.buttonBgSecondary.default.toString()
+        : props.theme.buttonTextDefault.toString()};
+  }
+
   &:hover {
     background-color: ${props => props.theme.backgroundTertiary.lightest.toString()};
+    color: ${props =>
+      props.active
+        ? props.theme.buttonTextDefault.toString()
+        : props.theme.buttonBgSecondary.default.toString()};
 
     svg {
-      fill: ${props => props.theme.buttonBgSecondary.default.toString()};
+      fill: ${props =>
+        props.active
+          ? props.theme.buttonTextDefault.toString()
+          : props.theme.buttonBgSecondary.default.toString()};
     }
   }
 `;

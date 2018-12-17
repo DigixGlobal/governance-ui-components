@@ -104,6 +104,26 @@ class LockDgd extends React.Component {
     });
   };
 
+  getStake = dgd => {
+    const { daoDetails } = this.props;
+    const { startOfMainphase, startOfNextQuarter, startOfQuarter } = daoDetails;
+    const currentTime = Date.now() / 1000; // daoDetails have time set to seconds instead of milliseconds
+
+    let stake = dgd;
+    if (currentTime >= startOfMainphase) {
+      stake =
+        (dgd * (startOfNextQuarter - startOfQuarter - (currentTime - startOfQuarter))) /
+        (startOfNextQuarter - startOfMainphase);
+    }
+
+    if (stake % 1 !== 0) {
+      // truncate to two decimal points instead of rounding with Number::toFixed
+      stake = Math.floor(stake * 100) / 100;
+    }
+
+    return stake;
+  };
+
   setError = error =>
     this.setState({
       error: JSON.stringify((error && error.message) || error),
@@ -221,6 +241,8 @@ class LockDgd extends React.Component {
   renderLockDgd = () => {
     const { dgd, openError, error } = this.state;
     const invalidDgd = !dgd || Number(dgd) <= 0;
+    const stake = this.getStake(dgd);
+
     return (
       <WalletContainer>
         <CloseButton>
@@ -238,7 +260,7 @@ class LockDgd extends React.Component {
         <Note>
           {dgd > 0 && (
             <StakeCaption>
-              This will give you <strong>{dgd} STAKE</strong> in DigixDAO
+              This will give you <strong>{stake} STAKE</strong> in DigixDAO
             </StakeCaption>
           )}
         </Note>
@@ -284,6 +306,7 @@ LockDgd.propTypes = {
   sendTransactionToDaoServer: func.isRequired,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  daoDetails: object.isRequired,
   defaultAddress: object,
   addresses: array,
 };
@@ -294,6 +317,7 @@ LockDgd.defaultProps = {
 };
 const mapStateToProps = state => ({
   // networks: getNetworks(state),
+  daoDetails: state.infoServer.DaoDetails.data,
   defaultAddress: getDefaultAddress(state),
   addresses: getAddresses(state),
   networks: getDefaultNetworks(state),

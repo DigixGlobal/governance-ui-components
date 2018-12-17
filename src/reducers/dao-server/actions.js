@@ -6,13 +6,26 @@ export const actions = {
   ADD_TRANSACTION: `${REDUX_PREFIX}ADD_TRANSACTION`,
   GET_TRANSACTIONS: `${REDUX_PREFIX}GET_TRANSACTIONS`,
   GET_TRANSACION_STATUS: `${REDUX_PREFIX}GET_TRANSACION_STATUS`,
+  GET_USER_PROPOSAL_LIKE_STATUS: `${REDUX_PREFIX}GET_USER_PROPOSAL_LIKE_STATUS`,
+  SET_USER_PROPOSAL_LIKE_STATUS: `${REDUX_PREFIX}SET_USER_PROPOSAL_LIKE_STATUS`,
+  SET_USER_PROPOSAL_UNLIKE_STATUS: `${REDUX_PREFIX}SET_USER_PROPOSAL_UNLIKE_STATUS`,
 };
 
-// TODO: remove (not being used)
-function fetchData(url, type) {
+function fetchData(url, type, authToken, client, uid) {
   return dispatch => {
     dispatch({ type, payload: { fetching: true } });
-    return fetch(url)
+    return fetch(url, {
+      method: 'GET',
+      mode: 'cors', // no-cors, cors, *same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'access-token': authToken,
+        client,
+        uid,
+      },
+    })
       .then(res =>
         res
           .json()
@@ -108,6 +121,17 @@ export function proveChallenge(payload) {
 // TODO: where is this used ?
 export function getTransactionStatus(payload) {
   return fetchData(`${DAO_SERVER}/transaction?txhash=${payload}`, actions.GET_TRANSACION_STATUS);
+}
+
+export function getUserProposalLikeStatus(payload) {
+  const { proposalId, token, client, uid } = payload;
+  return fetchData(
+    `${DAO_SERVER}/proposals/${proposalId}`,
+    actions.GET_USER_PROPOSAL_LIKE_STATUS,
+    token,
+    client,
+    uid
+  );
 }
 
 export function getTransactions(payload) {

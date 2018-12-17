@@ -31,6 +31,12 @@ const defaultState = {
     error: null,
     fetching: null,
   },
+  UserProposalLike: {
+    history: [],
+    data: undefined,
+    error: null,
+    fetching: null,
+  },
 };
 
 export default function(state = defaultState, action) {
@@ -122,6 +128,24 @@ export default function(state = defaultState, action) {
                 },
               ]
                 .concat(state.Transactions.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_USER_PROPOSAL_LIKE_STATUS:
+      return {
+        ...state,
+        UserProposalLike: {
+          ...state.UserProposalLike,
+          ...action.payload,
+          history: !action.payload
+            ? state.UserProposalLike.history
+            : [
+                {
+                  ...action.payload,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.UserProposalLike.history)
                 .slice(0, 100),
         },
       };

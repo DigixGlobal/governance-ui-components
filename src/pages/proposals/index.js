@@ -7,6 +7,7 @@ import { EMPTY_HASH } from '@digix/gov-ui/constants';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import Vote from '@digix/gov-ui/components/common/elements/vote/index';
 import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getUserProposalLikeStatus } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import PreviousVersion from './previous';
 import NextVersion from './next';
@@ -57,13 +58,22 @@ class Proposal extends React.Component {
   }
 
   componentWillMount = () => {
-    const { getProposalDetailsAction, location, challengeProof, history } = this.props;
+    const { location, challengeProof, history } = this.props;
     if (!challengeProof.data) history.push('/');
 
     if (location.pathname) {
       const path = location.pathname.split('/');
       const proposalId = path[2];
-      if (proposalId) getProposalDetailsAction(proposalId);
+      if (proposalId) {
+        this.props.getProposalDetails(proposalId);
+        this.props.getUserProposalLikeStatus({
+          proposalId,
+          client: challengeProof.data.client,
+          title: 'Approve Proposal',
+          token: challengeProof.data['access-token'],
+          uid: challengeProof.data.uid,
+        });
+      }
     }
   };
 
@@ -98,7 +108,7 @@ class Proposal extends React.Component {
 
   render() {
     const { currentVersion, versions } = this.state;
-    const { proposalDetails, addressDetails, history, daoInfo } = this.props;
+    const { proposalDetails, addressDetails, history, daoInfo, userProposalLike } = this.props;
 
     if (proposalDetails.fetching === null || proposalDetails.fetching)
       return <div>Fetching Proposal Details</div>;
@@ -257,15 +267,18 @@ const { object, func } = PropTypes;
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
   daoInfo: object.isRequired,
-  getProposalDetailsAction: func.isRequired,
+  getProposalDetails: func.isRequired,
+  getUserProposalLikeStatus: func.isRequired,
   addressDetails: object.isRequired,
   challengeProof: object,
+  userProposalLike: object,
   location: object.isRequired,
   history: object.isRequired,
 };
 
 Proposal.defaultProps = {
   challengeProof: undefined,
+  userProposalLike: undefined,
 };
 
 export default connect(
@@ -275,14 +288,16 @@ export default connect(
       AddressDetails,
       DaoDetails: { data },
     },
-    daoServer: { ChallengeProof },
+    daoServer: { ChallengeProof, UserProposalLike },
   }) => ({
     proposalDetails: ProposalDetails,
     addressDetails: AddressDetails,
     challengeProof: ChallengeProof,
     daoInfo: data,
+    userProposalLike: UserProposalLike,
   }),
   {
-    getProposalDetailsAction: getProposalDetails,
+    getProposalDetails,
+    getUserProposalLikeStatus,
   }
 )(Proposal);

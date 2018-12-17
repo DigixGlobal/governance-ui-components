@@ -1,7 +1,7 @@
 import { actions } from './actions';
 
 const defaultState = {
-  LockDgdOverlay: {
+  lockDgdOverlay: {
     show: false,
   },
   UserAddress: undefined,
@@ -14,6 +14,7 @@ const defaultState = {
     component: undefined,
     onClose: undefined,
   },
+  configPreProposalCollateral: undefined,
 };
 
 export default function(state = defaultState, action) {
@@ -21,8 +22,8 @@ export default function(state = defaultState, action) {
     case actions.SHOW_LOCK_DGD_OVERLAY:
       return {
         ...state,
-        LockDgdOverlay: {
-          ...state.LockDgdOverlay,
+        lockDgdOverlay: {
+          ...state.lockDgdOverlay,
           ...action.payload,
         },
       };
@@ -71,6 +72,12 @@ export default function(state = defaultState, action) {
         ...state,
         ShowRightPanel: action.payload,
       };
+    case actions.GET_CONFIG_PREPROPOSAL_COLLATERAL:
+      return {
+        ...state,
+        ConfigPreProposalCollateral: action.payload,
+      };
+
     default:
       return state;
   }

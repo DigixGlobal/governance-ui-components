@@ -300,7 +300,7 @@ const mapStateToProps = state => ({
   AddressDetails: state.infoServer.AddressDetails,
   Challenge: state.daoServer.Challenge,
   ChallengeProof: state.daoServer.ChallengeProof,
-  lockDgdOverlay: state.govUI.LockDgdOverlay,
+  lockDgdOverlay: state.govUI.lockDgdOverlay,
 });
 
 export default web3Connect(

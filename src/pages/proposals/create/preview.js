@@ -63,12 +63,12 @@ class Preview extends React.Component {
   }
 }
 
-const { object, func } = PropTypes;
+const { object, string, func } = PropTypes;
 
 Preview.propTypes = {
   form: object.isRequired,
   onContinueEditing: func.isRequired,
-  proposer: object.isRequired,
+  proposer: string.isRequired,
 };
 
 export default Preview;

@@ -174,7 +174,7 @@ ConnectedWallet.propTypes = {
 
 const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
-  lockDgdOverlay: state.govUI.LockDgdOverlay,
+  lockDgdOverlay: state.govUI.lockDgdOverlay,
 });
 
 export default connect(

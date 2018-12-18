@@ -31,6 +31,11 @@ const defaultState = {
     error: null,
     fetching: null,
   },
+  BlockConfig: {
+    data: {},
+    error: null,
+    fetching: null,
+  },
 };
 
 export default function(state = defaultState, action) {
@@ -41,7 +46,6 @@ export default function(state = defaultState, action) {
         DaoDetails: {
           ...state.DaoDetails,
           ...action.payload,
-          // isMainPhase: Date.now() > action.payload.data.startOfMainphase * 1000,
           history: !action.payload.data
             ? state.DaoDetails.history
             : [
@@ -124,6 +128,14 @@ export default function(state = defaultState, action) {
               ]
                 .concat(state.ProposalDetails.history)
                 .slice(0, 100),
+        },
+      };
+    case actions.GET_BLOCK_CONFIG:
+      return {
+        ...state,
+        BlockConfig: {
+          ...state.BlockConfig,
+          ...action.payload,
         },
       };
 

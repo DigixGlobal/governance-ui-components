@@ -6,6 +6,7 @@ export const actions = {
   GET_PROPOSALS: `${REDUX_PREFIX}GET_PROPOSALS`,
   GET_PROPOSALS_COUNT: `${REDUX_PREFIX}GET_PROPOSALS_COUNT`,
   GET_PROPOSAL_DETAILS: `${REDUX_PREFIX}GET_PROPOSAL_DETAILS`,
+  GET_BLOCK_CONFIG: `${REDUX_PREFIX}GET_BLOCK_CONFIG`,
 };
 
 function fetchData(url, type) {
@@ -57,4 +58,8 @@ export function getProposalsCount() {
 
 export function getProposalDetails(proposalId) {
   return fetchData(`${INFO_SERVER}/proposals/details/${proposalId}`, actions.GET_PROPOSAL_DETAILS);
+}
+
+export function getBlockConfig() {
+  return fetchData(`${INFO_SERVER}/config`, actions.GET_BLOCK_CONFIG);
 }

@@ -16,6 +16,8 @@ import LandingPage from './pages';
 import Proposals from './pages/proposals';
 import CreateProposals from './pages/proposals/create';
 import EditProposal from './pages/proposals/edit';
+import TransactionHistory from './pages/user/history';
+// import Profile from './pages/user/profile';
 
 import lightTheme from './theme/light';
 
@@ -56,6 +58,7 @@ export class Governance extends React.Component {
             />
             {/* , // ]} */}
             <Route path="/proposals" component={withHeaderAndPanel(Proposals)} />
+            <Route path="/history" component={withHeaderAndPanel(TransactionHistory)} />
             <Route path="/" component={withHeaderAndPanel(LandingPage)} />
           </Switch>
         </ThemeProvider>

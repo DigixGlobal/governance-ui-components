@@ -33,7 +33,7 @@ const defaultState = {
   },
   TransactionStatus: {
     history: [],
-    data: undefined,
+    data: [],
     error: null,
     fetching: null,
   },

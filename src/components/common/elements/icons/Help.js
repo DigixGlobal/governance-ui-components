@@ -3,7 +3,7 @@ import { Container } from './style';
 
 const HelpIcon = props => (
   <Container {...props}>
-    <svg width="26px" height="27px" viewBox="0 0 26 27">
+    <svg viewBox="0 0 26 27">
       <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g transform="translate(-24.000000, -554.000000)">
           <g transform="translate(24.000000, 554.000000)">
@@ -81,8 +81,8 @@ const HelpIcon = props => (
 );
 
 HelpIcon.defaultProps = {
-  width: '2rem',
-  height: '2rem',
+  // width: '2rem',
+  // height: '2rem',
 };
 
 export default HelpIcon;

@@ -247,13 +247,16 @@ export const QuorumInfoCol = styled.div`
   ${Container};
   align-items: flex-end;
   justify-content: flex-end;
-  flex-basis: 280px;
+
+  flex-basis: ${props => (props.countdown ? 130 : 220)}px;
 
   color: ${props => props.theme.textDefault.light.toString()};
   font-family: 'Futura PT Medium';
   text-transform: uppercase;
 
-  span {
-    margin: 0 1.5rem;
+  span:not(:last-child) {
+    border-right: 1px solid #ccc;
+    margin-right: 1.5rem;
+    padding-right: 1.5rem;
   }
 `;

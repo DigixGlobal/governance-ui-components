@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
-// import { ERC20_ABI } from 'spectrum-lightsuite/src/helpers/constants';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
+import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 
 import DGDAddress from '@digix/dao-contracts/build/contracts/MockDgd.json';
 
-import { showHideLockDgdOverlay, canLockDgd } from '../../../../../reducers/gov-ui/actions';
+import { showHideLockDgdOverlay, canLockDgd } from '@digix/gov-ui/reducers/gov-ui/actions';
 
-import Button from '../../../elements/buttons/index';
-import Icon from '../../../elements/icons';
-import { HR } from '../../../../common/common-styles';
+import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
+import { HR } from '@digix/gov-ui/components/common/common-styles';
 
-// import { DEFAULT_NETWORK, DGD_ADDRESS } from '../../../../../constants';
-
-import getContract from '../../../../../utils/contracts';
+import getContract from '@digix/gov-ui/utils/contracts';
 
 import { InnerContainer, Header, CloseButtonWithHeader } from '../style';
 import {
@@ -42,27 +42,37 @@ class ConnectedWallet extends React.Component {
   }
 
   componentWillMount() {
-    Promise.all([this.getEthBalance(), this.getDgdBalance()]).then(([eth, dgd]) =>
-      this.setState({ dgdBalance: dgd, ethBalance: eth })
-    );
+    const { defaultAddress } = this.props;
+    if (defaultAddress.address) {
+      Promise.all([
+        this.getEthBalance(),
+        this.getDgdBalance(),
+        this.props.getAddressDetails(defaultAddress.address),
+      ]).then(([eth, dgd]) => this.setState({ dgdBalance: dgd, ethBalance: eth }));
+    }
   }
 
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+
   getDgdBalance() {
-    const { address: ethAddress, web3Redux } = this.props;
+    const { defaultAddress, web3Redux } = this.props;
     const { address: contractAddress, abi } = getContract(DGDAddress);
     const { web3 } = web3Redux.networks[network];
     const contract = web3.eth.contract(abi).at(contractAddress);
-    return contract.balanceOf.call(ethAddress.address).then(balance => {
+    return contract.balanceOf.call(defaultAddress.address).then(balance => {
       this.props.canLockDgd(parseInt(parseBigNumber(balance, 9), 0) > 0);
       return parseBigNumber(balance, 9);
     });
   }
 
   getEthBalance() {
-    const { address: ethAddress, web3Redux } = this.props;
+    const { defaultAddress, web3Redux } = this.props;
     const { web3 } = web3Redux.networks[network];
-    if (ethAddress) {
-      return web3.eth.getBalance(ethAddress.address).then(balance => parseBigNumber(balance, 18));
+    if (defaultAddress) {
+      return web3.eth
+        .getBalance(defaultAddress.address)
+        .then(balance => parseBigNumber(balance, 18));
     }
   }
 
@@ -73,7 +83,7 @@ class ConnectedWallet extends React.Component {
   };
 
   render() {
-    const { address: ethAddress } = this.props;
+    const { defaultAddress } = this.props;
     const { dgdBalance, ethBalance } = this.state;
     return (
       <InnerContainer>
@@ -84,7 +94,7 @@ class ConnectedWallet extends React.Component {
         <Container>
           <AddressInfo>
             Selected Address
-            <span>{ethAddress.address}</span>
+            <span>{defaultAddress.address}</span>
           </AddressInfo>
           <TokenInfo>
             <TokenIcon>
@@ -155,18 +165,23 @@ const { object, func } = PropTypes;
 
 ConnectedWallet.propTypes = {
   onClose: func.isRequired,
-  address: object.isRequired,
+  getAddressDetails: func.isRequired,
+  defaultAddress: object.isRequired,
   web3Redux: object.isRequired,
   showHideLockDgdOverlayAction: func.isRequired,
   canLockDgd: func.isRequired,
 };
 
+const mapStateToProps = state => ({
+  defaultAddress: getDefaultAddress(state),
+  lockDgdOverlay: state.govUI.LockDgdOverlay,
+});
+
 export default connect(
-  ({ govUI: { LockDgdOverlay } }) => ({
-    lockDgdOverlay: LockDgdOverlay,
-  }),
+  mapStateToProps,
   {
     showHideLockDgdOverlayAction: showHideLockDgdOverlay,
     canLockDgd,
+    getAddressDetails,
   }
 )(ConnectedWallet);

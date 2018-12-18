@@ -33,7 +33,10 @@ class ClaimApprovalButton extends React.Component {
     };
   }
   componentWillMount = () => {
-    const { web3Redux } = this.props;
+    const { web3Redux, draftVoting, isProposer, votingStage } = this.props;
+
+    if (!draftVoting || !isProposer || votingStage !== VotingStages.draft) return;
+
     const { abi, address } = getContract(DaoConfigStorage, network);
     const contract = web3Redux
       .web3(network)
@@ -104,7 +107,8 @@ class ClaimApprovalButton extends React.Component {
   render() {
     const { voteClaimingDeadline } = this.state;
     const { draftVoting, isProposer, votingStage } = this.props;
-    if (!draftVoting || !isProposer || votingStage !== VotingStages.draft) return null;
+    if (!draftVoting || !isProposer || votingStage !== VotingStages.draft || !voteClaimingDeadline)
+      return null;
     const canClaim =
       Date.now() < new Date((draftVoting.votingDeadline + voteClaimingDeadline) * 1000);
 
@@ -120,7 +124,7 @@ class ClaimApprovalButton extends React.Component {
 const { object, string, func, array, bool } = PropTypes;
 
 ClaimApprovalButton.propTypes = {
-  draftVoting: object.isRequired,
+  draftVoting: object,
   proposalId: string.isRequired,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
@@ -129,8 +133,13 @@ ClaimApprovalButton.propTypes = {
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
-  votingStage: string.isRequired,
+  votingStage: string,
   isProposer: bool.isRequired,
+};
+
+ClaimApprovalButton.defaultProps = {
+  draftVoting: undefined,
+  votingStage: undefined,
 };
 
 const mapStateToProps = state => ({

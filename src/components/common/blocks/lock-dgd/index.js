@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 
@@ -63,21 +64,25 @@ class LockDgd extends React.Component {
       dgd: 0,
       error: '',
       openError: false,
-      maxAllowance: 0,
+      maxAllowance: undefined,
       txHash: undefined,
-      // txFee: 0,
     };
   }
   componentWillMount = () => {
-    const { defaultAddress } = this.props;
-    if (defaultAddress) {
+    const { defaultAddress, lockDgdOverlay } = this.props;
+    if (defaultAddress && lockDgdOverlay.show) {
       this.getMaxAllowance();
     }
   };
 
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+
   onDgdInputChange = e => {
     const { value } = e.target;
     const { maxAllowance } = this.state;
+
+    if (!maxAllowance) this.getMaxAllowance();
 
     if (Number(`${value}e9`) > Number(maxAllowance)) {
       this.setError(`You can only stake up to ${maxAllowance} DGDs`);
@@ -99,6 +104,26 @@ class LockDgd extends React.Component {
     });
   };
 
+  getStake = dgd => {
+    const { daoDetails } = this.props;
+    const { startOfMainphase, startOfNextQuarter, startOfQuarter } = daoDetails;
+    const currentTime = Date.now() / 1000; // daoDetails have time set to seconds instead of milliseconds
+
+    let stake = dgd;
+    if (currentTime >= startOfMainphase) {
+      stake =
+        (dgd * (startOfNextQuarter - startOfQuarter - (currentTime - startOfQuarter))) /
+        (startOfNextQuarter - startOfMainphase);
+    }
+
+    if (stake % 1 !== 0) {
+      // truncate to two decimal points instead of rounding with Number::toFixed
+      stake = Math.floor(stake * 100) / 100;
+    }
+
+    return stake;
+  };
+
   setError = error =>
     this.setState({
       error: JSON.stringify((error && error.message) || error),
@@ -108,10 +133,8 @@ class LockDgd extends React.Component {
   toggleBodyOverflow = () => {
     const { lockDgdOverlay } = this.props;
     if (!lockDgdOverlay || !lockDgdOverlay.show) {
-      console.log(lockDgdOverlay);
       document.body.classList.remove('modal-is-open');
     } else {
-      console.log('here');
       document.body.classList.toggle('modal-is-open');
     }
   };
@@ -218,6 +241,8 @@ class LockDgd extends React.Component {
   renderLockDgd = () => {
     const { dgd, openError, error } = this.state;
     const invalidDgd = !dgd || Number(dgd) <= 0;
+    const stake = this.getStake(dgd);
+
     return (
       <WalletContainer>
         <CloseButton>
@@ -235,7 +260,7 @@ class LockDgd extends React.Component {
         <Note>
           {dgd > 0 && (
             <StakeCaption>
-              This will give you <strong>{dgd} STAKE</strong> in DigixDAO
+              This will give you <strong>{stake} STAKE</strong> in DigixDAO
             </StakeCaption>
           )}
         </Note>
@@ -281,6 +306,7 @@ LockDgd.propTypes = {
   sendTransactionToDaoServer: func.isRequired,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  daoDetails: object.isRequired,
   defaultAddress: object,
   addresses: array,
 };
@@ -291,6 +317,7 @@ LockDgd.defaultProps = {
 };
 const mapStateToProps = state => ({
   // networks: getNetworks(state),
+  daoDetails: state.infoServer.DaoDetails.data,
   defaultAddress: getDefaultAddress(state),
   addresses: getAddresses(state),
   networks: getDefaultNetworks(state),

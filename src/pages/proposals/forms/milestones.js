@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TextArea, Input, Select } from '../../../components/common/elements/index';
 import { Fieldset, FormItem, Label, CreateMilestone } from './style';
-// import MilestoneList from '../../milestones';
 
 class Milestones extends React.Component {
   constructor(props) {
@@ -51,12 +50,10 @@ class Milestones extends React.Component {
     const { onChange } = this.props;
     const { value } = e.target;
     let currentField = milestones[i];
-    // currentField[field] = value;
     if (currentField) {
       currentField[field] = value;
     } else {
       currentField = {};
-      // currentField field === 'title' ? { title: value } : { description: value };
       currentField[field] = value;
     }
 
@@ -150,14 +147,11 @@ class Milestones extends React.Component {
   }
 }
 
-const { func, object, bool } = PropTypes;
+const { func, object } = PropTypes;
 
 Milestones.propTypes = {
   onChange: func.isRequired,
   form: object.isRequired,
 };
 
-Milestones.defaultProps = {
-  edit: false,
-};
 export default Milestones;

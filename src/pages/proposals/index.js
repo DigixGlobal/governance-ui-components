@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { EMPTY_HASH } from '@digix/gov-ui/constants';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import Vote from '@digix/gov-ui/components/common/elements/vote/index';
 import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { clearDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import PreviousVersion from './previous';
 import NextVersion from './next';
@@ -21,9 +23,9 @@ import ApproveButton from './proposal-buttons/approve';
 import ClaimApprovalButton from './proposal-buttons/claim-approval';
 import VoteCommitButton from './proposal-buttons/vote-commit';
 import RevealButton from './proposal-buttons/reveal-button';
-// import ClaimFundingButton from './proposal-buttons/claim-funding';
-// import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
-// import ClaimResultsButton from './proposal-buttons/claim-results';
+import ClaimResultsButton from './proposal-buttons/claim-results';
+import ClaimFundingButton from './proposal-buttons/claim-funding';
+import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
 
 import VotingResult from './voting-result';
 
@@ -50,14 +52,27 @@ class Proposal extends React.Component {
       versions: undefined,
       currentVersion: 0,
     };
+
+    const path = this.props.location.pathname.split('/');
+    const proposalId = path[2];
+    this.PROPOSAL_ID = proposalId;
   }
 
   componentWillMount = () => {
-    const { getProposalDetailsAction, location } = this.props;
+    const {
+      challengeProof,
+      clearDaoProposalDetailsAction,
+      getProposalDetailsAction,
+      history,
+      location,
+    } = this.props;
+    if (!challengeProof.data) history.push('/');
+
     if (location.pathname) {
-      const path = location.pathname.split('/');
-      const proposalId = path[2];
-      if (proposalId) getProposalDetailsAction(proposalId);
+      clearDaoProposalDetailsAction();
+      if (this.PROPOSAL_ID) {
+        getProposalDetailsAction(this.PROPOSAL_ID);
+      }
     }
   };
 
@@ -74,6 +89,9 @@ class Proposal extends React.Component {
     }
   };
 
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+
   handlePreviousVersionClick = () => {
     this.setState({ currentVersion: Number(this.state.currentVersion) - 1 });
   };
@@ -89,13 +107,10 @@ class Proposal extends React.Component {
 
   render() {
     const { currentVersion, versions } = this.state;
-    const { proposalDetails, addressDetails, challengeProof, history, daoInfo } = this.props;
-    if (!challengeProof.data) history.push('/');
+    const { proposalDetails, addressDetails, history, daoInfo } = this.props;
 
-    if (proposalDetails.fething === null || proposalDetails.fething)
+    if (proposalDetails.fetching === null || proposalDetails.fetching)
       return <div>Fetching Proposal Details</div>;
-
-    if (!proposalDetails.data.proposalId) return <h1>Proposal Not Found</h1>;
 
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isEndorsed = proposalDetails.data.endorser !== EMPTY_HASH;
@@ -103,6 +118,7 @@ class Proposal extends React.Component {
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
+
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -141,6 +157,21 @@ class Proposal extends React.Component {
                 history={history}
                 timeCreated={proposalDetails.data.timeCreated}
               />
+              <ClaimResultsButton
+                isProposer={isProposer}
+                proposal={proposalDetails.data}
+                history={history}
+              />
+              <ClaimFundingButton
+                isProposer={isProposer}
+                proposal={proposalDetails.data}
+                history={history}
+              />
+              <MilestoneCompletedButton
+                isProposer={isProposer}
+                proposal={proposalDetails.data}
+                history={history}
+              />
               <ApproveButton
                 history={history}
                 isModerator={addressDetails.data.isModerator}
@@ -169,11 +200,7 @@ class Proposal extends React.Component {
                 proposalId={proposalDetails.data.proposalId}
                 votingStage={proposalDetails.data.votingStage}
               />
-              {/* <ClaimFundingButton />
-              <MilestoneCompletedButton />
-              <ClaimResultsButton /> */}
 
-              {/* TODO: add functionality for the following buttons */}
               <EndorseButton
                 stage={proposalDetails.data.stage}
                 isModerator={addressDetails.data.isModerator}
@@ -214,7 +241,7 @@ class Proposal extends React.Component {
         <VotingResult draftVoting={proposalDetails.data.draftVoting} daoInfo={daoInfo} />
         <ProjectDetails project={dijixObject} />
         <Milestones milestones={dijixObject.milestones || []} />
-        <CommentThread />
+        <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>
     );
   }
@@ -225,6 +252,7 @@ const { object, func } = PropTypes;
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
   daoInfo: object.isRequired,
+  clearDaoProposalDetailsAction: func.isRequired,
   getProposalDetailsAction: func.isRequired,
   addressDetails: object.isRequired,
   challengeProof: object,
@@ -251,6 +279,7 @@ export default connect(
     daoInfo: data,
   }),
   {
+    clearDaoProposalDetailsAction: clearDaoProposalDetails,
     getProposalDetailsAction: getProposalDetails,
   }
 )(Proposal);

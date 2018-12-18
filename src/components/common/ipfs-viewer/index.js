@@ -10,13 +10,15 @@ const initialState = {
 };
 
 // eslint-disable
-export default class MultipleResolver extends Component {
+export default class IpfsViewer extends Component {
   static propTypes = {
     renderResolved: PropTypes.func.isRequired,
     renderLoading: PropTypes.object,
+    hashes: PropTypes.array,
   };
   static defaultProps = {
     renderLoading: undefined,
+    hashes: undefined,
   };
 
   constructor(props) {
@@ -25,7 +27,8 @@ export default class MultipleResolver extends Component {
   }
 
   componentWillMount() {
-    this.fetchImages(this.props);
+    const { hashes } = this.props;
+    if (hashes && hashes.length > 0) this.fetchImages(this.props);
   }
 
   componentWillReceiveProps = nextProps => {

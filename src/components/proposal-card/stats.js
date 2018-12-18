@@ -22,15 +22,19 @@ export default class ProposalCardStats extends React.Component {
       }
     }
 
-    const funding = details.proposalVersions[0].totalFunding / 1e18;
     const participantCount = draftVoting ? draftVoting.totalVoterCount : 0;
+    let funding = details.proposalVersions[0].totalFunding / 1e18;
+    if (funding % 1 !== 0) {
+      funding = funding.toFixed(3);
+    }
 
     return (
       <StatsWrapper>
         <Stats>
           <StatItem>
             Funding
-            <span>{funding} ETH</span>
+            <span>{funding}</span>
+            <span>ETH</span>
           </StatItem>
           <StatItem stage={details.stage}>
             Approval

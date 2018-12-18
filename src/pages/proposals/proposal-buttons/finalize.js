@@ -37,7 +37,15 @@ class FinalizeProjectButton extends React.PureComponent {
     };
   }
   componentWillMount = () => {
-    const { web3Redux } = this.props;
+    const { web3Redux, stage, endorser, isProposer, finalVersionIpfsDoc } = this.props;
+    if (
+      stage !== ProposalStages.draft ||
+      !isProposer ||
+      endorser === EMPTY_HASH ||
+      (finalVersionIpfsDoc && !finalVersionIpfsDoc.includes(EMPTY_HASH))
+    ) {
+      return;
+    }
     const { abi, address } = getContract(DaoConfigStorage, network);
     const contract = web3Redux
       .web3(network)

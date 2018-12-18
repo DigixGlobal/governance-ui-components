@@ -14,7 +14,7 @@ import { Button } from '../common/elements/index';
 
 const determineDeadline = proposal => {
   let deadline = Date.now();
-  const mileStone = proposal.currentMilestone + 1; // > 0 ? proposal.currentMilestone : 0;
+  const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
 
   switch (proposal.stage.toLowerCase()) {
     case 'draft':

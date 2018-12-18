@@ -36,7 +36,7 @@ class Metamask extends React.Component {
           allowedKeystoreTypes={['metamask']}
           trigger={
             <WalletItem>
-              <Button primary fill fluid iconButton>
+              <Button primary filled fluid iconButton>
                 <Icon kind="metamask" />
                 Metamask
               </Button>

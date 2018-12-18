@@ -9,10 +9,15 @@ export const Container = styled.div`
   margin-right: 1rem;
 
   > svg {
-    fill: ${props =>
-      props.selected
+    fill: ${props => {
+      if (props.active) {
+        return props.theme.buttonBgSecondary.default.toString();
+      }
+
+      return props.selected
         ? props.theme.textSecondary.default.toString()
-        : props.theme.iconColor.toString()};
+        : props.theme.iconColor.toString();
+    }};
     width: 100%;
     height: 100%;
   }

@@ -143,3 +143,18 @@ export const ErrorCaption = styled.div`
   border-radius: 0.5rem;
   box-shadow: ${props => props.theme.boxShadow};
 `;
+
+export const Wrapper = css`
+  display: flex;
+`;
+
+export const Card = css`
+  display: flex;
+  flex-grow: 1;
+  background: ${props => props.theme.backgroundDefault.default.toString()};
+  border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+  border-radius: 4px;
+  box-shadow: ${props => props.theme.boxShadow};
+  margin-bottom: 3em;
+  padding: 1rem;
+`;

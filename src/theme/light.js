@@ -74,18 +74,21 @@ const redHex = Color('#D0021B');
 const red = {
   default: redHex,
   darker: redHex.darken(0.05),
-  lighter: redHex.lighten(0.5),
-  fade: redHex.fade(0.8),
+  light: darkGoldHex.lighten(0.5),
+  lighter: darkGoldHex.lighten(1),
+  lightest: darkGoldHex.lighten(1.9),
+  fade: darkGoldHex.fade(0.8),
 };
 
 const greenHex = Color('#417505');
 const green = {
   default: greenHex,
   darker: greenHex.darken(2),
-  light: greenHex.lighten(0.5),
-  lighter: greenHex.lighten(0.5),
-  lightest: greenHex.lighten(0.5),
-  fade: greenHex.fade(0.8),
+
+  light: darkGoldHex.lighten(0.5),
+  lighter: darkGoldHex.lighten(1),
+  lightest: darkGoldHex.lighten(1.9),
+  fade: darkGoldHex.fade(0.8),
 };
 
 const primaryColor = darkBlue;
@@ -145,6 +148,7 @@ const LightTheme = {
   textPrimary: primaryColor,
   textSecondary: secondaryColor,
   textContrast: white,
+  textReverse: white,
   transition: transitionStyle,
 
   cardBorderColor: tertiaryColor,
@@ -154,6 +158,12 @@ const LightTheme = {
     Success: secondaryColor,
     Error: red,
     Response: green,
+  },
+
+  transaction: {
+    pending: tertiaryColor,
+    success: green,
+    failed: red,
   },
 };
 

@@ -10,6 +10,8 @@ import ProposalFilter from '../components/common/blocks/filter/index';
 
 import { getDaoDetails, getProposals } from '../reducers/info-server/actions';
 
+import Snackbar from '../components/common/elements/snackbar/index';
+
 class LandingPage extends Component {
   constructor(props) {
     super(props);
@@ -56,6 +58,7 @@ class LandingPage extends Component {
               userDetails={AddressDetails}
             />
           ))}
+        <Snackbar />
       </Fragment>
     );
   }

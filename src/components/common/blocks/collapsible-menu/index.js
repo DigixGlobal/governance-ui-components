@@ -25,6 +25,7 @@ const mockMenu = [
   { kind: 'activity', caption: 'Activity', url: '/' },
   { kind: 'wallet', caption: 'Wallet', url: '/' },
   { kind: 'profile', caption: 'Profile', url: '/' },
+  { kind: 'history', caption: 'Transaction History', url: '/' },
   { kind: 'product', caption: 'Help / DAO Tour', url: '/' },
 ];
 

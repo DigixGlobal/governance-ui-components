@@ -15,6 +15,7 @@ const defaultState = {
     onClose: undefined,
   },
   configPreProposalCollateral: undefined,
+  addressMaxAllowance: undefined,
 };
 
 export default function(state = defaultState, action) {
@@ -75,7 +76,12 @@ export default function(state = defaultState, action) {
     case actions.GET_CONFIG_PREPROPOSAL_COLLATERAL:
       return {
         ...state,
-        ConfigPreProposalCollateral: action.payload,
+        configPreProposalCollateral: action.payload,
+      };
+    case actions.GET_ADDRESS_MAX_ALLOWANCE:
+      return {
+        ...state,
+        addressMaxAllowance: action.payload,
       };
 
     default:

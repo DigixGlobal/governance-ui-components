@@ -51,7 +51,7 @@ export default class ProposalCardStats extends React.Component {
     }
   };
   render() {
-    const { details } = this.props;
+    const { details, votingStage } = this.props;
     if (!details) {
       return null;
     }
@@ -84,11 +84,11 @@ export default class ProposalCardStats extends React.Component {
             <span>{funding}</span>
             <span>ETH</span>
           </StatItem>
-          <StatItem stage={details.stage}>
+          <StatItem stage={details.stage} votingStage={votingStage}>
             Approval
             <span>{approvalRating}%</span>
           </StatItem>
-          <StatItem>
+          <StatItem stage={details.stage} votingStage={votingStage}>
             Participants
             <span>{participantCount}</span>
           </StatItem>
@@ -99,4 +99,9 @@ export default class ProposalCardStats extends React.Component {
 }
 ProposalCardStats.propTypes = {
   details: PropTypes.object.isRequired,
+  votingStage: PropTypes.string,
+};
+
+ProposalCardStats.defaultProps = {
+  votingStage: undefined,
 };

@@ -128,7 +128,8 @@ export const StatItem = styled.div`
   flex: 1;
   ${props =>
     props.stage &&
-    props.stage.toLowerCase() === 'idea' &&
+    (props.stage.toLowerCase() === 'idea' ||
+      (props.votingStage && props.votingStage.toLowerCase() === 'commit')) &&
     css`
       color: ${props.theme.textDefault.lighter.toString()};
     `};

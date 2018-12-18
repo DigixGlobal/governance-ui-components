@@ -10,9 +10,10 @@ export const actions = {
   CAN_LOCK_DGD: `${REDUX_PREFIX}CAN_LOCK_DGD`,
   SHOW_RIGHT_PANEL: `${REDUX_PREFIX}SHOW_RIGHT_PANEL`,
   GET_CONFIG_PREPROPOSAL_COLLATERAL: `${REDUX_PREFIX}GET_CONFIG_PREPROPOSAL_COLLATERAL`,
+  GET_ADDRESS_MAX_ALLOWANCE: `${REDUX_PREFIX}GET_ADDRESS_MAX_ALLOWANCE`,
 };
 
-function fetchData(contract, config, type) {
+function fetchConfig(contract, config, type) {
   return dispatch => {
     dispatch({ type, payload: { fetching: true } });
     return contract.uintConfigs
@@ -21,8 +22,18 @@ function fetchData(contract, config, type) {
   };
 }
 
+export function fetchMaxAllowance(contract, address, contractAddress) {
+  return dispatch =>
+    contract.allowance.call(address, contractAddress).then(result =>
+      dispatch({
+        type: actions.GET_ADDRESS_MAX_ALLOWANCE,
+        payload: parseBigNumber(result, 9, false),
+      })
+    );
+}
+
 export function fetchConfigPreproposalCollateral(contract, config) {
-  return fetchData(contract, config, actions.GET_CONFIG_PREPROPOSAL_COLLATERAL);
+  return fetchConfig(contract, config, actions.GET_CONFIG_PREPROPOSAL_COLLATERAL);
 }
 
 export function showHideLockDgdOverlay(show) {

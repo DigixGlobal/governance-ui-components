@@ -23,18 +23,6 @@ import Milestones from './milestones';
 import ParticipantButtons from './proposal-buttons/participants';
 import ModeratorButtons from './proposal-buttons/moderators';
 
-// import AbortButton from './proposal-buttons/abort';
-// import FinalizeButton from './proposal-buttons/finalize';
-// import EndorseButton from './proposal-buttons/endorse';
-
-// import ApproveButton from './proposal-buttons/approve';
-// import ClaimApprovalButton from './proposal-buttons/claim-approval';
-// import VoteCommitButton from './proposal-buttons/vote-commit';
-// import RevealButton from './proposal-buttons/reveal-button';
-// import ClaimResultsButton from './proposal-buttons/claim-results';
-// import ClaimFundingButton from './proposal-buttons/claim-funding';
-// import MilestoneCompletedButton from './proposal-buttons/milestone-completed';
-
 import VotingResult from './voting-result';
 
 import CommentThread from './comment/index';
@@ -103,12 +91,14 @@ class Proposal extends React.Component {
 
   getProposalLikes = () => {
     const { getUserProposalLikeStatusAction, challengeProof } = this.props;
-    getUserProposalLikeStatusAction({
-      proposalId: this.PROPOSAL_ID,
-      client: challengeProof.data.client,
-      token: challengeProof.data['access-token'],
-      uid: challengeProof.data.uid,
-    });
+    if (challengeProof.data) {
+      getUserProposalLikeStatusAction({
+        proposalId: this.PROPOSAL_ID,
+        client: challengeProof.data.client,
+        token: challengeProof.data['access-token'],
+        uid: challengeProof.data.uid,
+      });
+    }
   };
 
   handlePreviousVersionClick = () => {
@@ -193,73 +183,6 @@ class Proposal extends React.Component {
                 addressDetails={addressDetails}
                 history={history}
               />
-              {/* <AbortButton
-                stage={proposalDetails.data.stage}
-                isProposer={isProposer}
-                proposalId={proposalDetails.data.proposalId}
-                finalVersionIpfsDoc={proposalDetails.data.finalVersionIpfsDoc}
-                history={history}
-              />
-              <FinalizeButton
-                endorser={proposalDetails.data.endorser}
-                stage={proposalDetails.data.stage}
-                isProposer={isProposer}
-                proposalId={proposalDetails.data.proposalId}
-                finalVersionIpfsDoc={proposalDetails.data.finalVersionIpfsDoc}
-                history={history}
-                timeCreated={proposalDetails.data.timeCreated}
-              />
-              <ClaimResultsButton
-                isProposer={isProposer}
-                proposal={proposalDetails.data}
-                history={history}
-              />
-              <ClaimFundingButton
-                isProposer={isProposer}
-                proposal={proposalDetails.data}
-                history={history}
-              />
-              <MilestoneCompletedButton
-                isProposer={isProposer}
-                proposal={proposalDetails.data}
-                history={history}
-              />
-              <ApproveButton
-                history={history}
-                isModerator={addressDetails.data.isModerator}
-                proposal={proposalDetails.data}
-                proposalId={proposalDetails.data.proposalId}
-              />
-
-              <ClaimApprovalButton
-                isProposer={isProposer}
-                draftVoting={proposalDetails.data.draftVoting}
-                history={history}
-                votingStage={proposalDetails.data.votingStage}
-                proposalId={proposalDetails.data.proposalId}
-              />
-              <VoteCommitButton
-                isParticipant={addressDetails.data.isParticipant}
-                history={history}
-                proposal={proposalDetails.data}
-                proposalId={proposalDetails.data.proposalId}
-                votingStage={proposalDetails.data.votingStage}
-              />
-              <RevealButton
-                isParticipant={addressDetails.data.isParticipant}
-                history={history}
-                proposal={proposalDetails.data}
-                proposalId={proposalDetails.data.proposalId}
-                votingStage={proposalDetails.data.votingStage}
-              />
-
-              <EndorseButton
-                stage={proposalDetails.data.stage}
-                isModerator={addressDetails.data.isModerator}
-                endorser={proposalDetails.data.endorser}
-                proposalId={proposalDetails.data.proposalId}
-                history={history}
-              /> */}
 
               {isProposer && !isEndorsed && (
                 <Button kind="round" ghost primary onClick={this.handleEditClick}>

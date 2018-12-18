@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
+import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { getTransactions } from '@digix/gov-ui/reducers/dao-server/actions';
 import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
@@ -17,9 +18,17 @@ import {
   TxIcon,
 } from './style';
 
+const network = SpectrumConfig.defaultNetworks[0];
+
 class History extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentBlock: 0,
+    };
+  }
   componentWillMount = () => {
-    const { challengeProof, history } = this.props;
+    const { challengeProof, history, web3Redux } = this.props;
     if (!challengeProof.data || !challengeProof.data.client) history.push('/');
 
     if (challengeProof.data && challengeProof.data['access-token']) {
@@ -28,10 +37,17 @@ class History extends React.Component {
         client: challengeProof.data.client,
         uid: challengeProof.data.uid,
       });
+
+      web3Redux.web3(network).eth.getBlockNumber(result => {
+        let currentBlock = 0;
+        if (result && result !== null) currentBlock = result;
+        this.setState({ currentBlock });
+      });
     }
   };
   render() {
     const { transactions } = this.props;
+    const { currentBlock } = this.state;
     const history = Array.from(transactions.data);
     return (
       <div>
@@ -47,7 +63,12 @@ class History extends React.Component {
                 <HistoryCard key={transaction.id}>
                   <TxDetails href={`${ETHERSCAN_URL}${transaction.txhash}`} target="_blank">
                     <TxTitle>{transaction.title}</TxTitle>
-                    <TxStatus>8/10 Confirmation(s)</TxStatus>
+                    <TxStatus>
+                      {currentBlock -
+                        (transaction.blockNumber !== null ? transaction.blockNumber : 0)}
+                      {`/${currentBlock} `}
+                      Confirmation(s)
+                    </TxStatus>
                     <TxIcon
                       pending={transaction.status === 'pending'}
                       failed={transaction.status === 'failed'}
@@ -73,13 +94,16 @@ History.propTypes = {
   transactions: object.isRequired,
   challengeProof: object.isRequired,
   getTransactions: func.isRequired,
+  web3Redux: object.isRequired,
   history: object.isRequired,
 };
 
-export default connect(
-  ({ daoServer: { Transactions, ChallengeProof } }) => ({
-    transactions: Transactions,
-    challengeProof: ChallengeProof,
-  }),
-  { getTransactions }
-)(History);
+export default web3Connect(
+  connect(
+    ({ daoServer: { Transactions, ChallengeProof } }) => ({
+      transactions: Transactions,
+      challengeProof: ChallengeProof,
+    }),
+    { getTransactions }
+  )(History)
+);

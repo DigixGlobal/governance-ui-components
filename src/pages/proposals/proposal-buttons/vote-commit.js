@@ -9,11 +9,16 @@ import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { VotingStages } from '@digix/gov-ui/constants';
 
 class CommitVoteButton extends React.PureComponent {
-  showOverlay = () => {
+  showOverlay = hasVoted => {
     const { history, proposalId, showRightPanelAction, proposal } = this.props;
     showRightPanelAction({
       component: (
-        <CommitVoteOverlay history={history} proposalId={proposalId} proposal={proposal} />
+        <CommitVoteOverlay
+          history={history}
+          hasVoted={hasVoted}
+          proposalId={proposalId}
+          proposal={proposal}
+        />
       ),
       show: true,
     });
@@ -43,8 +48,8 @@ class CommitVoteButton extends React.PureComponent {
     if (!withinDeadline) return null;
 
     return (
-      <Button kind="round" ghost primary onClick={this.showOverlay}>
-        Vote
+      <Button kind="round" ghost primary onClick={() => this.showOverlay(hasVoted)}>
+        {hasVoted ? 'Change Vote' : 'Vote'}
       </Button>
     );
   }

@@ -99,7 +99,7 @@ class ClaimResultsButton extends React.PureComponent {
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Voting Result Claimed' });
+      this.props.showHideAlert({ message: 'Voting Result Claimed', txHash });
       if (this.props.history) this.props.history.push('/');
     };
 

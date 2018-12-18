@@ -5,7 +5,8 @@ import WalletContainer from '../components/common/blocks/wallet';
 
 import LeftMenu from '../components/common/blocks/collapsible-menu';
 import LockDgdOverlay from '../components/common/blocks/lock-dgd';
-import Alert from '../components/common/elements/alert';
+// import Alert from '../components/common/elements/alert';
+import SnackBar from '../components/common/elements/snackbar';
 import RightPanelOverlay from '../components/common/blocks/right-panel-overlay';
 
 import { Container, ContentWrapper } from './style';
@@ -16,7 +17,7 @@ function withHeaderAndPanel(WrappedComponent) {
       return (
         <Fragment>
           <LockDgdOverlay />
-          <Alert />
+          <SnackBar />
           <WalletContainer />
           <RightPanelOverlay />
           <NavBar />

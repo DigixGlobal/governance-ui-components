@@ -187,7 +187,7 @@ class EditProposal extends React.Component {
         });
       }
       if (this.props.history) this.props.history.push('/');
-      this.props.showHideAlert({ message: 'Proposal Updated' });
+      this.props.showHideAlert({ message: 'Proposal Updated', txHash });
     };
 
     this.createAttestation().then(ipfsHash => {

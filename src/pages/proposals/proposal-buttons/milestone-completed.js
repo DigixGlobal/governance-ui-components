@@ -64,7 +64,7 @@ class CompleteMilestoneButton extends React.PureComponent {
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Milestone Completed' });
+      this.props.showHideAlert({ message: 'Milestone Completed', txHash });
       if (this.props.history) this.props.history.push('/');
     };
 

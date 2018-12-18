@@ -63,7 +63,7 @@ class AbortProjectButton extends React.PureComponent {
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Proposal Aborted' });
+      this.props.showHideAlert({ message: 'Proposal Aborted', txHash });
       if (this.props.history) this.props.history.push('/');
     };
 

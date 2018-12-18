@@ -3,7 +3,7 @@ import { Container } from './style';
 
 const WalletIcon = props => (
   <Container {...props}>
-    <svg width="24px" height="24px" viewBox="0 0 24 24">
+    <svg viewBox="0 0 24 24">
       <g
         id="Symbols"
         stroke="none"
@@ -59,8 +59,8 @@ const WalletIcon = props => (
 );
 
 WalletIcon.defaultProps = {
-  width: '2.2rem',
-  height: '2.2rem',
+  // width: '2.2rem',
+  // height: '2.2rem',
 };
 
 export default WalletIcon;

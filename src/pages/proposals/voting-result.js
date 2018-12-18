@@ -136,8 +136,8 @@ class VotingResult extends React.Component {
             />
           </ProgressCol>
           <QuorumInfoCol>
-            {stats.votes} Votes
-            <span>|</span>
+            <span>{stats.votes} Votes</span>
+
             <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
           </QuorumInfoCol>
         </VotingResultContainer>
@@ -156,9 +156,24 @@ class VotingResult extends React.Component {
             />
           </ProgressCol>
           <QuorumInfoCol>
-            YES:&nbsp;{stats.yesVotes} DGD
-            <span>|</span>
-            NO:&nbsp;{stats.noVotes} DGD
+            <span>YES:&nbsp;{stats.yesVotes} DGD</span>
+
+            <span>NO:&nbsp;{stats.noVotes} DGD</span>
+          </QuorumInfoCol>
+        </VotingResultContainer>
+
+        <VotingResultContainer>
+          <ProgressCol>
+            <Label>
+              <QuorumLabel>Time Left To End of Commit</QuorumLabel>
+            </Label>
+            <ProgressBar
+              variant="determinate"
+              value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
+            />
+          </ProgressCol>
+          <QuorumInfoCol countdown>
+            <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
           </QuorumInfoCol>
         </VotingResultContainer>
       </VotingResultWrapper>

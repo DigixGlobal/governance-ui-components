@@ -3,7 +3,7 @@ import { Container } from './style';
 
 const ProfileIcon = props => (
   <Container {...props}>
-    <svg width="27px" height="26px" viewBox="0 0 27 26" version="1.1">
+    <svg viewBox="0 0 27 26" version="1.1">
       <defs>
         <polygon
           id="path-1"
@@ -55,7 +55,7 @@ const ProfileIcon = props => (
 );
 
 ProfileIcon.defaultProps = {
-  width: '2.8rem',
+  // width: '2.8rem',
 };
 
 export default ProfileIcon;

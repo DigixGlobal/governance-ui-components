@@ -3,7 +3,7 @@ import { Container } from './style';
 
 const ActivityIcon = props => (
   <Container {...props}>
-    <svg width="26px" height="26px" viewBox="0 0 26 26">
+    <svg viewBox="0 0 26 26">
       <g
         id="Symbols"
         stroke="none"
@@ -98,8 +98,8 @@ const ActivityIcon = props => (
 );
 
 ActivityIcon.defaultProps = {
-  width: '2.2rem',
-  height: '2.2rem',
+  // width: '2.2rem',
+  // height: '2.2rem',
 };
 
 export default ActivityIcon;

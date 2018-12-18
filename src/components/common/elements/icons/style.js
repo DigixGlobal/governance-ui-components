@@ -4,8 +4,8 @@ export const Container = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: ${props => props.width || '3rem'};
-  height: ${props => props.height || '3rem'};
+  width: ${props => props.width || '2.8rem'};
+  height: ${props => props.height || '2.8rem'};
   margin-right: 1rem;
 
   > svg {

@@ -120,8 +120,6 @@ class VotingResult extends React.Component {
       ? this.getModeratorVotingStats(proposal)
       : this.getProposalVotingPhaseStats(proposal);
 
-    console.log(stats);
-
     return (
       <VotingResultWrapper>
         <VotingResultContainer>

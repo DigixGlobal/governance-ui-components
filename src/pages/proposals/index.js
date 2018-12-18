@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { EMPTY_HASH } from '@digix/gov-ui/constants';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import Like from '@digix/gov-ui/components/common/elements/like';
-import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getProposalDetails, getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import {
   getUserProposalLikeStatus,
   likeProposal,
@@ -59,8 +59,10 @@ class Proposal extends React.Component {
       challengeProof,
       clearDaoProposalDetailsAction,
       getProposalDetailsAction,
+      getAddressDetailsAction,
       history,
       location,
+      addressDetails,
     } = this.props;
     if (!challengeProof.data) history.push('/');
 
@@ -68,6 +70,7 @@ class Proposal extends React.Component {
       clearDaoProposalDetailsAction();
       if (this.PROPOSAL_ID) {
         getProposalDetailsAction(this.PROPOSAL_ID);
+        getAddressDetailsAction(addressDetails.address);
         this.getProposalLikes();
       }
     }
@@ -237,6 +240,7 @@ Proposal.propTypes = {
   getProposalDetailsAction: func.isRequired,
   getUserProposalLikeStatusAction: func.isRequired,
   clearDaoProposalDetailsAction: func.isRequired,
+  getAddressDetailsAction: func.isRequired,
   likeProposalAction: func.isRequired,
   unlikeProposalAction: func.isRequired,
   addressDetails: object.isRequired,
@@ -269,6 +273,7 @@ export default connect(
   {
     getProposalDetailsAction: getProposalDetails,
     getUserProposalLikeStatusAction: getUserProposalLikeStatus,
+    getAddressDetailsAction: getAddressDetails,
     likeProposalAction: likeProposal,
     unlikeProposalAction: unlikeProposal,
     clearDaoProposalDetailsAction: clearDaoProposalDetails,

@@ -49,6 +49,7 @@ class ParticantButtons extends React.Component {
           proposal={data}
           proposalId={data.proposalId}
           votingStage={data.votingStage}
+          votes={addressDetails.data.votes}
         />
         <RevealButton
           isParticipant={addressDetails.data.isParticipant}
@@ -56,6 +57,7 @@ class ParticantButtons extends React.Component {
           proposal={data}
           proposalId={data.proposalId}
           votingStage={data.votingStage}
+          votes={addressDetails.data.votes}
         />
         <ClaimResultsButton isProposer={isProposer} proposal={data} history={history} />
         <ClaimFundingButton isProposer={isProposer} proposal={data} history={history} />

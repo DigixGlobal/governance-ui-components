@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { getTransactions, getChallenge } from '../../../../reducers/dao-server/actions';
-import { getAddressDetails } from '../../../../reducers/info-server/actions';
+import { getTransactions, getChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
+import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 
-import Icon from '../../elements/icons';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
 
 import {
   UtilityWrapper,

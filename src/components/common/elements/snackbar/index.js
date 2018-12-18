@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
@@ -19,12 +18,8 @@ class Snackbar extends React.Component {
     }
   };
 
-  shouldComponentUpdate = (nextProps, nextState) =>
-    !_.isEqual(this.props, nextProps) && !_.isEqual(this.state, nextState);
-
   render() {
     const { alertData } = this.props;
-    console.log({ alertData });
     if (!alertData || !alertData.message) return null;
 
     return (

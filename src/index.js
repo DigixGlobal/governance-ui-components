@@ -17,7 +17,10 @@ import Proposals from './pages/proposals';
 import CreateProposals from './pages/proposals/create';
 import EditProposal from './pages/proposals/edit';
 import TransactionHistory from './pages/user/history';
-// import Profile from './pages/user/profile';
+import Profile from './pages/user/profile';
+import Activity from './pages/activity';
+import Help from './pages/help';
+import Wallet from './pages/user/wallet';
 
 import lightTheme from './theme/light';
 
@@ -59,6 +62,10 @@ export class Governance extends React.Component {
             {/* , // ]} */}
             <Route path="/proposals" component={withHeaderAndPanel(Proposals)} />
             <Route path="/history" component={withHeaderAndPanel(TransactionHistory)} />
+            <Route path="/profile" component={withHeaderAndPanel(Profile)} />
+            <Route path="/help" component={withHeaderAndPanel(Help)} />
+            <Route path="/activity" component={withHeaderAndPanel(Activity)} />
+            <Route path="/wallet" component={withHeaderAndPanel(Wallet)} />
             <Route path="/" component={withHeaderAndPanel(LandingPage)} />
           </Switch>
         </ThemeProvider>

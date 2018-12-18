@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 
-import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+
+import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
+import { VotingStages } from '@digix/gov-ui/constants';
 
 import {
   VotingResultWrapper,
@@ -30,13 +32,9 @@ const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
 };
 
 class VotingResult extends React.Component {
-  formatPercentage = num => (num * 100).toFixed(2);
-
-  render() {
-    const { draftVoting, daoInfo } = this.props;
-    if (!draftVoting) {
-      return null;
-    }
+  getModeratorVotingStats = proposal => {
+    const { daoInfo } = this.props;
+    const { draftVoting } = proposal;
 
     const approvalDeadline = new Date(draftVoting.votingDeadline * 1000);
 
@@ -44,6 +42,9 @@ class VotingResult extends React.Component {
     const quota = parseBigNumber(draftVoting.quota, 0, false);
     const totalModeratorLockedDgds = parseBigNumber(daoInfo.totalModeratorLockedDgds, 0, false);
     const totalVoterStake = parseBigNumber(draftVoting.totalVoterStake, 0, false);
+    const votes = draftVoting.totalVoterCount;
+    const yesVotes = draftVoting.yes;
+    const noVotes = draftVoting.no;
 
     const minimumQuorum = totalModeratorLockedDgds
       ? this.formatPercentage(quorum / totalModeratorLockedDgds)
@@ -57,45 +58,107 @@ class VotingResult extends React.Component {
       ? this.formatPercentage(draftVoting.yes / totalVoterStake)
       : EMPTY_PROGRESS_BAR_VALUE;
 
+    return {
+      votes,
+      yesVotes,
+      noVotes,
+      approvalDeadline,
+      minimumQuorum,
+      quorumProgress,
+      minimumApproval,
+      approvalProgress,
+    };
+  };
+
+  getProposalVotingPhaseStats = proposal => {
+    const { daoInfo } = this.props;
+    const { currentVotingRound } = proposal;
+    const currentRound = proposal.votingRounds[currentVotingRound];
+
+    const approvalDeadline = new Date(currentRound.revealDeadline * 1000);
+
+    const quorum = parseBigNumber(currentRound.quorum, 0, false);
+    const quota = parseBigNumber(currentRound.quota, 0, false);
+    const totalModeratorLockedDgds = parseBigNumber(daoInfo.totalModeratorLockedDgds, 0, false);
+    const totalVoterStake = parseBigNumber(currentRound.totalVoterStake, 0, false);
+
+    const votes = currentRound.totalVoterCount;
+    const yesVotes = currentRound.yes;
+    const noVotes = currentRound.no;
+
+    const minimumQuorum = this.formatPercentage(quorum / totalModeratorLockedDgds);
+    const quorumProgress = this.formatPercentage(totalVoterStake / totalModeratorLockedDgds);
+
+    const minimumApproval = this.formatPercentage(quota);
+    const approvalProgress = this.formatPercentage(currentRound.yes / totalVoterStake);
+
+    return {
+      votes,
+      yesVotes,
+      noVotes,
+      approvalDeadline,
+      minimumQuorum,
+      quorumProgress,
+      minimumApproval,
+      approvalProgress,
+    };
+  };
+
+  formatPercentage = num => (num * 100).toFixed(2);
+
+  render() {
+    const { proposal } = this.props;
+    const isOnModeratorVoting = proposal.votingStage === VotingStages.draft;
+    const isOnProposalVoting =
+      proposal.votingStage === VotingStages.commit || proposal.votingStage === VotingStages.reveal;
+
+    if (!proposal || (!isOnModeratorVoting && !isOnProposalVoting)) {
+      return null;
+    }
+
+    const stats = isOnModeratorVoting
+      ? this.getModeratorVotingStats(proposal)
+      : this.getProposalVotingPhaseStats(proposal);
+
     return (
       <VotingResultWrapper>
         <VotingResultContainer>
           <ProgressCol>
             <Label>
-              <QuorumLabel flexWidth={minimumQuorum}>Quorum</QuorumLabel>
-              <QuorumMinLabel flexWidth={100 - minimumQuorum}>
-                <span>Minimum Quorum Needed: {minimumQuorum}%</span>
+              <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
+              <QuorumMinLabel flexWidth={100 - stats.minimumQuorum}>
+                <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
               </QuorumMinLabel>
             </Label>
             <ProgressBar
               variant="determinate"
-              value={Number(quorumProgress) > 0 ? Number(quorumProgress) : -1}
+              value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
             />
           </ProgressCol>
           <QuorumInfoCol>
-            {draftVoting.totalVoterCount} Votes
+            {stats.votes} Votes
             <span>|</span>
-            <Countdown date={approvalDeadline} renderer={countdownRenderer} />
+            <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
           </QuorumInfoCol>
         </VotingResultContainer>
 
         <VotingResultContainer>
           <ProgressCol>
             <Label>
-              <ApprovalLabel flexWidth={minimumApproval}>Current Approval Rate</ApprovalLabel>
-              <ApprovalMinLabel flexWidth={100 - minimumApproval}>
-                <span>Minimum Approval Needed: {minimumApproval}%</span>
+              <ApprovalLabel flexWidth={stats.minimumApproval}>Current Approval Rate</ApprovalLabel>
+              <ApprovalMinLabel flexWidth={100 - stats.minimumApproval}>
+                <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
               </ApprovalMinLabel>
             </Label>
             <ProgressBar
               variant="determinate"
-              value={Number(approvalProgress) > 0 ? Number(approvalProgress) : -1}
+              value={Number(stats.approvalProgress) > 0 ? Number(stats.approvalProgress) : -1}
             />
           </ProgressCol>
           <QuorumInfoCol>
-            YES:&nbsp;{draftVoting.yes} DGD
+            YES:&nbsp;{stats.yesVotes} DGD
             <span>|</span>
-            NO:&nbsp;{draftVoting.no} DGD
+            NO:&nbsp;{stats.noVotes} DGD
           </QuorumInfoCol>
         </VotingResultContainer>
       </VotingResultWrapper>
@@ -106,12 +169,13 @@ class VotingResult extends React.Component {
 const { object } = PropTypes;
 
 VotingResult.propTypes = {
-  draftVoting: object,
+  proposal: object,
   daoInfo: object.isRequired,
 };
 
 VotingResult.defaultProps = {
   draftVoting: undefined,
+  proposal: undefined,
 };
 
 export default VotingResult;

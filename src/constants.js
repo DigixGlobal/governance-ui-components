@@ -20,6 +20,11 @@ export const DEFAULT_GAS =
   (process.env.ENVIRONMENT === 'kovan' && 25e4) ||
   150e4;
 
+export const ETHERSCAN_URL =
+  (process.env.ENVIRONMENT === 'production' && 'https://etherscan.io/tx/') ||
+  (process.env.ENVIRONMENT === 'kovan' && 'https://kovan.etherscan.io/tx/') ||
+  'https://kovan.etherscan.io/tx/';
+
 export const DEFAULT_GAS_PRICE = 30 * 1e9;
 export const ONE_BILLION = 1000000000;
 
@@ -42,4 +47,5 @@ export const ProposalStages = {
 export const VotingStages = {
   draft: 'draftVoting',
   commit: 'commit',
+  reveal: 'reveal',
 };

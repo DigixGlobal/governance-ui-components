@@ -7,6 +7,8 @@ import ClaimApprovalButton from '../claim-approval';
 import ClaimResultsButton from '../claim-results';
 import MilestoneCompletedButton from '../milestone-completed';
 import ClaimFundingButton from '../claim-funding';
+import VoteCommitButton from '../vote-commit';
+import RevealButton from '../reveal-button';
 
 class ParticantButtons extends React.Component {
   render() {
@@ -14,6 +16,7 @@ class ParticantButtons extends React.Component {
       isProposer,
       proposal: { data },
       history,
+      addressDetails,
     } = this.props;
     return (
       <Fragment>
@@ -40,6 +43,22 @@ class ParticantButtons extends React.Component {
           votingStage={data.votingStage}
           proposalId={data.proposalId}
         />
+        <VoteCommitButton
+          isParticipant={addressDetails.data.isParticipant}
+          history={history}
+          proposal={data}
+          proposalId={data.proposalId}
+          votingStage={data.votingStage}
+          votes={addressDetails.data.votes}
+        />
+        <RevealButton
+          isParticipant={addressDetails.data.isParticipant}
+          history={history}
+          proposal={data}
+          proposalId={data.proposalId}
+          votingStage={data.votingStage}
+          votes={addressDetails.data.votes}
+        />
         <ClaimResultsButton isProposer={isProposer} proposal={data} history={history} />
         <ClaimFundingButton isProposer={isProposer} proposal={data} history={history} />
         <MilestoneCompletedButton isProposer={isProposer} proposal={data} history={history} />
@@ -53,11 +72,8 @@ const { object, bool } = PropTypes;
 ParticantButtons.propTypes = {
   proposal: object.isRequired,
   isProposer: bool.isRequired,
-  // web3Redux: object.isRequired,
-  // ChallengeProof: object.isRequired,
-  // showHideAlert: func.isRequired,
-  // sendTransactionToDaoServer: func.isRequired,
-  // showTxSigningModal: func.isRequired,
-  // addresses: array.isRequired,
+  addressDetails: object.isRequired,
   history: object.isRequired,
 };
+
+export default ParticantButtons;

@@ -43,7 +43,7 @@ class ConnectedWallet extends React.Component {
 
   componentWillMount() {
     const { defaultAddress } = this.props;
-    if (defaultAddress.address) {
+    if (defaultAddress && defaultAddress.address) {
       Promise.all([
         this.getEthBalance(),
         this.getDgdBalance(),
@@ -174,7 +174,7 @@ ConnectedWallet.propTypes = {
 
 const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
-  lockDgdOverlay: state.govUI.LockDgdOverlay,
+  lockDgdOverlay: state.govUI.lockDgdOverlay,
 });
 
 export default connect(

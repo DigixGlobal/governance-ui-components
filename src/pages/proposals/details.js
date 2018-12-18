@@ -23,13 +23,15 @@ export default class ProjectDetails extends React.Component {
 
   renderImages = (proofs, preview) => {
     if (!proofs) return null;
-    const images = proofs.map((img, i) => (
-      <img
-        key={`img-${i + 1}`}
-        alt=""
-        src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
-      />
-    ));
+    const images = proofs.map((img, i) =>
+      img.src ? (
+        <img
+          key={`img-${i + 1}`}
+          alt=""
+          src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
+        />
+      ) : null
+    );
     return <ImageHolder>{images}</ImageHolder>;
   };
 

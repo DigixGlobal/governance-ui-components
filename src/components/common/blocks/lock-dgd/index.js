@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 
 import PropTypes, { array } from 'prop-types';
-import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
@@ -21,16 +20,16 @@ import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 
-import { showHideLockDgdOverlay } from '../../../../reducers/gov-ui/actions';
-import { sendTransactionToDaoServer } from '../../../../reducers/dao-server/actions';
+import { showHideLockDgdOverlay, fetchMaxAllowance } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 
-import TextField from '../../elements/textfield';
+import TextField from '@digix/gov-ui/components/common/elements/textfield';
 
-import Button from '../../../common/elements/buttons';
+import Button from '@digix/gov-ui/components/common/elements/buttons';
 
-import getContract from '../../../../utils/contracts';
+import getContract from '@digix/gov-ui/utils/contracts';
 
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '../../../../constants';
+import { DEFAULT_GAS, DEFAULT_GAS_PRICE, ETHERSCAN_URL } from '@digix/gov-ui/constants';
 
 import {
   Container,
@@ -54,9 +53,6 @@ const network = SpectrumConfig.defaultNetworks[0];
 
 registerUIs({ lockDgd: { component: LockDgdTx } });
 
-const etherscanUrl =
-  network === 'eth-mainnet' ? 'https://etherscan.io/tx/' : 'https://kovan.etherscan.io/tx/';
-
 class LockDgd extends React.Component {
   constructor(props) {
     super(props);
@@ -64,15 +60,19 @@ class LockDgd extends React.Component {
       dgd: 0,
       error: '',
       openError: false,
-      maxAllowance: undefined,
       txHash: undefined,
     };
   }
-  componentWillMount = () => {
-    const { defaultAddress, lockDgdOverlay } = this.props;
-    if (defaultAddress && lockDgdOverlay.show) {
-      this.getMaxAllowance();
-    }
+
+  componentWillReceiveProps = nextProps => {
+    const { defaultAddress, lockDgdOverlay } = nextProps;
+    if (
+      !_.isEqual(this.props.defaultAddress, nextProps.defaultAddress) ||
+      !_.isEqual(this.props.lockDgdOverlay, nextProps.lockDgdOverlay)
+    )
+      if (defaultAddress && lockDgdOverlay.show) {
+        this.getMaxAllowance();
+      }
   };
 
   shouldComponentUpdate = (nextProps, nextState) =>
@@ -80,12 +80,10 @@ class LockDgd extends React.Component {
 
   onDgdInputChange = e => {
     const { value } = e.target;
-    const { maxAllowance } = this.state;
+    const { addressMaxAllowance } = this.props;
 
-    if (!maxAllowance) this.getMaxAllowance();
-
-    if (Number(`${value}e9`) > Number(maxAllowance)) {
-      this.setError(`You can only stake up to ${maxAllowance} DGDs`);
+    if (Number(`${value}e9`) > Number(addressMaxAllowance)) {
+      this.setError(`You can only stake up to ${addressMaxAllowance} DGDs`);
     } else this.setState({ dgd: value, error: undefined, openError: false });
   };
 
@@ -98,10 +96,7 @@ class LockDgd extends React.Component {
       .web3(network)
       .eth.contract(abi)
       .at(address);
-
-    contract.allowance.call(defaultAddress.address, DaoStakingContract).then(result => {
-      this.setState({ maxAllowance: parseBigNumber(result, 9, false) });
-    });
+    this.props.fetchMaxAllowance(contract, defaultAddress.address, DaoStakingContract);
   };
 
   getStake = dgd => {
@@ -149,7 +144,7 @@ class LockDgd extends React.Component {
     const {
       web3Redux,
       sendTransactionToDaoServer: sendTransactionToDaoServerAction,
-      ChallengeProof,
+      challengeProof,
       addresses,
     } = this.props;
     const { dgd } = this.state;
@@ -169,14 +164,14 @@ class LockDgd extends React.Component {
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
     const onSuccess = txHash => {
-      if (ChallengeProof.data) {
+      if (challengeProof.data) {
         this.setState({ txHash, dgd: undefined }, () => {
           sendTransactionToDaoServerAction({
             txHash,
             title: 'Lock DGD',
-            token: ChallengeProof.data['access-token'],
-            client: ChallengeProof.data.client,
-            uid: ChallengeProof.data.uid,
+            token: challengeProof.data['access-token'],
+            client: challengeProof.data.client,
+            uid: challengeProof.data.uid,
           });
         });
       }
@@ -217,7 +212,7 @@ class LockDgd extends React.Component {
           </div>
           <div>
             Want to check transaction? Click{' '}
-            <a href={`${etherscanUrl}${txHash}`} target="_blank" rel="noopener noreferrer">
+            <a href={`${ETHERSCAN_URL}${txHash}`} target="_blank" rel="noopener noreferrer">
               here
             </a>
             .
@@ -297,15 +292,17 @@ class LockDgd extends React.Component {
   }
 }
 
-const { object, func } = PropTypes;
+const { object, func, number, oneOfType } = PropTypes;
 
 LockDgd.propTypes = {
   lockDgdOverlay: object.isRequired,
   showTxSigningModal: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
+  fetchMaxAllowance: func.isRequired,
   web3Redux: object.isRequired,
-  ChallengeProof: object.isRequired,
+  addressMaxAllowance: oneOfType([number, object]),
+  challengeProof: object.isRequired,
   daoDetails: object.isRequired,
   defaultAddress: object,
   addresses: array,
@@ -314,17 +311,18 @@ LockDgd.propTypes = {
 LockDgd.defaultProps = {
   defaultAddress: undefined,
   addresses: undefined,
+  addressMaxAllowance: undefined,
 };
 const mapStateToProps = state => ({
-  // networks: getNetworks(state),
   daoDetails: state.infoServer.DaoDetails.data,
   defaultAddress: getDefaultAddress(state),
   addresses: getAddresses(state),
   networks: getDefaultNetworks(state),
-  AddressDetails: state.infoServer.AddressDetails,
-  Challenge: state.daoServer.Challenge,
-  ChallengeProof: state.daoServer.ChallengeProof,
-  lockDgdOverlay: state.govUI.LockDgdOverlay,
+  addressDetails: state.infoServer.AddressDetails,
+  challenge: state.daoServer.Challenge,
+  challengeProof: state.daoServer.ChallengeProof,
+  lockDgdOverlay: state.govUI.lockDgdOverlay,
+  addressMaxAllowance: state.govUI.addressMaxAllowance,
 });
 
 export default web3Connect(
@@ -334,6 +332,7 @@ export default web3Connect(
       showTxSigningModal,
       showHideLockDgdOverlay,
       sendTransactionToDaoServer,
+      fetchMaxAllowance,
     }
   )(LockDgd)
 );

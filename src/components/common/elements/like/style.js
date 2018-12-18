@@ -3,12 +3,15 @@ import styled from 'styled-components';
 export const UpVote = styled.a`
   display: flex;
   align-content: center;
-  color: ${props => props.theme.linkDefaultColor.default.toString()};
+  color: ${props =>
+    props.hasVoted
+      ? props.theme.linkSecondaryColor.default.toString()
+      : props.theme.linkDefaultColor.default.toString()};
   font-family: 'Futura PT Medium';
   &:visited {
     color: ${props =>
       props.hasVoted
-        ? props.theme.linkDefaultColor.default.toString()
+        ? props.theme.linkSecondaryColor.default.toString()
         : props.theme.linkDefaultColor.default.toString()};
   }
   i::before {

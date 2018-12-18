@@ -24,8 +24,16 @@ class CommitVoteButton extends React.PureComponent {
       isParticipant,
       proposal,
       proposal: { currentVotingRound },
+      votes,
     } = this.props;
-    if (!isParticipant || !proposal.draftVoting || proposal.votingStage !== VotingStages.commit) {
+    const vote = votes[proposal.proposalId];
+    const hasVoted = vote ? vote.votingRound[currentVotingRound].commit : false;
+    if (
+      !isParticipant ||
+      !proposal.draftVoting ||
+      proposal.votingStage !== VotingStages.commit ||
+      hasVoted
+    ) {
       return null;
     }
 
@@ -50,10 +58,12 @@ CommitVoteButton.propTypes = {
   proposalId: string.isRequired,
   history: object.isRequired,
   showRightPanelAction: func.isRequired,
+  votes: object,
 };
 
 CommitVoteButton.defaultProps = {
   isParticipant: false,
+  votes: undefined,
 };
 
 const mapStateToProps = () => ({});

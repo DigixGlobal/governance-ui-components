@@ -52,7 +52,14 @@ class EditProposal extends React.Component {
   }
 
   componentWillMount = () => {
-    const { getProposalDetailsAction, location, proposalDetails } = this.props;
+    const {
+      getProposalDetailsAction,
+      ChallengeProof,
+      history,
+      location,
+      proposalDetails,
+    } = this.props;
+    if (!ChallengeProof.data) history.push('/');
     if (location.pathname) {
       const path = location.pathname.split('/');
       const proposalId = path[path.length - 1];
@@ -215,12 +222,13 @@ class EditProposal extends React.Component {
   };
 
   renderPreview = () => {
-    const { address } = this.props;
+    const { addresses } = this.props;
+    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     return (
       <Preview
         form={this.state.form}
         onContinueEditing={this.handleShowPreview}
-        proposer={address ? address.address : ''}
+        proposer={sourceAddress ? sourceAddress.address : ''}
       />
     );
   };
@@ -293,7 +301,6 @@ EditProposal.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   proposalDetails: object.isRequired,
-  address: object.isRequired,
   location: object.isRequired,
   history: object.isRequired,
   addresses: array,
@@ -308,7 +315,6 @@ EditProposal.defaultProps = {
 };
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
-  address: state.govUI.UserAddress,
   addresses: getAddresses(state),
   proposalDetails: state.infoServer.ProposalDetails,
 });

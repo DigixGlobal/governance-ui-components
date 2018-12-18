@@ -9,11 +9,19 @@ import { ProposalWrapper, ProposalContainer } from './style';
 export default class ProposalCard extends React.Component {
   render() {
     const { history, proposal, userDetails } = this.props;
+    const currentTime = Date.now();
+    const { currentVotingRound } = proposal;
+    const withinDeadline =
+      currentVotingRound > -1
+        ? proposal.votingRounds[currentVotingRound].commitDeadline * 1000 < currentTime &&
+          currentTime < proposal.votingRounds[currentVotingRound].revealDeadline * 1000
+        : false;
+    const votingStage = withinDeadline ? 'reveal' : proposal.votingStage;
     return (
       <ProposalWrapper>
         <ProposalContainer>
           <Proposal details={proposal} userDetails={userDetails} />
-          <Stats details={proposal} />
+          <Stats details={proposal} votingStage={votingStage} />
           <Milestones details={proposal} history={history} userDetails={userDetails} />
         </ProposalContainer>
       </ProposalWrapper>

@@ -1,7 +1,6 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 
-import { SyledTextArea } from './style';
+import { TextArea as SyledTextArea } from './style';
 
 const TextArea = props => <SyledTextArea {...props} />;
 

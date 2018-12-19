@@ -89,7 +89,6 @@ class ClaimResultsButton extends React.PureComponent {
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
     const onSuccess = txHash => {
-      console.log(txHash);
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -127,7 +126,7 @@ class ClaimResultsButton extends React.PureComponent {
       proposal: { currentVotingRound },
     } = this.props;
     if (!isProposer || !proposal || !proposal.votingRounds || !voteClaimingDeadline) return null;
-    const { claimed } = proposal.votingRounds[currentVotingRound].claimed;
+    const { claimed } = proposal.votingRounds[currentVotingRound];
     const currentTime = Date.now();
     const withinDeadline =
       currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&

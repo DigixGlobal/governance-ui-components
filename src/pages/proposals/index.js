@@ -65,13 +65,12 @@ class Proposal extends React.Component {
       addressDetails,
     } = this.props;
     if (!challengeProof.data) history.push('/');
-
     if (location.pathname) {
       clearDaoProposalDetailsAction();
       if (this.PROPOSAL_ID) {
         getProposalDetailsAction(this.PROPOSAL_ID);
-        if (addressDetails.address) {
-          getAddressDetailsAction(addressDetails.address);
+        if (addressDetails.data.address) {
+          getAddressDetailsAction(addressDetails.data.address);
         }
         this.getProposalLikes();
       }

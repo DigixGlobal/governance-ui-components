@@ -92,7 +92,7 @@ class FinalizeProjectButton extends React.PureComponent {
           uid: challengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Proposal Finalized' });
+      this.props.showHideAlert({ message: 'Proposal Finalized', txHash });
       if (this.props.history) this.props.history.push('/');
     };
 

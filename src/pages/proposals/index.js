@@ -70,7 +70,9 @@ class Proposal extends React.Component {
       clearDaoProposalDetailsAction();
       if (this.PROPOSAL_ID) {
         getProposalDetailsAction(this.PROPOSAL_ID);
-        getAddressDetailsAction(addressDetails.address);
+        if (addressDetails.address) {
+          getAddressDetailsAction(addressDetails.address);
+        }
         this.getProposalLikes();
       }
     }

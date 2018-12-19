@@ -8,34 +8,9 @@ import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 
-import {
-  UtilityWrapper,
-  Notification,
-  NotificationCount,
-  NotificationHeader,
-  NotificationContent,
-  TxHash,
-  NotificationItem,
-  TxStatus,
-} from './style';
+import { UtilityWrapper } from './style';
 
 class Utility extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showNotice: false,
-    };
-  }
-
-  componentWillMount = () => {
-    const { transactions } = this.props;
-    this.interval = setInterval(() => {
-      if (!transactions.fetching || transactions.fetching === null) {
-        this.getNotifications();
-      }
-    }, 1000 * 60);
-  };
-
   componentWillReceiveProps = nextProps => {
     if (!_.isEqual(nextProps, this.props)) {
       const { userAddress } = nextProps;
@@ -76,13 +51,10 @@ class Utility extends React.Component {
   };
 
   showHideNotifications = () => {
-    if (!this.state.showNotice) this.getNotifications();
-    this.setState({ showNotice: !this.state.showNotice });
+    const { challengeProof, history } = this.props;
+    if (challengeProof.data && challengeProof.data.client) history.push('/history');
   };
   render() {
-    const { showNotice } = this.state;
-    const { transactions } = this.props;
-
     return (
       <UtilityWrapper>
         <Icon
@@ -90,24 +62,6 @@ class Utility extends React.Component {
           onClick={this.showHideNotifications}
           style={{ cursor: 'pointer' }}
         />
-        {transactions.data.transactions && (
-          <NotificationCount>{transactions.data.transactions.length}</NotificationCount>
-        )}
-        {showNotice && (
-          <Notification>
-            <NotificationHeader>Notifications</NotificationHeader>
-            <NotificationContent>
-              {transactions.data.transactions &&
-                transactions.data.transactions.map(t => (
-                  <NotificationItem key={t.id}>
-                    <TxHash>{t.txhash}</TxHash>
-                    <TxStatus>{t.status}</TxStatus>
-                  </NotificationItem>
-                ))}
-              {!transactions && <NotificationItem>No Notifications available</NotificationItem>}
-            </NotificationContent>
-          </Notification>
-        )}
       </UtilityWrapper>
     );
   }
@@ -122,6 +76,7 @@ Utility.propTypes = {
   getTransactions: func.isRequired,
   getChallenge: func.isRequired,
   getAddressDetails: func.isRequired,
+  history: object,
   userAddress: object, // eslint-disable-line
 };
 
@@ -130,6 +85,7 @@ Utility.defaultProps = {
   challengeProof: undefined,
   userAddress: undefined,
   challenge: undefined,
+  history: undefined,
 };
 
 export default connect(

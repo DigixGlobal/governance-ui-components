@@ -53,9 +53,9 @@ export const TxIcon = styled.div`
   padding: 1rem;
   border-left: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   flex: 0;
-  display: flex:
+  display: flex;
   align-items: center;
-  
+
   ${props =>
     props.pending &&
     css`
@@ -64,19 +64,19 @@ export const TxIcon = styled.div`
       }
     `};
 
-    ${props =>
-      props.success &&
-      css`
-        svg {
-          fill: ${props.theme.transaction.success.default.toString()};
-        }
-      `};
+  ${props =>
+    props.success &&
+    css`
+      svg {
+        fill: ${props.theme.transaction.success.default.toString()};
+      }
+    `};
 
-      ${props =>
-        props.failed &&
-        css`
-          svg {
-            fill: ${props.theme.transaction.failed.default.toString()};
-          }
-        `};
+  ${props =>
+    props.failed &&
+    css`
+      svg {
+        fill: ${props.theme.transaction.failed.default.toString()};
+      }
+    `};
 `;

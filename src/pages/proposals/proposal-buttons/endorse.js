@@ -63,7 +63,7 @@ class EndorseProjectButton extends React.PureComponent {
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Proposal Endorsed' });
+      this.props.showHideAlert({ message: 'Proposal Endorsed', txHash });
       if (this.props.history) this.props.history.push('/');
     };
 

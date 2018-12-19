@@ -176,7 +176,7 @@ class CreateProposal extends React.Component {
         });
       }
       if (this.props.history) this.props.history.push('/');
-      this.props.showHideAlert({ message: 'Proposal Created' });
+      this.props.showHideAlert({ message: 'Proposal Created', txHash });
     };
 
     this.setError();

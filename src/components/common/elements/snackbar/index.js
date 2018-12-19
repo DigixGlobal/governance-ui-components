@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
 
 import { SnackbarContainer, SnackbarDesc, SnackbarAction } from './style';
 
@@ -21,12 +21,17 @@ class Snackbar extends React.Component {
   render() {
     const { alertData } = this.props;
     if (!alertData || !alertData.message) return null;
-    //   return alertData.message && <Container>{alertData.message}</Container>;
-    // }
+
     return (
       <SnackbarContainer>
-        <SnackbarDesc>Monkeys are now bringing your vote to the Ethereum tree</SnackbarDesc>
-        <SnackbarAction>SEE IT HAPPEN FIRST HAND!</SnackbarAction>
+        <SnackbarDesc>
+          {alertData.message || 'Monkeys are now bringing your vote to the Ethereum tree'}
+        </SnackbarDesc>
+        {alertData.txHash && (
+          <SnackbarAction href={`${ETHERSCAN_URL}${alertData.txHash}`}>
+            {alertData.txHash}
+          </SnackbarAction>
+        )}
       </SnackbarContainer>
     );
   }

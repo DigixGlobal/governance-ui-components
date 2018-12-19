@@ -50,6 +50,7 @@ class RevealVote extends React.Component {
     showRightPanelAction({ show: false });
     showHideAlertAction({
       message: 'Vote Revealed',
+      txHash,
     });
 
     history.push('/');
@@ -57,7 +58,6 @@ class RevealVote extends React.Component {
 
   setError = error => {
     const message = JSON.stringify((error && error.message) || error);
-    console.log(message);
     return this.props.showHideAlertAction({ message });
   };
 

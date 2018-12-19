@@ -83,7 +83,7 @@ class ClaimApprovalButton extends React.Component {
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Approval Claimed' });
+      this.props.showHideAlert({ message: 'Approval Claimed', txHash });
       if (this.props.history) this.props.history.push('/');
     };
 

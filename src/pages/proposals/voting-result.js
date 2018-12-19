@@ -31,6 +31,24 @@ const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
   return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
 };
 
+// eslint-disable-next-line
+const commitCountdownRenderer = ({total, days, hours, minutes, seconds, completed }) => {
+  if (completed) {
+    return `Voting is over!`;
+  }
+  const currentDate = Date.now();
+  const deadLine = currentDate + total;
+  console.log(total);
+  // return (
+  //   <ProgressBar
+  //     variant="determinate"
+  //     value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
+  //   />
+  // );
+
+  return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
+};
+
 class VotingResult extends React.Component {
   getModeratorVotingStats = proposal => {
     const { daoInfo } = this.props;
@@ -75,6 +93,7 @@ class VotingResult extends React.Component {
     const { currentVotingRound } = proposal;
     const currentRound = proposal.votingRounds[currentVotingRound];
 
+    const commitDeadline = new Date(currentRound.commitDeadline * 100);
     const approvalDeadline = new Date(currentRound.revealDeadline * 1000);
 
     const quorum = parseBigNumber(currentRound.quorum, 0, false);
@@ -96,6 +115,7 @@ class VotingResult extends React.Component {
       votes,
       yesVotes,
       noVotes,
+      commitDeadline,
       approvalDeadline,
       minimumQuorum,
       quorumProgress,
@@ -115,6 +135,9 @@ class VotingResult extends React.Component {
     if (!proposal || (!isOnModeratorVoting && !isOnProposalVoting)) {
       return null;
     }
+
+    // const currentTime = Date.now();
+    // const proposalProgress =
 
     const stats = isOnModeratorVoting
       ? this.getModeratorVotingStats(proposal)
@@ -162,20 +185,20 @@ class VotingResult extends React.Component {
           </QuorumInfoCol>
         </VotingResultContainer>
 
-        <VotingResultContainer>
-          <ProgressCol>
-            <Label>
-              <QuorumLabel>Time Left To End of Commit</QuorumLabel>
-            </Label>
-            <ProgressBar
-              variant="determinate"
-              value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
-            />
-          </ProgressCol>
-          <QuorumInfoCol countdown>
-            <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
-          </QuorumInfoCol>
-        </VotingResultContainer>
+        {/* {isOnProposalVoting && (
+          <VotingResultContainer>
+            <ProgressCol>
+              <Label>
+                <QuorumLabel>Time Left To End of Commit</QuorumLabel>
+              </Label>
+
+              <Countdown date={stats.commitDeadline} renderer={commitCountdownRenderer} />
+            </ProgressCol>
+            <QuorumInfoCol countdown>
+              <Countdown date={stats.commitDeadline} renderer={countdownRenderer} />
+            </QuorumInfoCol>
+          </VotingResultContainer>
+        )} */}
       </VotingResultWrapper>
     );
   }

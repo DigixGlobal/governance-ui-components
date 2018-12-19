@@ -6,7 +6,8 @@ import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 
 import { connect } from 'react-redux';
 
-import lightTheme from '../../../../theme/light';
+import Icon from '@digix/gov-ui/components/common/elements/icons/';
+import lightTheme from '@digix/gov-ui/theme/light';
 
 import {
   MenuContainer,
@@ -18,15 +19,13 @@ import {
   MenuItem,
 } from './style';
 
-import Icon from '../../elements/icons/';
-
 const mockMenu = [
-  { kind: 'home', caption: 'Home', selected: true, url: '/' },
-  { kind: 'activity', caption: 'Activity', url: '/' },
-  { kind: 'wallet', caption: 'Wallet', url: '/' },
-  { kind: 'profile', caption: 'Profile', url: '/' },
-  { kind: 'history', caption: 'Transaction History', url: '/' },
-  { kind: 'product', caption: 'Help / DAO Tour', url: '/' },
+  { kind: 'home', caption: 'Home', url: '/' },
+  { kind: 'activity', caption: 'Activity', url: '/activity' },
+  { kind: 'wallet', caption: 'Wallet', url: '/wallet' },
+  { kind: 'profile', caption: 'Profile', url: '/profile' },
+  { kind: 'history', caption: 'Transaction History', url: '/history' },
+  { kind: 'product', caption: 'Help / DAO Tour', url: '/help' },
 ];
 
 const getUserType = details => {
@@ -39,7 +38,13 @@ const getUserType = details => {
 };
 class CollapsibleMenu extends React.Component {
   render() {
-    const { defaultAddress, menuItems, theme, addressDetails } = this.props;
+    const {
+      defaultAddress,
+      menuItems,
+      theme,
+      addressDetails,
+      location: { pathname },
+    } = this.props;
 
     const menu = menuItems || mockMenu;
     return (
@@ -53,14 +58,17 @@ class CollapsibleMenu extends React.Component {
           </ProfileContainer>
         )}
         <MenuList>
-          {menu.map(item => (
-            <MenuItem key={item.caption} selected={item.selected}>
-              <Link to={item.url} href={item.url}>
-                <Icon kind={item.kind} theme={theme || lightTheme} selected={item.selected} />
-                <span>{item.caption}</span>
-              </Link>
-            </MenuItem>
-          ))}
+          {menu.map(item => {
+            const samePath = pathname.toLowerCase() === item.url.toLowerCase();
+            return (
+              <MenuItem key={item.caption} selected={samePath}>
+                <Link to={item.url} href={item.url}>
+                  <Icon kind={item.kind} theme={theme || lightTheme} selected={samePath} />
+                  <span>{item.caption}</span>
+                </Link>
+              </MenuItem>
+            );
+          })}
         </MenuList>
       </MenuContainer>
     );
@@ -73,6 +81,7 @@ CollapsibleMenu.propTypes = {
   theme: object,
   defaultAddress: object,
   addressDetails: object,
+  location: object.isRequired,
 };
 
 CollapsibleMenu.defaultProps = {

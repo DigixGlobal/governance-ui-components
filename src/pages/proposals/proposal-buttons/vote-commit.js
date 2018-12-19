@@ -15,7 +15,7 @@ class CommitVoteButton extends React.PureComponent {
       component: (
         <CommitVoteOverlay
           history={history}
-          hasVoted={hasVoted}
+          revoting={hasVoted}
           proposalId={proposalId}
           proposal={proposal}
         />
@@ -32,13 +32,9 @@ class CommitVoteButton extends React.PureComponent {
       votes,
     } = this.props;
     const vote = votes[proposal.proposalId];
-    const hasVoted = vote ? vote.votingRound[currentVotingRound].commit : false;
-    if (
-      !isParticipant ||
-      !proposal.draftVoting ||
-      proposal.votingStage !== VotingStages.commit ||
-      hasVoted
-    ) {
+    const votingRound = vote ? vote.votingRound[currentVotingRound] : undefined;
+    const hasVoted = votingRound ? votingRound.commit : false;
+    if (!isParticipant || !proposal.draftVoting || proposal.votingStage !== VotingStages.commit) {
       return null;
     }
 

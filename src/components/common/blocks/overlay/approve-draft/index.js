@@ -46,6 +46,7 @@ class ApproveProposalOverlay extends React.Component {
     showRightPanelAction({ show: false });
     showHideAlertAction({
       message: 'Proposal Approved',
+      txHash,
     });
 
     history.push('/');

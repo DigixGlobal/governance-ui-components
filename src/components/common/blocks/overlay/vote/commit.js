@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import web3Utils from 'web3-utils';
@@ -9,6 +9,7 @@ import {
   IntroContainer,
   OverlayHeader as Header,
   Note,
+  NoteContainer,
 } from '@digix/gov-ui/components/common/common-styles';
 
 import { buffer2Hex } from '@digix/gov-ui/utils/helpers';
@@ -33,6 +34,7 @@ class CommitVote extends React.Component {
       vote: false,
       hasVoted: false,
       downloaded: false,
+      changeVote: false,
       voteObject: {},
     };
   }
@@ -53,6 +55,7 @@ class CommitVote extends React.Component {
     showRightPanelAction({ show: false });
     showHideAlertAction({
       message: 'Vote Accepted',
+      txHash,
     });
 
     history.push('/');
@@ -77,6 +80,9 @@ class CommitVote extends React.Component {
     this.setState({ downloaded: true });
   };
 
+  handleChangeVote = () => {
+    this.setState({ changeVote: true });
+  };
   handleSubmit = () => {
     const { voteObject } = this.state;
     const {
@@ -128,12 +134,12 @@ class CommitVote extends React.Component {
   };
 
   render() {
-    const { hasVoted, vote, downloaded } = this.state;
-    const { proposalId, proposal } = this.props;
+    const { hasVoted, vote, downloaded, changeVote } = this.state;
+    const { proposalId, proposal, revoting } = this.props;
     const { currentVotingRound } = proposal;
     const votedYes = hasVoted && vote;
     const votedNo = hasVoted && !vote;
-
+    const showVoting = !revoting || changeVote;
     const ResponseButton = props => (
       <Button
         {...props}
@@ -153,47 +159,65 @@ class CommitVote extends React.Component {
     return (
       <IntroContainer>
         <Header uppercase>Vote on Proposal (Commit)</Header>
-        <p>
-          In the DigixDAO, we employ the Commit and Reveal scheme to keep your votes as unbiased as
-          possible. You will need to download a JSON file when deciding your choice in the vote.
-          Your choice will then be verified in the Reveal phase when you upload the same JSON file.
-        </p>
-        <Note>
-          <strong>
-            Please keep the file in a safe place as you will not be able to download it again.
-          </strong>
-        </Note>
-        <ResponseButton voteValue>Yes</ResponseButton>
-        <ResponseButton voteValue={false}>No</ResponseButton>
-        {hasVoted && !downloaded && (
-          <Button
-            kind="link"
-            primary
-            filled
-            fluid
-            onClick={this.handleDownload}
-            download={`${proposalId}-${currentVotingRound}.json`}
-            href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
-          >
-            Download JSON File
-          </Button>
+        {revoting && !changeVote && (
+          <Fragment>
+            <NoteContainer>
+              <p>
+                You have already committed for this proposal. This action will overwrite the
+                previous commit.
+              </p>
+            </NoteContainer>
+            <Button kind="round" fluid ghost primary onClick={this.handleChangeVote}>
+              Change My Vote
+            </Button>
+          </Fragment>
         )}
-        {downloaded && (
-          <Button kind="round" secondary success fluid>
-            File Downloaded
-          </Button>
-        )}
-        {downloaded && (
-          <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
-            Confirm Commit
-          </Button>
+        {showVoting && (
+          <Fragment>
+            <p>
+              In the DigixDAO, we employ the Commit and Reveal scheme to keep your votes as unbiased
+              as possible. You will need to download a JSON file when deciding your choice in the
+              vote. Your choice will then be verified in the Reveal phase when you upload the same
+              JSON file.
+            </p>
+            <Note>
+              <strong>
+                Please keep the file in a safe place as you will not be able to download it again.
+              </strong>
+            </Note>
+            <ResponseButton voteValue>Yes</ResponseButton>
+            <ResponseButton voteValue={false}>No</ResponseButton>
+            {hasVoted && !downloaded && (
+              <Button
+                kind="link"
+                primary
+                filled
+                fluid
+                onClick={this.handleDownload}
+                download={`${proposalId}-${currentVotingRound}.json`}
+                href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
+              >
+                Download JSON File
+              </Button>
+            )}
+            {downloaded && (
+              <Button kind="round" secondary success fluid>
+                File Downloaded
+              </Button>
+            )}
+            {downloaded && (
+              <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
+                Confirm Commit
+              </Button>
+            )}
+          </Fragment>
         )}
       </IntroContainer>
     );
   }
 }
 
-const { array, func, object, string } = PropTypes;
+const { array, func, object, string, bool } = PropTypes;
 
 CommitVote.propTypes = {
   addresses: array.isRequired,
@@ -204,6 +228,11 @@ CommitVote.propTypes = {
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
   web3Redux: object.isRequired,
+  revoting: bool,
+};
+
+CommitVote.defaultProps = {
+  revoting: false,
 };
 
 const mapStateToProps = state => ({

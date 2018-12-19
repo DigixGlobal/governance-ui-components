@@ -9,6 +9,7 @@ export const SyledTextArea = styled.textarea`
   width: ${props => props.width || '100%'};
   min-height: 30rem;
   outline: none;
+  resize: none;
 
   &::placeholder {
     color: ${props => props.theme.textDefault.lighter.toString()};

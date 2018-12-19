@@ -21,6 +21,7 @@ export default class Proposal extends React.Component {
 
     const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
     const canCreate = userDetails && userDetails.data.isParticipant;
+    const canLike = userDetails && userDetails.data.client;
 
     return (
       <ProposaDetaillWrapper>
@@ -56,7 +57,7 @@ export default class Proposal extends React.Component {
             <PostedBy>
               BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
             </PostedBy>
-            <Like hasVoted />
+            {canLike && <Like />}
           </ProposalFooter>
         </ProposalCard>
       </ProposaDetaillWrapper>

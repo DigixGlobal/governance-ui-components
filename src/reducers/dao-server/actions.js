@@ -9,6 +9,8 @@ export const actions = {
   GET_TRANSACION_STATUS: `${REDUX_PREFIX}GET_TRANSACION_STATUS`,
   GET_USER_PROPOSAL_LIKE_STATUS: `${REDUX_PREFIX}GET_USER_PROPOSAL_LIKE_STATUS`,
 
+  GET_PROPOSAL_LIKES: `${REDUX_PREFIX}GET_PROPOSAL_LIKES`,
+
   GET_PROPOSAL_DETAILS: `${REDUX_PREFIX}GET_PROPOSAL_DETAILS`,
   CLEAR_PROPOSAL_DETAILS: `${REDUX_PREFIX}CLEAR_PROPOSAL_DETAILS`,
 };
@@ -120,11 +122,6 @@ export function proveChallenge(payload) {
   );
 }
 
-// TODO: where is this used ?
-export function getTransactionStatus(payload) {
-  return fetchData(`${DAO_SERVER}/transaction?txhash=${payload}`, actions.GET_TRANSACION_STATUS);
-}
-
 export function getUserProposalLikeStatus(payload) {
   const { proposalId, token, client, uid } = payload;
   return fetchData(
@@ -197,6 +194,19 @@ export function getDaoProposalDetails(payload) {
     `${DAO_SERVER}/proposals/${proposalId}`,
     actions.GET_PROPOSAL_DETAILS,
     undefined,
+    authToken,
+    client,
+    uid
+  );
+}
+
+export function getProposalLikes(payload) {
+  const { client, proposals, stage, authToken, uid } = payload;
+  return sendData(
+    'GET',
+    `${DAO_SERVER}/proposals`,
+    actions.GET_PROPOSAL_DETAILS,
+    { proposal_ids: proposals, stage },
     authToken,
     client,
     uid

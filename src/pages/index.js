@@ -9,6 +9,7 @@ import DashboardStats from '../components/common/blocks/user-DAO-stats/index';
 import ProposalFilter from '../components/common/blocks/filter/index';
 
 import { getDaoDetails, getProposals } from '../reducers/info-server/actions';
+import { getProposalLikes } from '../reducers/dao-server/actions';
 
 import Snackbar from '../components/common/elements/snackbar/index';
 
@@ -83,5 +84,6 @@ export default connect(
   {
     getDaoDetailsAction: getDaoDetails,
     getProposalsAction: getProposals,
+    getProposalLikesAction: getProposalLikes,
   }
 )(LandingPage);

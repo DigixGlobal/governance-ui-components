@@ -53,7 +53,7 @@ class CommentReply extends React.Component {
   };
 
   fetchThreads = fetchParams => {
-    const { ChallengeProof } = this.props;
+    const { ChallengeProof, fetchUserPoints } = this.props;
     if (!ChallengeProof.data) {
       return null;
     }
@@ -77,6 +77,9 @@ class CommentReply extends React.Component {
 
         this.setState({ lastSeenId, comment });
         return newComments;
+      })
+      .then(() => {
+        fetchUserPoints();
       })
       .catch(() => {
         this.setError(CommentsApi.ERROR_MESSAGES.fetch);
@@ -109,7 +112,7 @@ class CommentReply extends React.Component {
   };
 
   render() {
-    const { renderThreadReplies, setError, uid } = this.props;
+    const { renderThreadReplies, setError, uid, userPoints } = this.props;
     const { comment, showEditor } = this.state;
 
     if (!comment) {
@@ -122,7 +125,7 @@ class CommentReply extends React.Component {
     return (
       <section>
         <CommentReplyPost>
-          <CommentAuthor user={comment.user} />
+          <CommentAuthor user={comment.user} userPoints={userPoints} />
           <Comment
             comment={comment}
             setError={setError}
@@ -152,10 +155,12 @@ const { func, object, string } = PropTypes;
 CommentReply.propTypes = {
   ChallengeProof: object,
   comment: object.isRequired,
+  fetchUserPoints: func.isRequired,
   renderThreadReplies: func.isRequired,
   setError: func.isRequired,
   sortBy: string.isRequired,
   uid: string.isRequired,
+  userPoints: object.isRequired,
 };
 
 CommentReply.defaultProps = {

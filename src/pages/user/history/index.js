@@ -7,6 +7,9 @@ import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
 
 import {
+  EmptyStateContainer,
+  IconContainer,
+  EmptyStateTitle,
   HistoryHeading,
   Title,
   HistoryListView,
@@ -37,42 +40,55 @@ class History extends React.Component {
     const history = Array.from(transactions.data);
     return (
       <div>
-        <div>
-          <HistoryHeading>
-            <Title>Transactions</Title>
-            <div />
-          </HistoryHeading>
+        <HistoryHeading>
+          <Title>Transactions</Title>
+          <div />
+        </HistoryHeading>
 
-          {history && history.length > 0 && (
-            <HistoryListView>
-              {history.map(transaction => {
-                const { blockNumber } = transaction;
-                const { CURRENT_BLOCK_NUMBER, BLOCK_CONFIRMATIONS } = blockConfig.data;
-                const confirmation = CURRENT_BLOCK_NUMBER - blockNumber + 1;
-                return (
-                  <HistoryCard key={transaction.id}>
-                    <TxDetails href={`${ETHERSCAN_URL}${transaction.txhash}`} target="_blank">
-                      <TxTitle>{transaction.title}</TxTitle>
-                      <TxStatus>
-                        {`${confirmation}/${BLOCK_CONFIRMATIONS} `}
-                        Confirmation(s)
-                      </TxStatus>
-                      <TxIcon
-                        pending={transaction.status === 'pending'}
-                        failed={transaction.status === 'failed'}
-                        success={transaction.status === 'confirmed'}
-                      >
-                        {transaction.status === 'pending' && <Icon kind="option" />}
-                        {transaction.status === 'failed' && <Icon kind="xmark" />}
-                        {transaction.status === 'confirmed' && <Icon kind="check" />}
-                      </TxIcon>
-                    </TxDetails>
-                  </HistoryCard>
-                );
-              })}
-            </HistoryListView>
-          )}
-        </div>
+        <EmptyStateContainer>
+          <IconContainer>
+            <Icon kind="history" width="100px" height="100px" />
+          </IconContainer>
+
+          <EmptyStateTitle>Transaction Empty</EmptyStateTitle>
+          <p>
+            Looks like there are no transactions at the moment. Please lock your DGD to continue.
+          </p>
+          <p>
+            You will need to load your wallet to view your transactions, which will allow you to
+            view and participate on all governance proposals.
+          </p>
+        </EmptyStateContainer>
+
+        {history && history.length > 0 && (
+          <HistoryListView>
+            {history.map(transaction => {
+              const { blockNumber } = transaction;
+              const { CURRENT_BLOCK_NUMBER, BLOCK_CONFIRMATIONS } = blockConfig.data;
+              const confirmation = CURRENT_BLOCK_NUMBER - blockNumber + 1;
+              return (
+                <HistoryCard key={transaction.id}>
+                  <TxDetails href={`${ETHERSCAN_URL}${transaction.txhash}`} target="_blank">
+                    <TxTitle>{transaction.title}</TxTitle>
+                    <TxStatus>
+                      {`${confirmation}/${BLOCK_CONFIRMATIONS} `}
+                      Confirmation(s)
+                    </TxStatus>
+                    <TxIcon
+                      pending={transaction.status === 'pending'}
+                      failed={transaction.status === 'failed'}
+                      success={transaction.status === 'confirmed'}
+                    >
+                      {transaction.status === 'pending' && <Icon kind="option" />}
+                      {transaction.status === 'failed' && <Icon kind="xmark" />}
+                      {transaction.status === 'confirmed' && <Icon kind="check" />}
+                    </TxIcon>
+                  </TxDetails>
+                </HistoryCard>
+              );
+            })}
+          </HistoryListView>
+        )}
       </div>
     );
   }

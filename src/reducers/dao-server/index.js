@@ -43,6 +43,12 @@ const defaultState = {
     error: null,
     fetching: null,
   },
+  LikedProposals: {
+    history: [],
+    data: undefined,
+    error: null,
+    fetching: null,
+  },
 };
 
 export default function(state = defaultState, action) {
@@ -175,6 +181,24 @@ export default function(state = defaultState, action) {
                 },
               ]
                 .concat(state.UserProposalLike.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_PROPOSAL_LIKES:
+      return {
+        ...state,
+        LikedProposals: {
+          ...state.LikedProposals,
+          ...action.payload,
+          history: !action.payload
+            ? state.LikedProposals.history
+            : [
+                {
+                  ...action.payload,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.LikedProposals.history)
                 .slice(0, 100),
         },
       };

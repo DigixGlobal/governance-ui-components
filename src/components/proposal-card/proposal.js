@@ -17,7 +17,7 @@ import {
 
 export default class Proposal extends React.Component {
   render() {
-    const { details, userDetails } = this.props;
+    const { details, userDetails, liked } = this.props;
 
     const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
     const canCreate = userDetails && userDetails.data.isParticipant;
@@ -57,7 +57,7 @@ export default class Proposal extends React.Component {
             <PostedBy>
               BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
             </PostedBy>
-            {canLike && <Like />}
+            {canLike && <Like hasVoted={liked} />}
           </ProposalFooter>
         </ProposalCard>
       </ProposaDetaillWrapper>
@@ -65,7 +65,13 @@ export default class Proposal extends React.Component {
   }
 }
 
+const { bool, object } = PropTypes;
 Proposal.propTypes = {
-  details: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
+  details: object.isRequired,
+  userDetails: object.isRequired,
+  liked: bool,
+};
+
+Proposal.defaultProps = {
+  liked: false,
 };

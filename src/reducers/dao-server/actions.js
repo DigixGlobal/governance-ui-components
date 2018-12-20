@@ -75,14 +75,15 @@ function sendData(method, url, type, data, authToken, client, uid) {
       referrer: 'no-referrer', // no-referrer, *client
       body: JSON.stringify(data), // body data type must match "Content-Type" header
     })
-      .then(res =>
-        res
+      .then(res => {
+        console.log(res);
+        return res
           .json()
           .then(json => ({ json, res }))
           .catch(() => {
             throw res.statusText;
-          })
-      )
+          });
+      })
       .then(({ json, res }) => {
         if (json.result) {
           return dispatch({
@@ -201,12 +202,12 @@ export function getDaoProposalDetails(payload) {
 }
 
 export function getProposalLikes(payload) {
-  const { client, proposals, stage, authToken, uid } = payload;
+  const { client, stage, authToken, uid } = payload;
   return sendData(
     'GET',
-    `${DAO_SERVER}/proposals`,
-    actions.GET_PROPOSAL_DETAILS,
-    { proposal_ids: proposals, stage },
+    stage ? `${DAO_SERVER}/proposals?stage=${stage}&liked` : `${DAO_SERVER}/proposals?liked`,
+    actions.GET_PROPOSAL_LIKES,
+    undefined,
     authToken,
     client,
     uid

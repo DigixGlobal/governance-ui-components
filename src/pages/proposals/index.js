@@ -232,7 +232,10 @@ class Proposal extends React.Component {
           daoInfo={daoInfo}
         />
         <ProjectDetails project={dijixObject} />
-        <Milestones milestones={dijixObject.milestones || []} />
+        <Milestones
+          milestones={dijixObject.milestones || []}
+          milestoneFundings={proposalVersion.milestoneFundings}
+        />
         <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>
     );

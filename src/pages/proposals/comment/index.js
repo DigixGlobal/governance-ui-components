@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Button, Select } from '@digix/gov-ui/components/common/elements/index';
 import {
+  Title,
   CommentFilter,
   CommentList,
   ThreadedComments,
@@ -158,6 +159,7 @@ class CommentThread extends React.Component {
 
     return (
       <ThreadedComments>
+        <Title>Discussions</Title>
         <CommentTextEditor uid={uid} addComment={this.addThread} />
         {noComments && <p>There are no comments to show.</p>}
         {!noComments && (

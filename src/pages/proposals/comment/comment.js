@@ -57,7 +57,7 @@ class Comment extends React.Component {
 
     return (
       <article className="comment">
-        <CommentPost>
+        <CommentPost alertMessage>
           {body || this.DELETE_MESSAGE}
           {body && (
             <ActionBar>

@@ -107,6 +107,7 @@ export const Title = styled(H1)`
 
 export const SubTitle = styled(H2)`
   font-family: 'Futura PT Medium';
+  font-size: 2rem;
   color: ${props => props.theme.textPrimary.light.toString()};
 `;
 
@@ -155,7 +156,7 @@ export const DetailsContainer = styled.div``;
 export const ShortDescription = styled.div`
   border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   padding: 3rem 0 2em 0;
-  margin-bottom: 3rem;
+  margin-bottom: 6rem;
 `;
 
 export const ProjectSummary = styled.div`
@@ -175,7 +176,6 @@ export const TrackActivity = styled.label`
 export const ImageHolder = styled.div`
   border-radius: 3px;
   min-width: 500px;
-  height: 40rem;
   padding: 0rem;
   overflow: auto;
   & > img {
@@ -186,10 +186,12 @@ export const ImageHolder = styled.div`
 `;
 
 export const Details = styled.div`
-  padding-top: 2rem;
+  margin-bottom: 6rem;
 `;
 
-export const MilestonesContainer = styled.div``;
+export const MilestonesContainer = styled.div`
+  margin-bottom: 6rem;
+`;
 
 export const VotingResultWrapper = styled.div`
   ${Container};

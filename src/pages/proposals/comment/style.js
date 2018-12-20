@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { H2 } from '../../../components/common/common-styles';
+import { Button, TextArea } from '../../../components/common/elements/index';
 
 export const CommentFilter = styled.div`
   border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
@@ -9,7 +10,7 @@ export const CommentFilter = styled.div`
 `;
 
 export const Author = styled.div`
-  margin: 2rem 0;
+  margin-top: 2rem;
 
   span {
     font-family: 'Futura PT Medium';
@@ -31,32 +32,32 @@ export const ParentCommentItem = styled.div`
 
 export const EditorContainer = styled.div`
   position: relative;
-  & > button {
-    background: #fff;
-    border-width: 1px;
-    position: absolute;
-    bottom: 0;
-    padding: 0.8rem 1rem;
-    margin: 0.6rem 2rem;
-    right: 0;
-  }
 `;
 
-export const CommentEditor = styled.div`
-  margin-bottom: 3rem;
-  display: flex;
-  flex-direction: column;
+export const CommentEditor = styled.div``;
 
-  & > div:last-child {
-    display: flex;
-    flex-direction: column-reverse;
+export const CommentTextArea = styled(TextArea)`
+  height: 15rem;
+`;
 
-    & > div:last-child {
-      border-bottom: 0px;
-      border-radius: 0;
-      border-top: 1px solid #ccc !important;
-    }
-  }
+export const PostCommentButton = styled(Button)`
+  margin-left: 0;
+  color: ${props => props.theme.buttonTextPrimaryReverse.toString()};
+  background-color: ${props => props.theme.buttonBgPrimary.default.toString()};
+
+  ${props =>
+    props.disabled &&
+    css`
+      border-width: 1px;
+      background-color: transparent;
+      border-color: ${props.theme.buttonBorderPrimary.toString()};
+      color: ${props.theme.buttonTextPrimary.toString()};
+
+      &:hover {
+        border-color: ${props.theme.buttonBorderPrimary.toString()};
+        color: ${props.theme.buttonTextPrimary.toString()};
+      }
+    `};
 `;
 
 export const UserInfo = styled.div`
@@ -69,16 +70,37 @@ export const UserInfo = styled.div`
 `;
 
 export const CommentPost = styled.div`
-  background: ${props => props.theme.backgroundDefault.default.toString()};
-  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  background: ${props =>
+    props.alertMessage
+      ? props.theme.backgroundTertiary.lightest.toString()
+      : props.theme.backgroundDefault.default.toString()};
+  border: 1px solid
+    ${props =>
+      props.alertMessage
+        ? props.theme.backgroundTertiary.lighter.toString()
+        : props.theme.borderColor.lighter.toString()};
   border-radius: 4px;
-  padding: 4rem 4rem 3rem 4rem;
+
   box-shadow: ${props => props.theme.boxShadow};
+  color: ${props =>
+    props.alertMessage
+      ? props.theme.textDefault.light.toString()
+      : props.theme.textDefault.default.toString()};
+  padding: 2rem 3rem;
 `;
 
 export const ActionBar = styled.div`
   margin-top: 2rem;
   margin-left: -1rem;
+
+  button {
+    margin: 1rem 0;
+    margin-bottom: -1rem;
+
+    &:first-child {
+      margin-left: -1rem;
+    }
+  }
 `;
 
 export const CommentReplyPost = styled.div`

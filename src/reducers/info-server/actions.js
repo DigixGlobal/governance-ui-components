@@ -45,7 +45,6 @@ export function getDaoDetails() {
 }
 
 export function getAddressDetails(address) {
-  console.log({ address });
   return fetchData(`${INFO_SERVER}/address/${address}`, actions.GET_ADDRESS_DETAILS);
 }
 

@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, TextArea } from '@digix/gov-ui/components/common/elements/index';
 import {
   Author,
   CommentEditor,
+  CommentTextArea,
   EditorContainer,
+  PostCommentButton,
 } from '@digix/gov-ui/pages/proposals/comment/style';
 
 export default class CommentTextEditor extends React.Component {
@@ -42,24 +43,24 @@ export default class CommentTextEditor extends React.Component {
 
     return (
       <EditorContainer>
-        <Button
-          kind="round"
-          primary
-          ghost
-          disabled={isContentEmpty}
-          onClick={() => this.createComment()}
-        >
-          Comment
-        </Button>
         <CommentEditor>
           <Author>
             Comment as <span>{uid}</span>
           </Author>
-          <TextArea
+          <CommentTextArea
             onChange={this.onChange}
             placeholder="Write your comment here."
             value={content}
           />
+          <PostCommentButton
+            kind="round"
+            primary
+            ghost
+            disabled={isContentEmpty}
+            onClick={() => this.createComment()}
+          >
+            Post Comment
+          </PostCommentButton>
         </CommentEditor>
       </EditorContainer>
     );

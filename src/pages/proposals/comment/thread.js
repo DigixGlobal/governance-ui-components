@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Comment from '@digix/gov-ui/pages/proposals/comment/comment';
-import CommentAuthor from '@digix/gov-ui/pages/proposals/comment/author';
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
 import CommentReply from '@digix/gov-ui/pages/proposals/comment/reply';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
@@ -149,8 +148,13 @@ class ParentThread extends React.Component {
 
     return (
       <ParentCommentItem>
-        <CommentAuthor user={thread.user} userPoints={userPoints} />
-        <Comment comment={thread} setError={setError} toggleEditor={this.toggleEditor} uid={uid} />
+        <Comment
+          comment={thread}
+          setError={setError}
+          toggleEditor={this.toggleEditor}
+          uid={uid}
+          userPoints={userPoints}
+        />
         {showEditor && (
           <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} uid={uid} />
         )}

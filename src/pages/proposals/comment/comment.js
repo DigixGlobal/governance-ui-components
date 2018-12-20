@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import CommentAuthor from '@digix/gov-ui/pages/proposals/comment/author';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { ActionBar, CommentPost } from '@digix/gov-ui/pages/proposals/comment/style';
 import { CommentsApi } from '@digix/gov-ui/api/comments';
@@ -50,14 +51,16 @@ class Comment extends React.Component {
   };
 
   render() {
-    const { toggleEditor, uid } = this.props;
+    const { toggleEditor, uid, userPoints } = this.props;
     const { comment } = this.state;
     const { body, liked, user } = comment;
     const isAuthor = uid === user.address;
+    const isDeleted = !body;
 
     return (
       <article className="comment">
-        <CommentPost>
+        <CommentAuthor hide={isDeleted} user={user} userPoints={userPoints} />
+        <CommentPost deleted={isDeleted}>
           {body || this.DELETE_MESSAGE}
           {body && (
             <ActionBar>
@@ -92,6 +95,7 @@ Comment.propTypes = {
   setError: func.isRequired,
   toggleEditor: func,
   uid: string.isRequired,
+  userPoints: object.isRequired,
 };
 
 Comment.defaultProps = {

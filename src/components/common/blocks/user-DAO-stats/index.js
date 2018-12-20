@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { Container, Point } from './style';
 
 class UserDAOStats extends React.Component {
   render() {
     const { stats } = this.props;
+    const stake = truncateNumber(stats.data.lockedDgdStake || 0);
 
     return (
       <Container>
@@ -18,7 +20,7 @@ class UserDAOStats extends React.Component {
         </Point>
         <Point>
           My Stake
-          <span>{stats.data.lockedDgdStake || 0}</span>
+          <span>{stake}</span>
         </Point>
       </Container>
     );

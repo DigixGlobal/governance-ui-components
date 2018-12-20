@@ -56,7 +56,7 @@ class History extends React.Component {
           </p>
           <p>
             You will need to load your wallet to view your transactions, which will allow you to
-            view and participate on all governance proposals.
+            view and participate on all governance proposals. Load your wallet to continue.
           </p>
         </EmptyStateContainer>
 

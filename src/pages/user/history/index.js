@@ -74,14 +74,16 @@ class History extends React.Component {
             {history.map(transaction => {
               const { blockNumber } = transaction;
               const { CURRENT_BLOCK_NUMBER, BLOCK_CONFIRMATIONS } = blockConfig.data;
-              const confirmation = CURRENT_BLOCK_NUMBER - blockNumber + 1;
+              const confirmation = CURRENT_BLOCK_NUMBER + BLOCK_CONFIRMATIONS - (blockNumber + 1);
+              const showConfirmations = transaction.status === 'seen';
               return (
                 <HistoryCard key={transaction.id}>
                   <TxDetails href={`${ETHERSCAN_URL}${transaction.txhash}`} target="_blank">
                     <TxTitle>{transaction.title}</TxTitle>
                     <TxStatus>
-                      {`${confirmation}/${BLOCK_CONFIRMATIONS} `}
-                      Confirmation(s)
+                      {showConfirmations
+                        ? `${confirmation}/${BLOCK_CONFIRMATIONS} Confirmation(s)`
+                        : null}
                     </TxStatus>
                     <TxIcon
                       pending={transaction.status === 'pending'}

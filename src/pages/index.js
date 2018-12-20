@@ -57,7 +57,7 @@ class LandingPage extends Component {
 
     return getProposalLikesAction({
       stage,
-      token: ChallengeProof.data['access-token'],
+      authToken: ChallengeProof.data['access-token'],
       client: ChallengeProof.data.client,
       uid: ChallengeProof.data.uid,
     });
@@ -75,7 +75,7 @@ class LandingPage extends Component {
     }
     const checkIfLiked = proposalId => {
       if (!LikedProposals.data) return false;
-      const proposal = LikedProposals.find(p => p.proposalId === proposalId);
+      const proposal = LikedProposals.data.find(p => p.proposalId === proposalId);
       if (!proposal) return false;
       return proposal.liked;
     };

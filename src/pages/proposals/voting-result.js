@@ -36,7 +36,6 @@ const commitCountdownRenderer = (props) => {
   // eslint-disable-next-line
   const {date, total, completed, baseLine } = props;
   const duration = date - baseLine;
-  // console.log({ duration, total });
   if (completed) {
     return <ProgressBar variant="determinate" value={100} />;
   }

@@ -21,7 +21,7 @@ export default class Proposal extends React.Component {
 
     const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
     const canCreate = userDetails && userDetails.data.isParticipant;
-    const canLike = userDetails && userDetails.data.client;
+    const canLike = userDetails && userDetails.data.address;
 
     return (
       <ProposaDetaillWrapper>

@@ -176,7 +176,7 @@ class EditProposal extends React.Component {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
+    const onTransactionAttempt = txHash => {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -186,8 +186,15 @@ class EditProposal extends React.Component {
           uid: ChallengeProof.data.uid,
         });
       }
-      if (this.props.history) this.props.history.push('/');
-      this.props.showHideAlert({ message: 'Proposal Updated', txHash });
+    };
+
+    const onTransactionSuccess = txHash => {
+      this.props.showHideAlert({
+        message: 'Proposal Updated',
+        txHash,
+      });
+
+      this.props.history.push('/');
     };
 
     this.createAttestation().then(ipfsHash => {
@@ -202,10 +209,9 @@ class EditProposal extends React.Component {
           toBigNumber(parseFloat(form.finalReward, 0) * 1e18),
           web3Params,
         ],
-        onSuccess: txHash => {
-          onSuccess(txHash);
-        },
         onFailure: this.setError,
+        onFinally: txHash => onTransactionAttempt(txHash),
+        onSuccess: txHash => onTransactionSuccess(txHash),
         network,
         web3Params,
         ui,

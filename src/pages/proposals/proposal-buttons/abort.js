@@ -53,7 +53,7 @@ class AbortProjectButton extends React.PureComponent {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
+    const onTransactionAttempt = txHash => {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -63,8 +63,15 @@ class AbortProjectButton extends React.PureComponent {
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Proposal Aborted', txHash });
-      if (this.props.history) this.props.history.push('/');
+    };
+
+    const onTransactionSuccess = txHash => {
+      this.props.showHideAlert({
+        message: 'Proposal Aborted',
+        txHash,
+      });
+
+      this.props.history.push('/');
     };
 
     const payload = {
@@ -72,10 +79,9 @@ class AbortProjectButton extends React.PureComponent {
       contract,
       func: contract.closeProposal,
       params: [proposalId],
-      onSuccess: txHash => {
-        onSuccess(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => onTransactionAttempt(txHash),
+      onSuccess: txHash => onTransactionSuccess(txHash),
       network,
       web3Params,
       ui,

@@ -5,6 +5,7 @@ import { toBigNumber, parseBigNumber } from 'spectrum-lightsuite/src/helpers/str
 
 import { StatsWrapper, Stats, StatItem } from '@digix/gov-ui/components/proposal-card/style';
 import { VotingStages } from '@digix/gov-ui/constants';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 export default class ProposalCardStats extends React.Component {
   getStats = proposal => {
@@ -69,12 +70,7 @@ export default class ProposalCardStats extends React.Component {
 
     const { approvalRating, participantCount } = this.getStats(details);
     let funding = details.proposalVersions[0].totalFunding / 1e18;
-    // const participantCount = draftVoting ? draftVoting.totalVoterCount : 0;
-    // const participantCount = draftVoting ? draftVoting.totalVoterCount : 0;
-    // let funding = details.proposalVersions[0].totalFunding / 1e18;
-    if (funding % 1 !== 0) {
-      funding = funding.toFixed(3);
-    }
+    funding = truncateNumber(funding);
 
     return (
       <StatsWrapper>

@@ -47,7 +47,7 @@ class History extends React.Component {
 
         <EmptyStateContainer>
           <IconContainer>
-            <Icon kind="history" width="100px" height="100px" />
+            <Icon kind="history" width="80px" height="80px" />
           </IconContainer>
 
           <EmptyStateTitle>Transaction Empty</EmptyStateTitle>

@@ -165,7 +165,7 @@ class CreateProposal extends React.Component {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
+    const onTransactionAttempt = txHash => {
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -175,8 +175,15 @@ class CreateProposal extends React.Component {
           uid: challengeProof.data.uid,
         });
       }
-      if (this.props.history) this.props.history.push('/');
-      this.props.showHideAlert({ message: 'Proposal Created', txHash });
+    };
+
+    const onTransactionSuccess = txHash => {
+      this.props.showHideAlert({
+        message: 'Proposal Created',
+        txHash,
+      });
+
+      this.props.history.push('/');
     };
 
     this.setError();
@@ -187,10 +194,9 @@ class CreateProposal extends React.Component {
         contract,
         func: contract.submitPreproposal,
         params: [ipfsHash, funds, finalReward, web3Params],
-        onSuccess: txHash => {
-          onSuccess(txHash);
-        },
         onFailure: this.setError,
+        onFinally: txHash => onTransactionAttempt(txHash),
+        onSuccess: txHash => onTransactionSuccess(txHash),
         network,
         web3Params,
         ui,

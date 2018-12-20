@@ -8,7 +8,7 @@ export const TextArea = styled.textarea`
   padding: 2rem;
   width: ${props => props.width || '100%'};
   min-height: 20rem;
-  outline: none;
+  outline: none
   resize: none;
 
   &::placeholder {

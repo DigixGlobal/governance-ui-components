@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Comment from '@digix/gov-ui/pages/proposals/comment/comment';
-import CommentAuthor from '@digix/gov-ui/pages/proposals/comment/author';
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { CommentReplyPost } from '@digix/gov-ui/pages/proposals/comment/style';
@@ -125,12 +124,12 @@ class CommentReply extends React.Component {
     return (
       <section>
         <CommentReplyPost>
-          <CommentAuthor user={comment.user} userPoints={userPoints} />
           <Comment
             comment={comment}
             setError={setError}
             toggleEditor={this.toggleEditor}
             uid={uid}
+            userPoints={userPoints}
           />
           {showEditor && (
             <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} uid={uid} />

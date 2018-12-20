@@ -7,6 +7,7 @@ import {
   CommentFilter,
   CommentList,
   ThreadedComments,
+  Title,
 } from '@digix/gov-ui/pages/proposals/comment/style';
 
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
@@ -188,6 +189,7 @@ class CommentThread extends React.Component {
 
     return (
       <ThreadedComments>
+        <Title>Discussions</Title>
         <CommentTextEditor uid={uid} addComment={this.addThread} />
         {noComments && <p>There are no comments to show.</p>}
         {!noComments && (

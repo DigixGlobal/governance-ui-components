@@ -14,6 +14,8 @@ import {
   clearDaoProposalDetails,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+
 import PreviousVersion from './previous';
 import NextVersion from './next';
 
@@ -153,7 +155,11 @@ class Proposal extends React.Component {
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
+
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
+    const funding = truncateNumber(proposalVersion.totalFunding);
+    const reward = truncateNumber(proposalVersion.finalReward);
+
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -202,7 +208,7 @@ class Proposal extends React.Component {
             <FundingStatus>
               Funding
               <span>
-                {proposalVersion.totalFunding}
+                {funding}
                 ETH
               </span>
             </FundingStatus>
@@ -210,7 +216,7 @@ class Proposal extends React.Component {
               Milestones <span>{dijixObject.milestones.length || 0}</span>
             </MilestonesStatus>
             <Reward>
-              Reward <span>{proposalVersion.finalReward} ETH</span>
+              Reward <span>{reward} ETH</span>
             </Reward>
             <UpvoteStatus>
               <Like

@@ -21,7 +21,7 @@ class Intro extends React.Component {
           interact with your DGD.
         </p>
 
-        <Button kind="round" primary filled fluid onClick={this.handleButtonClick}>
+        <Button kind="round" secondary fluid large onClick={this.handleButtonClick}>
           APPROVE THE INTERACTION
         </Button>
       </IntroContainer>

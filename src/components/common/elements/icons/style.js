@@ -15,8 +15,8 @@ export const Container = styled.div`
       }
 
       return props.selected
-        ? props.theme.textSecondary.default.toString()
-        : props.theme.iconColor.toString();
+        ? props.theme.iconSecondaryColor.default.toString()
+        : props.theme.iconColor.light.toString();
     }};
     width: 100%;
     height: 100%;

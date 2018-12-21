@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from '../../../components/common/elements/index';
+import { Button } from '../../components/common/elements/index';
 
 export const EmptyStateContainer = styled.div`
   color: ${props => props.theme.textDefault.default.toString()};

@@ -255,14 +255,14 @@ class CreateProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button secondary onClick={this.handleShowPreview}>
+            <Button tertiary onClick={this.handleShowPreview}>
               Preview
             </Button>
-            <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
+            <Button disabled={!canMovePrevious} primary onClick={this.onPreviousButtonClick}>
               Previous
             </Button>
             {canMoveNext && (
-              <Button disabled={!canMoveNext} primary ghost onClick={this.onNextButtonClick}>
+              <Button disabled={!canMoveNext} primary onClick={this.onNextButtonClick}>
                 Next
               </Button>
             )}

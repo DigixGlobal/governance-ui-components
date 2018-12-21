@@ -194,7 +194,7 @@ class CommitVote extends React.Component {
               <Button
                 kind="link"
                 primary
-                filled
+                large
                 fluid
                 onClick={this.handleDownload}
                 download={`${proposalId}-${currentVotingRound}.json`}
@@ -209,7 +209,7 @@ class CommitVote extends React.Component {
               </Button>
             )}
             {downloaded && (
-              <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
+              <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
                 Confirm Commit
               </Button>
             )}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from '../../../common/elements/buttons/index'; // '../../elements/buttons';
 import { IntroContainer, CloseButton, OverlayHeader as Header, Link } from '../../common-styles';
+import { ActionContainer } from './style';
 import Icon from '../../../common/elements/icons';
 
 import { Stage } from './constants';
@@ -26,9 +27,11 @@ class Intro extends React.Component {
           You will need to load a wallet and lock some DGD in before you can browse projects and
           vote in DigixDAO
         </p>
-        <Button kind="round" primary filled fluid onClick={this.handleButtonClick}>
-          load wallet
-        </Button>
+        <ActionContainer>
+          <Button kind="round" secondary fluid onClick={this.handleButtonClick}>
+            load wallet
+          </Button>
+        </ActionContainer>
 
         <p>
           <Link href="#" secondary>

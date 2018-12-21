@@ -37,22 +37,22 @@ export const CommentEditor = styled.div``;
 
 export const CommentTextArea = styled(TextArea)`
   height: 15rem;
+  resize: none;
 `;
 
 export const PostCommentButton = styled(Button)`
   margin-left: 0;
-  color: ${props => props.theme.buttonTextPrimaryReverse.toString()};
-  background-color: ${props => props.theme.buttonBgPrimary.default.toString()};
   ${props =>
     props.disabled &&
     css`
       border-width: 1px;
       background-color: transparent;
-      border-color: ${props.theme.buttonBorderPrimary.toString()};
-      color: ${props.theme.buttonTextPrimary.toString()};
+      border-color: ${props.theme.buttonBorderDisabled.light.toString()};
+      color: ${props.theme.buttonTextDefault.light.toString()};
+
       &:hover {
-        border-color: ${props.theme.buttonBorderPrimary.toString()};
-        color: ${props.theme.buttonTextPrimary.toString()};
+        border-color: ${props.theme.buttonBorderDisabled.light.toString()};
+        color: ${props.theme.buttonTextDefault.light.toString()};
       }
     `};
 `;
@@ -82,17 +82,20 @@ export const CommentPost = styled.div`
       ? props.theme.textDefault.light.toString()
       : props.theme.textDefault.default.toString()};
   padding: 2rem 3rem;
+  margin-top: ${props => (props.deleted ? 2 : 0)}rem;
 `;
 
 export const ActionBar = styled.div`
+  border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   margin-top: 2rem;
   margin-left: -1rem;
-  button {
-    margin: 1rem 0;
-    margin-bottom: -1rem;
-    &:first-child {
-      margin-left: -1rem;
-    }
+`;
+
+export const ActionCommentButton = styled(Button)`
+  margin: 1rem 0;
+  margin-bottom: -1rem;
+  &:first-child {
+    margin-left: -1rem;
   }
 `;
 

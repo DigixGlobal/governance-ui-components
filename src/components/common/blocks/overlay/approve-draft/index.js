@@ -114,10 +114,9 @@ class ApproveProposalOverlay extends React.Component {
       <Button
         {...props}
         kind="round"
+        secondary
+        large
         fluid
-        ghost
-        primary
-        xlarge
         yes={props.voteValue}
         no={!props.voteValue}
         confirmedYes={votedYes && props.voteValue}

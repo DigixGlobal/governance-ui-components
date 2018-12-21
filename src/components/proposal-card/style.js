@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Button } from '../common/elements/index';
 
 export const ProposalWrapper = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
@@ -194,3 +195,8 @@ export const CallToAction = styled.div``;
 //   height: 0.8rem;
 //   background-color: #243961;
 // `;
+
+export const LikeButton = styled(Button)`
+  margin: 0;
+  padding: 0;
+`;

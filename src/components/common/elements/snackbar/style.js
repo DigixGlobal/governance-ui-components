@@ -12,6 +12,7 @@ export const SnackbarContainer = styled.div`
 
   width: 60%;
   margin-bottom: 5rem;
+  z-index: 999;
 `;
 export const SnackbarDesc = styled.div`
   color: ${props => props.theme.textReverse.default.toString()};

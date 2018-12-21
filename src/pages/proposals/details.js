@@ -40,6 +40,7 @@ export default class ProjectDetails extends React.Component {
     const hasImages = project.images && project.images.length > 0;
     return (
       <DetailsContainer>
+        <SubTitle>Short Description</SubTitle>
         <ShortDescription>
           {project.description
             ? project.description

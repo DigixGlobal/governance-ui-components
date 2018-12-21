@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Comment from '@digix/gov-ui/pages/proposals/comment/comment';
-import CommentAuthor from '@digix/gov-ui/pages/proposals/comment/author';
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
 import CommentReply from '@digix/gov-ui/pages/proposals/comment/reply';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
@@ -48,7 +47,7 @@ class ParentThread extends React.Component {
   };
 
   fetchThreads = fetchParams => {
-    const { ChallengeProof } = this.props;
+    const { ChallengeProof, fetchUserPoints } = this.props;
     if (!ChallengeProof.data) {
       return null;
     }
@@ -72,6 +71,9 @@ class ParentThread extends React.Component {
 
         this.setState({ lastSeenId, thread });
         return newComments;
+      })
+      .then(() => {
+        fetchUserPoints();
       })
       .catch(() => {
         this.setError(CommentsApi.ERROR_MESSAGES.fetch);
@@ -104,7 +106,7 @@ class ParentThread extends React.Component {
   };
 
   renderThreadReplies = replies => {
-    const { setError, sortBy, uid } = this.props;
+    const { fetchUserPoints, setError, sortBy, uid, userPoints } = this.props;
     if (!replies) {
       return null;
     }
@@ -112,11 +114,13 @@ class ParentThread extends React.Component {
     const replyElements = replies.data.map(comment => (
       <CommentReply
         comment={comment}
+        fetchUserPoints={fetchUserPoints}
         key={comment.id}
         setError={setError}
         sortBy={sortBy}
         renderThreadReplies={this.renderThreadReplies}
         uid={uid}
+        userPoints={userPoints}
       />
     ));
 
@@ -136,7 +140,7 @@ class ParentThread extends React.Component {
   };
 
   render() {
-    const { setError, uid } = this.props;
+    const { setError, uid, userPoints } = this.props;
     const { thread, showEditor } = this.state;
     if (!thread) {
       return null;
@@ -144,8 +148,13 @@ class ParentThread extends React.Component {
 
     return (
       <ParentCommentItem>
-        <CommentAuthor user={thread.user} />
-        <Comment comment={thread} setError={setError} toggleEditor={this.toggleEditor} uid={uid} />
+        <Comment
+          comment={thread}
+          setError={setError}
+          toggleEditor={this.toggleEditor}
+          uid={uid}
+          userPoints={userPoints}
+        />
         {showEditor && (
           <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} uid={uid} />
         )}
@@ -159,10 +168,12 @@ const { func, object, string } = PropTypes;
 
 ParentThread.propTypes = {
   ChallengeProof: object,
+  fetchUserPoints: func.isRequired,
   setError: func.isRequired,
   sortBy: string.isRequired,
   thread: object.isRequired,
   uid: string.isRequired,
+  userPoints: object.isRequired,
 };
 
 ParentThread.defaultProps = {

@@ -30,8 +30,8 @@ class ApproveProposalOverlay extends React.Component {
     };
   }
 
-  onSuccessfulTransaction = txHash => {
-    const { ChallengeProof, history, showHideAlertAction, showRightPanelAction } = this.props;
+  onTransactionAttempt = txHash => {
+    const { ChallengeProof, showRightPanelAction } = this.props;
 
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
@@ -44,6 +44,10 @@ class ApproveProposalOverlay extends React.Component {
     }
 
     showRightPanelAction({ show: false });
+  };
+
+  onTransactionSuccess = txHash => {
+    const { history, showHideAlertAction } = this.props;
     showHideAlertAction({
       message: 'Proposal Approved',
       txHash,
@@ -53,8 +57,7 @@ class ApproveProposalOverlay extends React.Component {
   };
 
   setError = error => {
-    const message = JSON.stringify((error && error.message) || error);
-    return this.props.showHideAlert({ message });
+    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
   };
 
   setVote(vote) {
@@ -91,10 +94,9 @@ class ApproveProposalOverlay extends React.Component {
       contract,
       func: contract.voteOnDraft,
       params: [proposalId, this.state.vote],
-      onSuccess: txHash => {
-        this.onSuccessfulTransaction(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => this.onTransactionAttempt(txHash),
+      onSuccess: txHash => this.onTransactionSuccess(txHash),
       network,
       web3Params,
       ui,

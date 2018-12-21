@@ -25,28 +25,21 @@ const EMPTY_PROGRESS_BAR_VALUE = '0';
 // eslint-disable-next-line
 const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
   if (completed) {
-    return `Voting is over!`;
+    return <span>Voting is over!</span>;
   }
 
   return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
 };
 
 // eslint-disable-next-line
-const commitCountdownRenderer = ({total, days, hours, minutes, seconds, completed }) => {
+const commitCountdownRenderer = (props) => {
+  // eslint-disable-next-line
+  const {date, total, completed, baseLine } = props;
+  const duration = date - baseLine;
   if (completed) {
-    return `Voting is over!`;
+    return <ProgressBar variant="determinate" value={100} />;
   }
-  const currentDate = Date.now();
-  const deadLine = currentDate + total;
-  console.log(total);
-  // return (
-  //   <ProgressBar
-  //     variant="determinate"
-  //     value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
-  //   />
-  // );
-
-  return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
+  return <ProgressBar variant="determinate" value={((duration - total) / duration) * 100} />;
 };
 
 class VotingResult extends React.Component {
@@ -93,7 +86,7 @@ class VotingResult extends React.Component {
     const { currentVotingRound } = proposal;
     const currentRound = proposal.votingRounds[currentVotingRound];
 
-    const commitDeadline = new Date(currentRound.commitDeadline * 100);
+    const commitDeadline = new Date(currentRound.commitDeadline * 1000);
     const approvalDeadline = new Date(currentRound.revealDeadline * 1000);
 
     const quorum = parseBigNumber(currentRound.quorum, 0, false);
@@ -185,20 +178,24 @@ class VotingResult extends React.Component {
           </QuorumInfoCol>
         </VotingResultContainer>
 
-        {/* {isOnProposalVoting && (
+        {isOnProposalVoting && (
           <VotingResultContainer>
             <ProgressCol>
               <Label>
                 <QuorumLabel>Time Left To End of Commit</QuorumLabel>
               </Label>
 
-              <Countdown date={stats.commitDeadline} renderer={commitCountdownRenderer} />
+              <Countdown
+                date={stats.commitDeadline}
+                baseLine={Date.now()}
+                renderer={props => commitCountdownRenderer(props)}
+              />
             </ProgressCol>
             <QuorumInfoCol countdown>
-              <Countdown date={stats.commitDeadline} renderer={countdownRenderer} />
+              <Countdown date={new Date(stats.commitDeadline)} renderer={countdownRenderer} />
             </QuorumInfoCol>
           </VotingResultContainer>
-        )} */}
+        )}
       </VotingResultWrapper>
     );
   }

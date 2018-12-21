@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 
 import PropTypes, { array } from 'prop-types';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
@@ -111,12 +112,7 @@ class LockDgd extends React.Component {
         (startOfNextQuarter - startOfMainphase);
     }
 
-    if (stake % 1 !== 0) {
-      // truncate to two decimal points instead of rounding with Number::toFixed
-      stake = Math.floor(stake * 100) / 100;
-    }
-
-    return stake;
+    return truncateNumber(stake);
   };
 
   setError = error =>
@@ -163,7 +159,7 @@ class LockDgd extends React.Component {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
+    const onTransactionAttempt = txHash => {
       if (challengeProof.data) {
         this.setState({ txHash, dgd: undefined }, () => {
           sendTransactionToDaoServerAction({
@@ -184,10 +180,8 @@ class LockDgd extends React.Component {
       contract,
       func: contract.lockDGD,
       params: [dgd * 1e9],
-      onSuccess: txHash => {
-        onSuccess(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => onTransactionAttempt(txHash),
       network,
       web3Params,
       ui,

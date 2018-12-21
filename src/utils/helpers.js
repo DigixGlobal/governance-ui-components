@@ -1,4 +1,5 @@
 import multihash from '@digix/multi-hash';
+import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
 export function encodeHash(hash) {
   // eslint-disable-line import/prefer-default-export
@@ -25,3 +26,12 @@ export function dgxHashToIPFSHash(string) {
 
 export const buffer2Hex = buffer =>
   Array.prototype.map.call(new Uint8Array(buffer), x => `00${x.toString(16)}`.slice(-2)).join('');
+
+export const truncateNumber = number => {
+  let truncatedNumber = parseBigNumber(number, 0, false);
+  if (truncatedNumber % 1 !== 0) {
+    truncatedNumber = Math.floor(truncatedNumber * 1000) / 1000;
+  }
+
+  return truncatedNumber;
+};

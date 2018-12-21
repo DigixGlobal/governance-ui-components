@@ -14,6 +14,8 @@ import {
   clearDaoProposalDetails,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+
 import PreviousVersion from './previous';
 import NextVersion from './next';
 
@@ -65,13 +67,12 @@ class Proposal extends React.Component {
       addressDetails,
     } = this.props;
     if (!challengeProof.data) history.push('/');
-
     if (location.pathname) {
       clearDaoProposalDetailsAction();
       if (this.PROPOSAL_ID) {
         getProposalDetailsAction(this.PROPOSAL_ID);
-        if (addressDetails.address) {
-          getAddressDetailsAction(addressDetails.address);
+        if (addressDetails.data.address) {
+          getAddressDetailsAction(addressDetails.data.address);
         }
         this.getProposalLikes();
       }
@@ -154,7 +155,11 @@ class Proposal extends React.Component {
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
+
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
+    const funding = truncateNumber(proposalVersion.totalFunding);
+    const reward = truncateNumber(proposalVersion.finalReward);
+
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -203,7 +208,7 @@ class Proposal extends React.Component {
             <FundingStatus>
               Funding
               <span>
-                {proposalVersion.totalFunding}
+                {funding}
                 ETH
               </span>
             </FundingStatus>
@@ -211,7 +216,7 @@ class Proposal extends React.Component {
               Milestones <span>{dijixObject.milestones.length || 0}</span>
             </MilestonesStatus>
             <Reward>
-              Reward <span>{proposalVersion.finalReward} ETH</span>
+              Reward <span>{reward} ETH</span>
             </Reward>
             <UpvoteStatus>
               <Like
@@ -227,7 +232,10 @@ class Proposal extends React.Component {
           daoInfo={daoInfo}
         />
         <ProjectDetails project={dijixObject} />
-        <Milestones milestones={dijixObject.milestones || []} />
+        <Milestones
+          milestones={dijixObject.milestones || []}
+          milestoneFundings={proposalVersion.milestoneFundings}
+        />
         <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>
     );

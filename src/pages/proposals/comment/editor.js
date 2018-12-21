@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import {
   Author,
   CommentEditor,
-  EditorContainer,
   CommentTextArea,
+  EditorContainer,
   PostCommentButton,
 } from '@digix/gov-ui/pages/proposals/comment/style';
 

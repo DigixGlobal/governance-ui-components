@@ -16,8 +16,8 @@ export const DGD_ADDRESS =
 export const REDUX_PREFIX = 'DIGIX_GOVERNANCE_';
 
 export const DEFAULT_GAS =
-  (process.env.ENVIRONMENT === 'production' && 25e4) ||
-  (process.env.ENVIRONMENT === 'kovan' && 25e4) ||
+  (process.env.ENVIRONMENT === 'production' && 100e4) ||
+  (process.env.ENVIRONMENT === 'kovan' && 100e4) ||
   150e4;
 
 export const ETHERSCAN_URL =
@@ -32,6 +32,7 @@ export const CONVERSIONS = {
   XAUUSD: 1 / 31.1035,
 };
 
+export const DEFAULT_LOCKED_DGD = 83423.45;
 export const EMPTY_HASH = '0x0000000000000000000000000000000000000000';
 export const EMPTY_HASH_LONG = '0x0000000000000000000000000000000000000000000000000000000000000000';
 

@@ -8,7 +8,7 @@ import { ProposalWrapper, ProposalContainer } from './style';
 
 export default class ProposalCard extends React.Component {
   render() {
-    const { history, proposal, userDetails } = this.props;
+    const { history, proposal, userDetails, liked } = this.props;
     const currentTime = Date.now();
     const { currentVotingRound } = proposal;
     const withinDeadline =
@@ -20,7 +20,7 @@ export default class ProposalCard extends React.Component {
     return (
       <ProposalWrapper>
         <ProposalContainer>
-          <Proposal details={proposal} userDetails={userDetails} />
+          <Proposal details={proposal} userDetails={userDetails} liked={liked} />
           <Stats details={proposal} votingStage={votingStage} />
           <Milestones details={proposal} history={history} userDetails={userDetails} />
         </ProposalContainer>
@@ -29,9 +29,14 @@ export default class ProposalCard extends React.Component {
   }
 }
 
-const { object } = PropTypes;
+const { object, bool } = PropTypes;
 ProposalCard.propTypes = {
   history: object.isRequired,
   proposal: object.isRequired,
   userDetails: object.isRequired,
+  liked: bool,
+};
+
+ProposalCard.defaultProps = {
+  liked: false,
 };

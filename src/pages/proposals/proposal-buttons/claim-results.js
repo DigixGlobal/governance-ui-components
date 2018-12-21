@@ -59,7 +59,7 @@ class ClaimResultsButton extends React.PureComponent {
   };
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
+    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
 
   handleSubmit = () => {
     const {
@@ -88,8 +88,7 @@ class ClaimResultsButton extends React.PureComponent {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
-      console.log(txHash);
+    const onTransactionAttempt = txHash => {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -99,8 +98,15 @@ class ClaimResultsButton extends React.PureComponent {
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Voting Result Claimed', txHash });
-      if (this.props.history) this.props.history.push('/');
+    };
+
+    const onTransactionSuccess = txHash => {
+      this.props.showHideAlert({
+        message: 'Voting Result Claimed',
+        txHash,
+      });
+
+      this.props.history.push('/');
     };
 
     const payload = {
@@ -108,10 +114,9 @@ class ClaimResultsButton extends React.PureComponent {
       contract,
       func: contract.claimProposalVotingResult,
       params: [proposalId, currentVotingRound, toBigNumber(50)],
-      onSuccess: txHash => {
-        onSuccess(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => onTransactionAttempt(txHash),
+      onSuccess: txHash => onTransactionSuccess(txHash),
       network,
       web3Params,
       ui,
@@ -127,7 +132,7 @@ class ClaimResultsButton extends React.PureComponent {
       proposal: { currentVotingRound },
     } = this.props;
     if (!isProposer || !proposal || !proposal.votingRounds || !voteClaimingDeadline) return null;
-    const { claimed } = proposal.votingRounds[currentVotingRound].claimed;
+    const { claimed } = proposal.votingRounds[currentVotingRound];
     const currentTime = Date.now();
     const withinDeadline =
       currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&

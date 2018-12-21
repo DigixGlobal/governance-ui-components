@@ -30,6 +30,17 @@ export const RoundBtn = styled(Button)`
         color: ${props.theme.buttonTextPrimaryReverse.default.toString()};
       }
     `};
+  ${props =>
+    props.tertiary &&
+    css`
+      background: ${props.theme.buttonBgTertiaryReverse.default.toString()};
+      border-color: ${props.theme.buttonBorderTertiary.default.toString()};
+      color: ${props.theme.buttonTextTertiary.default.toString()};
+      &:hover {
+        background: ${props.theme.buttonBgTertiary.default.toString()};
+        color: ${props.theme.buttonTextTertiaryReverse.default.toString()};
+      }
+    `};
 
   ${props =>
     props.reverse &&

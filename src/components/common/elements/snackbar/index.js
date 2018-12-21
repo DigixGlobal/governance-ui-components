@@ -21,7 +21,6 @@ class Snackbar extends React.Component {
   render() {
     const { alertData } = this.props;
     if (!alertData || !alertData.message) return null;
-
     return (
       <SnackbarContainer>
         <SnackbarDesc>

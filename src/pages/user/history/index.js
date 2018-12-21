@@ -22,8 +22,8 @@ import {
 
 class History extends React.Component {
   componentWillMount = () => {
-    const { challengeProof, history } = this.props;
-    if (!challengeProof.data || !challengeProof.data.client) history.push('/');
+    const { challengeProof } = this.props;
+    // if (!challengeProof.data || !challengeProof.data.client) history.push('/');
 
     if (challengeProof.data && challengeProof.data['access-token']) {
       this.props.getTransactions({
@@ -36,7 +36,8 @@ class History extends React.Component {
     }
   };
   render() {
-    const { transactions, blockConfig } = this.props;
+    const { transactions, blockConfig, challengeProof } = this.props;
+    const notAuthorized = !challengeProof.data || !challengeProof.data.client;
     const history = Array.from(transactions.data);
     return (
       <div>
@@ -45,34 +46,44 @@ class History extends React.Component {
           <div />
         </HistoryHeading>
 
-        <EmptyStateContainer>
-          <IconContainer>
-            <Icon kind="history" width="80px" height="80px" />
-          </IconContainer>
+        {!history ||
+          (history.length === 0 && (
+            <EmptyStateContainer>
+              <IconContainer>
+                <Icon kind="history" width="80px" height="80px" />
+              </IconContainer>
 
-          <EmptyStateTitle>Transaction Empty</EmptyStateTitle>
-          <p>
-            Looks like there are no transactions at the moment. Please lock your DGD to continue.
-          </p>
-          <p>
-            You will need to load your wallet to view your transactions, which will allow you to
-            view and participate on all governance proposals. Load your wallet to continue.
-          </p>
-        </EmptyStateContainer>
+              <EmptyStateTitle>Transaction Empty</EmptyStateTitle>
+              {!notAuthorized && history.length === 0 && (
+                <p>
+                  Looks like there are no transactions at the moment. Please lock your DGD to
+                  continue.
+                </p>
+              )}
+              {notAuthorized && (
+                <p>
+                  You will need to load your wallet to view your transactions, which will allow you
+                  to view and participate on all governance proposals. Load your wallet to continue.
+                </p>
+              )}
+            </EmptyStateContainer>
+          ))}
 
         {history && history.length > 0 && (
           <HistoryListView>
             {history.map(transaction => {
               const { blockNumber } = transaction;
               const { CURRENT_BLOCK_NUMBER, BLOCK_CONFIRMATIONS } = blockConfig.data;
-              const confirmation = CURRENT_BLOCK_NUMBER - blockNumber + 1;
+              const confirmation = CURRENT_BLOCK_NUMBER + BLOCK_CONFIRMATIONS - (blockNumber + 1);
+              const showConfirmations = transaction.status === 'seen';
               return (
                 <HistoryCard key={transaction.id}>
                   <TxDetails href={`${ETHERSCAN_URL}${transaction.txhash}`} target="_blank">
                     <TxTitle>{transaction.title}</TxTitle>
                     <TxStatus>
-                      {`${confirmation}/${BLOCK_CONFIRMATIONS} `}
-                      Confirmation(s)
+                      {showConfirmations
+                        ? `${confirmation}/${BLOCK_CONFIRMATIONS} Confirmation(s)`
+                        : null}
                     </TxStatus>
                     <TxIcon
                       pending={transaction.status === 'pending'}
@@ -101,7 +112,7 @@ History.propTypes = {
   getTransactions: func.isRequired,
   getBlockConfig: func.isRequired,
   blockConfig: object.isRequired,
-  history: object.isRequired,
+  // history: object.isRequired,
 };
 
 export default connect(

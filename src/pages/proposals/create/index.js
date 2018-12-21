@@ -101,7 +101,7 @@ class CreateProposal extends React.Component {
   };
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
+    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
 
   useStep = step => {
     this.setState({
@@ -165,7 +165,7 @@ class CreateProposal extends React.Component {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
+    const onTransactionAttempt = txHash => {
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -175,8 +175,15 @@ class CreateProposal extends React.Component {
           uid: challengeProof.data.uid,
         });
       }
-      if (this.props.history) this.props.history.push('/');
-      this.props.showHideAlert({ message: 'Proposal Created', txHash });
+    };
+
+    const onTransactionSuccess = txHash => {
+      this.props.showHideAlert({
+        message: 'Proposal Created',
+        txHash,
+      });
+
+      this.props.history.push('/');
     };
 
     this.setError();
@@ -187,10 +194,9 @@ class CreateProposal extends React.Component {
         contract,
         func: contract.submitPreproposal,
         params: [ipfsHash, funds, finalReward, web3Params],
-        onSuccess: txHash => {
-          onSuccess(txHash);
-        },
         onFailure: this.setError,
+        onFinally: txHash => onTransactionAttempt(txHash),
+        onSuccess: txHash => onTransactionSuccess(txHash),
         network,
         web3Params,
         ui,
@@ -249,14 +255,14 @@ class CreateProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button secondary onClick={this.handleShowPreview}>
+            <Button tertiary onClick={this.handleShowPreview}>
               Preview
             </Button>
-            <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
+            <Button disabled={!canMovePrevious} primary onClick={this.onPreviousButtonClick}>
               Previous
             </Button>
             {canMoveNext && (
-              <Button disabled={!canMoveNext} primary ghost onClick={this.onNextButtonClick}>
+              <Button disabled={!canMoveNext} primary onClick={this.onNextButtonClick}>
                 Next
               </Button>
             )}

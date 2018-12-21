@@ -159,7 +159,7 @@ class LockDgd extends React.Component {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
+    const onTransactionAttempt = txHash => {
       if (challengeProof.data) {
         this.setState({ txHash, dgd: undefined }, () => {
           sendTransactionToDaoServerAction({
@@ -180,10 +180,8 @@ class LockDgd extends React.Component {
       contract,
       func: contract.lockDGD,
       params: [dgd * 1e9],
-      onSuccess: txHash => {
-        onSuccess(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => onTransactionAttempt(txHash),
       network,
       web3Params,
       ui,
@@ -257,8 +255,8 @@ class LockDgd extends React.Component {
         </Note>
         <Button
           kind="round"
-          primary
-          ghost
+          secondary
+          large
           fluid
           onClick={this.handleButtonClick}
           disabled={invalidDgd}

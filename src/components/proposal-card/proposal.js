@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { H2 } from '../common/common-styles';
-import Button from '../common/elements/buttons/index';
-import Like from '../common/elements/like/index';
+import { Button, Icon } from '../common/elements/index';
 
 import {
   ProposaDetaillWrapper,
@@ -13,14 +12,16 @@ import {
   ProposalFooter,
   PostedBy,
   PostedByLink,
+  LikeButton,
 } from './style';
 
 export default class Proposal extends React.Component {
   render() {
-    const { details, userDetails } = this.props;
+    const { details, userDetails, liked } = this.props;
 
     const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
     const canCreate = userDetails && userDetails.data.isParticipant;
+    const canLike = userDetails && userDetails.data.address;
 
     return (
       <ProposaDetaillWrapper>
@@ -56,7 +57,12 @@ export default class Proposal extends React.Component {
             <PostedBy>
               BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
             </PostedBy>
-            <Like hasVoted />
+            {canLike && (
+              <LikeButton kind="text" xsmall hasVoted={liked}>
+                <Icon kind="like" />
+                <span>Like</span>
+              </LikeButton>
+            )}
           </ProposalFooter>
         </ProposalCard>
       </ProposaDetaillWrapper>
@@ -64,7 +70,13 @@ export default class Proposal extends React.Component {
   }
 }
 
+const { bool, object } = PropTypes;
 Proposal.propTypes = {
-  details: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
+  details: object.isRequired,
+  userDetails: object.isRequired,
+  liked: bool,
+};
+
+Proposal.defaultProps = {
+  liked: false,
 };

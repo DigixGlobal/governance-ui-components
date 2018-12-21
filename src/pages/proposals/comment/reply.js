@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Comment from '@digix/gov-ui/pages/proposals/comment/comment';
-import CommentAuthor from '@digix/gov-ui/pages/proposals/comment/author';
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { CommentReplyPost } from '@digix/gov-ui/pages/proposals/comment/style';
@@ -53,7 +52,7 @@ class CommentReply extends React.Component {
   };
 
   fetchThreads = fetchParams => {
-    const { ChallengeProof } = this.props;
+    const { ChallengeProof, fetchUserPoints } = this.props;
     if (!ChallengeProof.data) {
       return null;
     }
@@ -77,6 +76,9 @@ class CommentReply extends React.Component {
 
         this.setState({ lastSeenId, comment });
         return newComments;
+      })
+      .then(() => {
+        fetchUserPoints();
       })
       .catch(() => {
         this.setError(CommentsApi.ERROR_MESSAGES.fetch);
@@ -109,7 +111,7 @@ class CommentReply extends React.Component {
   };
 
   render() {
-    const { renderThreadReplies, setError, uid } = this.props;
+    const { renderThreadReplies, setError, uid, userPoints } = this.props;
     const { comment, showEditor } = this.state;
 
     if (!comment) {
@@ -122,12 +124,12 @@ class CommentReply extends React.Component {
     return (
       <section>
         <CommentReplyPost>
-          <CommentAuthor user={comment.user} />
           <Comment
             comment={comment}
             setError={setError}
             toggleEditor={this.toggleEditor}
             uid={uid}
+            userPoints={userPoints}
           />
           {showEditor && (
             <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} uid={uid} />
@@ -152,10 +154,12 @@ const { func, object, string } = PropTypes;
 CommentReply.propTypes = {
   ChallengeProof: object,
   comment: object.isRequired,
+  fetchUserPoints: func.isRequired,
   renderThreadReplies: func.isRequired,
   setError: func.isRequired,
   sortBy: string.isRequired,
   uid: string.isRequired,
+  userPoints: object.isRequired,
 };
 
 CommentReply.defaultProps = {

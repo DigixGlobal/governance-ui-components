@@ -58,7 +58,7 @@ class FinalizeProjectButton extends React.PureComponent {
   };
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
+    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
 
   handleSubmit = () => {
     const { web3Redux, challengeProof, addresses, proposalId } = this.props;
@@ -82,7 +82,7 @@ class FinalizeProjectButton extends React.PureComponent {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
+    const onTransactionAttempt = txHash => {
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -92,8 +92,15 @@ class FinalizeProjectButton extends React.PureComponent {
           uid: challengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Proposal Finalized', txHash });
-      if (this.props.history) this.props.history.push('/');
+    };
+
+    const onTransactionSuccess = txHash => {
+      this.props.showHideAlert({
+        message: 'Proposal Finalized',
+        txHash,
+      });
+
+      this.props.history.push('/');
     };
 
     const payload = {
@@ -101,10 +108,9 @@ class FinalizeProjectButton extends React.PureComponent {
       contract,
       func: contract.finalizeProposal,
       params: [proposalId],
-      onSuccess: txHash => {
-        onSuccess(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => onTransactionAttempt(txHash),
+      onSuccess: txHash => onTransactionSuccess(txHash),
       network,
       web3Params,
       ui,

@@ -70,6 +70,23 @@ export const CommentsApi = {
     data: [comment],
   }),
 
+  getUniqueUsers(users, threads) {
+    const { data } = threads;
+    if (!threads || data.length === 0) {
+      return users;
+    }
+
+    data.forEach(thread => {
+      if (!users.includes(thread.user.address)) {
+        users.push(thread.user.address);
+      }
+
+      this.getUniqueUsers(users, thread.replies);
+    });
+
+    return users;
+  },
+
   ERROR_MESSAGES: {
     fetch: 'Unable to fetch comments.',
     createComment: 'Unable to create comment.',

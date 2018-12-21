@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Button, Select } from '@digix/gov-ui/components/common/elements/index';
 import {
+  Title,
   CommentFilter,
   CommentList,
   ThreadedComments,
@@ -16,6 +17,7 @@ import { CommentsApi } from '@digix/gov-ui/api/comments';
 import { getDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { UsersApi } from '@digix/gov-ui/api/users';
 
 class CommentThread extends React.Component {
   constructor(props) {
@@ -24,6 +26,8 @@ class CommentThread extends React.Component {
       lastSeenId: 0,
       sortBy: 'latest',
       threads: null,
+      userAddresses: [],
+      userPoints: {},
     };
 
     this.FILTERS = [
@@ -95,7 +99,7 @@ class CommentThread extends React.Component {
   fetchThreads = (fetchParams, reset = false) => {
     const { ChallengeProof, rootCommentId } = this.props;
     if (!ChallengeProof.data || !rootCommentId) {
-      return null;
+      return;
     }
 
     const payload = initializePayload(ChallengeProof);
@@ -119,13 +123,38 @@ class CommentThread extends React.Component {
         }
 
         this.setState({ lastSeenId, threads });
-        return newThreads;
+      })
+      .then(() => {
+        this.fetchUserPoints();
       })
       .catch(() => {
         this.setError(CommentsApi.ERROR_MESSAGES.fetch);
       });
+  };
 
-    return null;
+  fetchUserPoints = () => {
+    const { threads, userAddresses } = this.state;
+    const { ChallengeProof } = this.props;
+    if (!threads || !ChallengeProof.data) {
+      return;
+    }
+
+    const previousUniqueAddressesCount = userAddresses.length;
+    const newUniqueAddresses = CommentsApi.getUniqueUsers(userAddresses, threads);
+    if (previousUniqueAddressesCount === newUniqueAddresses.length) {
+      return;
+    }
+
+    this.setState({ userAddresses: newUniqueAddresses });
+    const payload = initializePayload(ChallengeProof);
+
+    UsersApi.getPoints(newUniqueAddresses, payload)
+      .then(userPoints => {
+        this.setState({ userPoints });
+      })
+      .catch(() => {
+        this.setError(UsersApi.ERROR_MESSAGES.getPoints);
+      });
   };
 
   loadMoreComments = () => {
@@ -138,15 +167,17 @@ class CommentThread extends React.Component {
 
   renderThreads = threads => {
     const { uid } = this.props;
-    const { sortBy } = this.state;
+    const { sortBy, userPoints } = this.state;
 
     return threads.data.map(thread => (
       <ParentThread
         key={thread.id}
+        fetchUserPoints={this.fetchUserPoints}
         setError={this.setError}
         sortBy={sortBy}
         thread={thread}
         uid={uid}
+        userPoints={userPoints}
       />
     ));
   };
@@ -158,6 +189,7 @@ class CommentThread extends React.Component {
 
     return (
       <ThreadedComments>
+        <Title>Discussions</Title>
         <CommentTextEditor uid={uid} addComment={this.addThread} />
         {noComments && <p>There are no comments to show.</p>}
         {!noComments && (

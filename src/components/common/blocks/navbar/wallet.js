@@ -16,12 +16,12 @@ class WalletButton extends React.Component {
     return (
       <WalletWrapper>
         {!defaultAddress && (
-          <Button kind="round" primary sm ghost onClick={onWalletClick}>
+          <Button kind="round" primary small onClick={onWalletClick}>
             Load Wallet
           </Button>
         )}
         {canLockDgd && canLockDgd.show && (
-          <Button kind="round" primary sm ghost onClick={() => showHideLockDgd(true)}>
+          <Button kind="round" primary small onClick={() => showHideLockDgd(true)}>
             Lock DGD
           </Button>
         )}

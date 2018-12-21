@@ -49,7 +49,7 @@ class ClaimApprovalButton extends React.Component {
   };
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
+    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
 
   handleSubmit = () => {
     const { web3Redux, ChallengeProof, addresses, proposalId } = this.props;
@@ -73,7 +73,7 @@ class ClaimApprovalButton extends React.Component {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
+    const onTransactionAttempt = txHash => {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -83,8 +83,15 @@ class ClaimApprovalButton extends React.Component {
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Approval Claimed', txHash });
-      if (this.props.history) this.props.history.push('/');
+    };
+
+    const onTransactionSuccess = txHash => {
+      this.props.showHideAlert({
+        message: 'Approval Claimed',
+        txHash,
+      });
+
+      this.props.history.push('/');
     };
 
     const payload = {
@@ -92,10 +99,9 @@ class ClaimApprovalButton extends React.Component {
       contract,
       func: contract.claimDraftVotingResult,
       params: [proposalId, toBigNumber(50)],
-      onSuccess: txHash => {
-        onSuccess(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => onTransactionAttempt(txHash),
+      onSuccess: txHash => onTransactionSuccess(txHash),
       network,
       web3Params,
       ui,

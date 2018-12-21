@@ -8,6 +8,7 @@ export const executeContractFunction = payload => {
     params,
     onSuccess,
     onFailure,
+    onFinally,
     network,
     web3Params,
     ui,
@@ -35,9 +36,21 @@ export const executeContractFunction = payload => {
       ui,
     })
       .then(txHash => {
-        onSuccess(txHash);
+        if (typeof onSuccess === 'function') {
+          onSuccess(txHash);
+        }
+
+        if (typeof onFinally === 'function') {
+          onFinally(txHash);
+        }
       })
-      .catch(error => onFailure(error));
+      .catch(error => {
+        onFailure(error);
+        if (typeof onFinally === 'function') {
+          const txHash = Object.keys(error.data)[0];
+          onFinally(txHash);
+        }
+      });
   }
 
   return func
@@ -47,7 +60,20 @@ export const executeContractFunction = payload => {
       ...web3Params,
     })
     .then(txHash => {
-      onSuccess(txHash);
+      if (typeof onSuccess === 'function') {
+        onSuccess(txHash);
+      }
+
+      if (typeof onFinally === 'function') {
+        onFinally(txHash);
+      }
     })
-    .catch(error => onFailure(error));
+    .catch(error => {
+      onFailure(error);
+      if (typeof onFinally === 'function') {
+        const data = error.data ? Object.keys(error.data) : undefined;
+        const txHash = data ? data[0] : undefined;
+        onFinally(txHash);
+      }
+    });
 };

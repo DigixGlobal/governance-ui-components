@@ -13,6 +13,7 @@ export const MenuContainer = styled.div`
   font-size: 1.4rem;
   box-shadow: ${props => props.theme.boxShadow};
   flex: 1 0 0;
+  z-index: 1;
 `;
 
 export const CloseMenu = styled.div`

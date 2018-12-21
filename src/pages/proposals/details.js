@@ -6,7 +6,7 @@ import { dijix } from '../../utils/dijix';
 import {
   DetailsContainer,
   ShortDescription,
-  TrackActivity,
+  // TrackActivity,
   Details,
   SubTitle,
   ImageHolder,
@@ -40,15 +40,16 @@ export default class ProjectDetails extends React.Component {
     const hasImages = project.images && project.images.length > 0;
     return (
       <DetailsContainer>
+        <SubTitle>Short Description</SubTitle>
         <ShortDescription>
           {project.description
             ? project.description
             : 'No short description content has been created yet.'}
         </ShortDescription>
-        <TrackActivity>
+        {/* <TrackActivity>
           <input type="checkbox" />
           Track change from previous version
-        </TrackActivity>
+        </TrackActivity> */}
         <Details>
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />

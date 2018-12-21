@@ -24,7 +24,7 @@ const network = SpectrumConfig.defaultNetworks[0];
 
 class ClaimFundingButton extends React.PureComponent {
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
+    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
 
   handleSubmit = () => {
     const {
@@ -54,7 +54,7 @@ class ClaimFundingButton extends React.PureComponent {
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const onSuccess = txHash => {
+    const onTransactionAttempt = txHash => {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -64,8 +64,15 @@ class ClaimFundingButton extends React.PureComponent {
           uid: ChallengeProof.data.uid,
         });
       }
-      this.props.showHideAlert({ message: 'Funding Claimed', txHash });
-      if (this.props.history) this.props.history.push('/');
+    };
+
+    const onTransactionSuccess = txHash => {
+      this.props.showHideAlert({
+        message: 'Funding Claimed',
+        txHash,
+      });
+
+      this.props.history.push('/');
     };
 
     const payload = {
@@ -73,10 +80,9 @@ class ClaimFundingButton extends React.PureComponent {
       contract,
       func: contract.claimFunding,
       params: [proposalId, proposal.currentMilestone - 1],
-      onSuccess: txHash => {
-        onSuccess(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => onTransactionAttempt(txHash),
+      onSuccess: txHash => onTransactionSuccess(txHash),
       network,
       web3Params,
       ui,

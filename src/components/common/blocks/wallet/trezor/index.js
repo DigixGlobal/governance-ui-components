@@ -36,12 +36,10 @@ class Trezor extends React.Component {
           hideSelector
           allowedKeystoreTypes={['trezor']}
           trigger={
-            <WalletItem>
-              <Button primary filled fluid iconButton>
-                <Icon kind="trezor" />
-                Trezor
-              </Button>
-            </WalletItem>
+            <Button kind="round" secondary fluid icon large>
+              <Icon kind="trezor" />
+              Trezor
+            </Button>
           }
         />
       )

@@ -34,8 +34,8 @@ class RevealVote extends React.Component {
     };
   }
 
-  onSuccessfulTransaction = txHash => {
-    const { ChallengeProof, history, showHideAlertAction, showRightPanelAction } = this.props;
+  onTransactionAttempt = txHash => {
+    const { ChallengeProof, showRightPanelAction } = this.props;
 
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
@@ -48,6 +48,10 @@ class RevealVote extends React.Component {
     }
 
     showRightPanelAction({ show: false });
+  };
+
+  onTransactionSuccess = txHash => {
+    const { history, showHideAlertAction } = this.props;
     showHideAlertAction({
       message: 'Vote Revealed',
       txHash,
@@ -93,10 +97,9 @@ class RevealVote extends React.Component {
       contract,
       func: contract.revealVoteOnProposal,
       params: [proposalId, currentVotingRound, voteObject.vote, voteObject.salt],
-      onSuccess: txHash => {
-        this.onSuccessfulTransaction(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => this.onTransactionAttempt(txHash),
+      onSuccess: txHash => this.onTransactionSuccess(txHash),
       network,
       web3Params,
       ui,
@@ -166,10 +169,9 @@ class RevealVote extends React.Component {
           <Button
             kind="upload"
             accept=".json"
-            primary
-            fill
+            secondary
             fluid
-            fullWidth
+            large
             id="json-upload"
             onChange={this.handleUpload}
             type="file"
@@ -177,7 +179,7 @@ class RevealVote extends React.Component {
           />
         )}
         {uploaded && (
-          <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
+          <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
             Confirm My Vote
           </Button>
         )}

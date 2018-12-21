@@ -39,8 +39,8 @@ class CommitVote extends React.Component {
     };
   }
 
-  onSuccessfulTransaction = txHash => {
-    const { ChallengeProof, history, showHideAlertAction, showRightPanelAction } = this.props;
+  onTransactionAttempt = txHash => {
+    const { ChallengeProof, showRightPanelAction } = this.props;
 
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
@@ -53,6 +53,10 @@ class CommitVote extends React.Component {
     }
 
     showRightPanelAction({ show: false });
+  };
+
+  onTransactionSuccess = txHash => {
+    const { history, showHideAlertAction } = this.props;
     showHideAlertAction({
       message: 'Vote Accepted',
       txHash,
@@ -121,10 +125,9 @@ class CommitVote extends React.Component {
       contract,
       func: contract.commitVoteOnProposal,
       params: [proposalId, currentVotingRound, hash],
-      onSuccess: txHash => {
-        this.onSuccessfulTransaction(txHash);
-      },
       onFailure: this.setError,
+      onFinally: txHash => this.onTransactionAttempt(txHash),
+      onSuccess: txHash => this.onTransactionSuccess(txHash),
       network,
       web3Params,
       ui,
@@ -191,7 +194,7 @@ class CommitVote extends React.Component {
               <Button
                 kind="link"
                 primary
-                filled
+                large
                 fluid
                 onClick={this.handleDownload}
                 download={`${proposalId}-${currentVotingRound}.json`}
@@ -206,7 +209,7 @@ class CommitVote extends React.Component {
               </Button>
             )}
             {downloaded && (
-              <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
+              <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
                 Confirm Commit
               </Button>
             )}

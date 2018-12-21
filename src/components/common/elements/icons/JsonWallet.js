@@ -20,8 +20,8 @@ const JsonWalletIcon = props => (
 );
 
 JsonWalletIcon.defaultProps = {
-  width: '3.7rem',
-  height: '3.6rem',
+  width: '4rem',
+  height: '4rem',
 };
 
 export default JsonWalletIcon;

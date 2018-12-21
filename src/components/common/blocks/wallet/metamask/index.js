@@ -4,7 +4,6 @@ import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/com
 import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
 import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
 
-import { WalletItem } from '../style';
 import Button from '../../../../common/elements/buttons/index';
 import Icon from '../../../../common/elements/icons';
 
@@ -25,7 +24,7 @@ class Metamask extends React.Component {
       (
         <KeystoreModal
           createKeystore={this.props.createKeystore}
-          onClose={this.resetState}
+          onClose={() => this.props.onClose()}
           key="metamask-popup"
           submitFunc={this.props.createKeystore}
           form={KeystoreCreationForm}
@@ -35,12 +34,10 @@ class Metamask extends React.Component {
           hideSelector
           allowedKeystoreTypes={['metamask']}
           trigger={
-            <WalletItem>
-              <Button primary filled fluid iconButton>
-                <Icon kind="metamask" />
-                Metamask
-              </Button>
-            </WalletItem>
+            <Button kind="round" secondary fluid large icon>
+              <Icon kind="metamask" />
+              Metamask
+            </Button>
           }
         />
       )
@@ -50,6 +47,7 @@ class Metamask extends React.Component {
 
 Metamask.propTypes = {
   createKeystore: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
 };
 
 Metamask.defaultProps = {

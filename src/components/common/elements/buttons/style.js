@@ -1,5 +1,56 @@
 import styled, { css } from 'styled-components';
-// import { ButtonStyles, DisabledBtn, GhostBtn } from '../../common-styles';
+
+export const Button = styled.button`
+  cursor: pointer;
+  font-family: 'Futura PT Medium';
+  font-size: 1.4rem;
+  margin: 1rem;
+  outline: none;
+  padding: 1.2rem 2rem;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+
+  ${props =>
+    props.small &&
+    css`
+      padding: 1rem 1.5rem;
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+    `};
+
+  ${props =>
+    props.medium &&
+    css`
+      padding: 1.2rem 2rem;
+    `};
+
+  ${props =>
+    props.large &&
+    css`
+      padding: 2rem 3rem;
+      font-size: 1.6rem;
+    `};
+
+  ${props =>
+    props.icon &&
+    css`
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      svg {
+        fill: ${props.theme.buttonBgSecondary.light.toString()};
+      }
+
+      &:hover {
+        svg {
+          fill: ${props.theme.iconDefaultColor.default.toString()};
+        }
+      }
+    `};
+`;
 
 export const ButtonStyles = css`
   background: ${props =>
@@ -18,16 +69,6 @@ export const ButtonStyles = css`
       ? props.theme.buttonTextPrimaryReverse.toString()
       : props.theme.buttonTextSecondaryReverse.toString()};
 
-  cursor: pointer;
-  font-family: 'Futura PT Medium';
-  margin: 1rem;
-  outline: none;
-  padding: 1rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-
   &:hover {
     background-color: transparent;
     color: ${props =>
@@ -35,34 +76,6 @@ export const ButtonStyles = css`
         ? props.theme.buttonTextPrimary.toString()
         : props.theme.buttonTextSecondary.toString()};
   }
-
-  ${props =>
-    props.xsmall &&
-    css`
-      padding: 0.5rem 1rem;
-      font-size: 1.4rem;
-      margin-right: 0.5rem;
-    `};
-
-  ${props =>
-    props.small &&
-    css`
-      padding: 0.5rem 1rem;
-      font-size: 1.4rem;
-      margin-right: 0.5rem;
-    `};
-
-  ${props =>
-    props.medium &&
-    css`
-      padding: 1rem 2rem;
-    `};
-
-  ${props =>
-    props.large &&
-    css`
-      padding: 1rem 2rem;
-    `};
 `;
 
 export const GhostBtn = css`
@@ -151,7 +164,7 @@ export const RoundBtn = styled.button`
       font-size: 1.4rem;
 
       svg {
-        fill: ${props.theme.iconColor.toString()};
+        fill: ${props.theme.iconColor.default.toString()};
         width: 30px;
         height: 30px;
       }

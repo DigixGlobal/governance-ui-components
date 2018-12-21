@@ -82,22 +82,22 @@ export const CommentPost = styled.div`
       ? props.theme.textDefault.light.toString()
       : props.theme.textDefault.default.toString()};
   padding: 2rem 3rem;
+  margin-top: ${props => (props.deleted ? 2 : 0)}rem;
 `;
 
 export const ActionBar = styled.div`
   border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   margin-top: 2rem;
   margin-left: -1rem;
-  button {
-    margin: 1rem 0;
-    margin-bottom: -1rem;
-    &:first-child {
-      margin-left: -1rem;
-    }
-  }
 `;
 
-export const ActionCommentButton = styled(Button)``;
+export const ActionCommentButton = styled(Button)`
+  margin: 1rem 0;
+  margin-bottom: -1rem;
+  &:first-child {
+    margin-left: -1rem;
+  }
+`;
 
 export const CommentReplyPost = styled.div`
   margin-left: 5rem;

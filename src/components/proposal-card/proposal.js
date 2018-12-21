@@ -12,6 +12,7 @@ import {
   ProposalFooter,
   PostedBy,
   PostedByLink,
+  LikeButton,
 } from './style';
 
 export default class Proposal extends React.Component {
@@ -57,10 +58,10 @@ export default class Proposal extends React.Component {
               BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
             </PostedBy>
             {canLike && (
-              <Button kind="text" xsmall hasVoted={liked}>
+              <LikeButton kind="text" xsmall hasVoted={liked}>
                 <Icon kind="like" />
                 <span>Like</span>
-              </Button>
+              </LikeButton>
             )}
           </ProposalFooter>
         </ProposalCard>

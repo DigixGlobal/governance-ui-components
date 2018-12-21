@@ -114,8 +114,11 @@ const LightTheme = {
   buttonBgHoverPrimary: primaryColor,
   buttonBgSecondary: primaryColor,
   buttonBgHoverSecondary: primaryColor,
+  buttonBgTertiary: white,
+  buttonBgTertiaryReverse: secondaryColor,
   buttonBorderPrimary: primaryColor,
   buttonBorderSecondary: secondaryColor,
+  buttonBorderTertiary: secondaryColor,
   buttonBorderDisabled: darkGray,
   buttonResponseYes: green,
   buttonResponseNo: red,
@@ -125,6 +128,8 @@ const LightTheme = {
   buttonTextPrimaryReverse: white,
   buttonTextSecondary: secondaryColor,
   buttonTextSecondaryReverse: white.default,
+  buttonTextTertiary: white,
+  buttonTextTertiaryReverse: secondaryColor,
 
   headerBorderColor: gray.default,
 

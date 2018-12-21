@@ -1,22 +1,34 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { parseBigNumber, toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
-import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
+import { getDefaultAddress, getAddresses } from 'spectrum-lightsuite/src/selectors';
+import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import DGDAddress from '@digix/dao-contracts/build/contracts/MockDgd.json';
+import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 
-import { showHideLockDgdOverlay, canLockDgd } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+
+import {
+  showHideLockDgdOverlay,
+  canLockDgd,
+  fetchMaxAllowance,
+  showHideAlert,
+} from '@digix/gov-ui/reducers/gov-ui/actions';
 
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
+
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 import { HR } from '@digix/gov-ui/components/common/common-styles';
 
 import getContract from '@digix/gov-ui/utils/contracts';
+import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 
 import { InnerContainer, Header, CloseButtonWithHeader } from '../style';
 import {
@@ -38,6 +50,7 @@ class ConnectedWallet extends React.Component {
     this.state = {
       dgdBalance: 0,
       ethBalance: 0,
+      showLockDgd: false,
     };
   }
 
@@ -50,10 +63,23 @@ class ConnectedWallet extends React.Component {
         this.props.getAddressDetails(defaultAddress.address),
       ]).then(([eth, dgd]) => this.setState({ dgdBalance: dgd, ethBalance: eth }));
     }
+    this.getMaxAllowance();
   }
 
   shouldComponentUpdate = (nextProps, nextState) =>
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+
+  getMaxAllowance = () => {
+    const { defaultAddress, web3Redux } = this.props;
+
+    const { abi, address } = getContract(DGDAddress, network);
+    const { address: DaoStakingContract } = getContract(DaoStakeLocking, network);
+    const contract = web3Redux
+      .web3(network)
+      .eth.contract(abi)
+      .at(address);
+    this.props.fetchMaxAllowance(contract, defaultAddress.address, DaoStakingContract);
+  };
 
   getDgdBalance() {
     const { defaultAddress, web3Redux } = this.props;
@@ -76,17 +102,93 @@ class ConnectedWallet extends React.Component {
     }
   }
 
+  handleApprove = () => {
+    const { web3Redux, challengeProof, addresses } = this.props;
+
+    const { abi, address } = getContract(DGDAddress, network);
+    const contract = web3Redux
+      .web3(network)
+      .eth.contract(abi)
+      .at(address);
+
+    const ui = {
+      caption: 'Approve Interaction',
+      header: 'DGD Approval',
+      type: 'txVisualization',
+    };
+    const web3Params = {
+      gasPrice: DEFAULT_GAS_PRICE,
+      gas: DEFAULT_GAS,
+      ui,
+    };
+
+    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+
+    const onTransactionAttempt = txHash => {
+      if (challengeProof.data) {
+        this.props.sendTransactionToDaoServer({
+          txHash,
+          title: 'DGD Approval',
+          token: challengeProof.data['access-token'],
+          client: challengeProof.data.client,
+          uid: challengeProof.data.uid,
+        });
+      }
+    };
+
+    const onTransactionSuccess = txHash => {
+      this.setState({ showLockDgd: true }, () => {
+        this.props.showHideAlert({
+          message: 'DGD Approved',
+          txHash,
+        });
+      });
+    };
+
+    const { address: daoStakeLockingAddress } = getContract(DaoStakeLocking, network);
+    const payload = {
+      address: sourceAddress,
+      contract,
+      func: contract.approve,
+      params: [daoStakeLockingAddress, toBigNumber(2 ** 255)],
+      onFailure: this.setError,
+      onFinally: txHash => onTransactionAttempt(txHash),
+      onSuccess: txHash => onTransactionSuccess(txHash),
+      network,
+      web3Params,
+      ui,
+      showTxSigningModal: this.props.showTxSigningModal,
+    };
+    return executeContractFunction(payload);
+  };
+
   showLockDgdOverlay = () => {
     const { onClose, showHideLockDgdOverlayAction } = this.props;
     onClose();
     showHideLockDgdOverlayAction(true);
   };
 
-  render() {
+  renderApproval = () => (
+    <Fragment>
+      <CloseButtonWithHeader>
+        <Header uppercase>Enabling your DGD for use </Header>
+        <Icon kind="close" onClick={() => this.props.onClose()} />
+      </CloseButtonWithHeader>
+      <p>
+        In order to participate in DigixDAO, we need your approval in order for our contracts to
+        interact with your DGD.
+      </p>
+      <Button kind="round" primary fluid filled onClick={this.handleApprove}>
+        Approve the interaction
+      </Button>
+    </Fragment>
+  );
+
+  renderDefault = () => {
     const { defaultAddress } = this.props;
     const { dgdBalance, ethBalance } = this.state;
     return (
-      <InnerContainer>
+      <Fragment>
         <CloseButtonWithHeader>
           <Header uppercase>connected wallet </Header>
           <Icon kind="close" onClick={() => this.props.onClose()} />
@@ -156,32 +258,60 @@ class ConnectedWallet extends React.Component {
             </ul>
           </Notes>
         </Container>
-      </InnerContainer>
+      </Fragment>
+    );
+  };
+
+  render() {
+    const { addressMaxAllowance } = this.props;
+    const { dgdBalance, showLockDgd } = this.state;
+    const showApproval =
+      parseFloat(dgdBalance) > 0 && Number(addressMaxAllowance) === 0 && !showLockDgd;
+    return (
+      <InnerContainer>{showApproval ? this.renderApproval() : this.renderDefault()}</InnerContainer>
     );
   }
 }
 
-const { object, func } = PropTypes;
+const { object, func, number, oneOfType, array } = PropTypes;
 
 ConnectedWallet.propTypes = {
   onClose: func.isRequired,
   getAddressDetails: func.isRequired,
+  canLockDgd: func.isRequired,
+  fetchMaxAllowance: func.isRequired,
+  showHideAlert: func.isRequired,
+  showHideLockDgdOverlayAction: func.isRequired,
+  showTxSigningModal: func.isRequired,
+  sendTransactionToDaoServer: func.isRequired,
   defaultAddress: object.isRequired,
   web3Redux: object.isRequired,
-  showHideLockDgdOverlayAction: func.isRequired,
-  canLockDgd: func.isRequired,
+  addressMaxAllowance: oneOfType([number, object]),
+  challengeProof: object.isRequired,
+  addresses: array.isRequired,
+};
+
+ConnectedWallet.defaultProps = {
+  addressMaxAllowance: undefined,
 };
 
 const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
   lockDgdOverlay: state.govUI.lockDgdOverlay,
+  addressMaxAllowance: state.govUI.addressMaxAllowance,
+  challengeProof: state.daoServer.ChallengeProof,
+  addresses: getAddresses(state),
 });
 
 export default connect(
   mapStateToProps,
   {
+    showHideAlert,
     showHideLockDgdOverlayAction: showHideLockDgdOverlay,
     canLockDgd,
     getAddressDetails,
+    fetchMaxAllowance,
+    showTxSigningModal,
+    sendTransactionToDaoServer,
   }
 )(ConnectedWallet);

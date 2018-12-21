@@ -16,8 +16,8 @@ export const DGD_ADDRESS =
 export const REDUX_PREFIX = 'DIGIX_GOVERNANCE_';
 
 export const DEFAULT_GAS =
-  (process.env.ENVIRONMENT === 'production' && 25e4) ||
-  (process.env.ENVIRONMENT === 'kovan' && 25e4) ||
+  (process.env.ENVIRONMENT === 'production' && 90e4) ||
+  (process.env.ENVIRONMENT === 'kovan' && 90e4) ||
   150e4;
 
 export const ETHERSCAN_URL =

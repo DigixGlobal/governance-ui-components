@@ -57,8 +57,7 @@ class ApproveProposalOverlay extends React.Component {
   };
 
   setError = error => {
-    const message = JSON.stringify((error && error.message) || error);
-    return this.props.showHideAlert({ message });
+    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
   };
 
   setVote(vote) {

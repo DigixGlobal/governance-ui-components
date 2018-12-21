@@ -71,7 +71,8 @@ export const executeContractFunction = payload => {
     .catch(error => {
       onFailure(error);
       if (typeof onFinally === 'function') {
-        const txHash = Object.keys(error.data)[0];
+        const data = error.data ? Object.keys(error.data) : undefined;
+        const txHash = data ? data[0] : undefined;
         onFinally(txHash);
       }
     });

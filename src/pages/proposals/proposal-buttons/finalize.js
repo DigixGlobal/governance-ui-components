@@ -58,7 +58,7 @@ class FinalizeProjectButton extends React.PureComponent {
   };
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
+    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
 
   handleSubmit = () => {
     const { web3Redux, challengeProof, addresses, proposalId } = this.props;

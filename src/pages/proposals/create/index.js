@@ -101,7 +101,7 @@ class CreateProposal extends React.Component {
   };
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
+    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
 
   useStep = step => {
     this.setState({

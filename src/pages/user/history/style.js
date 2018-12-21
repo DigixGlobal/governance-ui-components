@@ -52,6 +52,7 @@ export const TxDetails = styled.a`
   align-items: center;
   width: 100%;
   flex-flow: row wrap;
+  color: ${props => props.theme.textDefault.default.toString()};
   & > div {
     padding: 2rem;
 

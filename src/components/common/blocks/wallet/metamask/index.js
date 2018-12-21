@@ -25,7 +25,7 @@ class Metamask extends React.Component {
       (
         <KeystoreModal
           createKeystore={this.props.createKeystore}
-          onClose={this.resetState}
+          onClose={() => this.props.onClose()}
           key="metamask-popup"
           submitFunc={this.props.createKeystore}
           form={KeystoreCreationForm}
@@ -50,6 +50,7 @@ class Metamask extends React.Component {
 
 Metamask.propTypes = {
   createKeystore: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
 };
 
 Metamask.defaultProps = {

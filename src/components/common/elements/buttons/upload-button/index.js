@@ -15,7 +15,6 @@ const UploadFileButton = props => (
     <UploadButton
       fullWidth={props.fullWidth}
       primary
-      ghost
       htmlFor={props.id ? props.id : 'image-upload'}
     >
       {props.caption}

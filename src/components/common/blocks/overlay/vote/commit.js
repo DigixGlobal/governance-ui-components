@@ -12,6 +12,8 @@ import {
   NoteContainer,
 } from '@digix/gov-ui/components/common/common-styles';
 
+import { LinkButton } from '@digix/gov-ui/components/common/blocks/overlay/vote/style';
+
 import { buffer2Hex } from '@digix/gov-ui/utils/helpers';
 
 import Dao from '@digix/dao-contracts/build/contracts/DaoVoting.json';
@@ -147,9 +149,8 @@ class CommitVote extends React.Component {
       <Button
         {...props}
         kind="round"
-        fluid
-        ghost
         primary
+        fluid
         xlarge
         yes={props.voteValue}
         no={!props.voteValue}
@@ -170,7 +171,7 @@ class CommitVote extends React.Component {
                 previous commit.
               </p>
             </NoteContainer>
-            <Button kind="round" fluid ghost primary onClick={this.handleChangeVote}>
+            <Button kind="round" secondary large fluid onClick={this.handleChangeVote}>
               Change My Vote
             </Button>
           </Fragment>
@@ -191,9 +192,8 @@ class CommitVote extends React.Component {
             <ResponseButton voteValue>Yes</ResponseButton>
             <ResponseButton voteValue={false}>No</ResponseButton>
             {hasVoted && !downloaded && (
-              <Button
+              <LinkButton
                 kind="link"
-                primary
                 large
                 fluid
                 onClick={this.handleDownload}
@@ -201,7 +201,7 @@ class CommitVote extends React.Component {
                 href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
               >
                 Download JSON File
-              </Button>
+              </LinkButton>
             )}
             {downloaded && (
               <Button kind="round" secondary success fluid>

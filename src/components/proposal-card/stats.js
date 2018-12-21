@@ -77,8 +77,7 @@ export default class ProposalCardStats extends React.Component {
         <Stats>
           <StatItem>
             Funding
-            <span>{funding}</span>
-            <span>ETH</span>
+            <span>{funding} ETH</span>
           </StatItem>
           <StatItem stage={details.stage} votingStage={votingStage}>
             Approval

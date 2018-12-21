@@ -103,3 +103,7 @@ export const CommentReplyPost = styled.div`
   margin-left: 5rem;
   margin-top: 1rem;
 `;
+
+export const LoadMoreButton = styled(Button)`
+  margin-left: -2rem;
+`;

@@ -57,7 +57,9 @@ class ApproveProposalOverlay extends React.Component {
   };
 
   setError = error => {
-    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
+    this.props.showHideAlert({
+      message: JSON.stringify(error && error.message) || error,
+    });
   };
 
   setVote(vote) {
@@ -114,8 +116,8 @@ class ApproveProposalOverlay extends React.Component {
       <Button
         {...props}
         kind="round"
-        secondary
-        large
+        primary
+        xlarge
         fluid
         yes={props.voteValue}
         no={!props.voteValue}
@@ -135,7 +137,7 @@ class ApproveProposalOverlay extends React.Component {
         <ResponseButton voteValue>Yes</ResponseButton>
         <ResponseButton voteValue={false}>No</ResponseButton>
         {hasVoted && (
-          <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
+          <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
             Confirm My Vote
           </Button>
         )}

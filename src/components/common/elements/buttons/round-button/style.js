@@ -72,4 +72,48 @@ export const RoundBtn = styled(Button)`
         color: ${props.theme.textSecondary.default.toString()};
       }
     `};
+
+  ${props =>
+    props.yes &&
+    css`
+      &:hover,
+      &:focus {
+        color: ${props.theme.buttonResponseYes.default.toString()};
+        border-color: ${props.theme.buttonResponseYes.default.toString()};
+        background-color: ${props.theme.buttonResponseYes.fade.toString()};
+      }
+    `};
+  ${props =>
+    props.no &&
+    css`
+      &:hover,
+      &:focus {
+        color: ${props.theme.buttonResponseNo.default.toString()};
+        border-color: ${props.theme.buttonResponseNo.default.toString()};
+        background-color: ${props.theme.buttonResponseNo.fade.toString()};
+      }
+    `};
+
+  ${props =>
+    props.confirmedYes &&
+    css`
+      &,
+      &:hover,
+      &:focus {
+        color: ${props.theme.buttonResponseYes.default.toString()};
+        border-color: ${props.theme.buttonResponseYes.default.toString()};
+        background-color: ${props.theme.buttonResponseYes.fade.toString()};
+      }
+    `};
+  ${props =>
+    props.confirmedNo &&
+    css`
+      &,
+      &:hover,
+      &:focus {
+        color: ${props.theme.buttonResponseNo.default.toString()};
+        border-color: ${props.theme.buttonResponseNo.default.toString()};
+        background-color: ${props.theme.buttonResponseNo.fade.toString()};
+      }
+    `};
 `;

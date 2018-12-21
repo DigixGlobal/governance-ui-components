@@ -16,7 +16,9 @@ class Help extends React.Component {
             This page will be updated very soon. Please feel free to look around and check back
             often for updates!
           </p>
-          <ButtonLink>Go back to Dashboard</ButtonLink>
+          <ButtonLink kind="link" href="/">
+            Go back to Dashboard
+          </ButtonLink>
         </EmptyStateContainer>
       </div>
     );

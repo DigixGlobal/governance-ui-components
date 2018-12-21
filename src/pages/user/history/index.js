@@ -74,7 +74,7 @@ class History extends React.Component {
             {history.map(transaction => {
               const { blockNumber } = transaction;
               const { CURRENT_BLOCK_NUMBER, BLOCK_CONFIRMATIONS } = blockConfig.data;
-              const confirmation = CURRENT_BLOCK_NUMBER + BLOCK_CONFIRMATIONS - (blockNumber + 1);
+              const confirmation = CURRENT_BLOCK_NUMBER + BLOCK_CONFIRMATIONS - blockNumber + 1;
               const showConfirmations = transaction.status === 'seen';
               const showPendingIcons =
                 transaction.status === 'seen' || transaction.status === 'pending';

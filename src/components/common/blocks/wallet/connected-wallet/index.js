@@ -123,7 +123,7 @@ class ConnectedWallet extends React.Component {
               <UsdEquivalent>0.0 USD</UsdEquivalent>
             </TokenDetails>
           </TokenInfo>
-          <Button fullWidth primary nobg>
+          <Button kind="round" primary fluid>
             Buy DGD
           </Button>
           <HR />
@@ -133,13 +133,14 @@ class ConnectedWallet extends React.Component {
             community and of course gives you voting power on the proposals you love to support
           </p>
           <Button
-            fullWidth
+            kind="round"
+            secondary
+            fluid
             disabled={!dgdBalance || dgdBalance <= 0}
             onClick={this.showLockDgdOverlay}
           >
             lock DGD
           </Button>
-          <DevNote>[DEV NOTE] Disabled when DGD is not sufficient</DevNote>
           <Notes>
             <p>NOTE:</p>
             <ul>

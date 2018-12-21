@@ -25,7 +25,7 @@ export const AddressInfo = styled(H5)`
 export const TokenInfo = styled.div`
   display: flex;
   align-items: center;
-  border: 1px solid ${props => props.theme.borderColor.darker.toString()};
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   padding: 2rem;
   background-color: ${props => props.theme.textContrast.default.toString()};
   margin: 1rem 0;

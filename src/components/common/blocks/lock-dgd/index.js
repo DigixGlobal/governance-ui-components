@@ -261,8 +261,8 @@ class LockDgd extends React.Component {
         </Note>
         <Button
           kind="round"
-          primary
-          ghost
+          secondary
+          large
           fluid
           onClick={this.handleButtonClick}
           disabled={invalidDgd}

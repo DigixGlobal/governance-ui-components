@@ -2,8 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
-import { ActionBar, CommentPost } from '@digix/gov-ui/pages/proposals/comment/style';
+import { Icon } from '@digix/gov-ui/components/common/elements/index';
+import {
+  ActionBar,
+  CommentPost,
+  ActionCommentButton,
+} from '@digix/gov-ui/pages/proposals/comment/style';
 import { CommentsApi } from '@digix/gov-ui/api/comments';
 import { initializePayload } from '@digix/gov-ui/api';
 
@@ -61,20 +65,25 @@ class Comment extends React.Component {
           {body || this.DELETE_MESSAGE}
           {body && (
             <ActionBar>
-              <Button kind="text" xsmall onClick={() => toggleEditor()}>
+              <ActionCommentButton kind="text" xsmall onClick={() => toggleEditor()}>
                 <Icon kind="reply" />
                 <span>Reply</span>
-              </Button>
-              <Button kind="text" xsmall active={liked} onClick={() => this.toggleLike()}>
+              </ActionCommentButton>
+              <ActionCommentButton
+                kind="text"
+                xsmall
+                active={liked}
+                onClick={() => this.toggleLike()}
+              >
                 <Icon active={liked} kind="like" />
                 {liked && <span>Unlike</span>}
                 {!liked && <span>Like</span>}
-              </Button>
+              </ActionCommentButton>
               {isAuthor && (
-                <Button kind="text" xsmall onClick={() => this.deleteComment()}>
+                <ActionCommentButton kind="text" xsmall onClick={() => this.deleteComment()}>
                   <Icon kind="trash" />
                   <span>Trash</span>
-                </Button>
+                </ActionCommentButton>
               )}
             </ActionBar>
           )}

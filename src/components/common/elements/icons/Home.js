@@ -12,8 +12,8 @@ const HomeIcon = props => (
           fillRule="nonzero"
           stroke={
             props.selected
-              ? props.theme.textSecondary.default.toString()
-              : props.theme.textPrimary.default.toString()
+              ? props.theme.iconSecondaryColor.default.toString()
+              : props.theme.iconColor.light.toString()
           }
         >
           <g id="Home-Icon" transform="translate(25.000000, 291.000000)">

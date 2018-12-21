@@ -55,7 +55,7 @@ export default class CommentTextEditor extends React.Component {
           <PostCommentButton
             kind="round"
             primary
-            ghost
+            reverse
             disabled={isContentEmpty}
             onClick={() => this.createComment()}
           >

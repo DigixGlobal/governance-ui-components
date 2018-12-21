@@ -31,12 +31,10 @@ class V3Keystore extends React.Component {
           onClose={() => this.props.onClose()}
           updateDefaultAddress
           trigger={
-            <WalletItem>
-              <Button primary filled fluid iconButton>
-                <Icon kind="json" />
-                Json File
-              </Button>
-            </WalletItem>
+            <Button kind="round" secondary large icon fluid>
+              <Icon kind="json" />
+              Json File
+            </Button>
           }
         />
       )

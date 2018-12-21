@@ -8,7 +8,7 @@ import Brand from '@digix/gov-ui/components/common/elements/icons/Brand';
 import Menu from './menu';
 import Search from './search';
 import WalletButton from './wallet';
-import Utility from './utility';
+// import Utility from './utility';
 
 import { HeaderWrapper } from './style';
 
@@ -35,7 +35,7 @@ class NavBar extends React.Component {
         <Menu />
         <Search />
         <WalletButton onWalletClick={() => this.props.showHideWalletOverlay(true)} />
-        <Utility history={history} />
+        {/* <Utility history={history} /> */}
         <Brand />
       </HeaderWrapper>
     );

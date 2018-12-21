@@ -166,10 +166,9 @@ class RevealVote extends React.Component {
           <Button
             kind="upload"
             accept=".json"
-            primary
-            fill
+            secondary
             fluid
-            fullWidth
+            large
             id="json-upload"
             onChange={this.handleUpload}
             type="file"
@@ -177,7 +176,7 @@ class RevealVote extends React.Component {
           />
         )}
         {uploaded && (
-          <Button kind="round" primary filled fluid onClick={this.handleSubmit}>
+          <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
             Confirm My Vote
           </Button>
         )}

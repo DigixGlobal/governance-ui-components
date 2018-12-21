@@ -9,8 +9,8 @@ export const SnackbarContainer = styled.div`
   position: fixed;
   bottom: 0;
   left: 5%;
-  right: 5%;
-  width: 90%;
+
+  width: 60%;
   margin-bottom: 5rem;
 `;
 export const SnackbarDesc = styled.div`

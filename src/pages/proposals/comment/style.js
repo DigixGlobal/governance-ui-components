@@ -42,20 +42,18 @@ export const CommentTextArea = styled(TextArea)`
 
 export const PostCommentButton = styled(Button)`
   margin-left: 0;
-  color: ${props => props.theme.buttonTextPrimaryReverse.toString()};
-  background-color: ${props => props.theme.buttonBgPrimary.default.toString()};
 
   ${props =>
     props.disabled &&
     css`
       border-width: 1px;
       background-color: transparent;
-      border-color: ${props.theme.buttonBorderPrimary.toString()};
-      color: ${props.theme.buttonTextPrimary.toString()};
+      border-color: ${props.theme.buttonBorderDisabled.light.toString()};
+      color: ${props.theme.buttonTextDefault.light.toString()};
 
       &:hover {
-        border-color: ${props.theme.buttonBorderPrimary.toString()};
-        color: ${props.theme.buttonTextPrimary.toString()};
+        border-color: ${props.theme.buttonBorderDisabled.light.toString()};
+        color: ${props.theme.buttonTextDefault.light.toString()};
       }
     `};
 `;
@@ -90,6 +88,7 @@ export const CommentPost = styled.div`
 `;
 
 export const ActionBar = styled.div`
+  border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   margin-top: 2rem;
   margin-left: -1rem;
 
@@ -102,6 +101,8 @@ export const ActionBar = styled.div`
     }
   }
 `;
+
+export const ActionCommentButton = styled(Button)``;
 
 export const CommentReplyPost = styled.div`
   margin-left: 5rem;

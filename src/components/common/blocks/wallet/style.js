@@ -49,20 +49,24 @@ export const Header = styled(H4)`
   text-transform: ${props => (props.uppercase ? 'uppercase' : 'none')};
 `;
 
-export const Wallets = styled.ul`
-  list-style: none;
-`;
+// export const ActionContainer = styled.ul`
+//   list-style: none;
+// `;
 
-export const WalletItem = styled.li`
-  font-family: 'Futura PT Medium';
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  :hover {
-    ${IconContainer} {
-      > svg {
-        fill: #fff;
-      }
-    }
-  }
+// export const WalletItem = styled.li`
+//   font-family: 'Futura PT Medium';
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   :hover {
+//     ${IconContainer} {
+//       > svg {
+//         fill: #fff;
+//       }
+//     }
+//   }
+// `;
+
+export const ActionContainer = styled.div`
+  margin: 1rem auto;
 `;

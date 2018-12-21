@@ -38,7 +38,7 @@ export const Button = styled.a`
       font-size: 1.4rem;
 
       svg {
-        fill: ${props.theme.iconColor.toString()};
+        fill: ${props.theme.iconColor.default.toString()};
         width: 30px;
         height: 30px;
       }

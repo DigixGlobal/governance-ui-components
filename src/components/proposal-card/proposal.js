@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { H2 } from '../common/common-styles';
-import Button from '../common/elements/buttons/index';
-import Like from '../common/elements/like/index';
+import { Button, Icon } from '../common/elements/index';
 
 import {
   ProposaDetaillWrapper,
@@ -56,7 +55,11 @@ export default class Proposal extends React.Component {
             <PostedBy>
               BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
             </PostedBy>
-            <Like hasVoted />
+
+            <Button kind="text" xsmall>
+              <Icon kind="like" />
+              <span>Like</span>
+            </Button>
           </ProposalFooter>
         </ProposalCard>
       </ProposaDetaillWrapper>

@@ -7,8 +7,10 @@ import {
 
 export const Button = styled.a`
   border-radius: 3px;
-  ${ButtonStyles};
   display: block;
+  padding: 1rem;
+
+  ${ButtonStyles};
   ${props =>
     props.ghost &&
     css`

@@ -171,6 +171,7 @@ class RevealVote extends React.Component {
             accept=".json"
             secondary
             fluid
+            fullWidth
             large
             id="json-upload"
             onChange={this.handleUpload}

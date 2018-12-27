@@ -194,8 +194,10 @@ class CommitVote extends React.Component {
               <Button
                 kind="link"
                 primary
+                ghost
                 large
                 fluid
+                fullWidth
                 onClick={this.handleDownload}
                 download={`${proposalId}-${currentVotingRound}.json`}
                 href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}

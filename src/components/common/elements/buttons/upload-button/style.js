@@ -7,8 +7,11 @@ export const UploadInput = styled.input`
   display: none;
 `;
 export const UploadButton = styled.label`
-  display: inline-block;
   border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  padding: 1rem;
+
   ${ButtonStyles};
   ${props =>
     props.fullWidth &&

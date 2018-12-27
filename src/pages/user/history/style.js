@@ -1,6 +1,20 @@
 import styled, { css } from 'styled-components';
 
-import { Wrapper, Card } from '../../../components/common/common-styles';
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import { Wrapper, Card } from '@digix/gov-ui/components/common/common-styles';
+
+export const ButtonLink = styled(Button)`
+  border: 0;
+  background: transparent;
+  color: ${props => props.theme.linkSecondaryColor.default.toString()};
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  margin: 1rem;
+  &:hover {
+    background: ${props => props.theme.backgroundTertiary.lighter.toString()};
+    color: ${props => props.theme.linkSecondaryColor.default.toString()};
+  }
+`;
 
 export const EmptyStateContainer = styled.div`
   color: ${props => props.theme.textDefault.default.toString()};

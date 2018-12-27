@@ -7,6 +7,7 @@ import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
 
 import {
+  ButtonLink,
   EmptyStateContainer,
   IconContainer,
   EmptyStateTitle,
@@ -61,10 +62,16 @@ class History extends React.Component {
                 </p>
               )}
               {notAuthorized && (
-                <p>
-                  You will need to load your wallet to view your transactions, which will allow you
-                  to view and participate on all governance proposals. Load your wallet to continue.
-                </p>
+                <div>
+                  <p>
+                    You will need to load your wallet to view your transactions, which will allow
+                    you to view and participate on all governance proposals. Load your wallet to
+                    continue.
+                  </p>
+                  <ButtonLink kind="link" href="/#">
+                    Go back to Dashboard
+                  </ButtonLink>
+                </div>
               )}
             </EmptyStateContainer>
           ))}

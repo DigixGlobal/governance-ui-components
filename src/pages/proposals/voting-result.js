@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 import { VotingStages } from '@digix/gov-ui/constants';
@@ -129,12 +130,12 @@ class VotingResult extends React.Component {
       return null;
     }
 
-    // const currentTime = Date.now();
-    // const proposalProgress =
-
     const stats = isOnModeratorVoting
       ? this.getModeratorVotingStats(proposal)
       : this.getProposalVotingPhaseStats(proposal);
+
+    const yesVotes = truncateNumber(stats.yesVotes);
+    const noVotes = truncateNumber(stats.noVotes);
 
     return (
       <VotingResultWrapper>
@@ -172,9 +173,8 @@ class VotingResult extends React.Component {
             />
           </ProgressCol>
           <QuorumInfoCol>
-            <span>YES:&nbsp;{stats.yesVotes} DGD</span>
-
-            <span>NO:&nbsp;{stats.noVotes} DGD</span>
+            <span>YES:&nbsp;{yesVotes} DGD</span>
+            <span>NO:&nbsp;{noVotes} DGD</span>
           </QuorumInfoCol>
         </VotingResultContainer>
 

@@ -61,38 +61,46 @@ export const ButtonStyles = css`
   border: 2px solid
     ${props =>
       props.primary
-        ? props.theme.buttonBorderPrimary.toString()
+        ? props.theme.buttonBorderPrimary.default.toString()
         : props.theme.buttonBorderSecondary.default.toString()};
 
   color: ${props =>
     props.primary
-      ? props.theme.buttonTextPrimaryReverse.toString()
-      : props.theme.buttonTextSecondaryReverse.toString()};
+      ? props.theme.buttonTextPrimary.default.toString()
+      : props.theme.buttonTextSecondary.toString()};
+
+  text-align: center;
 
   &:hover {
-    background-color: transparent;
+    background: ${props =>
+      props.primary
+        ? props.theme.buttonBgSecondary.default.toString()
+        : props.theme.buttonBgPrimary.default.toString()};
+
     color: ${props =>
       props.primary
-        ? props.theme.buttonTextPrimary.toString()
-        : props.theme.buttonTextSecondary.toString()};
+        ? props.theme.buttonTextPrimaryReverse.default.toString()
+        : props.theme.buttonTextSecondaryReverse.toString()};
   }
 `;
 
 export const GhostBtn = css`
   background-color: transparent;
+
   color: ${props =>
     props.primary
-      ? props.theme.buttonTextPrimary.toString()
-      : props.theme.buttonTextSecondary.toString()};
+      ? props.theme.buttonTextPrimary.default.toString()
+      : props.theme.buttonTextSecondary.default.toString()};
 
   &:hover {
     background: ${props =>
       props.primary
-        ? props.theme.buttonBgPrimary.default.toString()
-        : props.theme.buttonBgSecondary.default.toString()};
+        ? props.theme.buttonBgSecondary.default.toString()
+        : props.theme.buttonBgPrimary.default.toString()};
+
     color: ${props =>
       props.primary
-        ? props.theme.buttonTextPrimaryReverse.toString()
+        ? props.theme.buttonTextPrimaryReverse.default.toString()
         : props.theme.buttonTextSecondaryReverse.toString()};
   }
 `;

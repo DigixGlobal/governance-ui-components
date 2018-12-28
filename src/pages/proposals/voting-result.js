@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { formatPercentage, truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 import { VotingStages } from '@digix/gov-ui/constants';
@@ -58,15 +59,15 @@ class VotingResult extends React.Component {
     const noVotes = draftVoting.no;
 
     const minimumQuorum = totalModeratorLockedDgds
-      ? this.formatPercentage(quorum / totalModeratorLockedDgds)
+      ? formatPercentage(quorum / totalModeratorLockedDgds)
       : EMPTY_PROGRESS_BAR_VALUE;
     const quorumProgress = totalModeratorLockedDgds
-      ? this.formatPercentage(totalVoterStake / totalModeratorLockedDgds)
+      ? formatPercentage(totalVoterStake / totalModeratorLockedDgds)
       : EMPTY_PROGRESS_BAR_VALUE;
 
-    const minimumApproval = this.formatPercentage(quota);
+    const minimumApproval = formatPercentage(quota);
     const approvalProgress = totalVoterStake
-      ? this.formatPercentage(draftVoting.yes / totalVoterStake)
+      ? formatPercentage(draftVoting.yes / totalVoterStake)
       : EMPTY_PROGRESS_BAR_VALUE;
 
     return {
@@ -98,11 +99,11 @@ class VotingResult extends React.Component {
     const yesVotes = currentRound.yes;
     const noVotes = currentRound.no;
 
-    const minimumQuorum = this.formatPercentage(quorum / totalModeratorLockedDgds);
-    const quorumProgress = this.formatPercentage(totalVoterStake / totalModeratorLockedDgds);
+    const minimumQuorum = formatPercentage(quorum / totalModeratorLockedDgds);
+    const quorumProgress = formatPercentage(totalVoterStake / totalModeratorLockedDgds);
 
-    const minimumApproval = this.formatPercentage(quota);
-    const approvalProgress = this.formatPercentage(currentRound.yes / totalVoterStake);
+    const minimumApproval = formatPercentage(quota);
+    const approvalProgress = formatPercentage(currentRound.yes / totalVoterStake);
 
     return {
       votes,
@@ -117,8 +118,6 @@ class VotingResult extends React.Component {
     };
   };
 
-  formatPercentage = num => (num * 100).toFixed(2);
-
   render() {
     const { proposal } = this.props;
     const isOnModeratorVoting = proposal.votingStage === VotingStages.draft;
@@ -129,12 +128,12 @@ class VotingResult extends React.Component {
       return null;
     }
 
-    // const currentTime = Date.now();
-    // const proposalProgress =
-
     const stats = isOnModeratorVoting
       ? this.getModeratorVotingStats(proposal)
       : this.getProposalVotingPhaseStats(proposal);
+
+    const yesVotes = truncateNumber(stats.yesVotes);
+    const noVotes = truncateNumber(stats.noVotes);
 
     return (
       <VotingResultWrapper>
@@ -172,9 +171,8 @@ class VotingResult extends React.Component {
             />
           </ProgressCol>
           <QuorumInfoCol>
-            <span>YES:&nbsp;{stats.yesVotes} DGD</span>
-
-            <span>NO:&nbsp;{stats.noVotes} DGD</span>
+            <span>YES:&nbsp;{yesVotes} DGD</span>
+            <span>NO:&nbsp;{noVotes} DGD</span>
           </QuorumInfoCol>
         </VotingResultContainer>
 

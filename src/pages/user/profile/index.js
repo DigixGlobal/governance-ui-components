@@ -16,7 +16,7 @@ class Profile extends React.Component {
             This page will be updated very soon. Please feel free to look around and check back
             often for updates!
           </p>
-          <ButtonLink kind="link" href="/">
+          <ButtonLink kind="link" href="/#">
             Go back to Dashboard
           </ButtonLink>
         </EmptyStateContainer>

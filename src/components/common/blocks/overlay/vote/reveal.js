@@ -122,7 +122,9 @@ class RevealVote extends React.Component {
         if (!error) {
           const json = atob(result.replace('data:application/json;base64,', ''));
           const voteObject = JSON.parse(json);
-          if (voteObject.vote && voteObject.salt) {
+
+          // eslint-disable-next-line
+          if (voteObject.hasOwnProperty('vote') && voteObject.salt) {
             this.setState({ voteObject, uploaded: true, error: false });
           } else {
             this.setState({

@@ -24,11 +24,8 @@ export default class LoadWallet extends React.Component {
     }
   };
 
-  handleWalletClose = () => {
-    const { onChangeStage } = this.props;
-    if (onChangeStage) {
-      onChangeStage(WalletStages.WalletLoaded);
-    }
+  handleKeystorLoad = () => {
+    this.props.onChangeStage(WalletStages.WalletLoaded);
   };
 
   render() {
@@ -41,11 +38,11 @@ export default class LoadWallet extends React.Component {
         </CloseButton>
         <Header uppercase>load wallet </Header>
         <ActionContainer>
-          <Metamask createKeystore={createKeystore} onClose={this.handleWalletClose} />
-          <Ledger createKeystore={createKeystore} onClose={this.handleWalletClose} />
-          <Trezor createKeystore={createKeystore} onClose={this.handleWalletClose} />
-          <ImToken createKeystore={createKeystore} onClose={this.handleWalletClose} />
-          <V3 createKeystore={createKeystore} onClose={this.handleWalletClose} />
+          <Metamask createKeystore={createKeystore} onSuccess={this.handleKeystorLoad} />
+          <Ledger createKeystore={createKeystore} onSuccess={this.handleKeystorLoad} />
+          <Trezor createKeystore={createKeystore} onSuccess={this.handleKeystorLoad} />
+          <ImToken createKeystore={createKeystore} onSuccess={this.handleKeystorLoad} />
+          <V3 createKeystore={createKeystore} onSuccess={this.handleKeystorLoad} />
         </ActionContainer>
       </IntroContainer>
     );

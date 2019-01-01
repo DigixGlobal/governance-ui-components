@@ -27,7 +27,7 @@ class V3Keystore extends React.Component {
           submitFunc={this.props.createKeystore}
           header="Import Wallet"
           skipConfirmation
-          onClose={() => this.props.onClose()}
+          onSuccess={() => this.props.onSuccess()}
           updateDefaultAddress
           trigger={
             <Button kind="round" secondary large icon fluid>
@@ -45,7 +45,7 @@ const { func } = PropTypes;
 
 V3Keystore.propTypes = {
   createKeystore: func,
-  onClose: func.isRequired,
+  onSuccess: func.isRequired,
 };
 
 V3Keystore.defaultProps = {

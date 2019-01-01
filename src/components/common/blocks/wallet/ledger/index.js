@@ -24,7 +24,7 @@ class Ledger extends React.Component {
       (
         <KeystoreModal
           createKeystore={this.props.createKeystore}
-          onClose={this.resetState}
+          onSuccess={() => this.props.onSuccess()}
           showBalances
           key="keystore-popup"
           submitFunc={this.props.createKeystore}
@@ -46,8 +46,11 @@ class Ledger extends React.Component {
   }
 }
 
+const { func } = PropTypes;
+
 Ledger.propTypes = {
-  createKeystore: PropTypes.func,
+  createKeystore: func,
+  onSuccess: func.isRequired,
 };
 
 Ledger.defaultProps = {

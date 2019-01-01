@@ -24,7 +24,7 @@ class Trezor extends React.Component {
       (
         <KeystoreModal
           createKeystore={this.props.createKeystore}
-          onClose={this.resetState}
+          onSuccess={() => this.props.onSuccess()}
           showBalances
           key="trezor-popup"
           submitFunc={this.props.createKeystore}
@@ -46,8 +46,11 @@ class Trezor extends React.Component {
   }
 }
 
+const { func } = PropTypes;
+
 Trezor.propTypes = {
-  createKeystore: PropTypes.func,
+  createKeystore: func,
+  onSuccess: func.isRequired,
 };
 
 Trezor.defaultProps = {

@@ -24,7 +24,7 @@ class ImToken extends React.Component {
       (
         <KeystoreModal
           createKeystore={this.createKeystore}
-          onClose={this.resetState}
+          onSuccess={() => this.props.onSuccess()}
           key="imtoken-popup"
           submitFunc={this.props.createKeystore}
           form={KeystoreCreationForm}
@@ -45,8 +45,11 @@ class ImToken extends React.Component {
   }
 }
 
+const { func } = PropTypes;
+
 ImToken.propTypes = {
-  createKeystore: PropTypes.func,
+  createKeystore: func,
+  onSuccess: func.isRequired,
 };
 
 ImToken.defaultProps = {

@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
 import ImportKeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/import_keystore_modal';
 
-import { WalletItem } from '../style';
-import Button from '../../../../common/elements/buttons/index';
-import Icon from '../../../../common/elements/icons';
+import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
 
 class V3Keystore extends React.Component {
   render() {

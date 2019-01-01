@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Icon from '../../../common/elements/icons';
-
-import { IntroContainer, CloseButton, OverlayHeader as Header } from '../../common-styles';
-import { ActionContainer } from './style';
-import { Stage } from './constants';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
+import {
+  CloseButton,
+  IntroContainer,
+  OverlayHeader as Header,
+} from '@digix/gov-ui/components/common/common-styles';
+import { ActionContainer } from '@digix/gov-ui/components/common/blocks/wallet/style.js';
+import { WalletStages } from '@digix/gov-ui/constants';
 
 import V3 from './json';
 import Metamask from './metamask';
@@ -17,14 +20,14 @@ export default class LoadWallet extends React.Component {
   handleCloseButtonClick = () => {
     const { onChangeStage } = this.props;
     if (onChangeStage) {
-      onChangeStage(Stage.Intro);
+      onChangeStage(WalletStages.Intro);
     }
   };
 
   handleWalletClose = () => {
     const { onChangeStage } = this.props;
     if (onChangeStage) {
-      onChangeStage(Stage.WalletLoaded);
+      onChangeStage(WalletStages.WalletLoaded);
     }
   };
 

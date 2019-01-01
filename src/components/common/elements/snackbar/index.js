@@ -27,7 +27,7 @@ class Snackbar extends React.Component {
           {alertData.message || 'Monkeys are now bringing your vote to the Ethereum tree'}
         </SnackbarDesc>
         {alertData.txHash && (
-          <SnackbarAction href={`${ETHERSCAN_URL}${alertData.txHash}`}>
+          <SnackbarAction href={`${ETHERSCAN_URL}${alertData.txHash}`} target="_blank">
             {alertData.txHash}
           </SnackbarAction>
         )}

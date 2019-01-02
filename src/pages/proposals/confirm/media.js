@@ -12,6 +12,12 @@ import Modal from 'react-responsive-modal';
 import { Section, Title, Content, Heading, Media, LeftCol, RightCol, ImageHolder } from './style';
 
 export default class MediaAssets extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    };
+  }
   showHideImage = () => {
     this.setState({ open: !this.state.open });
   };

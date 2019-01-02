@@ -13,7 +13,7 @@ export const TextBtn = styled(Button)`
 
   color: ${props =>
     props.primary
-      ? props.theme.buttonTextPrimary.default.toString()
+      ? props.theme.icon.default.default.toString()
       : props.theme.buttonTextDefault.default.toString()};
 
   svg {
@@ -26,7 +26,7 @@ export const TextBtn = styled(Button)`
       color: ${props.theme.buttonTextSecondary.default.toString()};
 
       svg {
-        fill: ${props.theme.backgroundSecondary.default.toString()};
+        fill: ${props.theme.icon.active.default.toString()};
       }
     `};
 `;

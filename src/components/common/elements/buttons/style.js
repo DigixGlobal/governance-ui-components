@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const Button = styled.button`
+export const ButtonGlobalStyles = css`
   cursor: pointer;
   font-family: 'Futura PT Medium';
   font-size: 1.4rem;
@@ -11,6 +11,17 @@ export const Button = styled.button`
   text-decoration: none;
   text-transform: uppercase;
   transition: all 0.3s ease;
+
+  ${props =>
+    props.fluid &&
+    css`
+      width: 100%;
+      margin: 2rem 0;
+    `};
+`;
+
+export const Button = styled.button`
+  ${ButtonGlobalStyles};
 
   ${props =>
     props.small &&

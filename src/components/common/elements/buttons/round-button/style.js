@@ -54,13 +54,6 @@ export const RoundBtn = styled(Button)`
     `};
 
   ${props =>
-    props.fluid &&
-    css`
-      width: 100%;
-      margin: 2rem 0;
-    `};
-
-  ${props =>
     props.success &&
     css`
       background: ${props.theme.backgroundSecondary.fade.toString()};

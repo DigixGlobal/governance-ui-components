@@ -65,18 +65,22 @@ export const MediaUploader = styled.div`
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border-radius: 3px;
   padding: 2rem;
+
+  & > div {
+    flex: 1;
+  }
 `;
 
 export const ImageHolder = styled.div`
   background-color: ${props => props.theme.backgroundPrimary.default.toString()};
   border-radius: 3px;
   min-width: 500px;
-  height: 200px;
+  min-height: 200px;
   padding: 0.5rem;
   overflow: auto;
   & > img {
-    height: 17rem;
-    width: 20.5rem;
+    height: auto;
+    width: 100%;
     margin: 2px;
   }
 `;

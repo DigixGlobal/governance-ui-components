@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
+import Modal from 'react-responsive-modal';
+
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
 import { dijix } from '../../utils/dijix';
 
 import {
@@ -12,9 +16,15 @@ import {
   ImageHolder,
 } from './style';
 
-import ImageViewer from '../../components/common/ipfs-viewer';
-
 export default class ProjectDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { open: false };
+  }
+  showHideImage = () => {
+    this.setState({ open: !this.state.open });
+  };
+
   renderDocuments(documents) {
     if (!documents) return null;
 
@@ -25,11 +35,31 @@ export default class ProjectDetails extends React.Component {
     if (!proofs) return null;
     const images = proofs.map((img, i) =>
       img.src ? (
-        <img
-          key={`img-${i + 1}`}
-          alt=""
-          src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
-        />
+        <Fragment>
+          {/* eslint-disable */}
+          <img
+            key={`img-${i + 1}`}
+            alt=""
+            onClick={this.showHideImage}
+            src={!preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.thumbnail}` : img.src}
+          />
+          <Modal open={this.state.open} showCloseIcon={false} onClose={this.showHideImage} center>
+            <div>
+              <img
+                key={`img-${i + 1}`}
+                alt=""
+                style={{width:'100%'}}
+                src={
+                  preview
+                    ? img.src
+                    : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`
+                }
+              />
+              <Button kind="round" small onClick={this.showHideImage}>Close</Button>
+            </div>
+          </Modal>
+          {/* eslint-enable */}
+        </Fragment>
       ) : null
     );
     return <ImageHolder>{images}</ImageHolder>;

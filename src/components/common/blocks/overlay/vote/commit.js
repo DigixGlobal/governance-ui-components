@@ -37,7 +37,6 @@ class CommitVote extends React.Component {
     this.state = {
       vote: false,
       hasVoted: false,
-      downloaded: false,
       changeVote: false,
       voteObject: {},
     };
@@ -82,10 +81,6 @@ class CommitVote extends React.Component {
       vote,
       voteObject: { vote, salt: `0x${buffer2Hex(random)}` },
     });
-  };
-
-  handleDownload = () => {
-    this.setState({ downloaded: true });
   };
 
   handleChangeVote = () => {
@@ -142,7 +137,7 @@ class CommitVote extends React.Component {
   };
 
   render() {
-    const { hasVoted, vote, downloaded, changeVote } = this.state;
+    const { hasVoted, vote, changeVote } = this.state;
     const { proposalId, proposal, revoting } = this.props;
     const { currentVotingRound } = proposal;
     const votedYes = hasVoted && vote;
@@ -194,24 +189,19 @@ class CommitVote extends React.Component {
             </Note>
             <ResponseButton voteValue>Yes</ResponseButton>
             <ResponseButton voteValue={false}>No</ResponseButton>
-            {hasVoted && !downloaded && (
+            {hasVoted && (
               <LinkButton
                 kind="link"
                 large
                 fluid
-                onClick={this.handleDownload}
                 download={`${proposalId}-${currentVotingRound}.json`}
                 href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
               >
                 Download JSON File
               </LinkButton>
             )}
-            {downloaded && (
-              <Button kind="round" secondary success fluid>
-                File Downloaded
-              </Button>
-            )}
-            {downloaded && (
+
+            {hasVoted && (
               <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
                 Confirm Commit
               </Button>

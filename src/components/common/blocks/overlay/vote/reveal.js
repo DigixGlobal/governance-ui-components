@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
+
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
@@ -103,6 +105,7 @@ class RevealVote extends React.Component {
       network,
       web3Params,
       ui,
+      showTxSigningModal: this.props.showTxSigningModal,
     };
 
     return executeContractFunction(payload);
@@ -123,8 +126,7 @@ class RevealVote extends React.Component {
           const json = atob(result.replace('data:application/json;base64,', ''));
           const voteObject = JSON.parse(json);
 
-          // eslint-disable-next-line
-          if (voteObject.hasOwnProperty('vote') && voteObject.salt) {
+          if ((voteObject.vote || !voteObject.vote) && voteObject.salt) {
             this.setState({ voteObject, uploaded: true, error: false });
           } else {
             this.setState({
@@ -201,6 +203,7 @@ RevealVote.propTypes = {
   sendTransactionToDaoServer: func.isRequired,
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
+  showTxSigningModal: func.isRequired,
   web3Redux: object.isRequired,
 };
 
@@ -216,6 +219,7 @@ export default web3Connect(
       sendTransactionToDaoServer,
       showHideAlertAction: showHideAlert,
       showRightPanelAction: showRightPanel,
+      showTxSigningModal,
     }
   )(RevealVote)
 );

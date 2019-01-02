@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import web3Utils from 'web3-utils';
 import secureRandom from 'secure-random';
 
+import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
+
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
@@ -133,6 +135,7 @@ class CommitVote extends React.Component {
       network,
       web3Params,
       ui,
+      showTxSigningModal: this.props.showTxSigningModal,
     };
 
     return executeContractFunction(payload);
@@ -227,9 +230,11 @@ CommitVote.propTypes = {
   ChallengeProof: object.isRequired,
   history: object.isRequired,
   proposalId: string.isRequired,
+  proposal: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
+  showTxSigningModal: func.isRequired,
   web3Redux: object.isRequired,
   revoting: bool,
 };
@@ -250,6 +255,7 @@ export default web3Connect(
       sendTransactionToDaoServer,
       showHideAlertAction: showHideAlert,
       showRightPanelAction: showRightPanel,
+      showTxSigningModal,
     }
   )(CommitVote)
 );

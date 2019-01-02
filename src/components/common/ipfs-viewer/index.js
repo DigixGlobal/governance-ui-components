@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { fetchFromDijix } from '../../../utils/dijix';
 
 const initialState = {
-  // data: {},
   loading: true,
   thumbnails: [],
 };
@@ -36,7 +35,7 @@ export default class IpfsViewer extends Component {
   };
 
   componentWillUnmount = () => {
-    this.setState({ loading: false, thumbnails: undefined });
+    this.setState({ loading: false, files: undefined });
   };
 
   fetchImages = props => {
@@ -44,20 +43,23 @@ export default class IpfsViewer extends Component {
     Promise.all(
       hashes.map(hash => {
         if (hash === null || !hash) return undefined;
-        return fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails);
+        return fetchFromDijix(0, undefined, hash).then(data => data);
       })
     ).then(images => {
       if (!images[0]) return undefined;
-      const thumbs = images.map(image => ({ src: image ? image[thumbnailSize] : undefined }));
-      this.setState({ thumbnails: thumbs, loading: false });
+      const files = images.map(image => ({
+        thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
+        src: image ? image.data.src : undefined,
+      }));
+      this.setState({ files, loading: false });
     });
   };
 
   render() {
-    const { loading, thumbnails } = this.state;
+    const { loading, files } = this.state;
     if (loading) {
       return this.props.renderLoading || null;
     }
-    return this.props.renderResolved(thumbnails);
+    return this.props.renderResolved(files);
   }
 }

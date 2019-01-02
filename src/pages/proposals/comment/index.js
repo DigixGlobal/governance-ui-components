@@ -134,7 +134,7 @@ class CommentThread extends React.Component {
 
   fetchUserPoints = () => {
     const { threads, userAddresses } = this.state;
-    const { ChallengeProof } = this.props;
+    const { ChallengeProof, uid } = this.props;
     if (!threads || !ChallengeProof.data) {
       return;
     }
@@ -150,6 +150,18 @@ class CommentThread extends React.Component {
 
     UsersApi.getPoints(newUniqueAddresses, payload)
       .then(userPoints => {
+        this.setState({ userPoints });
+      })
+      // reputation points for first-time commenters
+      // are not available in the previous endpoint
+      .then(() => UsersApi.getDetails(uid, payload))
+      .then(details => {
+        const { userPoints } = this.state;
+        userPoints[uid] = {
+          quarterPoints: details.quarterPoint,
+          reputation: details.reputationPoint,
+        };
+
         this.setState({ userPoints });
       })
       .catch(() => {

@@ -172,6 +172,11 @@ const LightTheme = {
     success: green,
     failed: red,
   },
+
+  icon: {
+    default: primaryColor,
+    active: secondaryColor,
+  },
 };
 
 export default LightTheme;

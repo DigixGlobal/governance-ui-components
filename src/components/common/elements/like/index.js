@@ -8,7 +8,7 @@ class LikeButton extends React.Component {
   render() {
     const { hasVoted, onClick } = this.props;
     return (
-      <UpVote hasVoted={hasVoted} onClick={onClick}>
+      <UpVote active={hasVoted} onClick={onClick}>
         <Icon kind="like" active={hasVoted} />
         {hasVoted ? 'UNLIKE' : 'LIKE'}
       </UpVote>

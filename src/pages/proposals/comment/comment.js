@@ -57,7 +57,7 @@ class Comment extends React.Component {
   render() {
     const { toggleEditor, uid, userPoints } = this.props;
     const { comment } = this.state;
-    const { body, liked, user } = comment;
+    const { body, liked, likes, user } = comment;
     const isAuthor = uid === user.address;
     const isDeleted = !body;
 
@@ -79,8 +79,7 @@ class Comment extends React.Component {
                 onClick={() => this.toggleLike()}
               >
                 <Icon active={liked} kind="like" />
-                {liked && <span>Unlike</span>}
-                {!liked && <span>Like</span>}
+                <span>{likes}&nbsp;Likes</span>
               </ActionCommentButton>
               {isAuthor && (
                 <ActionCommentButton kind="text" xsmall onClick={() => this.deleteComment()}>

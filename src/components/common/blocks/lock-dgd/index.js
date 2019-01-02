@@ -234,9 +234,9 @@ class LockDgd extends React.Component {
 
     return (
       <WalletContainer>
-        <CloseButton>
+        <CloseButton onClick={this.handleCloseLockDgd}>
           <Header>LOCK DGD</Header>
-          <Icon kind="close" onClick={this.handleCloseLockDgd} />
+          <Icon kind="close" />
         </CloseButton>
         <LockDgdBox>You are now locking DGD in the staking Phase</LockDgdBox>
         <TextCaption>

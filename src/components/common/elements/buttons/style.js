@@ -65,7 +65,7 @@ export const Button = styled.button`
 
       &:hover {
         svg {
-          fill: ${props.theme.iconDefaultColor.default.toString()};
+          fill: ${props.theme.iconColorReverse.default.toString()};
         }
       }
     `};

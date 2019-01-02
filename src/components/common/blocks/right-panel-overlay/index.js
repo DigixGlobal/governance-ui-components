@@ -29,8 +29,8 @@ const PanelOverlay = props => {
     <Container>
       <TransparentOverlay />
       <PanelContainer>
-        <CloseButton>
-          <Icon kind="close" onClick={showPanel.onClose || closePanel} />
+        <CloseButton onClick={showPanel.onClose || closePanel}>
+          <Icon kind="close" />
         </CloseButton>
         {showPanel.component}
       </PanelContainer>

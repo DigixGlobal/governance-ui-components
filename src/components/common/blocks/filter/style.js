@@ -11,14 +11,6 @@ export const Heading = styled.div`
   h1 {
     margin-right: 2rem;
   }
-  svg {
-    fill: ${props => props.theme.iconPrimaryColor.toString()};
-  }
-  &:hover {
-    svg {
-      fill: #fff;
-    }
-  }
 `;
 export const Filter = styled.div`
   display: flex;

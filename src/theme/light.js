@@ -124,6 +124,7 @@ const LightTheme = {
   buttonResponseNo: red,
   buttonFlatColor: red.default,
   buttonTextDefault: tertiaryColor,
+  buttonTextDefaultReverse: white,
   buttonTextPrimary: primaryColor,
   buttonTextPrimaryReverse: white,
   buttonTextSecondary: secondaryColor,
@@ -171,6 +172,11 @@ const LightTheme = {
     pending: tertiaryColor,
     success: green,
     failed: red,
+  },
+
+  icon: {
+    default: primaryColor,
+    active: secondaryColor,
   },
 };
 

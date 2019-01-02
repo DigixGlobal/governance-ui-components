@@ -92,8 +92,10 @@ export const ActionBar = styled.div`
 `;
 
 export const ActionCommentButton = styled(Button)`
-  margin: 1rem 0;
+  margin: 1rem 0.5rem;
   margin-bottom: -1rem;
+  padding: 1rem;
+
   &:first-child {
     margin-left: -1rem;
   }

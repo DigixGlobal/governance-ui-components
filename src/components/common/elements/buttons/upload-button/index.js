@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { UploadButton, UploadInput } from './style';
+import { UploadInputContainer, UploadButton, UploadInput } from './style';
 
 const UploadFileButton = props => (
-  <div>
+  <UploadInputContainer>
     <UploadInput
       accept={props.accept ? props.accept : 'image/*'}
       id={props.id ? props.id : 'image-upload'}
@@ -13,14 +13,15 @@ const UploadFileButton = props => (
       type="file"
     />
     <UploadButton
-      fullWidth={props.fullWidth}
+      /* fullWidth={props.fullWidth} */
       primary
+      fluid
       htmlFor={props.id ? props.id : 'image-upload'}
     >
       {props.caption}
     </UploadButton>
     {props.children}
-  </div>
+  </UploadInputContainer>
 );
 
 const { object, string, node, oneOfType, bool, func } = PropTypes;
@@ -31,12 +32,12 @@ UploadFileButton.propTypes = {
   multiple: bool,
   accept: string.isRequired,
   onChange: func.isRequired,
-  fullWidth: bool,
+  // fullWidth: bool,
   children: oneOfType([object, string, node]),
 };
 
 UploadFileButton.defaultProps = {
-  fullWidth: false,
+  // fullWidth: false,
   children: null,
   multiple: false,
 };

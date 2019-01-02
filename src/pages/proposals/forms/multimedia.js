@@ -108,7 +108,6 @@ class Multimedia extends React.Component {
                 accept="image/*"
                 primary
                 fluid
-                fullWidth
                 large
                 multiple
                 id="image-upload"

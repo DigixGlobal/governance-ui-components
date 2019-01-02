@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import web3Utils from 'web3-utils';
 import secureRandom from 'secure-random';
 
+import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
+
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
@@ -11,6 +13,8 @@ import {
   Note,
   NoteContainer,
 } from '@digix/gov-ui/components/common/common-styles';
+
+import { LinkButton } from '@digix/gov-ui/components/common/blocks/overlay/vote/style';
 
 import { buffer2Hex } from '@digix/gov-ui/utils/helpers';
 
@@ -33,7 +37,6 @@ class CommitVote extends React.Component {
     this.state = {
       vote: false,
       hasVoted: false,
-      downloaded: false,
       changeVote: false,
       voteObject: {},
     };
@@ -78,10 +81,6 @@ class CommitVote extends React.Component {
       vote,
       voteObject: { vote, salt: `0x${buffer2Hex(random)}` },
     });
-  };
-
-  handleDownload = () => {
-    this.setState({ downloaded: true });
   };
 
   handleChangeVote = () => {
@@ -131,13 +130,14 @@ class CommitVote extends React.Component {
       network,
       web3Params,
       ui,
+      showTxSigningModal: this.props.showTxSigningModal,
     };
 
     return executeContractFunction(payload);
   };
 
   render() {
-    const { hasVoted, vote, downloaded, changeVote } = this.state;
+    const { hasVoted, vote, changeVote } = this.state;
     const { proposalId, proposal, revoting } = this.props;
     const { currentVotingRound } = proposal;
     const votedYes = hasVoted && vote;
@@ -147,9 +147,8 @@ class CommitVote extends React.Component {
       <Button
         {...props}
         kind="round"
-        fluid
-        ghost
         primary
+        fluid
         xlarge
         yes={props.voteValue}
         no={!props.voteValue}
@@ -170,7 +169,7 @@ class CommitVote extends React.Component {
                 previous commit.
               </p>
             </NoteContainer>
-            <Button kind="round" fluid ghost primary onClick={this.handleChangeVote}>
+            <Button kind="round" secondary large fluid onClick={this.handleChangeVote}>
               Change My Vote
             </Button>
           </Fragment>
@@ -190,27 +189,19 @@ class CommitVote extends React.Component {
             </Note>
             <ResponseButton voteValue>Yes</ResponseButton>
             <ResponseButton voteValue={false}>No</ResponseButton>
-            {hasVoted && !downloaded && (
-              <Button
+            {hasVoted && (
+              <LinkButton
                 kind="link"
-                primary
-                ghost
                 large
                 fluid
-                fullWidth
-                onClick={this.handleDownload}
                 download={`${proposalId}-${currentVotingRound}.json`}
                 href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
               >
                 Download JSON File
-              </Button>
+              </LinkButton>
             )}
-            {downloaded && (
-              <Button kind="round" secondary success fluid>
-                File Downloaded
-              </Button>
-            )}
-            {downloaded && (
+
+            {hasVoted && (
               <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
                 Confirm Commit
               </Button>
@@ -229,9 +220,11 @@ CommitVote.propTypes = {
   ChallengeProof: object.isRequired,
   history: object.isRequired,
   proposalId: string.isRequired,
+  proposal: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
+  showTxSigningModal: func.isRequired,
   web3Redux: object.isRequired,
   revoting: bool,
 };
@@ -252,6 +245,7 @@ export default web3Connect(
       sendTransactionToDaoServer,
       showHideAlertAction: showHideAlert,
       showRightPanelAction: showRightPanel,
+      showTxSigningModal,
     }
   )(CommitVote)
 );

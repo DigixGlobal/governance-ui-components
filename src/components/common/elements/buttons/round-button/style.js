@@ -54,13 +54,6 @@ export const RoundBtn = styled(Button)`
     `};
 
   ${props =>
-    props.fluid &&
-    css`
-      width: 100%;
-      margin: 2rem 0;
-    `};
-
-  ${props =>
     props.success &&
     css`
       background: ${props.theme.backgroundSecondary.fade.toString()};
@@ -70,6 +63,50 @@ export const RoundBtn = styled(Button)`
         background: ${props.theme.backgroundSecondary.fade.toString()};
         border-color: ${props.theme.buttonBorderSecondary.default.toString()};
         color: ${props.theme.textSecondary.default.toString()};
+      }
+    `};
+
+  ${props =>
+    props.yes &&
+    css`
+      &:hover,
+      &:focus {
+        color: ${props.theme.buttonResponseYes.default.toString()};
+        border-color: ${props.theme.buttonResponseYes.default.toString()};
+        background-color: ${props.theme.buttonResponseYes.fade.toString()};
+      }
+    `};
+  ${props =>
+    props.no &&
+    css`
+      &:hover,
+      &:focus {
+        color: ${props.theme.buttonResponseNo.default.toString()};
+        border-color: ${props.theme.buttonResponseNo.default.toString()};
+        background-color: ${props.theme.buttonResponseNo.fade.toString()};
+      }
+    `};
+
+  ${props =>
+    props.confirmedYes &&
+    css`
+      &,
+      &:hover,
+      &:focus {
+        color: ${props.theme.buttonResponseYes.default.toString()};
+        border-color: ${props.theme.buttonResponseYes.default.toString()};
+        background-color: ${props.theme.buttonResponseYes.fade.toString()};
+      }
+    `};
+  ${props =>
+    props.confirmedNo &&
+    css`
+      &,
+      &:hover,
+      &:focus {
+        color: ${props.theme.buttonResponseNo.default.toString()};
+        border-color: ${props.theme.buttonResponseNo.default.toString()};
+        background-color: ${props.theme.buttonResponseNo.fade.toString()};
       }
     `};
 `;

@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+
+import Modal from 'react-responsive-modal';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 
@@ -15,6 +17,10 @@ class Multimedia extends React.Component {
       thumbnails: undefined,
     };
   }
+
+  showHideImage = () => {
+    this.setState({ open: !this.state.open });
+  };
 
   handleUpload = e => {
     const { onChange } = this.props;
@@ -84,11 +90,33 @@ class Multimedia extends React.Component {
   renderImages = (proofs, preview) => {
     if (!proofs) return null;
     const images = proofs.map((img, i) => (
-      <img
-        key={`img-${i + 1}`}
-        alt=""
-        src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
-      />
+      <Fragment>
+        {/* eslint-disable */}
+        <img
+          key={`img-${i + 1}`}
+          alt=""
+          onClick={this.showHideImage}
+          src={
+            preview
+              ? img.thumbnail
+              : `${dijix.config.httpEndpoint}/${img.thumbnail}?q=${Date.now()}`
+          }
+        />
+        <Modal open={this.state.open} onClose={this.showHideImage}>
+          <div>
+            <img
+              key={`img-${i + 1}`}
+              alt=""
+              style={{width:'100%'}}
+              src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
+              />
+            <Button kind="round" small onClick={this.showHideImage}>
+              Close
+            </Button>
+          </div>
+        </Modal>
+        {/* eslint-enable */}
+      </Fragment>
     ));
     return images;
   };
@@ -108,7 +136,6 @@ class Multimedia extends React.Component {
                 accept="image/*"
                 primary
                 fluid
-                fullWidth
                 large
                 multiple
                 id="image-upload"

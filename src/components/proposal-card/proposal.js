@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { H2 } from '../common/common-styles';
-import { Button, Icon } from '../common/elements/index';
+import { connect } from 'react-redux';
+
+import { H2 } from '@digix/gov-ui/components/common/common-styles';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 
 import {
   ProposaDetaillWrapper,
@@ -12,12 +14,44 @@ import {
   ProposalFooter,
   PostedBy,
   PostedByLink,
-  LikeButton,
-} from './style';
+} from '@digix/gov-ui/components/proposal-card/style';
 
-export default class Proposal extends React.Component {
+import LikeButton from '@digix/gov-ui/components/common/elements/like';
+import { initializePayload } from '@digix/gov-ui/api';
+import { likeProposal, unlikeProposal } from '@digix/gov-ui/reducers/dao-server/actions';
+
+class Proposal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      liked: this.props.liked,
+    };
+  }
+
+  toggleLike = () => {
+    const { ChallengeProof, details, likeProposalAction, unlikeProposalAction } = this.props;
+    let { liked } = this.state;
+    const payload = initializePayload(ChallengeProof);
+
+    const options = {
+      ...payload,
+      proposalId: details.proposalId,
+      token: payload.authToken,
+    };
+
+    liked = !liked;
+    if (liked) {
+      likeProposalAction(options);
+    } else {
+      unlikeProposalAction(options);
+    }
+
+    this.setState({ liked });
+  };
+
   render() {
-    const { details, userDetails, liked } = this.props;
+    const { details, userDetails } = this.props;
+    const { liked } = this.state;
 
     const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
     const canCreate = userDetails && userDetails.data.isParticipant;
@@ -58,7 +92,7 @@ export default class Proposal extends React.Component {
               BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
             </PostedBy>
             {canLike && (
-              <LikeButton kind="text" xsmall hasVoted={liked}>
+              <LikeButton kind="text" xsmall hasVoted={liked} onClick={() => this.toggleLike()}>
                 <Icon kind="like" />
                 <span>Like</span>
               </LikeButton>
@@ -70,13 +104,30 @@ export default class Proposal extends React.Component {
   }
 }
 
-const { bool, object } = PropTypes;
+const { bool, func, object } = PropTypes;
+
 Proposal.propTypes = {
+  ChallengeProof: object,
   details: object.isRequired,
-  userDetails: object.isRequired,
   liked: bool,
+  likeProposalAction: func.isRequired,
+  unlikeProposalAction: func.isRequired,
+  userDetails: object.isRequired,
 };
 
+const mapStateToProps = state => ({
+  ChallengeProof: state.daoServer.ChallengeProof,
+});
+
 Proposal.defaultProps = {
+  ChallengeProof: undefined,
   liked: false,
 };
+
+export default connect(
+  mapStateToProps,
+  {
+    likeProposalAction: likeProposal,
+    unlikeProposalAction: unlikeProposal,
+  }
+)(Proposal);

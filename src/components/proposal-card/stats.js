@@ -5,69 +5,53 @@ import { toBigNumber, parseBigNumber } from 'spectrum-lightsuite/src/helpers/str
 
 import { StatsWrapper, Stats, StatItem } from '@digix/gov-ui/components/proposal-card/style';
 import { VotingStages } from '@digix/gov-ui/constants';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { formatPercentage, truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 export default class ProposalCardStats extends React.Component {
-  getStats = proposal => {
-    let approvalRating = 0;
-    switch (proposal.votingStage) {
-      case VotingStages.draftVoting: {
-        if (proposal.currentVotingRound === -1) {
-          approvalRating =
-            parseBigNumber(proposal.draftVoting.yes, 0, false) > 0
-              ? parseBigNumber(
-                  toBigNumber(proposal.draftVoting.yes)
-                    .div(toBigNumber(proposal.draftVoting.totalVoterStake))
-                    .times(100),
-                  0,
-                  false
-                )
-              : 0;
+  getVotingRoundDetails = proposal => {
+    const { votingStage } = this.props;
+    const { currentVotingRound, draftVoting, votingRounds } = proposal;
+
+    switch (votingStage) {
+      case VotingStages.draft:
+        if (currentVotingRound === -1) {
+          return draftVoting;
         }
-        return {
-          approvalRating,
-          participantCount: proposal.draftVoting ? proposal.draftVoting.totalVoterCount : 0,
-        };
-      }
+
+        break;
       case VotingStages.commit:
-      case VotingStages.reveal: {
-        const { currentVotingRound } = proposal;
-        approvalRating =
-          parseBigNumber(proposal.votingRounds[currentVotingRound].yes, 0, false) > 0
-            ? parseBigNumber(
-                toBigNumber(proposal.votingRounds[currentVotingRound].yes)
-                  .div(toBigNumber(proposal.votingRounds[currentVotingRound].totalVoterStake))
-                  .times(100),
-                0,
-                false
-              )
-            : 0;
-        return {
-          approvalRating,
-          participantCount: proposal.votingRounds[currentVotingRound].totalVoterCount || 0,
-        };
-      }
+      case VotingStages.reveal:
+        return votingRounds[currentVotingRound];
       default:
-        return { approvalRating: 0, participantCount: 0 };
+        return null;
     }
   };
+
+  getStats = proposal => {
+    const votingRoundDetails = this.getVotingRoundDetails(proposal);
+    let approvalRating = 0;
+    let participantCount = 0;
+
+    if (votingRoundDetails) {
+      const approval = toBigNumber(votingRoundDetails.yes);
+      const totalStake = toBigNumber(votingRoundDetails.totalVoterStake);
+
+      approvalRating = totalStake > 0 ? approval.div(totalStake) : 0;
+      approvalRating = parseBigNumber(approvalRating, 0, false);
+      participantCount = votingRoundDetails.totalVoterCount || 0;
+    }
+
+    return {
+      approvalRating: formatPercentage(approvalRating),
+      participantCount,
+    };
+  };
+
   render() {
     const { details, votingStage } = this.props;
     if (!details) {
       return null;
     }
-
-    // const { draftVoting } = details;
-
-    // let approvalRating = 0;
-    // if (draftVoting) {
-    //   const totalVotes = parseBigNumber(draftVoting.totalVoterStake, 0, false);
-    //   if (totalVotes) {
-    //     const votedYes = parseBigNumber(draftVoting.yes, 0, false);
-    //     approvalRating = ((votedYes * 100) / totalVotes).toFixed(2);
-    //   }
-    // }
-
     const { approvalRating, participantCount } = this.getStats(details);
     let funding = details.proposalVersions[0].totalFunding / 1e18;
     funding = truncateNumber(funding);

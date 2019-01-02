@@ -1,6 +1,5 @@
 import React from 'react';
 import Icon from '@digix/gov-ui/components/common/elements/icons/index';
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import { EmptyStateContainer, EmptyStateTitle, IconContainer, ButtonLink } from './style';
 
 class Wallet extends React.Component {
@@ -17,7 +16,7 @@ class Wallet extends React.Component {
             This page will be updated very soon. Please feel free to look around and check back
             often for updates!
           </p>
-          <ButtonLink kind="link" href="/">
+          <ButtonLink kind="link" href="/#">
             Go back to Dashboard
           </ButtonLink>
         </EmptyStateContainer>

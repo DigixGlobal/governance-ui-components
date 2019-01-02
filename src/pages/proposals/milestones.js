@@ -12,7 +12,7 @@ export default class Milestones extends React.Component {
         <Accordion allowMultipleOpen>
           {milestones.map((milestone, i) => (
             <div key={`ms-${i + 1}`} label={`Milestone ${i + 1}: ${milestone.title || ''}`}>
-              <p>Funding: {milestoneFundings[i]} ETH</p>
+              <p>Funding: {milestone.fund} ETH</p>
               {milestone.description
                 ? milestone.description
                 : 'No milestone description has been created yet.'}

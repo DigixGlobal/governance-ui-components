@@ -35,3 +35,16 @@ export const truncateNumber = number => {
 
   return truncatedNumber;
 };
+
+export const formatPercentage = num => {
+  if (!num) {
+    return 0;
+  }
+
+  const formatted = num * 100;
+  if (formatted % 1 !== 0) {
+    return formatted.toFixed(2);
+  }
+
+  return formatted;
+};

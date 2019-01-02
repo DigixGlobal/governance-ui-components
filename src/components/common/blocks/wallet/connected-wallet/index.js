@@ -267,7 +267,7 @@ class ConnectedWallet extends React.Component {
     const { addressMaxAllowance } = this.props;
     const { dgdBalance, showLockDgd } = this.state;
     const showApproval =
-      parseFloat(dgdBalance) > 0 && Number(addressMaxAllowance) === 0 && !showLockDgd;
+      parseFloat(dgdBalance) > 0 && Number(addressMaxAllowance) <= 2 ** 100 && !showLockDgd;
     return (
       <InnerContainer>{showApproval ? this.renderApproval() : this.renderDefault()}</InnerContainer>
     );

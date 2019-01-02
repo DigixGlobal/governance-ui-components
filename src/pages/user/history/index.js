@@ -7,6 +7,7 @@ import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
 
 import {
+  ButtonLink,
   EmptyStateContainer,
   IconContainer,
   EmptyStateTitle,
@@ -61,10 +62,16 @@ class History extends React.Component {
                 </p>
               )}
               {notAuthorized && (
-                <p>
-                  You will need to load your wallet to view your transactions, which will allow you
-                  to view and participate on all governance proposals. Load your wallet to continue.
-                </p>
+                <div>
+                  <p>
+                    You will need to load your wallet to view your transactions, which will allow
+                    you to view and participate on all governance proposals. Load your wallet to
+                    continue.
+                  </p>
+                  <ButtonLink kind="link" href="/#">
+                    Go back to Dashboard
+                  </ButtonLink>
+                </div>
               )}
             </EmptyStateContainer>
           ))}
@@ -74,8 +81,10 @@ class History extends React.Component {
             {history.map(transaction => {
               const { blockNumber } = transaction;
               const { CURRENT_BLOCK_NUMBER, BLOCK_CONFIRMATIONS } = blockConfig.data;
-              const confirmation = CURRENT_BLOCK_NUMBER + BLOCK_CONFIRMATIONS - (blockNumber + 1);
+              const confirmation = CURRENT_BLOCK_NUMBER + BLOCK_CONFIRMATIONS - blockNumber + 1;
               const showConfirmations = transaction.status === 'seen';
+              const showPendingIcons =
+                transaction.status === 'seen' || transaction.status === 'pending';
               return (
                 <HistoryCard key={transaction.id}>
                   <TxDetails href={`${ETHERSCAN_URL}${transaction.txhash}`} target="_blank">
@@ -86,11 +95,11 @@ class History extends React.Component {
                         : null}
                     </TxStatus>
                     <TxIcon
-                      pending={transaction.status === 'pending'}
+                      pending={showPendingIcons}
                       failed={transaction.status === 'failed'}
                       success={transaction.status === 'confirmed'}
                     >
-                      {transaction.status === 'pending' && <Icon kind="option" />}
+                      {showPendingIcons && <Icon kind="option" />}
                       {transaction.status === 'failed' && <Icon kind="xmark" />}
                       {transaction.status === 'confirmed' && <Icon kind="check" />}
                     </TxIcon>

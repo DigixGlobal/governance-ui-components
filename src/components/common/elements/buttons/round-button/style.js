@@ -43,6 +43,18 @@ export const RoundBtn = styled(Button)`
     `};
 
   ${props =>
+    props.disabled &&
+    css`
+      background: transparent;
+      border-color: ${props.theme.buttonBorderDisabled.light.toString()};
+      color: ${props.theme.buttonTextDefault.light.toString()};
+      &:hover {
+        background: ${props.theme.buttonBorderDisabled.light.toString()};
+        color: ${props.theme.buttonTextDefaultReverse.default.toString()};
+      }
+    `};
+
+  ${props =>
     props.reverse &&
     css`
       background: ${props.theme.buttonBgHoverPrimary.default.toString()};

@@ -14,6 +14,7 @@ import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
 import ParentThread from '@digix/gov-ui/pages/proposals/comment/thread';
 
 import { CommentsApi } from '@digix/gov-ui/api/comments';
+import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { getDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
@@ -134,14 +135,19 @@ class CommentThread extends React.Component {
 
   fetchUserPoints = () => {
     const { threads, userAddresses } = this.state;
-    const { ChallengeProof, uid } = this.props;
-    if (!threads || !ChallengeProof.data) {
+    const { ChallengeProof, getAddressDetailsAction, uid } = this.props;
+
+    // reputation points for first-time commenters
+    // are not available in the previous endpoint
+    getAddressDetailsAction(uid);
+
+    if (!ChallengeProof.data) {
       return;
     }
 
     const previousUniqueAddressesCount = userAddresses.length;
     const newUniqueAddresses = CommentsApi.getUniqueUsers(userAddresses, threads);
-    if (previousUniqueAddressesCount === newUniqueAddresses.length) {
+    if (threads.length && previousUniqueAddressesCount === newUniqueAddresses.length) {
       return;
     }
 
@@ -150,16 +156,10 @@ class CommentThread extends React.Component {
 
     UsersApi.getPoints(newUniqueAddresses, payload)
       .then(userPoints => {
-        this.setState({ userPoints });
-      })
-      // reputation points for first-time commenters
-      // are not available in the previous endpoint
-      .then(() => UsersApi.getDetails(uid, payload))
-      .then(details => {
-        const { userPoints } = this.state;
+        const { addressDetails } = this.props;
         userPoints[uid] = {
-          quarterPoints: details.quarterPoint,
-          reputation: details.reputationPoint,
+          reputation: addressDetails.reputationPoint,
+          quarterPoints: addressDetails.quarterPoint,
         };
 
         this.setState({ userPoints });
@@ -230,7 +230,9 @@ class CommentThread extends React.Component {
 const { func, number, object, string } = PropTypes;
 
 CommentThread.propTypes = {
+  addressDetails: object,
   ChallengeProof: object,
+  getAddressDetailsAction: func.isRequired,
   getDaoProposalDetailsActions: func.isRequired,
   proposalId: string.isRequired,
   rootCommentId: number,
@@ -239,19 +241,25 @@ CommentThread.propTypes = {
 };
 
 CommentThread.defaultProps = {
+  addressDetails: {
+    reputationPoint: 0,
+    quarterPoint: 0,
+  },
   ChallengeProof: undefined,
   rootCommentId: 0,
   uid: '',
 };
 
-const mapStateToProps = state => ({
-  ChallengeProof: state.daoServer.ChallengeProof,
-  rootCommentId: state.daoServer.ProposalDaoDetails.data.commentId,
+const mapStateToProps = ({ daoServer, infoServer }) => ({
+  addressDetails: infoServer.AddressDetails.data,
+  ChallengeProof: daoServer.ChallengeProof,
+  rootCommentId: daoServer.ProposalDaoDetails.data.commentId,
 });
 
 export default connect(
   mapStateToProps,
   {
+    getAddressDetailsAction: getAddressDetails,
     getDaoProposalDetailsActions: getDaoProposalDetails,
     showHideAlert,
   }

@@ -255,7 +255,7 @@ class CreateProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button tertiary onClick={this.handleShowPreview}>
+            <Button secondary onClick={this.handleShowPreview}>
               Preview
             </Button>
             <Button disabled={!canMovePrevious} primary onClick={this.onPreviousButtonClick}>

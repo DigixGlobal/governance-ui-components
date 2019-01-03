@@ -33,7 +33,7 @@ class Intro extends React.Component {
           vote in DigixDAO
         </p>
         <ActionContainer>
-          <Button kind="round" secondary fluid onClick={this.handleButtonClick}>
+          <Button kind="round" secondary fluid large onClick={this.handleButtonClick}>
             Load Wallet
           </Button>
         </ActionContainer>

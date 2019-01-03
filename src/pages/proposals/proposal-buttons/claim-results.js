@@ -59,7 +59,9 @@ class ClaimResultsButton extends React.PureComponent {
   };
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
+    this.props.showHideAlert({
+      message: JSON.stringify(error && error.message) || error,
+    });
 
   handleSubmit = () => {
     const {
@@ -142,7 +144,7 @@ class ClaimResultsButton extends React.PureComponent {
     if (!withinDeadline || claimed) return null;
 
     return (
-      <Button kind="round" ghost primary onClick={this.handleSubmit}>
+      <Button kind="round" onClick={this.handleSubmit}>
         Claim Results
       </Button>
     );

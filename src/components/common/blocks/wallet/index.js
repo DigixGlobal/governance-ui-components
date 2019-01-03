@@ -22,7 +22,8 @@ import {
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { getChallenge, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
 
-import { Container, TransparentOverlay, WalletContainer } from './style';
+import { Container } from './style';
+import { TransparentOverlay, DrawerContainer } from '../../common-styles';
 import Intro from './intro';
 import LoadWallet from './load-wallet';
 import ConnectedWallet from './connected-wallet';
@@ -59,7 +60,12 @@ export class Wallet extends React.Component {
         const caption =
           'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
         const signMessage = new Promise(resolve =>
-          resolve(this.props.showSigningModal({ txData: { message, caption }, network }))
+          resolve(
+            this.props.showSigningModal({
+              txData: { message, caption },
+              network,
+            })
+          )
         );
         signMessage.then(signature => {
           const {
@@ -98,7 +104,7 @@ export class Wallet extends React.Component {
     return (
       <Container>
         <TransparentOverlay />
-        <WalletContainer>
+        <DrawerContainer>
           {stage === Stage.Intro && (
             <Intro
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}
@@ -114,23 +120,36 @@ export class Wallet extends React.Component {
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}
             />
           )}
-        </WalletContainer>
+        </DrawerContainer>
       </Container>
     );
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, bool, array } = PropTypes;
 Wallet.propTypes = {
   signChallenge: object,
+  Challenge: object,
+  ChallengeProof: object,
+  showWallet: bool,
+  defaultNetworks: array.isRequired,
+  AddressDetails: object,
   getAddressDetailsAction: func.isRequired,
+  getChallengeAction: func.isRequired,
   showSigningModal: func.isRequired,
   showHideAlert: func.isRequired,
+
   showSignChallenge: func.isRequired,
+  showHideWalletOverlay: func.isRequired,
+  proveChallengeAction: func.isRequired,
 };
 
 Wallet.defaultProps = {
   signChallenge: undefined,
+  showWallet: false,
+  Challenge: undefined,
+  ChallengeProof: undefined,
+  AddressDetails: undefined,
 };
 
 const actions = {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import Modal from 'react-responsive-modal';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
 import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
 import { dijix } from '../../utils/dijix';
 
@@ -14,6 +14,7 @@ import {
   Details,
   SubTitle,
   ImageHolder,
+  CloseButton,
 } from './style';
 
 export default class ProjectDetails extends React.Component {
@@ -35,27 +36,43 @@ export default class ProjectDetails extends React.Component {
     if (!proofs) return null;
     const images = proofs.map((img, i) =>
       img.src ? (
-        <Fragment>
+        <Fragment key={`frag-${i + 1}`}>
           {/* eslint-disable */}
           <img
             key={`img-${i + 1}`}
             alt=""
             onClick={this.showHideImage}
-            src={!preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.thumbnail}` : img.src}
+            src={
+              !preview && img.thumbnail
+                ? `${dijix.config.httpEndpoint}/${img.thumbnail}`
+                : img.src
+            }
+            style={{ cursor: 'pointer' }}
           />
-          <Modal open={this.state.open} showCloseIcon={false} onClose={this.showHideImage} center>
+          <Modal
+            open={this.state.open}
+            showCloseIcon={false}
+            onClose={this.showHideImage}
+            center
+          >
             <div>
               <img
                 key={`img-${i + 1}`}
                 alt=""
-                style={{width:'100%'}}
+                style={{ width: '100%' }}
                 src={
                   preview
                     ? img.src
                     : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`
                 }
               />
-              <Button kind="round" small onClick={this.showHideImage}>Close</Button>
+
+              <CloseButton
+                onClick={this.showHideImage}
+                style={{ boxShadow: 'none' }}
+              >
+                <Icon kind="close" style={{ marginRight: 0 }} />
+              </CloseButton>
             </div>
           </Modal>
           {/* eslint-enable */}

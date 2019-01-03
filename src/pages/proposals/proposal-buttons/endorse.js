@@ -95,7 +95,7 @@ class EndorseProjectButton extends React.PureComponent {
       return null;
 
     return (
-      <Button kind="round" ghost primary onClick={this.handleSubmit}>
+      <Button kind="round" onClick={this.handleSubmit}>
         Endorse
       </Button>
     );

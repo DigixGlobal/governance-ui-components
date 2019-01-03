@@ -2,17 +2,11 @@ import styled, { css } from 'styled-components';
 import { Button } from '../style';
 
 export const RoundBtn = styled(Button)`
+  background: ${props => props.theme.buttonBgPrimary.default.toString()};
+  border: none;
   border-radius: 4px;
-  background: ${props =>
-    props.primary
-      ? props.theme.buttonBgPrimary.default.toString()
-      : props.theme.backgroundSecondary.default.toString()};
-  border: 2px solid ${props => props.theme.buttonBorderPrimary.default.toString()};
-
-  color: ${props =>
-    props.primary
-      ? props.theme.buttonTextPrimary.default.toString()
-      : props.theme.buttonTextPrimary.default.toString()};
+  box-shadow: ${props => props.theme.boxShadow};
+  color: ${props => props.theme.buttonTextPrimary.default.toString()};
 
   &:hover {
     background: ${props => props.theme.buttonBgHoverPrimary.default.toString()};
@@ -20,10 +14,20 @@ export const RoundBtn = styled(Button)`
   }
 
   ${props =>
+    props.primary &&
+    css`
+      background: ${props.theme.buttonBgPrimary.default.toString()};
+      border: 2px solid ${props.theme.buttonBorderPrimary.default.toString()};
+      box-shadow: none;
+      color: ${props.theme.buttonTextPrimary.default.toString()};
+    `};
+
+  ${props =>
     props.secondary &&
     css`
       background: ${props.theme.buttonBgSecondary.fade.toString()};
-      border-color: ${props.theme.buttonTextPrimary.default.toString()};
+      border: 2px solid ${props.theme.buttonTextPrimary.default.toString()};
+      box-shadow: none;
       color: ${props.theme.buttonTextPrimary.default.toString()};
       &:hover {
         background: ${props.theme.buttonBgSecondary.default.toString()};
@@ -34,7 +38,8 @@ export const RoundBtn = styled(Button)`
     props.tertiary &&
     css`
       background: ${props.theme.buttonBgTertiaryReverse.default.toString()};
-      border-color: ${props.theme.buttonBorderTertiary.default.toString()};
+      border: 2px solid ${props.theme.buttonBorderTertiary.default.toString()};
+      box-shadow: none;
       color: ${props.theme.buttonTextTertiary.default.toString()};
       &:hover {
         background: ${props.theme.buttonBgTertiary.default.toString()};
@@ -43,9 +48,26 @@ export const RoundBtn = styled(Button)`
     `};
 
   ${props =>
+    props.disabled &&
+    css`
+      background: transparent;
+      border: 2px solid ${props.theme.buttonBorderDisabled.lighter.toString()};
+      box-shadow: none;
+      color: ${props.theme.buttonTextDefault.lighter.toString()};
+      cursor: not-allowed;
+      pointer-events: none;
+      &:hover {
+        background: transparent;
+        background: ${props.theme.buttonBorderDisabled.lighter.toString()};
+        color: ${props.theme.buttonTextDefaultReverse.default.toString()};
+      }
+    `};
+
+  ${props =>
     props.reverse &&
     css`
       background: ${props.theme.buttonBgHoverPrimary.default.toString()};
+      box-shadow: none;
       color: ${props.theme.buttonTextPrimaryReverse.default.toString()};
       &:hover {
         background: ${props.theme.buttonBgPrimary.default.toString()};
@@ -57,7 +79,8 @@ export const RoundBtn = styled(Button)`
     props.success &&
     css`
       background: ${props.theme.backgroundSecondary.fade.toString()};
-      border-color: ${props.theme.buttonBorderSecondary.default.toString()};
+      border: 2px solid ${props.theme.buttonBorderSecondary.default.toString()};
+      box-shadow: none;
       color: ${props.theme.textSecondary.default.toString()};
       &:hover {
         background: ${props.theme.backgroundSecondary.fade.toString()};
@@ -72,7 +95,8 @@ export const RoundBtn = styled(Button)`
       &:hover,
       &:focus {
         color: ${props.theme.buttonResponseYes.default.toString()};
-        border-color: ${props.theme.buttonResponseYes.default.toString()};
+        border: 2px solid ${props.theme.buttonResponseYes.default.toString()};
+        box-shadow: none;
         background-color: ${props.theme.buttonResponseYes.fade.toString()};
       }
     `};
@@ -82,7 +106,8 @@ export const RoundBtn = styled(Button)`
       &:hover,
       &:focus {
         color: ${props.theme.buttonResponseNo.default.toString()};
-        border-color: ${props.theme.buttonResponseNo.default.toString()};
+        border: 2px solid ${props.theme.buttonResponseNo.default.toString()};
+        box-shadow: none;
         background-color: ${props.theme.buttonResponseNo.fade.toString()};
       }
     `};
@@ -94,7 +119,8 @@ export const RoundBtn = styled(Button)`
       &:hover,
       &:focus {
         color: ${props.theme.buttonResponseYes.default.toString()};
-        border-color: ${props.theme.buttonResponseYes.default.toString()};
+        border: 2px solid ${props.theme.buttonResponseYes.default.toString()};
+        box-shadow: none;
         background-color: ${props.theme.buttonResponseYes.fade.toString()};
       }
     `};
@@ -105,7 +131,8 @@ export const RoundBtn = styled(Button)`
       &:hover,
       &:focus {
         color: ${props.theme.buttonResponseNo.default.toString()};
-        border-color: ${props.theme.buttonResponseNo.default.toString()};
+        border: 2px solid ${props.theme.buttonResponseNo.default.toString()};
+        box-shadow: none;
         background-color: ${props.theme.buttonResponseNo.fade.toString()};
       }
     `};

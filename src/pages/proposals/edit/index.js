@@ -66,7 +66,7 @@ class EditProposal extends React.Component {
       if (proposalId) getProposalDetailsAction(proposalId);
     }
 
-    if (!proposalDetails.fething && proposalDetails.data.proposalId) {
+    if (proposalDetails.data.proposalId) {
       const currentVersion = proposalDetails.data.proposalVersions
         ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
         : {};

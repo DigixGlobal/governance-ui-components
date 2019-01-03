@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { H1, H2, Container } from '../../components/common/common-styles';
+import { Button } from '../../components/common/elements/buttons/style';
 
 export const ProposalsWrapper = styled.div``;
 
@@ -261,4 +262,14 @@ export const QuorumInfoCol = styled.div`
     margin-right: 1.5rem;
     padding-right: 1.5rem;
   }
+`;
+
+export const CloseButton = styled(Button)`
+  position: absolute;
+  background: #fff;
+  border: 0;
+  top: 10px;
+  right: 5px;
+  margin: 0;
+  padding: 1rem 1.5rem;
 `;

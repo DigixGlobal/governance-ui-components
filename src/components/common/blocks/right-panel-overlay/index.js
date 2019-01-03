@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 
-import { Container, TransparentOverlay, PanelContainer, CloseButton } from './style';
+import { Container, CloseButton } from './style';
+import { TransparentOverlay, DrawerContainer } from '../../common-styles';
 
 const PanelOverlay = props => {
   const { showPanel } = props;
@@ -19,7 +20,7 @@ const PanelOverlay = props => {
     if (!showPanel || !showPanel.show) {
       document.body.classList.remove('modal-is-open');
     } else {
-      document.body.classList.toggle('modal-is-open');
+      document.body.classList.add('modal-is-open');
     }
   };
 
@@ -28,12 +29,12 @@ const PanelOverlay = props => {
   return (
     <Container>
       <TransparentOverlay />
-      <PanelContainer>
-        <CloseButton>
-          <Icon kind="close" onClick={showPanel.onClose || closePanel} />
+      <DrawerContainer>
+        <CloseButton onClick={showPanel.onClose || closePanel}>
+          <Icon kind="close" />
         </CloseButton>
         {showPanel.component}
-      </PanelContainer>
+      </DrawerContainer>
     </Container>
   );
 };

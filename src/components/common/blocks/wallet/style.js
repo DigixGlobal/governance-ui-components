@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { H4 } from '../../common-styles';
-import { Container as IconContainer } from '../../../common/elements/icons/style';
 
 export const Container = styled.div`
   position: fixed;
@@ -20,20 +19,6 @@ export const CloseButtonWithHeader = styled.div`
   display: flex;
 
   justify-content: space-between;
-`;
-
-export const TransparentOverlay = styled.div`
-  background-color: #000;
-  opacity: 0.75;
-  width: 75%;
-  transition: ${props => props.theme.transition};
-`;
-
-export const WalletContainer = styled.div`
-  background-color: ${props => props.theme.backgroundDefault.default.toString()};
-  padding: 5rem;
-
-  width: 25%;
 `;
 
 export const InnerContainer = styled.div`

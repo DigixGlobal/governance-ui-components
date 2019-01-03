@@ -139,7 +139,7 @@ class CommentReply extends React.Component {
         </CommentReplyPost>
         {hasMoreChildren && (
           <CommentReplyPost>
-            <LoadMoreButton kind="link" tertiary xsmall onClick={() => this.loadMoreReplies()}>
+            <LoadMoreButton kind="text" tertiary xsmall onClick={() => this.loadMoreReplies()}>
               Load more replies...
             </LoadMoreButton>
           </CommentReplyPost>

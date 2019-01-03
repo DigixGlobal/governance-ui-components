@@ -124,6 +124,7 @@ const LightTheme = {
   buttonResponseNo: red,
   buttonFlatColor: red.default,
   buttonTextDefault: tertiaryColor,
+  buttonTextDefaultReverse: white,
   buttonTextPrimary: primaryColor,
   buttonTextPrimaryReverse: white,
   buttonTextSecondary: secondaryColor,

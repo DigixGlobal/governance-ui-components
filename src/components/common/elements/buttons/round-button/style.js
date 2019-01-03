@@ -5,7 +5,7 @@ export const RoundBtn = styled(Button)`
   background: ${props => props.theme.buttonBgPrimary.default.toString()};
   border: none;
   border-radius: 4px;
-  box-shadow: none;
+  box-shadow: ${props => props.theme.boxShadow};
   color: ${props => props.theme.buttonTextPrimary.default.toString()};
 
   &:hover {
@@ -18,6 +18,7 @@ export const RoundBtn = styled(Button)`
     css`
       background: ${props.theme.buttonBgPrimary.default.toString()};
       border: 2px solid ${props.theme.buttonBorderPrimary.default.toString()};
+      box-shadow: none;
       color: ${props.theme.buttonTextPrimary.default.toString()};
     `};
 
@@ -26,6 +27,7 @@ export const RoundBtn = styled(Button)`
     css`
       background: ${props.theme.buttonBgSecondary.fade.toString()};
       border: 2px solid ${props.theme.buttonTextPrimary.default.toString()};
+      box-shadow: none;
       color: ${props.theme.buttonTextPrimary.default.toString()};
       &:hover {
         background: ${props.theme.buttonBgSecondary.default.toString()};
@@ -37,6 +39,7 @@ export const RoundBtn = styled(Button)`
     css`
       background: ${props.theme.buttonBgTertiaryReverse.default.toString()};
       border: 2px solid ${props.theme.buttonBorderTertiary.default.toString()};
+      box-shadow: none;
       color: ${props.theme.buttonTextTertiary.default.toString()};
       &:hover {
         background: ${props.theme.buttonBgTertiary.default.toString()};
@@ -49,6 +52,7 @@ export const RoundBtn = styled(Button)`
     css`
       background: transparent;
       border: 2px solid ${props.theme.buttonBorderDisabled.lighter.toString()};
+      box-shadow: none;
       color: ${props.theme.buttonTextDefault.lighter.toString()};
       cursor: not-allowed;
       pointer-events: none;
@@ -63,6 +67,7 @@ export const RoundBtn = styled(Button)`
     props.reverse &&
     css`
       background: ${props.theme.buttonBgHoverPrimary.default.toString()};
+      box-shadow: none;
       color: ${props.theme.buttonTextPrimaryReverse.default.toString()};
       &:hover {
         background: ${props.theme.buttonBgPrimary.default.toString()};
@@ -75,6 +80,7 @@ export const RoundBtn = styled(Button)`
     css`
       background: ${props.theme.backgroundSecondary.fade.toString()};
       border: 2px solid ${props.theme.buttonBorderSecondary.default.toString()};
+      box-shadow: none;
       color: ${props.theme.textSecondary.default.toString()};
       &:hover {
         background: ${props.theme.backgroundSecondary.fade.toString()};
@@ -90,6 +96,7 @@ export const RoundBtn = styled(Button)`
       &:focus {
         color: ${props.theme.buttonResponseYes.default.toString()};
         border: 2px solid ${props.theme.buttonResponseYes.default.toString()};
+        box-shadow: none;
         background-color: ${props.theme.buttonResponseYes.fade.toString()};
       }
     `};
@@ -100,6 +107,7 @@ export const RoundBtn = styled(Button)`
       &:focus {
         color: ${props.theme.buttonResponseNo.default.toString()};
         border: 2px solid ${props.theme.buttonResponseNo.default.toString()};
+        box-shadow: none;
         background-color: ${props.theme.buttonResponseNo.fade.toString()};
       }
     `};
@@ -112,6 +120,7 @@ export const RoundBtn = styled(Button)`
       &:focus {
         color: ${props.theme.buttonResponseYes.default.toString()};
         border: 2px solid ${props.theme.buttonResponseYes.default.toString()};
+        box-shadow: none;
         background-color: ${props.theme.buttonResponseYes.fade.toString()};
       }
     `};
@@ -123,6 +132,7 @@ export const RoundBtn = styled(Button)`
       &:focus {
         color: ${props.theme.buttonResponseNo.default.toString()};
         border: 2px solid ${props.theme.buttonResponseNo.default.toString()};
+        box-shadow: none;
         background-color: ${props.theme.buttonResponseNo.fade.toString()};
       }
     `};

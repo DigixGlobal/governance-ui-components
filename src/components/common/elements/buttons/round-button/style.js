@@ -50,6 +50,8 @@ export const RoundBtn = styled(Button)`
       background: transparent;
       border: 2px solid ${props.theme.buttonBorderDisabled.lighter.toString()};
       color: ${props.theme.buttonTextDefault.lighter.toString()};
+      cursor: not-allowed;
+      pointer-events: none;
       &:hover {
         background: transparent;
         background: ${props.theme.buttonBorderDisabled.lighter.toString()};

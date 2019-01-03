@@ -81,7 +81,7 @@ class Proposal extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     const { proposalDetails } = nextProps;
-    if (!proposalDetails.fething && proposalDetails.data.proposalId) {
+    if (!proposalDetails.fetching && proposalDetails.data.proposalId) {
       const currentVersion = proposalDetails.data.proposalVersions
         ? proposalDetails.data.proposalVersions.length - 1
         : 0;
@@ -157,6 +157,7 @@ class Proposal extends React.Component {
     const versionCount = versions ? versions.length : 0;
 
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
+    const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
     const funding = truncateNumber(proposalVersion.totalFunding);
     const reward = truncateNumber(proposalVersion.finalReward);
 
@@ -221,6 +222,7 @@ class Proposal extends React.Component {
             <UpvoteStatus>
               <Like
                 hasVoted={liked}
+                likes={likes}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
             </UpvoteStatus>

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-
+import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import ProposalCard from '../components/proposal-card';
@@ -9,7 +9,7 @@ import DashboardStats from '../components/common/blocks/user-DAO-stats/index';
 import ProposalFilter from '../components/common/blocks/filter/index';
 
 import { getDaoDetails, getProposals } from '../reducers/info-server/actions';
-import { getProposalLikes } from '../reducers/dao-server/actions';
+import { getProposalLikesByUser, getProposalLikesStats } from '../reducers/dao-server/actions';
 
 import Snackbar from '../components/common/elements/snackbar/index';
 
@@ -25,13 +25,21 @@ class LandingPage extends Component {
     const {
       getDaoDetailsAction,
       getProposalsAction,
-      getProposalLikesAction,
+      getProposalLikesByUserAction,
       ChallengeProof,
     } = this.props;
 
-    Promise.all([getDaoDetailsAction(), getProposalsAction()]).then(result =>
-      this.getLikes(result[1], ChallengeProof, getProposalLikesAction)
-    );
+    Promise.all([getDaoDetailsAction(), getProposalsAction()]).then(result => {
+      this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
+      return this.getProposalLikes();
+    });
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (!_.isEqual(this.props.ChallengeProof, nextProps.ChallengeProof)) {
+      this.getUserLikes('all', nextProps.ChallengeProof, this.props.getProposalLikesByUserAction);
+      this.getProposalLikes('all', nextProps.ChallengeProof);
+    }
   };
 
   onOrderChange = order => {
@@ -39,23 +47,39 @@ class LandingPage extends Component {
   };
 
   getProposals = param => {
-    const { getProposalsAction, getProposalLikesAction, ChallengeProof } = this.props;
+    const { getProposalsAction, getProposalLikesByUserAction, ChallengeProof } = this.props;
 
-    Promise.all([getProposalsAction(param)]).then(result =>
-      this.getLikes(result[0], ChallengeProof, getProposalLikesAction)
-    );
+    Promise.all([
+      getProposalsAction(param),
+      this.getUserLikes(param, ChallengeProof, getProposalLikesByUserAction),
+      this.getProposalLikes(param),
+    ]);
   };
 
-  getLikes = (result, ChallengeProof, getProposalLikesAction) => {
+  getProposalLikes = (param, ChallengeProof) => {
+    const { getProposalLikesStatsAction } = this.props;
     if (
       !ChallengeProof ||
       !ChallengeProof.data ||
       (ChallengeProof.data && !ChallengeProof.data.client)
     )
       return undefined;
-    const { stage } = result.payload ? result.payload.data[0] : undefined;
+    return getProposalLikesStatsAction({
+      param,
+      authToken: ChallengeProof.data['access-token'],
+      client: ChallengeProof.data.client,
+      uid: ChallengeProof.data.uid,
+    });
+  };
 
-    return getProposalLikesAction({
+  getUserLikes = (stage, ChallengeProof, getProposalLikesByUserAction) => {
+    if (
+      !ChallengeProof ||
+      !ChallengeProof.data ||
+      (ChallengeProof.data && !ChallengeProof.data.client)
+    )
+      return undefined;
+    return getProposalLikesByUserAction({
       stage,
       authToken: ChallengeProof.data['access-token'],
       client: ChallengeProof.data.client,
@@ -65,7 +89,14 @@ class LandingPage extends Component {
 
   render() {
     const { order } = this.state;
-    const { history, DaoDetails, Proposals, AddressDetails, LikedProposals } = this.props;
+    const {
+      history,
+      DaoDetails,
+      Proposals,
+      AddressDetails,
+      UserLikedProposals,
+      ProposalLikes,
+    } = this.props;
     const hasProposals = Proposals.data && Proposals.data.length > 0;
     let orderedProposals = [];
     if (hasProposals) {
@@ -74,10 +105,17 @@ class LandingPage extends Component {
       );
     }
     const checkIfLiked = proposalId => {
-      if (!LikedProposals.data) return false;
-      const proposal = LikedProposals.data.find(p => p.proposalId === proposalId);
+      if (!UserLikedProposals.data) return false;
+      const proposal = UserLikedProposals.data.find(p => p.proposalId === proposalId);
       if (!proposal) return false;
       return proposal.liked;
+    };
+
+    const getLikesCount = proposalId => {
+      if (!ProposalLikes.data) return false;
+      const proposal = ProposalLikes.data.find(p => p.proposalId === proposalId);
+      if (!proposal) return false;
+      return proposal.likes;
     };
     return (
       <Fragment>
@@ -94,6 +132,7 @@ class LandingPage extends Component {
               history={history}
               key={proposal.proposalId}
               liked={checkIfLiked(proposal.proposalId)}
+              likes={getLikesCount(proposal.proposalId)}
               proposal={proposal}
               userDetails={AddressDetails}
             />
@@ -110,32 +149,37 @@ LandingPage.propTypes = {
   AddressDetails: object.isRequired,
   Proposals: object.isRequired,
   ChallengeProof: object,
-  LikedProposals: object,
+  UserLikedProposals: object,
+  ProposalLikes: object,
   history: object.isRequired,
   getDaoDetailsAction: func.isRequired,
   getProposalsAction: func.isRequired,
-  getProposalLikesAction: func.isRequired,
+  getProposalLikesByUserAction: func.isRequired,
+  getProposalLikesStatsAction: func.isRequired,
 };
 
 LandingPage.defaultProps = {
   ChallengeProof: undefined,
-  LikedProposals: undefined,
+  UserLikedProposals: undefined,
+  ProposalLikes: undefined,
 };
 
 export default connect(
   ({
     infoServer: { DaoDetails, Proposals, AddressDetails },
-    daoServer: { ChallengeProof, LikedProposals },
+    daoServer: { ChallengeProof, UserLikedProposals, ProposalLikes },
   }) => ({
     DaoDetails,
     Proposals,
     AddressDetails,
     ChallengeProof,
-    LikedProposals,
+    UserLikedProposals,
+    ProposalLikes,
   }),
   {
     getDaoDetailsAction: getDaoDetails,
     getProposalsAction: getProposals,
-    getProposalLikesAction: getProposalLikes,
+    getProposalLikesByUserAction: getProposalLikesByUser,
+    getProposalLikesStatsAction: getProposalLikesStats,
   }
 )(LandingPage);

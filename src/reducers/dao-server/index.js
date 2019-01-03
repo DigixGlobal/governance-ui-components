@@ -43,7 +43,13 @@ const defaultState = {
     error: null,
     fetching: null,
   },
-  LikedProposals: {
+  UserLikedProposals: {
+    history: [],
+    data: undefined,
+    error: null,
+    fetching: null,
+  },
+  ProposalLikes: {
     history: [],
     data: undefined,
     error: null,
@@ -184,21 +190,39 @@ export default function(state = defaultState, action) {
                 .slice(0, 100),
         },
       };
-    case actions.GET_PROPOSAL_LIKES:
+    case actions.GET_PROPOSAL_LIKES_BY_USER:
       return {
         ...state,
-        LikedProposals: {
-          ...state.LikedProposals,
+        UserLikedProposals: {
+          ...state.UserLikedProposals,
           ...action.payload,
           history: !action.payload
-            ? state.LikedProposals.history
+            ? state.UserLikedProposals.history
             : [
                 {
                   ...action.payload,
                   updated: action.payload.updated,
                 },
               ]
-                .concat(state.LikedProposals.history)
+                .concat(state.UserLikedProposals.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_PROPOSAL_LIKES_STATS:
+      return {
+        ...state,
+        ProposalLikes: {
+          ...state.ProposalLikes,
+          ...action.payload,
+          history: !action.payload
+            ? state.ProposalLikes.history
+            : [
+                {
+                  ...action.payload,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.ProposalLikes.history)
                 .slice(0, 100),
         },
       };

@@ -11,6 +11,7 @@ export const ButtonGlobalStyles = css`
   text-decoration: none;
   text-transform: uppercase;
   transition: all 0.3s ease;
+  box-shadow: ${props => props.theme.boxShadow};
 
   ${props =>
     props.fluid &&

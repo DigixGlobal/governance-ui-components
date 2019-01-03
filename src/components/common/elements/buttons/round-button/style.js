@@ -5,7 +5,7 @@ export const RoundBtn = styled(Button)`
   background: ${props => props.theme.buttonBgPrimary.default.toString()};
   border: none;
   border-radius: 4px;
-  box-shadow: ${props => props.theme.boxShadow};
+  box-shadow: none;
   color: ${props => props.theme.buttonTextPrimary.default.toString()};
 
   &:hover {
@@ -48,10 +48,11 @@ export const RoundBtn = styled(Button)`
     props.disabled &&
     css`
       background: transparent;
-      border: 2px solid ${props.theme.buttonBorderDisabled.light.toString()};
-      color: ${props.theme.buttonTextDefault.light.toString()};
+      border: 2px solid ${props.theme.buttonBorderDisabled.lighter.toString()};
+      color: ${props.theme.buttonTextDefault.lighter.toString()};
       &:hover {
-        background: ${props.theme.buttonBorderDisabled.light.toString()};
+        background: transparent;
+        background: ${props.theme.buttonBorderDisabled.lighter.toString()};
         color: ${props.theme.buttonTextDefaultReverse.default.toString()};
       }
     `};

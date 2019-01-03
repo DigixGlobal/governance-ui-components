@@ -105,7 +105,7 @@ class CompleteMilestoneButton extends React.PureComponent {
     if (!withinDeadline) return null;
 
     return (
-      <Button kind="round" ghost primary onClick={this.handleSubmit}>
+      <Button kind="round" onClick={this.handleSubmit}>
         My Milestone is completed
       </Button>
     );

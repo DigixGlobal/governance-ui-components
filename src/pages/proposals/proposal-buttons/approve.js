@@ -30,7 +30,7 @@ class ApproveProjectButton extends React.PureComponent {
     }
 
     return (
-      <Button kind="round" ghost primary onClick={this.showOverlay}>
+      <Button kind="round" onClick={this.showOverlay}>
         Approve
       </Button>
     );

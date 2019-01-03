@@ -195,7 +195,7 @@ class Proposal extends React.Component {
               />
 
               {isProposer && !isEndorsed && (
-                <Button kind="round" ghost primary onClick={this.handleEditClick}>
+                <Button kind="round" onClick={this.handleEditClick}>
                   Edit
                 </Button>
               )}

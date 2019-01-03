@@ -52,7 +52,7 @@ class CollapsibleMenu extends React.Component {
         {defaultAddress && (
           <ProfileContainer>
             <Welcome>
-              Welcome <span>{defaultAddress.address}</span>
+              Welcome, <span>{defaultAddress.address}</span>
             </Welcome>
             <UserType>{getUserType(addressDetails)}</UserType>
           </ProfileContainer>

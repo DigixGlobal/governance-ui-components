@@ -34,8 +34,6 @@ import { DEFAULT_GAS, DEFAULT_GAS_PRICE, ETHERSCAN_URL } from '@digix/gov-ui/con
 
 import {
   Container,
-  TransparentOverlay,
-  WalletContainer,
   CloseButton,
   Header,
   LockDgdBox,
@@ -46,6 +44,7 @@ import {
   ConfirmationBox,
   Note,
 } from './style';
+import { TransparentOverlay, DrawerContainer } from '../../common-styles';
 import Icon from '../../../common/elements/icons';
 
 import LockDgdTx from './tx-ui';
@@ -194,7 +193,7 @@ class LockDgd extends React.Component {
   renderConfirmation = () => {
     const { txHash } = this.state;
     return (
-      <WalletContainer>
+      <DrawerContainer>
         <CloseButton>
           <Header>CONFIRMATION</Header>
           <Icon kind="close" onClick={this.handleCloseLockDgd} />
@@ -223,7 +222,7 @@ class LockDgd extends React.Component {
         >
           Get Started
         </Button>
-      </WalletContainer>
+      </DrawerContainer>
     );
   };
 
@@ -233,7 +232,7 @@ class LockDgd extends React.Component {
     const stake = this.getStake(dgd);
 
     return (
-      <WalletContainer>
+      <DrawerContainer>
         <CloseButton onClick={this.handleCloseLockDgd}>
           <Header>LOCK DGD</Header>
           <Icon kind="close" />
@@ -265,7 +264,7 @@ class LockDgd extends React.Component {
           Lock DGD
         </Button>
         {openError && <ErrorCaption>{error}</ErrorCaption>}
-      </WalletContainer>
+      </DrawerContainer>
     );
   };
 

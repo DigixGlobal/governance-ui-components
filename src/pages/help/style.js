@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Button } from '../../components/common/elements/index';
 
 export const EmptyStateContainer = styled.div`
   color: ${props => props.theme.textDefault.default.toString()};
@@ -27,10 +26,11 @@ export const IconContainer = styled.div`
   display: block;
 `;
 
-export const ButtonLink = styled(Button)`
+export const ButtonLink = styled.span`
   border: 0;
   background: transparent;
   color: ${props => props.theme.linkSecondaryColor.default.toString()};
+  display: block;
   text-transform: uppercase;
   padding: 1rem 2rem;
   margin: 1rem;

@@ -10,7 +10,7 @@ export const ButtonGlobalStyles = css`
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
-  transition: all 0.3s ease;
+  transition: ${props => props.theme.transition};
 
   ${props =>
     props.fluid &&

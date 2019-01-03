@@ -177,6 +177,8 @@ const LightTheme = {
   icon: {
     default: primaryColor,
     active: secondaryColor,
+    primary: tertiaryColor,
+    disabled: tertiaryColor,
   },
 };
 

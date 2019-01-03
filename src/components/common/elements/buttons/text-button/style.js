@@ -18,8 +18,17 @@ export const TextBtn = styled(Button)`
       : props.theme.buttonTextDefault.default.toString()};
 
   svg {
-    fill: ${props => props.theme.backgroundTertiary.default.toString()};
+    fill: ${props => props.theme.icon.primary.default.toString()};
   }
+
+  ${props =>
+    props.disabled &&
+    css`
+      color: ${props.theme.buttonTextDefault.lighter.toString()};
+      svg {
+        fill: ${props.theme.icon.disabled.lighter.toString()};
+      }
+    `};
 
   ${props =>
     props.active &&

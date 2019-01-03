@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 
-import { Container, TransparentOverlay, PanelContainer, CloseButton } from './style';
+import { Container, CloseButton } from './style';
+import { TransparentOverlay, DrawerContainer } from '../../common-styles';
 
 const PanelOverlay = props => {
   const { showPanel } = props;
@@ -28,12 +29,12 @@ const PanelOverlay = props => {
   return (
     <Container>
       <TransparentOverlay />
-      <PanelContainer>
+      <DrawerContainer>
         <CloseButton onClick={showPanel.onClose || closePanel}>
           <Icon kind="close" />
         </CloseButton>
         {showPanel.component}
-      </PanelContainer>
+      </DrawerContainer>
     </Container>
   );
 };

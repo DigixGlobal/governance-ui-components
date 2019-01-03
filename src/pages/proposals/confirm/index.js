@@ -22,12 +22,12 @@ export default class ProjectConfirmation extends React.Component {
 
         <CTA>
           <LeftCol>
-            <Button primary ghost onClick={onBack}>
+            <Button primary onClick={onBack}>
               Back
             </Button>
           </LeftCol>
           <RightCol>
-            <Button primary ghost onClick={onSubmit}>
+            <Button primary onClick={onSubmit}>
               Submit
             </Button>
           </RightCol>

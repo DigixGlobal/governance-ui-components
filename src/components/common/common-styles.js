@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { media } from './breakpoints';
 
 export const Avatar = styled.img`
   width: 5rem;
@@ -157,4 +158,23 @@ export const Card = css`
   box-shadow: ${props => props.theme.boxShadow};
   margin-bottom: 3em;
   padding: 1rem;
+`;
+
+export const TransparentOverlay = styled.div`
+  background-color: #000;
+  opacity: 0.75;
+  transition: ${props => props.theme.transition};
+
+  width: 75%;
+  ${media.tablet`width: 40%`}
+  ${media.mobile`width: 0%`}
+`;
+
+export const DrawerContainer = styled.div`
+  background-color: ${props => props.theme.backgroundDefault.default.toString()};
+  padding: 5rem;
+
+  width: 25%;
+  ${media.tablet`width: 60%`}
+  ${media.mobile`width: 100%`}
 `;

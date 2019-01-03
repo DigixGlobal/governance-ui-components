@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getTransactions } from '@digix/gov-ui/reducers/dao-server/actions';
 import { getBlockConfig } from '@digix/gov-ui/reducers/info-server/actions';
 import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
@@ -68,9 +69,9 @@ class History extends React.Component {
                     you to view and participate on all governance proposals. Load your wallet to
                     continue.
                   </p>
-                  <ButtonLink kind="link" href="/#">
-                    Go back to Dashboard
-                  </ButtonLink>
+                  <Link to="/">
+                    <ButtonLink kind="link">Go back to Dashboard</ButtonLink>
+                  </Link>
                 </div>
               )}
             </EmptyStateContainer>

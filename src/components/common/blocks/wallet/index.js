@@ -126,17 +126,30 @@ export class Wallet extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, bool, array } = PropTypes;
 Wallet.propTypes = {
   signChallenge: object,
+  Challenge: object,
+  ChallengeProof: object,
+  showWallet: bool,
+  defaultNetworks: array.isRequired,
+  AddressDetails: object,
   getAddressDetailsAction: func.isRequired,
+  getChallengeAction: func.isRequired,
   showSigningModal: func.isRequired,
   showHideAlert: func.isRequired,
+
   showSignChallenge: func.isRequired,
+  showHideWalletOverlay: func.isRequired,
+  proveChallengeAction: func.isRequired,
 };
 
 Wallet.defaultProps = {
   signChallenge: undefined,
+  showWallet: false,
+  Challenge: undefined,
+  ChallengeProof: undefined,
+  AddressDetails: undefined,
 };
 
 const actions = {

@@ -20,7 +20,7 @@ const PanelOverlay = props => {
     if (!showPanel || !showPanel.show) {
       document.body.classList.remove('modal-is-open');
     } else {
-      document.body.classList.toggle('modal-is-open');
+      document.body.classList.add('modal-is-open');
     }
   };
 

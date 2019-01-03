@@ -87,8 +87,17 @@ class LandingPage extends Component {
     });
   };
 
+  fixScrollbar = ShowWallet => {
+    if (ShowWallet && ShowWallet.show) {
+      document.body.classList.add('modal-is-open');
+    } else {
+      document.body.classList.remove('modal-is-open');
+    }
+  };
+
   render() {
     const { order } = this.state;
+    this.fixScrollbar(this.props.ShowWallet);
     const {
       history,
       DaoDetails,
@@ -143,7 +152,7 @@ class LandingPage extends Component {
   }
 }
 
-const { object, func } = PropTypes;
+const { object, func, bool } = PropTypes;
 LandingPage.propTypes = {
   DaoDetails: object.isRequired,
   AddressDetails: object.isRequired,
@@ -151,6 +160,7 @@ LandingPage.propTypes = {
   ChallengeProof: object,
   UserLikedProposals: object,
   ProposalLikes: object,
+  ShowWallet: bool,
   history: object.isRequired,
   getDaoDetailsAction: func.isRequired,
   getProposalsAction: func.isRequired,
@@ -162,12 +172,14 @@ LandingPage.defaultProps = {
   ChallengeProof: undefined,
   UserLikedProposals: undefined,
   ProposalLikes: undefined,
+  ShowWallet: false,
 };
 
 export default connect(
   ({
     infoServer: { DaoDetails, Proposals, AddressDetails },
     daoServer: { ChallengeProof, UserLikedProposals, ProposalLikes },
+    govUI: { ShowWallet },
   }) => ({
     DaoDetails,
     Proposals,
@@ -175,6 +187,7 @@ export default connect(
     ChallengeProof,
     UserLikedProposals,
     ProposalLikes,
+    ShowWallet,
   }),
   {
     getDaoDetailsAction: getDaoDetails,

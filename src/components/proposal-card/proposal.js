@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import _ from 'lodash';
+
 import { connect } from 'react-redux';
 
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
@@ -36,6 +39,9 @@ class Proposal extends React.Component {
       });
     }
   };
+
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   toggleLike = () => {
     const {
@@ -124,7 +130,7 @@ class Proposal extends React.Component {
                 kind="text"
                 xsmall
                 hasVoted={likeStatus.liked}
-                likes={likeStatus.likes}
+                likes={!likeStatus.likes ? 0 : likeStatus.likes}
                 onClick={() => this.toggleLike()}
               />
             )}

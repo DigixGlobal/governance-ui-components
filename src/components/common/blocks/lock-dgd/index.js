@@ -71,6 +71,7 @@ class LockDgd extends React.Component {
       !_.isEqual(this.props.lockDgdOverlay, nextProps.lockDgdOverlay)
     )
       if (defaultAddress && lockDgdOverlay.show) {
+        // this.toggleBodyOverflow(nextProps.lockDgdOverlay);
         this.getMaxAllowance();
       }
   };
@@ -120,12 +121,11 @@ class LockDgd extends React.Component {
       openError: !!error,
     });
 
-  toggleBodyOverflow = () => {
-    const { lockDgdOverlay } = this.props;
-    if (!lockDgdOverlay || !lockDgdOverlay.show) {
-      document.body.classList.remove('modal-is-open');
+  toggleBodyOverflow = lockDgdOverlay => {
+    if (lockDgdOverlay && lockDgdOverlay.show) {
+      document.body.classList.add('modal-is-open');
     } else {
-      document.body.classList.toggle('modal-is-open');
+      document.body.classList.remove('modal-is-open');
     }
   };
 
@@ -272,8 +272,8 @@ class LockDgd extends React.Component {
     const { txHash } = this.state;
     const { lockDgdOverlay } = this.props;
 
+    this.toggleBodyOverflow(lockDgdOverlay);
     if (!lockDgdOverlay || !lockDgdOverlay.show) return null;
-    this.toggleBodyOverflow();
 
     return (
       <Container>

@@ -36,7 +36,7 @@ export default class ProjectDetails extends React.Component {
     if (!proofs) return null;
     const images = proofs.map((img, i) =>
       img.src ? (
-        <Fragment>
+        <Fragment key={`frag-${i + 1}`}>
           {/* eslint-disable */}
           <img
             key={`img-${i + 1}`}

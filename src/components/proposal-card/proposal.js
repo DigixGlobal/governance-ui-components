@@ -126,10 +126,7 @@ class Proposal extends React.Component {
                 hasVoted={likeStatus.liked}
                 likes={likeStatus.likes}
                 onClick={() => this.toggleLike()}
-              >
-                {/* <Icon kind="like" likes={likes} /> */}
-                {/* <span>{likeMessage}</span> */}
-              </LikeButton>
+              />
             )}
           </ProposalFooter>
         </ProposalCard>

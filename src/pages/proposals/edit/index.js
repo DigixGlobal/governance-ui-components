@@ -293,8 +293,7 @@ class EditProposal extends React.Component {
     );
   };
   render() {
-    const { showPreview, showConfirmPage, form } = this.state;
-    console.log(form);
+    const { showPreview, showConfirmPage } = this.state;
     if (!showConfirmPage) {
       if (!showPreview) return this.renderCreate();
       if (showPreview) return this.renderPreview();

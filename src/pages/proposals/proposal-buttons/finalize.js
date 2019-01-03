@@ -58,7 +58,9 @@ class FinalizeProjectButton extends React.PureComponent {
   };
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
+    this.props.showHideAlert({
+      message: JSON.stringify(error && error.message) || error,
+    });
 
   handleSubmit = () => {
     const { web3Redux, challengeProof, addresses, proposalId } = this.props;
@@ -137,7 +139,7 @@ class FinalizeProjectButton extends React.PureComponent {
     }
 
     return (
-      <Button kind="round" ghost primary onClick={this.handleSubmit}>
+      <Button kind="round" onClick={this.handleSubmit}>
         Finalize
       </Button>
     );

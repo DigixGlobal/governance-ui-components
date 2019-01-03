@@ -67,7 +67,10 @@ export default class ProjectDetails extends React.Component {
                 }
               />
 
-              <CloseButton primary onClick={this.showHideImage}>
+              <CloseButton
+                onClick={this.showHideImage}
+                style={{ boxShadow: 'none' }}
+              >
                 <Icon kind="close" style={{ marginRight: 0 }} />
               </CloseButton>
             </div>

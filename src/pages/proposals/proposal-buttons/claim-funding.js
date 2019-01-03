@@ -24,7 +24,9 @@ const network = SpectrumConfig.defaultNetworks[0];
 
 class ClaimFundingButton extends React.PureComponent {
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
+    this.props.showHideAlert({
+      message: JSON.stringify(error && error.message) || error,
+    });
 
   handleSubmit = () => {
     const {
@@ -100,7 +102,7 @@ class ClaimFundingButton extends React.PureComponent {
       return null;
 
     return (
-      <Button kind="round" ghost primary onClick={this.handleSubmit}>
+      <Button kind="round" onClick={this.handleSubmit}>
         Claim Funding
       </Button>
     );

@@ -8,6 +8,7 @@ export const TextBtn = styled(Button)`
 
   background-color: transparent;
   border: 0;
+  box-shadow: none;
   padding: 0;
   margin: 0;
 

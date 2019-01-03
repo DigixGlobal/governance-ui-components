@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const Button = styled.button`
+export const ButtonGlobalStyles = css`
   cursor: pointer;
   font-family: 'Futura PT Medium';
   font-size: 1.4rem;
@@ -11,6 +11,17 @@ export const Button = styled.button`
   text-decoration: none;
   text-transform: uppercase;
   transition: all 0.3s ease;
+
+  ${props =>
+    props.fluid &&
+    css`
+      width: 100%;
+      margin: 2rem 0;
+    `};
+`;
+
+export const Button = styled.button`
+  ${ButtonGlobalStyles};
 
   ${props =>
     props.small &&
@@ -29,8 +40,16 @@ export const Button = styled.button`
   ${props =>
     props.large &&
     css`
-      padding: 2rem 3rem;
+      padding: 1.5rem 3rem;
       font-size: 1.6rem;
+    `};
+
+  ${props =>
+    props.xlarge &&
+    css`
+      padding: 6rem;
+      font-size: 3.6rem;
+      font-family: 'Futura PT Heavy';
     `};
 
   ${props =>
@@ -181,66 +200,6 @@ export const RoundBtn = styled.button`
         svg {
           fill: ${props.theme.iconColorReverse.default.toString()};
         }
-      }
-    `};
-
-  ${props =>
-    props.xlarge &&
-    css`
-      padding: 6rem;
-      font-size: 3.6rem;
-      font-family: 'Futura PT Heavy';
-    `};
-
-  ${props =>
-    props.yes &&
-    css`
-      &:hover,
-      &:focus {
-        color: ${props => props.theme.buttonResponseYes.default.toString()};
-        border-color: ${props =>
-          props.theme.buttonResponseYes.default.toString()};
-        background-color: ${props =>
-          props.theme.buttonResponseYes.fade.toString()};
-      }
-    `};
-  ${props =>
-    props.no &&
-    css`
-      &:hover,
-      &:focus {
-        color: ${props => props.theme.buttonResponseNo.default.toString()};
-        border-color: ${props =>
-          props.theme.buttonResponseNo.default.toString()};
-        background-color: ${props =>
-          props.theme.buttonResponseNo.fade.toString()};
-      }
-    `};
-
-  ${props =>
-    props.confirmedYes &&
-    css`
-      &,
-      &:hover,
-      &:focus {
-        color: ${props => props.theme.buttonResponseYes.default.toString()};
-        border-color: ${props =>
-          props.theme.buttonResponseYes.default.toString()};
-        background-color: ${props =>
-          props.theme.buttonResponseYes.fade.toString()};
-      }
-    `};
-  ${props =>
-    props.confirmedNo &&
-    css`
-      &,
-      &:hover,
-      &:focus {
-        color: ${props => props.theme.buttonResponseNo.default.toString()};
-        border-color: ${props =>
-          props.theme.buttonResponseNo.default.toString()};
-        background-color: ${props =>
-          props.theme.buttonResponseNo.fade.toString()};
       }
     `};
 

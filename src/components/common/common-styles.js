@@ -112,7 +112,7 @@ export const Note = styled.p`
 `;
 
 export const NoteContainer = styled.div`
-  background-color: ${props => props.theme.buttonBgSecondary.fade.toString()};
+  background-color: ${props => props.theme.backgroundSecondary.fade.toString()};
   border: 1px solid ${props => props.theme.buttonBorderSecondary.default.toString()};
   border-radius: 3px;
   box-shadow: ${props => props.theme.boxShadow};

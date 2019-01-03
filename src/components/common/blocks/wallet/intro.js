@@ -1,20 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '../../../common/elements/buttons/index'; // '../../elements/buttons';
-import { IntroContainer, CloseButton, OverlayHeader as Header, Link } from '../../common-styles';
-import { ActionContainer } from './style';
-import Icon from '../../../common/elements/icons';
-
-import { Stage } from './constants';
+import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
+import {
+  CloseButton,
+  IntroContainer,
+  Link,
+  OverlayHeader as Header,
+} from '@digix/gov-ui/components/common/common-styles';
+import { ActionContainer } from '@digix/gov-ui/components/common/blocks/wallet/style.js';
+import { WalletStages } from '@digix/gov-ui/constants';
 
 class Intro extends React.Component {
   handleButtonClick = () => {
     const { onChangeStage } = this.props;
     if (onChangeStage) {
-      onChangeStage(Stage.LoadingWallet);
+      onChangeStage(WalletStages.LoadingWallet);
     }
   };
+
   render() {
     const { onClose } = this.props;
     return (
@@ -29,7 +34,7 @@ class Intro extends React.Component {
         </p>
         <ActionContainer>
           <Button kind="round" secondary fluid onClick={this.handleButtonClick}>
-            load wallet
+            Load Wallet
           </Button>
         </ActionContainer>
 

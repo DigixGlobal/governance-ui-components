@@ -1,22 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
 
-import { showHideLockDgdOverlay } from '../../../../reducers/gov-ui/actions';
-
-import Button from '../../elements/buttons/';
-
-import { WalletWrapper, AddressLabel } from './style';
+import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import { WalletWrapper, AddressLabel } from '@digix/gov-ui/components/common/blocks/navbar/style';
+import {
+  showHideLockDgdOverlay,
+  showHideWalletOverlay,
+} from '@digix/gov-ui/reducers/gov-ui/actions';
 
 class WalletButton extends React.Component {
+  onWalletClick = () => {
+    this.props.showHideWalletOverlay(true);
+  };
+
   render() {
-    const { onWalletClick, defaultAddress, showHideLockDgd, canLockDgd } = this.props;
+    const { defaultAddress, showHideLockDgd, canLockDgd } = this.props;
+
     return (
       <WalletWrapper>
         {!defaultAddress && (
-          <Button kind="round" primary small onClick={onWalletClick}>
+          <Button kind="round" primary small onClick={() => this.onWalletClick()}>
             Load Wallet
           </Button>
         )}
@@ -33,8 +38,8 @@ class WalletButton extends React.Component {
 
 const { func, string, object, oneOfType } = PropTypes;
 WalletButton.propTypes = {
-  onWalletClick: func.isRequired,
   showHideLockDgd: func.isRequired,
+  showHideWalletOverlay: func.isRequired,
   defaultAddress: oneOfType([string, object]),
   canLockDgd: object,
 };
@@ -52,5 +57,8 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { showHideLockDgd: showHideLockDgdOverlay }
+  {
+    showHideLockDgd: showHideLockDgdOverlay,
+    showHideWalletOverlay,
+  }
 )(WalletButton);

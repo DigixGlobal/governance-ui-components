@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 import Comment from '@digix/gov-ui/pages/proposals/comment/comment';
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { CommentReplyPost } from '@digix/gov-ui/pages/proposals/comment/style';
+// import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { CommentReplyPost, LoadMoreButton } from '@digix/gov-ui/pages/proposals/comment/style';
 import { CommentsApi } from '@digix/gov-ui/api/comments';
 import { initializePayload } from '@digix/gov-ui/api';
 
@@ -139,9 +139,9 @@ class CommentReply extends React.Component {
         </CommentReplyPost>
         {hasMoreChildren && (
           <CommentReplyPost>
-            <Button kind="text" xsmall onClick={() => this.loadMoreReplies()}>
+            <LoadMoreButton kind="link" tertiary xsmall onClick={() => this.loadMoreReplies()}>
               Load more replies...
-            </Button>
+            </LoadMoreButton>
           </CommentReplyPost>
         )}
       </section>

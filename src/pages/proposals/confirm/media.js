@@ -1,14 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { dijix } from '../../../utils/dijix';
-import ImageViewer from '../../../components/common/ipfs-viewer';
+import { dijix } from '@digix/gov-ui/utils/dijix';
+import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 
-import { HorizontalBar } from '../../../components/common/elements/index';
+import { HorizontalBar } from '@digix/gov-ui/components/common/elements/index';
+
+import Modal from 'react-responsive-modal';
 
 import { Section, Title, Content, Heading, Media, LeftCol, RightCol, ImageHolder } from './style';
 
 export default class MediaAssets extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    };
+  }
+  showHideImage = () => {
+    this.setState({ open: !this.state.open });
+  };
+
   renderDocuments(documents) {
     if (!documents) return null;
 
@@ -25,15 +38,35 @@ export default class MediaAssets extends React.Component {
           </LeftCol>
           <RightCol>
             <ImageHolder>
+              {/* eslint-disable */}
               <img
                 key={`img-${i + 1}`}
                 alt=""
-                src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
+                onClick={this.showHideImage}
+                src={
+                  preview
+                    ? img.thumbnail
+                    : `${dijix.config.httpEndpoint}/${img.thumbnail}?q=${Date.now()}`
+                }
               />
+              {/* eslint-enable */}
             </ImageHolder>
           </RightCol>
         </Media>
         <HorizontalBar />
+        <Modal open={this.state.open} onClose={this.showHideImage}>
+          <div>
+            <img
+              key={`img-${i + 1}`}
+              style={{ width: '100%' }}
+              alt=""
+              src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
+            />
+            <Button kind="round" small onClick={this.showHideImage}>
+              Close
+            </Button>
+          </div>
+        </Modal>
       </div>
     ));
     return images;

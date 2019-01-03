@@ -1,6 +1,5 @@
 import React from 'react';
 import Icon from '@digix/gov-ui/components/common/elements/icons/index';
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import { EmptyStateContainer, EmptyStateTitle, IconContainer, ButtonLink } from './style';
 
 class Wallet extends React.Component {

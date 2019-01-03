@@ -19,7 +19,7 @@ const ProfileIcon = props => (
               </mask>
               <use id="Mask" fill="#FFFFFF" xlinkHref="#path-1" />
               <rect
-                stroke="#000"
+                stroke="#999"
                 mask="url(#mask-2)"
                 x="0.5"
                 y="1.5"

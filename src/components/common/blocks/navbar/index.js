@@ -1,16 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { showHideWalletOverlay } from '@digix/gov-ui/reducers/gov-ui/actions';
 import Brand from '@digix/gov-ui/components/common/elements/icons/Brand';
-
-import Menu from './menu';
-import Search from './search';
-import WalletButton from './wallet';
-// import Utility from './utility';
-
-import { HeaderWrapper } from './style';
+import Menu from '@digix/gov-ui/components/common/blocks/navbar/menu';
+import Search from '@digix/gov-ui/components/common/blocks/navbar/search';
+import WalletButton from '@digix/gov-ui/components/common/blocks/navbar/wallet';
+import { HeaderWrapper } from '@digix/gov-ui/components/common/blocks/navbar/style';
 
 class NavBar extends React.Component {
   componentWillMount = () => {
@@ -29,33 +24,22 @@ class NavBar extends React.Component {
     }
   };
   render() {
-    const { history } = this.props;
     return (
       <HeaderWrapper>
         <Menu />
         <Search />
-        <WalletButton onWalletClick={() => this.props.showHideWalletOverlay(true)} />
-        {/* <Utility history={history} /> */}
+        <WalletButton />
         <Brand />
       </HeaderWrapper>
     );
   }
 }
 
-const { func, object } = PropTypes;
-
-NavBar.propTypes = {
-  showHideWalletOverlay: func.isRequired,
-  history: object,
-};
-
-NavBar.defaultProps = {
-  history: undefined,
-};
+const mapStateToProps = ({ govUI: { ShowWallet } }) => ({
+  showWallet: ShowWallet,
+});
 
 export default connect(
-  ({ govUI: { ShowWallet } }) => ({ showWallet: ShowWallet }),
-  {
-    showHideWalletOverlay,
-  }
+  mapStateToProps,
+  {}
 )(NavBar);

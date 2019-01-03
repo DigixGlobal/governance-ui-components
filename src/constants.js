@@ -36,6 +36,12 @@ export const DEFAULT_LOCKED_DGD = 83423.45;
 export const EMPTY_HASH = '0x0000000000000000000000000000000000000000';
 export const EMPTY_HASH_LONG = '0x0000000000000000000000000000000000000000000000000000000000000000';
 
+export const WalletStages = {
+  Intro: 1,
+  LoadingWallet: 2,
+  WalletLoaded: 3,
+};
+
 export const ProposalStages = {
   idea: 'idea',
   draft: 'draft',

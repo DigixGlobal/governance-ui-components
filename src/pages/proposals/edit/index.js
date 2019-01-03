@@ -66,7 +66,7 @@ class EditProposal extends React.Component {
       if (proposalId) getProposalDetailsAction(proposalId);
     }
 
-    if (!proposalDetails.fetching && proposalDetails.data.proposalId) {
+    if (proposalDetails.data.proposalId) {
       const currentVersion = proposalDetails.data.proposalVersions
         ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
         : {};
@@ -293,7 +293,8 @@ class EditProposal extends React.Component {
     );
   };
   render() {
-    const { showPreview, showConfirmPage } = this.state;
+    const { showPreview, showConfirmPage, form } = this.state;
+    console.log(form);
     if (!showConfirmPage) {
       if (!showPreview) return this.renderCreate();
       if (showPreview) return this.renderPreview();

@@ -58,7 +58,7 @@ class Preview extends React.Component {
           </LatestActivity>
         </ProjectSummary>
         <ProjectDetails project={form} preview />
-        <Milestones milestones={form.milestones || []} />
+        <Milestones preview milestones={form.milestones || []} />
       </ProposalsWrapper>
     );
   }

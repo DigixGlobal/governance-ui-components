@@ -99,7 +99,7 @@ class Timeline extends React.Component {
     const ellapsed = now.diff(start, 'days');
     const mainPhase = 100 * (ellapsed / 90);
 
-    const stakingPhase = stakeDuration > 0 ? stakeDuration : 100;
+    const stakingPhase = stakeDuration > 0 && Date.now() < start ? stakeDuration : 100;
 
     let lockedDgd = stats.data ? stats.data.totalLockedDgds : DEFAULT_LOCKED_DGD;
     lockedDgd = truncateNumber(lockedDgd);

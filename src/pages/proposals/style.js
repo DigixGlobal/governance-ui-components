@@ -30,7 +30,7 @@ export const BrowseVersionHistory = styled.div`
       flex: 2;
       justify-content: center;
       font-family: 'Futura PT Medium';
-      font-size: 2rem;
+      font-size: 1.6rem;
 
       text-transform: capitalize;
     }

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Container, FieldsetStyle, LabelStyle } from '../../../components/common/common-styles';
+import { Container, FieldsetStyle, LabelStyle, H1 } from '../../../components/common/common-styles';
 
 export const CreateWrapper = styled.div``;
 
@@ -30,6 +30,7 @@ export const Header = styled.div`
   ${Container};
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  border-radius: ${props => props.theme.borderRadius};
   justify-content: space-between;
   padding: 1rem 2rem;
   margin-bottom: 3rem;
@@ -44,7 +45,9 @@ export const RightCol = styled.div`
   justify-content: flex-end;
 `;
 
-export const Heading = styled.h1``;
+export const Heading = styled(H1)`
+  font-size: 2rem;
+`;
 
 export const Fieldset = styled.div`
   ${FieldsetStyle};

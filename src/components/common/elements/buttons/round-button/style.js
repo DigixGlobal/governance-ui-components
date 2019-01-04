@@ -4,7 +4,7 @@ import { Button } from '../style';
 export const RoundBtn = styled(Button)`
   background: ${props => props.theme.buttonBgPrimary.default.toString()};
   border: none;
-  border-radius: 4px;
+  border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   color: ${props => props.theme.buttonTextPrimary.default.toString()};
 

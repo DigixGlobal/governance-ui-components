@@ -270,7 +270,7 @@ class EditProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button secondary onClick={this.handleShowPreview}>
+            <Button tertiary onClick={this.handleShowPreview}>
               Preview
             </Button>
             <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>

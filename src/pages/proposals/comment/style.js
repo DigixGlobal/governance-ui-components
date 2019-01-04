@@ -81,7 +81,7 @@ export const CommentPost = styled.div`
     props.deleted
       ? props.theme.textDefault.light.toString()
       : props.theme.textDefault.default.toString()};
-  padding: 2rem 3rem 1.5rem 3rem;
+  padding: 2rem 3rem 2rem 3rem;
   margin-top: ${props => (props.deleted ? 2 : 0)}rem;
 `;
 

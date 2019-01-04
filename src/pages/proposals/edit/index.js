@@ -66,7 +66,7 @@ class EditProposal extends React.Component {
       if (proposalId) getProposalDetailsAction(proposalId);
     }
 
-    if (!proposalDetails.fething && proposalDetails.data.proposalId) {
+    if (proposalDetails.data.proposalId) {
       const currentVersion = proposalDetails.data.proposalVersions
         ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
         : {};
@@ -270,7 +270,7 @@ class EditProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button secondary onClick={this.handleShowPreview}>
+            <Button tertiary onClick={this.handleShowPreview}>
               Preview
             </Button>
             <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>

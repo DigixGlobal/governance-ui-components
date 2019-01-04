@@ -1,6 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Icon from '@digix/gov-ui/components/common/elements/icons/index';
-import { EmptyStateContainer, EmptyStateTitle, IconContainer, ButtonLink } from './style';
+import {
+  ButtonLink,
+  IconContainer,
+  EmptyStateContainer,
+  EmptyStateTitle,
+} from '@digix/gov-ui/pages/activity/style';
 
 class Activity extends React.Component {
   render() {
@@ -16,9 +22,9 @@ class Activity extends React.Component {
             This page will be updated very soon. Please feel free to look around and check back
             often for updates!
           </p>
-          <ButtonLink kind="link" href="/#">
-            Go back to Dashboard
-          </ButtonLink>
+          <Link to="/">
+            <ButtonLink kind="link">Go back to Dashboard</ButtonLink>
+          </Link>
         </EmptyStateContainer>
       </div>
     );

@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 import { H5 } from '../../../common-styles';
 
-import { DGD } from '../../../../common/elements/icons/DGD';
-
 import { Container as IconContainer } from '../../../../common/elements/icons/style.js';
 
 export const Container = styled.div`
@@ -12,12 +10,13 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const AddressInfo = styled(H5)`
+export const AddressInfo = styled.div`
   color: ${props => props.theme.borderColor.darker.toString()};
-  font-size: 1.2rem;
   text-transform: uppercase;
+  font-family: 'Futura PT Book';
   > span {
     color: ${props => props.theme.textPrimary.default.toString()};
+    font-family: 'Futura PT Medium';
     display: block;
   }
 `;
@@ -26,6 +25,7 @@ export const TokenInfo = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  border-radius: ${props => props.theme.borderRadius};
   padding: 2rem;
   background-color: ${props => props.theme.textContrast.default.toString()};
   margin: 1rem 0;
@@ -52,24 +52,21 @@ export const TokenDetails = styled.div`
 
 export const TokenValue = styled.div`
   font-family: 'Futura PT Medium';
+  font-size: 1.6rem;
   & > span {
     margin-left: 0.5rem;
     color: ${props => props.theme.borderColor.default.toString()};
-    font-family: 'Futura PT Light';
+    font-family: 'Futura PT Book';
   }
 `;
 
 export const UsdEquivalent = styled.div`
   font-family: 'Futura PT Light';
-  font-size: 1rem;
+  font-size: 1.4rem;
   & > span {
-    color: ${props => props.theme.backgroundDefault.darker.toString()};
+    color: ${props => props.theme.textDefault.lighter.toString()};
     margin-left: 0.5rem;
   }
-`;
-
-export const DevNote = styled.p`
-  color: ${props => props.theme.borderColor.darker.toString()};
 `;
 
 export const Notes = styled.div`

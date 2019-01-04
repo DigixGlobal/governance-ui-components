@@ -44,7 +44,7 @@ class CommitVoteButton extends React.PureComponent {
     if (!withinDeadline) return null;
 
     return (
-      <Button kind="round" ghost primary onClick={() => this.showOverlay(hasVoted)}>
+      <Button kind="round" onClick={() => this.showOverlay(hasVoted)}>
         {hasVoted ? 'Change Vote' : 'Vote'}
       </Button>
     );

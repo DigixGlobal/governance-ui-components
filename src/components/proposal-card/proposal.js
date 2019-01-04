@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import _ from 'lodash';
+
 import { connect } from 'react-redux';
 
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
-import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 import {
   ProposaDetaillWrapper,
@@ -18,19 +21,44 @@ import {
 
 import LikeButton from '@digix/gov-ui/components/common/elements/like';
 import { initializePayload } from '@digix/gov-ui/api';
-import { likeProposal, unlikeProposal } from '@digix/gov-ui/reducers/dao-server/actions';
+import {
+  likeProposal,
+  unlikeProposal,
+  getUserProposalLikeStatus,
+} from '@digix/gov-ui/reducers/dao-server/actions';
 
 class Proposal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      liked: this.props.liked,
-    };
-  }
+  componentWillMount = () => {
+    const { getUserProposalLikeStatusAction, ChallengeProof, details } = this.props;
+    if (ChallengeProof.data) {
+      getUserProposalLikeStatusAction({
+        proposalId: details.proposalId,
+        client: ChallengeProof.data.client,
+        token: ChallengeProof.data['access-token'],
+        uid: ChallengeProof.data.uid,
+      });
+    }
+  };
+
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   toggleLike = () => {
-    const { ChallengeProof, details, likeProposalAction, unlikeProposalAction } = this.props;
-    let { liked } = this.state;
+    const {
+      ChallengeProof,
+      details,
+      likeProposalAction,
+      unlikeProposalAction,
+      getUserProposalLikeStatusAction,
+      userProposalLike,
+      liked,
+    } = this.props;
+
+    const isLiked =
+      userProposalLike.data && userProposalLike.data.proposalId === details.proposalId
+        ? userProposalLike.data.liked
+        : liked;
+
     const payload = initializePayload(ChallengeProof);
 
     const options = {
@@ -39,19 +67,25 @@ class Proposal extends React.Component {
       token: payload.authToken,
     };
 
-    liked = !liked;
-    if (liked) {
+    if (!isLiked) {
       likeProposalAction(options);
     } else {
       unlikeProposalAction(options);
     }
-
-    this.setState({ liked });
+    getUserProposalLikeStatusAction({
+      proposalId: details.proposalId,
+      client: ChallengeProof.data.client,
+      token: ChallengeProof.data['access-token'],
+      uid: ChallengeProof.data.uid,
+    });
   };
 
   render() {
-    const { details, userDetails } = this.props;
-    const { liked } = this.state;
+    const { details, userDetails, likes, liked, userProposalLike } = this.props;
+    const likeStatus =
+      userProposalLike.data && userProposalLike.data.proposalId === details.proposalId
+        ? userProposalLike.data
+        : { liked, likes };
 
     const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
     const canCreate = userDetails && userDetails.data.isParticipant;
@@ -92,10 +126,13 @@ class Proposal extends React.Component {
               BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
             </PostedBy>
             {canLike && (
-              <LikeButton kind="text" xsmall hasVoted={liked} onClick={() => this.toggleLike()}>
-                <Icon kind="like" />
-                <span>Like</span>
-              </LikeButton>
+              <LikeButton
+                kind="text"
+                xsmall
+                hasVoted={likeStatus.liked}
+                likes={!likeStatus.likes ? 0 : likeStatus.likes}
+                onClick={() => this.toggleLike()}
+              />
             )}
           </ProposalFooter>
         </ProposalCard>
@@ -104,24 +141,29 @@ class Proposal extends React.Component {
   }
 }
 
-const { bool, func, object } = PropTypes;
+const { bool, func, object, number } = PropTypes;
 
 Proposal.propTypes = {
   ChallengeProof: object,
   details: object.isRequired,
   liked: bool,
+  likes: number,
   likeProposalAction: func.isRequired,
   unlikeProposalAction: func.isRequired,
+  getUserProposalLikeStatusAction: func.isRequired,
   userDetails: object.isRequired,
+  userProposalLike: object.isRequired,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
+  userProposalLike: state.daoServer.UserProposalLike,
 });
 
 Proposal.defaultProps = {
   ChallengeProof: undefined,
   liked: false,
+  likes: undefined,
 };
 
 export default connect(
@@ -129,5 +171,6 @@ export default connect(
   {
     likeProposalAction: likeProposal,
     unlikeProposalAction: unlikeProposal,
+    getUserProposalLikeStatusAction: getUserProposalLikeStatus,
   }
 )(Proposal);

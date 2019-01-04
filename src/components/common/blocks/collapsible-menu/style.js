@@ -41,24 +41,24 @@ export const ProfileContainer = styled.div`
 
 export const Welcome = styled.div`
   margin: 2rem 0;
-  font-size: 1.4rem;
   font-family: 'Futura PT Medium';
   color: ${props => props.theme.textPrimary.default.toString()};
   span {
-    font-family: 'Futura PT Light';
+    font-family: 'Futura PT Book';
     display: block;
-    font-size: 1.2rem;
     text-overflow: ellipsis;
     overflow: hidden;
+    width: 180px;
   }
 `;
 
 export const UserType = styled.p`
   margin-top: 0.5rem;
   font-size: 1.4rem;
-  color: #c19f58;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid ${props => props.theme.borderColor.default.toString()};
+  font-family: 'Futura PT Medium';
+  color: ${props => props.theme.textSecondary.default.toString()};
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
 `;
 
 export const MenuList = styled.ul`

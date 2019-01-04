@@ -27,7 +27,7 @@ export const ProposalContainer = styled.div`
 
 export const ProposaDetaillWrapper = styled.div`
   flex: 4 1 0;
-  padding: 2.5em 3em;
+  padding: 2.5rem 3rem;
 `;
 
 export const ProposalCard = styled.div`
@@ -61,7 +61,7 @@ export const ProposalLink = styled(Link)`
     color: ${props =>
       props.disabled
         ? props.theme.linkDefaultColor.light.toString()
-        : props.theme.linkPrimaryColor.light.toString()};
+        : props.theme.linkPrimaryColor.default.toString()};
   }
 
   &:hover {
@@ -132,7 +132,7 @@ export const StatItem = styled.div`
     (props.stage.toLowerCase() === 'idea' ||
       (props.votingStage && props.votingStage.toLowerCase() === 'commit')) &&
     css`
-      color: ${props.theme.textDefault.lighter.toString()};
+      color: ${props.theme.textDefault.light.toString()};
     `};
   display: flex;
   flex-direction: column;

@@ -1,12 +1,11 @@
 import styled, { css } from 'styled-components';
-
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import { Wrapper, Card } from '@digix/gov-ui/components/common/common-styles';
 
-export const ButtonLink = styled(Button)`
+export const ButtonLink = styled.span`
   border: 0;
   background: transparent;
   color: ${props => props.theme.linkSecondaryColor.default.toString()};
+  display: block;
   text-transform: uppercase;
   padding: 1rem 2rem;
   margin: 1rem;
@@ -41,6 +40,10 @@ export const HistoryHeading = styled.div`
   display: flex;
   flex-direction: space-between;
   margin-bottom: 2rem;
+
+  & > div {
+    flex: 1;
+  }
 `;
 
 export const IconContainer = styled.div`

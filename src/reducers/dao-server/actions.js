@@ -9,7 +9,9 @@ export const actions = {
   GET_TRANSACION_STATUS: `${REDUX_PREFIX}GET_TRANSACION_STATUS`,
   GET_USER_PROPOSAL_LIKE_STATUS: `${REDUX_PREFIX}GET_USER_PROPOSAL_LIKE_STATUS`,
 
-  GET_PROPOSAL_LIKES: `${REDUX_PREFIX}GET_PROPOSAL_LIKES`,
+  GET_PROPOSAL_LIKES_BY_USER: `${REDUX_PREFIX}GET_PROPOSAL_LIKES_BY_USER`,
+
+  GET_PROPOSAL_LIKES_STATS: `${REDUX_PREFIX}GET_PROPOSAL_LIKES_STATS`,
 
   GET_PROPOSAL_DETAILS: `${REDUX_PREFIX}GET_PROPOSAL_DETAILS`,
   CLEAR_PROPOSAL_DETAILS: `${REDUX_PREFIX}CLEAR_PROPOSAL_DETAILS`,
@@ -200,12 +202,25 @@ export function getDaoProposalDetails(payload) {
   );
 }
 
-export function getProposalLikes(payload) {
+export function getProposalLikesByUser(payload) {
   const { client, stage, authToken, uid } = payload;
   return sendData(
     'GET',
-    stage ? `${DAO_SERVER}/proposals?stage=${stage}&liked=` : `${DAO_SERVER}/proposals?liked=`,
-    actions.GET_PROPOSAL_LIKES,
+    stage ? `${DAO_SERVER}/proposals?liked=` : `${DAO_SERVER}/proposals?liked=`,
+    actions.GET_PROPOSAL_LIKES_BY_USER,
+    undefined,
+    authToken,
+    client,
+    uid
+  );
+}
+
+export function getProposalLikesStats(payload) {
+  const { client, stage, authToken, uid } = payload;
+  return sendData(
+    'GET',
+    stage ? `${DAO_SERVER}/proposals?stage=${stage}` : `${DAO_SERVER}/proposals`,
+    actions.GET_PROPOSAL_LIKES_STATS,
     undefined,
     authToken,
     client,

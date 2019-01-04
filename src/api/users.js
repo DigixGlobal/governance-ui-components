@@ -2,16 +2,6 @@ import { requestFromApi } from '@digix/gov-ui/api';
 import { INFO_SERVER } from '@digix/gov-ui/reducers/info-server/constants';
 
 export const UsersApi = {
-  getDetails: (address, payload) => {
-    const requestParams = {
-      ...payload,
-      method: 'GET',
-      url: `${INFO_SERVER}/address/${address}`,
-    };
-
-    return requestFromApi(requestParams);
-  },
-
   // users must be an array of addresses
   getPoints: (users, payload) => {
     const getParams = users.join('&address=');

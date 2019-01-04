@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import ProjectDetails from '../details';
 import Milestones from '../milestones';
 import { Button } from '../../../components/common/elements/index';
-
 import {
   ProposalsWrapper,
   ProjectSummary,
@@ -16,20 +16,23 @@ import {
   Reward,
 } from '../style';
 
-const getTotalFunds = source => {
-  const sum = source.reduce((acc, currentValue) => Number(acc) + Number(currentValue.fund), 0);
-
-  return sum;
-};
+const getTotalFunds = source =>
+  source.reduce((acc, currentValue) => Number(acc) + Number(currentValue.fund), 0);
 
 class Preview extends React.Component {
   render() {
-    const { form, proposer } = this.props;
-    if (!form) return null;
+    const { form, onContinueEditing, proposer } = this.props;
+    if (!form) {
+      return null;
+    }
+
     const totalFunding = form.milestones ? getTotalFunds(form.milestones) : 0;
+    const funding = truncateNumber(totalFunding);
+    const reward = truncateNumber(form.finalReward);
+
     return (
       <ProposalsWrapper>
-        <Button primary ghost onClick={this.props.onContinueEditing}>
+        <Button primary ghost onClick={onContinueEditing}>
           Continue Editing
         </Button>
         <ProjectSummary>
@@ -47,18 +50,19 @@ class Preview extends React.Component {
             </SubmittedBy>
             <FundingStatus>
               Funding
-              <span>{totalFunding} ETH</span>
+              <span>{funding} ETH</span>
             </FundingStatus>
             <MilestonesStatus>
               Milestones <span>{form.milestones ? form.milestones.length : 0}</span>
             </MilestonesStatus>
             <Reward>
-              Reward <span>{form.finalReward / 1e18}</span>
+              Reward
+              <span>{reward} ETH</span>
             </Reward>
           </LatestActivity>
         </ProjectSummary>
         <ProjectDetails project={form} preview />
-        <Milestones milestones={form.milestones || []} />
+        <Milestones preview milestones={form.milestones || []} />
       </ProposalsWrapper>
     );
   }

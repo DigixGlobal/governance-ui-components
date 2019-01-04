@@ -122,7 +122,7 @@ class ClaimApprovalButton extends React.Component {
 
     if (!canClaim) return null;
     return (
-      <Button kind="round" ghost primary onClick={this.handleSubmit}>
+      <Button kind="round" onClick={this.handleSubmit}>
         Claim Approval
       </Button>
     );

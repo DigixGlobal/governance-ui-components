@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { H3 } from '../../common-styles';
 
 export const AccordionItem = styled.div`

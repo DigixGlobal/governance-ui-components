@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { media } from './breakpoints';
 
 export const Avatar = styled.img`
   width: 5rem;
@@ -60,7 +61,7 @@ export const Link = styled.a`
 
 export const ContentWrapper = styled.div`
   flex: 5 0 0;
-  padding: 8em 10em;
+  padding: 12em 8em;
 `;
 
 export const LeftPanel = css``;
@@ -153,8 +154,27 @@ export const Card = css`
   flex-grow: 1;
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-  border-radius: 4px;
+  border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   margin-bottom: 3em;
   padding: 1rem;
+`;
+
+export const TransparentOverlay = styled.div`
+  background-color: #000;
+  opacity: 0.75;
+  transition: ${props => props.theme.transition};
+
+  width: 75%;
+  ${media.tablet`width: 40%`}
+  ${media.mobile`width: 0%`}
+`;
+
+export const DrawerContainer = styled.div`
+  background-color: ${props => props.theme.backgroundDefault.default.toString()};
+  padding: 5rem;
+
+  width: 25%;
+  ${media.tablet`width: 60%`}
+  ${media.mobile`width: 100%`}
 `;

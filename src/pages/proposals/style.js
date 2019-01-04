@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { H1, H2, Container } from '../../components/common/common-styles';
+import { Button } from '../../components/common/elements/buttons/style';
 
 export const ProposalsWrapper = styled.div``;
 
@@ -29,7 +30,7 @@ export const BrowseVersionHistory = styled.div`
       flex: 2;
       justify-content: center;
       font-family: 'Futura PT Medium';
-      font-size: 2rem;
+      font-size: 1.6rem;
 
       text-transform: capitalize;
     }
@@ -65,33 +66,16 @@ export const BrowseVersionHistory = styled.div`
 `;
 
 export const PreviousWrapper = styled.div`
-  text-transform: uppercase;
-  i {
-    &:before {
-      transform: rotate(-90deg);
-      margin-right: 0.5rem;
-      ${props =>
-        props.disabled &&
-        css`
-          border-bottom: 9px solid #f2f2f2 !important;
-        `};
-    }
+  ${Container};
+  align-items: center;
+  svg {
+    transform: rotate(180deg);
   }
 `;
 
 export const NextWrapper = styled.div`
-  text-transform: uppercase;
-  i {
-    &:before {
-      transform: rotate(90deg);
-      margin-left: 0.5rem;
-      ${props =>
-        props.disabled &&
-        css`
-          border-bottom: 9px solid #f2f2f2 !important;
-        `};
-    }
-  }
+  ${Container};
+  align-items: center;
 `;
 
 export const Header = styled.div`
@@ -261,4 +245,14 @@ export const QuorumInfoCol = styled.div`
     margin-right: 1.5rem;
     padding-right: 1.5rem;
   }
+`;
+
+export const CloseButton = styled(Button)`
+  position: absolute;
+  background: #fff;
+  border: 0;
+  top: 10px;
+  right: 5px;
+  margin: 0;
+  padding: 1rem 1.5rem;
 `;

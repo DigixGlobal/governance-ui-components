@@ -68,13 +68,13 @@ class Comment extends React.Component {
           {body || this.DELETE_MESSAGE}
           {body && (
             <ActionBar>
-              <ActionCommentButton kind="text" xsmall onClick={() => toggleEditor()}>
+              <ActionCommentButton kind="text" small onClick={() => toggleEditor()}>
                 <Icon kind="reply" />
                 <span>Reply</span>
               </ActionCommentButton>
               <ActionCommentButton
                 kind="text"
-                xsmall
+                small
                 active={liked}
                 onClick={() => this.toggleLike()}
               >
@@ -82,7 +82,7 @@ class Comment extends React.Component {
                 <span>{likes}&nbsp;Likes</span>
               </ActionCommentButton>
               {isAuthor && (
-                <ActionCommentButton kind="text" xsmall onClick={() => this.deleteComment()}>
+                <ActionCommentButton kind="text" small onClick={() => this.deleteComment()}>
                   <Icon kind="trash" />
                   <span>Trash</span>
                 </ActionCommentButton>

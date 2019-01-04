@@ -40,6 +40,10 @@ export const HistoryHeading = styled.div`
   display: flex;
   flex-direction: space-between;
   margin-bottom: 2rem;
+
+  & > div {
+    flex: 1;
+  }
 `;
 
 export const IconContainer = styled.div`

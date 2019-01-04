@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Arrow from './Arrow';
 import Close from './Close';
 import Face from './Face';
 import Check from './Check';
@@ -31,6 +32,7 @@ import Dgd from './DGD';
 import XMark from './XMark';
 
 const icons = {
+  arrow: Arrow,
   close: Close,
   face: Face,
   check: Check,

@@ -27,7 +27,7 @@ export const ProposalContainer = styled.div`
 
 export const ProposaDetaillWrapper = styled.div`
   flex: 4 1 0;
-  padding: 2.5em 3em;
+  padding: 2.5rem 3rem;
 `;
 
 export const ProposalCard = styled.div`

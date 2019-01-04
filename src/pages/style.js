@@ -8,6 +8,6 @@ export const Container = styled.div`
 export const ContentWrapper = styled.div`
   background-color: ${props => props.theme.backgroundTertiary.lighter.toString()};
   flex: 5 0 0;
-  padding: 8em 10em;
+  padding: 12em 8em;
   margin-left: 15%;
 `;

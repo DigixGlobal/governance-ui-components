@@ -97,6 +97,7 @@ const tertiaryColor = darkGray;
 
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
 const transitionStyle = 'all .25s ease';
+const borderRadiusStyle = '0.25rem';
 
 const LightTheme = {
   backgroundDefault: white,
@@ -109,6 +110,7 @@ const LightTheme = {
   borderColor: tertiaryColor,
 
   boxShadow: boxShadowStyle,
+  borderRadius: borderRadiusStyle,
 
   buttonBgPrimary: white,
   buttonBgHoverPrimary: primaryColor,
@@ -177,6 +179,8 @@ const LightTheme = {
   icon: {
     default: primaryColor,
     active: secondaryColor,
+    primary: tertiaryColor,
+    disabled: tertiaryColor,
   },
 };
 

@@ -5,7 +5,7 @@ export const SyledInput = styled.input.attrs({
   //   size: props => (props.small ? 5 : undefined),
 })`
   border: 1px solid ${props => props.theme.borderColor.light.toString()};
-  border-radius: ${props => (props.rounded ? '2rem' : '.5rem')};
+  border-radius: ${props => props.theme.borderRadius};
   color: ${props => props.theme.textDefault.default.toString()};
   padding: 2rem;
   font-size: 1.4rem;

@@ -64,7 +64,7 @@ export const UsdEquivalent = styled.div`
   font-family: 'Futura PT Light';
   font-size: 1.4rem;
   & > span {
-    color: ${props => props.theme.textDefault.lighter.toString()};
+    color: ${props => props.theme.textDefault.default.toString()};
     margin-left: 0.5rem;
   }
 `;

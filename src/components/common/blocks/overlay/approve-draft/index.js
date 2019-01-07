@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
+
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
@@ -102,6 +104,7 @@ class ApproveProposalOverlay extends React.Component {
       network,
       web3Params,
       ui,
+      showTxSigningModal: this.props.showTxSigningModal,
     };
 
     return executeContractFunction(payload);
@@ -156,6 +159,7 @@ ApproveProposalOverlay.propTypes = {
   sendTransactionToDaoServer: func.isRequired,
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
+  showTxSigningModal: func.isRequired,
   web3Redux: object.isRequired,
 };
 
@@ -171,6 +175,7 @@ export default web3Connect(
       sendTransactionToDaoServer,
       showHideAlertAction: showHideAlert,
       showRightPanelAction: showRightPanel,
+      showTxSigningModal,
     }
   )(ApproveProposalOverlay)
 );

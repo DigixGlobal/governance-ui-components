@@ -61,7 +61,7 @@ export const Link = styled.a`
 
 export const ContentWrapper = styled.div`
   flex: 5 0 0;
-  padding: 8em 10em;
+  padding: 12em 8em;
 `;
 
 export const LeftPanel = css``;
@@ -154,7 +154,7 @@ export const Card = css`
   flex-grow: 1;
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-  border-radius: 4px;
+  border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   margin-bottom: 3em;
   padding: 1rem;

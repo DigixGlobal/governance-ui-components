@@ -29,7 +29,7 @@ class Preview extends React.Component {
     const totalFunding = form.milestones ? getTotalFunds(form.milestones) : 0;
     return (
       <ProposalsWrapper>
-        <Button primary ghost onClick={this.props.onContinueEditing}>
+        <Button primary onClick={this.props.onContinueEditing}>
           Continue Editing
         </Button>
         <ProjectSummary>

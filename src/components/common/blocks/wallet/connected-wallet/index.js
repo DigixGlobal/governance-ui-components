@@ -39,7 +39,6 @@ import {
   TokenDetails,
   TokenValue,
   UsdEquivalent,
-  DevNote,
   Notes,
 } from './style';
 
@@ -195,7 +194,7 @@ class ConnectedWallet extends React.Component {
         </CloseButtonWithHeader>
         <Container>
           <AddressInfo>
-            Selected Address
+            Your Address
             <span>{defaultAddress.address}</span>
           </AddressInfo>
           <TokenInfo>

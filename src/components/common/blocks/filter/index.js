@@ -27,7 +27,12 @@ export default class ProposalCardFilter extends React.Component {
               href="/proposals/create"
               style={{ display: 'inline-block' }}
             >
-              <Button kind="round" primary icon>
+              <Button
+                kind="round"
+                primary
+                icon
+                style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
+              >
                 <Icon kind="plus" />
                 Create
               </Button>

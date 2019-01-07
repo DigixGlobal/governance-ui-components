@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import { EMPTY_HASH } from '@digix/gov-ui/constants';
+import { ProposalStages, EMPTY_HASH } from '@digix/gov-ui/constants';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import Like from '@digix/gov-ui/components/common/elements/like';
 import { getProposalDetails, getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
@@ -150,11 +150,15 @@ class Proposal extends React.Component {
       return <div>Fetching Proposal Details</div>;
 
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
-    const isEndorsed = proposalDetails.data.endorser !== EMPTY_HASH;
-
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
+
+    const stagesThatCanEdit = [ProposalStages.idea, ProposalStages.draft];
+    const showEditButton =
+      isProposer &&
+      stagesThatCanEdit.includes(proposalDetails.data.stage) &&
+      !proposalDetails.data.votingStage;
 
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
@@ -195,7 +199,7 @@ class Proposal extends React.Component {
                 history={history}
               />
 
-              {isProposer && !isEndorsed && (
+              {showEditButton && (
                 <Button kind="round" onClick={this.handleEditClick}>
                   Edit
                 </Button>

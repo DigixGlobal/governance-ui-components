@@ -228,7 +228,13 @@ class LockDgd extends React.Component {
 
   renderLockDgd = () => {
     const { dgd, openError, error } = this.state;
+    const { daoDetails } = this.props;
     const invalidDgd = !dgd || Number(dgd) <= 0;
+    let phase = 'staking';
+    if (new Date(daoDetails.startOfMainphase * 1000) > Date.now()) {
+      phase = 'main';
+    }
+
     const stake = this.getStake(dgd);
 
     return (
@@ -237,7 +243,7 @@ class LockDgd extends React.Component {
           <Header>LOCK DGD</Header>
           <Icon kind="close" />
         </CloseButton>
-        <LockDgdBox>You are now locking DGD in the staking Phase</LockDgdBox>
+        <LockDgdBox>You are now locking DGD in the {phase} Phase</LockDgdBox>
         <TextCaption>
           <strong>Please enter the amount of DGD you wish to lock in:</strong>
         </TextCaption>

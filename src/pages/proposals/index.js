@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import { ProposalStages, EMPTY_HASH } from '@digix/gov-ui/constants';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import Like from '@digix/gov-ui/components/common/elements/like';
 import { getProposalDetails, getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
@@ -115,11 +114,6 @@ class Proposal extends React.Component {
     this.setState({ currentVersion: Number(this.state.currentVersion) + 1 });
   };
 
-  handleEditClick = () => {
-    const { history, proposalDetails } = this.props;
-    history.push(`/proposals/edit/${proposalDetails.data.proposalId}`);
-  };
-
   handleLikeClick = e => {
     e.preventDefault();
     const { likeProposalAction, challengeProof } = this.props;
@@ -153,12 +147,6 @@ class Proposal extends React.Component {
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
-
-    const stagesThatCanEdit = [ProposalStages.idea, ProposalStages.draft];
-    const showEditButton =
-      isProposer &&
-      stagesThatCanEdit.includes(proposalDetails.data.stage) &&
-      !proposalDetails.data.votingStage;
 
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
@@ -198,12 +186,6 @@ class Proposal extends React.Component {
                 addressDetails={addressDetails}
                 history={history}
               />
-
-              {showEditButton && (
-                <Button kind="round" onClick={this.handleEditClick}>
-                  Edit
-                </Button>
-              )}
             </div>
           </Header>
           <LatestActivity>

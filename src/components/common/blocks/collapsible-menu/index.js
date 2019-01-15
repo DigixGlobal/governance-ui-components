@@ -23,16 +23,10 @@ const DEFAULT_MENU = [
     public: true,
   },
   {
-    kind: 'activity',
-    caption: 'Activity',
-    url: '/activity',
-    public: true,
-  },
-  {
     kind: 'wallet',
     caption: 'Wallet',
     url: '/wallet',
-    public: true,
+    public: false,
   },
   {
     kind: 'profile',
@@ -44,7 +38,7 @@ const DEFAULT_MENU = [
     kind: 'history',
     caption: 'Transaction History',
     url: '/history',
-    public: true,
+    public: false,
   },
   {
     kind: 'product',

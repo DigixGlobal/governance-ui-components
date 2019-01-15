@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import { EMPTY_HASH } from '@digix/gov-ui/constants';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import Like from '@digix/gov-ui/components/common/elements/like';
 import { getProposalDetails, getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
@@ -115,11 +114,6 @@ class Proposal extends React.Component {
     this.setState({ currentVersion: Number(this.state.currentVersion) + 1 });
   };
 
-  handleEditClick = () => {
-    const { history, proposalDetails } = this.props;
-    history.push(`/proposals/edit/${proposalDetails.data.proposalId}`);
-  };
-
   handleLikeClick = e => {
     e.preventDefault();
     const { likeProposalAction, challengeProof } = this.props;
@@ -150,8 +144,6 @@ class Proposal extends React.Component {
       return <div>Fetching Proposal Details</div>;
 
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
-    const isEndorsed = proposalDetails.data.endorser !== EMPTY_HASH;
-
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
@@ -194,12 +186,6 @@ class Proposal extends React.Component {
                 addressDetails={addressDetails}
                 history={history}
               />
-
-              {isProposer && !isEndorsed && (
-                <Button kind="round" onClick={this.handleEditClick}>
-                  Edit
-                </Button>
-              )}
             </div>
           </Header>
           <LatestActivity>

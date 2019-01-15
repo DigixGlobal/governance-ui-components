@@ -37,6 +37,7 @@ class CommitVote extends React.Component {
     this.state = {
       vote: false,
       hasVoted: false,
+      hasDownloaded: false,
       changeVote: false,
       voteObject: {},
     };
@@ -86,6 +87,11 @@ class CommitVote extends React.Component {
   handleChangeVote = () => {
     this.setState({ changeVote: true });
   };
+
+  handleDownload = () => {
+    this.setState({ hasDownloaded: true });
+  };
+
   handleSubmit = () => {
     const { voteObject } = this.state;
     const {
@@ -137,7 +143,7 @@ class CommitVote extends React.Component {
   };
 
   render() {
-    const { hasVoted, vote, changeVote } = this.state;
+    const { hasVoted, vote, changeVote, hasDownloaded } = this.state;
     const { proposalId, proposal, revoting } = this.props;
     const { currentVotingRound } = proposal;
     const votedYes = hasVoted && vote;
@@ -195,13 +201,14 @@ class CommitVote extends React.Component {
                 large
                 fluid
                 download={`${proposalId}-${currentVotingRound}.json`}
+                onClick={this.handleDownload}
                 href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
               >
                 Download JSON File
               </LinkButton>
             )}
 
-            {hasVoted && (
+            {hasDownloaded && (
               <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
                 Confirm Commit
               </Button>

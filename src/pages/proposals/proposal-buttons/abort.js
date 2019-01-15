@@ -91,8 +91,14 @@ class AbortProjectButton extends React.PureComponent {
   };
   render() {
     const { stage, isProposer, finalVersionIpfsDoc } = this.props;
-    if (stage !== ProposalStages.idea || !isProposer || finalVersionIpfsDoc !== EMPTY_HASH_LONG)
+    const stagesThatCanAbort = [ProposalStages.idea, ProposalStages.draft];
+    if (
+      !stagesThatCanAbort.includes(stage) ||
+      !isProposer ||
+      finalVersionIpfsDoc !== EMPTY_HASH_LONG
+    ) {
       return null;
+    }
 
     return (
       <Button kind="round" onClick={this.handleSubmit}>

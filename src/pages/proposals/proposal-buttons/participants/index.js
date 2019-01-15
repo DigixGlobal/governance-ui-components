@@ -1,16 +1,29 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import AbortButton from '../abort';
-import FinalizeButton from '../finalize';
-import ClaimApprovalButton from '../claim-approval';
-import ClaimResultsButton from '../claim-results';
-import MilestoneCompletedButton from '../milestone-completed';
-import ClaimFundingButton from '../claim-funding';
-import VoteCommitButton from '../vote-commit';
-import RevealButton from '../reveal-button';
+import { ProposalStages } from '@digix/gov-ui/constants';
+
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import AbortButton from '@digix/gov-ui/pages/proposals/proposal-buttons/abort';
+import FinalizeButton from '@digix/gov-ui/pages/proposals/proposal-buttons/finalize';
+import ClaimApprovalButton from '@digix/gov-ui/pages/proposals/proposal-buttons/claim-approval';
+import ClaimResultsButton from '@digix/gov-ui/pages/proposals/proposal-buttons/claim-results';
+import MilestoneCompletedButton from '@digix/gov-ui/pages/proposals/proposal-buttons/milestone-completed';
+import ClaimFundingButton from '@digix/gov-ui/pages/proposals/proposal-buttons/claim-funding';
+import VoteCommitButton from '@digix/gov-ui/pages/proposals/proposal-buttons/vote-commit';
+import RevealButton from '@digix/gov-ui/pages/proposals/proposal-buttons/reveal-button';
 
 class ParticantButtons extends React.Component {
+  constructor(props) {
+    super(props);
+    this.STAGES_THAT_CAN_EDIT = [ProposalStages.idea, ProposalStages.draft];
+  }
+
+  handleEditClick = () => {
+    const { history, proposal } = this.props;
+    history.push(`/proposals/edit/${proposal.data.proposalId}`);
+  };
+
   render() {
     const {
       isProposer,
@@ -18,6 +31,10 @@ class ParticantButtons extends React.Component {
       history,
       addressDetails,
     } = this.props;
+
+    const showEditButton =
+      isProposer && this.STAGES_THAT_CAN_EDIT.includes(data.stage) && !data.votingStage;
+
     return (
       <Fragment>
         <AbortButton
@@ -27,6 +44,11 @@ class ParticantButtons extends React.Component {
           finalVersionIpfsDoc={data.finalVersionIpfsDoc}
           history={history}
         />
+        {showEditButton && (
+          <Button kind="round" onClick={this.handleEditClick}>
+            Edit
+          </Button>
+        )}
         <FinalizeButton
           endorser={data.endorser}
           stage={data.stage}

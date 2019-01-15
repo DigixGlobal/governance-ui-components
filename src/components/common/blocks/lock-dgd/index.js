@@ -7,7 +7,7 @@ import PropTypes, { array } from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
-import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
+// import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
 
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 
@@ -28,7 +28,7 @@ import TextField from '@digix/gov-ui/components/common/elements/textfield';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons';
 
-import getContract from '@digix/gov-ui/utils/contracts';
+import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
 
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE, ETHERSCAN_URL } from '@digix/gov-ui/constants';
 
@@ -91,7 +91,7 @@ class LockDgd extends React.Component {
   getMaxAllowance = () => {
     const { defaultAddress, web3Redux } = this.props;
 
-    const { abi, address } = getContract(DgdToken, network);
+    const { abi, address } = getDGDBalanceContract(network);
     const { address: DaoStakingContract } = getContract(DaoStakeLocking, network);
     const contract = web3Redux
       .web3(network)

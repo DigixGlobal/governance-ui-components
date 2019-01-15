@@ -35,12 +35,8 @@ class LandingPage extends Component {
     });
   };
 
-  componentWillReceiveProps = nextProps => {
-    if (!_.isEqual(this.props.ChallengeProof, nextProps.ChallengeProof)) {
-      this.getUserLikes('all', nextProps.ChallengeProof, this.props.getProposalLikesByUserAction);
-      this.getProposalLikes('all', nextProps.ChallengeProof);
-    }
-  };
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   onOrderChange = order => {
     this.setState({ order });

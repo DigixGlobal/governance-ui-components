@@ -34,7 +34,6 @@ export function getDGDBalanceContract(network) {
   const address =
     (process.env.ENVIRONMENT !== 'development' && getToken('DGD').address) || rpcContract.address;
 
-  console.log({ abi, address });
   return { abi, address };
 }
 

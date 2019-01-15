@@ -1,41 +1,118 @@
 import styled from 'styled-components';
+import { H1, Card, CardItem } from '../../../components/common/common-styles';
+import { media } from '../../../components/common/breakpoints';
 
-export const EmptyStateContainer = styled.div`
-  color: ${props => props.theme.textDefault.default.toString()};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 50vh;
-  width: 320px;
-  text-align: center;
-  margin: 0 auto;
-
-  svg {
-    fill: ${props => props.theme.iconDefaultColor.light.toString()};
+export const ProfileWrapper = styled.div``;
+export const Heading = styled(H1)``;
+export const UserInfo = styled.div`
+  span {
+    display: inline-block;
+    min-width: 7rem;
   }
 `;
-export const EmptyStateTitle = styled.div`
+export const WalletInfo = styled.div`
+  color: ${props => props.theme.textPrimary.default.toString()};
+  font-family: 'Futura PT', sans-serif;
   font-size: 2rem;
-  margin: 2rem 0 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+`;
+export const UserStatus = styled.div`
+  color: ${props => props.theme.textSecondary.default.toString()};
+  font-family: 'Futura PT', sans-serif;
+  font-size: 2rem;
+  font-weight: 400;
+`;
+export const RewardSummary = styled.div`
+  ${Card};
+
+  color: ${props => props.theme.textPrimary.default.toString()};
+  font-family: 'Futura PT', sans-serif;
+  font-weight: 500;
+  margin-top: 5rem;
+
+  ${media.mobile`flex-direction: column;`}
+`;
+export const RewardItem = styled.div`
+  ${CardItem};
+  border-right: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  align-items: center;
+
+  &:last-child {
+    border-right: 0;
+  }
+
+  ${media.mobile`border-right: 0;`}
 `;
 
-export const IconContainer = styled.div`
-  width: 200px;
-  display: block;
-`;
-
-export const ButtonLink = styled.span`
-  border: 0;
-  background: transparent;
-  color: ${props => props.theme.linkSecondaryColor.default.toString()};
-  display: block;
+export const Label = styled.div`
   text-transform: uppercase;
-  padding: 1rem 2rem;
-  margin: 1rem;
-  &:hover {
-    background: ${props => props.theme.backgroundTertiary.lighter.toString()};
-    color: ${props => props.theme.linkSecondaryColor.default.toString()};
+  margin-top: 1rem;
+`;
+export const Data = styled.div`
+  font-size: 3.8em;
+  margin: 1rem 0 0;
+`;
+export const ActivitySummary = styled.div`
+  display: flex;
+  ${media.mobile`flex-direction: column;`}
+`;
+export const ActivityItem = styled.div`
+  ${Card};
+  color: ${props => props.theme.textPrimary.default.toString()};
+  flex-direction: column;
+  flex-grow: 1;
+  font-family: 'Futura PT', sans-serif;
+  font-weight: 500;
+  margin-right: 3rem;
+  &:last-child {
+    margin-right: 0;
+  }
+`;
+export const Moderation = styled.div`
+  ${Card};
+  color: ${props => props.theme.textPrimary.default.toString()};
+  flex-direction: column;
+  font-family: 'Futura PT', sans-serif;
+  font-weight: 500;
+`;
+export const Criteria = styled.div`
+  ${CardItem};
+  align-items: center;
+  justify-content: flex-start;
+  font-family: 'Futura PT', sans-serif;
+  font-weight: 500;
+  margin: 3rem 0 0;
+  ${media.mobile`flex-direction: column;`}
+`;
+export const ModeratorReputation = styled.div`
+  ${CardItem};
+  flex-grow: 0;
+  align-items: flex-end;
+`;
+export const ModeratorStake = styled.div`
+  ${CardItem};
+  flex-grow: 0;
+  align-items: flex-end;
+`;
+export const ModeratorLabel = styled.div`
+  margin-bottom: 1.1rem;
+  margin-left: 1rem;
+  text-transform: uppercase;
+`;
+export const Plus = styled.div`
+  display: flex;
+  margin: 0 3rem;
+
+  svg {
+    fill: ${props => props.theme.icon.default.default.toString()};
+  }
+`;
+
+export const Actions = styled.div`
+  margin-top: 3rem;
+
+  & > button {
+    margin-left: 0;
   }
 `;

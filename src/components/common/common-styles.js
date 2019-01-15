@@ -157,7 +157,13 @@ export const Card = css`
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   margin-bottom: 3em;
-  padding: 1rem;
+  padding: 3rem;
+`;
+
+export const CardItem = css`
+  display: flex;
+  flex-direction: ${props => (props.column ? 'column' : '')};
+  flex-grow: 1;
 `;
 
 export const TransparentOverlay = styled.div`

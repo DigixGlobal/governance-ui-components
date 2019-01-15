@@ -19,7 +19,7 @@ import {
   MenuItem,
 } from './style';
 
-const mockMenu = [
+const menuList = [
   { kind: 'home', caption: 'Home', url: '/' },
   { kind: 'activity', caption: 'Activity', url: '/activity' },
   { kind: 'wallet', caption: 'Wallet', url: '/wallet' },
@@ -46,7 +46,7 @@ class CollapsibleMenu extends React.Component {
       location: { pathname },
     } = this.props;
 
-    const menu = menuItems || mockMenu;
+    const menu = menuItems || menuList;
     return (
       <MenuContainer>
         {defaultAddress && (
@@ -85,7 +85,7 @@ CollapsibleMenu.propTypes = {
 };
 
 CollapsibleMenu.defaultProps = {
-  menuItems: mockMenu,
+  menuItems: menuList,
   theme: lightTheme,
   defaultAddress: undefined,
   addressDetails: undefined,

@@ -27,6 +27,8 @@ import {
   Actions,
 } from '@digix/gov-ui/pages/user/profile/style';
 
+import RedeemBadge from './buttons/redeem-badge';
+
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -198,12 +200,8 @@ class Profile extends React.Component {
               </ModeratorReqs>
             </Criteria>
             <Actions>
-              <Button primary data-digix="Profile-RedeemBadge-Cta">
-                Redeem Badge
-              </Button>
-              <Button primary data-digix="Profile-LockMoreDgd-Cta">
-                Lock More DGD
-              </Button>
+              <RedeemBadge />
+              <Button primary>Lock More DGD</Button>
             </Actions>
           </Moderation>
         )}

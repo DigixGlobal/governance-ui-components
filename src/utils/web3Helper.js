@@ -53,8 +53,33 @@ export const executeContractFunction = payload => {
       });
   }
 
+  if (params)
+    return func
+      .sendTransaction(...params, {
+        from: address.address,
+        ui,
+        ...web3Params,
+      })
+      .then(txHash => {
+        if (typeof onSuccess === 'function') {
+          onSuccess(txHash);
+        }
+
+        if (typeof onFinally === 'function') {
+          onFinally(txHash);
+        }
+      })
+      .catch(error => {
+        onFailure(error);
+        if (typeof onFinally === 'function') {
+          const data = error.data ? Object.keys(error.data) : undefined;
+          const txHash = data ? data[0] : undefined;
+          onFinally(txHash);
+        }
+      });
+
   return func
-    .sendTransaction(...params, {
+    .sendTransaction({
       from: address.address,
       ui,
       ...web3Params,

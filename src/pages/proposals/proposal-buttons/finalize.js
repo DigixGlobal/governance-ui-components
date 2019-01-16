@@ -126,7 +126,7 @@ class FinalizeProjectButton extends React.PureComponent {
     }
 
     return (
-      <Button kind="round" onClick={this.handleSubmit}>
+      <Button kind="round" onClick={this.handleSubmit} data-digix="Create-Proposal-Finalize">
         Finalize
       </Button>
     );

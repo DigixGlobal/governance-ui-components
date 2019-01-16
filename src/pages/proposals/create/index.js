@@ -246,19 +246,34 @@ class CreateProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button tertiary onClick={this.handleShowPreview}>
+            <Button tertiary onClick={this.handleShowPreview} data-digix="Create-Proposal-Preview">
               Preview
             </Button>
-            <Button disabled={!canMovePrevious} primary onClick={this.onPreviousButtonClick}>
+            <Button
+              disabled={!canMovePrevious}
+              primary
+              onClick={this.onPreviousButtonClick}
+              data-digix="Create-Proposal-Previous"
+            >
               Previous
             </Button>
             {canMoveNext && (
-              <Button disabled={!canMoveNext} primary onClick={this.onNextButtonClick}>
+              <Button
+                disabled={!canMoveNext}
+                primary
+                onClick={this.onNextButtonClick}
+                data-digix="Create-Proposal-Next"
+              >
                 Next
               </Button>
             )}
             {!canMoveNext && validForm && (
-              <Button primary ghost onClick={this.handleShowConfirmPage}>
+              <Button
+                primary
+                ghost
+                onClick={this.handleShowConfirmPage}
+                data-digix="Create-Proposal-Button"
+              >
                 Create Now
               </Button>
             )}

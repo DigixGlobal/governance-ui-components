@@ -105,7 +105,7 @@ class ClaimApprovalButton extends React.Component {
 
     if (!canClaim) return null;
     return (
-      <Button kind="round" onClick={this.handleSubmit}>
+      <Button kind="round" onClick={this.handleSubmit} data-digix="Create-Proposal-Claim-Approval">
         Claim Approval
       </Button>
     );

@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import EmailOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-email/index';
 import KycOverlay from '@digix/gov-ui/components/common/blocks/overlay/kyc/index';
+import UsernameOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-username/index';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { DEFAULT_STAKE_PER_DGD } from '@digix/gov-ui/constants';
 import {
@@ -12,9 +14,7 @@ import {
 } from '@digix/gov-ui/reducers/info-server/actions';
 import { showHideLockDgdOverlay, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
-import UsernameOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-username/index';
-import EmailOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-email/index';
-
+import { withFetchUser } from '@digix/gov-ui/api/users';
 import {
   ProfileWrapper,
   Heading,
@@ -152,6 +152,7 @@ class Profile extends React.Component {
   }
 
   render() {
+    const { displayName, email } = this.props.userData;
     const { AddressDetails } = this.props;
     const { stake } = this.state;
     const address = AddressDetails.data;
@@ -168,7 +169,7 @@ class Profile extends React.Component {
         <UserInfo>
           <UserItem>
             <UserLabel>User:</UserLabel>
-            <UserData data-digix="Profile-UserName">someone_else</UserData>
+            <UserData data-digix="Profile-UserName">{displayName}</UserData>
             <Button
               primary
               icon
@@ -185,7 +186,7 @@ class Profile extends React.Component {
           </UserItem>
           <UserItem>
             <UserLabel>Email:</UserLabel>
-            <UserData data-digix="Profile-Email">example@email.com</UserData>
+            <UserData data-digix="Profile-Email">{email}</UserData>
             <Button
               primary
               icon
@@ -302,7 +303,7 @@ class Profile extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, shape, string } = PropTypes;
 
 Profile.propTypes = {
   AddressDetails: object.isRequired,
@@ -313,11 +314,16 @@ Profile.propTypes = {
   getDaoDetailsAction: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
   showRightPanel: func.isRequired,
+  userData: shape({
+    displayName: string,
+    email: string,
+  }),
 };
 
 Profile.defaultProps = {
   DaoConfig: undefined,
   DaoDetails: undefined,
+  userData: undefined,
 };
 
 const mapStateToProps = ({ infoServer }) => ({
@@ -326,13 +332,15 @@ const mapStateToProps = ({ infoServer }) => ({
   DaoDetails: infoServer.DaoDetails,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getAddressDetailsAction: getAddressDetails,
-    getDaoConfigAction: getDaoConfig,
-    getDaoDetailsAction: getDaoDetails,
-    showHideLockDgdOverlay,
-    showRightPanel,
-  }
-)(Profile);
+export default withFetchUser(
+  connect(
+    mapStateToProps,
+    {
+      getAddressDetailsAction: getAddressDetails,
+      getDaoConfigAction: getDaoConfig,
+      getDaoDetailsAction: getDaoDetails,
+      showHideLockDgdOverlay,
+      showRightPanel,
+    }
+  )(Profile)
+);

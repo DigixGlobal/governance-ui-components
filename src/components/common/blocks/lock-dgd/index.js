@@ -2,14 +2,10 @@ import React from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-
 import PropTypes, { array } from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
-
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
-
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import {
   getDefaultAddress,
@@ -17,19 +13,18 @@ import {
   getDefaultNetworks,
 } from 'spectrum-lightsuite/src/selectors';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
-
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
-
-import { showHideLockDgdOverlay, fetchMaxAllowance } from '@digix/gov-ui/reducers/gov-ui/actions';
+import {
+  fetchMaxAllowance,
+  showHideAlert,
+  showHideLockDgdOverlay,
+} from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
-
 import TextField from '@digix/gov-ui/components/common/elements/textfield';
-
 import Button from '@digix/gov-ui/components/common/elements/buttons';
-
 import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
-
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE, ETHERSCAN_URL } from '@digix/gov-ui/constants';
+import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 
 import {
   Container,
@@ -58,6 +53,7 @@ class LockDgd extends React.Component {
     this.state = {
       dgd: 0,
       error: '',
+      disableLockDgdButton: true,
       openError: false,
       txHash: undefined,
     };
@@ -70,7 +66,6 @@ class LockDgd extends React.Component {
       !_.isEqual(this.props.lockDgdOverlay, nextProps.lockDgdOverlay)
     )
       if (defaultAddress && lockDgdOverlay.show) {
-        // this.toggleBodyOverflow(nextProps.lockDgdOverlay);
         this.getMaxAllowance();
       }
   };
@@ -81,10 +76,23 @@ class LockDgd extends React.Component {
   onDgdInputChange = e => {
     const { value } = e.target;
     const { addressMaxAllowance } = this.props;
+    let disableLockDgdButton = true;
+    let error;
 
-    if (Number(`${value}e9`) > Number(addressMaxAllowance)) {
-      this.setError(`You can only stake up to ${addressMaxAllowance} DGDs`);
-    } else this.setState({ dgd: value, error: undefined, openError: false });
+    if (!value || Number(value) <= 0) {
+      disableLockDgdButton = true;
+    } else if (Number(`${value}e9`) > Number(addressMaxAllowance)) {
+      disableLockDgdButton = true;
+      error = `You can only stake up to ${addressMaxAllowance} DGDs`;
+    } else {
+      disableLockDgdButton = false;
+    }
+
+    this.setError(error);
+    this.setState({
+      dgd: value,
+      disableLockDgdButton,
+    });
   };
 
   getMaxAllowance = () => {
@@ -171,6 +179,15 @@ class LockDgd extends React.Component {
       }
     };
 
+    const onTransactionSuccess = txHash => {
+      this.props.showHideAlert({
+        message: 'DGD Locked',
+        txHash,
+      });
+
+      this.props.getAddressDetails(sourceAddress.address);
+    };
+
     this.setError();
 
     const payload = {
@@ -180,6 +197,7 @@ class LockDgd extends React.Component {
       params: [dgd * 1e9],
       onFailure: this.setError,
       onFinally: txHash => onTransactionAttempt(txHash),
+      onSuccess: txHash => onTransactionSuccess(txHash),
       network,
       web3Params,
       ui,
@@ -226,9 +244,9 @@ class LockDgd extends React.Component {
   };
 
   renderLockDgd = () => {
-    const { dgd, openError, error } = this.state;
+    const { dgd, disableLockDgdButton, openError, error } = this.state;
     const { daoDetails } = this.props;
-    const invalidDgd = !dgd || Number(dgd) <= 0;
+
     let phase = 'staking';
     if (new Date(daoDetails.startOfMainphase * 1000) > Date.now()) {
       phase = 'main';
@@ -247,7 +265,12 @@ class LockDgd extends React.Component {
           <strong>Please enter the amount of DGD you wish to lock in:</strong>
         </TextCaption>
         <InputDgxBox>
-          <TextField type="number" autoFocus onChange={this.onDgdInputChange} />
+          <TextField
+            type="number"
+            autoFocus
+            data-digix="LockDgdOverlay-DgdAmount"
+            onChange={this.onDgdInputChange}
+          />
           DGD
         </InputDgxBox>
         <Note>
@@ -263,7 +286,8 @@ class LockDgd extends React.Component {
           large
           fluid
           onClick={this.handleButtonClick}
-          disabled={invalidDgd}
+          disabled={disableLockDgdButton}
+          data-digix="LockDgdOverlay-LockDgd"
           style={{ marginTop: '4rem' }}
         >
           Lock DGD
@@ -293,6 +317,7 @@ class LockDgd extends React.Component {
 const { object, func, number, oneOfType } = PropTypes;
 
 LockDgd.propTypes = {
+  getAddressDetails: func.isRequired,
   lockDgdOverlay: object.isRequired,
   showTxSigningModal: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
@@ -304,6 +329,7 @@ LockDgd.propTypes = {
   daoDetails: object.isRequired,
   defaultAddress: object,
   addresses: array,
+  showHideAlert: func.isRequired,
 };
 
 LockDgd.defaultProps = {
@@ -327,7 +353,9 @@ export default web3Connect(
   connect(
     mapStateToProps,
     {
+      getAddressDetails,
       showTxSigningModal,
+      showHideAlert,
       showHideLockDgdOverlay,
       sendTransactionToDaoServer,
       fetchMaxAllowance,

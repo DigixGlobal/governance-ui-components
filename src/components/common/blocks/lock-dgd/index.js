@@ -7,7 +7,6 @@ import PropTypes, { array } from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
-// import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
 
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 

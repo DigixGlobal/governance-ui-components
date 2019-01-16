@@ -22,7 +22,7 @@ import {
   Moderation,
   Criteria,
   ModeratorReqs,
-  ModeratorLabel,
+  ReqLabel,
   Plus,
   Actions,
 } from '@digix/gov-ui/pages/user/profile/style';
@@ -187,7 +187,7 @@ class Profile extends React.Component {
                 <Data data-digix="Profile-ModerationRequirements-Reputation">
                   {moderatorRequirements.reputation}
                 </Data>
-                <ModeratorLabel>Reputation Points</ModeratorLabel>
+                <ReqLabel>Reputation Points</ReqLabel>
               </ModeratorReqs>
               <Plus>
                 <Icon kind="plus" />
@@ -196,12 +196,14 @@ class Profile extends React.Component {
                 <Data data-digix="Profile-ModerationRequirements-Stake">
                   {moderatorRequirements.stake}
                 </Data>
-                <ModeratorLabel>Stake</ModeratorLabel>
+                <ReqLabel>Stake</ReqLabel>
               </ModeratorReqs>
             </Criteria>
             <Actions>
               <RedeemBadge />
-              <Button primary>Lock More DGD</Button>
+              <Button primary data-digix="Profile-LockMoreDgd-Cta">
+                Lock More DGD
+              </Button>
             </Actions>
           </Moderation>
         )}

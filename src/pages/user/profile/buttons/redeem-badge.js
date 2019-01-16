@@ -98,8 +98,6 @@ class RedeemBadgeButton extends React.PureComponent {
         this.getDgdBalance();
         this.props.getAddressDetails(sourceAddress.address);
       });
-
-      // this.props.history.push('/');
     };
 
     const payload = {
@@ -122,15 +120,11 @@ class RedeemBadgeButton extends React.PureComponent {
     const { badgeBalance, redeemed } = this.state;
     const { addressDetails, daoInfo } = this.props;
 
-    let canRedeemBadge = false;
-    if (
+    const canRedeemBadge =
       addressDetails.redeemedBadge === false &&
       !redeemed &&
       Number(badgeBalance) > 0 &&
-      Number(addressDetails.lastQuarterThatReputationWasUpdated) === daoInfo.currentQuarter - 1
-    ) {
-      canRedeemBadge = true;
-    }
+      Number(addressDetails.lastQuarterThatReputationWasUpdated) === daoInfo.currentQuarter - 1;
 
     return (
       <Button
@@ -155,7 +149,6 @@ RedeemBadgeButton.propTypes = {
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   daoInfo: object.isRequired,
-  // history: object.isRequired,
   addressDetails: object.isRequired,
   getAddressDetails: func.isRequired,
 };

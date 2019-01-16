@@ -21,8 +21,7 @@ import {
   ActivityItem,
   Moderation,
   Criteria,
-  ModeratorReputation,
-  ModeratorStake,
+  ModeratorReqs,
   ModeratorLabel,
   Plus,
   Actions,
@@ -141,7 +140,9 @@ class Profile extends React.Component {
             <Data data-digix="Profile-QuarterParticipation">12</Data>
             <Label>Quarter(s)</Label>
             <Actions>
-              <Button primary>More Info</Button>
+              <Button primary data-digix="Profile-QuarterParticipation-Cta">
+                More Info
+              </Button>
             </Actions>
           </ActivityItem>
           <ActivityItem>
@@ -149,7 +150,9 @@ class Profile extends React.Component {
             <Data data-digix="Profile-Proposals">0</Data>
             <Label>Project(s)</Label>
             <Actions>
-              <Button primary>More Info</Button>
+              <Button primary data-digix="Profile-Proposals-Cta">
+                More Info
+              </Button>
             </Actions>
           </ActivityItem>
           <ActivityItem>
@@ -157,7 +160,9 @@ class Profile extends React.Component {
             <Data data-digix="Profile-DgxClaimed">12</Data>
             <Label>DGX</Label>
             <Actions>
-              <Button primary>More Info</Button>
+              <Button primary data-digix="Profile-DgxClaimed-Cta">
+                More Info
+              </Button>
             </Actions>
           </ActivityItem>
           <ActivityItem>
@@ -165,7 +170,9 @@ class Profile extends React.Component {
             <Data data-digix="Profile-KycStatus">Not Verified</Data>
             <Label>&nbsp;</Label>
             <Actions>
-              <Button primary>Submit KYC</Button>
+              <Button primary data-digix="Profile-KycStatus-Cta">
+                Submit KYC
+              </Button>
             </Actions>
           </ActivityItem>
         </ActivitySummary>
@@ -174,25 +181,29 @@ class Profile extends React.Component {
           <Moderation data-digix="Profile-ModerationRequirements">
             <Label>TO GAIN MODERATOR STATUS, YOU WILL NEED ANOTHER</Label>
             <Criteria>
-              <ModeratorReputation>
+              <ModeratorReqs>
                 <Data data-digix="Profile-ModerationRequirements-Reputation">
                   {moderatorRequirements.reputation}
                 </Data>
                 <ModeratorLabel>Reputation Points</ModeratorLabel>
-              </ModeratorReputation>
+              </ModeratorReqs>
               <Plus>
                 <Icon kind="plus" />
               </Plus>
-              <ModeratorStake>
+              <ModeratorReqs>
                 <Data data-digix="Profile-ModerationRequirements-Stake">
                   {moderatorRequirements.stake}
                 </Data>
                 <ModeratorLabel>Stake</ModeratorLabel>
-              </ModeratorStake>
+              </ModeratorReqs>
             </Criteria>
             <Actions>
-              <Button primary>Redeem Badge</Button>
-              <Button primary>Lock More DGD</Button>
+              <Button primary data-digix="Profile-RedeemBadge-Cta">
+                Redeem Badge
+              </Button>
+              <Button primary data-digix="Profile-LockMoreDgd-Cta">
+                Lock More DGD
+              </Button>
             </Actions>
           </Moderation>
         )}

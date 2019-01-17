@@ -8,6 +8,7 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
+  ErrorCaption,
 } from '@digix/gov-ui/components/common/common-styles';
 
 import Dao from '@digix/dao-contracts/build/contracts/DaoVoting.json';
@@ -31,6 +32,7 @@ class ChangeFundingOverlay extends React.Component {
         expectedReward: 0,
         milestoneFundings: [],
       },
+      exceedsLimit: false,
     };
   }
 
@@ -47,14 +49,18 @@ class ChangeFundingOverlay extends React.Component {
     const { value } = e.target;
     const { form } = this.state;
     form.expectedReward = value;
-    this.setState({ form: { ...form } });
+    this.setState({ form: { ...form } }, () => {
+      this.checkFundingLimit();
+    });
   };
 
   onFundingChange = (e, i) => {
     const { value } = e.target;
     const { form } = this.state;
     form.milestoneFundings[i] = value;
-    this.setState({ form: { ...form } });
+    this.setState({ form: { ...form } }, () => {
+      this.checkFundingLimit();
+    });
   };
 
   onTransactionAttempt = txHash => {
@@ -89,6 +95,22 @@ class ChangeFundingOverlay extends React.Component {
     });
   };
 
+  checkFundingLimit = () => {
+    const { proposal, daoConfig } = this.props;
+    const { form } = this.state;
+    if (proposal.isDigix) {
+      this.setState({ exceedsLimit: false });
+    } else {
+      const limit = daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
+      const milestoneFunds = (acc, currentValue) => acc + currentValue;
+      const totalFunds =
+        Number(form.milestoneFundings.reduce(milestoneFunds)) + Number(form.expectedReward);
+
+      const exceedsLimit = totalFunds * 1e18 > Number(limit);
+      this.setState({ exceedsLimit });
+    }
+  };
+
   handleSubmit = () => {
     const { web3Redux, addresses } = this.props;
     const { abi, address } = getContract(Dao, network);
@@ -115,7 +137,7 @@ class ChangeFundingOverlay extends React.Component {
       address: sourceAddress,
       contract,
       func: contract.voteOnDraft,
-      params: [proposalId, this.state.vote],
+      params: [],
       onFailure: this.setError,
       onFinally: txHash => this.onTransactionAttempt(txHash),
       onSuccess: txHash => this.onTransactionSuccess(txHash),
@@ -148,7 +170,9 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   render() {
-    const { form } = this.state;
+    const { form, exceedsLimit } = this.state;
+
+    const { daoConfig } = this.props;
 
     return (
       <IntroContainer>
@@ -163,7 +187,19 @@ class ChangeFundingOverlay extends React.Component {
           />
         </div>
         {this.renderMilestoneFields(form.milestoneFundings)}
-        <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
+        {exceedsLimit && (
+          <ErrorCaption>{`Sum of Reward Expected and Milestone Fundings must not exceed ${daoConfig
+            .data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX / 1e18} ETH`}</ErrorCaption>
+        )}
+        <Button
+          kind="round"
+          disabled={exceedsLimit}
+          secondary
+          large
+          fluid
+          data-digix="Edit-Funding"
+          onClick={this.handleSubmit}
+        >
           Edit Funding
         </Button>
       </IntroContainer>
@@ -175,6 +211,7 @@ const { array, func, object } = PropTypes;
 
 ChangeFundingOverlay.propTypes = {
   addresses: array.isRequired,
+  daoConfig: object.isRequired,
   ChallengeProof: object.isRequired,
   history: object.isRequired,
   proposal: object.isRequired,
@@ -187,6 +224,7 @@ ChangeFundingOverlay.propTypes = {
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
+  daoConfig: state.infoServer.DaoConfig,
   addresses: getAddresses(state),
 });
 

@@ -6,6 +6,7 @@ import DaoRewardsManager from '@digix/dao-contracts/build/contracts/DaoRewardsMa
 import getContract from '@digix/gov-ui/utils/contracts';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
+import UnlockDgdOverlay from '@digix/gov-ui/components/common/blocks/overlay/unlock-dgd/index';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
@@ -13,9 +14,8 @@ import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
-import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
@@ -122,6 +122,13 @@ class Wallet extends React.Component {
     return executeContractFunction(payload);
   };
 
+  showUnlockDgdOverlay() {
+    this.props.showRightPanel({
+      component: <UnlockDgdOverlay />,
+      show: true,
+    });
+  }
+
   render() {
     const { AddressDetails, DaoDetails } = this.props;
     const { claimableDgx } = this.state;
@@ -162,7 +169,11 @@ class Wallet extends React.Component {
                 <Button primary data-digix="Wallet-LockDgd">
                   Lock DGD
                 </Button>
-                <Button primary disabled data-digix="Wallet-UnlockDgd">
+                <Button
+                  primary
+                  data-digix="Wallet-UnlockDgd"
+                  onClick={() => this.showUnlockDgdOverlay()}
+                >
                   Unlock DGD
                 </Button>
               </Actions>
@@ -223,6 +234,7 @@ Wallet.propTypes = {
   ChallengeProof: object.isRequired,
   DaoDetails: object,
   getDaoDetails: func.isRequired,
+  showRightPanel: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlert: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -246,6 +258,7 @@ export default web3Connect(
     {
       getDaoDetails,
       showHideAlert,
+      showRightPanel,
       sendTransactionToDaoServer,
       showTxSigningModal,
     }

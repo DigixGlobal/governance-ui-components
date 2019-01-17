@@ -168,6 +168,7 @@ const LightTheme = {
     success: secondaryColor,
     error: red,
     response: green,
+    info: secondaryColor,
   },
 
   transaction: {

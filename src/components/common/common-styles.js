@@ -216,4 +216,9 @@ export const Hint = styled.div`
   color: ${props => props.theme.textDefault.light.toString()};
   font-family: 'Futura PT Book', sans-serif;
   font-size: 1.4rem;
+  ${props =>
+    props.error &&
+    css`
+      color: ${props.theme.alertMessage.error.default.toString()};
+    `};
 `;

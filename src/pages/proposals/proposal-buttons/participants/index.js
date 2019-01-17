@@ -12,6 +12,7 @@ import MilestoneCompletedButton from '@digix/gov-ui/pages/proposals/proposal-but
 import ClaimFundingButton from '@digix/gov-ui/pages/proposals/proposal-buttons/claim-funding';
 import VoteCommitButton from '@digix/gov-ui/pages/proposals/proposal-buttons/vote-commit';
 import RevealButton from '@digix/gov-ui/pages/proposals/proposal-buttons/reveal-button';
+import EditFundingButton from '@digix/gov-ui/pages/proposals/proposal-buttons/edit-funding';
 
 class ParticantButtons extends React.Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class ParticantButtons extends React.Component {
             Edit
           </Button>
         )}
+        <EditFundingButton proposal={data} isProposer={isProposer} />
         <FinalizeButton
           endorser={data.endorser}
           stage={data.stage}

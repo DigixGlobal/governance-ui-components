@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import DaoRewardsManager from '@digix/dao-contracts/build/contracts/DaoRewardsManager.json';
-import getContract from '@digix/gov-ui/utils/contracts';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
-import { getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getAddressDetails, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getContract } from '@digix/gov-ui/utils/contracts';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
-import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { showHideAlert, showHideLockDgdOverlay } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import { Button } from '@digix/gov-ui/components/common/elements/index';
@@ -53,7 +53,10 @@ class Wallet extends React.Component {
   }
 
   componentDidMount() {
+    const { AddressDetails } = this.props;
+
     this.props.getDaoDetails();
+    this.props.getAddressDetails(AddressDetails.data.address);
   }
 
   setError = error => {
@@ -159,7 +162,12 @@ class Wallet extends React.Component {
                 move your DGD back into your wallet.
               </Desc>
               <Actions>
-                <Button primary data-digix="Wallet-LockDgd">
+                <Button
+                  primary
+                  data-digix="Wallet-LockDgd"
+                  disabled={!this.props.CanLockDgd.show}
+                  onClick={() => this.props.showHideLockDgdOverlay(true)}
+                >
                   Lock DGD
                 </Button>
                 <Button primary disabled data-digix="Wallet-UnlockDgd">
@@ -220,22 +228,29 @@ const { array, func, object } = PropTypes;
 Wallet.propTypes = {
   addresses: array.isRequired,
   AddressDetails: object.isRequired,
+  CanLockDgd: object,
   ChallengeProof: object.isRequired,
   DaoDetails: object,
+  getAddressDetails: func.isRequired,
   getDaoDetails: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlert: func.isRequired,
+  showHideLockDgdOverlay: func.isRequired,
   showTxSigningModal: func.isRequired,
   web3Redux: object.isRequired,
 };
 
 Wallet.defaultProps = {
+  CanLockDgd: {
+    show: false,
+  },
   DaoDetails: undefined,
 };
 
 const mapStateToProps = state => ({
   addresses: getAddresses(state),
   AddressDetails: state.infoServer.AddressDetails,
+  CanLockDgd: state.govUI.CanLockDgd,
   ChallengeProof: state.daoServer.ChallengeProof,
   DaoDetails: state.infoServer.DaoDetails,
 });
@@ -244,8 +259,10 @@ export default web3Connect(
   connect(
     mapStateToProps,
     {
+      getAddressDetails,
       getDaoDetails,
       showHideAlert,
+      showHideLockDgdOverlay,
       sendTransactionToDaoServer,
       showTxSigningModal,
     }

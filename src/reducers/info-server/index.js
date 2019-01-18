@@ -1,6 +1,12 @@
 import { actions } from './actions';
 
 const defaultState = {
+  DaoConfig: {
+    history: [],
+    data: {},
+    error: null,
+    fetching: null,
+  },
   DaoDetails: {
     history: [],
     data: {},
@@ -40,6 +46,24 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
+    case actions.GET_DAO_CONFIG:
+      return {
+        ...state,
+        DaoConfig: {
+          ...state.DaoConfig,
+          ...action.payload,
+          history: !action.payload.data
+            ? state.DaoConfig.history
+            : [
+                {
+                  ...action.payload.data,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.DaoConfig.history)
+                .slice(0, 100),
+        },
+      };
     case actions.GET_DAO_DETAILS:
       return {
         ...state,

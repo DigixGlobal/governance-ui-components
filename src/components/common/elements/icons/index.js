@@ -23,6 +23,7 @@ import JsonWallet from './JsonWallet';
 import Ledger from './Ledger';
 import Like from './Like';
 import Metamask from './Metamask';
+import Plus from './Plus';
 import Reply from './Reply';
 import Trash from './Trash';
 import Trezor from './Trezor';
@@ -54,6 +55,7 @@ const icons = {
   ledger: Ledger,
   like: Like,
   metamask: Metamask,
+  plus: Plus,
   reply: Reply,
   trash: Trash,
   trezor: Trezor,

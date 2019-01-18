@@ -3,15 +3,23 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 
-import ProposalCard from '../components/proposal-card';
-import Timeline from '../components/common/blocks/timeline';
-import DashboardStats from '../components/common/blocks/user-DAO-stats/index';
-import ProposalFilter from '../components/common/blocks/filter/index';
+import ProposalCard from '@digix/gov-ui/components/proposal-card';
+import Timeline from '@digix/gov-ui/components/common/blocks/timeline';
+import DashboardStats from '@digix/gov-ui/components/common/blocks/user-DAO-stats/index';
+import ProposalFilter from '@digix/gov-ui/components/common/blocks/filter/index';
 
-import { getDaoDetails, getProposals } from '../reducers/info-server/actions';
-import { getProposalLikesByUser, getProposalLikesStats } from '../reducers/dao-server/actions';
+import {
+  getAddressDetails,
+  getDaoDetails,
+  getProposals,
+} from '@digix/gov-ui/reducers/info-server/actions';
 
-import Snackbar from '../components/common/elements/snackbar/index';
+import {
+  getProposalLikesByUser,
+  getProposalLikesStats,
+} from '@digix/gov-ui/reducers/dao-server/actions';
+
+import Snackbar from '@digix/gov-ui/components/common/elements/snackbar/index';
 
 class LandingPage extends Component {
   constructor(props) {
@@ -23,24 +31,26 @@ class LandingPage extends Component {
 
   componentWillMount = () => {
     const {
+      AddressDetails,
+      getAddressDetailsAction,
       getDaoDetailsAction,
       getProposalsAction,
       getProposalLikesByUserAction,
       ChallengeProof,
     } = this.props;
 
-    Promise.all([getDaoDetailsAction(), getProposalsAction()]).then(result => {
+    Promise.all([
+      getAddressDetailsAction(AddressDetails.data.address),
+      getDaoDetailsAction(),
+      getProposalsAction(),
+    ]).then(() => {
       this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
       return this.getProposalLikes();
     });
   };
 
-  componentWillReceiveProps = nextProps => {
-    if (!_.isEqual(this.props.ChallengeProof, nextProps.ChallengeProof)) {
-      this.getUserLikes('all', nextProps.ChallengeProof, this.props.getProposalLikesByUserAction);
-      this.getProposalLikes('all', nextProps.ChallengeProof);
-    }
-  };
+  shouldComponentUpdate = (nextProps, nextState) =>
+    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   onOrderChange = order => {
     this.setState({ order });
@@ -162,6 +172,7 @@ LandingPage.propTypes = {
   ProposalLikes: object,
   ShowWallet: bool,
   history: object.isRequired,
+  getAddressDetailsAction: func.isRequired,
   getDaoDetailsAction: func.isRequired,
   getProposalsAction: func.isRequired,
   getProposalLikesByUserAction: func.isRequired,
@@ -190,6 +201,7 @@ export default connect(
     ShowWallet,
   }),
   {
+    getAddressDetailsAction: getAddressDetails,
     getDaoDetailsAction: getDaoDetails,
     getProposalsAction: getProposals,
     getProposalLikesByUserAction: getProposalLikesByUser,

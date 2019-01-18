@@ -8,22 +8,22 @@ export const Heading = styled(H1)`
 `;
 export const UserInfo = styled.div`
   margin-bottom: 5rem;
-  span {
-    display: inline-block;
-    min-width: 7rem;
-  }
 `;
-export const WalletInfo = styled.div`
+export const UserItem = styled.div`
+  display: flex;
+  align-items: center;
   color: ${props => props.theme.textPrimary.default.toString()};
   font-family: 'Futura PT Medium', sans-serif;
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
 `;
-export const UserStatus = styled.div`
-  color: ${props => props.theme.textSecondary.default.toString()};
-  font-family: 'Futura PT Medium', sans-serif;
-  font-size: 2rem;
+
+export const UserLabel = styled.span`
+  min-width: 12rem;
 `;
+export const UserData = styled.span`
+  margin-right: 2rem;
+`;
+
 export const RewardSummary = styled.div`
   ${Card};
 

@@ -5,15 +5,19 @@ import { connect } from 'react-redux';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { DEFAULT_STAKE_PER_DGD } from '@digix/gov-ui/constants';
 import { getDaoConfig, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import UsernameOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-username/index';
+import EmailOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-email/index';
 
 import {
   ProfileWrapper,
   Heading,
   UserInfo,
-  WalletInfo,
-  UserStatus,
+  UserItem,
+  UserLabel,
+  UserData,
   RewardSummary,
   RewardItem,
   Label,
@@ -96,6 +100,20 @@ class Profile extends React.Component {
     return this.STATUS.guest;
   };
 
+  showSetUsernameOverlay() {
+    this.props.showRightPanel({
+      component: <UsernameOverlay />,
+      show: true,
+    });
+  }
+
+  showSetEmailOverlay() {
+    this.props.showRightPanel({
+      component: <EmailOverlay />,
+      show: true,
+    });
+  }
+
   render() {
     const { AddressDetails } = this.props;
     const address = AddressDetails.data;
@@ -111,14 +129,40 @@ class Profile extends React.Component {
       <ProfileWrapper>
         <Heading>Profile</Heading>
         <UserInfo>
-          <WalletInfo>
-            <span>User:</span>
-            <span data-digix="Profile-Address">{address.address}</span>
-          </WalletInfo>
-          <UserStatus>
-            <span>Status:</span>
-            <span data-digix="Profile-Status">{status}</span>
-          </UserStatus>
+          <UserItem>
+            <UserLabel>User:</UserLabel>
+            <UserData data-digix="Profile-UserName">someone_else</UserData>
+            <Button
+              primary
+              icon
+              data-digix="Profile-UserName-Cta"
+              onClick={() => this.showSetUsernameOverlay()}
+            >
+              <Icon kind="plus" />
+              Set Username
+            </Button>
+          </UserItem>
+          <UserItem>
+            <UserLabel>Status:</UserLabel>
+            <UserData data-digix="Profile-Status">{status}</UserData>
+          </UserItem>
+          <UserItem>
+            <UserLabel>Email:</UserLabel>
+            <UserData data-digix="Profile-Email">example@email.com</UserData>
+            <Button
+              primary
+              icon
+              data-digix="Profile-Email-Cta"
+              onClick={() => this.showSetEmailOverlay()}
+            >
+              <Icon kind="plus" />
+              Set Email
+            </Button>
+          </UserItem>
+          <UserItem>
+            <UserLabel>Address:</UserLabel>
+            <UserData data-digix="Profile-Address">{address.address}</UserData>
+          </UserItem>
         </UserInfo>
 
         <RewardSummary>
@@ -221,6 +265,7 @@ Profile.propTypes = {
   DaoDetails: object,
   getDaoConfigAction: func.isRequired,
   getDaoDetailsAction: func.isRequired,
+  showRightPanel: func.isRequired,
 };
 
 Profile.defaultProps = {
@@ -239,5 +284,6 @@ export default connect(
   {
     getDaoConfigAction: getDaoConfig,
     getDaoDetailsAction: getDaoDetails,
+    showRightPanel,
   }
 )(Profile);

@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { DEFAULT_STAKE_PER_DGD } from '@digix/gov-ui/constants';
 import { getDaoConfig, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
-import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import {
@@ -65,7 +64,7 @@ class Profile extends React.Component {
     const config = DaoConfig.data;
 
     const currentReputation = Number(address.reputationPoint);
-    const minReputation = parseBigNumber(config.CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR);
+    const minReputation = Number(config.CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR);
     const requiredReputation = Math.max(0, minReputation - currentReputation);
 
     const currentStake = Number(address.lockedDgdStake);

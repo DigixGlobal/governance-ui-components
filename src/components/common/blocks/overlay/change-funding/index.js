@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
+import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import TextField from '@digix/gov-ui/components/common/elements/textfield';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
@@ -112,9 +113,12 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   handleSubmit = () => {
-    const { web3Redux, addresses } = this.props;
+    const { web3Redux, addresses, proposal } = this.props;
+    const { form } = this.state;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+
+    const funds = form.milestoneFundings.map(fund => toBigNumber(fund).times(toBigNumber(1e18)));
 
     const contract = web3Redux
       .web3(network)
@@ -136,8 +140,13 @@ class ChangeFundingOverlay extends React.Component {
     const payload = {
       address: sourceAddress,
       contract,
-      func: contract.voteOnDraft,
-      params: [],
+      func: contract.changeFundings,
+      params: [
+        proposal.proposalId,
+        funds,
+        toBigNumber(form.expectedReward).times(toBigNumber(1e18)),
+        proposal.currentMilestone,
+      ],
       onFailure: this.setError,
       onFinally: txHash => this.onTransactionAttempt(txHash),
       onSuccess: txHash => this.onTransactionSuccess(txHash),

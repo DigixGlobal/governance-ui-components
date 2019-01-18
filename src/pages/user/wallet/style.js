@@ -31,6 +31,7 @@ export const DigixDAO = styled.div`
 export const StakeRewards = styled.div`
   color: ${props => props.theme.textPrimary.default.toString()};
   flex-grow: 1;
+  flex-basis: 0;
   margin-top: 5rem;
   margin-right: 3rem;
   &:last-child {

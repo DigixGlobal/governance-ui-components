@@ -140,17 +140,14 @@ class CreateProposal extends React.Component {
       .at(address);
 
     const ui = {
-      caption: `Requires ${parseBigNumber(
-        daoConfig.data.CONFIG_PREPROPOSAL_COLLATERAL,
-        18
-      )} ETH to Submit Proposal`,
+      caption: `Requires ${daoConfig.data.CONFIG_PREPROPOSAL_COLLATERAL} ETH to Submit Proposal`,
       header: 'Proposal',
       type: 'txVisualization',
     };
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
       gas: DEFAULT_GAS,
-      value: toBigNumber(daoConfig.data.CONFIG_PREPROPOSAL_COLLATERAL),
+      value: toBigNumber(Number(daoConfig.data.CONFIG_PREPROPOSAL_COLLATERAL) * 1e18),
       ui,
     };
 

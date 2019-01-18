@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import DaoRewardsManager from '@digix/dao-contracts/build/contracts/DaoRewardsManager.json';
+import getContract from '@digix/gov-ui/utils/contracts';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import UnlockDgdOverlay from '@digix/gov-ui/components/common/blocks/overlay/unlock-dgd/index';
@@ -11,7 +12,6 @@ import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getAddressDetails, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
-import { getContract } from '@digix/gov-ui/utils/contracts';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import {
@@ -48,20 +48,27 @@ class Wallet extends React.Component {
     super(props);
     this.MIN_CLAIMABLE_DGX = 0.001;
 
-    let { claimableDgx } = props.AddressDetails.data;
-    claimableDgx = claimableDgx >= this.MIN_CLAIMABLE_DGX ? truncateNumber(claimableDgx) : 0;
-
     this.state = {
-      claimableDgx,
+      claimableDgx: 0,
     };
+
+    this.setClaimableDgxFromAddress();
   }
 
   componentDidMount() {
     const { AddressDetails } = this.props;
 
     this.props.getDaoDetails();
-    this.props.getAddressDetails(AddressDetails.data.address);
+    this.props.getAddressDetails(AddressDetails.data.address).then(() => {
+      this.setClaimableDgxFromAddress();
+    });
   }
+
+  setClaimableDgxFromAddress = () => {
+    let { claimableDgx } = this.props.AddressDetails.data;
+    claimableDgx = claimableDgx >= this.MIN_CLAIMABLE_DGX ? truncateNumber(claimableDgx) : 0;
+    this.setState({ claimableDgx });
+  };
 
   setError = error => {
     this.props.showHideAlert({

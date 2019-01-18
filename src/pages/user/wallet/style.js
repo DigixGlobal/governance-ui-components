@@ -1,41 +1,70 @@
 import styled from 'styled-components';
+import { H1, Card, CardItem } from '@digix/gov-ui/components/common/common-styles';
+import { media } from '@digix/gov-ui/components/common/breakpoints';
 
-export const EmptyStateContainer = styled.div`
-  color: ${props => props.theme.textDefault.default.toString()};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+export const WalletWrapper = styled.div``;
+export const Heading = styled(H1)``;
+export const WalletAddress = styled.div`
+  color: ${props => props.theme.textPrimary.light.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  font-weight: 500;
+  font-size: 2rem;
+  margin-top: 3rem;
 
-  min-height: 50vh;
-  width: 320px;
-  text-align: center;
-  margin: 0 auto;
-
-  svg {
-    fill: ${props => props.theme.iconDefaultColor.light.toString()};
+  span {
+    display: inline-block;
+    min-width: 10rem;
   }
 `;
-export const EmptyStateTitle = styled.div`
+export const WalletDetails = styled.div`
+  ${Card};
+
+  ${media.mobile`flex-direction: column;`};
+`;
+export const WalletItem = styled.div`
+  ${CardItem};
+`;
+export const DigixDAO = styled.div`
+  display: flex;
+  ${media.mobile`flex-direction: column;`}
+`;
+export const StakeRewards = styled.div`
+  color: ${props => props.theme.textPrimary.default.toString()};
+  flex-grow: 1;
+  flex-basis: 0;
+  margin-top: 5rem;
+  margin-right: 3rem;
+  &:last-child {
+    margin-right: 0;
+  }
+  ${media.mobile`margin-top: 1rem; margin-right: 0;`}
+`;
+export const Title = styled.div`
+  color: ${props => props.theme.textPrimary.light.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  font-weight: 500;
   font-size: 2rem;
-  margin: 2rem 0 1rem;
+  margin-bottom: 2rem;
 `;
-
-export const IconContainer = styled.div`
-  width: 200px;
-  display: block;
+export const Content = styled.div`
+  ${Card};
+  flex-direction: column;
 `;
-
-export const ButtonLink = styled.span`
-  border: 0;
-  background: transparent;
-  color: ${props => props.theme.linkSecondaryColor.default.toString()};
-  display: block;
+export const Label = styled.div`
   text-transform: uppercase;
-  padding: 1rem 2rem;
-  margin: 1rem;
-  &:hover {
-    background: ${props => props.theme.backgroundTertiary.lighter.toString()};
-    color: ${props => props.theme.linkSecondaryColor.default.toString()};
+  margin-top: 1rem;
+`;
+export const Data = styled.div`
+  font-size: 3.8em;
+  margin: 1rem 0 0;
+  text-transform: uppercase;
+`;
+export const Desc = styled.div`
+  margin-top: 3rem;
+`;
+export const Actions = styled.div`
+  margin-top: 3rem;
+  & > button:first-child {
+    margin-left: 0;
   }
 `;

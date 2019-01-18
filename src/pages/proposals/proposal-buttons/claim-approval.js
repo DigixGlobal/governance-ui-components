@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { toBigNumber, parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
@@ -16,8 +16,9 @@ import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import getContract from '@digix/gov-ui/utils/contracts';
-import DaoConfigStorage from '@digix/dao-contracts/build/contracts/MockDaoConfigsStorage.json';
 import DaoVotingClaims from '@digix/dao-contracts/build/contracts/DaoVotingClaims.json';
+
+import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 
@@ -26,27 +27,9 @@ registerUIs({ txVisualization: { component: TxVisualization } });
 const network = SpectrumConfig.defaultNetworks[0];
 
 class ClaimApprovalButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      voteClaimingDeadline: undefined,
-    };
+  componentDidMount() {
+    Promise.all([this.props.getDaoConfig()]);
   }
-  componentWillMount = () => {
-    const { web3Redux, draftVoting, isProposer, votingStage } = this.props;
-
-    if (!draftVoting || !isProposer || votingStage !== VotingStages.draft) return;
-
-    const { abi, address } = getContract(DaoConfigStorage, network);
-    const contract = web3Redux
-      .web3(network)
-      .eth.contract(abi)
-      .at(address);
-
-    contract.uintConfigs
-      .call('config_claiming_deadline')
-      .then(result => this.setState({ voteClaimingDeadline: parseBigNumber(result, 0, false) }));
-  };
 
   setError = error =>
     this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
@@ -111,18 +94,18 @@ class ClaimApprovalButton extends React.Component {
   };
 
   render() {
-    const { voteClaimingDeadline } = this.state;
-    const { draftVoting, isProposer, votingStage } = this.props;
+    const { draftVoting, isProposer, votingStage, daoConfig } = this.props;
+    const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;
     const currentTime = Date.now();
     if (!draftVoting || !isProposer || votingStage !== VotingStages.draft || !voteClaimingDeadline)
       return null;
     const canClaim =
       currentTime > draftVoting.votingDeadline * 1000 &&
-      currentTime < new Date((draftVoting.votingDeadline + voteClaimingDeadline) * 1000);
+      currentTime < new Date((draftVoting.votingDeadline + Number(voteClaimingDeadline)) * 1000);
 
     if (!canClaim) return null;
     return (
-      <Button kind="round" onClick={this.handleSubmit}>
+      <Button kind="round" onClick={this.handleSubmit} data-digix="Create-Proposal-Claim-Approval">
         Claim Approval
       </Button>
     );
@@ -134,10 +117,12 @@ const { object, string, func, array, bool } = PropTypes;
 ClaimApprovalButton.propTypes = {
   draftVoting: object,
   proposalId: string.isRequired,
+  daoConfig: object.isRequired,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
+  getDaoConfig: func.isRequired,
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
@@ -153,11 +138,12 @@ ClaimApprovalButton.defaultProps = {
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  daoConfig: state.infoServer.DaoConfig,
 });
 
 export default web3Connect(
   connect(
     mapStateToProps,
-    { showHideAlert, sendTransactionToDaoServer, showTxSigningModal }
+    { showHideAlert, sendTransactionToDaoServer, showTxSigningModal, getDaoConfig }
   )(ClaimApprovalButton)
 );

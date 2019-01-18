@@ -65,7 +65,7 @@ body {
 }
 
 input {
-  font-family: 'Futura PT Light', 'Roboto', 'Arial', 'sans-serif';
+  font-family: 'Futura PT Book', 'Roboto', 'Arial', 'sans-serif';
   outline: none;
 }
 

@@ -97,7 +97,15 @@ export const IntroContainer = styled(InnerContainer)`
   position: relative;
 `;
 
+// This will be replaced soon by 'Close' style component
 export const CloseButton = styled.div`
+  position: absolute;
+  right: 0;
+  margin-right: -1rem;
+  cursor: pointer;
+`;
+
+export const Close = styled.div`
   position: absolute;
   right: 0;
   margin-right: -1rem;
@@ -157,7 +165,13 @@ export const Card = css`
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   margin-bottom: 3em;
-  padding: 1rem;
+  padding: 3rem;
+`;
+
+export const CardItem = css`
+  display: flex;
+  flex-direction: ${props => (props.column ? 'column' : '')};
+  flex-grow: 1;
 `;
 
 export const TransparentOverlay = styled.div`
@@ -177,4 +191,29 @@ export const DrawerContainer = styled.div`
   width: 25%;
   ${media.tablet`width: 60%`}
   ${media.mobile`width: 100%`}
+`;
+
+export const Notifications = styled.div`
+  padding: 1.5rem 3rem;
+  font-family: 'Futura PT Book', sans-serif;
+  border-radius: ${props => props.theme.borderRadius};
+  margin-bottom: 3rem;
+  ${props =>
+    props.info &&
+    css`
+      background: ${props.theme.textSecondary.fade.toString()};
+      border: 1px solid ${props.theme.alertMessage.info.light.toString()};
+      color: ${props.theme.textSecondary.default.toString()};
+      font-family: 'Futura PT Medium', sans-serif;
+    `};
+`;
+
+export const Label = styled.div`
+  font-family: 'Futura PT Book', sans-serif;
+`;
+
+export const Hint = styled.div`
+  color: ${props => props.theme.textDefault.light.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  font-size: 1.4rem;
 `;

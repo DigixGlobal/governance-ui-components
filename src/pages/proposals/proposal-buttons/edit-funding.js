@@ -19,8 +19,11 @@ class EditFundingButton extends React.PureComponent {
   render() {
     const { isProposer, proposal } = this.props;
     const canEdit = proposal.stage === ProposalStages.ongoing && isProposer;
+    const proposalDetails = proposal.proposalVersions[proposal.proposalVersions.length - 1];
+    const hasUnfinishedMilestones =
+      proposal.currentMilestone < proposalDetails.milestoneFundings.length;
 
-    if (!canEdit) return null;
+    if (!canEdit || !hasUnfinishedMilestones) return null;
 
     return (
       <Button kind="round" onClick={() => this.showOverlay()}>

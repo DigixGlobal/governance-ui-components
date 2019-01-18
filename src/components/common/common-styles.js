@@ -198,13 +198,16 @@ export const Notifications = styled.div`
   font-family: 'Futura PT Book', sans-serif;
   border-radius: ${props => props.theme.borderRadius};
   margin-bottom: 3rem;
+
+  span {
+    font-family: 'Futura PT Medium', sans-serif;
+  }
   ${props =>
     props.info &&
     css`
       background: ${props.theme.textSecondary.fade.toString()};
       border: 1px solid ${props.theme.alertMessage.info.light.toString()};
       color: ${props.theme.textSecondary.default.toString()};
-      font-family: 'Futura PT Medium', sans-serif;
     `};
 `;
 

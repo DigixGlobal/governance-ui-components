@@ -3,10 +3,10 @@ import styled, { css } from 'styled-components';
 export const ButtonGlobalStyles = css`
   cursor: pointer;
   font-family: 'Futura PT Medium';
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   margin: 1rem;
   outline: none;
-  padding: 1rem 3rem;
+  padding: 1rem 1.75rem;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -34,8 +34,8 @@ export const Button = styled.button`
   ${props =>
     props.medium &&
     css`
-      font-size: 1.6rem;
-      padding: 1rem 3rem;
+      font-size: 1.4rem;
+      padding: 1rem 1.75rem;
     `};
 
   ${props =>

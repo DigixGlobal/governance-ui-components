@@ -11,7 +11,13 @@ import {
   Hint,
 } from '@digix/gov-ui/components/common/common-styles';
 
-import { UnlockDGDContainer, TextBox, MaxAmount, Currency, CallToAction } from './style';
+import {
+  UnlockDGDContainer,
+  TextBox,
+  MaxAmount,
+  Currency,
+  CallToAction,
+} from '@digix/gov-ui/components/common/blocks/overlay/unlock-dgd/style';
 
 class UnlockDgdOverlay extends React.Component {
   render() {

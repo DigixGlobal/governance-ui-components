@@ -65,9 +65,15 @@ class Wallet extends React.Component {
     });
   }
 
+  onLockDgd = amountLocked => {
+    let { stake } = this.state;
+    stake = truncateNumber(stake + amountLocked);
+    this.setState({ stake });
+  };
+
   onUnlockDgd = amountUnlocked => {
     let { stake } = this.state;
-    stake -= amountUnlocked;
+    stake = truncateNumber(stake - amountUnlocked);
     this.setState({ stake });
   };
 
@@ -147,8 +153,9 @@ class Wallet extends React.Component {
   };
 
   showUnlockDgdOverlay() {
+    const { stake } = this.state;
     this.props.showRightPanel({
-      component: <UnlockDgdOverlay onSuccess={this.onUnlockDgd} />,
+      component: <UnlockDgdOverlay maxAmount={stake} onSuccess={this.onUnlockDgd} />,
       show: true,
     });
   }
@@ -164,8 +171,7 @@ class Wallet extends React.Component {
 
     const currentTime = Date.now() / 1000;
     const inLockingPhase = currentTime < DaoDetails.data.startOfMainphase;
-    const lockedDgd = Number(AddressDetails.data.lockedDgd);
-    const canUnlockDgd = inLockingPhase && lockedDgd > 0 && isGlobalRewardsSet;
+    const canUnlockDgd = inLockingPhase && stake > 0 && isGlobalRewardsSet;
 
     return (
       <WalletWrapper>
@@ -198,7 +204,7 @@ class Wallet extends React.Component {
                   primary
                   data-digix="Wallet-LockDgd"
                   disabled={!this.props.CanLockDgd.show}
-                  onClick={() => this.props.showHideLockDgdOverlay(true)}
+                  onClick={() => this.props.showHideLockDgdOverlay(true, this.onLockDgd)}
                 >
                   Lock DGD
                 </Button>

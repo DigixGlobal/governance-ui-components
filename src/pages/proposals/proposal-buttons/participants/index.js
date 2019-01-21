@@ -50,7 +50,13 @@ class ParticantButtons extends React.Component {
             Edit
           </Button>
         )}
-        <EditFundingButton proposal={data} isProposer={isProposer} />
+        <EditFundingButton
+          onCompleted={this.props.onCompleted}
+          proposal={data}
+          proposalId={data.proposalId}
+          history={history}
+          isProposer={isProposer}
+        />
         <FinalizeButton
           endorser={data.endorser}
           stage={data.stage}
@@ -91,13 +97,18 @@ class ParticantButtons extends React.Component {
   }
 }
 
-const { object, bool } = PropTypes;
+const { object, bool, func } = PropTypes;
 
 ParticantButtons.propTypes = {
   proposal: object.isRequired,
   isProposer: bool.isRequired,
   addressDetails: object.isRequired,
+  onCompleted: func,
   history: object.isRequired,
+};
+
+ParticantButtons.defaultProps = {
+  onCompleted: undefined,
 };
 
 export default ParticantButtons;

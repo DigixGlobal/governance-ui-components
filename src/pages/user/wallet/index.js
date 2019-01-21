@@ -50,9 +50,10 @@ class Wallet extends React.Component {
 
     this.state = {
       claimableDgx: 0,
+      stake: 0,
     };
 
-    this.setClaimableDgxFromAddress();
+    this.setStateFromAddressDetails();
   }
 
   componentDidMount() {
@@ -60,14 +61,23 @@ class Wallet extends React.Component {
 
     this.props.getDaoDetails();
     this.props.getAddressDetails(AddressDetails.data.address).then(() => {
-      this.setClaimableDgxFromAddress();
+      this.setStateFromAddressDetails();
     });
   }
 
-  setClaimableDgxFromAddress = () => {
-    let { claimableDgx } = this.props.AddressDetails.data;
-    claimableDgx = claimableDgx >= this.MIN_CLAIMABLE_DGX ? truncateNumber(claimableDgx) : 0;
-    this.setState({ claimableDgx });
+  onUnlockDgd = amountUnlocked => {
+    let { stake } = this.state;
+    stake -= amountUnlocked;
+    this.setState({ stake });
+  };
+
+  setStateFromAddressDetails = () => {
+    const address = this.props.AddressDetails.data;
+    const stake = truncateNumber(address.lockedDgdStake);
+    const claimableDgx =
+      address.claimableDgx >= this.MIN_CLAIMABLE_DGX ? truncateNumber(address.claimableDgx) : 0;
+
+    this.setState({ claimableDgx, stake });
   };
 
   setError = error => {
@@ -138,20 +148,24 @@ class Wallet extends React.Component {
 
   showUnlockDgdOverlay() {
     this.props.showRightPanel({
-      component: <UnlockDgdOverlay />,
+      component: <UnlockDgdOverlay onSuccess={this.onUnlockDgd} />,
       show: true,
     });
   }
 
   render() {
     const { AddressDetails, DaoDetails } = this.props;
-    const { claimableDgx } = this.state;
+    const { claimableDgx, stake } = this.state;
     const address = AddressDetails.data;
-    const stake = truncateNumber(address.lockedDgdStake);
 
     const isGlobalRewardsSet = DaoDetails ? DaoDetails.data.isGlobalRewardsSet : false;
     const canClaimDgx = claimableDgx > this.MIN_CLAIMABLE_DGX && isGlobalRewardsSet;
     const eth = 0;
+
+    const currentTime = Date.now() / 1000;
+    const inLockingPhase = currentTime < DaoDetails.data.startOfMainphase;
+    const lockedDgd = Number(AddressDetails.data.lockedDgd);
+    const canUnlockDgd = inLockingPhase && lockedDgd > 0 && isGlobalRewardsSet;
 
     return (
       <WalletWrapper>
@@ -190,6 +204,7 @@ class Wallet extends React.Component {
                 </Button>
                 <Button
                   primary
+                  disabled={!canUnlockDgd}
                   data-digix="Wallet-UnlockDgd"
                   onClick={() => this.showUnlockDgdOverlay()}
                 >

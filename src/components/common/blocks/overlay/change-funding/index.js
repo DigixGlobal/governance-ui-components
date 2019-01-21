@@ -12,7 +12,7 @@ import {
   ErrorCaption,
 } from '@digix/gov-ui/components/common/common-styles';
 
-import Dao from '@digix/dao-contracts/build/contracts/DaoVoting.json';
+import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
 import getContract from '@digix/gov-ui/utils/contracts';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
@@ -21,6 +21,7 @@ import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
+import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 const network = SpectrumConfig.defaultNetworks[0];
@@ -38,12 +39,22 @@ class ChangeFundingOverlay extends React.Component {
   }
 
   componentWillMount = () => {
-    const { proposal } = this.props;
+    const { proposalId, proposalDetails } = this.props;
+    if (proposalId) this.props.getProposalDetails(proposalId);
     const { form } = this.state;
-    const proposalDetails = proposal.proposalVersions[proposal.proposalVersions.length - 1];
-    form.expectedReward = proposalDetails.finalReward;
-    form.milestoneFundings = proposalDetails.milestoneFundings;
-    this.setState({ form: { ...form } });
+    if (proposalDetails) {
+      if (!proposalDetails.isFundingChanged) {
+        const currentVersion =
+          proposalDetails.proposalVersions[proposalDetails.proposalVersions.length - 1];
+        form.expectedReward = currentVersion.finalReward;
+
+        form.milestoneFundings = currentVersion.milestoneFundings;
+        this.setState({ form: { ...form } });
+      } else {
+        form.expectedReward = proposalDetails.changedFundings.finalReward.updated;
+        form.milestoneFundings = proposalDetails.changedFundings.milestones.map(ms => ms.updated);
+      }
+    }
   };
 
   onExpectedRewardChange = e => {
@@ -81,12 +92,12 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   onTransactionSuccess = txHash => {
-    const { history, showHideAlertAction } = this.props;
+    const { showHideAlertAction, history } = this.props;
     showHideAlertAction({
       message: 'Funding Changed',
       txHash,
     });
-
+    if (this.props.onCompleted) this.props.onCompleted();
     history.push('/');
   };
 
@@ -97,13 +108,13 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   checkFundingLimit = () => {
-    const { proposal, daoConfig } = this.props;
+    const { proposalDetails, daoConfig } = this.props;
     const { form } = this.state;
-    if (proposal.isDigix) {
+    if (proposalDetails.isDigix) {
       this.setState({ exceedsLimit: false });
     } else {
       const limit = daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
-      const milestoneFunds = (acc, currentValue) => acc + currentValue;
+      const milestoneFunds = (acc, currentValue) => Number(acc) + Number(currentValue);
       const totalFunds =
         Number(form.milestoneFundings.reduce(milestoneFunds)) + Number(form.expectedReward);
 
@@ -113,13 +124,12 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   handleSubmit = () => {
-    const { web3Redux, addresses, proposal } = this.props;
+    const { web3Redux, addresses, proposalDetails } = this.props;
     const { form } = this.state;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const funds = form.milestoneFundings.map(fund => toBigNumber(fund).times(toBigNumber(1e18)));
-
+    const funds = form.milestoneFundings.map(fund => toBigNumber(fund).times(toBigNumber(1e18))); // filteredFunds.map(fund => toBigNumber(fund).times(toBigNumber(1e18)));
     const contract = web3Redux
       .web3(network)
       .eth.contract(abi)
@@ -142,10 +152,10 @@ class ChangeFundingOverlay extends React.Component {
       contract,
       func: contract.changeFundings,
       params: [
-        proposal.proposalId,
+        proposalDetails.proposalId,
         funds,
         toBigNumber(form.expectedReward).times(toBigNumber(1e18)),
-        proposal.currentMilestone,
+        proposalDetails.currentMilestoneIndex,
       ],
       onFailure: this.setError,
       onFinally: txHash => this.onTransactionAttempt(txHash),
@@ -161,21 +171,26 @@ class ChangeFundingOverlay extends React.Component {
 
   renderMilestoneFields = milestoneFundings => {
     if (!milestoneFundings || milestoneFundings.length <= 0) return null;
-
-    return milestoneFundings.map((milestone, i) => (
-      <div key={`ms-${i + 1}`}>
-        <div>Milestone {i + 1}</div>
-        <div>
-          <div>Funds required for This Milestone</div>
-          <TextField
-            type="number"
-            data-digix={`Edit-milestone-funding-${i + 1}`}
-            value={milestone[i]}
-            onChange={e => this.onFundingChange(e, i)}
-          />
+    const { proposalDetails } = this.props;
+    return milestoneFundings.map((milestone, i) => {
+      const previousMilestone = i + 1 <= Number(proposalDetails.currentMilestone);
+      return (
+        <div key={`ms-${i + 1}`}>
+          <div>Milestone {i + 1}</div>
+          <div>
+            <div>Funds required for This Milestone</div>
+            <TextField
+              type="number"
+              disabled={previousMilestone}
+              name="test"
+              data-digix={`Edit-milestone-funding-${i + 1}`}
+              value={milestone}
+              onChange={e => this.onFundingChange(e, i)}
+            />
+          </div>
         </div>
-      </div>
-    ));
+      );
+    });
   };
 
   render() {
@@ -216,24 +231,28 @@ class ChangeFundingOverlay extends React.Component {
   }
 }
 
-const { array, func, object } = PropTypes;
+const { array, func, object, string } = PropTypes;
 
 ChangeFundingOverlay.propTypes = {
   addresses: array.isRequired,
   daoConfig: object.isRequired,
   ChallengeProof: object.isRequired,
   history: object.isRequired,
-  proposal: object.isRequired,
+  proposalId: string.isRequired,
+  proposalDetails: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
+  getProposalDetails: func.isRequired,
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
   showTxSigningModal: func.isRequired,
+  onCompleted: func.isRequired,
   web3Redux: object.isRequired,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   daoConfig: state.infoServer.DaoConfig,
+  proposalDetails: state.infoServer.ProposalDetails.data,
   addresses: getAddresses(state),
 });
 
@@ -244,6 +263,7 @@ export default web3Connect(
       sendTransactionToDaoServer,
       showHideAlertAction: showHideAlert,
       showRightPanelAction: showRightPanel,
+      getProposalDetails,
       showTxSigningModal,
     }
   )(ChangeFundingOverlay)

@@ -153,6 +153,19 @@ class Proposal extends React.Component {
     const funding = truncateNumber(proposalVersion.totalFunding);
     const reward = truncateNumber(proposalVersion.finalReward);
 
+    let updatedFunding;
+    let updatedReward;
+
+    const totalUpdatedFunds = (acc, currentValue) =>
+      Number(acc.updated) + Number(currentValue.updated);
+
+    if (proposalDetails.data.isFundingChanged) {
+      updatedReward = truncateNumber(proposalDetails.data.changedFundings.finalReward.updated);
+      updatedFunding = truncateNumber(
+        proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds)
+      );
+    }
+
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -179,6 +192,7 @@ class Proposal extends React.Component {
                 isProposer={isProposer}
                 proposal={proposalDetails}
                 addressDetails={addressDetails}
+                onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
                 history={history}
               />
               <ModeratorButtons
@@ -194,16 +208,18 @@ class Proposal extends React.Component {
             </SubmittedBy>
             <FundingStatus>
               Funding
-              <span>
-                {funding}
-                ETH
-              </span>
+              <span>{funding}</span>
+              {updatedFunding && <span> + {updatedFunding} </span>}
+              ETH
             </FundingStatus>
             <MilestonesStatus>
               Milestones <span>{dijixObject.milestones.length || 0}</span>
             </MilestonesStatus>
             <Reward>
-              Reward <span>{reward} ETH</span>
+              Reward
+              <span>{reward} </span>
+              {updatedReward && <span> + {updatedReward} </span>}
+              ETH
             </Reward>
             <UpvoteStatus>
               <Like

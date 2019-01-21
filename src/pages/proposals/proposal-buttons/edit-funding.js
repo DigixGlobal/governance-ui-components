@@ -8,10 +8,15 @@ import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { ProposalStages } from '@digix/gov-ui/constants';
 
 class EditFundingButton extends React.PureComponent {
+  onPanelClose = () => {
+    this.props.onCompleted();
+    this.props.showRightPanelAction({ show: false });
+  };
+
   showOverlay = () => {
-    const { history, showRightPanelAction, proposal } = this.props;
+    const { history, showRightPanelAction } = this.props;
     showRightPanelAction({
-      component: <ChangeFundingOverlay history={history} proposal={proposal} />,
+      component: <ChangeFundingOverlay history={history} onCompleted={this.onPanelClose} />,
       show: true,
     });
   };
@@ -39,6 +44,7 @@ EditFundingButton.propTypes = {
   isProposer: bool,
   proposal: object.isRequired,
   history: object.isRequired,
+  onCompleted: func.isRequired,
   showRightPanelAction: func.isRequired,
 };
 

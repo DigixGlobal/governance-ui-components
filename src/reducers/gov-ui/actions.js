@@ -36,9 +36,9 @@ export function fetchConfigPreproposalCollateral(contract, config) {
   return fetchConfig(contract, config, actions.GET_CONFIG_PREPROPOSAL_COLLATERAL);
 }
 
-export function showHideLockDgdOverlay(show) {
+export function showHideLockDgdOverlay(show, onSuccess) {
   return dispatch => {
-    dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show } });
+    dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show, onSuccess } });
   };
 }
 

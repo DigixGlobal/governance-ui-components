@@ -35,6 +35,7 @@ class ChangeFundingOverlay extends React.Component {
         milestoneFundings: [],
       },
       exceedsLimit: false,
+      fundChanged: false,
     };
   }
 
@@ -61,7 +62,7 @@ class ChangeFundingOverlay extends React.Component {
     const { value } = e.target;
     const { form } = this.state;
     form.expectedReward = value;
-    this.setState({ form: { ...form } }, () => {
+    this.setState({ form: { ...form }, fundChanged: true }, () => {
       this.checkFundingLimit();
     });
   };
@@ -70,7 +71,7 @@ class ChangeFundingOverlay extends React.Component {
     const { value } = e.target;
     const { form } = this.state;
     form.milestoneFundings[i] = value;
-    this.setState({ form: { ...form } }, () => {
+    this.setState({ form: { ...form }, fundChanged: true }, () => {
       this.checkFundingLimit();
     });
   };
@@ -109,18 +110,22 @@ class ChangeFundingOverlay extends React.Component {
 
   checkFundingLimit = () => {
     const { proposalDetails, daoConfig } = this.props;
-    const { form } = this.state;
     if (proposalDetails.isDigix) {
       this.setState({ exceedsLimit: false });
     } else {
       const limit = daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
-      const milestoneFunds = (acc, currentValue) => Number(acc) + Number(currentValue);
-      const totalFunds =
-        Number(form.milestoneFundings.reduce(milestoneFunds)) + Number(form.expectedReward);
 
-      const exceedsLimit = totalFunds * 1e18 > Number(limit);
+      const totalFunds = this.computeTotalFunds();
+
+      const exceedsLimit = totalFunds > Number(limit);
       this.setState({ exceedsLimit });
     }
+  };
+
+  computeTotalFunds = () => {
+    const { form } = this.state;
+    const milestoneFunds = (acc, currentValue) => Number(acc) + Number(currentValue);
+    return Number(form.milestoneFundings.reduce(milestoneFunds)) + Number(form.expectedReward);
   };
 
   handleSubmit = () => {
@@ -194,7 +199,7 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   render() {
-    const { form, exceedsLimit } = this.state;
+    const { form, exceedsLimit, fundChanged } = this.state;
 
     const { daoConfig } = this.props;
 
@@ -212,12 +217,13 @@ class ChangeFundingOverlay extends React.Component {
         </div>
         {this.renderMilestoneFields(form.milestoneFundings)}
         {exceedsLimit && (
-          <ErrorCaption>{`Sum of Reward Expected and Milestone Fundings must not exceed ${daoConfig
-            .data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX / 1e18} ETH`}</ErrorCaption>
+          <ErrorCaption>{`Sum of Reward Expected and Milestone Fundings must not exceed ${
+            daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX
+          } ETH`}</ErrorCaption>
         )}
         <Button
           kind="round"
-          disabled={exceedsLimit}
+          disabled={exceedsLimit || !fundChanged}
           secondary
           large
           fluid

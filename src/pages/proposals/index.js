@@ -148,22 +148,31 @@ class Proposal extends React.Component {
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
 
+    const totalUpdatedFunds = (acc, currentValue) =>
+      Number(acc.updated) + Number(currentValue.updated);
+
+    const totalOriginalFunds = (acc, currentValue) =>
+      Number(acc.original) + Number(currentValue.original);
+
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
-    const funding = truncateNumber(proposalVersion.totalFunding);
-    const reward = truncateNumber(proposalVersion.finalReward);
+    let funding = truncateNumber(proposalVersion.totalFunding);
+    let reward = truncateNumber(proposalVersion.finalReward);
 
     let updatedFunding;
     let updatedReward;
-
-    const totalUpdatedFunds = (acc, currentValue) =>
-      Number(acc.updated) + Number(currentValue.updated);
 
     if (proposalDetails.data.isFundingChanged) {
       updatedReward = truncateNumber(proposalDetails.data.changedFundings.finalReward.updated);
       updatedFunding = truncateNumber(
         proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds)
       );
+
+      funding = truncateNumber(
+        proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
+      );
+
+      reward = truncateNumber(proposalDetails.data.changedFundings.finalReward.original);
     }
 
     return (

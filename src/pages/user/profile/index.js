@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import KycOverlay from '@digix/gov-ui/components/common/blocks/overlay/kyc/index';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { DEFAULT_STAKE_PER_DGD } from '@digix/gov-ui/constants';
 import {
@@ -143,6 +144,13 @@ class Profile extends React.Component {
     });
   }
 
+  showKycOverlay() {
+    this.props.showRightPanel({
+      component: <KycOverlay />,
+      show: true,
+    });
+  }
+
   render() {
     const { AddressDetails } = this.props;
     const { stake } = this.state;
@@ -246,7 +254,11 @@ class Profile extends React.Component {
             <Data data-digix="Profile-KycStatus">Not Verified</Data>
             <Label>&nbsp;</Label>
             <Actions>
-              <Button primary data-digix="Profile-KycStatus-Cta">
+              <Button
+                primary
+                data-digix="Profile-KycStatus-Cta"
+                onClick={() => this.showKycOverlay()}
+              >
                 Submit KYC
               </Button>
             </Actions>

@@ -12,12 +12,7 @@ const UploadFileButton = props => (
       onChange={props.onChange}
       type="file"
     />
-    <UploadButton
-      /* fullWidth={props.fullWidth} */
-      primary
-      fluid
-      htmlFor={props.id ? props.id : 'image-upload'}
-    >
+    <UploadButton secondary fluid htmlFor={props.id ? props.id : 'image-upload'}>
       {props.caption}
     </UploadButton>
     {props.children}

@@ -143,13 +143,16 @@ class LockDgd extends React.Component {
   };
 
   handleButtonClick = () => {
+    const { dgd } = this.state;
+    const stakeAdded = this.getStake(dgd);
+
     const {
       web3Redux,
       sendTransactionToDaoServer: sendTransactionToDaoServerAction,
       challengeProof,
       addresses,
     } = this.props;
-    const { dgd } = this.state;
+
     const { abi, address } = getContract(DaoStakeLocking, network);
     const contract = web3Redux
       .web3(network)
@@ -180,10 +183,15 @@ class LockDgd extends React.Component {
     };
 
     const onTransactionSuccess = txHash => {
+      const { onSuccess } = this.props.lockDgdOverlay;
       this.props.showHideAlert({
         message: 'DGD Locked',
         txHash,
       });
+
+      if (onSuccess) {
+        onSuccess(stakeAdded);
+      }
 
       this.props.getAddressDetails(sourceAddress.address);
     };

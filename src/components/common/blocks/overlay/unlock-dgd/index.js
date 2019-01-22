@@ -10,11 +10,13 @@ import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
+import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import {
   IntroContainer,
@@ -39,10 +41,14 @@ class UnlockDgdOverlay extends React.Component {
   constructor(props) {
     super(props);
 
-    this.MAX_AMOUNT = Number(props.AddressDetails.lockedDgd);
+    this.MAX_AMOUNT = props.maxAmount;
     this.state = {
       unlockAmount: 0,
     };
+  }
+
+  componentDidMount() {
+    this.props.getDaoConfig();
   }
 
   onDgdInputChange = e => {
@@ -153,7 +159,7 @@ class UnlockDgdOverlay extends React.Component {
         <Hint>
           <span>This will leave you with&nbsp;</span>
           <b>
-            <span data-digix="UnlockDgd-RemainingDgd">{remainingDgd}</span>
+            <span data-digix="UnlockDgd-RemainingDgd">{truncateNumber(remainingDgd)}</span>
             <span>&nbsp;STAKE</span>
           </b>
           <span>&nbsp;in DigixDAO.</span>
@@ -165,7 +171,7 @@ class UnlockDgdOverlay extends React.Component {
       <Hint error>
         <span>This will leave you with&nbsp;</span>
         <b>
-          <span data-digix="UnlockDgd-RemainingDgd">{remainingDgd}</span>
+          <span data-digix="UnlockDgd-RemainingDgd">{truncateNumber(remainingDgd)}</span>
           <span>&nbsp;STAKE.&nbsp;</span>
         </b>
         <span>You will no longer continue to be a participant.</span>
@@ -218,13 +224,14 @@ class UnlockDgdOverlay extends React.Component {
   }
 }
 
-const { array, func, object } = PropTypes;
+const { array, func, number, object } = PropTypes;
 
 UnlockDgdOverlay.propTypes = {
   addresses: array.isRequired,
-  AddressDetails: object.isRequired,
   ChallengeProof: object.isRequired,
   DaoConfig: object.isRequired,
+  getDaoConfig: func.isRequired,
+  maxAmount: number.isRequired,
   onSuccess: func.isRequired,
   showRightPanel: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
@@ -237,7 +244,6 @@ UnlockDgdOverlay.defaultProps = {};
 
 const mapStateToProps = state => ({
   addresses: getAddresses(state),
-  AddressDetails: state.infoServer.AddressDetails.data,
   ChallengeProof: state.daoServer.ChallengeProof.data,
   DaoConfig: state.infoServer.DaoConfig.data,
 });
@@ -246,6 +252,7 @@ export default web3Connect(
   connect(
     mapStateToProps,
     {
+      getDaoConfig,
       showHideAlert,
       showRightPanel,
       sendTransactionToDaoServer,

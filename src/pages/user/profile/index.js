@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { DEFAULT_STAKE_PER_DGD } from '@digix/gov-ui/constants';
-import { getDaoConfig, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
-import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
+import {
+  getAddressDetails,
+  getDaoConfig,
+  getDaoDetails,
+} from '@digix/gov-ui/reducers/info-server/actions';
+import { showHideLockDgdOverlay, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import UsernameOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-username/index';
 import EmailOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-email/index';
@@ -42,12 +46,38 @@ class Profile extends React.Component {
       pastParticipant: 'Past Participant',
       guest: 'Have not participated',
     };
+
+    this.state = {
+      stake: truncateNumber(props.AddressDetails.data.lockedDgdStake),
+    };
   }
 
   componentDidMount() {
-    const { getDaoConfigAction, getDaoDetailsAction } = this.props;
-    Promise.all([getDaoConfigAction(), getDaoDetailsAction()]);
+    const {
+      AddressDetails,
+      getAddressDetailsAction,
+      getDaoConfigAction,
+      getDaoDetailsAction,
+    } = this.props;
+
+    getDaoConfigAction();
+    getDaoDetailsAction();
+    getAddressDetailsAction(AddressDetails.data.address).then(() => {
+      this.setStateFromAddressDetails();
+    });
   }
+
+  onLockDgd = amountLocked => {
+    let { stake } = this.state;
+    stake = truncateNumber(stake + amountLocked);
+    this.setState({ stake });
+  };
+
+  setStateFromAddressDetails = () => {
+    const address = this.props.AddressDetails.data;
+    const stake = truncateNumber(address.lockedDgdStake);
+    this.setState({ stake });
+  };
 
   getStakePerDgd = () => {
     const { DaoDetails } = this.props;
@@ -71,7 +101,7 @@ class Profile extends React.Component {
     const minReputation = Number(config.CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR);
     const requiredReputation = Math.max(0, minReputation - currentReputation);
 
-    const currentStake = Number(address.lockedDgdStake);
+    const currentStake = this.state.stake;
     const minStake = Number(config.CONFIG_MINIMUM_DGD_FOR_MODERATOR);
     const stakePerDgd = this.getStakePerDgd();
     const requiredStake = stakePerDgd ? Math.max(0, (minStake - currentStake) / stakePerDgd) : 0;
@@ -115,10 +145,10 @@ class Profile extends React.Component {
 
   render() {
     const { AddressDetails } = this.props;
+    const { stake } = this.state;
     const address = AddressDetails.data;
 
     const status = this.getStatus();
-    const stake = truncateNumber(address.lockedDgdStake);
     const moderatorRequirements = this.getModeratorRequirements();
     const hasUnmetModerationRequirements =
       !address.isModerator &&
@@ -245,7 +275,11 @@ class Profile extends React.Component {
             </Criteria>
             <Actions>
               <RedeemBadge />
-              <Button primary data-digix="Profile-LockMoreDgd-Cta">
+              <Button
+                primary
+                data-digix="Profile-LockMoreDgd-Cta"
+                onClick={() => this.props.showHideLockDgdOverlay(true, this.onLockDgd)}
+              >
                 Lock More DGD
               </Button>
             </Actions>
@@ -262,8 +296,10 @@ Profile.propTypes = {
   AddressDetails: object.isRequired,
   DaoConfig: object,
   DaoDetails: object,
+  getAddressDetailsAction: func.isRequired,
   getDaoConfigAction: func.isRequired,
   getDaoDetailsAction: func.isRequired,
+  showHideLockDgdOverlay: func.isRequired,
   showRightPanel: func.isRequired,
 };
 
@@ -281,8 +317,10 @@ const mapStateToProps = ({ infoServer }) => ({
 export default connect(
   mapStateToProps,
   {
+    getAddressDetailsAction: getAddressDetails,
     getDaoConfigAction: getDaoConfig,
     getDaoDetailsAction: getDaoDetails,
+    showHideLockDgdOverlay,
     showRightPanel,
   }
 )(Profile);

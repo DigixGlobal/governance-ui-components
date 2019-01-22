@@ -67,21 +67,24 @@ class Wallet extends React.Component {
 
   onLockDgd = amountLocked => {
     let { stake } = this.state;
-    stake = truncateNumber(stake + amountLocked);
+    stake += amountLocked;
     this.setState({ stake });
   };
 
   onUnlockDgd = amountUnlocked => {
     let { stake } = this.state;
-    stake = truncateNumber(stake - amountUnlocked);
+    stake -= amountUnlocked;
     this.setState({ stake });
   };
 
   setStateFromAddressDetails = () => {
     const address = this.props.AddressDetails.data;
-    const stake = truncateNumber(address.lockedDgdStake);
-    const claimableDgx =
-      address.claimableDgx >= this.MIN_CLAIMABLE_DGX ? truncateNumber(address.claimableDgx) : 0;
+    const stake = Number(address.lockedDgdStake);
+
+    let claimableDgx = Number(address.claimableDgx);
+    if (claimableDgx < this.MIN_CLAIMABLE_DGX) {
+      claimableDgx = 0;
+    }
 
     this.setState({ claimableDgx, stake });
   };
@@ -162,7 +165,7 @@ class Wallet extends React.Component {
 
   render() {
     const { AddressDetails, DaoDetails } = this.props;
-    const { claimableDgx, stake } = this.state;
+    let { claimableDgx, stake } = this.state;
     const address = AddressDetails.data;
 
     const isGlobalRewardsSet = DaoDetails ? DaoDetails.data.isGlobalRewardsSet : false;
@@ -172,6 +175,9 @@ class Wallet extends React.Component {
     const currentTime = Date.now() / 1000;
     const inLockingPhase = currentTime < DaoDetails.data.startOfMainphase;
     const canUnlockDgd = inLockingPhase && stake > 0 && isGlobalRewardsSet;
+
+    claimableDgx = truncateNumber(claimableDgx);
+    stake = truncateNumber(stake);
 
     return (
       <WalletWrapper>

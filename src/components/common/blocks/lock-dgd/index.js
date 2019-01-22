@@ -119,7 +119,7 @@ class LockDgd extends React.Component {
         (startOfNextQuarter - startOfMainphase);
     }
 
-    return truncateNumber(stake);
+    return stake;
   };
 
   setError = error =>
@@ -260,7 +260,7 @@ class LockDgd extends React.Component {
       phase = 'main';
     }
 
-    const stake = this.getStake(dgd);
+    const stake = truncateNumber(this.getStake(dgd));
 
     return (
       <DrawerContainer>

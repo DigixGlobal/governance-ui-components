@@ -50,6 +50,7 @@ class Wallet extends React.Component {
 
     this.state = {
       claimableDgx: 0,
+      lockedDgd: 0,
       stake: 0,
     };
 
@@ -65,28 +66,34 @@ class Wallet extends React.Component {
     });
   }
 
-  onLockDgd = amountLocked => {
+  onLockDgd = addedStake => {
     let { stake } = this.state;
-    stake += amountLocked;
+    stake += addedStake;
     this.setState({ stake });
   };
 
   onUnlockDgd = amountUnlocked => {
-    let { stake } = this.state;
+    let { lockedDgd, stake } = this.state;
+
+    // NOTE: you can only unlock during the locking phase,
+    // where stake == locked dgd
+    lockedDgd -= amountUnlocked;
     stake -= amountUnlocked;
-    this.setState({ stake });
+
+    this.setState({ lockedDgd, stake });
   };
 
   setStateFromAddressDetails = () => {
     const address = this.props.AddressDetails.data;
     const stake = Number(address.lockedDgdStake);
+    const lockedDgd = Number(address.lockedDgd);
 
     let claimableDgx = Number(address.claimableDgx);
     if (claimableDgx < this.MIN_CLAIMABLE_DGX) {
       claimableDgx = 0;
     }
 
-    this.setState({ claimableDgx, stake });
+    this.setState({ claimableDgx, lockedDgd, stake });
   };
 
   setError = error => {
@@ -156,9 +163,9 @@ class Wallet extends React.Component {
   };
 
   showUnlockDgdOverlay() {
-    const { stake } = this.state;
+    const { lockedDgd } = this.state;
     this.props.showRightPanel({
-      component: <UnlockDgdOverlay maxAmount={stake} onSuccess={this.onUnlockDgd} />,
+      component: <UnlockDgdOverlay maxAmount={lockedDgd} onSuccess={this.onUnlockDgd} />,
       show: true,
     });
   }

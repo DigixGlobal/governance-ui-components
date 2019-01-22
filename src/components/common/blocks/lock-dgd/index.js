@@ -109,10 +109,14 @@ class LockDgd extends React.Component {
 
   getStake = dgd => {
     const { daoDetails } = this.props;
-    const { startOfMainphase, startOfNextQuarter, startOfQuarter } = daoDetails;
-    const currentTime = Date.now() / 1000; // daoDetails have time set to seconds instead of milliseconds
+    let { startOfMainphase, startOfNextQuarter, startOfQuarter } = daoDetails;
+    const currentTime = Date.now() / 1000;
 
-    let stake = dgd;
+    startOfMainphase = Number(startOfMainphase);
+    startOfNextQuarter = Number(startOfNextQuarter);
+    startOfQuarter = Number(startOfQuarter);
+
+    let stake = Number(dgd);
     if (currentTime >= startOfMainphase) {
       stake =
         (dgd * (startOfNextQuarter - startOfQuarter - (currentTime - startOfQuarter))) /

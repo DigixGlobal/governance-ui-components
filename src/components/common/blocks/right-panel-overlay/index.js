@@ -28,8 +28,8 @@ const PanelOverlay = props => {
 
   return (
     <Container>
-      <TransparentOverlay />
-      <DrawerContainer>
+      <TransparentOverlay kyc />
+      <DrawerContainer kyc>
         <CloseButton onClick={showPanel.onClose || closePanel}>
           <Icon kind="close" />
         </CloseButton>

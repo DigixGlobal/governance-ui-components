@@ -4,7 +4,7 @@ import { ButtonGlobalStyles } from '@digix/gov-ui/components/common/elements/but
 export const UploadInputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding-right: 2rem;
+  margin-right: 2rem;
   width: 100%;
 `;
 
@@ -14,25 +14,37 @@ export const UploadInput = styled.input`
 export const UploadButton = styled.label`
   ${ButtonGlobalStyles};
   display: inline-block;
-  border-radius: 4px;
   margin-left: 0;
-  margin-top: 0;
-
-  background: ${props =>
-    props.primary
-      ? props.theme.buttonBgPrimary.default.toString()
-      : props.theme.backgroundSecondary.default.toString()};
-  border: 2px solid ${props => props.theme.buttonBorderPrimary.default.toString()};
-
-  color: ${props =>
-    props.primary
-      ? props.theme.buttonTextPrimary.default.toString()
-      : props.theme.buttonTextPrimary.default.toString()};
+  margin-top: 0.5rem;
+  border-radius: ${props => props.theme.borderRadius};
+  color: ${props => props.theme.buttonTextPrimary.default.toString()};
 
   &:hover {
     background: ${props => props.theme.buttonBgHoverPrimary.default.toString()};
     color: ${props => props.theme.buttonTextPrimaryReverse.default.toString()};
   }
+
+  ${props =>
+    props.primary &&
+    css`
+      background: ${props.theme.buttonBgPrimary.default.toString()};
+      border: 2px solid ${props.theme.buttonBorderPrimary.default.toString()};
+      box-shadow: none;
+      color: ${props.theme.buttonTextPrimary.default.toString()};
+    `};
+
+  ${props =>
+    props.secondary &&
+    css`
+      background: ${props.theme.buttonBgSecondary.fade.toString()};
+      border: 2px solid ${props.theme.buttonTextPrimary.default.toString()};
+      box-shadow: none;
+      color: ${props.theme.buttonTextPrimary.default.toString()};
+      &:hover {
+        background: ${props.theme.buttonBgSecondary.default.toString()};
+        color: ${props.theme.buttonTextPrimaryReverse.default.toString()};
+      }
+    `};
 
   ${props =>
     props.disabled &&

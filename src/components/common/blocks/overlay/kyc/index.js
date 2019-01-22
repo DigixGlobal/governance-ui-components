@@ -6,6 +6,11 @@ import KycOverlayBasicInformation from '@digix/gov-ui/components/common/blocks/o
 import KycOverlayAddress from '@digix/gov-ui/components/common/blocks/overlay/kyc/address';
 import KycOverlayPhotoUpload from '@digix/gov-ui/components/common/blocks/overlay/kyc/photo-upload';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { OverlayHeader as Header } from '@digix/gov-ui/components/common/common-styles';
+import {
+  WizardContainer,
+  WizardMenu,
+} from '@digix/gov-ui/components/common/blocks/overlay/kyc/style.js';
 
 class KycOverlay extends React.Component {
   constructor(props) {
@@ -62,7 +67,21 @@ class KycOverlay extends React.Component {
   }
 
   render() {
-    return this.renderKycStep();
+    const { step } = this.state;
+    return (
+      <div>
+        <Header uppercase>KYC</Header>
+
+        {step !== this.STAGES.intro && (
+          <WizardContainer>
+            <WizardMenu active>Basic Information</WizardMenu>
+            <WizardMenu>Residence Proof</WizardMenu>
+            <WizardMenu>Photo Proof</WizardMenu>
+          </WizardContainer>
+        )}
+        {this.renderKycStep()}
+      </div>
+    );
   }
 }
 

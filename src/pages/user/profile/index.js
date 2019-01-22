@@ -241,6 +241,7 @@ class Profile extends React.Component {
             <Actions>
               <Button
                 primary
+                disabled // TODO: remove from shadow when submit KYC is done
                 data-digix="Profile-KycStatus-Cta"
                 onClick={() => this.showKycOverlay()}
               >

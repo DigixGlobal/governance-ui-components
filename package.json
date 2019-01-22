@@ -24,6 +24,7 @@
     "react-redux": "^5.0.7",
     "react-responsive-modal": "^3.4.0",
     "react-scripts": "1.1.5",
+    "react-table": "^6.8.6",
     "secure-random": "^1.1.1",
     "styled-components": "^3.4.9",
     "web3-utils": "^1.0.0-beta.37"

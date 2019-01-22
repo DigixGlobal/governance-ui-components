@@ -14,7 +14,7 @@ export class CategoryGroup extends React.Component {
     };
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.getProposalsCountAction();
   };
 

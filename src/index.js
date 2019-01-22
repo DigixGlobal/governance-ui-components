@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// import { withRouter } from 'react-router';
 // import { connect } from 'react-redux';
 
 import { HashRouter, Switch, Route } from 'react-router-dom';
@@ -20,6 +21,7 @@ import TransactionHistory from './pages/user/history';
 import Profile from './pages/user/profile';
 import Help from './pages/help';
 import Wallet from './pages/user/wallet';
+import KycOfficerDashboard from './pages/kyc/officer';
 
 import lightTheme from './theme/light';
 
@@ -31,10 +33,11 @@ registerReducers({
   govUI: { src: govUiReducer },
 });
 
+// eslint-disable-next-line
 // const ParticipantsRoute = ({ component: Component, isParticipant, ...rest }) => (
 //   <Route
 //     {...rest}
-//     render={props => (isParticipant ? <Component {...props} /> : <Redirect to="/login" />)}
+//     render={props => (isParticipant ? <Component {...props} /> : <Redirect to="/" />)}
 //   />
 // );
 export class Governance extends React.Component {
@@ -44,22 +47,22 @@ export class Governance extends React.Component {
       <HashRouter>
         <ThemeProvider theme={lightTheme}>
           <Switch>
-            {/* {addressDetails.data && [ */}
             <Route
               path="/proposals/create"
-              key="r-1"
               component={withHeaderAndPanel(CreateProposals)}
               isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
             />
-            ,
             <Route
               path="/proposals/edit"
-              key="r-2"
               component={withHeaderAndPanel(EditProposal)}
               isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
             />
-            {/* , // ]} */}
-            <Route path="/proposals" component={withHeaderAndPanel(Proposals)} />
+            <Route
+              path="/proposals"
+              component={withHeaderAndPanel(Proposals)}
+              isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
+            />
+            <Route path="/kyc/admin" component={withHeaderAndPanel(KycOfficerDashboard)} />
             <Route path="/history" component={withHeaderAndPanel(TransactionHistory)} />
             <Route path="/profile" component={withHeaderAndPanel(Profile)} />
             <Route path="/help" component={withHeaderAndPanel(Help)} />
@@ -80,9 +83,11 @@ Governance.defaultProps = {
   addressDetails: undefined,
 };
 
-// export default connect(
-//   ({ infoServer: { AddressDetails } }) => ({ addressDetails: AddressDetails }),
-//   {}
-// )(Governance);
+// export default withRouter(
+//   connect(
+//     ({ infoServer: { AddressDetails } }) => ({ addressDetails: AddressDetails }),
+//     {}
+//   )(Governance)
+// );
 
 export default Governance;

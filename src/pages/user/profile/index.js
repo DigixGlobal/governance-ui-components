@@ -49,7 +49,7 @@ class Profile extends React.Component {
     };
 
     this.state = {
-      stake: truncateNumber(props.AddressDetails.data.lockedDgdStake),
+      stake: props.AddressDetails.data.lockedDgdStake,
     };
   }
 
@@ -70,13 +70,13 @@ class Profile extends React.Component {
 
   onLockDgd = amountLocked => {
     let { stake } = this.state;
-    stake = truncateNumber(stake + amountLocked);
+    stake += amountLocked;
     this.setState({ stake });
   };
 
   setStateFromAddressDetails = () => {
     const address = this.props.AddressDetails.data;
-    const stake = truncateNumber(address.lockedDgdStake);
+    const stake = Number(address.lockedDgdStake);
     this.setState({ stake });
   };
 
@@ -155,7 +155,7 @@ class Profile extends React.Component {
   render() {
     const { displayName, email } = this.props.userData;
     const { AddressDetails } = this.props;
-    const { stake } = this.state;
+    let { stake } = this.state;
     const address = AddressDetails.data;
 
     const status = this.getStatus();
@@ -163,6 +163,8 @@ class Profile extends React.Component {
     const hasUnmetModerationRequirements =
       !address.isModerator &&
       (moderatorRequirements.reputation > 0 || moderatorRequirements.stake > 0);
+
+    stake = truncateNumber(stake);
 
     return (
       <ProfileWrapper>

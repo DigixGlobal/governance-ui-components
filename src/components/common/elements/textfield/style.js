@@ -4,12 +4,12 @@ export const SyledInput = styled.input.attrs({
   type: 'text',
   //   size: props => (props.small ? 5 : undefined),
 })`
-  border: 1px solid ${props => props.theme.borderColor.light.toString()};
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   color: ${props => props.theme.textDefault.default.toString()};
   padding: 1.5rem 2rem;
   font-size: 1.6rem;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   width: ${props => props.width || '100%'};
   transition: opacity 650ms ease, border 650ms ease;
 

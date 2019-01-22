@@ -178,8 +178,14 @@ export const TransparentOverlay = styled.div`
   background-color: #000;
   opacity: 0.75;
   transition: ${props => props.theme.transition};
-
   width: 75%;
+
+  ${props =>
+    props.kyc &&
+    css`
+      width: 25%;
+    `}
+
   ${media.tablet`width: 40%`}
   ${media.mobile`width: 0%`}
 `;
@@ -187,8 +193,15 @@ export const TransparentOverlay = styled.div`
 export const DrawerContainer = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
   padding: 5rem;
-
   width: 25%;
+  
+  ${props =>
+    props.kyc &&
+    css`
+      overflow-y: scroll;
+      width: 75%;
+      background: ${props.theme.backgroundTertiary.lightest.toString()};
+    `}
   ${media.tablet`width: 60%`}
   ${media.mobile`width: 100%`}
 `;
@@ -223,5 +236,28 @@ export const Hint = styled.div`
     props.error &&
     css`
       color: ${props.theme.alertMessage.error.default.toString()};
+    `};
+`;
+
+export const FieldItem = styled.div``;
+
+export const Col = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+
+  ${props =>
+    props.six &&
+    css`
+      width: 50%;
+    `};
+  ${props =>
+    props.four &&
+    css`
+      width: 33.33%;
+    `};
+  ${props =>
+    props.three &&
+    css`
+      width: 25%;
     `};
 `;

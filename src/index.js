@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// import { withRouter } from 'react-router';
 // import { connect } from 'react-redux';
 
 import { HashRouter, Switch, Route } from 'react-router-dom';
@@ -33,10 +34,11 @@ registerReducers({
   govUI: { src: govUiReducer },
 });
 
+// eslint-disable-next-line
 // const ParticipantsRoute = ({ component: Component, isParticipant, ...rest }) => (
 //   <Route
 //     {...rest}
-//     render={props => (isParticipant ? <Component {...props} /> : <Redirect to="/login" />)}
+//     render={props => (isParticipant ? <Component {...props} /> : <Redirect to="/" />)}
 //   />
 // );
 export class Governance extends React.Component {
@@ -83,9 +85,11 @@ Governance.defaultProps = {
   addressDetails: undefined,
 };
 
-// export default connect(
-//   ({ infoServer: { AddressDetails } }) => ({ addressDetails: AddressDetails }),
-//   {}
-// )(Governance);
+// export default withRouter(
+//   connect(
+//     ({ infoServer: { AddressDetails } }) => ({ addressDetails: AddressDetails }),
+//     {}
+//   )(Governance)
+// );
 
 export default Governance;

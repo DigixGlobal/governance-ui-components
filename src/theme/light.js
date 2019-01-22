@@ -136,6 +136,8 @@ const LightTheme = {
 
   headerBorderColor: gray.default,
 
+  errorBorder: red.default,
+
   iconDefaultColor: tertiaryColor,
   iconPrimaryColor: primaryColor,
   iconSecondaryColor: secondaryColor,

@@ -157,6 +157,7 @@ class Profile extends React.Component {
     const { AddressDetails } = this.props;
     const { stake } = this.state;
     const address = AddressDetails.data;
+    const usernameIsSet = this.props.userData.username;
 
     const status = this.getStatus();
     const moderatorRequirements = this.getModeratorRequirements();
@@ -171,15 +172,17 @@ class Profile extends React.Component {
           <UserItem>
             <UserLabel>User:</UserLabel>
             <UserData data-digix="Profile-UserName">{displayName}</UserData>
-            <Button
-              primary
-              icon
-              data-digix="Profile-UserName-Cta"
-              onClick={() => this.showSetUsernameOverlay()}
-            >
-              <Icon kind="plus" />
-              Set Username
-            </Button>
+            {!usernameIsSet && (
+              <Button
+                primary
+                icon
+                data-digix="Profile-UserName-Cta"
+                onClick={() => this.showSetUsernameOverlay()}
+              >
+                <Icon kind="plus" />
+                Set Username
+              </Button>
+            )}
           </UserItem>
           <UserItem>
             <UserLabel>Status:</UserLabel>

@@ -12,6 +12,7 @@ import {
   FieldGroup,
   FieldItem,
   PreviewImage,
+  ErrorMessage,
 } from '@digix/gov-ui/components/common/blocks/overlay/kyc/style.js';
 
 class KycOverlayBasicInformation extends React.Component {
@@ -105,8 +106,9 @@ class KycOverlayBasicInformation extends React.Component {
         <FormSection>
           <FieldGroup>
             <FieldItem col6>
-              <Label>First Name</Label>
-              <Input />
+              <Label error>First Name</Label>
+              <Input error />
+              <ErrorMessage>Please enter a valid first name</ErrorMessage>
             </FieldItem>
             <FieldItem col6>
               <Label>Last Name</Label>
@@ -122,7 +124,6 @@ class KycOverlayBasicInformation extends React.Component {
                 </FieldItem>
                 <FieldItem col6>
                   <Label>Gender</Label>
-
                   <Select items={this.OptionsGender} />
                 </FieldItem>
               </FieldGroup>
@@ -159,7 +160,7 @@ class KycOverlayBasicInformation extends React.Component {
 
           <FieldGroup>
             <FieldItem col6>
-              <FieldGroup column style={{ marginRight: '-2rem' }}>
+              <FieldGroup column>
                 <FieldItem>
                   <Label>National I.D (Must Match Provided Nationality)</Label>
                   <Select items={this.OptionsIdentification} />
@@ -175,8 +176,6 @@ class KycOverlayBasicInformation extends React.Component {
                     fluid
                     large
                     multiple
-                    id="image-upload"
-                    onChange={this.handleUpload}
                     type="file"
                     caption="Upload National I.D"
                   />
@@ -186,7 +185,7 @@ class KycOverlayBasicInformation extends React.Component {
                     <Label>I.D Expiration Date</Label>
                     <Input />
                   </FieldItem>
-                  <FieldItem col6>
+                  <FieldItem col6 style={{ marginRight: '0' }}>
                     <Label>I.D Number</Label>
                     <Input />
                   </FieldItem>

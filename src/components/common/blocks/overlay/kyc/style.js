@@ -53,6 +53,7 @@ export const FieldGroup = styled.div`
 `;
 export const FieldItem = styled.div`
   margin: 0 2rem 2rem 0;
+  width: 100%;
   ${props =>
     props.col6 &&
     css`
@@ -83,4 +84,95 @@ export const PreviewImage = styled.div`
   height: 85%;
   border-radius: ${props => props.theme.borderRadius};
   margin: 2.5rem 0;
+`;
+
+export const PhotoVerification = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: ${props => props.theme.backgroundPrimary.fade.toString()};
+  border: 1px solid ${props => props.theme.borderColor.default.toString()};
+  border-radius: ${props => props.theme.borderRadius};
+  padding: 3rem;
+  margin: 2rem 2rem 0 0;
+
+  ${props =>
+    props.webcam &&
+    css`
+      padding: inherit 8rem;
+    `};
+`;
+
+export const MediaContainer = styled.div`
+  flex-direction: column;
+  font-size: 1.4rem;
+`;
+
+export const GetStarted = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
+export const IdentificationCode = styled.div`
+  background: ${props => props.theme.backgroundDefault.default.toString()};
+  border: 1px solid ${props => props.theme.borderColorSecondary.light.toString()};
+  border-radius: ${props => props.theme.borderRadius};
+  box-shadow: ${props => props.theme.boxShadow};
+  padding: 1rem 3rem;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+`;
+export const CamPreview = styled.div`
+  background: ${props => props.theme.backgroundPrimary.default.toString()};
+  border-radius: ${props => props.theme.borderRadius};
+  height: 300px;
+  margin-bottom: 3rem;
+  width: 60%;
+`;
+
+export const PhotoViewer = styled.div`
+  display: flex;
+  border: 1px solid ${props => props.theme.borderColor.default.toString()};
+  border-radius: ${props => props.theme.borderRadius};
+  margin: 3rem auto;
+  width: 100%;
+
+  ${props =>
+    props.webcam &&
+    css`
+      width: 60%;
+    `};
+`;
+export const SelfieGuide = styled.div`
+  display: flex;
+  justify-content: center;
+  border-right: 1px solid ${props => props.theme.borderColorPrimary.light.toString()};
+  background: ${props => props.theme.backgroundPrimary.fade.toString()};
+
+  padding: 2rem 5rem;
+  width: 100%;
+
+  ${props =>
+    props.webcam &&
+    css`
+      flex-direction: column;
+      width: 28%;
+      padding: 2rem 0;
+    `};
+`;
+export const GuideItem = styled.div`
+  margin: 1rem;
+  img {
+    width: 100%;
+  }
+`;
+export const Photo = styled.div`
+  background: ${props => props.theme.backgroundPrimary.default.toString()};
+  width: 100%;
+`;
+
+export const ErrorMessage = styled.span`
+  color: ${props => props.theme.alertMessage.error.default.toString()};
+  display: inline-block;
+  font-size: 1.4rem;
 `;

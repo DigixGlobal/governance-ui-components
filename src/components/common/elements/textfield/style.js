@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const SyledInput = styled.input.attrs({
   type: 'text',
@@ -29,4 +29,10 @@ export const SyledInput = styled.input.attrs({
       color: ${props => props.theme.textDefault.default.toString()};
     }
   }
+
+  ${props =>
+    props.error &&
+    css`
+      border: 1px solid ${props.theme.alertMessage.error.default.toString()};
+    `};
 `;

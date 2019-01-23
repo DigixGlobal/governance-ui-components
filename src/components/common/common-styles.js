@@ -226,6 +226,13 @@ export const Notifications = styled.div`
 
 export const Label = styled.div`
   font-family: 'Futura PT Book', sans-serif;
+  margin-bottom: 0.5rem;
+
+  ${props =>
+    props.error &&
+    css`
+      color: ${props.theme.alertMessage.error.default.toString()};
+    `};
 `;
 
 export const Hint = styled.div`

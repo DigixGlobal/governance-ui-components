@@ -45,7 +45,7 @@ class EmailOverlay extends React.Component {
     });
   };
 
-  onEmailUpdateError = error => {
+  onEmailUpdateError = () => {
     this.setState({
       error: this.ERROR_MESSAGES.connectionError,
     });
@@ -76,7 +76,8 @@ class EmailOverlay extends React.Component {
 
   render() {
     const { email, error } = this.state;
-    const disableButton = !email || email === '' || !!error;
+    const invalidInput = !!error && error !== this.ERROR_MESSAGES.connectionError;
+    const disableButton = !email || email === '' || invalidInput;
 
     return (
       <IntroContainer>

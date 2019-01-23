@@ -60,6 +60,21 @@ const UserMutations = {
       }
     }
   `,
+  changeUsername: gql`
+    mutation changeUsername($username: String!) {
+      changeUsername(input: { username: $username }) {
+        user {
+          id
+          displayName
+          username
+        }
+        errors {
+          field
+          message
+        }
+      }
+    }
+  `,
 };
 
 export const withFetchUser = Component => props => (
@@ -96,6 +111,28 @@ export const withChangeEmail = Component => props => (
       }
 
       return <Component {...props} changeEmail={changeEmail} />;
+    }}
+  </Mutation>
+);
+
+export const withChangeUsername = Component => props => (
+  <Mutation
+    mutation={UserMutations.changeUsername}
+    onCompleted={props.onUsernameUpdate}
+    onError={props.onUsernameUpdateError}
+  >
+    {(mutation, { loading }) => {
+      const changeUsername = username => {
+        mutation({
+          variables: { username },
+        });
+      };
+
+      if (loading) {
+        return <Component {...props} disabled />;
+      }
+
+      return <Component {...props} changeUsername={changeUsername} />;
     }}
   </Mutation>
 );

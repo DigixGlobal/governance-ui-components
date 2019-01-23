@@ -138,8 +138,9 @@ class Profile extends React.Component {
   }
 
   showSetEmailOverlay() {
+    const { email } = this.props.userData;
     this.props.showRightPanel({
-      component: <EmailOverlay />,
+      component: <EmailOverlay currentEmail={email} />,
       show: true,
     });
   }
@@ -186,7 +187,7 @@ class Profile extends React.Component {
           </UserItem>
           <UserItem>
             <UserLabel>Email:</UserLabel>
-            <UserData data-digix="Profile-Email">{email}</UserData>
+            {email && <UserData data-digix="Profile-Email">{email}</UserData>}
             <Button
               primary
               icon

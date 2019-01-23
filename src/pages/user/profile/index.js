@@ -12,8 +12,8 @@ import {
   getDaoConfig,
   getDaoDetails,
 } from '@digix/gov-ui/reducers/info-server/actions';
+import { getUserStatus, truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { showHideLockDgdOverlay, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { withFetchUser } from '@digix/gov-ui/api/users';
 import {
   ProfileWrapper,
@@ -41,13 +41,6 @@ import RedeemBadge from './buttons/redeem-badge';
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.STATUS = {
-      moderator: 'Moderator',
-      participant: 'Participant',
-      pastParticipant: 'Past Participant',
-      guest: 'Have not participated',
-    };
-
     this.state = {
       stake: truncateNumber(props.AddressDetails.data.lockedDgdStake),
     };
@@ -115,21 +108,6 @@ class Profile extends React.Component {
     return requirements;
   };
 
-  getStatus = () => {
-    const { AddressDetails } = this.props;
-    const address = AddressDetails.data;
-
-    if (address.isModerator) {
-      return this.STATUS.moderator;
-    } else if (address.isParticipant) {
-      return this.STATUS.participant;
-    } else if (address.lastParticipatedQuarter > 0) {
-      return this.STATUS.pastParticipant;
-    }
-
-    return this.STATUS.guest;
-  };
-
   showSetUsernameOverlay() {
     this.props.showRightPanel({
       component: <UsernameOverlay />,
@@ -159,7 +137,7 @@ class Profile extends React.Component {
     const address = AddressDetails.data;
     const usernameIsSet = this.props.userData.username;
 
-    const status = this.getStatus();
+    const status = getUserStatus(address);
     const moderatorRequirements = this.getModeratorRequirements();
     const hasUnmetModerationRequirements =
       !address.isModerator &&

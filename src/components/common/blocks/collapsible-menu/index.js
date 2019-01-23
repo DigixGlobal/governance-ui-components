@@ -14,6 +14,7 @@ import {
   MenuList,
   MenuItem,
 } from '@digix/gov-ui/components/common/blocks/collapsible-menu/style.js';
+import { getUserStatus } from '@digix/gov-ui/utils/helpers';
 
 const DEFAULT_MENU = [
   {
@@ -49,22 +50,6 @@ const DEFAULT_MENU = [
 ];
 
 class CollapsibleMenu extends React.Component {
-  getUserType = details => {
-    if (!details) {
-      return null;
-    }
-
-    if (details.data.isModerator) {
-      return 'Moderator';
-    }
-
-    if (details.data.isParticipant) {
-      return 'Participant';
-    }
-
-    return null;
-  };
-
   renderMenuItem = item => {
     const { ChallengeProof, location, theme } = this.props;
     const authorized = ChallengeProof.data && ChallengeProof.data.client;
@@ -86,7 +71,7 @@ class CollapsibleMenu extends React.Component {
 
   render() {
     const { addressDetails, defaultAddress, menuItems } = this.props;
-    const userType = this.getUserType(addressDetails);
+    const userType = getUserStatus(addressDetails.data);
     const menu = menuItems || DEFAULT_MENU;
     const menuItemElements = menu.map(item => this.renderMenuItem(item));
 
@@ -97,7 +82,7 @@ class CollapsibleMenu extends React.Component {
             <Welcome>
               Welcome, <span>{defaultAddress.address}</span>
             </Welcome>
-            <UserType>{userType}</UserType>
+            <UserType data-digix="Sidebar-UserStatus">{userType}</UserType>
           </ProfileContainer>
         )}
 

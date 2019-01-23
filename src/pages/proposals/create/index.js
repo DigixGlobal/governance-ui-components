@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-import { toBigNumber, parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
@@ -48,6 +48,7 @@ class CreateProposal extends React.Component {
       showPreview: false,
       showConfirmPage: false,
       validForm: false,
+      exceedsLimit: false,
     };
   }
 
@@ -83,13 +84,37 @@ class CreateProposal extends React.Component {
       form[e] = value;
     }
 
-    const validForm = form.milestones && form.milestones.length > 0;
-
-    this.setState({ form: { ...form }, validForm });
+    this.setState({ form: { ...form } }, () => {
+      this.checkFundingLimit();
+    });
   };
 
   setError = error =>
     this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
+
+  checkFundingLimit = () => {
+    const { daoConfig } = this.props;
+    const { form } = this.state;
+
+    const validForm = form.milestones && form.milestones.length > 0;
+
+    const limit = daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
+
+    const totalFunds = this.computeTotalFunds();
+    // console.log({ totalFunds });
+    const exceedsLimit = totalFunds > Number(limit);
+    this.setState({ exceedsLimit, validForm: validForm && !exceedsLimit });
+  };
+
+  computeTotalFunds = () => {
+    const { form } = this.state;
+    if (!form.milestones && form.finalReward) return Number(form.finalReward);
+    else if (!form.milestones && !form.finalReward) return 0;
+
+    const milestoneFunds = (acc, currentValue) => acc + Number(currentValue.fund);
+
+    return Number(form.milestones.reduce(milestoneFunds, 0)) + Number(form.finalReward);
+  };
 
   useStep = step => {
     this.setState({
@@ -195,9 +220,16 @@ class CreateProposal extends React.Component {
   };
 
   renderStep = () => {
-    const { currentStep, form } = this.state;
+    const { currentStep, form, exceedsLimit } = this.state;
     const Step = steps[currentStep];
-    return <Step onChange={this.onChangeHandler} form={form} />;
+    return (
+      <Step
+        onChange={this.onChangeHandler}
+        form={form}
+        daoConfig={this.props.daoConfig}
+        exceedsLimit={exceedsLimit}
+      />
+    );
   };
 
   renderPreview = () => {

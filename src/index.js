@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -72,7 +71,11 @@ export class Governance extends React.Component {
                 isAuthenticated={isAuthenticated}
               />
 
-              <Route path="/kyc/admin" component={withHeaderAndPanel(KycOfficerDashboard)} />
+              <AuthenticatedRoute
+                path="/kyc/admin"
+                component={withHeaderAndPanel(KycOfficerDashboard)}
+                isAuthenticated={isAuthenticated}
+              />
               <Route path="/history" component={withHeaderAndPanel(TransactionHistory)} />
               <Route path="/profile" component={withHeaderAndPanel(Profile)} />
               <Route path="/help" component={withHeaderAndPanel(Help)} />

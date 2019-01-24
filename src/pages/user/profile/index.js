@@ -14,7 +14,8 @@ import {
 } from '@digix/gov-ui/reducers/info-server/actions';
 import { getUserStatus, truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { showHideLockDgdOverlay, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { withFetchUser } from '@digix/gov-ui/api/users';
+import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
+
 import {
   ProfileWrapper,
   Heading,

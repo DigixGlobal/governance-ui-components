@@ -148,7 +148,8 @@ class LockDgd extends React.Component {
 
   handleButtonClick = () => {
     const { dgd } = this.state;
-    const stakeAdded = this.getStake(dgd);
+    const addedStake = this.getStake(dgd);
+    const addedDgd = Number(dgd);
 
     const {
       web3Redux,
@@ -194,7 +195,7 @@ class LockDgd extends React.Component {
       });
 
       if (onSuccess) {
-        onSuccess(stakeAdded);
+        onSuccess({ addedStake, addedDgd });
       }
 
       this.props.getAddressDetails(sourceAddress.address);
@@ -259,10 +260,9 @@ class LockDgd extends React.Component {
     const { dgd, disableLockDgdButton, openError, error } = this.state;
     const { daoDetails } = this.props;
 
-    let phase = 'staking';
-    if (new Date(daoDetails.startOfMainphase * 1000) > Date.now()) {
-      phase = 'main';
-    }
+    const currentTime = Date.now() / 1000;
+    const inLockingPhase = currentTime < Number(daoDetails.startOfMainphase);
+    const phase = inLockingPhase ? 'Staking' : 'Main';
 
     const stake = truncateNumber(this.getStake(dgd));
 

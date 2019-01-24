@@ -66,10 +66,12 @@ class Wallet extends React.Component {
     });
   }
 
-  onLockDgd = addedStake => {
-    let { stake } = this.state;
+  onLockDgd = ({ addedStake, addedDgd }) => {
+    let { lockedDgd, stake } = this.state;
+    lockedDgd += addedDgd;
     stake += addedStake;
-    this.setState({ stake });
+
+    this.setState({ lockedDgd, stake });
   };
 
   onUnlockDgd = amountUnlocked => {

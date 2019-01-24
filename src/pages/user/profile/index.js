@@ -61,9 +61,9 @@ class Profile extends React.Component {
     });
   }
 
-  onLockDgd = amountLocked => {
+  onLockDgd = ({ addedStake }) => {
     let { stake } = this.state;
-    stake += amountLocked;
+    stake += addedStake;
     this.setState({ stake });
   };
 

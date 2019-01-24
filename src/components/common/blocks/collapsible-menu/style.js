@@ -45,7 +45,6 @@ export const Welcome = styled.div`
   color: ${props => props.theme.textPrimary.default.toString()};
   span {
     font-family: 'Futura PT Book';
-    display: block;
     text-overflow: ellipsis;
     overflow: hidden;
     width: 180px;

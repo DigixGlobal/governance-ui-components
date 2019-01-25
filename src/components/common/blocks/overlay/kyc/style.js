@@ -63,6 +63,11 @@ export const PreviewImage = styled.div`
   height: 85%;
   border-radius: ${props => props.theme.borderRadius};
   margin: 2.5rem 0;
+  max-height: 400px;
+
+  img {
+    max-height: inherit;
+  }
 `;
 
 export const PhotoVerification = styled.div`
@@ -148,7 +153,11 @@ export const GuideItem = styled.div`
 `;
 export const Photo = styled.div`
   background: ${props => props.theme.backgroundPrimary.default.toString()};
-  width: 100%;
+  max-height: 400px;
+
+  img {
+    max-height: inherit;
+  }
 `;
 
 export const ErrorMessage = styled.span`

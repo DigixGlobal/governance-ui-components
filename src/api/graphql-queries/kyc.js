@@ -6,7 +6,7 @@ import { Mutation, Query } from 'react-apollo';
 
 const fetchKycFormOptions = gql`
   query fetchKycFormOptions {
-    addressCountry: countries {
+    birthCountry: countries {
       text: name
       value
     }

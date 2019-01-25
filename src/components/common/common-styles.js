@@ -231,6 +231,14 @@ export const Label = styled.label`
   font-family: 'Futura PT Book', sans-serif;
   margin-bottom: 0.5rem;
 
+  span {
+    ${props =>
+      props.req &&
+      css`
+        color: ${props.theme.alertMessage.error.default.toString()};
+      `};
+  }
+
   ${props =>
     props.error &&
     css`

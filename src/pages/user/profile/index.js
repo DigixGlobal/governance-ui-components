@@ -126,6 +126,7 @@ class Profile extends React.Component {
   showKycOverlay() {
     this.props.showRightPanel({
       component: <KycOverlay />,
+      large: true,
       show: true,
     });
   }

@@ -110,20 +110,22 @@ class KycOverlayPhotoUpload extends React.Component {
           </PhotoVerification>
           <PhotoVerification>
             <MediaContainer>
-              <FieldGroup column>
-                <Label>
-                  Image must be in JPEG or PNG format &amp; file size must be lesser than 10MB.
-                </Label>
-                <Button
-                  kind="upload"
-                  accept="image/*"
-                  secondary
-                  fluid
-                  large
-                  multiple
-                  type="file"
-                  caption="Upload Photo"
-                />
+              <FieldGroup>
+                <FieldItem>
+                  <Label>
+                    Image must be in JPEG or PNG format &amp; file size must be lesser than 10MB.
+                  </Label>
+                  <Button
+                    kind="upload"
+                    accept="image/*"
+                    secondary
+                    fluid
+                    large
+                    multiple
+                    type="file"
+                    caption="Upload Photo"
+                  />
+                </FieldItem>
               </FieldGroup>
 
               <PhotoViewer>

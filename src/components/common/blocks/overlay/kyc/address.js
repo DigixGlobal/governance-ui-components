@@ -57,18 +57,20 @@ class KycOverlayAddress extends React.Component {
           </div>
         </WizardHeader>
         <FormSection>
-          <FieldItem style={{ paddingRight: '2rem' }}>
-            <Label>Country of Residence</Label>
-            <Select items={this.OptionsCountryResidence} />
-          </FieldItem>
-          <FieldItem style={{ paddingRight: '2rem' }}>
-            <Label>Address</Label>
-            <Input />
-          </FieldItem>
-          <FieldItem style={{ paddingRight: '2rem' }}>
-            <Label>Address Line 2 (Optional)</Label>
-            <Input />
-          </FieldItem>
+          <FieldGroup column>
+            <FieldItem>
+              <Label>Country of Residence</Label>
+              <Select items={this.OptionsCountryResidence} />
+            </FieldItem>
+            <FieldItem>
+              <Label>Address</Label>
+              <Input />
+            </FieldItem>
+            <FieldItem>
+              <Label>Address Line 2 (Optional)</Label>
+              <Input />
+            </FieldItem>
+          </FieldGroup>
           <FieldGroup>
             <FieldItem col4>
               <Label>City</Label>
@@ -84,7 +86,7 @@ class KycOverlayAddress extends React.Component {
             </FieldItem>
           </FieldGroup>
           <FieldGroup>
-            <FieldItem col6>
+            <FieldItem>
               <FieldGroup column>
                 <FieldItem>
                   <Label>Residence Proof</Label>
@@ -107,7 +109,7 @@ class KycOverlayAddress extends React.Component {
                 </FieldItem>
               </FieldGroup>
             </FieldItem>
-            <FieldItem col6>
+            <FieldItem>
               <PreviewImage>I.D IMAGE HOLDER</PreviewImage>
             </FieldItem>
           </FieldGroup>

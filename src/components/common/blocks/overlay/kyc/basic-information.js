@@ -105,61 +105,61 @@ class KycOverlayBasicInformation extends React.Component {
         </WizardHeader>
         <FormSection>
           <FieldGroup>
-            <FieldItem col6>
+            <FieldItem>
               <Label error>First Name</Label>
               <Input error />
               <ErrorMessage>Please enter a valid first name</ErrorMessage>
             </FieldItem>
-            <FieldItem col6>
+            <FieldItem>
               <Label>Last Name</Label>
               <Input />
             </FieldItem>
           </FieldGroup>
           <FieldGroup>
-            <FieldItem col6>
-              <FieldGroup style={{ marginRight: '-2rem' }}>
-                <FieldItem col6>
+            <FieldItem>
+              <FieldGroup>
+                <FieldItem>
                   <Label>Date Of Birth</Label>
                   <Input />
                 </FieldItem>
-                <FieldItem col6>
+                <FieldItem>
                   <Label>Gender</Label>
                   <Select items={this.OptionsGender} />
                 </FieldItem>
               </FieldGroup>
             </FieldItem>
-            <FieldItem col6>
+            <FieldItem>
               <Label>Country Of Birth</Label>
               <Select items={this.OptionsCountry} />
             </FieldItem>
           </FieldGroup>
           <FieldGroup>
-            <FieldItem col6>
+            <FieldItem>
               <Label>Nationality</Label>
               <Select items={this.OptionsNationality} />
             </FieldItem>
-            <FieldItem col6>
+            <FieldItem>
               <Label>Phone Number (Including Country Code)</Label>
               <Input />
             </FieldItem>
           </FieldGroup>
           <FieldGroup>
-            <FieldItem col4>
+            <FieldItem>
               <Label>Employment Status</Label>
               <Select items={this.OptionsEmployment} />
             </FieldItem>
-            <FieldItem col4>
+            <FieldItem>
               <Label>Industry</Label>
               <Select items={this.OptionsIndustry} />
             </FieldItem>
-            <FieldItem col4>
+            <FieldItem>
               <Label>Income Range Per Annum (USD)</Label>
               <Select items={this.OptionsSalary} />
             </FieldItem>
           </FieldGroup>
 
           <FieldGroup>
-            <FieldItem col6>
+            <FieldItem>
               <FieldGroup column>
                 <FieldItem>
                   <Label>National I.D (Must Match Provided Nationality)</Label>
@@ -180,19 +180,19 @@ class KycOverlayBasicInformation extends React.Component {
                     caption="Upload National I.D"
                   />
                 </FieldItem>
-                <FieldGroup>
-                  <FieldItem col6>
-                    <Label>I.D Expiration Date</Label>
-                    <Input />
-                  </FieldItem>
-                  <FieldItem col6 style={{ marginRight: '0' }}>
-                    <Label>I.D Number</Label>
-                    <Input />
-                  </FieldItem>
-                </FieldGroup>
+              </FieldGroup>
+              <FieldGroup>
+                <FieldItem>
+                  <Label>I.D Expiration Date</Label>
+                  <Input />
+                </FieldItem>
+                <FieldItem>
+                  <Label>I.D Number</Label>
+                  <Input />
+                </FieldItem>
               </FieldGroup>
             </FieldItem>
-            <FieldItem col6>
+            <FieldItem>
               <PreviewImage>I.D IMAGE HOLDER</PreviewImage>
             </FieldItem>
           </FieldGroup>

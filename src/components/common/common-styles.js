@@ -184,6 +184,7 @@ export const TransparentOverlay = styled.div`
     props.kyc &&
     css`
       width: 25%;
+      ${media.tablet`width: 0%`};
     `}
 
   ${media.tablet`width: 40%`}
@@ -201,6 +202,8 @@ export const DrawerContainer = styled.div`
       overflow-y: scroll;
       width: 75%;
       background: ${props.theme.backgroundTertiary.lightest.toString()};
+
+      ${media.tablet`width: 100%`};
     `}
   ${media.tablet`width: 60%`}
   ${media.mobile`width: 100%`}
@@ -224,7 +227,7 @@ export const Notifications = styled.div`
     `};
 `;
 
-export const Label = styled.div`
+export const Label = styled.label`
   font-family: 'Futura PT Book', sans-serif;
   margin-bottom: 0.5rem;
 

@@ -44,33 +44,15 @@ export const Title = styled(H3)`
 export const FormSection = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: -2rem;
 `;
 export const FieldGroup = styled.div`
   display: flex;
   flex-direction: ${props => (props.column ? 'column' : '')};
-  margin: 0;
+  margin: 0 -1rem;
 `;
 export const FieldItem = styled.div`
-  margin: 0 2rem 2rem 0;
-  width: 100%;
-  ${props =>
-    props.col6 &&
-    css`
-      width: 50%;
-    `};
-
-  ${props =>
-    props.col4 &&
-    css`
-      width: 33.33%;
-    `};
-
-  ${props =>
-    props.col3 &&
-    css`
-      width: 25%;
-    `};
+  margin: 0 1rem 2rem 1rem;
+  flex: 1;
 
   ${media.desktop`
   
@@ -93,12 +75,13 @@ export const PhotoVerification = styled.div`
   border: 1px solid ${props => props.theme.borderColor.default.toString()};
   border-radius: ${props => props.theme.borderRadius};
   padding: 3rem;
-  margin: 2rem 2rem 0 0;
+  margin: 2rem 0 0 0;
 
   ${props =>
     props.webcam &&
     css`
-      padding: inherit 8rem;
+      padding-left: 8rem;
+      padding-right: 8rem;
     `};
 `;
 

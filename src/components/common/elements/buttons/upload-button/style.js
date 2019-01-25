@@ -15,7 +15,7 @@ export const UploadButton = styled.label`
   ${ButtonGlobalStyles};
   display: inline-block;
   margin-left: 0;
-  margin-top: 0;
+  margin-top: 0.5rem;
   border-radius: ${props => props.theme.borderRadius};
   color: ${props => props.theme.buttonTextPrimary.default.toString()};
 

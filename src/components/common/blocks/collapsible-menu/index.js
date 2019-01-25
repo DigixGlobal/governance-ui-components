@@ -26,13 +26,13 @@ const DEFAULT_MENU = [
     kind: 'wallet',
     caption: 'Wallet',
     url: '/wallet',
-    public: true,
+    public: false,
   },
   {
     kind: 'profile',
     caption: 'Profile',
     url: '/profile',
-    public: true,
+    public: false,
   },
   {
     kind: 'history',

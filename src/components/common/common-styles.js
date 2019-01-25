@@ -181,7 +181,7 @@ export const TransparentOverlay = styled.div`
   width: 75%;
 
   ${props =>
-    props.kyc &&
+    props.large &&
     css`
       width: 25%;
       ${media.tablet`width: 0%`};
@@ -197,7 +197,7 @@ export const DrawerContainer = styled.div`
   width: 25%;
   
   ${props =>
-    props.kyc &&
+    props.large &&
     css`
       overflow-y: scroll;
       width: 75%;

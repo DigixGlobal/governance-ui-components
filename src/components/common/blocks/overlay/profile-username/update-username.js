@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { withChangeUsername } from '@digix/gov-ui/api/users';
+import { withChangeUsername } from '@digix/gov-ui/api/graphql-queries/users';
 
 class UpdateUsernameButton extends React.Component {
   render() {

@@ -155,9 +155,7 @@ class ParentThread extends React.Component {
           uid={uid}
           userPoints={userPoints}
         />
-        {showEditor && (
-          <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} uid={uid} />
-        )}
+        {showEditor && <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} />}
         {this.renderThreadReplies(thread.replies)}
       </ParentCommentItem>
     );

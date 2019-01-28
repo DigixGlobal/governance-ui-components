@@ -195,14 +195,14 @@ class CommentThread extends React.Component {
   };
 
   render() {
-    const { rootCommentId, uid } = this.props;
+    const { rootCommentId } = this.props;
     const { threads } = this.state;
     const noComments = !rootCommentId || !threads || threads.data.length === 0;
 
     return (
       <ThreadedComments>
         <Title>Discussions</Title>
-        <CommentTextEditor uid={uid} addComment={this.addThread} />
+        <CommentTextEditor addComment={this.addThread} />
         {noComments && <p>There are no comments to show.</p>}
         {!noComments && (
           <div>

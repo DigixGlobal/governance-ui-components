@@ -2,17 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import EmailOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-email/index';
+import KycOverlay from '@digix/gov-ui/components/common/blocks/overlay/kyc/index';
+import UsernameOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-username/index';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { DEFAULT_STAKE_PER_DGD } from '@digix/gov-ui/constants';
-import { getDaoConfig, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import {
+  getAddressDetails,
+  getDaoConfig,
+  getDaoDetails,
+} from '@digix/gov-ui/reducers/info-server/actions';
+import { getUserStatus, truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { showHideLockDgdOverlay, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
 import {
   ProfileWrapper,
   Heading,
   UserInfo,
-  WalletInfo,
-  UserStatus,
+  UserItem,
+  UserLabel,
+  UserData,
   RewardSummary,
   RewardItem,
   Label,
@@ -32,18 +42,29 @@ import RedeemBadge from './buttons/redeem-badge';
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.STATUS = {
-      moderator: 'Moderator',
-      participant: 'Participant',
-      pastParticipant: 'Past Participant',
-      guest: 'Have not participated',
+    this.state = {
+      hasPendingLockTransaction: false,
     };
   }
 
   componentDidMount() {
-    const { getDaoConfigAction, getDaoDetailsAction } = this.props;
-    Promise.all([getDaoConfigAction(), getDaoDetailsAction()]);
+    const {
+      AddressDetails,
+      getAddressDetailsAction,
+      getDaoConfigAction,
+      getDaoDetailsAction,
+    } = this.props;
+
+    getDaoConfigAction();
+    getDaoDetailsAction();
+    getAddressDetailsAction(AddressDetails.data.address);
   }
+
+  onLockDgd = () => {
+    this.setState({
+      hasPendingLockTransaction: true,
+    });
+  };
 
   getStakePerDgd = () => {
     const { DaoDetails } = this.props;
@@ -67,7 +88,7 @@ class Profile extends React.Component {
     const minReputation = Number(config.CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR);
     const requiredReputation = Math.max(0, minReputation - currentReputation);
 
-    const currentStake = Number(address.lockedDgdStake);
+    const currentStake = this.state.stake;
     const minStake = Number(config.CONFIG_MINIMUM_DGD_FOR_MODERATOR);
     const stakePerDgd = this.getStakePerDgd();
     const requiredStake = stakePerDgd ? Math.max(0, (minStake - currentStake) / stakePerDgd) : 0;
@@ -80,44 +101,86 @@ class Profile extends React.Component {
     return requirements;
   };
 
-  getStatus = () => {
-    const { AddressDetails } = this.props;
-    const address = AddressDetails.data;
+  showSetUsernameOverlay() {
+    this.props.showRightPanel({
+      component: <UsernameOverlay />,
+      show: true,
+    });
+  }
 
-    if (address.isModerator) {
-      return this.STATUS.moderator;
-    } else if (address.isParticipant) {
-      return this.STATUS.participant;
-    } else if (address.lastParticipatedQuarter > 0) {
-      return this.STATUS.pastParticipant;
-    }
+  showSetEmailOverlay() {
+    const { email } = this.props.userData;
+    this.props.showRightPanel({
+      component: <EmailOverlay currentEmail={email} />,
+      show: true,
+    });
+  }
 
-    return this.STATUS.guest;
-  };
+  showKycOverlay() {
+    this.props.showRightPanel({
+      component: <KycOverlay />,
+      large: true,
+      show: true,
+    });
+  }
 
   render() {
+    const { displayName, email } = this.props.userData;
     const { AddressDetails } = this.props;
-    const address = AddressDetails.data;
+    const { hasPendingLockTransaction } = this.state;
 
-    const status = this.getStatus();
-    const stake = truncateNumber(address.lockedDgdStake);
+    const address = AddressDetails.data;
+    let stake = Number(address.lockedDgdStake);
+    const usernameIsSet = this.props.userData.username;
+
+    const status = getUserStatus(address);
     const moderatorRequirements = this.getModeratorRequirements();
     const hasUnmetModerationRequirements =
       !address.isModerator &&
       (moderatorRequirements.reputation > 0 || moderatorRequirements.stake > 0);
 
+    stake = truncateNumber(stake);
+
     return (
       <ProfileWrapper>
         <Heading>Profile</Heading>
         <UserInfo>
-          <WalletInfo>
-            <span>User:</span>
-            <span data-digix="Profile-Address">{address.address}</span>
-          </WalletInfo>
-          <UserStatus>
-            <span>Status:</span>
-            <span data-digix="Profile-Status">{status}</span>
-          </UserStatus>
+          <UserItem>
+            <UserLabel>User:</UserLabel>
+            <UserData data-digix="Profile-UserName">{displayName}</UserData>
+            {!usernameIsSet && (
+              <Button
+                primary
+                icon
+                data-digix="Profile-UserName-Cta"
+                onClick={() => this.showSetUsernameOverlay()}
+              >
+                <Icon kind="plus" />
+                Set Username
+              </Button>
+            )}
+          </UserItem>
+          <UserItem>
+            <UserLabel>Status:</UserLabel>
+            <UserData data-digix="Profile-Status">{status}</UserData>
+          </UserItem>
+          <UserItem>
+            <UserLabel>Email:</UserLabel>
+            {email && <UserData data-digix="Profile-Email">{email}</UserData>}
+            <Button
+              primary
+              icon
+              data-digix="Profile-Email-Cta"
+              onClick={() => this.showSetEmailOverlay()}
+            >
+              <Icon kind="plus" />
+              Set Email
+            </Button>
+          </UserItem>
+          <UserItem>
+            <UserLabel>Address:</UserLabel>
+            <UserData data-digix="Profile-Address">{address.address}</UserData>
+          </UserItem>
         </UserInfo>
 
         <RewardSummary>
@@ -172,7 +235,12 @@ class Profile extends React.Component {
             <Data data-digix="Profile-KycStatus">Not Verified</Data>
             <Label>&nbsp;</Label>
             <Actions>
-              <Button primary data-digix="Profile-KycStatus-Cta">
+              <Button
+                primary
+                disabled // TODO: remove from shadow when submit KYC is done
+                data-digix="Profile-KycStatus-Cta"
+                onClick={() => this.showKycOverlay()}
+              >
                 Submit KYC
               </Button>
             </Actions>
@@ -201,7 +269,12 @@ class Profile extends React.Component {
             </Criteria>
             <Actions>
               <RedeemBadge />
-              <Button primary data-digix="Profile-LockMoreDgd-Cta">
+              <Button
+                primary
+                data-digix="Profile-LockMoreDgd-Cta"
+                disabled={hasPendingLockTransaction}
+                onClick={() => this.props.showHideLockDgdOverlay(true, this.onLockDgd)}
+              >
                 Lock More DGD
               </Button>
             </Actions>
@@ -212,19 +285,27 @@ class Profile extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, shape, string } = PropTypes;
 
 Profile.propTypes = {
   AddressDetails: object.isRequired,
   DaoConfig: object,
   DaoDetails: object,
+  getAddressDetailsAction: func.isRequired,
   getDaoConfigAction: func.isRequired,
   getDaoDetailsAction: func.isRequired,
+  showHideLockDgdOverlay: func.isRequired,
+  showRightPanel: func.isRequired,
+  userData: shape({
+    displayName: string,
+    email: string,
+  }),
 };
 
 Profile.defaultProps = {
   DaoConfig: undefined,
   DaoDetails: undefined,
+  userData: undefined,
 };
 
 const mapStateToProps = ({ infoServer }) => ({
@@ -233,10 +314,15 @@ const mapStateToProps = ({ infoServer }) => ({
   DaoDetails: infoServer.DaoDetails,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getDaoConfigAction: getDaoConfig,
-    getDaoDetailsAction: getDaoDetails,
-  }
-)(Profile);
+export default withFetchUser(
+  connect(
+    mapStateToProps,
+    {
+      getAddressDetailsAction: getAddressDetails,
+      getDaoConfigAction: getDaoConfig,
+      getDaoDetailsAction: getDaoDetails,
+      showHideLockDgdOverlay,
+      showRightPanel,
+    }
+  )(Profile)
+);

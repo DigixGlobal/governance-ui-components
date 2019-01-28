@@ -178,8 +178,15 @@ export const TransparentOverlay = styled.div`
   background-color: #000;
   opacity: 0.75;
   transition: ${props => props.theme.transition};
-
   width: 75%;
+
+  ${props =>
+    props.large &&
+    css`
+      width: 25%;
+      ${media.tablet`width: 0%`};
+    `}
+
   ${media.tablet`width: 40%`}
   ${media.mobile`width: 0%`}
 `;
@@ -187,8 +194,17 @@ export const TransparentOverlay = styled.div`
 export const DrawerContainer = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
   padding: 5rem;
-
   width: 25%;
+  
+  ${props =>
+    props.large &&
+    css`
+      overflow-y: scroll;
+      width: 75%;
+      background: ${props.theme.backgroundTertiary.lightest.toString()};
+
+      ${media.tablet`width: 100%`};
+    `}
   ${media.tablet`width: 60%`}
   ${media.mobile`width: 100%`}
 `;
@@ -198,22 +214,39 @@ export const Notifications = styled.div`
   font-family: 'Futura PT Book', sans-serif;
   border-radius: ${props => props.theme.borderRadius};
   margin-bottom: 3rem;
+
+  span {
+    font-family: 'Futura PT Medium', sans-serif;
+  }
   ${props =>
     props.info &&
     css`
       background: ${props.theme.textSecondary.fade.toString()};
       border: 1px solid ${props.theme.alertMessage.info.light.toString()};
       color: ${props.theme.textSecondary.default.toString()};
-      font-family: 'Futura PT Medium', sans-serif;
     `};
 `;
 
-export const Label = styled.div`
+export const Label = styled.label`
   font-family: 'Futura PT Book', sans-serif;
+  margin-bottom: 0.5rem;
+
+  ${props =>
+    props.error &&
+    css`
+      color: ${props.theme.alertMessage.error.default.toString()};
+    `};
 `;
 
 export const Hint = styled.div`
   color: ${props => props.theme.textDefault.light.toString()};
   font-family: 'Futura PT Book', sans-serif;
   font-size: 1.4rem;
+  ${props =>
+    props.error &&
+    css`
+      color: ${props.theme.alertMessage.error.default.toString()};
+    `};
 `;
+
+export const FieldItem = styled.div``;

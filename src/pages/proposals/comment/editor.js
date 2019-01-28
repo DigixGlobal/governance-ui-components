@@ -8,6 +8,7 @@ import {
   EditorContainer,
   PostCommentButton,
 } from '@digix/gov-ui/pages/proposals/comment/style';
+import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 
 export default class CommentTextEditor extends React.Component {
   constructor(props) {
@@ -37,7 +38,6 @@ export default class CommentTextEditor extends React.Component {
   };
 
   render() {
-    const { uid } = this.props;
     const { content } = this.state;
     const isContentEmpty = content === '';
 
@@ -45,7 +45,8 @@ export default class CommentTextEditor extends React.Component {
       <EditorContainer>
         <CommentEditor>
           <Author>
-            Comment as <span>{uid}</span>
+            <span>Comment as&nbsp;</span>
+            {renderDisplayName('CommentEditor-DisplayName')}
           </Author>
           <CommentTextArea
             onChange={this.onChange}
@@ -72,10 +73,8 @@ const { func, string } = PropTypes;
 CommentTextEditor.propTypes = {
   addComment: func.isRequired,
   callback: func, // to call after a comment is submitted
-  uid: string,
 };
 
 CommentTextEditor.defaultProps = {
   callback: undefined,
-  uid: '',
 };

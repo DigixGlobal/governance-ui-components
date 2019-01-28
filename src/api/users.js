@@ -1,5 +1,5 @@
-import { requestFromApi } from '@digix/gov-ui/api';
 import { INFO_SERVER } from '@digix/gov-ui/reducers/info-server/constants';
+import { requestFromApi } from '@digix/gov-ui/api';
 
 export const UsersApi = {
   // users must be an array of addresses

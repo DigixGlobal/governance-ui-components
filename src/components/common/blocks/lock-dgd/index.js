@@ -109,17 +109,21 @@ class LockDgd extends React.Component {
 
   getStake = dgd => {
     const { daoDetails } = this.props;
-    const { startOfMainphase, startOfNextQuarter, startOfQuarter } = daoDetails;
-    const currentTime = Date.now() / 1000; // daoDetails have time set to seconds instead of milliseconds
+    let { startOfMainphase, startOfNextQuarter, startOfQuarter } = daoDetails;
+    const currentTime = Date.now() / 1000;
 
-    let stake = dgd;
+    startOfMainphase = Number(startOfMainphase);
+    startOfNextQuarter = Number(startOfNextQuarter);
+    startOfQuarter = Number(startOfQuarter);
+
+    let stake = Number(dgd);
     if (currentTime >= startOfMainphase) {
       stake =
         (dgd * (startOfNextQuarter - startOfQuarter - (currentTime - startOfQuarter))) /
         (startOfNextQuarter - startOfMainphase);
     }
 
-    return truncateNumber(stake);
+    return stake;
   };
 
   setError = error =>
@@ -143,13 +147,17 @@ class LockDgd extends React.Component {
   };
 
   handleButtonClick = () => {
+    const { dgd } = this.state;
+    const addedStake = this.getStake(dgd);
+    const addedDgd = Number(dgd);
+
     const {
       web3Redux,
       sendTransactionToDaoServer: sendTransactionToDaoServerAction,
       challengeProof,
       addresses,
     } = this.props;
-    const { dgd } = this.state;
+
     const { abi, address } = getContract(DaoStakeLocking, network);
     const contract = web3Redux
       .web3(network)
@@ -180,10 +188,15 @@ class LockDgd extends React.Component {
     };
 
     const onTransactionSuccess = txHash => {
+      const { onSuccess } = this.props.lockDgdOverlay;
       this.props.showHideAlert({
         message: 'DGD Locked',
         txHash,
       });
+
+      if (onSuccess) {
+        onSuccess({ addedStake, addedDgd });
+      }
 
       this.props.getAddressDetails(sourceAddress.address);
     };
@@ -247,12 +260,11 @@ class LockDgd extends React.Component {
     const { dgd, disableLockDgdButton, openError, error } = this.state;
     const { daoDetails } = this.props;
 
-    let phase = 'staking';
-    if (new Date(daoDetails.startOfMainphase * 1000) > Date.now()) {
-      phase = 'main';
-    }
+    const currentTime = Date.now() / 1000;
+    const inLockingPhase = currentTime < Number(daoDetails.startOfMainphase);
+    const phase = inLockingPhase ? 'Staking' : 'Main';
 
-    const stake = this.getStake(dgd);
+    const stake = truncateNumber(this.getStake(dgd));
 
     return (
       <DrawerContainer>

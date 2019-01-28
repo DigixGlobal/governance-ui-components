@@ -11,7 +11,7 @@ export const ButtonGlobalStyles = css`
   text-decoration: none;
   text-transform: uppercase;
   transition: ${props => props.theme.transition};
-  width: ${props => (props.width ? '' : 'inherit')};
+  width: ${props => (props.width ? '' : 'auto')};
   ${props =>
     props.fluid &&
     css`

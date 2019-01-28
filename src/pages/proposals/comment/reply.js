@@ -132,7 +132,7 @@ class CommentReply extends React.Component {
             userPoints={userPoints}
           />
           {showEditor && (
-            <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} uid={uid} />
+            <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} />
           )}
 
           {renderThreadReplies(comment.replies)}

@@ -14,7 +14,8 @@ import {
 } from '@digix/gov-ui/reducers/info-server/actions';
 import { getUserStatus, truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { showHideLockDgdOverlay, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { withFetchUser } from '@digix/gov-ui/api/users';
+import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
+
 import {
   ProfileWrapper,
   Heading,
@@ -42,7 +43,7 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      stake: props.AddressDetails.data.lockedDgdStake,
+      hasPendingLockTransaction: false,
     };
   }
 
@@ -56,21 +57,13 @@ class Profile extends React.Component {
 
     getDaoConfigAction();
     getDaoDetailsAction();
-    getAddressDetailsAction(AddressDetails.data.address).then(() => {
-      this.setStateFromAddressDetails();
-    });
+    getAddressDetailsAction(AddressDetails.data.address);
   }
 
-  onLockDgd = ({ addedStake }) => {
-    let { stake } = this.state;
-    stake += addedStake;
-    this.setState({ stake });
-  };
-
-  setStateFromAddressDetails = () => {
-    const address = this.props.AddressDetails.data;
-    const stake = Number(address.lockedDgdStake);
-    this.setState({ stake });
+  onLockDgd = () => {
+    this.setState({
+      hasPendingLockTransaction: true,
+    });
   };
 
   getStakePerDgd = () => {
@@ -134,8 +127,10 @@ class Profile extends React.Component {
   render() {
     const { displayName, email } = this.props.userData;
     const { AddressDetails } = this.props;
-    let { stake } = this.state;
+    const { hasPendingLockTransaction } = this.state;
+
     const address = AddressDetails.data;
+    let stake = Number(address.lockedDgdStake);
     const usernameIsSet = this.props.userData.username;
 
     const status = getUserStatus(address);
@@ -277,6 +272,7 @@ class Profile extends React.Component {
               <Button
                 primary
                 data-digix="Profile-LockMoreDgd-Cta"
+                disabled={hasPendingLockTransaction}
                 onClick={() => this.props.showHideLockDgdOverlay(true, this.onLockDgd)}
               >
                 Lock More DGD

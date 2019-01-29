@@ -15,7 +15,7 @@ import {
 
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import {
-  setUserAddress,
+  setAuthentationStatus,
   showHideAlert,
   showSignChallenge,
   showHideWalletOverlay,
@@ -54,7 +54,6 @@ export class Wallet extends React.Component {
       }
 
       if (hasChallenge && !hasProof) {
-        // this.props.showSignChallenge(true);
         const message = Challenge.data.challenge;
         const network = this.props.defaultNetworks[0];
         const caption =
@@ -81,7 +80,11 @@ export class Wallet extends React.Component {
               message,
               signature: signature.signedTx,
             })
-            .then(this.setState({ proving: true }));
+            .then(
+              this.setState({ proving: true }, () => {
+                this.props.setAuthentationStatus(true);
+              })
+            );
         });
       } else {
         this.props.showSignChallenge(false);
@@ -138,7 +141,7 @@ Wallet.propTypes = {
   getChallengeAction: func.isRequired,
   showSigningModal: func.isRequired,
   showHideAlert: func.isRequired,
-
+  setAuthentationStatus: func.isRequired,
   showSignChallenge: func.isRequired,
   showHideWalletOverlay: func.isRequired,
   proveChallengeAction: func.isRequired,
@@ -161,7 +164,7 @@ const actions = {
   proveChallengeAction: proveChallenge,
   showSigningModal: showMsgSigningModal,
   showHideAlert,
-  setUserAddress,
+  setAuthentationStatus,
   showSignChallenge,
   showHideWalletOverlay,
 };

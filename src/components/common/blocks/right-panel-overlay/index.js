@@ -12,16 +12,17 @@ const PanelOverlay = props => {
   const { showPanel } = props;
   if (!showPanel || !showPanel.show) return null;
 
-  const closePanel = () => {
-    props.showRightPanel({ show: false });
-  };
-
   const toggleBodyOverflow = () => {
     if (!showPanel || !showPanel.show) {
       document.body.classList.remove('modal-is-open');
     } else {
       document.body.classList.add('modal-is-open');
     }
+  };
+
+  const closePanel = () => {
+    document.body.classList.remove('modal-is-open');
+    props.showRightPanel({ show: false });
   };
 
   toggleBodyOverflow();

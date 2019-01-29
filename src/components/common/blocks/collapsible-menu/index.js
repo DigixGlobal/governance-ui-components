@@ -47,6 +47,12 @@ const DEFAULT_MENU = [
     url: '/help',
     public: true,
   },
+  {
+    kind: 'product',
+    caption: 'KYC Dashboard',
+    url: '/kyc/admin',
+    public: true,
+  },
 ];
 
 class CollapsibleMenu extends React.Component {

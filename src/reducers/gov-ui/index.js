@@ -17,6 +17,7 @@ const defaultState = {
   },
   configPreProposalCollateral: undefined,
   addressMaxAllowance: undefined,
+  isAuthenticated: false,
 };
 
 export default function(state = defaultState, action) {
@@ -83,6 +84,11 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         addressMaxAllowance: action.payload,
+      };
+    case actions.SET_AUTHENTICATION_STATUS:
+      return {
+        ...state,
+        isAuthenticated: action.payload,
       };
 
     default:

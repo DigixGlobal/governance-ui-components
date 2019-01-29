@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
@@ -22,6 +23,7 @@ import TransactionHistory from '@digix/gov-ui/pages/user/history';
 import Profile from '@digix/gov-ui/pages/user/profile';
 import Help from '@digix/gov-ui/pages/help';
 import Wallet from '@digix/gov-ui/pages/user/wallet';
+import KycOfficerDashboard from '@digix/gov-ui/pages/kyc/officer';
 
 import lightTheme from '@digix/gov-ui/theme/light';
 
@@ -33,39 +35,50 @@ registerReducers({
   govUI: { src: govUiReducer },
 });
 
-// const ParticipantsRoute = ({ component: Component, isParticipant, ...rest }) => (
-//   <Route
-//     {...rest}
-//     render={props => (isParticipant ? <Component {...props} /> : <Redirect to="/login" />)}
-//   />
-// );
+// eslint-disable-next-line
+const AuthenticatedRoute = ({ component: Component, isAuthenticated, ...rest }) => (
+  <Route
+    {...rest}
+    render={props => (isAuthenticated ? <Component {...props} /> : <Redirect to="/" />)}
+  />
+);
 export class Governance extends React.Component {
   render() {
-    const { addressDetails } = this.props;
+    const { isAuthenticated } = this.props;
     return (
       <GraphqlProvider>
         <HashRouter>
           <ThemeProvider theme={lightTheme}>
             <Switch>
-              {/* {addressDetails.data && [ */}
-              <Route
+              <AuthenticatedRoute
                 path="/proposals/create"
-                key="r-1"
                 component={withHeaderAndPanel(CreateProposals)}
-                isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
+                isAuthenticated={isAuthenticated}
               />
-              <Route
+              <AuthenticatedRoute
                 path="/proposals/edit"
-                key="r-2"
                 component={withHeaderAndPanel(EditProposal)}
-                isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
+                isAuthenticated={isAuthenticated}
               />
-              {/* , // ]} */}
-              <Route path="/proposals" component={withHeaderAndPanel(Proposals)} />
+              <AuthenticatedRoute
+                path="/proposals"
+                component={withHeaderAndPanel(Proposals)}
+                isAuthenticated={isAuthenticated}
+              />
+              <AuthenticatedRoute
+                path="/wallet"
+                component={withHeaderAndPanel(Wallet)}
+                isAuthenticated={isAuthenticated}
+              />
+
+              <AuthenticatedRoute
+                path="/kyc/admin"
+                component={withHeaderAndPanel(KycOfficerDashboard)}
+                isAuthenticated={isAuthenticated}
+              />
               <Route path="/history" component={withHeaderAndPanel(TransactionHistory)} />
               <Route path="/profile" component={withHeaderAndPanel(Profile)} />
               <Route path="/help" component={withHeaderAndPanel(Help)} />
-              <Route path="/wallet" component={withHeaderAndPanel(Wallet)} />
               <Route path="/" component={withHeaderAndPanel(LandingPage)} />
             </Switch>
           </ThemeProvider>
@@ -76,16 +89,16 @@ export class Governance extends React.Component {
 }
 
 Governance.propTypes = {
-  addressDetails: PropTypes.object,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
-Governance.defaultProps = {
-  addressDetails: undefined,
-};
+export default withRouter(
+  connect(
+    ({ govUI: { isAuthenticated } }) => ({
+      isAuthenticated,
+    }),
+    {}
+  )(Governance)
+);
 
-// export default connect(
-//   ({ infoServer: { AddressDetails } }) => ({ addressDetails: AddressDetails }),
-//   {}
-// )(Governance);
-
-export default Governance;
+// export default Governance;

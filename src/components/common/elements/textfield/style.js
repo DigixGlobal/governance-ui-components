@@ -41,6 +41,12 @@ export const SyledInput = styled.input.attrs({
     css`
       border: 1px solid ${props.theme.alertMessage.error.default.toString()};
     `};
+
+  ${props =>
+    props.disabled &&
+    css`
+      background: ${props.theme.backgroundTertiary.lighter.toString()};
+    `};
 `;
 
 export const Adornment = styled.div`

@@ -14,6 +14,13 @@ export const RoundBtn = styled(Button)`
   }
 
   ${props =>
+    props.active &&
+    css`
+      background: ${props.theme.buttonBgHoverPrimary.default.toString()};
+      color: ${props.theme.buttonTextPrimaryReverse.default.toString()};
+    `};
+
+  ${props =>
     props.primary &&
     css`
       background: ${props.theme.buttonBgPrimary.default.toString()};

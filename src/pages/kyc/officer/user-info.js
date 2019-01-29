@@ -1,246 +1,253 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
-import Icon from '@digix/gov-ui/components/common/elements/icons/';
+import Toggle from '@digix/gov-ui/components/common/elements/toggle';
 
 import { Container, Caption, Value, ValueWrapper } from './style';
 
-const UserInfo = props => {
-  const { user, header, approving } = props;
-  return (
-    <Container>
-      <h3>{`${header} ${user.first_name} ${user.last_name}`}</h3>
-      <br />
-      {user.approved && (
-        <ValueWrapper>
-          <Caption>Approved</Caption>
-          <Value>
-            <Icon kind={user.approved ? 'check' : 'XMark'} />
-          </Value>
-        </ValueWrapper>
-      )}
+import { showStatusIcon } from './constants';
 
-      {user.user_id && (
-        <ValueWrapper>
-          <Caption>User ID</Caption>
-          <Value>{user.user_id}</Value>
-        </ValueWrapper>
-      )}
-      {user.email !== undefined && (
-        <ValueWrapper>
-          <Caption>Email</Caption>
-          <Value>{user.email}</Value>
-        </ValueWrapper>
-      )}
+import ApproveKyc from './approve';
+import RejectKyc from './reject';
 
-      {user.created_at !== undefined && (
-        <ValueWrapper>
-          <Caption>Created</Caption>
-          <Value>{moment(user.created_at).format('YYYY-MM-DD HH:mm')}</Value>
-        </ValueWrapper>
-      )}
-      {user.updated_at !== undefined && (
-        <ValueWrapper>
-          <Caption>Updated</Caption>
-          <Value>{moment(user.updated_at).format('YYYY-MM-DD HH:mm')}</Value>
-        </ValueWrapper>
-      )}
-      {user.language !== undefined && (
-        <ValueWrapper>
-          <Caption>Language</Caption>
-          <Value>{user.language}</Value>
-        </ValueWrapper>
-      )}
-      {user.first_name !== undefined && (
-        <ValueWrapper>
-          <Caption>First Name</Caption>
-          <Value>{user.first_name}</Value>
-        </ValueWrapper>
-      )}
-      {user.last_name !== undefined && (
-        <ValueWrapper>
-          <Caption>Last Name</Caption>
-          <Value>{user.last_name}</Value>
-        </ValueWrapper>
-      )}
-      {user.sex !== undefined && (
-        <ValueWrapper>
-          <Caption>Gender</Caption>
-          <Value>{user.sex}</Value>
-        </ValueWrapper>
-      )}
-      {user.phone_number !== undefined && (
-        <ValueWrapper>
-          <Caption>Phone Number</Caption>
-          <Value>{user.phone_number}</Value>
-        </ValueWrapper>
-      )}
-      {user.birthday !== undefined && (
-        <ValueWrapper>
-          <Caption>Birthday</Caption>
-          <Value>{moment(user.birthday).format('YYYY-MM-DD')}</Value>
-        </ValueWrapper>
-      )}
-      {user.nationality !== undefined && (
-        <ValueWrapper>
-          <Caption>Nationality</Caption>
-          <Value>{user.nationality}</Value>
-        </ValueWrapper>
-      )}
-      {user.address && user.address.line_one !== undefined && (
-        <ValueWrapper>
-          <Caption>Address Line 1</Caption>
-          <Value>{user.address.line_one}</Value>
-        </ValueWrapper>
-      )}
-      {user.address && user.address.line_two !== undefined && (
-        <ValueWrapper>
-          <Caption>Address Line 2</Caption>
-          <Value>{user.address.line_two}</Value>
-        </ValueWrapper>
-      )}
-      {user.address && user.address.city !== undefined && (
-        <ValueWrapper>
-          <Caption>City</Caption>
-          <Value>{user.address.city}</Value>
-        </ValueWrapper>
-      )}
-      {user.address && user.address.state !== undefined && (
-        <ValueWrapper>
-          <Caption>State</Caption>
-          <Value>{user.address.state}</Value>
-        </ValueWrapper>
-      )}
-      {user.address && user.address.country !== undefined && (
-        <ValueWrapper>
-          <Caption>Country of Residence</Caption>
-          <Value>{user.address.country}</Value>
-        </ValueWrapper>
-      )}
-      {user.address && user.address.postal_code !== undefined && (
-        <ValueWrapper>
-          <Caption>Postal Code</Caption>
-          <Value>{user.address.postal_code}</Value>
-        </ValueWrapper>
-      )}
-      {user.employment_status !== undefined && (
-        <ValueWrapper>
-          <Caption>Employment Status</Caption>
-          <Value>{user.employment_status}</Value>
-        </ValueWrapper>
-      )}
-      {user.source_of_funds !== undefined && (
-        <ValueWrapper>
-          <Caption>Source of Funds</Caption>
-          <Value>{user.source_of_funds}</Value>
-        </ValueWrapper>
-      )}
-      {user.income_range !== undefined && (
-        <ValueWrapper>
-          <Caption>Income Range</Caption>
-          <Value>{user.income_range}</Value>
-        </ValueWrapper>
-      )}
-      {user.identification_pose && user.identification_pose.url !== undefined && (
-        <ValueWrapper>
-          <Caption>Webcam Proof</Caption>
-          <Value>
-            {user.identification_pose.url}
-            {/* <ImageInfo
-            url={user.identification_pose.url}
-            thumb={user.identification_pose.thumbnail}
-          /> */}
-          </Value>
-        </ValueWrapper>
-      )}
-      {user.verification_code !== undefined && (
-        <ValueWrapper>
-          <Caption>Verification Code</Caption>
-          <Value>{user.verification_code}</Value>
-        </ValueWrapper>
-      )}
-      {user.residence && user.residence.type !== undefined && (
-        <ValueWrapper>
-          <Caption>Proof of Residence Type</Caption>
-          <Value>{user.residence.type}</Value>
-        </ValueWrapper>
-      )}
-      {user.residence && user.residence.url !== undefined && (
-        <ValueWrapper>
-          <Caption>Residence Proof</Caption>
-          <Value>
-            {/* <ImageInfo
-            // filename={user.residence_proof_file_name}
-            url={user.residence.url}
-            thumb={user.residence.thumbnail}
-            // size={user.residence_proof_file_size}
-            // updated={user.residence_proof_updated_at}
-          /> */}
-            {user.residence.thumbnail}
-          </Value>
-        </ValueWrapper>
-      )}
-      {user.identification && user.identification.type !== undefined && (
-        <ValueWrapper>
-          <Caption>ID Type</Caption>
-          <Value>{user.identification.type}</Value>
-        </ValueWrapper>
-      )}
-      {user.identification && user.identification.issue_date !== undefined && (
-        <ValueWrapper>
-          <Caption>ID Issue Date</Caption>
-          <Value>{moment(user.identification.issue_date).format('YYYY-MM-DD HH:mm')}</Value>
-        </ValueWrapper>
-      )}
-      {user.identification && user.identification.expiration_date !== undefined && (
-        <ValueWrapper>
-          <Caption>ID Expiration Date</Caption>
-          <Value>{moment(user.identification.expiration_date).format('YYYY-MM-DD HH:mm')}</Value>
-        </ValueWrapper>
-      )}
-      {user.identification && user.identification.user_input_id_number !== undefined && (
-        <ValueWrapper>
-          <Caption>ID Number</Caption>
-          <Value>{user.identification.user_input_id_number}</Value>
-        </ValueWrapper>
-      )}
-      {user.identification && user.identification.url !== undefined && (
-        <ValueWrapper>
-          <Caption>ID Proof</Caption>
-          <Value>
-            {user.identification.thumbnail}
-            {/* <ImageInfo
-            // filename={user.identification_proof_file_name}
-            url={user.identification.url}
-            thumb={user.identification.thumbnail}
-            // size={user.identification_proof_file_size}
-            // updated={user.identification_proof_updated_at}
-          /> */}
-          </Value>
-        </ValueWrapper>
-      )}
-      {user.used_ip_addresses && user.used_ip_addresses.length > 0 && (
-        <ValueWrapper>
-          <Caption>IP Addresses Used</Caption>
-          <Value>{this.renderIps(user.used_ip_addresses)}</Value>
-        </ValueWrapper>
-      )}
-      {approving && <div>Approving</div>}
-    </Container>
-  );
-};
+const renderIps = ips => (
+  <ul>
+    {ips.map((ip, i) => (
+      <li key={`${ip - i}`}>ip</li>
+    ))}
+  </ul>
+);
 
-const { object, string, bool } = PropTypes;
+class UserInfo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      approve: false,
+    };
+  }
+
+  handleChange = (value, event) => {
+    this.setState({ approve: value });
+  };
+  render() {
+    const { user, header } = this.props;
+    const { approve } = this.state;
+    return (
+      <Container>
+        <h3>{`${header} ${user.firstName} ${user.lastName}`}</h3>
+        <br />
+        {user.status && (
+          <ValueWrapper>
+            <Caption>KYC Status</Caption>
+            <Value>{showStatusIcon(user.status)}</Value>
+          </ValueWrapper>
+        )}
+        {user.userId && (
+          <ValueWrapper>
+            <Caption>User ID</Caption>
+            <Value>{user.userId}</Value>
+          </ValueWrapper>
+        )}
+        {user.email !== undefined && (
+          <ValueWrapper>
+            <Caption>Email</Caption>
+            <Value>{user.email}</Value>
+          </ValueWrapper>
+        )}
+        {user.ethAddress !== undefined && (
+          <ValueWrapper>
+            <Caption>ETH Address</Caption>
+            <Value>{user.ethAddress}</Value>
+          </ValueWrapper>
+        )}
+        {user.createdAt !== undefined && (
+          <ValueWrapper>
+            <Caption>Created</Caption>
+            <Value>{moment(user.createdAt).format('YYYY-MM-DD HH:mm')}</Value>
+          </ValueWrapper>
+        )}
+        {user.updatedAt !== undefined && (
+          <ValueWrapper>
+            <Caption>Updated</Caption>
+            <Value>{moment(user.updatedAt).format('YYYY-MM-DD HH:mm')}</Value>
+          </ValueWrapper>
+        )}
+        {user.language !== undefined && (
+          <ValueWrapper>
+            <Caption>Language</Caption>
+            <Value>{user.language}</Value>
+          </ValueWrapper>
+        )}
+        {user.firstName !== undefined && (
+          <ValueWrapper>
+            <Caption>First Name</Caption>
+            <Value>{user.firstName}</Value>
+          </ValueWrapper>
+        )}
+        {user.lastName !== undefined && (
+          <ValueWrapper>
+            <Caption>Last Name</Caption>
+            <Value>{user.lastName}</Value>
+          </ValueWrapper>
+        )}
+        {user.gender !== undefined && (
+          <ValueWrapper>
+            <Caption>Gender</Caption>
+            <Value>{user.gender}</Value>
+          </ValueWrapper>
+        )}
+        {user.phoneNumber !== undefined && (
+          <ValueWrapper>
+            <Caption>Phone Number</Caption>
+            <Value>{user.phoneNumber}</Value>
+          </ValueWrapper>
+        )}
+        {user.birthdate !== undefined && (
+          <ValueWrapper>
+            <Caption>Birthday</Caption>
+            <Value>{moment(user.birthdate).format('YYYY-MM-DD')}</Value>
+          </ValueWrapper>
+        )}
+        {user.nationality !== undefined && (
+          <ValueWrapper>
+            <Caption>Nationality</Caption>
+            <Value>{user.nationality}</Value>
+          </ValueWrapper>
+        )}
+        {user.residenceProof && user.residenceProof.residence !== undefined && (
+          <Fragment>
+            <ValueWrapper>
+              <Caption>Address Line 1</Caption>
+              <Value>{user.residenceProof.residence.address}</Value>
+            </ValueWrapper>
+            <ValueWrapper>
+              <Caption>Address Line 2</Caption>
+              <Value>{user.residenceProof.residence.addressDetails}</Value>
+            </ValueWrapper>
+            <ValueWrapper>
+              <Caption>City</Caption>
+              <Value>{user.residenceProof.residence.city}</Value>
+            </ValueWrapper>
+            <ValueWrapper>
+              <Caption>State</Caption>
+              <Value>{user.residenceProof.residence.state}</Value>
+            </ValueWrapper>
+            <ValueWrapper>
+              <Caption>Country of Residence</Caption>
+              <Value>{user.residenceProof.residence.country}</Value>
+            </ValueWrapper>
+            <ValueWrapper>
+              <Caption>Postal Code</Caption>
+              <Value>{user.residenceProof.residence.postalCode}</Value>
+            </ValueWrapper>
+          </Fragment>
+        )}
+        {user.employmentStatus !== undefined && (
+          <ValueWrapper>
+            <Caption>Employment Status</Caption>
+            <Value>{user.employmentStatus}</Value>
+          </ValueWrapper>
+        )}
+        {user.incomeRange !== undefined && (
+          <ValueWrapper>
+            <Caption>Income Range</Caption>
+            <Value>{user.incomeRange}</Value>
+          </ValueWrapper>
+        )}
+        {user.identificationPose && user.identificationPose.url !== undefined && (
+          <Fragment>
+            <ValueWrapper>
+              <Caption>Webcam Proof</Caption>
+              <Value>
+                <img src={user.identificationPose.image.dataUrl} alt="" />
+              </Value>
+            </ValueWrapper>
+            <ValueWrapper>
+              <Caption>Verification Code</Caption>
+              <Value>{user.identificationPose.verificationCode}</Value>
+            </ValueWrapper>
+          </Fragment>
+        )}
+        {user.residenceProof && user.residenceProof.type !== undefined && (
+          <ValueWrapper>
+            <Caption>Proof of Residence Type</Caption>
+            <Value>{user.residenceProof.type}</Value>
+          </ValueWrapper>
+        )}
+        {user.residenceProof && user.residenceProof.residence !== undefined && (
+          <ValueWrapper>
+            <Caption>Residence Proof</Caption>
+            <Value>
+              <img src={user.residenceProof.image.dataUrl} alt="" />
+            </Value>
+          </ValueWrapper>
+        )}
+        {user.identificationProof && user.identificationProof.type !== undefined && (
+          <Fragment>
+            <ValueWrapper>
+              <Caption>ID Type</Caption>
+              <Value>{user.identificationProof.type}</Value>
+            </ValueWrapper>
+
+            <ValueWrapper>
+              <Caption>ID Expiration Date</Caption>
+              <Value>
+                {moment(user.identificationProof.expirationDate).format('YYYY-MM-DD HH:mm')}
+              </Value>
+            </ValueWrapper>
+            <ValueWrapper>
+              <Caption>ID Number</Caption>
+              <Value>{user.identificationProof.number}</Value>
+            </ValueWrapper>
+            <ValueWrapper>
+              <Caption>ID Proof</Caption>
+              <Value>
+                <img src={user.identificationProof.image.dataUrl} alt="" />
+              </Value>
+            </ValueWrapper>
+          </Fragment>
+        )}
+        {user.ipAddresses && user.ipAddresses.length > 0 && (
+          <ValueWrapper>
+            <Caption>IP Addresses Used</Caption>
+            <Value>{renderIps(user.ipAddresses)}</Value>
+          </ValueWrapper>
+        )}
+
+        {user.status === 'PENDING' && (
+          <Fragment>
+            <ValueWrapper>
+              <Caption>Approve/Reject</Caption>
+              <Value>
+                <Toggle
+                  name="kycAction"
+                  data-digix="KycAction"
+                  mode="select"
+                  labelRight="Approve KYC"
+                  checked={this.state.approve}
+                  label="Reject KYC"
+                  onToggle={this.handleChange}
+                />
+              </Value>
+            </ValueWrapper>
+            {approve && <ApproveKyc kycId={user.id} onCompleted={this.props.onCompleted} />}
+            {approve === false && (
+              <RejectKyc kycId={user.id} onCompleted={this.props.onCompleted} />
+            )}
+          </Fragment>
+        )}
+      </Container>
+    );
+  }
+}
+const { object, string, func } = PropTypes;
 
 UserInfo.propTypes = {
   user: object.isRequired,
   header: string.isRequired,
-  approving: bool,
+  onCompleted: func.isRequired,
 };
 
-UserInfo.defaultProps = {
-  approving: false,
-};
 export default UserInfo;

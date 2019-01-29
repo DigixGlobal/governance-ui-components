@@ -1,11 +1,12 @@
 import gql from 'graphql-tag';
 
 export const searchKycQuery = gql`
-  query searchKycs($status: KycStatusEnum) {
-    searchKycs(status: $status) {
+  query searchKycs($page: PositiveInteger, $pageSize: PositiveInteger, $status: KycStatusEnum) {
+    searchKycs(page: $page, pageSize: $pageSize, status: $status) {
       edges {
         node {
-          userUid
+          id
+          userId
           status
           firstName
           lastName
@@ -15,7 +16,12 @@ export const searchKycQuery = gql`
           phoneNumber
           employmentStatus
           employmentIndustry
+          email
+          updatedAt
+          createdAt
           incomeRange
+          ipAddresses
+          ethAddress
           identificationProof {
             number
             expirationDate
@@ -25,6 +31,7 @@ export const searchKycQuery = gql`
             }
           }
           residenceProof {
+            type
             residence {
               address
               addressDetails
@@ -33,7 +40,6 @@ export const searchKycQuery = gql`
               postalCode
               state
             }
-            type
             image {
               contentType
               filename
@@ -51,6 +57,49 @@ export const searchKycQuery = gql`
             }
           }
         }
+      }
+    }
+  }
+`;
+
+export const getKycRejectionReasonsQuery = gql`
+  {
+    rejectionReasons {
+      name
+      value
+    }
+  }
+`;
+
+export const rejectKycMutation = gql`
+  mutation rejectKyc($kycId: String!, $rejectionReason: RejectionReasonValue!) {
+    rejectKyc(input: { kycId: $kycId, rejectionReason: $rejectionReason }) {
+      clientMutationId
+      kyc {
+        id
+        status
+        rejectionReason
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const approveKycMutation = gql`
+  mutation approveKyc($kycId: String!, $expirationDate: Date!) {
+    approveKyc(input: { kycId: $kycId, expirationDate: $expirationDate }) {
+      clientMutationId
+      kyc {
+        id
+        status
+        expirationDate
+      }
+      errors {
+        field
+        message
       }
     }
   }

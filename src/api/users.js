@@ -1,8 +1,5 @@
-import React from 'react';
-import gql from 'graphql-tag';
 import { INFO_SERVER } from '@digix/gov-ui/reducers/info-server/constants';
 import { requestFromApi } from '@digix/gov-ui/api';
-import { Query } from 'react-apollo';
 
 export const UsersApi = {
   // users must be an array of addresses
@@ -25,37 +22,3 @@ export const UsersApi = {
     getPoints: 'Unable to fetch reputation points for users.',
   },
 };
-
-/*
- * GraphQL
- */
-
-const fetchUserQuery = gql`
-  query fetchUser {
-    currentUser {
-      id
-      address
-      email
-      username
-      displayName
-      createdAt
-    }
-  }
-`;
-
-// eslint-disable-next-line
-export const withFetchUser = (Component) => props => (
-  <Query query={fetchUserQuery}>
-    {({ loading, error, data }) => {
-      if (loading) {
-        return null;
-      }
-
-      if (error) {
-        return null;
-      }
-
-      return <Component {...props} userData={data.currentUser} />;
-    }}
-  </Query>
-);

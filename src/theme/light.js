@@ -108,6 +108,8 @@ const LightTheme = {
   backgroundHeader: white,
 
   borderColor: tertiaryColor,
+  borderColorPrimary: primaryColor,
+  borderColorSecondary: secondaryColor,
 
   boxShadow: boxShadowStyle,
   borderRadius: borderRadiusStyle,

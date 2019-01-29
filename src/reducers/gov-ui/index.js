@@ -11,6 +11,7 @@ const defaultState = {
   CanLockDgd: undefined,
   ShowRightPanel: {
     show: false,
+    large: false,
     component: undefined,
     onClose: undefined,
   },

@@ -41,7 +41,7 @@ class UnlockDgdOverlay extends React.Component {
   constructor(props) {
     super(props);
 
-    this.MAX_AMOUNT = props.maxAmount;
+    this.MAX_AMOUNT = Number(props.maxAmount);
     this.state = {
       unlockAmount: 0,
     };

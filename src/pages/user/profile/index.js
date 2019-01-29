@@ -12,9 +12,10 @@ import {
   getDaoConfig,
   getDaoDetails,
 } from '@digix/gov-ui/reducers/info-server/actions';
+import { getUserStatus, truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { showHideLockDgdOverlay, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
-import { withFetchUser } from '@digix/gov-ui/api/users';
+import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
+
 import {
   ProfileWrapper,
   Heading,
@@ -41,15 +42,8 @@ import RedeemBadge from './buttons/redeem-badge';
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.STATUS = {
-      moderator: 'Moderator',
-      participant: 'Participant',
-      pastParticipant: 'Past Participant',
-      guest: 'Have not participated',
-    };
-
     this.state = {
-      stake: truncateNumber(props.AddressDetails.data.lockedDgdStake),
+      hasPendingLockTransaction: false,
     };
   }
 
@@ -63,21 +57,13 @@ class Profile extends React.Component {
 
     getDaoConfigAction();
     getDaoDetailsAction();
-    getAddressDetailsAction(AddressDetails.data.address).then(() => {
-      this.setStateFromAddressDetails();
-    });
+    getAddressDetailsAction(AddressDetails.data.address);
   }
 
-  onLockDgd = amountLocked => {
-    let { stake } = this.state;
-    stake = truncateNumber(stake + amountLocked);
-    this.setState({ stake });
-  };
-
-  setStateFromAddressDetails = () => {
-    const address = this.props.AddressDetails.data;
-    const stake = truncateNumber(address.lockedDgdStake);
-    this.setState({ stake });
+  onLockDgd = () => {
+    this.setState({
+      hasPendingLockTransaction: true,
+    });
   };
 
   getStakePerDgd = () => {
@@ -115,21 +101,6 @@ class Profile extends React.Component {
     return requirements;
   };
 
-  getStatus = () => {
-    const { AddressDetails } = this.props;
-    const address = AddressDetails.data;
-
-    if (address.isModerator) {
-      return this.STATUS.moderator;
-    } else if (address.isParticipant) {
-      return this.STATUS.participant;
-    } else if (address.lastParticipatedQuarter > 0) {
-      return this.STATUS.pastParticipant;
-    }
-
-    return this.STATUS.guest;
-  };
-
   showSetUsernameOverlay() {
     this.props.showRightPanel({
       component: <UsernameOverlay />,
@@ -138,8 +109,9 @@ class Profile extends React.Component {
   }
 
   showSetEmailOverlay() {
+    const { email } = this.props.userData;
     this.props.showRightPanel({
-      component: <EmailOverlay />,
+      component: <EmailOverlay currentEmail={email} />,
       show: true,
     });
   }
@@ -147,6 +119,7 @@ class Profile extends React.Component {
   showKycOverlay() {
     this.props.showRightPanel({
       component: <KycOverlay />,
+      large: true,
       show: true,
     });
   }
@@ -154,14 +127,19 @@ class Profile extends React.Component {
   render() {
     const { displayName, email } = this.props.userData;
     const { AddressDetails } = this.props;
-    const { stake } = this.state;
-    const address = AddressDetails.data;
+    const { hasPendingLockTransaction } = this.state;
 
-    const status = this.getStatus();
+    const address = AddressDetails.data;
+    let stake = Number(address.lockedDgdStake);
+    const usernameIsSet = this.props.userData.username;
+
+    const status = getUserStatus(address);
     const moderatorRequirements = this.getModeratorRequirements();
     const hasUnmetModerationRequirements =
       !address.isModerator &&
       (moderatorRequirements.reputation > 0 || moderatorRequirements.stake > 0);
+
+    stake = truncateNumber(stake);
 
     return (
       <ProfileWrapper>
@@ -170,15 +148,17 @@ class Profile extends React.Component {
           <UserItem>
             <UserLabel>User:</UserLabel>
             <UserData data-digix="Profile-UserName">{displayName}</UserData>
-            <Button
-              primary
-              icon
-              data-digix="Profile-UserName-Cta"
-              onClick={() => this.showSetUsernameOverlay()}
-            >
-              <Icon kind="plus" />
-              Set Username
-            </Button>
+            {!usernameIsSet && (
+              <Button
+                primary
+                icon
+                data-digix="Profile-UserName-Cta"
+                onClick={() => this.showSetUsernameOverlay()}
+              >
+                <Icon kind="plus" />
+                Set Username
+              </Button>
+            )}
           </UserItem>
           <UserItem>
             <UserLabel>Status:</UserLabel>
@@ -186,7 +166,7 @@ class Profile extends React.Component {
           </UserItem>
           <UserItem>
             <UserLabel>Email:</UserLabel>
-            <UserData data-digix="Profile-Email">{email}</UserData>
+            {email && <UserData data-digix="Profile-Email">{email}</UserData>}
             <Button
               primary
               icon
@@ -257,6 +237,7 @@ class Profile extends React.Component {
             <Actions>
               <Button
                 primary
+                disabled // TODO: remove from shadow when submit KYC is done
                 data-digix="Profile-KycStatus-Cta"
                 onClick={() => this.showKycOverlay()}
               >
@@ -291,6 +272,7 @@ class Profile extends React.Component {
               <Button
                 primary
                 data-digix="Profile-LockMoreDgd-Cta"
+                disabled={hasPendingLockTransaction}
                 onClick={() => this.props.showHideLockDgdOverlay(true, this.onLockDgd)}
               >
                 Lock More DGD

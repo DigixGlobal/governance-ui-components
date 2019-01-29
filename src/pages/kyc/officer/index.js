@@ -123,13 +123,20 @@ class KycOfficerDashboard extends React.Component {
         <Query
           query={searchKycQuery}
           fetchPolicy="network-only"
-          variables={{ page: 1, pageSize: 2, status: filter === 'All' ? undefined : filter }}
+          variables={{ status: filter === 'All' ? undefined : filter }}
           // pollInterval={1000}
         >
-          {({ client }) => {
-            if (firstLoad) this.handleLoadAllUsers(client);
-            if (reloading)
-              this.handleListKycByStatus(client, filter === 'All' ? undefined : filter);
+          {({ client, data, loading, error, refetch }) => {
+            if (loading) {
+              return null;
+            }
+
+            if (error) {
+              return null;
+            }
+            if (reloading) refetch();
+            // this.handleListKycByStatus(client, filter === 'All' ? undefined : filter);
+
             return (
               <Fragment>
                 <Button
@@ -164,33 +171,34 @@ class KycOfficerDashboard extends React.Component {
                 >
                   Rejected KYC Requests
                 </Button>
+
+                <h3>Showing {filter || 'All'} KYC</h3>
+                <br />
+                <DigixTable
+                  data={data.searchKycs.edges}
+                  columns={columns}
+                  getTrProps={(state, rowInfo) => {
+                    if (rowInfo && rowInfo.row) {
+                      return {
+                        onClick: () => {
+                          this.setState({
+                            selected: rowInfo.original,
+                            selectedIndex: rowInfo.index,
+                          });
+                        },
+                        style: {
+                          backgroundColor: rowInfo.index === selectedIndex ? '#f2f2f2' : 'white',
+                          cursor: 'pointer',
+                        },
+                      };
+                    }
+                    return {};
+                  }}
+                />
               </Fragment>
             );
           }}
         </Query>
-        <h3>Showing {filter || 'All'} KYC</h3>
-        <br />
-        <DigixTable
-          data={kycUsers}
-          columns={columns}
-          getTrProps={(state, rowInfo) => {
-            if (rowInfo && rowInfo.row) {
-              return {
-                onClick: () => {
-                  this.setState({
-                    selected: rowInfo.original,
-                    selectedIndex: rowInfo.index,
-                  });
-                },
-                style: {
-                  backgroundColor: rowInfo.index === selectedIndex ? '#f2f2f2' : 'white',
-                  cursor: 'pointer',
-                },
-              };
-            }
-            return {};
-          }}
-        />
 
         <Modal open={selected !== undefined} onClose={() => this.onClose()}>
           {this.renderInfo()}

@@ -48,22 +48,7 @@ class ApproveKyc extends React.Component {
           />
         </div>
         <div>
-          <Mutation
-            mutation={approveKycMutation}
-            // refetchQueries={['searchKycQuery']}
-            // update={(cache, { data: { approveKyc } }) => {
-            //   const { searchKycs } = cache.readQuery({
-            //     query: searchKycQuery,
-            //     variables: { status: 'PENDING' },
-            //   });
-            //   console.log({ searchKycs, approveKyc });
-
-            //   cache.writeQuery({
-            //     query: searchKycQuery,
-            //     data: { searchKycs },
-            //   });
-            // }}
-          >
+          <Mutation mutation={approveKycMutation}>
             {approveKyc => (
               <Button kind="round" disabled={!validDate} onClick={() => this.onSubmit(approveKyc)}>
                 Approve

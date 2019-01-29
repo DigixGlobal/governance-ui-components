@@ -4,7 +4,7 @@ import Icon from '@digix/gov-ui/components/common/elements/icons/';
 const iconStatus = [
   {
     status: 'PENDING',
-    key: 'hourGlass',
+    key: 'alarm',
   },
   { status: 'APPROVED', key: 'check' },
   { status: 'REJECTED', key: 'close' },

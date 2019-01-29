@@ -20,6 +20,7 @@ export const ValueWrapper = styled.div`
 
 export const Caption = styled.div`
   background-color: #f2f2f2;
+  font-weight: bold;
   width: 25%;
 `;
 

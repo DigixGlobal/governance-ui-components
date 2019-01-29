@@ -31,7 +31,7 @@ import ImToken from './ImToken';
 import Ethereum from './Ethereum';
 import Dgd from './DGD';
 import XMark from './XMark';
-import HourGlass from './HourGlass';
+import Alarm from './Alarm';
 
 const icons = {
   arrow: Arrow,
@@ -64,7 +64,7 @@ const icons = {
   ethereum: Ethereum,
   dgd: Dgd,
   xmark: XMark,
-  hourGlass: HourGlass,
+  alarm: Alarm,
 };
 
 const Icon = props => {

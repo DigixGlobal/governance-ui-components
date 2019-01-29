@@ -56,7 +56,6 @@ class KycOfficerDashboard extends React.Component {
     this.state = {
       selected: undefined,
       selectedIndex: 0,
-      approving: false,
       filter: 'All',
       reloading: false,
     };
@@ -77,21 +76,21 @@ class KycOfficerDashboard extends React.Component {
   };
 
   handleAllUsersClick = () => {
-    this.setState({ approving: false, filter: undefined });
+    this.setState({ filter: undefined });
   };
 
   handleListKycByStatus = (status = 'PENDING') => {
-    this.setState({ approving: status === 'PENDING', filter: status, reloading: false });
+    this.setState({ filter: status, reloading: false });
   };
 
   renderInfo = () => {
-    const { selected, approving } = this.state;
+    const { selected } = this.state;
 
     if (!selected) return null;
     return (
       <UserInfo
         user={selected.node}
-        header={approving ? 'Veriy User KYC' : 'Manage User'}
+        header={selected.node.status === 'PENDING' ? 'Verify User KYC - ' : 'User Detail - '}
         onCompleted={this.onClose}
       />
     );

@@ -154,9 +154,13 @@ class Proposal extends React.Component {
     const totalOriginalFunds = (acc, currentValue) =>
       Number(acc.original) + Number(currentValue.original);
 
+    const milestoneFundings = (acc, currentValue) => Number(acc) + Number(currentValue);
+
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
-    let funding = truncateNumber(proposalVersion.totalFunding);
+    let funding = proposalDetails.data.changedFundings
+      ? proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
+      : proposalVersion.milestoneFundings.reduce(milestoneFundings, 0);
     let reward = truncateNumber(proposalVersion.finalReward);
 
     let updatedFunding;

@@ -45,7 +45,7 @@ class RevealVoteButton extends React.PureComponent {
       currentTime < proposal.votingRounds[currentVotingRound].revealDeadline * 1000;
     if (!withinDeadline) return null;
     return (
-      <Button kind="round" onClick={this.showOverlay}>
+      <Button kind="round" large onClick={this.showOverlay}>
         Reveal Vote
       </Button>
     );

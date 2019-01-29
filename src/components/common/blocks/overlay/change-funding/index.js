@@ -4,13 +4,17 @@ import { connect } from 'react-redux';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
-import TextField from '@digix/gov-ui/components/common/elements/textfield';
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import { Button, TextField } from '@digix/gov-ui/components/common/elements/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
   ErrorCaption,
+  Label,
 } from '@digix/gov-ui/components/common/common-styles';
+import {
+  FieldItem,
+  EditFunding,
+} from '@digix/gov-ui/components/common/blocks/overlay/change-funding/style';
 
 import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
 import getContract from '@digix/gov-ui/utils/contracts';
@@ -181,9 +185,9 @@ class ChangeFundingOverlay extends React.Component {
       const previousMilestone = i + 1 <= Number(proposalDetails.currentMilestone);
       return (
         <div key={`ms-${i + 1}`}>
-          <div>Milestone {i + 1}</div>
-          <div>
-            <div>Funds required for This Milestone</div>
+          <Label>Milestone {i + 1}</Label>
+          <EditFunding>
+            <Label>Funds required for This Milestone</Label>
             <TextField
               type="number"
               disabled={previousMilestone}
@@ -192,7 +196,7 @@ class ChangeFundingOverlay extends React.Component {
               value={milestone}
               onChange={e => this.onFundingChange(e, i)}
             />
-          </div>
+          </EditFunding>
         </div>
       );
     });
@@ -206,20 +210,22 @@ class ChangeFundingOverlay extends React.Component {
     return (
       <IntroContainer>
         <Header uppercase>Edit Funding</Header>
-        <div>
-          Reward Expected
+        <FieldItem>
+          <Label>Reward Expected</Label>
           <TextField
             type="number"
             data-digix="Edit-funding-reward-expected"
             value={form.expectedReward}
             onChange={this.onExpectedRewardChange}
           />
-        </div>
+        </FieldItem>
         {this.renderMilestoneFields(form.milestoneFundings)}
         {exceedsLimit && (
-          <ErrorCaption>{`Sum of Reward Expected and Milestone Fundings must not exceed ${
-            daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX
-          } ETH`}</ErrorCaption>
+          <FieldItem>
+            <ErrorCaption>{`Sum of Reward Expected and Milestone Fundings must not exceed ${
+              daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX
+            } ETH`}</ErrorCaption>
+          </FieldItem>
         )}
         <Button
           kind="round"

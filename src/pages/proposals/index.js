@@ -34,12 +34,13 @@ import {
   ProjectSummary,
   Header,
   Title,
-  LatestActivity,
-  SubmittedBy,
-  FundingStatus,
-  MilestonesStatus,
-  Reward,
-  UpvoteStatus,
+  CTAButtons,
+  FundingSummary,
+  SummaryInfo,
+  InfoItem,
+  Upvote,
+  ItemTitle,
+  Data,
 } from './style';
 
 class Proposal extends React.Component {
@@ -187,7 +188,6 @@ class Proposal extends React.Component {
         proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) - funding
       );
     }
-    console.log({ updatedReward });
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -209,7 +209,7 @@ class Proposal extends React.Component {
               <Button kind="flat">{proposalDetails.data.stage}</Button>
               <Title primary>{dijixObject.title}</Title>
             </div>
-            <div>
+            <CTAButtons>
               <ParticipantButtons
                 isProposer={isProposer}
                 proposal={proposalDetails}
@@ -222,35 +222,47 @@ class Proposal extends React.Component {
                 addressDetails={addressDetails}
                 history={history}
               />
-            </div>
+            </CTAButtons>
           </Header>
-          <LatestActivity>
-            <SubmittedBy>
-              Submitted By <span>{proposalDetails.data.proposer}</span>
-            </SubmittedBy>
-            <FundingStatus>
-              Funding
-              <span>{funding}</span>
-              {updatedFunding && <span> + {updatedFunding} </span>}
-              ETH
-            </FundingStatus>
-            <MilestonesStatus>
-              Milestones <span>{dijixObject.milestones.length || 0}</span>
-            </MilestonesStatus>
-            <Reward>
-              Reward
-              <span>{reward} </span>
-              {Number(updatedReward) > 0 && <span> + {updatedReward} </span>}
-              ETH
-            </Reward>
-            <UpvoteStatus>
+          <FundingSummary>
+            <SummaryInfo>
+              <InfoItem>
+                <ItemTitle>Submitted By</ItemTitle>
+                <Data>
+                  <span>{proposalDetails.data.proposer}</span>
+                </Data>
+              </InfoItem>
+              <InfoItem>
+                <ItemTitle>Funding</ItemTitle>
+                <Data>
+                  <span>{funding}</span>
+                  {updatedFunding && <span> + {updatedFunding} </span>}
+                  ETH
+                </Data>
+              </InfoItem>
+              <InfoItem>
+                <ItemTitle>Milestones</ItemTitle>
+                <Data>
+                  <span>{dijixObject.milestones.length || 0}</span>
+                </Data>
+              </InfoItem>
+              <InfoItem>
+                <ItemTitle>Reward</ItemTitle>
+                <Data>
+                  <span>{reward} </span>
+                  {Number(updatedReward) > 0 && <span> + {updatedReward} </span>}
+                  ETH
+                </Data>
+              </InfoItem>
+            </SummaryInfo>
+            <Upvote>
               <Like
                 hasVoted={liked}
                 likes={likes}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
-            </UpvoteStatus>
-          </LatestActivity>
+            </Upvote>
+          </FundingSummary>
         </ProjectSummary>
         <VotingResult
           proposal={proposalDetails.data}

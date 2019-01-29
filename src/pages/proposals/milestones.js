@@ -6,7 +6,6 @@ import { MilestonesContainer, SubTitle } from './style';
 export default class Milestones extends React.Component {
   render() {
     const { milestones, milestoneFundings, changedFundings, preview } = this.props;
-    console.log(changedFundings);
     return (
       <MilestonesContainer>
         <SubTitle>Milestones</SubTitle>

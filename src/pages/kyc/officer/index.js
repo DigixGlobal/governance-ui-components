@@ -80,13 +80,6 @@ class KycOfficerDashboard extends React.Component {
     this.setState({ approving: false, filter: undefined });
   };
 
-  handleRefetch = refetch => {
-    if (refetch) {
-      console.log('refetching');
-      refetch();
-    }
-  };
-
   handleListKycByStatus = (status = 'PENDING') => {
     this.setState({ approving: status === 'PENDING', filter: status, reloading: false });
   };

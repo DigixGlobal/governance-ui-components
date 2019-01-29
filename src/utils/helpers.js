@@ -1,5 +1,6 @@
 import multihash from '@digix/multi-hash';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { UserStatus } from '@digix/gov-ui/constants';
 
 export function encodeHash(hash) {
   // eslint-disable-line import/prefer-default-export
@@ -47,4 +48,24 @@ export const formatPercentage = num => {
   }
 
   return formatted;
+};
+
+export const getUserStatus = addressDetails => {
+  if (!addressDetails) {
+    return null;
+  }
+
+  if (addressDetails.isModerator) {
+    return UserStatus.moderator;
+  }
+
+  if (addressDetails.isParticipant) {
+    return UserStatus.participant;
+  }
+
+  if (addressDetails.lastParticipatedQuarter > 0) {
+    return UserStatus.pastParticipant;
+  }
+
+  return UserStatus.guest;
 };

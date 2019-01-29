@@ -57,3 +57,10 @@ export const VotingStages = {
   commit: 'commit',
   reveal: 'reveal',
 };
+
+export const UserStatus = {
+  moderator: 'Moderator',
+  participant: 'Participant',
+  pastParticipant: 'Past Participant',
+  guest: 'Have not participated',
+};

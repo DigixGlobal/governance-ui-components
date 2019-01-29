@@ -88,10 +88,10 @@ class Profile extends React.Component {
     const minReputation = Number(config.CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR);
     const requiredReputation = Math.max(0, minReputation - currentReputation);
 
-    const currentStake = this.state.stake;
+    const currentStake = Number(address.lockedDgdStake);
     const minStake = Number(config.CONFIG_MINIMUM_DGD_FOR_MODERATOR);
     const stakePerDgd = this.getStakePerDgd();
-    const requiredStake = stakePerDgd ? Math.max(0, (minStake - currentStake) / stakePerDgd) : 0;
+    const requiredStake = Math.max(0, (minStake - currentStake) / stakePerDgd);
 
     const requirements = {
       reputation: truncateNumber(requiredReputation),

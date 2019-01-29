@@ -29,7 +29,9 @@ const network = SpectrumConfig.defaultNetworks[0];
 
 class AbortProjectButton extends React.PureComponent {
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
+    this.props.showHideAlert({
+      message: JSON.stringify(error && error.message) || error,
+    });
 
   handleSubmit = () => {
     const { web3Redux, ChallengeProof, addresses, proposalId } = this.props;
@@ -101,7 +103,7 @@ class AbortProjectButton extends React.PureComponent {
     }
 
     return (
-      <Button kind="round" onClick={this.handleSubmit}>
+      <Button kind="round" large onClick={this.handleSubmit}>
         Abort
       </Button>
     );

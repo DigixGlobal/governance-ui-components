@@ -169,14 +169,21 @@ class Proposal extends React.Component {
 
       reward = truncateNumber(proposalDetails.data.changedFundings.finalReward.original);
 
-      updatedReward = truncateNumber(
-        proposalDetails.data.changedFundings.finalReward.updated - reward
-      );
+      if (Number(proposalDetails.data.changedFundings.finalReward.updated) > 0) {
+        updatedReward = truncateNumber(
+          proposalDetails.data.changedFundings.finalReward.updated - reward
+        );
+      } else {
+        // show reward as zero
+        reward = 0;
+        updatedReward = 0;
+      }
+
       updatedFunding = truncateNumber(
         proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) - funding
       );
     }
-
+    console.log({ updatedReward });
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -229,7 +236,7 @@ class Proposal extends React.Component {
             <Reward>
               Reward
               <span>{reward} </span>
-              {updatedReward && <span> + {updatedReward} </span>}
+              {Number(updatedReward) > 0 && <span> + {updatedReward} </span>}
               ETH
             </Reward>
             <UpvoteStatus>
@@ -255,6 +262,7 @@ class Proposal extends React.Component {
               ? proposalDetails.data.changedFundings.milestones
               : undefined
           }
+          fundingChanged={proposalDetails.data.isFundingChanged}
         />
         <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>

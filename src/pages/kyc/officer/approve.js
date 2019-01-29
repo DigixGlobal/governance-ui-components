@@ -7,7 +7,7 @@ import moment from 'moment';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import TextField from '@digix/gov-ui/components/common/elements/textfield';
 
-import { approveKycMutation, searchKycQuery } from '@digix/gov-ui/api/graphql-queries/kyc';
+import { approveKycMutation } from '@digix/gov-ui/api/graphql-queries/kyc';
 
 class ApproveKyc extends React.Component {
   constructor(props) {
@@ -50,19 +50,19 @@ class ApproveKyc extends React.Component {
         <div>
           <Mutation
             mutation={approveKycMutation}
-            refetchQueries={['searchKycQuery']}
-            update={(cache, { data: { approveKyc } }) => {
-              const { searchKycs } = cache.readQuery({
-                query: searchKycQuery,
-                variables: { status: 'PENDING' },
-              });
-              console.log({ searchKycs, approveKyc });
+            // refetchQueries={['searchKycQuery']}
+            // update={(cache, { data: { approveKyc } }) => {
+            //   const { searchKycs } = cache.readQuery({
+            //     query: searchKycQuery,
+            //     variables: { status: 'PENDING' },
+            //   });
+            //   console.log({ searchKycs, approveKyc });
 
-              cache.writeQuery({
-                query: searchKycQuery,
-                data: { searchKycs },
-              });
-            }}
+            //   cache.writeQuery({
+            //     query: searchKycQuery,
+            //     data: { searchKycs },
+            //   });
+            // }}
           >
             {approveKyc => (
               <Button kind="round" disabled={!validDate} onClick={() => this.onSubmit(approveKyc)}>

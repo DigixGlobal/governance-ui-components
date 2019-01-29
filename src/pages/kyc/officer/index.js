@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import Modal from 'react-responsive-modal';
 
-import { ApolloConsumer, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 
 import DigixTable from '@digix/gov-ui/components/common/blocks/digix-table';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
@@ -57,8 +57,6 @@ class KycOfficerDashboard extends React.Component {
       selected: undefined,
       selectedIndex: 0,
       approving: false,
-      kycUsers: [],
-      firstLoad: true,
       filter: 'All',
       reloading: false,
     };
@@ -74,14 +72,12 @@ class KycOfficerDashboard extends React.Component {
 
   handleLoadAllUsers = client => {
     client.query({ query: searchKycQuery }).then(result => {
-      this.setState({ kycUsers: result.data.searchKycs.edges, firstLoad: false, filter: 'All' });
+      this.setState({ filter: 'All' });
     });
   };
 
-  handleAllUsersClick = client => {
-    this.setState({ approving: false }, () => {
-      this.handleLoadAllUsers(client);
-    });
+  handleAllUsersClick = () => {
+    this.setState({ approving: false, filter: undefined });
   };
 
   handleRefetch = refetch => {
@@ -91,14 +87,8 @@ class KycOfficerDashboard extends React.Component {
     }
   };
 
-  handleListKycByStatus = (client, status = 'PENDING') => {
-    console.log({ status });
-    this.setState({ approving: status === 'PENDING', filter: status, reloading: false }, () => {
-      client.query({ query: searchKycQuery, variables: { status } }).then(result => {
-        console.log(result);
-        this.setState({ kycUsers: result.data.searchKycs.edges });
-      });
-    });
+  handleListKycByStatus = (status = 'PENDING') => {
+    this.setState({ approving: status === 'PENDING', filter: status, reloading: false });
   };
 
   renderInfo = () => {
@@ -115,20 +105,54 @@ class KycOfficerDashboard extends React.Component {
   };
 
   render() {
-    const { selected, selectedIndex, kycUsers, firstLoad, filter, reloading } = this.state;
+    const { selected, selectedIndex, filter, reloading } = this.state;
 
     return (
       <KycWrapper>
         <Heading>KYC Dashboard</Heading>
+        <Button
+          kind="round"
+          onClick={this.handleAllUsersClick}
+          data-digix="Kyc-Admin-All-users"
+          active={filter === 'All'}
+        >
+          All Users
+        </Button>
+        <Button
+          kind="round"
+          onClick={() => this.handleListKycByStatus('PENDING')}
+          data-digix="Kyc-Admin-KYC-Requests"
+          active={filter === 'PENDING'}
+        >
+          KYC Requests
+        </Button>
+        <Button
+          kind="round"
+          onClick={() => this.handleListKycByStatus('APPROVED')}
+          data-digix="Kyc-Admin-Approved-Requests"
+          active={filter === 'APPROVED'}
+        >
+          Approved KYC Requests
+        </Button>
+        <Button
+          kind="round"
+          onClick={() => this.handleListKycByStatus('REJECTED')}
+          data-digix="Kyc-Admin-Rejected-Requests"
+          active={filter === 'REJECTED'}
+        >
+          Rejected KYC Requests
+        </Button>
+
+        <h3>Showing {filter || 'All'} KYC</h3>
+        <br />
         <Query
           query={searchKycQuery}
           fetchPolicy="network-only"
           variables={{ status: filter === 'All' ? undefined : filter }}
-          // pollInterval={1000}
         >
-          {({ client, data, loading, error, refetch }) => {
+          {({ data, loading, error, refetch }) => {
             if (loading) {
-              return null;
+              return <div>Loading...</div>;
             }
 
             if (error) {
@@ -139,41 +163,6 @@ class KycOfficerDashboard extends React.Component {
 
             return (
               <Fragment>
-                <Button
-                  kind="round"
-                  onClick={() => this.handleAllUsersClick(client)}
-                  data-digix="Kyc-Admin-All-users"
-                  active={filter === 'All'}
-                >
-                  All Users
-                </Button>
-                <Button
-                  kind="round"
-                  onClick={() => this.handleListKycByStatus(client, 'PENDING')}
-                  data-digix="Kyc-Admin-KYC-Requests"
-                  active={filter === 'PENDING'}
-                >
-                  KYC Requests
-                </Button>
-                <Button
-                  kind="round"
-                  onClick={() => this.handleListKycByStatus(client, 'APPROVED')}
-                  data-digix="Kyc-Admin-Approved-Requests"
-                  active={filter === 'APPROVED'}
-                >
-                  Approved KYC Requests
-                </Button>
-                <Button
-                  kind="round"
-                  onClick={() => this.handleListKycByStatus(client, 'REJECTED')}
-                  data-digix="Kyc-Admin-Rejected-Requests"
-                  active={filter === 'REJECTED'}
-                >
-                  Rejected KYC Requests
-                </Button>
-
-                <h3>Showing {filter || 'All'} KYC</h3>
-                <br />
                 <DigixTable
                   data={data.searchKycs.edges}
                   columns={columns}

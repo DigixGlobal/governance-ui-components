@@ -163,16 +163,18 @@ class Proposal extends React.Component {
     let updatedReward;
 
     if (proposalDetails.data.isFundingChanged) {
-      updatedReward = truncateNumber(proposalDetails.data.changedFundings.finalReward.updated);
-      updatedFunding = truncateNumber(
-        proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds)
-      );
-
       funding = truncateNumber(
         proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
       );
 
       reward = truncateNumber(proposalDetails.data.changedFundings.finalReward.original);
+
+      updatedReward = truncateNumber(
+        proposalDetails.data.changedFundings.finalReward.updated - reward
+      );
+      updatedFunding = truncateNumber(
+        proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) - funding
+      );
     }
 
     return (
@@ -248,6 +250,11 @@ class Proposal extends React.Component {
         <Milestones
           milestones={dijixObject.milestones || []}
           milestoneFundings={proposalVersion.milestoneFundings}
+          changedFundings={
+            proposalDetails.data.changedFundings
+              ? proposalDetails.data.changedFundings.milestones
+              : undefined
+          }
         />
         <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>

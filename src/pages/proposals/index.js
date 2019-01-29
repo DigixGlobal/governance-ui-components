@@ -154,9 +154,13 @@ class Proposal extends React.Component {
     const totalOriginalFunds = (acc, currentValue) =>
       Number(acc.original) + Number(currentValue.original);
 
+    const milestoneFundings = (acc, currentValue) => Number(acc) + Number(currentValue);
+
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
-    let funding = truncateNumber(proposalVersion.totalFunding);
+    let funding = proposalDetails.data.changedFundings
+      ? proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
+      : proposalVersion.milestoneFundings.reduce(milestoneFundings, 0);
     let reward = truncateNumber(proposalVersion.finalReward);
 
     let updatedFunding;
@@ -169,14 +173,21 @@ class Proposal extends React.Component {
 
       reward = truncateNumber(proposalDetails.data.changedFundings.finalReward.original);
 
-      updatedReward = truncateNumber(
-        proposalDetails.data.changedFundings.finalReward.updated - reward
-      );
+      if (Number(proposalDetails.data.changedFundings.finalReward.updated) > 0) {
+        updatedReward = truncateNumber(
+          proposalDetails.data.changedFundings.finalReward.updated - reward
+        );
+      } else {
+        // show reward as zero
+        reward = 0;
+        updatedReward = 0;
+      }
+
       updatedFunding = truncateNumber(
         proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) - funding
       );
     }
-
+    console.log({ updatedReward });
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -229,7 +240,7 @@ class Proposal extends React.Component {
             <Reward>
               Reward
               <span>{reward} </span>
-              {updatedReward && <span> + {updatedReward} </span>}
+              {Number(updatedReward) > 0 && <span> + {updatedReward} </span>}
               ETH
             </Reward>
             <UpvoteStatus>
@@ -255,6 +266,7 @@ class Proposal extends React.Component {
               ? proposalDetails.data.changedFundings.milestones
               : undefined
           }
+          fundingChanged={proposalDetails.data.isFundingChanged}
         />
         <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>

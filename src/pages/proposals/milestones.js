@@ -5,16 +5,17 @@ import { MilestonesContainer, SubTitle } from './style';
 
 export default class Milestones extends React.Component {
   render() {
-    const { milestones, milestoneFundings, changedFundings, preview } = this.props;
+    const { milestones, milestoneFundings, changedFundings, preview, fundingChanged } = this.props;
     return (
       <MilestonesContainer>
         <SubTitle>Milestones</SubTitle>
         <Accordion allowMultipleOpen>
           {milestones.map((milestone, i) => {
-            const funding = Number(milestoneFundings[i]);
-            const updatedFunding = changedFundings ? Number(changedFundings[i].updated) : 0;
+            const funding = fundingChanged ? Number(milestoneFundings[i]) : milestoneFundings[i];
+            const updatedFunding = fundingChanged ? Number(changedFundings[i].updated) : 0;
             const milestoneFund = updatedFunding > 0 ? updatedFunding - funding : funding;
-            const fundingText = milestoneFund > 0 ? `${funding} + ${milestoneFund}` : funding;
+            const fundingText =
+              fundingChanged && milestoneFund > 0 ? `${funding} + ${milestoneFund}` : funding;
             return (
               <div key={`ms-${i + 1}`} label={`Milestone ${i + 1}: ${milestone.title || ''}`}>
                 <p>Funding: {preview ? milestone.fund : fundingText} ETH</p>
@@ -34,6 +35,7 @@ Milestones.propTypes = {
   milestones: PropTypes.array.isRequired,
   milestoneFundings: PropTypes.array.isRequired,
   changedFundings: PropTypes.array.isRequired,
+  fundingChanged: PropTypes.bool.isRequired,
   preview: PropTypes.bool,
 };
 

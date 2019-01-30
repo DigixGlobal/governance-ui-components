@@ -11,9 +11,11 @@ export default class Milestones extends React.Component {
         <SubTitle>Milestones</SubTitle>
         <Accordion allowMultipleOpen>
           {milestones.map((milestone, i) => {
-            const funding = fundingChanged ? Number(milestoneFundings[i]) : milestoneFundings[i];
+            const funding = fundingChanged
+              ? Number(changedFundings[i].original)
+              : milestoneFundings[i];
             const updatedFunding = fundingChanged ? Number(changedFundings[i].updated) : 0;
-            const milestoneFund = updatedFunding - funding;
+            const milestoneFund = fundingChanged ? updatedFunding - funding : undefined;
 
             return (
               <div

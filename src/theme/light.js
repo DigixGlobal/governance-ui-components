@@ -60,7 +60,7 @@ const darkGray = {
   darker: darkGrayHex.darken(0.5),
   light: darkGrayHex.lighten(1),
   lighter: darkGrayHex.lighten(1.9),
-  lightest: darkGrayHex.lighten(2.1),
+  lightest: darkGrayHex.lighten(2.075),
 };
 
 const whiteHex = Color('#fff');
@@ -137,6 +137,8 @@ const LightTheme = {
   buttonTextTertiaryReverse: secondaryColor,
 
   headerBorderColor: gray.default,
+
+  errorBorder: red.default,
 
   iconDefaultColor: tertiaryColor,
   iconPrimaryColor: primaryColor,

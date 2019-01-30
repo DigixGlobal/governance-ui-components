@@ -61,6 +61,8 @@ export default class Accordion extends React.Component {
             key={`acc-${i + 1}`}
             isOpen={!!openSections[child.props.label]}
             label={child.props.label}
+            funding={child.props.funding}
+            milestoneFund={child.props.milestoneFund}
             onClick={onClick}
           >
             {child.props.children}

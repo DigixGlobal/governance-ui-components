@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Accordion from '../../components/common/elements/accordion/index';
-import { MilestonesContainer, SubTitle } from './style';
+import Accordion from '@digix/gov-ui/components/common/elements/accordion/index';
+import { MilestonesContainer, SubTitle } from '@digix/gov-ui/pages/proposals/style';
 
 export default class Milestones extends React.Component {
   render() {
@@ -25,8 +25,12 @@ export default class Milestones extends React.Component {
             }
 
             return (
-              <div key={`ms-${i + 1}`} label={`Milestone ${i + 1}: ${milestone.title || ''}`}>
-                <p>Funding: {preview ? milestone.fund : fundingText} ETH</p>
+              <div
+                key={`ms-${i + 1}`}
+                label={`Milestone ${i + 1}: ${milestone.title || ''}`}
+                funding={funding}
+                milestoneFund={milestoneFund}
+              >
                 {milestone.description
                   ? milestone.description
                   : 'No milestone description has been created yet.'}

@@ -14,7 +14,6 @@ export default class AccordionSelection extends React.Component {
       props: { children, isOpen, label, funding, milestoneFund },
     } = this;
 
-    // const fundingText = milestoneFund > 0 ? `${funding} + ${milestoneFund}` : funding;
     const svgIcon = isOpen ? '#arrow_up' : '#arrow_down';
 
     return (
@@ -23,7 +22,10 @@ export default class AccordionSelection extends React.Component {
           <Title>{label}</Title>
           <Funding>
             <Amount>
-              {funding} {milestoneFund > 0 && <span>+ {milestoneFund}</span>}
+              {funding}{' '}
+              {milestoneFund && (
+                <span>+ {milestoneFund > 0 ? milestoneFund : `(${milestoneFund})`}</span>
+              )}
             </Amount>
             <div style={{ width: '18px', height: '18px' }}>
               <Icons />

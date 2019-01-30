@@ -5,8 +5,7 @@ import { MilestonesContainer, SubTitle } from '@digix/gov-ui/pages/proposals/sty
 
 export default class Milestones extends React.Component {
   render() {
-    const { milestones, milestoneFundings, changedFundings, preview, fundingChanged } = this.props;
-    console.log(changedFundings);
+    const { milestones, milestoneFundings, changedFundings, fundingChanged } = this.props;
     return (
       <MilestonesContainer>
         <SubTitle>Milestones</SubTitle>
@@ -15,21 +14,13 @@ export default class Milestones extends React.Component {
             const funding = fundingChanged ? Number(milestoneFundings[i]) : milestoneFundings[i];
             const updatedFunding = fundingChanged ? Number(changedFundings[i].updated) : 0;
             const milestoneFund = updatedFunding - funding;
-            let fundingText;
-            if (fundingChanged && milestoneFund > 0) {
-              fundingText = `${funding} + ${milestoneFund}`;
-            } else if (fundingChanged && milestoneFund < 0) {
-              fundingText = `${funding} + (${milestoneFund})`;
-            } else {
-              fundingText = funding;
-            }
 
             return (
               <div
                 key={`ms-${i + 1}`}
                 label={`Milestone ${i + 1}: ${milestone.title || ''}`}
-                funding={funding}
-                milestoneFund={milestoneFund}
+                funding={milestoneFundings[i]}
+                milestoneFund={milestoneFund !== 0 ? milestoneFund : undefined}
               >
                 {milestone.description
                   ? milestone.description
@@ -48,9 +39,4 @@ Milestones.propTypes = {
   milestoneFundings: PropTypes.array.isRequired,
   changedFundings: PropTypes.array.isRequired,
   fundingChanged: PropTypes.bool.isRequired,
-  preview: PropTypes.bool,
-};
-
-Milestones.defaultProps = {
-  preview: false,
 };

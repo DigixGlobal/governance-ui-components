@@ -21,7 +21,7 @@ import { showStatusIcon } from './constants';
 const columns = [
   {
     Header: 'User Id',
-    id: 'userUid',
+    id: 'id',
     accessor: d => d.node.userId, // String-based value accessors!
   },
   {

@@ -152,8 +152,10 @@ class Profile extends React.Component {
               <Button
                 primary
                 icon
+                xsmall
                 data-digix="Profile-UserName-Cta"
                 onClick={() => this.showSetUsernameOverlay()}
+                style={{ margin: 0 }}
               >
                 <Icon kind="plus" />
                 Set Username
@@ -170,8 +172,10 @@ class Profile extends React.Component {
             <Button
               primary
               icon
+              xsmall
               data-digix="Profile-Email-Cta"
               onClick={() => this.showSetEmailOverlay()}
+              style={{ margin: 0 }}
             >
               <Icon kind="plus" />
               Set Email

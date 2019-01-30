@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const ButtonGlobalStyles = css`
+  background: #fff;
   cursor: pointer;
   font-family: 'Futura PT Medium';
   font-size: 1.4rem;
@@ -22,6 +23,22 @@ export const ButtonGlobalStyles = css`
 
 export const Button = styled.button`
   ${ButtonGlobalStyles};
+
+  ${props =>
+    props.xsmall &&
+    css`
+      padding: 0.75rem 1rem;
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+
+      & > div {
+        margin-right: 0.5rem;
+      }
+
+      svg {
+        width: 80%;
+      }
+    `};
 
   ${props =>
     props.small &&

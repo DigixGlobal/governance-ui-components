@@ -29,9 +29,10 @@ export const DigixDAO = styled.div`
   ${media.mobile`flex-direction: column;`}
 `;
 export const StakeRewards = styled.div`
+  width: calc(100% / 3);
   color: ${props => props.theme.textPrimary.default.toString()};
-  flex-grow: 1;
-  flex-basis: 0;
+  display: flex;
+  flex-direction: column;
   margin-top: 5rem;
   margin-right: 3rem;
   &:last-child {
@@ -40,7 +41,7 @@ export const StakeRewards = styled.div`
   ${media.mobile`margin-top: 1rem; margin-right: 0;`}
 `;
 export const Title = styled.div`
-  color: ${props => props.theme.textPrimary.light.toString()};
+  color: ${props => props.theme.textPrimary.default.toString()};
   font-family: 'Futura PT Book', sans-serif;
   font-weight: 500;
   font-size: 2rem;
@@ -49,6 +50,7 @@ export const Title = styled.div`
 export const Content = styled.div`
   ${Card};
   flex-direction: column;
+  flex: 1 0 auto;
 `;
 export const Label = styled.div`
   text-transform: uppercase;

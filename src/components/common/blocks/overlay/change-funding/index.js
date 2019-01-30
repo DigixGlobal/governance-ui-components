@@ -40,6 +40,7 @@ class ChangeFundingOverlay extends React.Component {
       },
       exceedsLimit: false,
       fundChanged: false,
+      hasNegative: false,
     };
   }
 
@@ -66,7 +67,9 @@ class ChangeFundingOverlay extends React.Component {
     const { value } = e.target;
     const { form } = this.state;
     form.expectedReward = value;
-    this.setState({ form: { ...form }, fundChanged: true }, () => {
+    let hasNegative = false;
+    if (parseFloat(value) < 0) hasNegative = true;
+    this.setState({ form: { ...form }, fundChanged: true, hasNegative }, () => {
       this.checkFundingLimit();
     });
   };
@@ -75,7 +78,8 @@ class ChangeFundingOverlay extends React.Component {
     const { value } = e.target;
     const { form } = this.state;
     form.milestoneFundings[i] = value;
-    this.setState({ form: { ...form }, fundChanged: true }, () => {
+
+    this.setState({ form: { ...form }, fundChanged: true, hasNegative: false }, () => {
       this.checkFundingLimit();
     });
   };
@@ -128,7 +132,10 @@ class ChangeFundingOverlay extends React.Component {
 
   computeTotalFunds = () => {
     const { form } = this.state;
-    const milestoneFunds = (acc, currentValue) => Number(acc) + Number(currentValue);
+    const milestoneFunds = (acc, currentValue) => {
+      if (Number(currentValue) < 0) this.setState({ hasNegative: true });
+      return Number(acc) + Number(currentValue);
+    };
     return Number(form.milestoneFundings.reduce(milestoneFunds)) + Number(form.expectedReward);
   };
 
@@ -203,7 +210,7 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   render() {
-    const { form, exceedsLimit, fundChanged } = this.state;
+    const { form, exceedsLimit, fundChanged, hasNegative } = this.state;
 
     const { daoConfig } = this.props;
 
@@ -227,9 +234,14 @@ class ChangeFundingOverlay extends React.Component {
             } ETH`}</ErrorCaption>
           </FieldItem>
         )}
+        {hasNegative && (
+          <FieldItem>
+            <ErrorCaption>Nevative value is not allowed</ErrorCaption>
+          </FieldItem>
+        )}
         <Button
           kind="round"
-          disabled={exceedsLimit || !fundChanged}
+          disabled={exceedsLimit || !fundChanged || hasNegative}
           secondary
           large
           fluid

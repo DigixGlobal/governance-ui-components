@@ -32,7 +32,9 @@ class ClaimApprovalButton extends React.Component {
   }
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
+    this.props.showHideAlert({
+      message: JSON.stringify(error && error.message) || error,
+    });
 
   handleSubmit = () => {
     const { web3Redux, ChallengeProof, addresses, proposalId } = this.props;
@@ -105,7 +107,12 @@ class ClaimApprovalButton extends React.Component {
 
     if (!canClaim) return null;
     return (
-      <Button kind="round" onClick={this.handleSubmit} data-digix="Create-Proposal-Claim-Approval">
+      <Button
+        kind="round"
+        large
+        onClick={this.handleSubmit}
+        data-digix="Create-Proposal-Claim-Approval"
+      >
         Claim Approval
       </Button>
     );
@@ -144,6 +151,11 @@ const mapStateToProps = state => ({
 export default web3Connect(
   connect(
     mapStateToProps,
-    { showHideAlert, sendTransactionToDaoServer, showTxSigningModal, getDaoConfig }
+    {
+      showHideAlert,
+      sendTransactionToDaoServer,
+      showTxSigningModal,
+      getDaoConfig,
+    }
   )(ClaimApprovalButton)
 );

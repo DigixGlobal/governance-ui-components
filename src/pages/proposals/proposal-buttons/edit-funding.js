@@ -31,7 +31,7 @@ class EditFundingButton extends React.PureComponent {
     if (!canEdit || !hasUnfinishedMilestones) return null;
 
     return (
-      <Button kind="round" onClick={() => this.showOverlay()}>
+      <Button kind="round" large onClick={() => this.showOverlay()}>
         Edit Funding
       </Button>
     );

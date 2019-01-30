@@ -14,9 +14,16 @@ export default class Milestones extends React.Component {
           {milestones.map((milestone, i) => {
             const funding = fundingChanged ? Number(milestoneFundings[i]) : milestoneFundings[i];
             const updatedFunding = fundingChanged ? Number(changedFundings[i].updated) : 0;
-            const milestoneFund = updatedFunding > 0 ? updatedFunding - funding : funding;
-            const fundingText =
-              fundingChanged && milestoneFund > 0 ? `${funding} + ${milestoneFund}` : funding;
+            const milestoneFund = updatedFunding - funding;
+            let fundingText;
+            if (fundingChanged && milestoneFund > 0) {
+              fundingText = `${funding} + ${milestoneFund}`;
+            } else if (fundingChanged && milestoneFund < 0) {
+              fundingText = `${funding} + (${milestoneFund})`;
+            } else {
+              fundingText = funding;
+            }
+
             return (
               <div key={`ms-${i + 1}`} label={`Milestone ${i + 1}: ${milestone.title || ''}`}>
                 <p>Funding: {preview ? milestone.fund : fundingText} ETH</p>

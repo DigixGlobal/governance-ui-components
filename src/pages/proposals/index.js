@@ -184,9 +184,14 @@ class Proposal extends React.Component {
         updatedReward = 0;
       }
 
-      updatedFunding = truncateNumber(
-        proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) - funding
-      );
+      if (proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) > 0) {
+        updatedFunding = truncateNumber(
+          proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) - funding
+        );
+        if (updatedFunding === 0) updatedFunding = undefined; // set to undefined to ensure no change in fundng is displayed
+      } else {
+        updatedFunding = undefined;
+      }
     }
     return (
       <ProposalsWrapper>
@@ -236,8 +241,16 @@ class Proposal extends React.Component {
                 <ItemTitle>Funding</ItemTitle>
                 <Data>
                   <span>{funding}</span>
-                  {updatedFunding && <span> + {updatedFunding} </span>}
-                  ETH
+                  {updatedFunding && (
+                    <span>
+                      {' '}
+                      +{' '}
+                      {updatedFunding && updatedFunding > 0
+                        ? updatedFunding
+                        : `(${updatedFunding})`}{' '}
+                    </span>
+                  )}
+                  {` ETH`}
                 </Data>
               </InfoItem>
               <InfoItem>
@@ -250,7 +263,9 @@ class Proposal extends React.Component {
                 <ItemTitle>Reward</ItemTitle>
                 <Data>
                   <span>{reward} </span>
-                  {Number(updatedReward) > 0 && <span> + {updatedReward} </span>}
+                  {Number(updatedReward) > 0 && (
+                    <span> + {updatedReward > 0 ? updatedReward : `(${updatedReward})`} </span>
+                  )}
                   ETH
                 </Data>
               </InfoItem>

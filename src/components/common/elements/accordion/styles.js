@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { H3 } from '../../common-styles';
+// import { H3 } from '../../common-styles';
+// import { EDEADLK } from 'constants';
 
 export const AccordionItem = styled.div`
   position: relative;
@@ -57,12 +58,32 @@ export const AccordionItem = styled.div`
   }
 `;
 
-export const Header = styled(H3)`
-  margin-bottom: 0;
+export const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
+export const Title = styled.div`
+  margin-bottom: 0;
+  font-size: 1.8rem;
+`;
+
+export const Funding = styled.div`
+  display: flex;
+  justify-content: flex-end;
   svg {
     width: 100%;
     height: 100%;
+  }
+`;
+
+export const Amount = styled.div`
+  margin-right: 3rem;
+  font-size: 1.8rem;
+  font-style: italic;
+
+  span {
+    color: ${props => props.theme.textSecondary.default.toString()};
   }
 `;
 

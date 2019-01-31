@@ -178,10 +178,9 @@ class Proposal extends React.Component {
         updatedReward = truncateNumber(
           proposalDetails.data.changedFundings.finalReward.updated - reward
         );
+        if (updatedReward === 0) updatedReward = -Math.abs(reward);
       } else {
-        // show reward as zero
-        reward = 0;
-        updatedReward = 0;
+        updatedReward = -Math.abs(reward);
       }
 
       if (proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) > 0) {
@@ -243,11 +242,9 @@ class Proposal extends React.Component {
                   <span>{funding}</span>
                   {updatedFunding && (
                     <span>
-                      {' '}
-                      +{' '}
                       {updatedFunding && updatedFunding > 0
-                        ? updatedFunding
-                        : `(${updatedFunding})`}{' '}
+                        ? ` + ${updatedFunding}`
+                        : ` - ${Math.abs(updatedFunding)}`}
                     </span>
                   )}
                   {` ETH`}
@@ -263,8 +260,12 @@ class Proposal extends React.Component {
                 <ItemTitle>Reward</ItemTitle>
                 <Data>
                   <span>{reward} </span>
-                  {Number(updatedReward) > 0 && (
-                    <span> + {updatedReward > 0 ? updatedReward : `(${updatedReward})`} </span>
+                  {updatedReward && (
+                    <span>
+                      {updatedReward > 0
+                        ? ` + ${updatedReward} `
+                        : ` - ${Math.abs(updatedReward)} `}
+                    </span>
                   )}
                   ETH
                 </Data>

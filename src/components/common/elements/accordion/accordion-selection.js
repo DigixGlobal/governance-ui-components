@@ -24,7 +24,9 @@ export default class AccordionSelection extends React.Component {
             <Amount>
               {funding}{' '}
               {milestoneFund && (
-                <span>+ {milestoneFund > 0 ? milestoneFund : `(${milestoneFund})`}</span>
+                <span>
+                  {milestoneFund > 0 ? ` + ${milestoneFund}` : ` - ${Math.abs(milestoneFund)}`}
+                </span>
               )}
             </Amount>
             <div style={{ width: '18px', height: '18px' }}>

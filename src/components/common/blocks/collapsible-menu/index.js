@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
+import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
 import lightTheme from '@digix/gov-ui/theme/light';
 
@@ -14,6 +14,7 @@ import {
   MenuList,
   MenuItem,
 } from '@digix/gov-ui/components/common/blocks/collapsible-menu/style.js';
+import { getUserStatus } from '@digix/gov-ui/utils/helpers';
 
 const DEFAULT_MENU = [
   {
@@ -49,22 +50,6 @@ const DEFAULT_MENU = [
 ];
 
 class CollapsibleMenu extends React.Component {
-  getUserType = details => {
-    if (!details) {
-      return null;
-    }
-
-    if (details.data.isModerator) {
-      return 'Moderator';
-    }
-
-    if (details.data.isParticipant) {
-      return 'Participant';
-    }
-
-    return null;
-  };
-
   renderMenuItem = item => {
     const { ChallengeProof, location, theme } = this.props;
     const authorized = ChallengeProof.data && ChallengeProof.data.client;
@@ -85,19 +70,20 @@ class CollapsibleMenu extends React.Component {
   };
 
   render() {
-    const { addressDetails, defaultAddress, menuItems } = this.props;
-    const userType = this.getUserType(addressDetails);
+    const { addressDetails, ChallengeProof, menuItems } = this.props;
+    const userType = getUserStatus(addressDetails.data);
     const menu = menuItems || DEFAULT_MENU;
     const menuItemElements = menu.map(item => this.renderMenuItem(item));
 
     return (
       <MenuContainer>
-        {defaultAddress && (
+        {ChallengeProof.data && (
           <ProfileContainer>
             <Welcome>
-              Welcome, <span>{defaultAddress.address}</span>
+              Welcome,&nbsp;
+              {renderDisplayName('Sidebar-DisplayName')}
             </Welcome>
-            <UserType>{userType}</UserType>
+            <UserType data-digix="Sidebar-UserStatus">{userType}</UserType>
           </ProfileContainer>
         )}
 
@@ -111,7 +97,6 @@ const { array, object } = PropTypes;
 CollapsibleMenu.propTypes = {
   menuItems: array,
   theme: object,
-  defaultAddress: object,
   addressDetails: object,
   location: object.isRequired,
   ChallengeProof: object,
@@ -120,13 +105,11 @@ CollapsibleMenu.propTypes = {
 CollapsibleMenu.defaultProps = {
   menuItems: DEFAULT_MENU,
   theme: lightTheme,
-  defaultAddress: undefined,
   addressDetails: undefined,
   ChallengeProof: undefined,
 };
 
 const mapStateToProps = state => ({
-  defaultAddress: getDefaultAddress(state),
   addressDetails: state.infoServer.AddressDetails,
   ChallengeProof: state.daoServer.ChallengeProof,
 });

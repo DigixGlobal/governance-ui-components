@@ -152,17 +152,11 @@ class RedeemBadgeButton extends React.PureComponent {
       Number(badgeBalance) > 0 &&
       Number(addressDetails.lastQuarterThatReputationWasUpdated) === daoInfo.currentQuarter - 1;
 
-    console.log(
-      addressDetails.redeemedBadge === false,
-      !redeemed,
-      Number(badgeBalance) > 0,
-      Number(addressDetails.lastQuarterThatReputationWasUpdated) === daoInfo.currentQuarter - 1
-    );
     return (
       <Button
         data-digix="redeemBadgeButton"
         primary
-        onClick={this.handleShowOverlay}
+        onClick={showOverlay ? this.handleShowOverlay : this.handleSubmit}
         disabled={!canRedeemBadge}
       >
         Redeem Badge

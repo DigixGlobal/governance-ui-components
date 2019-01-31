@@ -243,7 +243,7 @@ class ChangeFundingOverlay extends React.Component {
         )}
         {hasNegative && (
           <FieldItem>
-            <ErrorCaption>Nevative value is not allowed</ErrorCaption>
+            <ErrorCaption>Negative value is not allowed</ErrorCaption>
           </FieldItem>
         )}
         <Button

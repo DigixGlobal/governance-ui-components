@@ -41,6 +41,7 @@ class ChangeFundingOverlay extends React.Component {
       exceedsLimit: false,
       fundChanged: false,
       hasNegative: false,
+      hasEmpty: false,
     };
   }
 
@@ -68,8 +69,10 @@ class ChangeFundingOverlay extends React.Component {
     const { form } = this.state;
     form.expectedReward = value;
     let hasNegative = false;
+    let hasEmpty = false;
     if (parseFloat(value) < 0) hasNegative = true;
-    this.setState({ form: { ...form }, fundChanged: true, hasNegative }, () => {
+    if (value === '') hasEmpty = true;
+    this.setState({ form: { ...form }, fundChanged: true, hasNegative, hasEmpty }, () => {
       this.checkFundingLimit();
     });
   };
@@ -78,10 +81,12 @@ class ChangeFundingOverlay extends React.Component {
     const { value } = e.target;
     const { form } = this.state;
     form.milestoneFundings[i] = value;
-
-    this.setState({ form: { ...form }, fundChanged: true, hasNegative: false }, () => {
-      this.checkFundingLimit();
-    });
+    this.setState(
+      { form: { ...form }, fundChanged: true, hasNegative: false, hasEmpty: false },
+      () => {
+        this.checkFundingLimit();
+      }
+    );
   };
 
   onTransactionAttempt = txHash => {
@@ -134,6 +139,8 @@ class ChangeFundingOverlay extends React.Component {
     const { form } = this.state;
     const milestoneFunds = (acc, currentValue) => {
       if (Number(currentValue) < 0) this.setState({ hasNegative: true });
+      if (currentValue === '') this.setState({ hasEmpty: true });
+      console.log({ currentValue });
       return Number(acc) + Number(currentValue);
     };
     return Number(form.milestoneFundings.reduce(milestoneFunds)) + Number(form.expectedReward);
@@ -210,7 +217,7 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   render() {
-    const { form, exceedsLimit, fundChanged, hasNegative } = this.state;
+    const { form, exceedsLimit, fundChanged, hasNegative, hasEmpty } = this.state;
 
     const { daoConfig } = this.props;
 
@@ -241,7 +248,7 @@ class ChangeFundingOverlay extends React.Component {
         )}
         <Button
           kind="round"
-          disabled={exceedsLimit || !fundChanged || hasNegative}
+          disabled={exceedsLimit || !fundChanged || hasNegative || hasEmpty}
           secondary
           large
           fluid

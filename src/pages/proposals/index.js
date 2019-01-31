@@ -178,11 +178,9 @@ class Proposal extends React.Component {
         updatedReward = truncateNumber(
           proposalDetails.data.changedFundings.finalReward.updated - reward
         );
-        if (updatedReward === 0) updatedReward = undefined;
+        if (updatedReward === 0) updatedReward = -Math.abs(reward);
       } else {
-        // show reward as zero
-        reward = 0;
-        updatedReward = 0;
+        updatedReward = -Math.abs(reward);
       }
 
       if (proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) > 0) {

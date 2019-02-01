@@ -272,7 +272,7 @@ class Profile extends React.Component {
               </ModeratorReqs>
             </Criteria>
             <Actions>
-              <RedeemBadge />
+              <RedeemBadge history={this.props.history} />
               <Button
                 primary
                 data-digix="Profile-LockMoreDgd-Cta"
@@ -295,6 +295,7 @@ Profile.propTypes = {
   AddressDetails: object.isRequired,
   DaoConfig: object,
   DaoDetails: object,
+  history: object.isRequired,
   getAddressDetailsAction: func.isRequired,
   getDaoConfigAction: func.isRequired,
   getDaoDetailsAction: func.isRequired,

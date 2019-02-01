@@ -9,6 +9,8 @@ import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
+import RedeeemBadgeOverlay from '@digix/gov-ui/components/common/blocks/overlay/approve-badge-redemption';
+
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import getContract, { getDGDBadgeBalanceContract } from '@digix/gov-ui/utils/contracts';
 
@@ -17,7 +19,7 @@ import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
-import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 
@@ -30,6 +32,7 @@ class RedeemBadgeButton extends React.PureComponent {
     super(props);
     this.state = {
       badgeBalance: 0,
+      allowance: 0,
       redeemed: false,
     };
   }
@@ -37,6 +40,7 @@ class RedeemBadgeButton extends React.PureComponent {
   componentWillMount = () => {
     const { addressDetails } = this.props;
     this.getDgdBalance();
+    this.getDgdBadgeAllowance();
     this.props.getAddressDetails(addressDetails.address);
   };
 
@@ -50,10 +54,31 @@ class RedeemBadgeButton extends React.PureComponent {
       .call(addressDetails.address)
       .then(balance => this.setState({ badgeBalance: parseBigNumber(balance) }));
   }
+
+  getDgdBadgeAllowance() {
+    const { addressDetails, web3Redux } = this.props;
+    const { address: contractAddress, abi } = getDGDBadgeBalanceContract(network);
+    const { address: daoStakeLockingAddress } = getContract(DaoStakeLocking, network);
+    const { web3 } = web3Redux.networks[network];
+    const contract = web3.eth.contract(abi).at(contractAddress);
+
+    return contract.allowance
+      .call(addressDetails.address, daoStakeLockingAddress)
+      .then(allowance => this.setState({ allowance: parseBigNumber(allowance) }));
+  }
+
   setError = error =>
     this.props.showHideAlert({
       message: JSON.stringify(error && error.message) || error,
     });
+
+  handleShowOverlay = () => {
+    const { history } = this.props;
+    this.props.showRightPanel({
+      component: <RedeeemBadgeOverlay history={history} onCompleted={this.onPanelClose} />,
+      show: true,
+    });
+  };
 
   handleSubmit = () => {
     const { web3Redux, challengeProof, addresses } = this.props;
@@ -117,9 +142,10 @@ class RedeemBadgeButton extends React.PureComponent {
   };
 
   render() {
-    const { badgeBalance, redeemed } = this.state;
+    const { badgeBalance, redeemed, allowance } = this.state;
     const { addressDetails, daoInfo } = this.props;
 
+    const showOverlay = Number(allowance) < 1;
     const canRedeemBadge =
       addressDetails.redeemedBadge === false &&
       !redeemed &&
@@ -130,7 +156,7 @@ class RedeemBadgeButton extends React.PureComponent {
       <Button
         data-digix="redeemBadgeButton"
         primary
-        onClick={this.handleSubmit}
+        onClick={showOverlay ? this.handleShowOverlay : this.handleSubmit}
         disabled={!canRedeemBadge}
       >
         Redeem Badge
@@ -150,7 +176,9 @@ RedeemBadgeButton.propTypes = {
   addresses: array.isRequired,
   daoInfo: object.isRequired,
   addressDetails: object.isRequired,
+  history: object.isRequired,
   getAddressDetails: func.isRequired,
+  showRightPanel: func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -163,6 +191,12 @@ const mapStateToProps = state => ({
 export default web3Connect(
   connect(
     mapStateToProps,
-    { showHideAlert, sendTransactionToDaoServer, showTxSigningModal, getAddressDetails }
+    {
+      showHideAlert,
+      showRightPanel,
+      sendTransactionToDaoServer,
+      showTxSigningModal,
+      getAddressDetails,
+    }
   )(RedeemBadgeButton)
 );

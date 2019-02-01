@@ -105,8 +105,14 @@ class BadgeRedemptionApproval extends React.Component {
           In order to redeem a DGD Badge, we need your approval in order for our contracts to
           interact with your DGD Badge.
         </p>
-
-        <Button kind="round" secondary fluid large onClick={this.handleSubmit}>
+        <Button
+          kind="round"
+          secondary
+          fluid
+          large
+          onClick={this.handleSubmit}
+          data-digix="Approve-Interaction"
+        >
           APPROVE THE INTERACTION
         </Button>
       </IntroContainer>

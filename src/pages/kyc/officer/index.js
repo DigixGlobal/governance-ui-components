@@ -4,19 +4,27 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Modal from 'react-responsive-modal';
-
 import { Query } from 'react-apollo';
 
 import DigixTable from '@digix/gov-ui/components/common/blocks/digix-table';
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 import { searchKycQuery } from '@digix/gov-ui/api/graphql-queries/kyc';
 
-import { KycWrapper, Heading } from './style';
-import UserInfo from './user-info';
+import UserInfo from '@digix/gov-ui/pages/kyc/officer/user-info';
+import { showStatusIcon } from '@digix/gov-ui/pages/kyc/officer/constants';
 
-import { showStatusIcon } from './constants';
+import {
+  KycWrapper,
+  Title,
+  CTAContainer,
+  TabButton,
+  FilterLabel,
+  SummaryReport,
+  ReportItem,
+} from '@digix/gov-ui/pages/kyc/officer/style';
+
+// import '@digix/gov-ui/pages/kyc/officer/modal_styles.css';
 
 const columns = [
   {
@@ -90,7 +98,7 @@ class KycOfficerDashboard extends React.Component {
     return (
       <UserInfo
         user={selected.node}
-        header={selected.node.status === 'PENDING' ? 'Verify User KYC - ' : 'User Detail - '}
+        header={selected.node.status === 'PENDING' ? 'User Verification - ' : 'User Detail - '}
         onCompleted={this.onClose}
       />
     );
@@ -101,42 +109,46 @@ class KycOfficerDashboard extends React.Component {
 
     return (
       <KycWrapper>
-        <Heading>KYC Dashboard</Heading>
-        <Button
-          kind="round"
-          onClick={this.handleAllUsersClick}
-          data-digix="Kyc-Admin-All-users"
-          active={filter === 'All'}
-        >
-          All Users
-        </Button>
-        <Button
-          kind="round"
-          onClick={() => this.handleListKycByStatus('PENDING')}
-          data-digix="Kyc-Admin-KYC-Requests"
-          active={filter === 'PENDING'}
-        >
-          KYC Requests
-        </Button>
-        <Button
-          kind="round"
-          onClick={() => this.handleListKycByStatus('APPROVED')}
-          data-digix="Kyc-Admin-Approved-Requests"
-          active={filter === 'APPROVED'}
-        >
-          Approved KYC Requests
-        </Button>
-        <Button
-          kind="round"
-          onClick={() => this.handleListKycByStatus('REJECTED')}
-          data-digix="Kyc-Admin-Rejected-Requests"
-          active={filter === 'REJECTED'}
-        >
-          Rejected KYC Requests
-        </Button>
-
-        <h3>Showing {filter || 'All'} KYC</h3>
-        <br />
+        <Title>KYC Dashboard</Title>
+        <CTAContainer>
+          <TabButton
+            kind="round"
+            large
+            onClick={this.handleAllUsersClick}
+            data-digix="Kyc-Admin-All-users"
+            active={filter === 'All'}
+          >
+            All Users
+          </TabButton>
+          <TabButton
+            kind="round"
+            large
+            onClick={() => this.handleListKycByStatus('PENDING')}
+            data-digix="Kyc-Admin-KYC-Requests"
+            active={filter === 'PENDING'}
+          >
+            KYC Requests
+          </TabButton>
+          <TabButton
+            kind="round"
+            large
+            onClick={() => this.handleListKycByStatus('APPROVED')}
+            data-digix="Kyc-Admin-Approved-Requests"
+            active={filter === 'APPROVED'}
+          >
+            Approved KYC Requests
+          </TabButton>
+          <TabButton
+            kind="round"
+            large
+            onClick={() => this.handleListKycByStatus('REJECTED')}
+            data-digix="Kyc-Admin-Rejected-Requests"
+            active={filter === 'REJECTED'}
+          >
+            Rejected KYC Requests
+          </TabButton>
+        </CTAContainer>
+        {/* <FilterLabel>Showing {filter || 'All'} KYC</FilterLabel> */}
         <Query
           query={searchKycQuery}
           fetchPolicy="network-only"
@@ -168,7 +180,7 @@ class KycOfficerDashboard extends React.Component {
                           });
                         },
                         style: {
-                          backgroundColor: rowInfo.index === selectedIndex ? '#f2f2f2' : 'white',
+                          backgroundColor: rowInfo.index === selectedIndex ? '#f2f2f2' : '#fff',
                           cursor: 'pointer',
                         },
                       };
@@ -180,7 +192,6 @@ class KycOfficerDashboard extends React.Component {
             );
           }}
         </Query>
-
         <Modal open={selected !== undefined} onClose={() => this.onClose()}>
           {this.renderInfo()}
         </Modal>

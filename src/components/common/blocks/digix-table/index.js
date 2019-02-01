@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ReactTable from 'react-table';
-import 'react-table/react-table.css';
+import './react-table.css';
 
 export default class DigixTable extends React.Component {
   render() {

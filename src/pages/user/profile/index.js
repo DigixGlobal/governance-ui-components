@@ -152,8 +152,10 @@ class Profile extends React.Component {
               <Button
                 primary
                 icon
+                xsmall
                 data-digix="Profile-UserName-Cta"
                 onClick={() => this.showSetUsernameOverlay()}
+                style={{ margin: 0 }}
               >
                 <Icon kind="plus" />
                 Set Username
@@ -170,8 +172,10 @@ class Profile extends React.Component {
             <Button
               primary
               icon
+              xsmall
               data-digix="Profile-Email-Cta"
               onClick={() => this.showSetEmailOverlay()}
+              style={{ margin: 0 }}
             >
               <Icon kind="plus" />
               Set Email
@@ -268,7 +272,7 @@ class Profile extends React.Component {
               </ModeratorReqs>
             </Criteria>
             <Actions>
-              <RedeemBadge />
+              <RedeemBadge history={this.props.history} />
               <Button
                 primary
                 data-digix="Profile-LockMoreDgd-Cta"
@@ -291,6 +295,7 @@ Profile.propTypes = {
   AddressDetails: object.isRequired,
   DaoConfig: object,
   DaoDetails: object,
+  history: object.isRequired,
   getAddressDetailsAction: func.isRequired,
   getDaoConfigAction: func.isRequired,
   getDaoDetailsAction: func.isRequired,

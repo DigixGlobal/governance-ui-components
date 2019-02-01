@@ -15,13 +15,14 @@ export const UserItem = styled.div`
   color: ${props => props.theme.textPrimary.default.toString()};
   font-family: 'Futura PT Medium', sans-serif;
   font-size: 1.6rem;
+  margin: 1.5rem 0;
 `;
 
 export const UserLabel = styled.span`
   min-width: 12rem;
 `;
 export const UserData = styled.span`
-  margin-right: 2rem;
+  margin-right: 1rem;
 `;
 
 export const RewardSummary = styled.div`

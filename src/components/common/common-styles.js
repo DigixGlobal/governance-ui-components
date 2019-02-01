@@ -195,7 +195,7 @@ export const DrawerContainer = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
   padding: 5rem;
   width: 25%;
-  
+  overflow-y: scroll;
   ${props =>
     props.large &&
     css`

@@ -69,11 +69,10 @@ class ChangeFundingOverlay extends React.Component {
     const { form } = this.state;
     form.expectedReward = value;
     let hasNegative = false;
-    let hasEmpty = false;
     if (parseFloat(value) < 0) hasNegative = true;
-    if (value === '') hasEmpty = true;
-    this.setState({ form: { ...form }, fundChanged: true, hasNegative, hasEmpty }, () => {
+    this.setState({ form: { ...form }, fundChanged: true, hasNegative }, () => {
       this.checkFundingLimit();
+      this.checkEmptyFunds();
     });
   };
 
@@ -82,9 +81,14 @@ class ChangeFundingOverlay extends React.Component {
     const { form } = this.state;
     form.milestoneFundings[i] = value;
     this.setState(
-      { form: { ...form }, fundChanged: true, hasNegative: false, hasEmpty: false },
+      {
+        form: { ...form },
+        fundChanged: true,
+        hasNegative: false,
+      },
       () => {
         this.checkFundingLimit();
+        this.checkEmptyFunds();
       }
     );
   };
@@ -139,11 +143,28 @@ class ChangeFundingOverlay extends React.Component {
     const { form } = this.state;
     const milestoneFunds = (acc, currentValue) => {
       if (Number(currentValue) < 0) this.setState({ hasNegative: true });
-      if (currentValue === '') this.setState({ hasEmpty: true });
-      console.log({ currentValue });
+      // if (currentValue === '') this.setState({ hasEmpty: true });
       return Number(acc) + Number(currentValue);
     };
     return Number(form.milestoneFundings.reduce(milestoneFunds)) + Number(form.expectedReward);
+  };
+
+  checkEmptyFunds = () => {
+    const { form } = this.state;
+    let hasEmpty = false;
+
+    if (form.expectedReward === '') {
+      this.setState({ hasEmpty: true });
+      return;
+    }
+    // eslint-disable-next-line
+    for (const fund of form.milestoneFundings) {
+      if (fund === '') {
+        hasEmpty = true;
+        break;
+      }
+    }
+    this.setState({ hasEmpty });
   };
 
   handleSubmit = () => {

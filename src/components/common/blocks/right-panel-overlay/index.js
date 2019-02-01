@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import { TransparentOverlay, DrawerContainer } from '@digix/gov-ui/components/common/common-styles';
 
 import { Container, CloseButton } from './style';
-import { TransparentOverlay, DrawerContainer } from '../../common-styles';
 
 const PanelOverlay = props => {
   const { showPanel } = props;

@@ -114,13 +114,13 @@ export class Wallet extends React.Component {
       <Container>
         <TransparentOverlay />
         <DrawerContainer>
-          {stage === Stage.Intro && (
+          {stage === Stage.Intro && !isAuthenticated && (
             <Intro
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}
               onChangeStage={this.updateStage}
             />
           )}
-          {stage === Stage.LoadingWallet && (
+          {stage === Stage.LoadingWallet && !isAuthenticated && (
             <LoadWallet {...rest} onChangeStage={this.updateStage} />
           )}
           {(stage === Stage.WalletLoaded || isAuthenticated) && (

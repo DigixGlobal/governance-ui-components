@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import Toggle from '@digix/gov-ui/components/common/elements/toggle';
 
-import { Container, Caption, Value, ValueWrapper } from './style';
+import { Container, Caption, Value, ValueWrapper, UserTitle } from './style';
 
 import { showStatusIcon } from './constants';
 
@@ -36,8 +36,7 @@ class UserInfo extends React.Component {
     const { approve } = this.state;
     return (
       <Container>
-        <h3>{`${header} ${user.firstName} ${user.lastName}`}</h3>
-        <br />
+        <UserTitle>{`${header} ${user.firstName} ${user.lastName}`}</UserTitle>
         {user.status && (
           <ValueWrapper>
             <Caption>KYC Status</Caption>

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 
 import { Query, Mutation } from 'react-apollo';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
-import { Select } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Select } from '@digix/gov-ui/components/common/elements/index';
+import { Label } from '@digix/gov-ui/components/common/common-styles';
+import { FieldGroup, FieldItemKYC } from '@digix/gov-ui/pages/kyc/officer/style';
 
 import {
   getKycRejectionReasonsQuery,
@@ -27,7 +28,10 @@ class RejectKyc extends React.Component {
   onSubmit = rejectKyc => {
     const { onCompleted } = this.props;
     rejectKyc({
-      variables: { kycId: this.props.kycId, rejectionReason: this.state.reason },
+      variables: {
+        kycId: this.props.kycId,
+        rejectionReason: this.state.reason,
+      },
     }).then(() => {
       if (onCompleted) onCompleted('KYC Rejected');
     });
@@ -36,9 +40,9 @@ class RejectKyc extends React.Component {
   render() {
     const hasReason = this.state.reason && this.state.reason.length > 0;
     return (
-      <div>
-        <div>Rejection Reason</div>
-        <div>
+      <FieldGroup>
+        <FieldItemKYC>
+          <Label>Rejection Reason</Label>
           <Query query={getKycRejectionReasonsQuery}>
             {({ loading, error, data }) => {
               if (loading) return 'Loading...';
@@ -49,7 +53,10 @@ class RejectKyc extends React.Component {
                 value: reason.value,
               }));
 
-              options.splice(0, 0, { text: 'Select Rejection Reason', value: '' });
+              options.splice(0, 0, {
+                text: 'Select Rejection Reason',
+                value: '',
+              });
               return (
                 <Select
                   name="rejection-reason"
@@ -60,17 +67,26 @@ class RejectKyc extends React.Component {
               );
             }}
           </Query>
-        </div>
-        <div>
+        </FieldItemKYC>
+        <FieldItemKYC>
           <Mutation mutation={rejectKycMutation}>
             {rejectKyc => (
-              <Button kind="round" disabled={!hasReason} onClick={() => this.onSubmit(rejectKyc)}>
+              <Button
+                kind="round"
+                primary
+                large
+                reverse
+                fluid
+                disabled={!hasReason}
+                onClick={() => this.onSubmit(rejectKyc)}
+                style={{ margin: '0.5rem 1rem' }}
+              >
                 Reject
               </Button>
             )}
           </Mutation>
-        </div>
-      </div>
+        </FieldItemKYC>
+      </FieldGroup>
     );
   }
 }

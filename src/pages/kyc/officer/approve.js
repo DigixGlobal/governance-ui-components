@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import moment from 'moment';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
-import TextField from '@digix/gov-ui/components/common/elements/textfield';
+import { Button, TextField } from '@digix/gov-ui/components/common/elements/index';
+import { Label } from '@digix/gov-ui/components/common/common-styles';
+import { FieldGroup, FieldItemKYC } from '@digix/gov-ui/pages/kyc/officer/style';
 
 import { approveKycMutation } from '@digix/gov-ui/api/graphql-queries/kyc';
 
@@ -20,7 +21,10 @@ class ApproveKyc extends React.Component {
   onSubmit = approveKyc => {
     const { onCompleted } = this.props;
     approveKyc({
-      variables: { kycId: this.props.kycId, expirationDate: this.state.expirationDate },
+      variables: {
+        kycId: this.props.kycId,
+        expirationDate: this.state.expirationDate,
+      },
     }).then(() => {
       if (onCompleted) onCompleted('KYC successfully Approved');
     });
@@ -36,9 +40,9 @@ class ApproveKyc extends React.Component {
     const validDate = moment(expirationDate).isValid() && new Date(expirationDate) >= Date.now();
 
     return (
-      <div>
-        <div>Expiration Date</div>
-        <div>
+      <FieldGroup>
+        <FieldItemKYC>
+          <Label>Expiration Date</Label>
           <TextField
             data-digix="Approve-Kyc-Expiration"
             type="date"
@@ -46,17 +50,26 @@ class ApproveKyc extends React.Component {
             error={!validDate && expirationDate !== undefined}
             message="Date must be valid and NOT less than the current date"
           />
-        </div>
-        <div>
+        </FieldItemKYC>
+        <FieldItemKYC>
           <Mutation mutation={approveKycMutation}>
             {approveKyc => (
-              <Button kind="round" disabled={!validDate} onClick={() => this.onSubmit(approveKyc)}>
+              <Button
+                kind="round"
+                primary
+                large
+                reverse
+                fluid
+                disabled={!validDate}
+                onClick={() => this.onSubmit(approveKyc)}
+                style={{ margin: '0.5rem 1rem' }}
+              >
                 Approve
               </Button>
             )}
           </Mutation>
-        </div>
-      </div>
+        </FieldItemKYC>
+      </FieldGroup>
     );
   }
 }

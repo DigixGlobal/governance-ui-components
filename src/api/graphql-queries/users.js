@@ -4,7 +4,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 
-const fetchDisplayName = gql`
+export const fetchDisplayName = gql`
   query fetchUser {
     currentUser {
       displayName
@@ -12,7 +12,7 @@ const fetchDisplayName = gql`
   }
 `;
 
-const fetchUserQuery = gql`
+export const fetchUserQuery = gql`
   query fetchUser {
     currentUser {
       id
@@ -21,11 +21,15 @@ const fetchUserQuery = gql`
       username
       displayName
       createdAt
+      kyc {
+        id
+        status
+      }
     }
   }
 `;
 
-const UserMutations = {
+export const UserMutations = {
   changeEmail: gql`
     mutation changeEmail($email: String!) {
       changeEmail(input: { email: $email }) {
@@ -72,16 +76,12 @@ export const renderDisplayName = dataDigixAttribute => (
 
 export const withFetchUser = Component => props => (
   <Query query={fetchUserQuery}>
-    {({ loading, error, data }) => {
-      if (loading) {
+    {({ loading, error, data, refetch }) => {
+      if (loading || error) {
         return null;
       }
 
-      if (error) {
-        return null;
-      }
-
-      return <Component {...props} userData={data.currentUser} />;
+      return <Component {...props} userData={data.currentUser} refetchUser={refetch} />;
     }}
   </Query>
 );

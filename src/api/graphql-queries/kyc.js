@@ -3,6 +3,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
+import { fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 
 const fetchKycFormOptions = gql`
   query fetchKycFormOptions {
@@ -70,6 +71,7 @@ const submitKycMutation = gql`
         message
       }
       kyc {
+        id
         status
       }
     }
@@ -124,6 +126,14 @@ export const withSubmitKyc = Component => props => (
       const submitKyc = kycRequest => {
         mutation({
           variables: { kycRequest },
+          update: (store, response) => {
+            const cache = store.readQuery({ query: fetchUserQuery });
+            cache.currentUser.kyc = response.data.submitKyc.kyc;
+            store.writeQuery({
+              data: cache,
+              query: fetchUserQuery,
+            });
+          },
         });
       };
 

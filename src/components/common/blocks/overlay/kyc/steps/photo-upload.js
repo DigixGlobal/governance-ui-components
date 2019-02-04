@@ -163,6 +163,7 @@ class KycOverlayPhotoUpload extends KycFormStep {
                   <WebCam
                     audio={false}
                     height={450}
+                    data-digix="GESTARTED-WEBCAM-PREVIEW"
                     ref={this.setRef}
                     screenshotFormat="image/jpeg"
                     width={600}
@@ -174,7 +175,12 @@ class KycOverlayPhotoUpload extends KycFormStep {
                   If you do not have a webcam or are unable to see the preview after granting
                   permission, you will have the option of uploading an image instead.
                 </p>
-                <Button secondary width="60" onClick={this.toggleWebcamDisplay}>
+                <Button
+                  secondary
+                  width="60"
+                  data-digix="PROOF-GET-STARTED-BUTTON"
+                  onClick={this.toggleWebcamDisplay}
+                >
                   Get Started
                 </Button>
               </GetStarted>
@@ -205,7 +211,11 @@ class KycOverlayPhotoUpload extends KycFormStep {
                   </SelfieGuide>
                   <Photo>
                     {identificationPoseDataUrl && (
-                      <img src={identificationPoseDataUrl} alt="Identification Pose Preview" />
+                      <img
+                        src={identificationPoseDataUrl}
+                        data-digix="CAPTURED-IMAGE"
+                        alt="Identification Pose Preview"
+                      />
                     )}
 
                     {showWebcam && (
@@ -215,6 +225,7 @@ class KycOverlayPhotoUpload extends KycFormStep {
                           height={450}
                           ref={this.setRef}
                           screenshotFormat="image/jpeg"
+                          data-digix="WEBCAM-CAPTURE"
                           width={450}
                           style={{ display: showWebcam ? 'block' : 'none' }}
                         />
@@ -225,7 +236,11 @@ class KycOverlayPhotoUpload extends KycFormStep {
                 </PhotoViewer>
 
                 {!ticking && (
-                  <Button onClick={() => this.toggleTicking()} secondary>
+                  <Button
+                    data-digix="CAPTURE-COUNTDOWN-BUTTON"
+                    onClick={() => this.toggleTicking()}
+                    secondary
+                  >
                     Take a Photo (5 seconds countdown)
                   </Button>
                 )}

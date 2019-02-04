@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { Button } from '../style';
 
 export const RoundBtn = styled(Button)`
-  background: ${props => props.theme.buttonBgPrimary.default.toString()};
+  background: transparent;
   border: none;
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
@@ -142,5 +142,11 @@ export const RoundBtn = styled(Button)`
         box-shadow: none;
         background-color: ${props.theme.buttonResponseNo.fade.toString()};
       }
+    `};
+
+  ${props =>
+    props.xsmall &&
+    css`
+      border-width: 1px;
     `};
 `;

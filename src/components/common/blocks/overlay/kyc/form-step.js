@@ -129,9 +129,17 @@ class KycFormStep extends React.Component {
   };
 
   isImageFileValid = fieldName => {
-    const inputElement = this.getInputElement(fieldName);
+    // if image is captured by webcam, we can assume it's valid
+    // since it will have already passed the regex for it
+    if (this.state.proofMethod === 'webcam') {
+      return {
+        isValid: true,
+        errorMessage: null,
+      };
+    }
 
     // check that file exists
+    const inputElement = this.getInputElement(fieldName);
     if (!inputElement.files.length) {
       return {
         isValid: false,
@@ -215,6 +223,11 @@ class KycFormStep extends React.Component {
   }
 
   updateState(fieldName, value) {
+    // if input is captured by webcam, it should already be saved in the state
+    if (this.state.proofMethod === 'webcam') {
+      return;
+    }
+
     const rule = this.VALIDATION_RULES[fieldName];
     const newFormValues = { ...this.state.formValues };
 

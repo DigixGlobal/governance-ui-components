@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
+import Countdown from 'react-countdown-now';
 import KycFormStep from '@digix/gov-ui/components/common/blocks/overlay/kyc/form-step';
+import WebCam from '@digix/react-webcam';
 import { Button, Select } from '@digix/gov-ui/components/common/elements/index';
 import { Label } from '@digix/gov-ui/components/common/common-styles';
 import {
@@ -17,6 +19,7 @@ import {
   PhotoVerification,
   PhotoViewer,
   SelfieGuide,
+  WebcamCountdown,
 } from '@digix/gov-ui/components/common/blocks/overlay/kyc/style.js';
 
 import SelfieGuideA from '@digix/gov-ui/assets/images/selfie_guide1.png';
@@ -40,6 +43,9 @@ class KycOverlayPhotoUpload extends KycFormStep {
 
     const { formValues } = props;
     this.state = {
+      ticking: false,
+      showWebcam: false,
+      useWebcam: false,
       formValues: {
         identificationPoseDataUrl: formValues.identificationPoseDataUrl || undefined,
         identificationPoseVerificationCode: props.idVerificationCode,
@@ -63,79 +69,200 @@ class KycOverlayPhotoUpload extends KycFormStep {
         hasError: false,
       },
     };
+
+    this.webcam = undefined;
   }
 
   changeProofMethod = e => {
+    const { formValues } = this.state;
+    formValues.identificationPoseDataUrl = undefined;
+
     this.setState({
+      formValues: { ...formValues },
       proofMethod: e.target.value,
     });
   };
 
-  // TODO: add webcam
-  renderWebCam() {
+  captureWebcamPhoto = () => {
+    const { onPhotoCaptured } = this.props;
+    const capturedImage = this.webcam.getScreenshot();
+
+    if (onPhotoCaptured) {
+      onPhotoCaptured(capturedImage);
+    }
+
+    if (capturedImage) {
+      this.toggleTicking(capturedImage);
+    }
+  };
+
+  setWebcamRef = webcam => {
+    this.webcam = webcam;
+  };
+
+  toggleTicking = capturedImage => {
+    const { formValues, ticking } = this.state;
+    if (!capturedImage) {
+      this.setState({ showWebcam: true });
+    }
+
+    formValues.identificationPoseDataUrl = capturedImage;
+    this.handleInput(null, 'identificationPoseDataUrl');
+
+    setTimeout(() => {
+      this.setState({
+        formValues: { ...formValues },
+        showWebcam: !capturedImage,
+        ticking: !ticking,
+      });
+    }, 1000); // Add this delay to allow webcam to show
+  };
+
+  toggleWebcamDisplay = () => {
+    this.setState({
+      showWebcam: true,
+      useWebcam: true,
+    });
+  };
+
+  countdownRenderer = ({ seconds }) => (
+    <WebcamCountdown>{`Taking photo in ${seconds}...`}</WebcamCountdown>
+  );
+
+  renderCountdown = () => {
+    setTimeout(() => {}, 1000); // delay timer to allow webcam to show
+    return (
+      <Countdown
+        date={Date.now() + 5000}
+        onStart={this.toggleTicking}
+        onComplete={this.captureWebcamPhoto}
+        renderer={props => this.countdownRenderer(props)}
+      />
+    );
+  };
+
+  renderAllowWebcam() {
+    return (
+      <PhotoVerification webcam>
+        <MediaContainer>
+          <GetStarted>
+            <p>
+              Please allow activation of your webcam. Once you allow access, you may need to refresh
+              in order to proceed.
+              <br />
+              You will also be asked to write down a verification code on a piece of paper. Please
+              have a paper and pen handy.
+            </p>
+            <Label>WEBCAM PREVIEW</Label>
+            <CamPreview>
+              <WebCam
+                audio={false}
+                data-digix="KycForm-Webcam-Preview"
+                height={450}
+                ref={this.setWebcamRef}
+                screenshotFormat="image/jpeg"
+                width={600}
+              />
+            </CamPreview>
+            <p>
+              Only continue when you can see the preview above.
+              <br />
+              If you do not have a webcam or are unable to see the preview after granting
+              permission, you will have the option of uploading an image instead.
+            </p>
+            <Button
+              secondary
+              width="60"
+              data-digix="KycForm-Webcam-GetStarted"
+              onClick={this.toggleWebcamDisplay}
+            >
+              Get Started
+            </Button>
+          </GetStarted>
+        </MediaContainer>
+      </PhotoVerification>
+    );
+  }
+
+  renderActiveWebcam() {
     const { identificationPoseDataUrl, identificationPoseVerificationCode } = this.state.formValues;
+    const { ticking, showWebcam } = this.state;
+
+    return (
+      <PhotoVerification>
+        <MediaContainer>
+          <GetStarted>
+            <IdentificationCode>{identificationPoseVerificationCode}</IdentificationCode>
+            <p>
+              Write the above code on a piece of paper and show it to the webcam along with your
+              face and your identification document.
+            </p>
+            <PhotoViewer>
+              <SelfieGuide>
+                <GuideItem>
+                  <img
+                    height=""
+                    src={SelfieGuideA}
+                    alt="Selfie Guide: Show both face and code clearly"
+                  />
+                </GuideItem>
+                <GuideItem>
+                  <img height="" src={SelfieGuideB} alt="Selfie Guide: Do not cover face" />
+                </GuideItem>
+                <GuideItem>
+                  <img height="" src={SelfieGuideC} alt="Selfie Guide: Code must be visible" />
+                </GuideItem>
+              </SelfieGuide>
+              <Photo>
+                {identificationPoseDataUrl && (
+                  <img
+                    alt="Identification Pose Preview"
+                    data-digix="KycForm-Webcam-CapturedImage"
+                    src={identificationPoseDataUrl}
+                  />
+                )}
+
+                {showWebcam && (
+                  <Fragment>
+                    <WebCam
+                      audio={false}
+                      data-digix="KycForm-Webcam"
+                      ref={this.setWebcamRef}
+                      screenshotFormat="image/jpeg"
+                      style={{
+                        display: showWebcam ? 'block' : 'none',
+                        maxHeight: '100%',
+                        maxWidth: '100%',
+                      }}
+                    />
+                  </Fragment>
+                )}
+              </Photo>
+            </PhotoViewer>
+
+            {ticking && this.renderCountdown()}
+            {!ticking && (
+              <Button
+                secondary
+                data-digix="KycForm-Webcam-TakePhoto"
+                onClick={() => this.toggleTicking()}
+              >
+                Take a Photo (5 seconds countdown)
+              </Button>
+            )}
+          </GetStarted>
+        </MediaContainer>
+      </PhotoVerification>
+    );
+  }
+
+  renderWebCam() {
+    const { useWebcam } = this.state;
 
     return (
       <section>
-        <PhotoVerification webcam>
-          <MediaContainer>
-            <GetStarted>
-              <p>
-                Please allow activation of your webcam. Once you allow access, you may need to
-                refresh in order to proceed.
-                <br />
-                You will also be asked to write down a verification code on a piece of paper. Please
-                have a paper and pen handy.
-              </p>
-              <Label>WEBCAM PREVIEW</Label>
-              <CamPreview>&nbsp;</CamPreview>
-              <p>
-                Only continue when you can see the preview above.
-                <br />
-                If you do not have a webcam or are unable to see the preview after granting
-                permission, you will have the option of uploading an image instead.
-              </p>
-              <Button secondary width="60">
-                Get Started
-              </Button>
-            </GetStarted>
-          </MediaContainer>
-        </PhotoVerification>
-
-        <PhotoVerification webcam>
-          <MediaContainer>
-            <GetStarted>
-              <IdentificationCode>{identificationPoseVerificationCode}</IdentificationCode>
-              <p>
-                Write the above code on a piece of paper and show it to the webcam along with your
-                face and your identification document.
-              </p>
-              <PhotoViewer webcam>
-                <SelfieGuide webcam>
-                  <GuideItem>
-                    <img
-                      height=""
-                      src={SelfieGuideA}
-                      alt="Selfie Guide: Show both face and code clearly"
-                    />
-                  </GuideItem>
-                  <GuideItem>
-                    <img height="" src={SelfieGuideB} alt="Selfie Guide: Do not cover face" />
-                  </GuideItem>
-                  <GuideItem>
-                    <img height="" src={SelfieGuideC} alt="Selfie Guide: Code must be visible" />
-                  </GuideItem>
-                </SelfieGuide>
-                <Photo>
-                  {identificationPoseDataUrl && (
-                    <img src={identificationPoseDataUrl} alt="Identification Pose Preview" />
-                  )}
-                </Photo>
-              </PhotoViewer>
-              <Button secondary>Take a Photo (5 seconds countdown)</Button>
-            </GetStarted>
-          </MediaContainer>
-        </PhotoVerification>
+        {!useWebcam && this.renderAllowWebcam()}
+        {useWebcam && this.renderActiveWebcam()}
       </section>
     );
   }

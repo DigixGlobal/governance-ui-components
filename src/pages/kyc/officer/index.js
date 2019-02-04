@@ -13,16 +13,9 @@ import { searchKycQuery } from '@digix/gov-ui/api/graphql-queries/kyc';
 
 import UserInfo from '@digix/gov-ui/pages/kyc/officer/user-info';
 import { showStatusIcon } from '@digix/gov-ui/pages/kyc/officer/constants';
+import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
-import {
-  KycWrapper,
-  Title,
-  CTAContainer,
-  TabButton,
-  FilterLabel,
-  SummaryReport,
-  ReportItem,
-} from '@digix/gov-ui/pages/kyc/officer/style';
+import { KycWrapper, Title, CTAContainer, TabButton } from '@digix/gov-ui/pages/kyc/officer/style';
 
 // import '@digix/gov-ui/pages/kyc/officer/modal_styles.css';
 
@@ -106,7 +99,8 @@ class KycOfficerDashboard extends React.Component {
 
   render() {
     const { selected, selectedIndex, filter, reloading } = this.state;
-
+    const { userData, history } = this.props;
+    if (!userData || (userData && !userData.isKycOfficer)) history.push('/');
     return (
       <KycWrapper>
         <Title>KYC Dashboard</Title>
@@ -200,14 +194,19 @@ class KycOfficerDashboard extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 
 KycOfficerDashboard.propTypes = {
   showHideAlert: func.isRequired,
+  history: object.isRequired,
+  userData: object.isRequired,
 };
-export default connect(
-  null,
-  {
-    showHideAlert,
-  }
-)(KycOfficerDashboard);
+
+export default withFetchUser(
+  connect(
+    null,
+    {
+      showHideAlert,
+    }
+  )(KycOfficerDashboard)
+);

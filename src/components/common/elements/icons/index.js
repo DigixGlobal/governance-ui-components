@@ -38,7 +38,7 @@ const icons = {
   close: Close,
   face: Face,
   check: Check,
-  dasboard: Dashboard,
+  dashboard: Dashboard,
   // digixLogo: DigixLogo,
   magnifier: Magnifier,
   menu: Menu,

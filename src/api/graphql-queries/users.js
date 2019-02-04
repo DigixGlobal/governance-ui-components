@@ -12,7 +12,7 @@ const fetchDisplayName = gql`
   }
 `;
 
-const fetchUserQuery = gql`
+export const fetchUserQuery = gql`
   query fetchUser {
     currentUser {
       id
@@ -21,6 +21,7 @@ const fetchUserQuery = gql`
       username
       displayName
       createdAt
+      isKycOfficer
     }
   }
 `;

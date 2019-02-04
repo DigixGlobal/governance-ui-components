@@ -9,7 +9,7 @@ import { Query } from 'react-apollo';
 import DigixTable from '@digix/gov-ui/components/common/blocks/digix-table';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 
-import { searchKycQuery } from '@digix/gov-ui/api/graphql-queries/kyc';
+import { searchKycQuery } from '@digix/gov-ui/api/graphql-queries/kyc-officer';
 
 import UserInfo from '@digix/gov-ui/pages/kyc/officer/user-info';
 import { showStatusIcon } from '@digix/gov-ui/pages/kyc/officer/constants';

@@ -10,7 +10,7 @@ import { FieldGroup, FieldItemKYC } from '@digix/gov-ui/pages/kyc/officer/style'
 import {
   getKycRejectionReasonsQuery,
   rejectKycMutation,
-} from '@digix/gov-ui/api/graphql-queries/kyc';
+} from '@digix/gov-ui/api/graphql-queries/kyc-officer';
 
 class RejectKyc extends React.Component {
   constructor(props) {

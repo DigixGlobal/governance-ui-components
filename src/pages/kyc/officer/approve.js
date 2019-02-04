@@ -8,7 +8,7 @@ import { Button, TextField } from '@digix/gov-ui/components/common/elements/inde
 import { Label } from '@digix/gov-ui/components/common/common-styles';
 import { FieldGroup, FieldItemKYC } from '@digix/gov-ui/pages/kyc/officer/style';
 
-import { approveKycMutation } from '@digix/gov-ui/api/graphql-queries/kyc';
+import { approveKycMutation } from '@digix/gov-ui/api/graphql-queries/kyc-officer';
 
 class ApproveKyc extends React.Component {
   constructor(props) {

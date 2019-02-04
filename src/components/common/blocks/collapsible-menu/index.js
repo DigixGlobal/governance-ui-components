@@ -81,7 +81,6 @@ class CollapsibleMenu extends React.Component {
           return null;
         }
         const samePath = this.props.location.pathname.toLowerCase() === '/kyc/admin';
-        console.log(data.currentUser !== null && data.currentUser.isKycOfficer);
         return data.currentUser !== null && data.currentUser.isKycOfficer ? (
           <MenuItem selected={samePath}>
             <Link to="/kyc/admin" href="/kyc/admin">

@@ -110,9 +110,9 @@ export const IdentificationCode = styled.div`
 export const CamPreview = styled.div`
   background: ${props => props.theme.backgroundPrimary.default.toString()};
   border-radius: ${props => props.theme.borderRadius};
-  height: 300px;
+  height: 450px;
   margin-bottom: 3rem;
-  width: 60%;
+  width: 600px;
 `;
 
 export const PhotoViewer = styled.div`

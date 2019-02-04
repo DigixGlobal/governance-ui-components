@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import WebCam from '@digix/react-webcam';
+
+import Countdown from 'react-countdown-now';
 
 import KycFormStep from '@digix/gov-ui/components/common/blocks/overlay/kyc/form-step';
 import { Button, Select } from '@digix/gov-ui/components/common/elements/index';
@@ -34,6 +37,9 @@ class KycOverlayPhotoUpload extends KycFormStep {
 
     const { formValues } = props;
     this.state = {
+      ticking: false,
+      showWebcam: false,
+      useWebcam: false,
       formValues: {
         identificationPoseDataUrl: formValues.identificationPoseDataUrl || undefined,
         identificationPoseVerificationCode: 'Loading...',
@@ -70,19 +76,52 @@ class KycOverlayPhotoUpload extends KycFormStep {
     ];
   }
 
+  setRef = webcam => {
+    this.webcam = webcam;
+  };
+
   componentDidMount() {
     const { web3Redux } = this.props;
     const { web3 } = web3Redux.networks[network];
-
     web3.eth.getBlock('latest').then(block => {
       const blockNumber = block.number;
       const firstTwoChars = block.hash.substring(2, 4);
       const lastTwoChars = block.hash.slice(-2);
-
       const identificationPoseVerificationCode = `${blockNumber}-${firstTwoChars}-${lastTwoChars}`;
       this.setState({ identificationPoseVerificationCode });
     });
   }
+
+  capture = () => {
+    const { onPhotoCaptured } = this.props;
+    const capturedImage = this.webcam.getScreenshot();
+
+    if (onPhotoCaptured) onPhotoCaptured(capturedImage);
+    if (capturedImage) {
+      this.toggleTicking(capturedImage);
+    }
+  };
+
+  toggleWebcamDisplay = () => {
+    this.setState({ useWebcam: true, showWebcam: true });
+  };
+
+  toggleTicking = capturedImage => {
+    const { formValues, ticking } = this.state;
+    formValues.identificationPoseDataUrl = capturedImage;
+    if (!capturedImage) {
+      this.setState({ showWebcam: true });
+    }
+    setTimeout(() => {
+      this.setState({
+        formValues: { ...formValues },
+        ticking: !ticking,
+        showWebcam: capturedImage === undefined,
+      });
+    }, 1000); // Add this delay to allow webcam to show
+  };
+
+  countdownRenderer = ({ seconds }) => <div>{`Taking a Photo in ${seconds}...`}</div>;
 
   changeProofMethod = e => {
     this.setState({
@@ -90,66 +129,110 @@ class KycOverlayPhotoUpload extends KycFormStep {
     });
   };
 
+  renderCountdown = () => {
+    setTimeout(() => {}, 1000); // delay timer to allow webcam to show
+    return (
+      <Countdown
+        date={Date.now() + 5000}
+        onStart={this.toggleTicking}
+        onComplete={this.capture}
+        renderer={props => this.countdownRenderer(props)}
+      />
+    );
+  };
+
   renderWebCam() {
     const { identificationPoseDataUrl, identificationPoseVerificationCode } = this.state.formValues;
+    const { ticking, showWebcam, useWebcam } = this.state;
 
     return (
       <section>
-        <PhotoVerification webcam>
-          <MediaContainer>
-            <GetStarted>
-              <p>
-                Please allow activation of your webcam. Once you allow access, you may need to
-                refresh in order to proceed.
-                <br />
-                You will also be asked to write down a verification code on a piece of paper. Please
-                have a paper and pen handy.
-              </p>
-              <Label>WEBCAM PREVIEW</Label>
-              <CamPreview>&nbsp;</CamPreview>
-              <p>
-                Only continue when you can see the preview above.
-                <br />
-                If you do not have a webcam or are unable to see the preview after granting
-                permission, you will have the option of uploading an image instead.
-              </p>
-              <Button secondary width="60">
-                Get Started
-              </Button>
-            </GetStarted>
-          </MediaContainer>
-        </PhotoVerification>
+        {!useWebcam && (
+          <PhotoVerification webcam>
+            <MediaContainer>
+              <GetStarted>
+                <p>
+                  Please allow activation of your webcam. Once you allow access, you may need to
+                  refresh in order to proceed.
+                  <br />
+                  You will also be asked to write down a verification code on a piece of paper.
+                  Please have a paper and pen handy.
+                </p>
+                <Label>WEBCAM PREVIEW</Label>
+                <CamPreview>
+                  <WebCam
+                    audio={false}
+                    height={450}
+                    ref={this.setRef}
+                    screenshotFormat="image/jpeg"
+                    width={600}
+                  />
+                </CamPreview>
+                <p>
+                  Only continue when you can see the preview above.
+                  <br />
+                  If you do not have a webcam or are unable to see the preview after granting
+                  permission, you will have the option of uploading an image instead.
+                </p>
+                <Button secondary width="60" onClick={this.toggleWebcamDisplay}>
+                  Get Started
+                </Button>
+              </GetStarted>
+            </MediaContainer>
+          </PhotoVerification>
+        )}
 
-        <PhotoVerification webcam>
-          <MediaContainer>
-            <GetStarted>
-              <IdentificationCode>{identificationPoseVerificationCode}</IdentificationCode>
-              <p>
-                Write the above code on a piece of paper and show it to the webcam along with your
-                face and your identification document.
-              </p>
-              <PhotoViewer webcam>
-                <SelfieGuide webcam>
-                  <GuideItem>
-                    <img height="" src={SelfieGuideA} alt="Selfie Guide" />
-                  </GuideItem>
-                  <GuideItem>
-                    <img height="" src={SelfieGuideB} alt="Selfie Guide" />
-                  </GuideItem>
-                  <GuideItem>
-                    <img height="" src={SelfieGuideC} alt="Selfie Guide" />
-                  </GuideItem>
-                </SelfieGuide>
-                <Photo>
-                  {identificationPoseDataUrl && (
-                    <img src={identificationPoseDataUrl} alt="Identification Pose Preview" />
-                  )}
-                </Photo>
-              </PhotoViewer>
-              <Button secondary>Take a Photo (5 seconds countdown)</Button>
-            </GetStarted>
-          </MediaContainer>
-        </PhotoVerification>
+        {useWebcam && (
+          <PhotoVerification webcam>
+            <MediaContainer>
+              <GetStarted>
+                <IdentificationCode>{identificationPoseVerificationCode}</IdentificationCode>
+                <p>
+                  Write the above code on a piece of paper and show it to the webcam along with your
+                  face and your identification document.
+                </p>
+                <PhotoViewer webcam>
+                  <SelfieGuide webcam>
+                    <GuideItem>
+                      <img height="" src={SelfieGuideA} alt="Selfie Guide" />
+                    </GuideItem>
+                    <GuideItem>
+                      <img height="" src={SelfieGuideB} alt="Selfie Guide" />
+                    </GuideItem>
+                    <GuideItem>
+                      <img height="" src={SelfieGuideC} alt="Selfie Guide" />
+                    </GuideItem>
+                  </SelfieGuide>
+                  <Photo>
+                    {identificationPoseDataUrl && (
+                      <img src={identificationPoseDataUrl} alt="Identification Pose Preview" />
+                    )}
+
+                    {showWebcam && (
+                      <Fragment>
+                        <WebCam
+                          audio={false}
+                          height={450}
+                          ref={this.setRef}
+                          screenshotFormat="image/jpeg"
+                          width={450}
+                          style={{ display: showWebcam ? 'block' : 'none' }}
+                        />
+                      </Fragment>
+                    )}
+                    {ticking && this.renderCountdown()}
+                  </Photo>
+                </PhotoViewer>
+
+                {!ticking && (
+                  <Button onClick={() => this.toggleTicking()} secondary>
+                    Take a Photo (5 seconds countdown)
+                  </Button>
+                )}
+              </GetStarted>
+            </MediaContainer>
+          </PhotoVerification>
+        )}
       </section>
     );
   }

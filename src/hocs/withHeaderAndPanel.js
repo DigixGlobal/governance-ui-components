@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import _ from 'lodash';
+import { push as Menu } from 'react-burger-menu';
 
 import NavBar from '../components/common/blocks/navbar';
 import WalletContainer from '../components/common/blocks/wallet';
@@ -10,6 +11,7 @@ import SnackBar from '../components/common/elements/snackbar';
 import RightPanelOverlay from '../components/common/blocks/right-panel-overlay';
 
 import { Container, ContentWrapper } from './style';
+import './style.css';
 
 function withHeaderAndPanel(WrappedComponent) {
   return class TemplateContainer extends React.Component {
@@ -24,9 +26,12 @@ function withHeaderAndPanel(WrappedComponent) {
           <WalletContainer />
           <RightPanelOverlay />
           <NavBar />
-          <Container>
-            <LeftMenu location={this.props.location} />
-            <ContentWrapper>
+          <Container id="App">
+            <Menu noOverlay pageWrapId="page-wrap" outerContainerId="App">
+              <LeftMenu location={this.props.location} />
+            </Menu>
+
+            <ContentWrapper id="page-wrap">
               <WrappedComponent {...this.props} />
             </ContentWrapper>
           </Container>

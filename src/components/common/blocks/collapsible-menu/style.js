@@ -1,18 +1,16 @@
 import styled from 'styled-components';
 
 export const MenuContainer = styled.div`
-  position: fixed;
-  height: 100%;
-  width: 280px;
-  max-width: 280px;
-  padding: 8rem 2.5rem;
-  padding-right: 0;
+  flex: 1;
   background: ${props => props.theme.backgroundLeftPanel.default.toString()};
   border-right: ${props => props.theme.borderColor.lightest.toString()};
+  box-shadow: ${props => props.theme.boxShadow};
   color: ${props => props.theme.textContrast.default.toString()};
   font-size: 1.4rem;
-  box-shadow: ${props => props.theme.boxShadow};
-  flex: 1 0 0;
+  height: 100%;
+  width: 100%;
+  padding: 2.5rem;
+  padding-right: 0;
   z-index: 1;
 `;
 

@@ -2,10 +2,13 @@ import styled, { css } from 'styled-components';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 import { H3 } from '@digix/gov-ui/components/common/common-styles';
 
+const MAX_PREVIEW_DIMENSION = '450px';
+
 export const WizardContainer = styled.div`
   display: flex;
   margin-bottom: 2rem;
 `;
+
 export const WizardMenu = styled.a`
   flex-grow: 1;
   text-align: center;
@@ -21,6 +24,7 @@ export const WizardMenu = styled.a`
       border-bottom: 3px solid ${props.theme.backgroundSecondary.default.toString()};
     `};
 `;
+
 export const WizardHeader = styled.div`
   display: flex;
   background: ${props => props.theme.backgroundDefault.default.toString()};
@@ -36,19 +40,23 @@ export const CallToAction = styled.div`
   display: flex;
   margin-top: 3rem;
 `;
+
 export const Title = styled(H3)`
   margin-bottom: 0;
   font-family: 'Futura PT Medium', sans-serif;
 `;
+
 export const FormSection = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 export const FieldGroup = styled.div`
   display: flex;
   flex-direction: ${props => (props.column ? 'column' : '')};
   margin: 0 -1rem;
 `;
+
 export const FieldItem = styled.div`
   margin: 0 1rem 2rem 1rem;
   flex: 1;
@@ -63,6 +71,11 @@ export const PreviewImage = styled.div`
   height: 85%;
   border-radius: ${props => props.theme.borderRadius};
   margin: 2.5rem 0;
+  max-height: ${MAX_PREVIEW_DIMENSION};
+
+  img {
+    max-height: inherit;
+  }
 `;
 
 export const PhotoVerification = styled.div`
@@ -74,12 +87,8 @@ export const PhotoVerification = styled.div`
   padding: 3rem;
   margin: 2rem 0 0 0;
 
-  ${props =>
-    props.webcam &&
-    css`
-      padding-left: 8rem;
-      padding-right: 8rem;
-    `};
+  padding-left: 8rem;
+  padding-right: 8rem;
 `;
 
 export const MediaContainer = styled.div`
@@ -93,6 +102,7 @@ export const GetStarted = styled.div`
   align-items: center;
   text-align: center;
 `;
+
 export const IdentificationCode = styled.div`
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.borderColorSecondary.light.toString()};
@@ -102,12 +112,19 @@ export const IdentificationCode = styled.div`
   font-size: 3rem;
   margin-bottom: 2rem;
 `;
+
 export const CamPreview = styled.div`
   background: ${props => props.theme.backgroundPrimary.default.toString()};
   border-radius: ${props => props.theme.borderRadius};
-  height: 300px;
+  height: 450px;
   margin-bottom: 3rem;
-  width: 60%;
+  width: 600px;
+`;
+
+export const WebcamCountdown = styled.div`
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
 `;
 
 export const PhotoViewer = styled.div`
@@ -115,40 +132,37 @@ export const PhotoViewer = styled.div`
   border: 1px solid ${props => props.theme.borderColor.default.toString()};
   border-radius: ${props => props.theme.borderRadius};
   margin: 3rem auto;
-  width: 100%;
-
-  ${props =>
-    props.webcam &&
-    css`
-      width: 60%;
-    `};
+  width: 60%;
 `;
+
 export const SelfieGuide = styled.div`
-  display: flex;
-  justify-content: center;
-  border-right: 1px solid ${props => props.theme.borderColorPrimary.light.toString()};
   background: ${props => props.theme.backgroundPrimary.fade.toString()};
-
-  padding: 2rem 5rem;
-  width: 100%;
-
-  ${props =>
-    props.webcam &&
-    css`
-      flex-direction: column;
-      width: 28%;
-      padding: 2rem 0;
-    `};
+  border-right: 1px solid ${props => props.theme.borderColorPrimary.light.toString()};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 0;
+  max-height: ${MAX_PREVIEW_DIMENSION};
+  min-width: 100px;
+  width: 28%;
 `;
+
 export const GuideItem = styled.div`
   margin: 1rem;
   img {
     width: 100%;
   }
 `;
+
 export const Photo = styled.div`
   background: ${props => props.theme.backgroundPrimary.default.toString()};
+  max-height: ${MAX_PREVIEW_DIMENSION};
   width: 100%;
+
+  img {
+    max-height: 100%;
+    max-width: 100%;
+  }
 `;
 
 export const ErrorMessage = styled.span`

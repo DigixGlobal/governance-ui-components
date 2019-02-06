@@ -239,9 +239,9 @@ class Proposal extends React.Component {
               <InfoItem>
                 <ItemTitle>Funding</ItemTitle>
                 <Data>
-                  <span>{funding}</span>
+                  <span data-digx="funding-amount-label">{funding}</span>
                   {updatedFunding && (
-                    <span>
+                    <span data-digix="edit-funding-amount-label">
                       {updatedFunding && updatedFunding > 0
                         ? ` + ${updatedFunding}`
                         : ` - ${Math.abs(updatedFunding)}`}
@@ -253,15 +253,15 @@ class Proposal extends React.Component {
               <InfoItem>
                 <ItemTitle>Milestones</ItemTitle>
                 <Data>
-                  <span>{dijixObject.milestones.length || 0}</span>
+                  <span data-digix="milestone-label">{dijixObject.milestones.length || 0}</span>
                 </Data>
               </InfoItem>
               <InfoItem>
                 <ItemTitle>Reward</ItemTitle>
                 <Data>
-                  <span>{reward} </span>
+                  <span data-digix="reward-amount-label">{reward} </span>
                   {updatedReward && (
-                    <span>
+                    <span data-digix="edit-reward-amount-label">
                       {updatedReward > 0
                         ? ` + ${updatedReward} `
                         : ` - ${Math.abs(updatedReward)} `}

@@ -132,7 +132,7 @@ class Profile extends React.Component {
       currentKycStatus = kyc.status.charAt(0) + kyc.status.slice(1).toLowerCase();
     }
 
-    const kycStatusesForResubmission = [KycStatus.expired, KycStatus.approved, KycStatus.rejected];
+    const kycStatusesForResubmission = [KycStatus.expired, KycStatus.rejected];
     const canResubmitKyc = kyc ? kycStatusesForResubmission.includes(kyc.status) : false;
     const canSubmitKyc = (email && !kyc) || (kyc && kyc.status === KycStatus.pending);
     const showSubmitKycButton = canSubmitKyc || canResubmitKyc;

@@ -35,7 +35,7 @@
   height: 30px;
   left: 38px;
   top: 18px;
-  z-index: 999 !important;
+  z-index: 997 !important;
 }
 
 .bm-burger-button button:focus {
@@ -96,7 +96,12 @@
   color: #b8b7ad;
 }
 
-/* Styling of overlay */
+/* Styling of overlay  */
 .bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
+  background: none !important;
+  z-index: 996 !important;
+}
+
+.bm-menu-wrap {
+  z-index: 998 !important;
 }

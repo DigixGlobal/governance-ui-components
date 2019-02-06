@@ -8,6 +8,7 @@ const defaultState = {
   Alert: undefined,
   SignChallenge: undefined,
   ShowWallet: undefined,
+  showLeftMenu: undefined,
   CanLockDgd: undefined,
   ShowRightPanel: {
     show: false,
@@ -58,6 +59,14 @@ export default function(state = defaultState, action) {
         ...state,
         ShowWallet: {
           ...state.ShowWallet,
+          ...action.payload,
+        },
+      };
+    case actions.SHOW_LEFT_MENU:
+      return {
+        ...state,
+        showLeftMenu: {
+          ...state.showLeftMenu,
           ...action.payload,
         },
       };

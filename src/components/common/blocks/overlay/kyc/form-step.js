@@ -26,7 +26,7 @@ class KycFormStep extends React.Component {
     this.REGEX = {
       date: /^\d{4}-\d{2}-\d{2}$/,
       nonEmptyString: /^(?!\s*$).+/,
-      phoneNumber: /^[+]?[0-9]+$/,
+      phoneNumber: /^[+]?[0-9][0-9]+[0-9]+$/,
     };
 
     this.LABELS = {

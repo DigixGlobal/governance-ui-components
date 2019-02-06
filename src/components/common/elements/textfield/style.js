@@ -63,8 +63,6 @@ export const Error = styled.div`
 `;
 
 export const Required = styled.span`
-  /* position: absolute; */
-  /* margin-left: 9.5rem; */
   padding-left: 0.2rem;
   font-size: 1.2rem;
   color: red;

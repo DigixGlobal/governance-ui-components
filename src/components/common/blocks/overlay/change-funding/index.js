@@ -58,8 +58,9 @@ class ChangeFundingOverlay extends React.Component {
         form.milestoneFundings = currentVersion.milestoneFundings;
         this.setState({ form: { ...form } });
       } else {
-        form.expectedReward = proposalDetails.changedFundings.finalReward.updated;
-        form.milestoneFundings = proposalDetails.changedFundings.milestones.map(ms => ms.updated);
+        const { changedFundings } = proposalDetails.changedFundings;
+        form.expectedReward = changedFundings.finalReward.updated;
+        form.milestoneFundings = changedFundings.milestones.map(ms => ms.updated);
       }
     }
   };
@@ -68,8 +69,7 @@ class ChangeFundingOverlay extends React.Component {
     const { value } = e.target;
     const { form } = this.state;
     form.expectedReward = value;
-    let hasNegative = false;
-    if (parseFloat(value) < 0) hasNegative = true;
+    const hasNegative = true;
     this.setState({ form: { ...form }, fundChanged: true, hasNegative }, () => {
       this.checkFundingLimit();
       this.checkEmptyFunds();
@@ -143,7 +143,6 @@ class ChangeFundingOverlay extends React.Component {
     const { form } = this.state;
     const milestoneFunds = (acc, currentValue) => {
       if (Number(currentValue) < 0) this.setState({ hasNegative: true });
-      // if (currentValue === '') this.setState({ hasEmpty: true });
       return Number(acc) + Number(currentValue);
     };
     return Number(form.milestoneFundings.reduce(milestoneFunds)) + Number(form.expectedReward);
@@ -173,7 +172,7 @@ class ChangeFundingOverlay extends React.Component {
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const funds = form.milestoneFundings.map(fund => toBigNumber(fund).times(toBigNumber(1e18))); // filteredFunds.map(fund => toBigNumber(fund).times(toBigNumber(1e18)));
+    const funds = form.milestoneFundings.map(fund => toBigNumber(fund).times(toBigNumber(1e18)));
     const contract = web3Redux
       .web3(network)
       .eth.contract(abi)

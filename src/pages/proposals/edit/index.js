@@ -125,7 +125,6 @@ class EditProposal extends React.Component {
     const limit = daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
 
     const totalFunds = this.computeTotalFunds();
-    // console.log({ totalFunds });
     const exceedsLimit = totalFunds > Number(limit);
     this.setState({ exceedsLimit, validForm: validForm && !exceedsLimit });
   };

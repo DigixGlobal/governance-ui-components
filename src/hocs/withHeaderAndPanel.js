@@ -15,8 +15,26 @@ import './style.css';
 
 function withHeaderAndPanel(WrappedComponent) {
   return class TemplateContainer extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        menuOpen: false,
+      };
+    }
+
     shouldComponentUpdate = (nextProps, nextState) =>
       !_.isEqual(this.props, nextProps) && !_.isEqual(this.state, nextState);
+
+    // This keeps your state in sync with the opening/closing of the menu
+    // via the default means, e.g. clicking the X, pressing the ESC key etc.
+    handleStateChange(state) {
+      this.setState({ menuOpen: state.isOpen });
+    }
+
+    // This can be used to close the menu, e.g. when a user clicks a menu item
+    closeMenu() {
+      this.setState({ menuOpen: false });
+    }
 
     render() {
       return (
@@ -27,7 +45,13 @@ function withHeaderAndPanel(WrappedComponent) {
           <RightPanelOverlay />
           <NavBar />
           <Container id="App">
-            <Menu noOverlay pageWrapId="page-wrap" outerContainerId="App">
+            <Menu
+              noOverlay
+              pageWrapId="page-wrap"
+              outerContainerId="App"
+              isOpen={this.state.menuOpen}
+              onStateChange={state => this.handleStateChange(state)}
+            >
               <LeftMenu location={this.props.location} />
             </Menu>
 

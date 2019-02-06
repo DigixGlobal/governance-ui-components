@@ -120,6 +120,7 @@ class KycOverlay extends React.Component {
       return;
     }
 
+    this.props.refetchUser();
     this.props.showRightPanel({ show: false });
     this.props.showHideAlert({
       message: 'KYC submitted. Request is pending approval.',
@@ -271,6 +272,7 @@ KycOverlay.propTypes = {
     industries: array,
     residenceProofType: array,
   }),
+  refetchUser: func.isRequired,
   showHideAlert: func.isRequired,
   showRightPanel: func.isRequired,
   web3Redux: object.isRequired,

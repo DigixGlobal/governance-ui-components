@@ -1,16 +1,34 @@
 import styled from 'styled-components';
-import { H1 } from '@digix/gov-ui/components/common/common-styles';
+import { H1, H3, Card, FieldItem } from '@digix/gov-ui/components/common/common-styles';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 export const KycWrapper = styled.div``;
 
-export const Heading = styled(H1)`
+export const Title = styled(H1)`
   margin-bottom: 1rem;
+  font-size: 3rem;
+  font-family: 'Futura PT Book', sans-serif;
+`;
+
+export const SummaryReport = styled.div`
+  ${Card};
+`;
+export const ReportItem = styled.div``;
+
+export const CTAContainer = styled.div`
+  margin: 2rem 0;
 `;
 
 export const Container = styled.div`
   width: 75rem;
   /* display: flex; */
   /* flex-direction: row; */
+`;
+
+export const UserTitle = styled(H3)`
+  padding: 1rem 0 2rem 0;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 0;
 `;
 
 export const ValueWrapper = styled.div`
@@ -20,10 +38,46 @@ export const ValueWrapper = styled.div`
 
 export const Caption = styled.div`
   background-color: #f2f2f2;
+  font-weight: bold;
   width: 25%;
+  padding: 1rem 2rem;
 `;
 
 export const Value = styled.div`
   width: 75%;
-  padding-left: 1rem;
+  padding: 1rem 2rem;
+`;
+
+export const TabButton = styled(Button)`
+  width: 25%;
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid #ccc;
+  border-right: 0;
+  margin: 1rem 0;
+  &:last-child {
+    border-right: 1px solid #ccc;
+  }
+`;
+
+export const FilterLabel = styled(H3)`
+  font-family: 'Futura PT Light';
+  margin: 3rem 0 1rem 0;
+`;
+
+export const FieldGroup = styled.div`
+  display: flex;
+  margin: 3rem 0;
+`;
+
+export const FieldItemKYC = styled(FieldItem)`
+  &:first-child {
+    flex: 1 0 0;
+  }
+
+  &:last-child {
+    flex: 0.5 0 0;
+    display: flex;
+    align-items: flex-end;
+  }
 `;

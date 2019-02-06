@@ -76,8 +76,13 @@ export class Governance extends React.Component {
                 component={withHeaderAndPanel(KycOfficerDashboard)}
                 isAuthenticated={isAuthenticated}
               />
+              <AuthenticatedRoute
+                path="/profile"
+                component={withHeaderAndPanel(Profile)}
+                isAuthenticated={isAuthenticated}
+              />
+
               <Route path="/history" component={withHeaderAndPanel(TransactionHistory)} />
-              <Route path="/profile" component={withHeaderAndPanel(Profile)} />
               <Route path="/help" component={withHeaderAndPanel(Help)} />
               <Route path="/" component={withHeaderAndPanel(LandingPage)} />
             </Switch>

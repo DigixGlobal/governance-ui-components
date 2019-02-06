@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
+import { Query } from 'react-apollo';
+import { renderDisplayName, fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
 import lightTheme from '@digix/gov-ui/theme/light';
 
@@ -47,12 +48,6 @@ const DEFAULT_MENU = [
     url: '/help',
     public: true,
   },
-  {
-    kind: 'product',
-    caption: 'KYC Dashboard',
-    url: '/kyc/admin',
-    public: true,
-  },
 ];
 
 class CollapsibleMenu extends React.Component {
@@ -75,6 +70,29 @@ class CollapsibleMenu extends React.Component {
     );
   };
 
+  renderKycOfficerMenu = () => (
+    <Query query={fetchUserQuery}>
+      {({ loading, error, data }) => {
+        if (loading) {
+          return null;
+        }
+
+        if (error) {
+          return null;
+        }
+        const samePath = this.props.location.pathname.toLowerCase() === '/kyc/admin';
+        return data.currentUser !== null && data.currentUser.isKycOfficer ? (
+          <MenuItem selected={samePath}>
+            <Link to="/kyc/admin" href="/kyc/admin">
+              <Icon kind="dashboard" theme={this.props.theme || lightTheme} selected={samePath} />
+              <span>KYC Dashboard</span>
+            </Link>
+          </MenuItem>
+        ) : null;
+      }}
+    </Query>
+  );
+
   render() {
     const { addressDetails, ChallengeProof, menuItems } = this.props;
     const userType = getUserStatus(addressDetails.data);
@@ -93,7 +111,10 @@ class CollapsibleMenu extends React.Component {
           </ProfileContainer>
         )}
 
-        <MenuList>{menuItemElements}</MenuList>
+        <MenuList>
+          {menuItemElements}
+          {ChallengeProof.data && this.renderKycOfficerMenu()}
+        </MenuList>
       </MenuContainer>
     );
   }

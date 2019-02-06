@@ -44,7 +44,7 @@ function withHeaderAndPanel(WrappedComponent) {
           <WalletContainer />
           <RightPanelOverlay />
           <NavBar />
-          <Container id="App">
+          <Container id="App" style={{ height: '100%'}}>
             <Menu
               noOverlay
               pageWrapId="page-wrap"

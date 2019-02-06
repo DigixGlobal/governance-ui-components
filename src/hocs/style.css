@@ -98,7 +98,9 @@
 
 /* Styling of overlay  */
 .bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
+  /* background: rgba(0, 0, 0, 0.3); */
+  background: none !important;
+  z-index: 996 !important;
 }
 
 .bm-menu-wrap {

@@ -4,14 +4,15 @@ export const MenuContainer = styled.div`
   flex: 1;
   background: ${props => props.theme.backgroundLeftPanel.default.toString()};
   border-right: ${props => props.theme.borderColor.lightest.toString()};
-  box-shadow: ${props => props.theme.boxShadow};
+  // box-shadow: ${props => props.theme.boxShadow};
   color: ${props => props.theme.textContrast.default.toString()};
   font-size: 1.4rem;
-  height: 100%;
+  // height: 100%;
   width: 100%;
   padding: 2.5rem;
   padding-right: 0;
   z-index: 1;
+  outline: none;
 `;
 
 export const CloseMenu = styled.div`

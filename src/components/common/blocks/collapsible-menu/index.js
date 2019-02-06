@@ -87,11 +87,11 @@ class CollapsibleMenu extends React.Component {
 
     return (
       <Menu
-        noOverlay
         pageWrapId="page-wrap"
         outerContainerId="App"
         isOpen={showLeftMenu && showLeftMenu.show}
         onStateChange={state => this.handleStateChange(state)}
+        disableOverlayClick={false}
       >
         <MenuContainer>
           {ChallengeProof.data && (

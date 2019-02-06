@@ -118,6 +118,12 @@ class Profile extends React.Component {
 
   showKycOverlay() {
     const { refetchUser } = this.props;
+    const { kyc } = this.props.userData;
+
+    if (kyc && kyc.status === KycStatus.approved) {
+      return;
+    }
+
     this.props.showRightPanel({
       component: <KycOverlay refetchUser={refetchUser} />,
       large: true,

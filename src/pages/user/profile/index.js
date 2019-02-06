@@ -118,6 +118,12 @@ class Profile extends React.Component {
 
   showKycOverlay() {
     const { refetchUser } = this.props;
+    const { kyc } = this.props.userData;
+
+    if (kyc && kyc.status === KycStatus.approved) {
+      return;
+    }
+
     this.props.showRightPanel({
       component: <KycOverlay refetchUser={refetchUser} />,
       large: true,
@@ -132,7 +138,7 @@ class Profile extends React.Component {
       currentKycStatus = kyc.status.charAt(0) + kyc.status.slice(1).toLowerCase();
     }
 
-    const kycStatusesForResubmission = [KycStatus.expired, KycStatus.rejected];
+    const kycStatusesForResubmission = [KycStatus.expired, KycStatus.approved, KycStatus.rejected];
     const canResubmitKyc = kyc ? kycStatusesForResubmission.includes(kyc.status) : false;
     const canSubmitKyc = (email && !kyc) || (kyc && kyc.status === KycStatus.pending);
     const showSubmitKycButton = canSubmitKyc || canResubmitKyc;

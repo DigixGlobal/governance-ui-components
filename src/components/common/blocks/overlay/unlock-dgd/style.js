@@ -16,7 +16,7 @@ export const UnlockDGDContainer = styled.div`
 export const TextBox = styled(Input)`
   font-size: 1.6rem;
   margin: 0;
-  width: calc(100% - 110px);
+  width: 100%;
   border: 0;
   outline: 0;
 
@@ -25,21 +25,16 @@ export const TextBox = styled(Input)`
     transition: opacity 0.5s 0.5s ease;
     opacity: 0;
   }
-
-  padding-right: 0.5rem;
 `;
 
 export const MaxAmount = styled(Link)`
-  margin: 0 0.5rem;
+  margin: 0 1rem;
   text-decoration: underline;
   color: ${props => props.theme.textDefault.light.toString()};
   font-family: 'Futura PT Light', sans-serif;
-  font-size: 1.4rem;
 `;
 
-export const Currency = styled.div`
-  font-size: 1.4rem;
-`;
+export const Currency = styled.div``;
 
 export const CallToAction = styled.div`
   margin-top: 2rem;

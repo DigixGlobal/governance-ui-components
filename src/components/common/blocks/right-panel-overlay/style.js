@@ -7,7 +7,7 @@ export const Container = styled.div`
   min-height: 100vh;
   min-width: 100vw;
   display: flex;
-  z-index: 100;
+  z-index: 1100;
 `;
 
 export const CloseButton = styled.div`

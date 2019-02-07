@@ -45,6 +45,12 @@ const StyledSelect = styled.select`
         calc(100% - 2.5em) 0.5em;
       max-width: 150px;
     `};
+
+  ${props =>
+    props.error &&
+    css`
+      border-color: ${props.theme.errorBorder.toString()};
+    `};
 `;
 
 export default StyledSelect;

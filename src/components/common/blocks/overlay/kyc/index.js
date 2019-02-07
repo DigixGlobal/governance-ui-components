@@ -1,95 +1,296 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import KycOverlayIntro from '@digix/gov-ui/components/common/blocks/overlay/kyc/intro';
-import KycOverlayBasicInformation from '@digix/gov-ui/components/common/blocks/overlay/kyc/basic-information';
-import KycOverlayAddress from '@digix/gov-ui/components/common/blocks/overlay/kyc/address';
-import KycOverlayPhotoUpload from '@digix/gov-ui/components/common/blocks/overlay/kyc/photo-upload';
-import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-import { OverlayHeader as Header } from '@digix/gov-ui/components/common/common-styles';
+import KycFormStep from '@digix/gov-ui/components/common/blocks/overlay/kyc/form-step';
+import KycOverlayIntro from '@digix/gov-ui/components/common/blocks/overlay/kyc/steps/intro';
+import KycOverlayBasicInformation from '@digix/gov-ui/components/common/blocks/overlay/kyc/steps/basic-information';
+import KycOverlayAddress from '@digix/gov-ui/components/common/blocks/overlay/kyc/steps/address';
+import KycOverlayPhotoUpload from '@digix/gov-ui/components/common/blocks/overlay/kyc/steps/photo-upload';
+import SubmitKycButton from '@digix/gov-ui/components/common/blocks/overlay/kyc/buttons/submit-kyc';
+import Wizard from '@digix/gov-ui/components/common/blocks/overlay/kyc/wizard-menu';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import {
-  WizardContainer,
-  WizardMenu,
-} from '@digix/gov-ui/components/common/blocks/overlay/kyc/style.js';
+  IntroContainer,
+  NoteContainer,
+  OverlayHeader as Header,
+} from '@digix/gov-ui/components/common/common-styles';
+import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { Title, WizardHeader } from '@digix/gov-ui/components/common/blocks/overlay/kyc/style.js';
+import { withFetchKycFormOptions } from '@digix/gov-ui/api/graphql-queries/kyc';
+
+import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
+
+const network = SpectrumConfig.defaultNetworks[0];
 
 class KycOverlay extends React.Component {
   constructor(props) {
     super(props);
 
-    this.STAGES = {
-      intro: 1,
-      basicInformation: 2,
-      address: 3,
-      photoUpload: 4,
-    };
+    this.STAGES = [
+      {
+        title: undefined,
+        component: KycOverlayIntro,
+        key: 'Intro',
+        ref: undefined,
+      },
+      {
+        title: 'Basic Information',
+        component: KycOverlayBasicInformation,
+        key: 'BasicInformation',
+        ref: React.createRef(),
+      },
+      {
+        title: 'Residence Proof',
+        component: KycOverlayAddress,
+        key: 'Address',
+        ref: React.createRef(),
+      },
+      {
+        title: 'Photo Proof',
+        component: KycOverlayPhotoUpload,
+        key: 'PhotoUpload',
+        ref: React.createRef(),
+      },
+    ];
 
-    this.MAX_STEPS = Object.keys(this.STAGES).length;
+    this.MAX_STEPS = this.STAGES.length - 1;
+    this.SUBMIT_ERROR_MESSAGE = 'Unable to submit KYC.';
+
     this.state = {
-      step: this.STAGES.intro,
+      currentStep: 0,
+      errorMessage: undefined,
+      formData: this.STAGES.map(() => ({})),
+      hasPendingSubmission: false,
+      idVerificationCode: null,
+      validForms: this.STAGES.map(stage => !this.stepHasFormData(stage.component)),
     };
+  }
+
+  componentDidMount() {
+    const { web3Redux } = this.props;
+    const { web3 } = web3Redux.networks[network];
+
+    web3.eth.getBlock('latest').then(block => {
+      const blockNumber = block.number;
+      const firstTwoChars = block.hash.substring(2, 4);
+      const lastTwoChars = block.hash.slice(-2);
+
+      const idVerificationCode = `${blockNumber}-${firstTwoChars}-${lastTwoChars}`;
+      this.setState({ idVerificationCode });
+    });
   }
 
   onPreviousStep = () => {
-    let { step } = this.state;
-    if (step < 1) {
+    let { currentStep } = this.state;
+    if (currentStep < 1) {
       return;
     }
 
-    step -= 1;
-    this.setState({ step });
+    this.updateFormValues(currentStep);
+
+    currentStep -= 1;
+    this.setState({ currentStep });
   };
 
   onNextStep = () => {
-    let { step } = this.state;
-    if (step >= this.MAX_STEPS) {
+    let { currentStep } = this.state;
+    if (currentStep >= this.MAX_STEPS) {
       return;
     }
 
-    step += 1;
-    this.setState({ step });
+    this.updateFormValues(currentStep);
+
+    currentStep += 1;
+    this.setState({ currentStep });
   };
 
-  renderKycStep() {
-    const { step } = this.state;
+  onSubmitKyc = response => {
+    const { errors } = response.submitKyc;
+    if (errors.length) {
+      this.setState({
+        errorMessage: errors[0].message,
+        hasPendingSubmission: false,
+      });
 
-    switch (step) {
-      case this.STAGES.basicInformation:
-        return <KycOverlayBasicInformation onNextStep={this.onNextStep} />;
-      case this.STAGES.address:
-        return (
-          <KycOverlayAddress onNextStep={this.onNextStep} onPreviousStep={this.onPreviousStep} />
-        );
-      case this.STAGES.photoUpload:
-        return <KycOverlayPhotoUpload onPreviousStep={this.onPreviousStep} />;
-      default:
-        return <KycOverlayIntro onNextStep={this.onNextStep} />;
+      this.props.showHideAlert({
+        message: this.SUBMIT_ERROR_MESSAGE,
+      });
+      return;
     }
+
+    this.props.refetchUser();
+    this.props.showRightPanel({ show: false });
+    this.props.showHideAlert({
+      message: 'KYC submitted. Request is pending approval.',
+    });
+  };
+
+  onSubmitKycError = () => {
+    this.setState({
+      hasPendingSubmission: false,
+    });
+
+    this.props.showHideAlert({
+      message: this.SUBMIT_ERROR_MESSAGE,
+    });
+  };
+
+  setHasPendingSubmission = hasPendingSubmission => {
+    this.setState({ hasPendingSubmission });
+  };
+
+  setValidForm = (index, isValid) => {
+    const { validForms } = this.state;
+    validForms[index] = isValid;
+    this.setState({ validForms });
+  };
+
+  collectFormData = () => {
+    const { currentStep, formData } = this.state;
+
+    // get data from last step then flatten the data object
+    this.updateFormValues(currentStep);
+    return Object.assign(...formData);
+  };
+
+  stepHasFormData = component =>
+    // eslint-disable-next-line
+    KycFormStep.isPrototypeOf(component)
+
+  updateFormValues = step => {
+    const { formData } = this.state;
+    const stage = this.STAGES[step];
+
+    if (!this.stepHasFormData(stage.component)) {
+      return;
+    }
+
+    // get form data from the current form and trim the values
+    const currentForm = stage.ref.current;
+    let newFormData = currentForm.state.formValues;
+    const newFormDataKeys = Object.keys(newFormData);
+    const trimmedValues = Object.values(newFormData).map(value => (value ? value.trim() : value));
+    newFormData = trimmedValues.reduce(
+      (newData, value, index) => ({
+        ...newData,
+        [newFormDataKeys[index]]: value,
+      }),
+      {}
+    );
+
+    formData[step] = newFormData;
+    this.setState({ formData });
+  };
+
+  renderNavigation() {
+    const { currentStep, errorMessage, hasPendingSubmission, validForms } = this.state;
+    const stage = this.STAGES[currentStep];
+
+    const showPreviousButton = currentStep > 1;
+    const showNextButton = currentStep < this.MAX_STEPS;
+    const showSubmitButton = currentStep === this.MAX_STEPS;
+    const disableNextButton = !validForms[currentStep];
+
+    if (!stage.title) {
+      return null;
+    }
+
+    return (
+      <nav>
+        <Wizard stages={this.STAGES} step={currentStep} />
+        <WizardHeader>
+          <Title>{stage.title}</Title>
+          <div>
+            {showPreviousButton && (
+              <Button secondary data-digix="KycOverlay-Previous" onClick={this.onPreviousStep}>
+                Previous
+              </Button>
+            )}
+            {showNextButton && (
+              <Button
+                secondary
+                data-digix="KycOverlay-Next"
+                disabled={disableNextButton}
+                onClick={this.onNextStep}
+              >
+                Next
+              </Button>
+            )}
+            {showSubmitButton && (
+              <SubmitKycButton
+                collectFormData={this.collectFormData}
+                disable={disableNextButton}
+                hasPendingSubmission={hasPendingSubmission}
+                onSubmitKyc={this.onSubmitKyc}
+                onSubmitKycError={this.onSubmitKycError}
+                setHasPendingSubmission={this.setHasPendingSubmission}
+              />
+            )}
+          </div>
+        </WizardHeader>
+        {errorMessage && <NoteContainer>{errorMessage}</NoteContainer>}
+      </nav>
+    );
   }
 
   render() {
-    const { step } = this.state;
+    const { currentStep, formData, idVerificationCode } = this.state;
+    const formValues = formData[currentStep];
+    const { formOptions } = this.props;
+    const stage = this.STAGES[currentStep];
+
     return (
       <div>
         <Header uppercase>KYC</Header>
-
-        {step !== this.STAGES.intro && (
-          <WizardContainer>
-            <WizardMenu active>Basic Information</WizardMenu>
-            <WizardMenu>Residence Proof</WizardMenu>
-            <WizardMenu>Photo Proof</WizardMenu>
-          </WizardContainer>
-        )}
-        {this.renderKycStep()}
+        <IntroContainer>
+          {this.renderNavigation()}
+          {React.createElement(stage.component, {
+            currentStep,
+            formOptions,
+            formValues,
+            idVerificationCode,
+            onNextStep: this.onNextStep,
+            ref: stage.ref,
+            setValidForm: this.setValidForm,
+          })}
+        </IntroContainer>
       </div>
     );
   }
 }
 
-KycOverlay.propTypes = {};
+const { array, func, shape, object } = PropTypes;
+KycOverlay.propTypes = {
+  formOptions: shape({
+    countries: array,
+    employmentStatus: array,
+    gender: array,
+    identificationProofType: array,
+    incomeRanges: array,
+    industries: array,
+    residenceProofType: array,
+  }),
+  refetchUser: func.isRequired,
+  showHideAlert: func.isRequired,
+  showRightPanel: func.isRequired,
+  web3Redux: object.isRequired,
+};
+
+KycOverlay.defaultProps = {
+  formOptions: undefined,
+};
+
 const mapStateToProps = () => ({});
-export default web3Connect(
-  connect(
-    mapStateToProps,
-    {}
-  )(KycOverlay)
+export default withFetchKycFormOptions(
+  web3Connect(
+    connect(
+      mapStateToProps,
+      {
+        showHideAlert,
+        showRightPanel,
+      }
+    )(KycOverlay)
+  )
 );

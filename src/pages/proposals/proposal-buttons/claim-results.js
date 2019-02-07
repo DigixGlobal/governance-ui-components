@@ -131,6 +131,7 @@ class ClaimResultsButton extends React.PureComponent {
         disabled={claimed}
         data-digix="Propsal-Claim-Results"
         kind="round"
+        large
         onClick={this.handleSubmit}
       >
         Claim Results
@@ -168,6 +169,11 @@ const mapStateToProps = state => ({
 export default web3Connect(
   connect(
     mapStateToProps,
-    { showHideAlert, sendTransactionToDaoServer, showTxSigningModal, getDaoConfig }
+    {
+      showHideAlert,
+      sendTransactionToDaoServer,
+      showTxSigningModal,
+      getDaoConfig,
+    }
   )(ClaimResultsButton)
 );

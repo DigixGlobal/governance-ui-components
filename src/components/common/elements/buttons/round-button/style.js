@@ -14,6 +14,13 @@ export const RoundBtn = styled(Button)`
   }
 
   ${props =>
+    props.active &&
+    css`
+      background: ${props.theme.buttonBgHoverPrimary.default.toString()};
+      color: ${props.theme.buttonTextPrimaryReverse.default.toString()};
+    `};
+
+  ${props =>
     props.primary &&
     css`
       background: ${props.theme.buttonBgPrimary.default.toString()};
@@ -48,22 +55,6 @@ export const RoundBtn = styled(Button)`
     `};
 
   ${props =>
-    props.disabled &&
-    css`
-      background: transparent;
-      border: 2px solid ${props.theme.buttonBorderDisabled.lighter.toString()};
-      box-shadow: none;
-      color: ${props.theme.buttonTextDefault.lighter.toString()};
-      cursor: not-allowed;
-      pointer-events: none;
-      &:hover {
-        background: transparent;
-        background: ${props.theme.buttonBorderDisabled.lighter.toString()};
-        color: ${props.theme.buttonTextDefaultReverse.default.toString()};
-      }
-    `};
-
-  ${props =>
     props.reverse &&
     css`
       background: ${props.theme.buttonBgHoverPrimary.default.toString()};
@@ -72,6 +63,22 @@ export const RoundBtn = styled(Button)`
       &:hover {
         background: ${props.theme.buttonBgPrimary.default.toString()};
         color: ${props.theme.buttonTextPrimary.default.toString()};
+      }
+    `};
+
+  ${props =>
+    props.disabled &&
+    css`
+      background: transparent;
+      border: 2px solid ${props.theme.buttonBorderDisabled.lighter.toString()};
+      box-shadow: none;
+      color: ${props.theme.buttonTextDefault.lighter.toString()} !important;
+      cursor: not-allowed;
+      pointer-events: none;
+      &:hover {
+        background: transparent;
+        background: ${props.theme.buttonBorderDisabled.lighter.toString()};
+        color: ${props.theme.buttonTextDefaultReverse.default.toString()};
       }
     `};
 

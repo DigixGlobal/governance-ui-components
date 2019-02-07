@@ -64,3 +64,10 @@ export const UserStatus = {
   pastParticipant: 'Past Participant',
   guest: 'Have not participated',
 };
+
+export const KycStatus = {
+  pending: 'PENDING',
+  rejected: 'REJECTED',
+  expired: 'EXPIRED',
+  approved: 'APPROVED',
+};

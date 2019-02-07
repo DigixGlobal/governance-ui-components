@@ -11,6 +11,11 @@ export const actions = {
   SHOW_RIGHT_PANEL: `${REDUX_PREFIX}SHOW_RIGHT_PANEL`,
   GET_CONFIG_PREPROPOSAL_COLLATERAL: `${REDUX_PREFIX}GET_CONFIG_PREPROPOSAL_COLLATERAL`,
   GET_ADDRESS_MAX_ALLOWANCE: `${REDUX_PREFIX}GET_ADDRESS_MAX_ALLOWANCE`,
+
+  SET_AUTHENTICATION_STATUS: `${REDUX_PREFIX}SET_AUTHENTICATION_STATUS`,
+
+  SHOW_LEFT_MENU: `${REDUX_PREFIX}SHOW_LEFT_MENU`,
+
 };
 
 function fetchConfig(contract, config, type) {
@@ -53,6 +58,11 @@ export function showHideWalletOverlay(show) {
     dispatch({ type: actions.SHOW_WALLET, payload: { show } });
   };
 }
+export function showHideLeftMenu(show) {
+  return dispatch => {
+    dispatch({ type: actions.SHOW_LEFT_MENU, payload: { show } });
+  };
+}
 
 export function showSignChallenge(show) {
   return dispatch => {
@@ -75,5 +85,11 @@ export function showHideAlert(alert) {
 export function showRightPanel(payload) {
   return dispatch => {
     dispatch({ type: actions.SHOW_RIGHT_PANEL, payload: { ...payload } });
+  };
+}
+
+export function setAuthentationStatus(payload) {
+  return dispatch => {
+    dispatch({ type: actions.SET_AUTHENTICATION_STATUS, payload });
   };
 }

@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 
 import EmailOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-email/index';
 import KycOverlay from '@digix/gov-ui/components/common/blocks/overlay/kyc/index';
+import RedeemBadge from '@digix/gov-ui/pages/user/profile/buttons/redeem-badge';
 import UsernameOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-username/index';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
-import { DEFAULT_STAKE_PER_DGD } from '@digix/gov-ui/constants';
+import { DEFAULT_STAKE_PER_DGD, KycStatus } from '@digix/gov-ui/constants';
 import {
   getAddressDetails,
   getDaoConfig,
@@ -37,8 +38,6 @@ import {
   Actions,
 } from '@digix/gov-ui/pages/user/profile/style';
 
-import RedeemBadge from './buttons/redeem-badge';
-
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -58,6 +57,7 @@ class Profile extends React.Component {
     getDaoConfigAction();
     getDaoDetailsAction();
     getAddressDetailsAction(AddressDetails.data.address);
+    this.props.refetchUser();
   }
 
   onLockDgd = () => {
@@ -117,11 +117,98 @@ class Profile extends React.Component {
   }
 
   showKycOverlay() {
+    const { refetchUser } = this.props;
+    const { kyc } = this.props.userData;
+
+    if (kyc && kyc.status === KycStatus.approved) {
+      return;
+    }
+
     this.props.showRightPanel({
-      component: <KycOverlay />,
+      component: <KycOverlay refetchUser={refetchUser} />,
       large: true,
       show: true,
     });
+  }
+
+  renderActivitySummary() {
+    const { email, kyc } = this.props.userData;
+    let currentKycStatus = 'Not Verified';
+    if (kyc && kyc.status) {
+      currentKycStatus = kyc.status.charAt(0) + kyc.status.slice(1).toLowerCase();
+    }
+
+    const kycStatusesForResubmission = [KycStatus.expired, KycStatus.approved, KycStatus.rejected];
+    const canResubmitKyc = kyc ? kycStatusesForResubmission.includes(kyc.status) : false;
+    const canSubmitKyc = (email && !kyc) || (kyc && kyc.status === KycStatus.pending);
+    const showSubmitKycButton = canSubmitKyc || canResubmitKyc;
+    const setEmailForKyc = !email && !kyc;
+
+    return (
+      <ActivitySummary>
+        <ActivityItem>
+          <Label>Participated In</Label>
+          <Data data-digix="Profile-QuarterParticipation">12</Data>
+          <Label>Quarter(s)</Label>
+          <Actions>
+            <Button primary data-digix="Profile-QuarterParticipation-Cta">
+              More Info
+            </Button>
+          </Actions>
+        </ActivityItem>
+
+        <ActivityItem>
+          <Label>Proposed</Label>
+          <Data data-digix="Profile-Proposals">0</Data>
+          <Label>Project(s)</Label>
+          <Actions>
+            <Button primary data-digix="Profile-Proposals-Cta">
+              More Info
+            </Button>
+          </Actions>
+        </ActivityItem>
+
+        <ActivityItem>
+          <Label>Claimed</Label>
+          <Data data-digix="Profile-DgxClaimed">12</Data>
+          <Label>DGX</Label>
+          <Actions>
+            <Button primary data-digix="Profile-DgxClaimed-Cta">
+              More Info
+            </Button>
+          </Actions>
+        </ActivityItem>
+
+        <ActivityItem>
+          <Label>KYC Status</Label>
+          <Data data-digix="Profile-KycStatus">{currentKycStatus}</Data>
+          <Label>&nbsp;</Label>
+          <Actions>
+            {setEmailForKyc && (
+              <Button
+                primary
+                data-digix="Profile-KycStatus-SetEmail"
+                onClick={() => this.showSetEmailOverlay()}
+              >
+                Set Email to submit KYC
+              </Button>
+            )}
+
+            {showSubmitKycButton && (
+              <Button
+                primary
+                disabled={kyc && kyc.status === KycStatus.pending}
+                data-digix="Profile-KycStatus-Submit"
+                onClick={() => this.showKycOverlay()}
+              >
+                {canSubmitKyc && <span>Submit KYC</span>}
+                {canResubmitKyc && <span>Re-submit KYC</span>}
+              </Button>
+            )}
+          </Actions>
+        </ActivityItem>
+      </ActivitySummary>
+    );
   }
 
   render() {
@@ -201,55 +288,7 @@ class Profile extends React.Component {
             <Data data-digix="Profile-Stake">{stake}</Data>
           </RewardItem>
         </RewardSummary>
-
-        {/* TODO: Fetch data for this section */}
-        <ActivitySummary>
-          <ActivityItem>
-            <Label>Participated In</Label>
-            <Data data-digix="Profile-QuarterParticipation">12</Data>
-            <Label>Quarter(s)</Label>
-            <Actions>
-              <Button primary data-digix="Profile-QuarterParticipation-Cta">
-                More Info
-              </Button>
-            </Actions>
-          </ActivityItem>
-          <ActivityItem>
-            <Label>Proposed</Label>
-            <Data data-digix="Profile-Proposals">0</Data>
-            <Label>Project(s)</Label>
-            <Actions>
-              <Button primary data-digix="Profile-Proposals-Cta">
-                More Info
-              </Button>
-            </Actions>
-          </ActivityItem>
-          <ActivityItem>
-            <Label>Claimed</Label>
-            <Data data-digix="Profile-DgxClaimed">12</Data>
-            <Label>DGX</Label>
-            <Actions>
-              <Button primary data-digix="Profile-DgxClaimed-Cta">
-                More Info
-              </Button>
-            </Actions>
-          </ActivityItem>
-          <ActivityItem>
-            <Label>KYC Status</Label>
-            <Data data-digix="Profile-KycStatus">Not Verified</Data>
-            <Label>&nbsp;</Label>
-            <Actions>
-              <Button
-                primary
-                disabled // TODO: remove from shadow when submit KYC is done
-                data-digix="Profile-KycStatus-Cta"
-                onClick={() => this.showKycOverlay()}
-              >
-                Submit KYC
-              </Button>
-            </Actions>
-          </ActivityItem>
-        </ActivitySummary>
+        {this.renderActivitySummary()}
 
         {hasUnmetModerationRequirements && (
           <Moderation data-digix="Profile-ModerationRequirements">
@@ -299,6 +338,7 @@ Profile.propTypes = {
   getAddressDetailsAction: func.isRequired,
   getDaoConfigAction: func.isRequired,
   getDaoDetailsAction: func.isRequired,
+  refetchUser: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
   showRightPanel: func.isRequired,
   userData: shape({

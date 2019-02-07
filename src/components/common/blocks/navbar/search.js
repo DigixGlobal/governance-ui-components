@@ -5,6 +5,7 @@ import Icon from '../../elements/icons';
 const MenuWrapper = styled.div`
   display: inline-flex;
   justify-content: flex-start;
+  margin-left: 110px;
 `;
 
 const StyledLink = styled.a`

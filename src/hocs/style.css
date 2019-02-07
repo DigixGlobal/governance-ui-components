@@ -3,6 +3,7 @@
 
   /* Give app full page to work with */
   height: 100vh;
+  overflow-x: scroll !important;
 }
 
 #page-wrap {

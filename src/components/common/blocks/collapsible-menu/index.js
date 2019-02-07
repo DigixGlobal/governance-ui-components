@@ -92,6 +92,7 @@ class CollapsibleMenu extends React.Component {
         outerContainerId="App"
         isOpen={showLeftMenu && showLeftMenu.show}
         onStateChange={state => this.handleStateChange(state)}
+        width={210}
       >
         <MenuContainer>
           {ChallengeProof.data && (

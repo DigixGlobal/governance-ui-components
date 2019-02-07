@@ -31,19 +31,12 @@ class LandingPage extends Component {
 
   componentWillMount = () => {
     const {
-      AddressDetails,
-      getAddressDetailsAction,
       getDaoDetailsAction,
       getProposalsAction,
       getProposalLikesByUserAction,
       ChallengeProof,
     } = this.props;
-
-    Promise.all([
-      getAddressDetailsAction(AddressDetails.data.address),
-      getDaoDetailsAction(),
-      getProposalsAction(),
-    ]).then(() => {
+    Promise.all([getDaoDetailsAction(), getProposalsAction()]).then(() => {
       this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
       return this.getProposalLikes();
     });
@@ -162,7 +155,7 @@ class LandingPage extends Component {
   }
 }
 
-const { object, func, bool } = PropTypes;
+const { object, func } = PropTypes;
 LandingPage.propTypes = {
   DaoDetails: object.isRequired,
   AddressDetails: object.isRequired,
@@ -170,9 +163,8 @@ LandingPage.propTypes = {
   ChallengeProof: object,
   UserLikedProposals: object,
   ProposalLikes: object,
-  ShowWallet: bool,
+  ShowWallet: object,
   history: object.isRequired,
-  getAddressDetailsAction: func.isRequired,
   getDaoDetailsAction: func.isRequired,
   getProposalsAction: func.isRequired,
   getProposalLikesByUserAction: func.isRequired,
@@ -183,7 +175,7 @@ LandingPage.defaultProps = {
   ChallengeProof: undefined,
   UserLikedProposals: undefined,
   ProposalLikes: undefined,
-  ShowWallet: false,
+  ShowWallet: undefined,
 };
 
 export default connect(

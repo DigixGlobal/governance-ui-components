@@ -21,6 +21,7 @@ export const fetchUserQuery = gql`
       username
       displayName
       createdAt
+      isKycOfficer
       kyc {
         id
         status

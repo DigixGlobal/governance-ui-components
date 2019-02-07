@@ -48,6 +48,7 @@ class EditProposal extends React.Component {
       showConfirmPage: false,
       validForm: true,
       proposalId: undefined,
+      exceedsLimit: false,
     };
   }
 
@@ -107,13 +108,36 @@ class EditProposal extends React.Component {
       form[e] = value;
     }
 
-    const validForm = form.milestones && form.milestones.length > 0;
-
-    this.setState({ form: { ...form }, validForm });
+    this.setState({ form: { ...form } }, () => {
+      this.checkFundingLimit();
+    });
   };
 
   setError = error =>
     this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
+
+  checkFundingLimit = () => {
+    const { daoConfig } = this.props;
+    const { form } = this.state;
+
+    const validForm = form.milestones && form.milestones.length > 0;
+
+    const limit = daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
+
+    const totalFunds = this.computeTotalFunds();
+    const exceedsLimit = totalFunds > Number(limit);
+    this.setState({ exceedsLimit, validForm: validForm && !exceedsLimit });
+  };
+
+  computeTotalFunds = () => {
+    const { form } = this.state;
+    if (!form.milestones && form.finalReward) return Number(form.finalReward);
+    else if (!form.milestones && !form.finalReward) return 0;
+
+    const milestoneFunds = (acc, currentValue) => acc + Number(currentValue.fund);
+
+    return Number(form.milestones.reduce(milestoneFunds, 0)) + Number(form.finalReward);
+  };
 
   useStep = step => {
     this.setState({
@@ -222,9 +246,17 @@ class EditProposal extends React.Component {
   };
 
   renderStep = () => {
-    const { currentStep, form } = this.state;
+    const { currentStep, form, exceedsLimit } = this.state;
     const Step = steps[currentStep];
-    return <Step onChange={this.onChangeHandler} form={form} edit />;
+    return (
+      <Step
+        onChange={this.onChangeHandler}
+        form={form}
+        edit
+        exceedsLimit={exceedsLimit}
+        daoConfig={this.props.daoConfig}
+      />
+    );
   };
 
   renderPreview = () => {
@@ -309,6 +341,7 @@ EditProposal.propTypes = {
   proposalDetails: object.isRequired,
   location: object.isRequired,
   history: object.isRequired,
+  daoConfig: object.isRequired,
   addresses: array,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
@@ -323,6 +356,7 @@ const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
   proposalDetails: state.infoServer.ProposalDetails,
+  daoConfig: state.infoServer.DaoConfig,
 });
 
 export default web3Connect(

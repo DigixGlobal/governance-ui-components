@@ -3,8 +3,12 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+
+import { Query } from 'react-apollo';
+import { renderDisplayName, fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
+
 import { push as Menu } from 'react-burger-menu';
-import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
+
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
 import lightTheme from '@digix/gov-ui/theme/light';
 
@@ -79,6 +83,29 @@ class CollapsibleMenu extends React.Component {
     );
   };
 
+  renderKycOfficerMenu = () => (
+    <Query query={fetchUserQuery}>
+      {({ loading, error, data }) => {
+        if (loading) {
+          return null;
+        }
+
+        if (error) {
+          return null;
+        }
+        const samePath = this.props.location.pathname.toLowerCase() === '/kyc/admin';
+        return data.currentUser !== null && data.currentUser.isKycOfficer ? (
+          <MenuItem selected={samePath}>
+            <Link to="/kyc/admin" href="/kyc/admin">
+              <Icon kind="dashboard" theme={this.props.theme || lightTheme} selected={samePath} />
+              <span>KYC Dashboard</span>
+            </Link>
+          </MenuItem>
+        ) : null;
+      }}
+    </Query>
+  );
+
   render() {
     const { addressDetails, ChallengeProof, menuItems, showLeftMenu } = this.props;
     const userType = getUserStatus(addressDetails.data);
@@ -104,10 +131,14 @@ class CollapsibleMenu extends React.Component {
               <UserType data-digix="Sidebar-UserStatus">{userType}</UserType>
             </ProfileContainer>
           )}
+        <MenuList>
+          {menuItemElements}
+          {ChallengeProof.data && this.renderKycOfficerMenu()}
+        </MenuList>
+      </MenuContainer>
 
-          <MenuList>{menuItemElements}</MenuList>
-        </MenuContainer>
       </Menu>
+
     );
   }
 }

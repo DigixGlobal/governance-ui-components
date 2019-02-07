@@ -53,7 +53,7 @@ class KycOverlayAddress extends KycFormStep {
         customValidation: null,
         defaultErrorMessage: null,
         errorMessage: null,
-        hasError: stateValues.addressDetails ? false : undefined,
+        hasError: false,
         label: 'Address Line 2 (Optional)',
         pattern: null,
         type: this.FIELD_TYPES.input,

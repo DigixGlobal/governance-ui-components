@@ -26,6 +26,7 @@ class LandingPage extends Component {
     super(props);
     this.state = {
       order: 'latest',
+      loadingLikes: false,
     };
   }
 
@@ -39,18 +40,30 @@ class LandingPage extends Component {
       ChallengeProof,
     } = this.props;
 
-    Promise.all([
-      getAddressDetailsAction(AddressDetails.data.address),
-      getDaoDetailsAction(),
-      getProposalsAction(),
-    ]).then(() => {
-      this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
-      return this.getProposalLikes();
-    });
+    getDaoDetailsAction();
+    getProposalsAction();
+    if (AddressDetails.data.address && ChallengeProof.data.client) {
+      Promise.all([getAddressDetailsAction(AddressDetails.data.address)]).then(() => {
+        this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
+        this.getProposalLikes(undefined, ChallengeProof);
+      });
+    }
   };
 
-  shouldComponentUpdate = (nextProps, nextState) =>
-    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+  componentWillReceiveProps = nextProps => {
+    const { ChallengeProof, getProposalLikesByUserAction } = nextProps;
+    if (ChallengeProof.data && ChallengeProof.data.client && !this.state.loadingLikes) {
+      this.setState({ loadingLikes: true }, () => {
+        Promise.all([
+          this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction),
+          this.getProposalLikes(undefined, ChallengeProof),
+        ]).then(() => this.setState({ loadingLikes: false }));
+      });
+    }
+  };
+
+  // shouldComponentUpdate = (nextProps, nextState) =>
+  //   !_.isEqual(nextProps, this.props);// && !_.isEqual(nextState, this.state);
 
   onOrderChange = order => {
     this.setState({ order });
@@ -62,11 +75,11 @@ class LandingPage extends Component {
     Promise.all([
       getProposalsAction(param),
       this.getUserLikes(param, ChallengeProof, getProposalLikesByUserAction),
-      this.getProposalLikes(param),
+      this.getProposalLikes(param, ChallengeProof),
     ]);
   };
 
-  getProposalLikes = (param, ChallengeProof) => {
+  getProposalLikes = (param = undefined, ChallengeProof) => {
     const { getProposalLikesStatsAction } = this.props;
     if (
       !ChallengeProof ||
@@ -74,6 +87,7 @@ class LandingPage extends Component {
       (ChallengeProof.data && !ChallengeProof.data.client)
     )
       return undefined;
+
     return getProposalLikesStatsAction({
       param,
       authToken: ChallengeProof.data['access-token'],
@@ -89,6 +103,7 @@ class LandingPage extends Component {
       (ChallengeProof.data && !ChallengeProof.data.client)
     )
       return undefined;
+
     return getProposalLikesByUserAction({
       stage,
       authToken: ChallengeProof.data['access-token'],

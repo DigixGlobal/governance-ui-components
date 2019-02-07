@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import ProposalCard from '@digix/gov-ui/components/proposal-card';
@@ -31,42 +30,39 @@ class LandingPage extends Component {
   }
 
   componentWillMount = () => {
-    const {
-      AddressDetails,
-      getAddressDetailsAction,
-      getDaoDetailsAction,
-      getProposalsAction,
-      getProposalLikesByUserAction,
-      ChallengeProof,
-    } = this.props;
+    const { AddressDetails, getDaoDetailsAction, getProposalsAction, ChallengeProof } = this.props;
 
     getDaoDetailsAction();
     getProposalsAction();
     if (AddressDetails.data.address && ChallengeProof.data.client) {
-      Promise.all([getAddressDetailsAction(AddressDetails.data.address)]).then(() => {
-        this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
-        this.getProposalLikes(undefined, ChallengeProof);
-      });
+      this.getLikeStatus();
     }
   };
 
   componentWillReceiveProps = nextProps => {
-    const { ChallengeProof, getProposalLikesByUserAction } = nextProps;
+    const { ChallengeProof } = nextProps;
     if (ChallengeProof.data && ChallengeProof.data.client && !this.state.loadingLikes) {
       this.setState({ loadingLikes: true }, () => {
-        Promise.all([
-          this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction),
-          this.getProposalLikes(undefined, ChallengeProof),
-        ]).then(() => this.setState({ loadingLikes: false }));
+        this.getLikeStatus().then(() => this.setState({ loadingLikes: false }));
       });
     }
   };
 
-  // shouldComponentUpdate = (nextProps, nextState) =>
-  //   !_.isEqual(nextProps, this.props);// && !_.isEqual(nextState, this.state);
-
   onOrderChange = order => {
     this.setState({ order });
+  };
+
+  getLikeStatus = () => {
+    const {
+      AddressDetails,
+      getAddressDetailsAction,
+      getProposalLikesByUserAction,
+      ChallengeProof,
+    } = this.props;
+    return Promise.all([getAddressDetailsAction(AddressDetails.data.address)]).then(() => {
+      this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
+      this.getProposalLikes(undefined, ChallengeProof);
+    });
   };
 
   getProposals = param => {

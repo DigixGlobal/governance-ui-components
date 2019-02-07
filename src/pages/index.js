@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import ProposalCard from '@digix/gov-ui/components/proposal-card';
@@ -26,27 +25,44 @@ class LandingPage extends Component {
     super(props);
     this.state = {
       order: 'latest',
+      loadingLikes: false,
     };
   }
 
   componentWillMount = () => {
-    const {
-      getDaoDetailsAction,
-      getProposalsAction,
-      getProposalLikesByUserAction,
-      ChallengeProof,
-    } = this.props;
-    Promise.all([getDaoDetailsAction(), getProposalsAction()]).then(() => {
-      this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
-      return this.getProposalLikes();
-    });
+    const { AddressDetails, getDaoDetailsAction, getProposalsAction, ChallengeProof } = this.props;
+
+    getDaoDetailsAction();
+    getProposalsAction();
+    if (AddressDetails.data.address && (ChallengeProof.data && ChallengeProof.data.client)) {
+      this.getLikeStatus();
+    }
   };
 
-  shouldComponentUpdate = (nextProps, nextState) =>
-    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+  componentWillReceiveProps = nextProps => {
+    const { ChallengeProof } = nextProps;
+    if (ChallengeProof.data && ChallengeProof.data.client && !this.state.loadingLikes) {
+      this.setState({ loadingLikes: true }, () => {
+        this.getLikeStatus().then(() => this.setState({ loadingLikes: false }));
+      });
+    }
+  };
 
   onOrderChange = order => {
     this.setState({ order });
+  };
+
+  getLikeStatus = () => {
+    const {
+      AddressDetails,
+      getAddressDetailsAction,
+      getProposalLikesByUserAction,
+      ChallengeProof,
+    } = this.props;
+    return Promise.all([getAddressDetailsAction(AddressDetails.data.address)]).then(() => {
+      this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
+      this.getProposalLikes(undefined, ChallengeProof);
+    });
   };
 
   getProposals = param => {
@@ -55,11 +71,11 @@ class LandingPage extends Component {
     Promise.all([
       getProposalsAction(param),
       this.getUserLikes(param, ChallengeProof, getProposalLikesByUserAction),
-      this.getProposalLikes(param),
+      this.getProposalLikes(param, ChallengeProof),
     ]);
   };
 
-  getProposalLikes = (param, ChallengeProof) => {
+  getProposalLikes = (param = undefined, ChallengeProof) => {
     const { getProposalLikesStatsAction } = this.props;
     if (
       !ChallengeProof ||
@@ -67,6 +83,7 @@ class LandingPage extends Component {
       (ChallengeProof.data && !ChallengeProof.data.client)
     )
       return undefined;
+
     return getProposalLikesStatsAction({
       param,
       authToken: ChallengeProof.data['access-token'],
@@ -82,6 +99,7 @@ class LandingPage extends Component {
       (ChallengeProof.data && !ChallengeProof.data.client)
     )
       return undefined;
+
     return getProposalLikesByUserAction({
       stage,
       authToken: ChallengeProof.data['access-token'],
@@ -165,6 +183,7 @@ LandingPage.propTypes = {
   ProposalLikes: object,
   ShowWallet: object,
   history: object.isRequired,
+  getAddressDetailsAction: func.isRequired,
   getDaoDetailsAction: func.isRequired,
   getProposalsAction: func.isRequired,
   getProposalLikesByUserAction: func.isRequired,

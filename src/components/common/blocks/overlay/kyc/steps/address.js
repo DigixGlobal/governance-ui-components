@@ -16,13 +16,13 @@ class KycOverlayAddress extends KycFormStep {
     const { formValues } = props;
     this.state = {
       formValues: {
-        country: formValues.country || 'AFGHANISTAN',
+        country: formValues.country || '',
         address: formValues.address || '',
         addressDetails: formValues.addressDetails || '',
         city: formValues.city || '',
         state: formValues.state || '',
         postalCode: formValues.postalCode || '',
-        residenceProofType: formValues.residenceProofType || 'UTILITY_BILL',
+        residenceProofType: formValues.residenceProofType || '',
         residenceProofDataUrl: formValues.residenceProofDataUrl || '',
       },
     };
@@ -33,7 +33,7 @@ class KycOverlayAddress extends KycFormStep {
         customValidation: null,
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
-        hasError: false,
+        hasError: stateValues.country ? false : undefined,
         label: 'Country of Residence',
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
@@ -53,7 +53,7 @@ class KycOverlayAddress extends KycFormStep {
         customValidation: null,
         defaultErrorMessage: null,
         errorMessage: null,
-        hasError: false,
+        hasError: stateValues.addressDetails ? false : undefined,
         label: 'Address Line 2 (Optional)',
         pattern: null,
         type: this.FIELD_TYPES.input,
@@ -93,7 +93,7 @@ class KycOverlayAddress extends KycFormStep {
         customValidation: null,
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
-        hasError: false,
+        hasError: stateValues.residenceProofType ? false : undefined,
         label: 'Residence Proof',
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
@@ -117,8 +117,8 @@ class KycOverlayAddress extends KycFormStep {
     return (
       <FormSection>
         <FieldGroup column>
-          {this.renderField('country')}
-          {this.renderField('address', { autoFocus: true })}
+          {this.renderField('country', { autoFocus: true })}
+          {this.renderField('address')}
           {this.renderField('addressDetails')}
         </FieldGroup>
         <FieldGroup>

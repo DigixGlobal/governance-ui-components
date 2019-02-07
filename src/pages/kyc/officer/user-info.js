@@ -155,7 +155,7 @@ class UserInfo extends React.Component {
             <Value>{user.incomeRange}</Value>
           </ValueWrapper>
         )}
-        {user.identificationPose && user.identificationPose.url !== undefined && (
+        {user.identificationPose && user.identificationPose.image.dataUrl !== undefined && (
           <Fragment>
             <ValueWrapper>
               <Caption>Webcam Proof</Caption>

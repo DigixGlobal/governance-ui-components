@@ -157,7 +157,6 @@ class KycOfficerDashboard extends React.Component {
               return null;
             }
             if (reloading) refetch();
-            // this.handleListKycByStatus(client, filter === 'All' ? undefined : filter);
 
             return (
               <Fragment>

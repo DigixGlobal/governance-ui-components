@@ -5,9 +5,14 @@ import StyledSelect from './style';
 
 class Select extends React.Component {
   render() {
-    const { items, id, ...rest } = this.props;
+    const { items, id, showPlaceholder, ...rest } = this.props;
     return (
       <StyledSelect id={id} {...rest}>
+        {showPlaceholder && (
+          <option disabled selected value="">
+            Please select option
+          </option>
+        )}
         {items.map(item => (
           <option key={item.value} value={item.value}>
             {item.text}
@@ -18,10 +23,16 @@ class Select extends React.Component {
   }
 }
 
-const { array, string } = PropTypes;
+const { array, bool, string } = PropTypes;
 
 Select.propTypes = {
   id: string.isRequired,
   items: array.isRequired,
+  showPlaceholder: bool,
 };
+
+Select.defaultProps = {
+  showPlaceholder: false,
+};
+
 export default Select;

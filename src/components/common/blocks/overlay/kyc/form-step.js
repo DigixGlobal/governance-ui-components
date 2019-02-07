@@ -297,6 +297,7 @@ class KycFormStep extends React.Component {
         name={fieldName}
         onBlur={e => this.handleInput(e, fieldName)}
         onChange={e => this.handleInput(e, fieldName)}
+        showPlaceholder
         value={formValues[fieldName]}
         {...props}
       />
@@ -320,7 +321,7 @@ class KycFormStep extends React.Component {
     const rules = this.VALIDATION_RULES;
     const rule = rules[fieldName];
 
-    const hasValidator = rule.pattern || rule.customValidation;
+    const hasValidator = !!rule.pattern || rule.customValidation instanceof Function;
     // NOTE: make sure hasError is not false;
     // if undefined, we should still show that the field is required
     const showRequired = hasValidator && rule.hasError !== false;

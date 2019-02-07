@@ -31,13 +31,14 @@ import ImToken from './ImToken';
 import Ethereum from './Ethereum';
 import Dgd from './DGD';
 import XMark from './XMark';
+import Alarm from './Alarm';
 
 const icons = {
   arrow: Arrow,
   close: Close,
   face: Face,
   check: Check,
-  dasboard: Dashboard,
+  dashboard: Dashboard,
   // digixLogo: DigixLogo,
   magnifier: Magnifier,
   menu: Menu,
@@ -63,6 +64,7 @@ const icons = {
   ethereum: Ethereum,
   dgd: Dgd,
   xmark: XMark,
+  alarm: Alarm,
 };
 
 const Icon = props => {

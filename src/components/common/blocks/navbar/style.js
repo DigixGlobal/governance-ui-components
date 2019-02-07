@@ -19,35 +19,27 @@ export const HeaderWrapper = styled.section`
     flex: 1 0 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100%;
     padding: 0 2em;
 
-    &:nth-child(1) {
-      flex: 0.5 0 0;
-    }
     &:nth-child(2) {
-      justify-content: flex-start;
-      flex: 4 0 0;
+      justify-content: flex-end;
+      flex: 1 0 0;
     }
     &:nth-child(3) {
-      flex: 3 0 0;
-      justify-content: flex-end;
-    }
-    &:nth-child(4) {
-      flex: inherit;
-      width: 150px;
+      flex: 0 0 180px;
+      justify-content: center;
     }
   }
 `;
 
 export const WalletWrapper = styled.div`
-  flex: 3 0 0;
+  flex: 1 0 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  // padding: 2em !important;
-  //   width: 300px;
+
   border-left: 0 !important;
 `;
 

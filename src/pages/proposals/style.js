@@ -84,52 +84,56 @@ export const Header = styled.div`
   justify-content: space-between;
 `;
 
+export const CTAButtons = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+`;
+
 export const Title = styled(H1)`
   font-size: 3.6rem;
   font-family: 'Futura PT Medium';
 `;
 
 export const SubTitle = styled(H2)`
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Book';
   font-size: 2rem;
   color: ${props => props.theme.textPrimary.light.toString()};
 `;
 
-export const LatestActivity = styled.div`
+export const FundingSummary = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 4rem 0;
+`;
+
+export const SummaryInfo = styled.div`
   color: ${props => props.theme.textDefault.light.toString()};
   display: flex;
   flex-direction: row;
-  margin: 3rem 0;
   text-transform: uppercase;
+`;
+export const InfoItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 5rem;
+`;
 
-  > div {
-    display: flex;
-    flex-direction: column;
-  }
+export const ItemTitle = styled.div`
+  margin-bottom: 1.5rem;
+`;
 
+export const Data = styled.div`
+  font-size: 1.8rem;
+  color: ${props => props.theme.textPrimary.default.toString()};
   span {
-    font-size: 2rem;
-    font-family: 'Futura PT Medium';
-    color: ${props => props.theme.textPrimary.default.toString()};
-    margin-top: 1rem;
+    &:not(:first-child) {
+      color: ${props => props.theme.textSecondary.default.toString()};
+    }
   }
 `;
-export const SubmittedBy = styled.div`
-  flex: 4;
-`;
-export const FundingStatus = styled.div`
-  flex: 1;
-`;
-export const MilestonesStatus = styled.div`
-  flex: 1;
-`;
 
-export const Reward = styled.div`
-  flex: 1;
-`;
-
-export const UpvoteStatus = styled.div`
-  flex: 1;
+export const Upvote = styled.div`
+  display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   margin-right: 2rem;

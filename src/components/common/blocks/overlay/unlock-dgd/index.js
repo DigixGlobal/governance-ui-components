@@ -203,7 +203,7 @@ class UnlockDgdOverlay extends React.Component {
             value={unlockAmount}
           />
           <MaxAmount to="#" data-digix="UnlockDgd-FillAmount" onClick={e => this.fillMaximum(e)}>
-            Fill Maximum
+            Fill Max
           </MaxAmount>
           <Currency>DGD</Currency>
         </UnlockDGDContainer>

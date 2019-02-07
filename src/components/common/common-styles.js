@@ -195,7 +195,7 @@ export const DrawerContainer = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
   padding: 5rem;
   width: 25%;
-  
+  overflow-y: scroll;
   ${props =>
     props.large &&
     css`
@@ -230,6 +230,14 @@ export const Notifications = styled.div`
 export const Label = styled.label`
   font-family: 'Futura PT Book', sans-serif;
   margin-bottom: 0.5rem;
+
+  span {
+    ${props =>
+      props.req &&
+      css`
+        color: ${props.theme.alertMessage.error.default.toString()};
+      `};
+  }
 
   ${props =>
     props.error &&

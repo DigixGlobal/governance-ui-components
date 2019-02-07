@@ -15,7 +15,7 @@ import {
 
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import {
-  setUserAddress,
+  setAuthentationStatus,
   showHideAlert,
   showSignChallenge,
   showHideWalletOverlay,
@@ -42,7 +42,13 @@ export class Wallet extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(nextProps, this.props)) {
-      const { AddressDetails, Challenge, getChallengeAction, ChallengeProof } = nextProps;
+      const {
+        AddressDetails,
+        Challenge,
+        getChallengeAction,
+        ChallengeProof,
+        isAuthenticated,
+      } = nextProps;
       if (!AddressDetails.data.address) return;
       const hasChallenge = Challenge.data;
       const hasProof = (ChallengeProof.data && ChallengeProof.data.client) || this.state.signed;
@@ -53,8 +59,7 @@ export class Wallet extends React.Component {
         }
       }
 
-      if (hasChallenge && !hasProof) {
-        // this.props.showSignChallenge(true);
+      if (hasChallenge && !hasProof && !isAuthenticated) {
         const message = Challenge.data.challenge;
         const network = this.props.defaultNetworks[0];
         const caption =
@@ -81,7 +86,11 @@ export class Wallet extends React.Component {
               message,
               signature: signature.signedTx,
             })
-            .then(this.setState({ proving: true }));
+            .then(
+              this.setState({ proving: true }, () => {
+                this.props.setAuthentationStatus(true);
+              })
+            );
         });
       } else {
         this.props.showSignChallenge(false);
@@ -98,23 +107,23 @@ export class Wallet extends React.Component {
 
   render() {
     const { stage } = this.state;
-    const { showWallet, ...rest } = this.props;
+    const { showWallet, isAuthenticated, ...rest } = this.props;
     if (!showWallet || !showWallet.show) return null;
 
     return (
       <Container>
         <TransparentOverlay />
         <DrawerContainer>
-          {stage === Stage.Intro && (
+          {stage === Stage.Intro && !isAuthenticated && (
             <Intro
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}
               onChangeStage={this.updateStage}
             />
           )}
-          {stage === Stage.LoadingWallet && (
+          {stage === Stage.LoadingWallet && !isAuthenticated && (
             <LoadWallet {...rest} onChangeStage={this.updateStage} />
           )}
-          {stage === Stage.WalletLoaded && (
+          {(stage === Stage.WalletLoaded || isAuthenticated) && (
             <ConnectedWallet
               {...rest}
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}
@@ -132,13 +141,14 @@ Wallet.propTypes = {
   Challenge: object,
   ChallengeProof: object,
   showWallet: bool,
+  isAuthenticated: bool,
   defaultNetworks: array.isRequired,
   AddressDetails: object,
   getAddressDetailsAction: func.isRequired,
   getChallengeAction: func.isRequired,
   showSigningModal: func.isRequired,
   showHideAlert: func.isRequired,
-
+  setAuthentationStatus: func.isRequired,
   showSignChallenge: func.isRequired,
   showHideWalletOverlay: func.isRequired,
   proveChallengeAction: func.isRequired,
@@ -147,6 +157,7 @@ Wallet.propTypes = {
 Wallet.defaultProps = {
   signChallenge: undefined,
   showWallet: false,
+  isAuthenticated: false,
   Challenge: undefined,
   ChallengeProof: undefined,
   AddressDetails: undefined,
@@ -161,7 +172,7 @@ const actions = {
   proveChallengeAction: proveChallenge,
   showSigningModal: showMsgSigningModal,
   showHideAlert,
-  setUserAddress,
+  setAuthentationStatus,
   showSignChallenge,
   showHideWalletOverlay,
 };
@@ -173,6 +184,7 @@ const mapStateToProps = state => ({
   Challenge: state.daoServer.Challenge,
   ChallengeProof: state.daoServer.ChallengeProof,
   showWallet: state.govUI.ShowWallet,
+  isAuthenticated: state.govUI.isAuthenticated,
 });
 
 export default web3Connect(

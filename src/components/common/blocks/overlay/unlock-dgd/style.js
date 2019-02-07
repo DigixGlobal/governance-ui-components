@@ -16,7 +16,7 @@ export const UnlockDGDContainer = styled.div`
 export const TextBox = styled(Input)`
   font-size: 1.6rem;
   margin: 0;
-  width: calc(100% - 160px);
+  width: 100%;
   border: 0;
   outline: 0;
 

@@ -1,23 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Accordion from '../../components/common/elements/accordion/index';
-import { MilestonesContainer, SubTitle } from './style';
+import Accordion from '@digix/gov-ui/components/common/elements/accordion/index';
+import { MilestonesContainer, SubTitle } from '@digix/gov-ui/pages/proposals/style';
 
 export default class Milestones extends React.Component {
   render() {
-    const { milestones, milestoneFundings, preview } = this.props;
+    const { milestones, milestoneFundings, changedFundings, fundingChanged } = this.props;
     return (
       <MilestonesContainer>
         <SubTitle>Milestones</SubTitle>
         <Accordion allowMultipleOpen>
-          {milestones.map((milestone, i) => (
-            <div key={`ms-${i + 1}`} label={`Milestone ${i + 1}: ${milestone.title || ''}`}>
-              <p>Funding: {preview ? milestone.fund : milestoneFundings[i]} ETH</p>
-              {milestone.description
-                ? milestone.description
-                : 'No milestone description has been created yet.'}
-            </div>
-          ))}
+          {milestones.map((milestone, i) => {
+            const funding = fundingChanged
+              ? Number(changedFundings[i].original)
+              : milestoneFundings[i];
+            const updatedFunding = fundingChanged ? Number(changedFundings[i].updated) : 0;
+            const milestoneFund = fundingChanged ? updatedFunding - funding : undefined;
+
+            return (
+              <div
+                key={`ms-${i + 1}`}
+                label={`Milestone ${i + 1}: ${milestone.title || ''}`}
+                funding={milestoneFundings[i]}
+                milestoneFund={milestoneFund !== 0 ? milestoneFund : undefined}
+              >
+                {milestone.description
+                  ? milestone.description
+                  : 'No milestone description has been created yet.'}
+              </div>
+            );
+          })}
         </Accordion>
       </MilestonesContainer>
     );
@@ -27,9 +39,6 @@ export default class Milestones extends React.Component {
 Milestones.propTypes = {
   milestones: PropTypes.array.isRequired,
   milestoneFundings: PropTypes.array.isRequired,
-  preview: PropTypes.bool,
-};
-
-Milestones.defaultProps = {
-  preview: false,
+  changedFundings: PropTypes.array.isRequired,
+  fundingChanged: PropTypes.bool.isRequired,
 };

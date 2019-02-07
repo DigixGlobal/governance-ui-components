@@ -1,0 +1,108 @@
+#App {
+  font-family: sans-serif;
+
+  /* Give app full page to work with */
+  height: 100vh;
+  overflow-x: scroll !important;
+}
+
+#page-wrap {
+  /* Prevent sidebar from showing a scrollbar on page */
+  overflow: auto;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+
+  /* Our sidebar item styling */
+  text-decoration: none;
+  margin-bottom: 10px;
+  color: #d1d1d1;
+  transition: color 0.2s;
+}
+
+/* Change color on hover */
+.bm-item:hover {
+  color: white;
+}
+
+/* The rest copied directly from react-burger-menu docs */
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 38px;
+  top: 18px;
+  z-index: 997 !important;
+}
+
+.bm-burger-button button:focus {
+  outline: none;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #373a47;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 18px !important;
+  width: 65px !important;
+  top: 2em !important;
+  right: 2em !important;
+
+  font-family: 'Futura PT Book', sans-serif;
+}
+
+.bm-cross-button > span {
+  top: 3px !important;
+}
+
+.bm-cross-button::before {
+  content: 'CLOSE';
+  margin-left: 0;
+}
+
+.bm-cross-button button:focus {
+  outline: none;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #373a47;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #fff;
+  border-right: 1px solid hsl(217.10000000000002, 13%, 97.1%);
+  box-shadow: 0 4px 8px 0 rgba(231, 233, 236, 0.8),
+    0 2px 4px 0 rgba(231, 233, 236, 0.6);
+
+  padding-top: 2.5em;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+}
+
+/* Styling of overlay  */
+.bm-overlay {
+  background: none !important;
+  z-index: 996 !important;
+}
+
+.bm-menu-wrap {
+  z-index: 998 !important;
+}

@@ -15,7 +15,6 @@ export const ProposalContainer = styled.div`
   display: flex;
   flex-direction: row;
 
-  height: 36.6rem;
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
 
   transition: ${props => props.theme.transition};
@@ -28,6 +27,17 @@ export const ProposalContainer = styled.div`
 export const ProposaDetaillWrapper = styled.div`
   flex: 4 1 0;
   padding: 2.5rem 3rem;
+`;
+
+export const StatsWrapper = styled.div`
+  min-height: 100%;
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const MilestonesWrapper = styled.div`
+  flex: 2 0 0;
 `;
 
 export const ProposalCard = styled.div`
@@ -101,13 +111,6 @@ export const Data = styled.div`
   font-size: 1.3rem;
 `;
 
-export const StatsWrapper = styled.div`
-  min-height: 100%;
-  flex: 1 0 0;
-  display: flex;
-  flex-direction: column;
-`;
-
 export const Stats = styled.div`
   flex: 1;
   display: flex;
@@ -144,10 +147,6 @@ export const StatItem = styled.div`
     font-size: 2.6rem;
     display: block;
   }
-`;
-
-export const MilestonesWrapper = styled.div`
-  flex: 2 0 0;
 `;
 
 export const Milestones = styled.div`

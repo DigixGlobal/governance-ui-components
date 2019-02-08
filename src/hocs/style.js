@@ -4,6 +4,7 @@ import { media } from '@digix/gov-ui/components/common/breakpoints';
 export const Container = styled.div`
   min-height: 100vh;
   height: 100vh;
+  background: ${props => props.theme.backgroundTertiary.lightest.toString()};
 `;
 
 export const ContentWrapper = styled.div`

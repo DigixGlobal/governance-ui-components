@@ -58,7 +58,7 @@ class ChangeFundingOverlay extends React.Component {
         form.milestoneFundings = currentVersion.milestoneFundings;
         this.setState({ form: { ...form } });
       } else {
-        const { changedFundings } = proposalDetails.changedFundings;
+        const { changedFundings } = proposalDetails;
         form.expectedReward = changedFundings.finalReward.updated;
         form.milestoneFundings = changedFundings.milestones.map(ms => ms.updated);
       }
@@ -69,7 +69,8 @@ class ChangeFundingOverlay extends React.Component {
     const { value } = e.target;
     const { form } = this.state;
     form.expectedReward = value;
-    const hasNegative = true;
+    let hasNegative = false;
+    if (parseFloat(value) < 0) hasNegative = true;
     this.setState({ form: { ...form }, fundChanged: true, hasNegative }, () => {
       this.checkFundingLimit();
       this.checkEmptyFunds();

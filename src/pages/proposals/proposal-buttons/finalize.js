@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
-import DaoConfigStorage from '@digix/dao-contracts/build/contracts/MockDaoConfigsStorage.json';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
@@ -25,19 +23,15 @@ import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 
+import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
+
 registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
 
 class FinalizeProjectButton extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      configDeadDuration: undefined,
-    };
-  }
   componentWillMount = () => {
-    const { web3Redux, stage, endorser, isProposer, finalVersionIpfsDoc } = this.props;
+    const { stage, endorser, isProposer, finalVersionIpfsDoc } = this.props;
     if (
       stage !== ProposalStages.draft ||
       !isProposer ||
@@ -46,15 +40,7 @@ class FinalizeProjectButton extends React.PureComponent {
     ) {
       return;
     }
-    const { abi, address } = getContract(DaoConfigStorage, network);
-    const contract = web3Redux
-      .web3(network)
-      .eth.contract(abi)
-      .at(address);
-
-    contract.uintConfigs
-      .call('config_dead_duration')
-      .then(result => this.setState({ configDeadDuration: parseBigNumber(result, 0, false) }));
+    this.props.getDaoConfig();
   };
 
   setError = error =>
@@ -121,11 +107,12 @@ class FinalizeProjectButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
   render() {
-    const { stage, endorser, isProposer, timeCreated, finalVersionIpfsDoc } = this.props;
-    const { configDeadDuration } = this.state;
+    const { stage, endorser, isProposer, timeCreated, finalVersionIpfsDoc, daoConfig } = this.props;
+
+    const configDeadDuration = daoConfig.data.CONFIG_PROPOSAL_DEAD_DURATION;
 
     // time is sent in seconds, not milliseconds
-    const finalizeDeadline = new Date((timeCreated + configDeadDuration) * 1000);
+    const finalizeDeadline = new Date((timeCreated + Number(configDeadDuration)) * 1000);
     const canFinalize = finalizeDeadline > Date.now();
 
     if (
@@ -139,7 +126,7 @@ class FinalizeProjectButton extends React.PureComponent {
     }
 
     return (
-      <Button kind="round" onClick={this.handleSubmit}>
+      <Button kind="round" large onClick={this.handleSubmit} data-digix="Create-Proposal-Finalize">
         Finalize
       </Button>
     );
@@ -155,9 +142,11 @@ FinalizeProjectButton.propTypes = {
   finalVersionIpfsDoc: string.isRequired,
   isProposer: bool,
   web3Redux: object.isRequired,
+  daoConfig: object.isRequired,
   challengeProof: object.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
+  getDaoConfig: func.isRequired,
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
@@ -172,11 +161,12 @@ FinalizeProjectButton.defaultProps = {
 const mapStateToProps = state => ({
   challengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  daoConfig: state.infoServer.DaoConfig,
 });
 
 export default web3Connect(
   connect(
     mapStateToProps,
-    { showHideAlert, sendTransactionToDaoServer, showTxSigningModal }
+    { showHideAlert, sendTransactionToDaoServer, showTxSigningModal, getDaoConfig }
   )(FinalizeProjectButton)
 );

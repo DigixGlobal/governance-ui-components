@@ -23,6 +23,7 @@ import JsonWallet from './JsonWallet';
 import Ledger from './Ledger';
 import Like from './Like';
 import Metamask from './Metamask';
+import Plus from './Plus';
 import Reply from './Reply';
 import Trash from './Trash';
 import Trezor from './Trezor';
@@ -30,13 +31,14 @@ import ImToken from './ImToken';
 import Ethereum from './Ethereum';
 import Dgd from './DGD';
 import XMark from './XMark';
+import Alarm from './Alarm';
 
 const icons = {
   arrow: Arrow,
   close: Close,
   face: Face,
   check: Check,
-  dasboard: Dashboard,
+  dashboard: Dashboard,
   // digixLogo: DigixLogo,
   magnifier: Magnifier,
   menu: Menu,
@@ -54,6 +56,7 @@ const icons = {
   ledger: Ledger,
   like: Like,
   metamask: Metamask,
+  plus: Plus,
   reply: Reply,
   trash: Trash,
   trezor: Trezor,
@@ -61,6 +64,7 @@ const icons = {
   ethereum: Ethereum,
   dgd: Dgd,
   xmark: XMark,
+  alarm: Alarm,
 };
 
 const Icon = props => {

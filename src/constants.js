@@ -32,6 +32,7 @@ export const CONVERSIONS = {
   XAUUSD: 1 / 31.1035,
 };
 
+export const DEFAULT_STAKE_PER_DGD = 1;
 export const DEFAULT_LOCKED_DGD = 83423.45;
 export const EMPTY_HASH = '0x0000000000000000000000000000000000000000';
 export const EMPTY_HASH_LONG = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -55,4 +56,18 @@ export const VotingStages = {
   draft: 'draftVoting',
   commit: 'commit',
   reveal: 'reveal',
+};
+
+export const UserStatus = {
+  moderator: 'Moderator',
+  participant: 'Participant',
+  pastParticipant: 'Past Participant',
+  guest: 'Have not participated',
+};
+
+export const KycStatus = {
+  pending: 'PENDING',
+  rejected: 'REJECTED',
+  expired: 'EXPIRED',
+  approved: 'APPROVED',
 };

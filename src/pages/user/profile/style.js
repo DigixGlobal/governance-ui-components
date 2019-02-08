@@ -1,41 +1,118 @@
 import styled from 'styled-components';
+import { H1, Card, CardItem } from '@digix/gov-ui/components/common/common-styles';
+import { media } from '@digix/gov-ui/components/common/breakpoints';
 
-export const EmptyStateContainer = styled.div`
-  color: ${props => props.theme.textDefault.default.toString()};
+export const ProfileWrapper = styled.div``;
+export const Heading = styled(H1)`
+  margin-bottom: 1rem;
+`;
+export const UserInfo = styled.div`
+  margin-bottom: 5rem;
+`;
+export const UserItem = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  color: ${props => props.theme.textPrimary.default.toString()};
+  font-family: 'Futura PT Medium', sans-serif;
+  font-size: 1.6rem;
+  margin: 1.5rem 0;
+`;
 
-  min-height: 50vh;
-  width: 320px;
-  text-align: center;
-  margin: 0 auto;
+export const UserLabel = styled.span`
+  min-width: 12rem;
+`;
+export const UserData = styled.span`
+  margin-right: 1rem;
+`;
 
-  svg {
-    fill: ${props => props.theme.iconDefaultColor.light.toString()};
+export const RewardSummary = styled.div`
+  ${Card};
+
+  color: ${props => props.theme.textPrimary.default.toString()};
+  font-family: 'Futura PT Medium', sans-serif;
+  margin-bottom: 5rem;
+
+  ${media.mobile`flex-direction: column;`}
+`;
+export const RewardItem = styled.div`
+  ${CardItem};
+
+  border-right: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  align-items: center;
+
+  &:last-child {
+    border-right: 0;
+  }
+
+  ${media.mobile`border-right: 0;`}
+`;
+
+export const Label = styled.div`
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  margin-top: 1rem;
+`;
+export const Data = styled.div`
+  font-size: 3.8em;
+  margin: 1rem 0 0;
+`;
+export const ActivitySummary = styled.div`
+  display: flex;
+  ${media.mobile`flex-direction: column;`}
+`;
+export const ActivityItem = styled.div`
+  ${Card};
+  color: ${props => props.theme.textPrimary.default.toString()};
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  font-family: 'Futura PT Medium', sans-serif;
+
+  margin-right: 3rem;
+  &:last-child {
+    margin-right: 0;
   }
 `;
-export const EmptyStateTitle = styled.div`
-  font-size: 2rem;
-  margin: 2rem 0 1rem;
+export const Moderation = styled.div`
+  ${Card};
+  color: ${props => props.theme.textPrimary.default.toString()};
+  flex-direction: column;
+  font-family: 'Futura PT Medium', sans-serif;
+`;
+export const Criteria = styled.div`
+  ${CardItem};
+  align-items: center;
+  justify-content: flex-start;
+  font-family: 'Futura PT Medium', sans-serif;
+  margin: 3rem 0 0;
+
+  ${media.mobile`flex-direction: column;`}
+`;
+export const ModeratorReqs = styled.div`
+  ${CardItem};
+  flex-grow: 0;
+  align-items: flex-end;
 `;
 
-export const IconContainer = styled.div`
-  width: 200px;
-  display: block;
-`;
-
-export const ButtonLink = styled.span`
-  border: 0;
-  background: transparent;
-  color: ${props => props.theme.linkSecondaryColor.default.toString()};
-  display: block;
+export const ReqLabel = styled.div`
+  margin-bottom: 1.1rem;
+  margin-left: 1rem;
   text-transform: uppercase;
-  padding: 1rem 2rem;
-  margin: 1rem;
-  &:hover {
-    background: ${props => props.theme.backgroundTertiary.lighter.toString()};
-    color: ${props => props.theme.linkSecondaryColor.default.toString()};
+  letter-spacing: 0.2rem;
+`;
+export const Plus = styled.div`
+  display: flex;
+  margin: 0 3rem;
+
+  svg {
+    fill: ${props => props.theme.icon.default.default.toString()};
+  }
+`;
+
+export const Actions = styled.div`
+  margin-top: 3rem;
+
+  & > button {
+    margin-left: 0;
   }
 `;

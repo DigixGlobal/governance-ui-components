@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { toBigNumber, parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
-import DaoConfigStorage from '@digix/dao-contracts/build/contracts/MockDaoConfigsStorage.json';
 import DaoVotingClaims from '@digix/dao-contracts/build/contracts/DaoVotingClaims.json';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
@@ -19,6 +18,8 @@ import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
+import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
+
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
@@ -26,36 +27,8 @@ registerUIs({ txVisualization: { component: TxVisualization } });
 const network = SpectrumConfig.defaultNetworks[0];
 
 class ClaimResultsButton extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      voteClaimingDeadline: undefined,
-    };
-  }
   componentWillMount = () => {
-    const {
-      web3Redux,
-      isProposer,
-      proposal,
-      proposal: { currentVotingRound },
-    } = this.props;
-    const currentTime = Date.now();
-
-    if (!isProposer || !proposal || !proposal.votingRounds) return;
-
-    const { abi, address } = getContract(DaoConfigStorage, network);
-    const contract = web3Redux
-      .web3(network)
-      .eth.contract(abi)
-      .at(address);
-
-    contract.uintConfigs.call('config_claiming_deadline').then(result => {
-      const deadline = parseBigNumber(result, 0, false);
-      const withinDeadline =
-        currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&
-        currentTime < (proposal.votingRounds[currentVotingRound].revealDeadline + deadline) * 1000;
-      if (withinDeadline) this.setState({ voteClaimingDeadline: deadline });
-    });
+    this.props.getDaoConfig();
   };
 
   setError = error =>
@@ -126,25 +99,41 @@ class ClaimResultsButton extends React.PureComponent {
     };
     return executeContractFunction(payload);
   };
+
   render() {
-    const { voteClaimingDeadline } = this.state;
     const {
       isProposer,
       proposal,
       proposal: { currentVotingRound },
+      daoConfig,
     } = this.props;
-    if (!isProposer || !proposal || !proposal.votingRounds || !voteClaimingDeadline) return null;
+
+    if (
+      !isProposer ||
+      !proposal ||
+      !proposal.votingRounds ||
+      !daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE
+    )
+      return null;
     const { claimed } = proposal.votingRounds[currentVotingRound];
     const currentTime = Date.now();
     const withinDeadline =
       currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&
       currentTime <
-        (proposal.votingRounds[currentVotingRound].revealDeadline + voteClaimingDeadline) * 1000;
+        (proposal.votingRounds[currentVotingRound].revealDeadline +
+          Number(daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE)) *
+          1000;
 
-    if (!withinDeadline || claimed) return null;
+    if (!withinDeadline) return null;
 
     return (
-      <Button kind="round" onClick={this.handleSubmit}>
+      <Button
+        disabled={claimed}
+        data-digix="Propsal-Claim-Results"
+        kind="round"
+        large
+        onClick={this.handleSubmit}
+      >
         Claim Results
       </Button>
     );
@@ -158,7 +147,9 @@ ClaimResultsButton.propTypes = {
   isProposer: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  daoConfig: object.isRequired,
   showHideAlert: func.isRequired,
+  getDaoConfig: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
@@ -172,11 +163,17 @@ ClaimResultsButton.defaultProps = {
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  daoConfig: state.infoServer.DaoConfig,
 });
 
 export default web3Connect(
   connect(
     mapStateToProps,
-    { showHideAlert, sendTransactionToDaoServer, showTxSigningModal }
+    {
+      showHideAlert,
+      sendTransactionToDaoServer,
+      showTxSigningModal,
+      getDaoConfig,
+    }
   )(ClaimResultsButton)
 );

@@ -8,7 +8,6 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import { getDefaultAddress, getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
-// import DGDAddress from '@digix/dao-contracts/build/contracts/MockDgd.json';
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
@@ -20,7 +19,7 @@ import {
   showHideAlert,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
-import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getAddressDetails, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
@@ -85,10 +84,17 @@ class ConnectedWallet extends React.Component {
     const { address: contractAddress, abi } = getDGDBalanceContract(network);
     const { web3 } = web3Redux.networks[network];
     const contract = web3.eth.contract(abi).at(contractAddress);
-    return contract.balanceOf.call(defaultAddress.address).then(balance => {
-      this.props.canLockDgd(parseInt(parseBigNumber(balance, 9), 0) > 0);
-      return parseBigNumber(balance, 9);
-    });
+
+    return this.props.getDaoDetails().then(() =>
+      contract.balanceOf.call(defaultAddress.address).then(balance => {
+        const { isGlobalRewardsSet } = this.props.DaoDetails.data;
+        const parsedBalance = parseBigNumber(balance, 9);
+        const hasBalance = parseInt(parsedBalance, 0) > 0;
+
+        this.props.canLockDgd(hasBalance && isGlobalRewardsSet);
+        return parsedBalance;
+      })
+    );
   }
 
   getEthBalance() {
@@ -184,7 +190,7 @@ class ConnectedWallet extends React.Component {
   );
 
   renderDefault = () => {
-    const { defaultAddress } = this.props;
+    const { defaultAddress, enableLockDgd } = this.props;
     const { dgdBalance, ethBalance } = this.state;
     return (
       <Fragment>
@@ -237,7 +243,7 @@ class ConnectedWallet extends React.Component {
             kind="round"
             secondary
             fluid
-            disabled={!dgdBalance || dgdBalance <= 0}
+            disabled={!enableLockDgd.show}
             onClick={this.showLockDgdOverlay}
           >
             lock DGD
@@ -278,7 +284,9 @@ const { object, func, number, oneOfType, array } = PropTypes;
 ConnectedWallet.propTypes = {
   onClose: func.isRequired,
   getAddressDetails: func.isRequired,
+  getDaoDetails: func.isRequired,
   canLockDgd: func.isRequired,
+  DaoDetails: object,
   fetchMaxAllowance: func.isRequired,
   showHideAlert: func.isRequired,
   showHideLockDgdOverlayAction: func.isRequired,
@@ -289,10 +297,19 @@ ConnectedWallet.propTypes = {
   addressMaxAllowance: oneOfType([number, object]),
   challengeProof: object.isRequired,
   addresses: array.isRequired,
+  enableLockDgd: object,
 };
 
 ConnectedWallet.defaultProps = {
   addressMaxAllowance: undefined,
+  DaoDetails: {
+    data: {
+      isGlobalRewardsSet: false,
+    },
+  },
+  enableLockDgd: {
+    show: false,
+  },
 };
 
 const mapStateToProps = state => ({
@@ -300,7 +317,9 @@ const mapStateToProps = state => ({
   lockDgdOverlay: state.govUI.lockDgdOverlay,
   addressMaxAllowance: state.govUI.addressMaxAllowance,
   challengeProof: state.daoServer.ChallengeProof,
+  DaoDetails: state.infoServer.DaoDetails,
   addresses: getAddresses(state),
+  enableLockDgd: state.govUI.CanLockDgd,
 });
 
 export default connect(
@@ -310,6 +329,7 @@ export default connect(
     showHideLockDgdOverlayAction: showHideLockDgdOverlay,
     canLockDgd,
     getAddressDetails,
+    getDaoDetails,
     fetchMaxAllowance,
     showTxSigningModal,
     sendTransactionToDaoServer,

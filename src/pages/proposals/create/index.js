@@ -10,7 +10,6 @@ import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
-import DaoConfigStorage from '@digix/dao-contracts/build/contracts/MockDaoConfigsStorage.json';
 
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
@@ -19,11 +18,9 @@ import { encodeHash } from '@digix/gov-ui/utils/helpers';
 import getContract from '@digix/gov-ui/utils/contracts';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
-import {
-  showHideAlert,
-  fetchConfigPreproposalCollateral,
-} from '@digix/gov-ui/reducers/gov-ui/actions';
+import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
+import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 
 import Details from '../forms/details';
 import Milestones from '../forms/milestones';
@@ -51,21 +48,13 @@ class CreateProposal extends React.Component {
       showPreview: false,
       showConfirmPage: false,
       validForm: false,
+      exceedsLimit: false,
     };
   }
 
-  componentWillMount = () => {
-    const { web3Redux, history, challengeProof } = this.props;
-    if (!challengeProof.data) history.push('/');
-
-    const { abi, address } = getContract(DaoConfigStorage, network);
-    const contract = web3Redux
-      .web3(network)
-      .eth.contract(abi)
-      .at(address);
-
-    this.props.fetchConfigPreproposalCollateral(contract, 'config_preproposal_collateral');
-  };
+  componentDidMount() {
+    Promise.all([this.props.getDaoConfig()]);
+  }
 
   onNextButtonClick = () => {
     const { currentStep } = this.state;
@@ -95,13 +84,36 @@ class CreateProposal extends React.Component {
       form[e] = value;
     }
 
-    const validForm = form.milestones && form.milestones.length > 0;
-
-    this.setState({ form: { ...form }, validForm });
+    this.setState({ form: { ...form } }, () => {
+      this.checkFundingLimit();
+    });
   };
 
   setError = error =>
     this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
+
+  checkFundingLimit = () => {
+    const { daoConfig } = this.props;
+    const { form } = this.state;
+
+    const validForm = form.milestones && form.milestones.length > 0;
+
+    const limit = daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
+
+    const totalFunds = this.computeTotalFunds();
+    const exceedsLimit = totalFunds > Number(limit);
+    this.setState({ exceedsLimit, validForm: validForm && !exceedsLimit });
+  };
+
+  computeTotalFunds = () => {
+    const { form } = this.state;
+    if (!form.milestones && form.finalReward) return Number(form.finalReward);
+    else if (!form.milestones && !form.finalReward) return 0;
+
+    const milestoneFunds = (acc, currentValue) => acc + Number(currentValue.fund);
+
+    return Number(form.milestones.reduce(milestoneFunds, 0)) + Number(form.finalReward);
+  };
 
   useStep = step => {
     this.setState({
@@ -140,7 +152,7 @@ class CreateProposal extends React.Component {
   };
 
   handleSubmit = () => {
-    const { web3Redux, challengeProof, addresses, configPreProposalCollateral } = this.props;
+    const { web3Redux, challengeProof, addresses, daoConfig } = this.props;
     const { form } = this.state;
     const { milestones } = form;
     const funds = milestones.map(ms => toBigNumber(ms.fund).times(toBigNumber(1e18)));
@@ -152,14 +164,14 @@ class CreateProposal extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Requires 2 ETH to Submit Proposal',
+      caption: `Requires ${daoConfig.data.CONFIG_PREPROPOSAL_COLLATERAL} ETH to Submit Proposal`,
       header: 'Proposal',
       type: 'txVisualization',
     };
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
       gas: DEFAULT_GAS,
-      value: configPreProposalCollateral,
+      value: toBigNumber(Number(daoConfig.data.CONFIG_PREPROPOSAL_COLLATERAL) * 1e18),
       ui,
     };
 
@@ -207,9 +219,16 @@ class CreateProposal extends React.Component {
   };
 
   renderStep = () => {
-    const { currentStep, form } = this.state;
+    const { currentStep, form, exceedsLimit } = this.state;
     const Step = steps[currentStep];
-    return <Step onChange={this.onChangeHandler} form={form} />;
+    return (
+      <Step
+        onChange={this.onChangeHandler}
+        form={form}
+        daoConfig={this.props.daoConfig}
+        exceedsLimit={exceedsLimit}
+      />
+    );
   };
 
   renderPreview = () => {
@@ -255,19 +274,34 @@ class CreateProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button tertiary onClick={this.handleShowPreview}>
+            <Button tertiary onClick={this.handleShowPreview} data-digix="Create-Proposal-Preview">
               Preview
             </Button>
-            <Button disabled={!canMovePrevious} primary onClick={this.onPreviousButtonClick}>
+            <Button
+              disabled={!canMovePrevious}
+              primary
+              onClick={this.onPreviousButtonClick}
+              data-digix="Create-Proposal-Previous"
+            >
               Previous
             </Button>
             {canMoveNext && (
-              <Button disabled={!canMoveNext} primary onClick={this.onNextButtonClick}>
+              <Button
+                disabled={!canMoveNext}
+                primary
+                onClick={this.onNextButtonClick}
+                data-digix="Create-Proposal-Next"
+              >
                 Next
               </Button>
             )}
             {!canMoveNext && validForm && (
-              <Button primary ghost onClick={this.handleShowConfirmPage}>
+              <Button
+                primary
+                ghost
+                onClick={this.handleShowConfirmPage}
+                data-digix="Create-Proposal-Button"
+              >
                 Create Now
               </Button>
             )}
@@ -287,15 +321,15 @@ class CreateProposal extends React.Component {
   }
 }
 
-const { object, func, array, number, oneOfType } = PropTypes;
+const { object, func, array } = PropTypes;
 CreateProposal.propTypes = {
   web3Redux: object.isRequired,
   challengeProof: object.isRequired,
+  daoConfig: object.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
-  fetchConfigPreproposalCollateral: func.isRequired,
-  configPreProposalCollateral: oneOfType([number, object]),
+  getDaoConfig: func.isRequired,
   history: object,
   addresses: array,
 };
@@ -303,12 +337,11 @@ CreateProposal.propTypes = {
 CreateProposal.defaultProps = {
   addresses: undefined,
   history: undefined,
-  configPreProposalCollateral: undefined,
 };
 
 const mapStateToProps = state => ({
   challengeProof: state.daoServer.ChallengeProof,
-  configPreProposalCollateral: state.govUI.configPreProposalCollateral,
+  daoConfig: state.infoServer.DaoConfig,
   addresses: getAddresses(state),
 });
 
@@ -319,7 +352,7 @@ export default web3Connect(
       showHideAlert,
       sendTransactionToDaoServer,
       showTxSigningModal,
-      fetchConfigPreproposalCollateral,
+      getDaoConfig,
     }
   )(CreateProposal)
 );

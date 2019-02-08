@@ -10,14 +10,11 @@ const UploadFileButton = props => (
       id={props.id ? props.id : 'image-upload'}
       multiple={props.multiple}
       onChange={props.onChange}
+      data-digix={props.dataDigix}
+      name={props.name}
       type="file"
     />
-    <UploadButton
-      /* fullWidth={props.fullWidth} */
-      primary
-      fluid
-      htmlFor={props.id ? props.id : 'image-upload'}
-    >
+    <UploadButton secondary fluid htmlFor={props.id ? props.id : 'image-upload'}>
       {props.caption}
     </UploadButton>
     {props.children}
@@ -32,13 +29,15 @@ UploadFileButton.propTypes = {
   multiple: bool,
   accept: string.isRequired,
   onChange: func.isRequired,
-  // fullWidth: bool,
   children: oneOfType([object, string, node]),
+  dataDigix: string,
+  name: string,
 };
 
 UploadFileButton.defaultProps = {
-  // fullWidth: false,
   children: null,
+  dataDigix: '',
+  name: '',
   multiple: false,
 };
 export default UploadFileButton;

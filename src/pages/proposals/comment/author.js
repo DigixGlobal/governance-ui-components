@@ -16,11 +16,11 @@ export default class CommentAuthor extends React.Component {
 
     return (
       <UserInfo>
-        {user.address}
+        <span data-digix="CommentAuthor-DisplayName">{user.displayName}</span>
         <span>•</span>
-        <span>Reputation Points: {reputationPoints}</span>
+        <span data-digix="CommentAuthor-Reputation">Reputation Points: {reputationPoints}</span>
         <span>•</span>
-        <span>Quarter Points: {quarterPoints}</span>
+        <span data-digix="CommentAuthor-QuarterPoints">Quarter Points: {quarterPoints}</span>
       </UserInfo>
     );
   }

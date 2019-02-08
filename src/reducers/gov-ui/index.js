@@ -8,14 +8,17 @@ const defaultState = {
   Alert: undefined,
   SignChallenge: undefined,
   ShowWallet: undefined,
+  showLeftMenu: undefined,
   CanLockDgd: undefined,
   ShowRightPanel: {
     show: false,
+    large: false,
     component: undefined,
     onClose: undefined,
   },
   configPreProposalCollateral: undefined,
   addressMaxAllowance: undefined,
+  isAuthenticated: false,
 };
 
 export default function(state = defaultState, action) {
@@ -60,6 +63,14 @@ export default function(state = defaultState, action) {
           ...action.payload,
         },
       };
+    case actions.SHOW_LEFT_MENU:
+      return {
+        ...state,
+        showLeftMenu: {
+          ...state.showLeftMenu,
+          ...action.payload,
+        },
+      };
     case actions.SHOW_SIGN_CHALLENGE:
       return {
         ...state,
@@ -82,6 +93,11 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         addressMaxAllowance: action.payload,
+      };
+    case actions.SET_AUTHENTICATION_STATUS:
+      return {
+        ...state,
+        isAuthenticated: action.payload,
       };
 
     default:

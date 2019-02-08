@@ -97,7 +97,15 @@ export const IntroContainer = styled(InnerContainer)`
   position: relative;
 `;
 
+// This will be replaced soon by 'Close' style component
 export const CloseButton = styled.div`
+  position: absolute;
+  right: 0;
+  margin-right: -1rem;
+  cursor: pointer;
+`;
+
+export const Close = styled.div`
   position: absolute;
   right: 0;
   margin-right: -1rem;
@@ -157,15 +165,28 @@ export const Card = css`
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   margin-bottom: 3em;
-  padding: 1rem;
+  padding: 3rem;
+`;
+
+export const CardItem = css`
+  display: flex;
+  flex-direction: ${props => (props.column ? 'column' : '')};
+  flex-grow: 1;
 `;
 
 export const TransparentOverlay = styled.div`
   background-color: #000;
   opacity: 0.75;
   transition: ${props => props.theme.transition};
-
   width: 75%;
+
+  ${props =>
+    props.large &&
+    css`
+      width: 25%;
+      ${media.tablet`width: 0%`};
+    `}
+
   ${media.tablet`width: 40%`}
   ${media.mobile`width: 0%`}
 `;
@@ -173,8 +194,67 @@ export const TransparentOverlay = styled.div`
 export const DrawerContainer = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
   padding: 5rem;
-
   width: 25%;
+  overflow-y: scroll;
+  ${props =>
+    props.large &&
+    css`
+      overflow-y: scroll;
+      width: 75%;
+      background: ${props.theme.backgroundTertiary.lightest.toString()};
+
+      ${media.tablet`width: 100%`};
+    `}
   ${media.tablet`width: 60%`}
   ${media.mobile`width: 100%`}
 `;
+
+export const Notifications = styled.div`
+  padding: 1.5rem 3rem;
+  font-family: 'Futura PT Book', sans-serif;
+  border-radius: ${props => props.theme.borderRadius};
+  margin-bottom: 3rem;
+
+  span {
+    font-family: 'Futura PT Medium', sans-serif;
+  }
+  ${props =>
+    props.info &&
+    css`
+      background: ${props.theme.textSecondary.fade.toString()};
+      border: 1px solid ${props.theme.alertMessage.info.light.toString()};
+      color: ${props.theme.textSecondary.default.toString()};
+    `};
+`;
+
+export const Label = styled.label`
+  font-family: 'Futura PT Book', sans-serif;
+  margin-bottom: 0.5rem;
+
+  span {
+    ${props =>
+      props.req &&
+      css`
+        color: ${props.theme.alertMessage.error.default.toString()};
+      `};
+  }
+
+  ${props =>
+    props.error &&
+    css`
+      color: ${props.theme.alertMessage.error.default.toString()};
+    `};
+`;
+
+export const Hint = styled.div`
+  color: ${props => props.theme.textDefault.light.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  font-size: 1.4rem;
+  ${props =>
+    props.error &&
+    css`
+      color: ${props.theme.alertMessage.error.default.toString()};
+    `};
+`;
+
+export const FieldItem = styled.div``;

@@ -11,6 +11,11 @@ export const actions = {
   SHOW_RIGHT_PANEL: `${REDUX_PREFIX}SHOW_RIGHT_PANEL`,
   GET_CONFIG_PREPROPOSAL_COLLATERAL: `${REDUX_PREFIX}GET_CONFIG_PREPROPOSAL_COLLATERAL`,
   GET_ADDRESS_MAX_ALLOWANCE: `${REDUX_PREFIX}GET_ADDRESS_MAX_ALLOWANCE`,
+
+  SET_AUTHENTICATION_STATUS: `${REDUX_PREFIX}SET_AUTHENTICATION_STATUS`,
+
+  SHOW_LEFT_MENU: `${REDUX_PREFIX}SHOW_LEFT_MENU`,
+
 };
 
 function fetchConfig(contract, config, type) {
@@ -36,9 +41,9 @@ export function fetchConfigPreproposalCollateral(contract, config) {
   return fetchConfig(contract, config, actions.GET_CONFIG_PREPROPOSAL_COLLATERAL);
 }
 
-export function showHideLockDgdOverlay(show) {
+export function showHideLockDgdOverlay(show, onSuccess) {
   return dispatch => {
-    dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show } });
+    dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show, onSuccess } });
   };
 }
 
@@ -51,6 +56,11 @@ export function canLockDgd(show) {
 export function showHideWalletOverlay(show) {
   return dispatch => {
     dispatch({ type: actions.SHOW_WALLET, payload: { show } });
+  };
+}
+export function showHideLeftMenu(show) {
+  return dispatch => {
+    dispatch({ type: actions.SHOW_LEFT_MENU, payload: { show } });
   };
 }
 
@@ -75,5 +85,11 @@ export function showHideAlert(alert) {
 export function showRightPanel(payload) {
   return dispatch => {
     dispatch({ type: actions.SHOW_RIGHT_PANEL, payload: { ...payload } });
+  };
+}
+
+export function setAuthentationStatus(payload) {
+  return dispatch => {
+    dispatch({ type: actions.SET_AUTHENTICATION_STATUS, payload });
   };
 }

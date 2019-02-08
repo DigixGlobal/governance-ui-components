@@ -1,17 +1,18 @@
 import styled, { css } from 'styled-components';
 
 export const ButtonGlobalStyles = css`
+  background: #fff;
   cursor: pointer;
   font-family: 'Futura PT Medium';
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   margin: 1rem;
   outline: none;
-  padding: 1rem 3rem;
+  padding: 1rem 1.75rem;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
   transition: ${props => props.theme.transition};
-
+  width: ${props => (props.width ? '' : 'auto')};
   ${props =>
     props.fluid &&
     css`
@@ -24,6 +25,22 @@ export const Button = styled.button`
   ${ButtonGlobalStyles};
 
   ${props =>
+    props.xsmall &&
+    css`
+      padding: 0.75rem 1rem;
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+
+      & > div {
+        margin-right: 0.5rem;
+      }
+
+      svg {
+        width: 80%;
+      }
+    `};
+
+  ${props =>
     props.small &&
     css`
       padding: 1rem 1.5rem;
@@ -34,8 +51,8 @@ export const Button = styled.button`
   ${props =>
     props.medium &&
     css`
-      font-size: 1.6rem;
-      padding: 1rem 3rem;
+      font-size: 1.4rem;
+      padding: 1rem 1.75rem;
     `};
 
   ${props =>

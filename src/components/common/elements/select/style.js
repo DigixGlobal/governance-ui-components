@@ -17,20 +17,20 @@ const StyledSelect = styled.select`
       ${props => props.theme.borderColor.lightest.toString()}
     );
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
-
-  background-position: calc(100% - 20px) calc(2em + 2px), calc(100% - 15px) calc(2em + 2px),
+  background-position: calc(100% - 20px) calc(1.5em + 2px), calc(100% - 15px) calc(1.5em + 2px),
     calc(100% - 3em) 0.5em;
-
   background-size: 5px 5px, 5px 5px, 1px 80%;
   background-repeat: no-repeat;
-  border: 1px solid ${props => props.theme.borderColor.light.toString()};
+
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   color: ${props => props.color || props.theme.textDefault.default.toString()};
-  padding: ${props => (props.small ? '1rem' : '2rem')};
-  font-size: 1.2rem;
+  padding: ${props => (props.small ? '1rem' : '1.75rem')};
+  line-height: 1.6rem;
+  font-size: 1.4rem;
   width: ${props => props.width || '100%'};
   outline: none;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -44,6 +44,12 @@ const StyledSelect = styled.select`
       background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
         calc(100% - 2.5em) 0.5em;
       max-width: 150px;
+    `};
+
+  ${props =>
+    props.error &&
+    css`
+      border-color: ${props.theme.errorBorder.toString()};
     `};
 `;
 

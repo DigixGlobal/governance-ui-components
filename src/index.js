@@ -82,7 +82,11 @@ export class Governance extends React.Component {
                 isAuthenticated={isAuthenticated}
               />
 
-              <Route path="/history" component={withHeaderAndPanel(TransactionHistory)} />
+              <AuthenticatedRoute
+                path="/history"
+                component={withHeaderAndPanel(TransactionHistory)}
+                isAuthenticated={isAuthenticated}
+              />
               <Route path="/help" component={withHeaderAndPanel(Help)} />
               <Route path="/" component={withHeaderAndPanel(LandingPage)} />
             </Switch>

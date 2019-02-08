@@ -58,11 +58,26 @@ const DEFAULT_MENU = [
 ];
 
 class CollapsibleMenu extends React.Component {
+  componentDidMount = () => {
+    const { showLeftMenu } = this.props;
+    this.toggleShrink(showLeftMenu ? showLeftMenu.show : false);
+  };
+
   shouldComponentUpdate = (nextProps, nextState) => !_.isEqual(this.props, nextProps);
 
   handleStateChange(state) {
+    this.toggleShrink(state.isOpen);
     this.props.showHideLeftMenu(state.isOpen);
   }
+
+  toggleShrink = shrink => {
+    const wrapper = document.querySelector('#page-wrap');
+    if (shrink && wrapper) {
+      wrapper.style.width = '86%';
+    } else if (wrapper) {
+      wrapper.style.width = '100%';
+    }
+  };
 
   renderMenuItem = item => {
     const { ChallengeProof, location, theme } = this.props;
@@ -131,14 +146,12 @@ class CollapsibleMenu extends React.Component {
               <UserType data-digix="Sidebar-UserStatus">{userType}</UserType>
             </ProfileContainer>
           )}
-        <MenuList>
-          {menuItemElements}
-          {ChallengeProof.data && this.renderKycOfficerMenu()}
-        </MenuList>
-      </MenuContainer>
-
+          <MenuList>
+            {menuItemElements}
+            {ChallengeProof.data && this.renderKycOfficerMenu()}
+          </MenuList>
+        </MenuContainer>
       </Menu>
-
     );
   }
 }

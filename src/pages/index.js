@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -20,7 +20,7 @@ import {
 
 import Snackbar from '@digix/gov-ui/components/common/elements/snackbar/index';
 
-class LandingPage extends Component {
+class LandingPage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,11 +39,11 @@ class LandingPage extends Component {
     }
   };
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps, nextState) => {
     const { ChallengeProof } = nextProps;
     if (ChallengeProof.data && ChallengeProof.data.client && !this.state.loadingLikes) {
       this.setState({ loadingLikes: true }, () => {
-        this.getLikeStatus().then(() => this.setState({ loadingLikes: false }));
+        this.getLikeStatus();
       });
     }
   };

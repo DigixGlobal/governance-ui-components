@@ -182,7 +182,7 @@ class ConnectedWallet extends React.Component {
   showLockDgdOverlay = () => {
     const { onClose, showHideLockDgdOverlayAction } = this.props;
     onClose();
-    showHideLockDgdOverlayAction(true);
+    showHideLockDgdOverlayAction(true, null, 'Load Wallet Overlay');
   };
 
   showRenderApproval = () => {

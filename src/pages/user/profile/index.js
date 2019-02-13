@@ -131,6 +131,10 @@ class Profile extends React.Component {
     });
   }
 
+  showLockDgdOverlay() {
+    this.props.showHideLockDgdOverlay(true, this.onLockDgd, 'Profile Page');
+  }
+
   renderActivitySummary() {
     const { email, kyc } = this.props.userData;
     let currentKycStatus = 'Not Verified';
@@ -316,7 +320,7 @@ class Profile extends React.Component {
                 primary
                 data-digix="Profile-LockMoreDgd-Cta"
                 disabled={hasPendingLockTransaction}
-                onClick={() => this.props.showHideLockDgdOverlay(true, this.onLockDgd)}
+                onClick={() => this.showLockDgdOverlay()}
               >
                 Lock More DGD
               </Button>

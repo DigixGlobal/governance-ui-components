@@ -1,4 +1,5 @@
-import { actions } from './actions';
+import LogLockDgd from '@digix/gov-ui/analytics/lockDgd';
+import { actions } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 const defaultState = {
   lockDgdOverlay: {
@@ -24,6 +25,7 @@ const defaultState = {
 export default function(state = defaultState, action) {
   switch (action.type) {
     case actions.SHOW_LOCK_DGD_OVERLAY:
+      LogLockDgd.toggleOverlay(action.payload);
       return {
         ...state,
         lockDgdOverlay: {

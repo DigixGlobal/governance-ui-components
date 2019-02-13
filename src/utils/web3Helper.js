@@ -13,6 +13,7 @@ export const executeContractFunction = payload => {
     web3Params,
     ui,
     showTxSigningModal,
+    logTxn,
   } = payload;
   const {
     keystore: {
@@ -34,8 +35,13 @@ export const executeContractFunction = payload => {
         network
       ),
       ui,
+      logTxn,
     })
       .then(txHash => {
+        if (logTxn) {
+          logTxn.completeTransaction(true);
+        }
+
         if (typeof onSuccess === 'function') {
           onSuccess(txHash);
         }
@@ -46,6 +52,10 @@ export const executeContractFunction = payload => {
       })
       .catch(error => {
         onFailure(error);
+        if (logTxn) {
+          logTxn.completeTransaction(false, error);
+        }
+
         if (typeof onFinally === 'function') {
           const txHash = Object.keys(error.data)[0];
           onFinally(txHash);
@@ -58,9 +68,14 @@ export const executeContractFunction = payload => {
       .sendTransaction(...params, {
         from: address.address,
         ui,
+        logTxn,
         ...web3Params,
       })
       .then(txHash => {
+        if (logTxn) {
+          logTxn.completeTransaction(true);
+        }
+
         if (typeof onSuccess === 'function') {
           onSuccess(txHash);
         }
@@ -71,6 +86,10 @@ export const executeContractFunction = payload => {
       })
       .catch(error => {
         onFailure(error);
+        if (logTxn) {
+          logTxn.completeTransaction(false, error);
+        }
+
         if (typeof onFinally === 'function') {
           const data = error.data ? Object.keys(error.data) : undefined;
           const txHash = data ? data[0] : undefined;
@@ -82,9 +101,14 @@ export const executeContractFunction = payload => {
     .sendTransaction({
       from: address.address,
       ui,
+      logTxn,
       ...web3Params,
     })
     .then(txHash => {
+      if (logTxn) {
+        logTxn.completeTransaction(true);
+      }
+
       if (typeof onSuccess === 'function') {
         onSuccess(txHash);
       }
@@ -95,6 +119,10 @@ export const executeContractFunction = payload => {
     })
     .catch(error => {
       onFailure(error);
+      if (logTxn) {
+        logTxn.completeTransaction(false, error);
+      }
+
       if (typeof onFinally === 'function') {
         const data = error.data ? Object.keys(error.data) : undefined;
         const txHash = data ? data[0] : undefined;

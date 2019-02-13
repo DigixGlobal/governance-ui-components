@@ -26,6 +26,7 @@ import Button from '@digix/gov-ui/components/common/elements/buttons';
 import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import LogLockDgd from '@digix/gov-ui/analytics/lockDgd';
 
 import {
   Container,
@@ -167,6 +168,7 @@ class LockDgd extends React.Component {
     const { dgd } = this.state;
     const addedStake = this.getStake(dgd);
     const addedDgd = Number(dgd);
+    LogLockDgd.submit(addedDgd);
 
     const {
       web3Redux,
@@ -231,6 +233,7 @@ class LockDgd extends React.Component {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      logTxn: LogLockDgd.txn,
     };
 
     return executeContractFunction(payload);
@@ -296,6 +299,10 @@ class LockDgd extends React.Component {
     }
 
     this.toggleBodyOverflow(lockDgdOverlay);
+    if (!lockDgdOverlay || !lockDgdOverlay.show) {
+      return null;
+    }
+
     return (
       <Container>
         <TransparentOverlay />

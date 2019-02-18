@@ -262,10 +262,12 @@ class EditProposal extends React.Component {
   renderPreview = () => {
     const { addresses } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+    const { milestoneFundings } = this.props.proposalDetails.data.proposalVersions[0];
     return (
       <Preview
         form={this.state.form}
         onContinueEditing={this.handleShowPreview}
+        milestoneFundings={milestoneFundings}
         proposer={sourceAddress ? sourceAddress.address : ''}
       />
     );

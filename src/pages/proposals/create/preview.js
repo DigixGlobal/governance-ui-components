@@ -16,7 +16,6 @@ import {
   InfoItem,
   ItemTitle,
   Data,
-  Upvote,
 } from '@digix/gov-ui/pages/proposals/style';
 
 const getTotalFunds = source =>
@@ -75,7 +74,6 @@ class Preview extends React.Component {
                 </Data>
               </InfoItem>
             </SummaryInfo>
-            <Upvote>&nbsp;</Upvote>
           </FundingSummary>
         </ProjectSummary>
         <ProjectDetails project={form} preview />

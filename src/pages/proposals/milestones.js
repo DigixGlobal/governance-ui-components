@@ -7,7 +7,6 @@ export default class Milestones extends React.Component {
   render() {
     const { milestones, milestoneFundings, changedFundings, fundingChanged } = this.props;
 
-    console.log(milestoneFundings, milestoneFundings);
     return (
       <MilestonesContainer>
         <SubTitle>Milestones</SubTitle>

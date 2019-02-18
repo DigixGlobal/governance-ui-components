@@ -25,18 +25,23 @@ export default class IpfsViewer extends Component {
     this.state = { ...initialState };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { hashes } = this.props;
-    if (hashes && hashes.length > 0) this.fetchImages(this.props);
+    this._isMounted = true;
+    if (this._isMounted) {
+      if (hashes && hashes.length > 0) this.fetchImages(this.props);
+    }
   }
 
-  componentWillReceiveProps = nextProps => {
-    this.fetchImages(nextProps);
-  };
+  // componentWillReceiveProps = nextProps => {
+  //   this.fetchImages(nextProps);
+  // };
 
   componentWillUnmount = () => {
-    this.setState({ loading: false, files: undefined });
+    this._isMounted = false;
   };
+
+  _isMounted = false;
 
   fetchImages = props => {
     const { hashes, thumbnailSize } = props;

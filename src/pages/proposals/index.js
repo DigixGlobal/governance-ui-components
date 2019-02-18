@@ -159,6 +159,8 @@ class Proposal extends React.Component {
 
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
+    const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
+
     let funding = proposalDetails.data.changedFundings
       ? proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
       : proposalVersion.milestoneFundings.reduce(milestoneFundings, 0);
@@ -233,7 +235,7 @@ class Proposal extends React.Component {
               <InfoItem>
                 <ItemTitle>Submitted By</ItemTitle>
                 <Data>
-                  <span>{proposalDetails.data.proposer}</span>
+                  <span>{displayName}</span>
                 </Data>
               </InfoItem>
               <InfoItem>

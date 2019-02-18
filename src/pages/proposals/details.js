@@ -98,6 +98,8 @@ export default class ProjectDetails extends React.Component {
           Track change from previous version
         </TrackActivity> */}
         <Details>
+          {/* TO DO: Please pass condition for below subheadings */}
+          <SubTitle>Configuration Details</SubTitle>
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
           {hasImages && (

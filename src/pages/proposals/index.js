@@ -239,7 +239,7 @@ class Proposal extends React.Component {
               <InfoItem>
                 <ItemTitle>Funding</ItemTitle>
                 <Data>
-                  <span data-digx="funding-amount-label">{funding}</span>
+                  <span data-digix="funding-amount-label">{funding}</span>
                   {updatedFunding && (
                     <span data-digix="edit-funding-amount-label">
                       {updatedFunding && updatedFunding > 0

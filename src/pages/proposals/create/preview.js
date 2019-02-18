@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
-import ProjectDetails from '../details';
-import Milestones from '../milestones';
-import { Button } from '../../../components/common/elements/index';
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+
+import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
+import Milestones from '@digix/gov-ui/pages/proposals/milestones';
+
 import {
   ProposalsWrapper,
   ProjectSummary,
   Header,
   Title,
-  LatestActivity,
-  SubmittedBy,
-  FundingStatus,
-  MilestonesStatus,
-  Reward,
-} from '../style';
+  FundingSummary,
+  SummaryInfo,
+  InfoItem,
+  ItemTitle,
+  Data,
+  Upvote,
+} from '@digix/gov-ui/pages/proposals/style';
 
 const getTotalFunds = source =>
   source.reduce((acc, currentValue) => Number(acc) + Number(currentValue.fund), 0);
@@ -31,37 +34,52 @@ class Preview extends React.Component {
 
     return (
       <ProposalsWrapper>
-        <Button primary ghost onClick={onContinueEditing}>
+        <Button kind="round" primary onClick={onContinueEditing}>
           Continue Editing
         </Button>
         <ProjectSummary>
           <Header>
             <div>
-              <Button kind="flat" style={{ pointerEvents: 'none' }}>
-                IDEA
-              </Button>
+              <Button kind="flat">IDEA</Button>
               <Title primary>{form.title}</Title>
             </div>
           </Header>
-          <LatestActivity>
-            <SubmittedBy>
-              Submitted By <span>{proposer}</span>
-            </SubmittedBy>
-            <FundingStatus>
-              Funding
-              <span>{funding} ETH</span>
-            </FundingStatus>
-            <MilestonesStatus>
-              Milestones <span>{form.milestones ? form.milestones.length : 0}</span>
-            </MilestonesStatus>
-            <Reward>
-              Reward
-              <span>{reward} ETH</span>
-            </Reward>
-          </LatestActivity>
+          <FundingSummary>
+            <SummaryInfo>
+              <InfoItem>
+                <ItemTitle>Submitted By</ItemTitle>
+                <Data>
+                  <span>{proposer}</span>
+                </Data>
+              </InfoItem>
+              <InfoItem>
+                <ItemTitle>Funding</ItemTitle>
+                <Data>
+                  <span data-digix="funding-amount-label">{funding}</span>
+                  {` ETH`}
+                </Data>
+              </InfoItem>
+              <InfoItem>
+                <ItemTitle>Milestones</ItemTitle>
+                <Data>
+                  <span data-digix="milestone-label">
+                    {form.milestones ? form.milestones.length : 0}
+                  </span>
+                </Data>
+              </InfoItem>
+              <InfoItem>
+                <ItemTitle>Reward</ItemTitle>
+                <Data>
+                  <span data-digix="reward-amount-label">{reward} </span>
+                  ETH
+                </Data>
+              </InfoItem>
+            </SummaryInfo>
+            <Upvote>&nbsp;</Upvote>
+          </FundingSummary>
         </ProjectSummary>
         <ProjectDetails project={form} preview />
-        <Milestones preview milestones={form.milestones || []} />
+        {/* <Milestones preview milestones={form.milestones || []} fundingChanged={false} milestoneFundings={form.milestones} /> */}
       </ProposalsWrapper>
     );
   }

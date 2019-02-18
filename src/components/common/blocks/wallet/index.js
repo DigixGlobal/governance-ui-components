@@ -140,7 +140,7 @@ Wallet.propTypes = {
   signChallenge: object,
   Challenge: object,
   ChallengeProof: object,
-  showWallet: bool,
+  showWallet: object,
   isAuthenticated: bool,
   defaultNetworks: array.isRequired,
   AddressDetails: object,
@@ -156,7 +156,7 @@ Wallet.propTypes = {
 
 Wallet.defaultProps = {
   signChallenge: undefined,
-  showWallet: false,
+  showWallet: undefined,
   isAuthenticated: false,
   Challenge: undefined,
   ChallengeProof: undefined,

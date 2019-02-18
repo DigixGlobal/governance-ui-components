@@ -71,7 +71,7 @@ export const Button = styled.button`
     `};
 
   ${props =>
-    props.icon &&
+    props.showIcon &&
     css`
       display: flex;
       align-items: center;

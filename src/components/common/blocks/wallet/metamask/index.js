@@ -34,7 +34,7 @@ class Metamask extends React.Component {
           hideSelector
           allowedKeystoreTypes={['metamask']}
           trigger={
-            <Button kind="round" secondary fluid large icon>
+            <Button kind="round" secondary fluid large showIcon>
               <Icon kind="metamask" />
               Metamask
             </Button>

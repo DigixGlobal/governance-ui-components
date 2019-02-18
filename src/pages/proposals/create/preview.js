@@ -79,7 +79,7 @@ class Preview extends React.Component {
           </FundingSummary>
         </ProjectSummary>
         <ProjectDetails project={form} preview />
-        {/* <Milestones preview milestones={form.milestones || []} fundingChanged={false} milestoneFundings={form.milestones} /> */}
+        <Milestones preview milestones={form.milestones || []} fundingChanged={false} />
       </ProposalsWrapper>
     );
   }

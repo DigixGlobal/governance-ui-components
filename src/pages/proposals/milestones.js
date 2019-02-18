@@ -6,14 +6,19 @@ import { MilestonesContainer, SubTitle } from '@digix/gov-ui/pages/proposals/sty
 export default class Milestones extends React.Component {
   render() {
     const { milestones, milestoneFundings, changedFundings, fundingChanged } = this.props;
+
+    console.log(milestoneFundings, milestoneFundings);
     return (
       <MilestonesContainer>
         <SubTitle>Milestones</SubTitle>
         <Accordion allowMultipleOpen>
           {milestones.map((milestone, i) => {
+            // eslint-disable-next-line
             const funding = fundingChanged
               ? Number(changedFundings[i].original)
-              : milestoneFundings[i];
+              : milestoneFundings
+              ? milestoneFundings[i]
+              : milestones[i].fund;
             const updatedFunding = fundingChanged ? Number(changedFundings[i].updated) : 0;
             const milestoneFund = fundingChanged ? updatedFunding - funding : undefined;
 
@@ -21,7 +26,7 @@ export default class Milestones extends React.Component {
               <div
                 key={`ms-${i + 1}`}
                 label={`Milestone ${i + 1}: ${milestone.title || ''}`}
-                funding={milestoneFundings[i]}
+                funding={milestoneFundings ? milestoneFundings[i] : milestones[i].fund}
                 milestoneFund={milestoneFund !== 0 ? milestoneFund : undefined}
               >
                 {milestone.description

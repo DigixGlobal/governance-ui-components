@@ -39,6 +39,12 @@ class LandingPage extends React.PureComponent {
     }
   };
 
+  componentDidMount = () => {
+    if (window.Cookiebot) {
+      window.Cookiebot.show();
+    }
+  };
+
   componentWillReceiveProps = (nextProps, nextState) => {
     const { ChallengeProof } = nextProps;
     if (ChallengeProof.data && ChallengeProof.data.client && !this.state.loadingLikes) {

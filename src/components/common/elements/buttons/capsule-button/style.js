@@ -24,18 +24,3 @@ export const CapsuleBtn = styled.button`
       ${DisabledBtn};
     `};
 `;
-
-// export const Button = styled.button`
-//   border-radius: 4px;
-//   ${ButtonStyles};
-//   ${props =>
-//     props.ghost &&
-//     css`
-//       ${GhostBtn};
-//     `};
-//   ${props =>
-//     props.disabled &&
-//     css`
-//       background-color:orangered;
-//     `};
-// `;

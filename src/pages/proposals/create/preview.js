@@ -37,7 +37,7 @@ class Preview extends React.Component {
         <ProjectSummary>
           <Header>
             <div>
-              <Button kind="flat" style={{ pointerEvents: 'none' }}>
+              <Button kind="tag" icon>
                 IDEA
               </Button>
               <Title primary>{form.title}</Title>

@@ -95,7 +95,7 @@ class Proposal extends React.Component {
       <ProposaDetaillWrapper>
         <ProposalCard>
           <TagsContainer>
-            <Button kind="flat" style={{ pointerEvents: 'none' }}>
+            <Button kind="tag" icon>
               {details.stage}
             </Button>
           </TagsContainer>

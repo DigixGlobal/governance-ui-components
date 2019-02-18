@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { LabeledIconBtn } from '../style';
+import { LabeledIconBtn } from './style';
 
 const LabeledIconButton = props => <LabeledIconBtn {...props}>{props.children}</LabeledIconBtn>;
 

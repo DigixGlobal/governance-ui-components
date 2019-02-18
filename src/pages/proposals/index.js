@@ -215,7 +215,7 @@ class Proposal extends React.Component {
               <Button kind="tag" fill>
                 Special
               </Button>
-              <Button kind="tag" icon>
+              <Button kind="tag" showIcon>
                 {proposalDetails.data.stage}
               </Button>
               <Title primary>{dijixObject.title}</Title>

@@ -51,7 +51,11 @@ AccordionSelection.propTypes = {
   children: oneOfType([object, node, string]).isRequired,
   isOpen: bool.isRequired,
   label: string.isRequired,
-  funding: number.isRequired,
-  milestoneFund: number.isRequired,
+  funding: oneOfType([number, string]).isRequired,
+  milestoneFund: number,
   onClick: func.isRequired,
+};
+
+AccordionSelection.defaultProps = {
+  milestoneFund: undefined,
 };

@@ -20,10 +20,9 @@ const darkBlueHex = Color('#131F35');
 const darkBlue = {
   default: darkBlueHex,
   darker: darkBlueHex.darken(1),
-  light: darkBlueHex.lighten(1),
-  lighter: darkBlueHex.lighten(1.5),
-  lightest: darkBlueHex.lighten(2),
-  fade: darkBlueHex.fade(0.8),
+  light: darkBlueHex.lighten(0.5),
+  lighter: darkBlueHex.lighten(0.75),
+  lightest: darkBlueHex.lighten(1.9),
 };
 
 const goldHex = Color('#E3C88E');
@@ -42,7 +41,6 @@ const darkGold = {
   light: darkGoldHex.lighten(0.5),
   lighter: darkGoldHex.lighten(1),
   lightest: darkGoldHex.lighten(1.9),
-  fade: darkGoldHex.fade(0.8),
 };
 
 const grayHex = Color('#E8ECF2');
@@ -60,7 +58,7 @@ const darkGray = {
   darker: darkGrayHex.darken(0.5),
   light: darkGrayHex.lighten(1),
   lighter: darkGrayHex.lighten(1.9),
-  lightest: darkGrayHex.lighten(2.075),
+  lightest: darkGrayHex.lighten(2.1),
 };
 
 const whiteHex = Color('#fff');
@@ -74,21 +72,7 @@ const redHex = Color('#D0021B');
 const red = {
   default: redHex,
   darker: redHex.darken(0.05),
-  light: redHex.lighten(0.5),
-  lighter: redHex.lighten(0.8),
-  lightest: redHex.lighten(1.9),
-  fade: redHex.fade(0.8),
-};
-
-const greenHex = Color('#417505');
-const green = {
-  default: greenHex,
-  darker: greenHex.darken(2),
-
-  light: greenHex.lighten(0.5),
-  lighter: greenHex.lighten(1),
-  lightest: greenHex.lighten(1.9),
-  fade: greenHex.fade(0.8),
+  lighter: redHex.lighten(0.5),
 };
 
 const primaryColor = darkBlue;
@@ -96,54 +80,38 @@ const secondaryColor = darkGold;
 const tertiaryColor = darkGray;
 
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
-const transitionStyle = 'all .25s ease';
-const borderRadiusStyle = '0.25rem';
+const transitionStyle = 'all 300ms ease';
 
 const LightTheme = {
   backgroundDefault: white,
   backgroundPrimary: primaryColor,
   backgroundSecondary: secondaryColor,
-  backgroundTertiary: tertiaryColor,
+  backgroundLayout: tertiaryColor,
   backgroundLeftPanel: white,
   backgroundHeader: white,
 
   borderColor: tertiaryColor,
-  borderColorPrimary: primaryColor,
-  borderColorSecondary: secondaryColor,
 
   boxShadow: boxShadowStyle,
-  borderRadius: borderRadiusStyle,
 
-  buttonBgPrimary: white,
-  buttonBgHoverPrimary: primaryColor,
-  buttonBgSecondary: primaryColor,
-  buttonBgHoverSecondary: primaryColor,
-  buttonBgTertiary: white,
-  buttonBgTertiaryReverse: secondaryColor,
-  buttonBorderPrimary: primaryColor,
-  buttonBorderSecondary: secondaryColor,
-  buttonBorderTertiary: secondaryColor,
-  buttonBorderDisabled: darkGray,
-  buttonResponseYes: green,
-  buttonResponseNo: red,
+  buttonBgPrimary: primaryColor.default,
+  buttonBgSecondary: secondaryColor.default,
+  buttonBorderPrimary: primaryColor.default,
+  buttonBorderSecondary: secondaryColor.default,
+  buttonBorderDisabled: darkGray.lighter,
   buttonFlatColor: red.default,
-  buttonTextDefault: tertiaryColor,
-  buttonTextDefaultReverse: white,
-  buttonTextPrimary: primaryColor,
-  buttonTextPrimaryReverse: white,
-  buttonTextSecondary: secondaryColor,
+  buttonTextDefault: tertiaryColor.default,
+  buttonTextPrimary: primaryColor.default,
+  buttonTextPrimaryReverse: white.default,
+  buttonTextSecondary: secondaryColor.default,
   buttonTextSecondaryReverse: white.default,
-  buttonTextTertiary: white,
-  buttonTextTertiaryReverse: secondaryColor,
 
   headerBorderColor: gray.default,
-
-  errorBorder: red.default,
 
   iconDefaultColor: tertiaryColor,
   iconPrimaryColor: primaryColor,
   iconSecondaryColor: secondaryColor,
-  iconColor: tertiaryColor,
+  iconColor: primaryColor.default,
   iconColorReverse: white,
 
   linkDefaultColor: tertiaryColor,
@@ -162,30 +130,13 @@ const LightTheme = {
   textPrimary: primaryColor,
   textSecondary: secondaryColor,
   textContrast: white,
-  textReverse: white,
   transition: transitionStyle,
 
   cardBorderColor: tertiaryColor,
-  cardBorderColorHover: primaryColor,
 
-  alertMessage: {
-    success: secondaryColor,
-    error: red,
-    response: green,
-    info: secondaryColor,
-  },
-
-  transaction: {
-    pending: tertiaryColor,
-    success: green,
-    failed: red,
-  },
-
-  icon: {
-    default: primaryColor,
-    active: secondaryColor,
-    primary: tertiaryColor,
-    disabled: tertiaryColor,
+  ErrorMessage: {
+    backgroundColor: gray,
+    padding: '1em',
   },
 };
 

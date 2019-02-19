@@ -47,25 +47,27 @@ export const Header = styled(H4)`
 `;
 
 export const LockDgdBox = styled.div`
-  color: ${props => props.theme.textSecondary.default.toString()};
-  background-color: ${props => props.theme.backgroundSecondary.fade.toString()};
-  border: 1px solid ${props => props.theme.backgroundSecondary.light.toString()};
-  border-radius: ${props => props.theme.borderRadius};
-  font-family: 'Futura PT Medium';
-  margin-bottom: 4rem;
-  padding: 2.5rem;
   text-align: center;
+  background-color: rgba(226, 206, 152, 0.2);
+  padding: 1.5rem 2.5rem;
+  border: 1px solid #c4a159;
+  color: #c4a159;
+  margin-bottom: 4rem;
+  font-family: 'Futura PT Medium';
+  border-radius: 0.5rem;
+  box-shadow: ${props => props.theme.boxShadow};
 `;
 
 export const ConfirmationBox = styled.div`
-  font-family: 'Futura PT Book';
-  background-color: ${props => props.theme.backgroundSecondary.fade.toString()};
-  border: 1px solid ${props => props.theme.backgroundSecondary.light.toString()};
-  border-radius: ${props => props.theme.borderRadius};
-  box-shadow: ${props => props.theme.boxShadow};
-  margin-bottom: 4rem;
-  padding: 2.5rem;
   text-align: center;
+  background-color: rgba(226, 206, 152, 0.2);
+  padding: 1.5rem 2.5rem;
+  border: 1px solid #c4a159;
+  /* color: #c4a159; */
+  margin-bottom: 4rem;
+  font-family: 'Futura PT Book';
+  border-radius: 0.5rem;
+  box-shadow: ${props => props.theme.boxShadow};
 
   > h2 {
     color: #c4a159;
@@ -82,20 +84,15 @@ export const InputDgxBox = styled.div`
   display: flex;
   text-align: center;
   border: 1px solid ${props => props.theme.backgroundPrimary.default.toString()};
-  border-radius: ${props => props.theme.borderRadius};
+  border-radius: 0.5rem;
   align-items: center;
   padding-right: 1rem;
   font-size: 2rem;
   box-shadow: ${props => props.theme.boxShadow};
   ${SyledInput} {
     height: 5rem;
-    font-size: 2rem;
+    font-size: 3rem;
     border: none;
-    font-family: 'Futura PT Book';
-    &:focus {
-      box-shadow: none;
-      border-color: #fff;
-    }
   }
 `;
 
@@ -118,8 +115,4 @@ export const ErrorCaption = styled.div`
   font-family: 'Futura PT Medium';
   border-radius: 0.5rem;
   box-shadow: ${props => props.theme.boxShadow};
-`;
-
-export const Note = styled.span`
-  margin: 2rem;
 `;

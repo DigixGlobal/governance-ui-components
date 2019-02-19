@@ -7,19 +7,19 @@ import { ThemeProvider } from 'styled-components';
 
 import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
 
-import './global-styles';
-import infoServerReducer from './reducers/info-server';
-import daoServerReducer from './reducers/dao-server';
-import govUiReducer from './reducers/gov-ui';
+import '../global-styles';
+import infoServerReducer from '../reducers/info-server';
+import daoServerReducer from '../reducers/dao-server';
+import govUiReducer from '../reducers/gov-ui';
 
-import LandingPage from './pages';
-import Proposals from './pages/proposals';
-import CreateProposals from './pages/proposals/create';
-import EditProposal from './pages/proposals/edit';
+import LandingPage from '../pages';
+import Proposals from '../pages/proposals';
+import CreateProposals from '../pages/proposals/create';
+import EditProposal from '../pages/proposals/edit';
 
-import lightTheme from './theme/light';
+import lightTheme from '../theme/light';
 
-import withHeaderAndPanel from './hocs/withHeaderAndPanel';
+import withHeaderAndPanel from '../hocs/withHeaderAndPanel';
 
 registerReducers({
   infoServer: { src: infoServerReducer },
@@ -33,9 +33,8 @@ const ParticipantsRoute = ({ component: Component, isParticipant, ...rest }) => 
     render={props => (isParticipant ? <Component {...props} /> : <Redirect to="/login" />)}
   />
 );
-export class Governance extends React.Component {
+export class Index extends React.Component {
   render() {
-    console.count(1);
     const { addressDetails } = this.props;
     return (
       <HashRouter>
@@ -62,11 +61,11 @@ export class Governance extends React.Component {
   }
 }
 
-Governance.propTypes = {
+Index.propTypes = {
   addressDetails: PropTypes.object,
 };
 
-Governance.defaultProps = {
+Index.defaultProps = {
   addressDetails: undefined,
 };
 
@@ -79,9 +78,4 @@ const mapStateToProps = state => ({
 export default connect(
   ({ infoServer: { AddressDetails } }) => ({ addressDetails: AddressDetails }),
   {}
-)(Governance);
-
-// export default connect(
-//   mapStateToProps,
-//   {}
-// )(Governance);
+)(Index);

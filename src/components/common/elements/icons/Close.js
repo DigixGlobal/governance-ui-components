@@ -3,19 +3,15 @@ import { Container } from './style';
 
 const CloseIcon = props => (
   <Container {...props}>
-    <svg viewBox="0 0 13.91 13.91">
-      <path
-        className="cls-1"
-        d="M8.35,7l5.56,5.57-1.39,1.39L7,8.35,1.39,13.91,0,12.52,5.56,7,0,1.39,1.39,0,7,5.56,12.52,0l1.39,1.39Z"
-        transform="translate(0 0)"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
     </svg>
   </Container>
 );
 
 CloseIcon.defaultProps = {
-  width: '1.75rem',
-  height: '1.75rem',
+  width: '2.5rem',
+  height: '2.5rem',
 };
 
 export default CloseIcon;

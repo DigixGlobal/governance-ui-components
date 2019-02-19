@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { TextArea, Input, Select } from '@digix/gov-ui/components/common/elements/index';
-import { ErrorCaption } from '@digix/gov-ui/components/common/common-styles';
-
+import { TextArea, Input, Select } from '../../../components/common/elements/index';
 import { Fieldset, FormItem, Label, CreateMilestone } from './style';
+// import MilestoneList from '../../milestones';
 
 class Milestones extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       milestones: [],
+      milestoneFundings: [],
       milestoneCount: 1,
     };
   }
@@ -19,8 +18,8 @@ class Milestones extends React.Component {
     const { form } = this.props;
     if (form.milestones && form.milestones.length > 0) {
       this.setState({
-        milestones: form.milestones,
         milestoneCount: form.milestones.length,
+        milestoneFundings: form.milestoneFundings,
       });
     }
   };
@@ -30,15 +29,18 @@ class Milestones extends React.Component {
     const { milestones } = this.state;
     if (milestones.length > 1 && milestones.length > Number(value)) {
       milestones.splice(milestones.length - 1);
+      // milestoneFundings.splice(milestoneFundings.length - 1);
     }
 
     this.setState(
       {
         milestoneCount: e.target.value,
         milestones: [...milestones],
+        // milestoneFundings: [...milestoneFundings],
       },
       () => {
         this.props.onChange('milestones', milestones);
+        // this.props.onChange('milestoneFundings', milestoneFundings);
       }
     );
   };
@@ -48,16 +50,30 @@ class Milestones extends React.Component {
     const { onChange } = this.props;
     const { value } = e.target;
     let currentField = milestones[i];
+    // currentField[field] = value;
     if (currentField) {
       currentField[field] = value;
     } else {
       currentField = {};
+      // currentField field === 'title' ? { title: value } : { description: value };
       currentField[field] = value;
     }
 
     milestones[i] = currentField;
     this.setState({ milestones: [...milestones] }, () => {
       onChange('milestones', milestones);
+    });
+  };
+
+  handleFundChange = (e, i) => {
+    const { milestoneFundings } = this.state;
+    const { onChange } = this.props;
+    const { value } = e.target;
+
+    milestoneFundings[i] = value;
+
+    this.setState({ milestoneFundings: [...milestoneFundings] }, () => {
+      onChange('milestoneFundings', milestoneFundings);
     });
   };
 
@@ -77,6 +93,8 @@ class Milestones extends React.Component {
             <Input
               name={index}
               type="number"
+              // value={milestoneFundings[index]}
+              // onChange={e => this.handleFundChange(e, index)}
               value={createdMilestones[index] ? createdMilestones[index].fund : ''}
               onChange={e => this.handleChange(e, index, 'fund')}
               placeholder="Insert amount of fund expected in ETH for completion of milestone"
@@ -101,9 +119,10 @@ class Milestones extends React.Component {
   };
 
   render() {
-    const { onChange, form, daoConfig, exceedsLimit } = this.props;
+    const { onChange, form } = this.props;
     const { milestoneCount } = this.state;
     const noOfMilestones = milestoneCount;
+    // const { milestones } = this.state;
     return (
       <Fieldset>
         <FormItem>
@@ -127,28 +146,15 @@ class Milestones extends React.Component {
           />
         </FormItem>
         {this.renderMilestoneForm()}
-        <br />
-        {exceedsLimit && (
-          <ErrorCaption>{`Sum of Reward Expected and Milestone Fundings must not exceed ${
-            daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX
-          } ETH`}</ErrorCaption>
-        )}
       </Fieldset>
     );
   }
 }
 
-const { func, object, bool } = PropTypes;
+const { func, object } = PropTypes;
 
 Milestones.propTypes = {
   onChange: func.isRequired,
   form: object.isRequired,
-  daoConfig: object.isRequired,
-  exceedsLimit: bool,
 };
-
-Milestones.defaultProps = {
-  exceedsLimit: false,
-};
-
 export default Milestones;

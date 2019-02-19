@@ -4,20 +4,21 @@ import PropTypes from 'prop-types';
 import { fetchFromDijix } from '../../../utils/dijix';
 
 const initialState = {
+  // data: {},
   loading: true,
   thumbnails: [],
 };
 
-// eslint-disable
-export default class IpfsViewer extends Component {
+export default class MultipleResolver extends Component {
   static propTypes = {
+    thumbnailSize: PropTypes.string.isRequired,
+    hashes: PropTypes.array,
     renderResolved: PropTypes.func.isRequired,
     renderLoading: PropTypes.object,
-    hashes: PropTypes.array,
   };
   static defaultProps = {
-    renderLoading: undefined,
     hashes: undefined,
+    renderLoading: undefined,
   };
 
   constructor(props) {
@@ -25,42 +26,35 @@ export default class IpfsViewer extends Component {
     this.state = { ...initialState };
   }
 
-  componentDidMount() {
-    const { hashes } = this.props;
-    this._isMounted = true;
-    if (this._isMounted) {
-      if (hashes && hashes.length > 0) this.fetchImages(this.props);
-    }
+  componentWillMount() {
+    this.fetchImages(this.props);
   }
 
-  componentWillUnmount = () => {
-    this._isMounted = false;
+  componentWillReceiveProps = nextProps => {
+    this.fetchImages(nextProps);
   };
 
-  _isMounted = false;
+  componentWillUnmount = () => {
+    this.setState({ loading: false, thumbnails: undefined });
+  };
 
   fetchImages = props => {
     const { hashes, thumbnailSize } = props;
     Promise.all(
-      hashes.map(hash => {
-        if (hash === null || !hash) return undefined;
-        return fetchFromDijix(0, undefined, hash).then(data => data);
-      })
+      hashes.map(hash =>
+        fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails)
+      )
     ).then(images => {
-      if (!images[0]) return undefined;
-      const files = images.map(image => ({
-        thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
-        src: image ? image.data.src : undefined,
-      }));
-      this.setState({ files, loading: false });
+      const thumbs = images.map(image => ({ src: image[thumbnailSize] }));
+      this.setState({ thumbnails: thumbs, loading: false });
     });
   };
 
   render() {
-    const { loading, files } = this.state;
+    const { loading, thumbnails } = this.state;
     if (loading) {
       return this.props.renderLoading || null;
     }
-    return this.props.renderResolved(files);
+    return this.props.renderResolved(thumbnails);
   }
 }

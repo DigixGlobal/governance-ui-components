@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { media } from './breakpoints';
 
 export const Avatar = styled.img`
   width: 5rem;
@@ -61,16 +60,84 @@ export const Link = styled.a`
 
 export const ContentWrapper = styled.div`
   flex: 5 0 0;
-  padding: 12em 8em;
+  padding: 8em 10em;
 `;
 
 export const LeftPanel = css``;
 export const RightPanel = css``;
 
 export const HR = styled.hr`
-  border: 0.5px solid ${props => props.theme.backgroundTertiary.default.toString()};
+  border: 0.5px solid ${props => props.theme.backgroundLayout.default.toString()};
   width: 100%;
   margin: 2rem 0;
+`;
+
+const Button = {
+  cursor: 'pointer',
+  textAlign: 'center',
+  textDecoration: 'none',
+  textTransform: 'uppercase',
+  outline: 'none',
+  padding: '1em 2em',
+  margin: '1rem',
+  transition: 'all 0.3s ease',
+};
+
+export const ButtonStyles = css`
+  ${Button};
+
+  background: ${props =>
+    props.primary
+      ? props.theme.buttonBgPrimary.toString()
+      : props.theme.buttonBgSecondary.toString()};
+
+  color: ${props =>
+    props.primary
+      ? props.theme.buttonTextPrimaryReverse.toString()
+      : props.theme.buttonTextSecondaryReverse.toString()};
+
+  border: 2px solid
+    ${props =>
+      props.primary
+        ? props.theme.buttonBorderPrimary.toString()
+        : props.theme.buttonBorderSecondary.toString()};
+  &:hover {
+    background-color: transparent;
+    color: ${props =>
+      props.primary
+        ? props.theme.buttonTextPrimary.toString()
+        : props.theme.buttonTextSecondary.toString()};
+  }
+`;
+
+export const GhostBtn = css`
+  background-color: transparent;
+  color: ${props =>
+    props.primary
+      ? props.theme.buttonTextPrimary.toString()
+      : props.theme.buttonTextSecondary.toString()};
+
+  &:hover {
+    background: ${props =>
+      props.primary
+        ? props.theme.buttonBgPrimary.toString()
+        : props.theme.buttonBgSecondary.toString()};
+    color: ${props =>
+      props.primary
+        ? props.theme.buttonTextPrimaryReverse.toString()
+        : props.theme.buttonTextSecondaryReverse.toString()};
+  }
+`;
+
+export const DisabledBtn = css`
+  background-color: transparent;
+  border-color: ${props => props.theme.buttonBorderDisabled.toString()};
+  color: ${props => props.theme.textDefault.lighter.toString()};
+  &:hover {
+    background-color: transparent;
+    border-color: ${props => props.theme.buttonBorderDisabled.toString()};
+    color: ${props => props.theme.textDefault.lighter.toString()};
+  }
 `;
 
 export const Container = css`
@@ -83,178 +150,3 @@ export const FieldsetStyle = css`
 `;
 
 export const LabelStyle = css``;
-
-// * * * * * * * * * * * *
-// OVERLAY
-// * * * * * * * * * * * *
-export const InnerContainer = styled.div`
-  color: ${props => props.theme.textPrimary.default.toString()};
-  transition: ${props => props.theme.transition};
-`;
-
-export const IntroContainer = styled(InnerContainer)`
-  font-size: 1.6rem;
-  position: relative;
-`;
-
-// This will be replaced soon by 'Close' style component
-export const CloseButton = styled.div`
-  position: absolute;
-  right: 0;
-  margin-right: -1rem;
-  cursor: pointer;
-`;
-
-export const Close = styled.div`
-  position: absolute;
-  right: 0;
-  margin-right: -1rem;
-  cursor: pointer;
-`;
-
-export const OverlayHeader = styled(H4)`
-  text-transform: ${props => (props.uppercase ? 'uppercase' : 'none')};
-`;
-
-export const Note = styled.p`
-  color: ${props => props.theme.textSecondary.default.toString()};
-`;
-
-export const NoteContainer = styled.div`
-  background-color: ${props => props.theme.backgroundSecondary.fade.toString()};
-  border: 1px solid ${props => props.theme.buttonBorderSecondary.default.toString()};
-  border-radius: 3px;
-  box-shadow: ${props => props.theme.boxShadow};
-  margin: 3rem 0;
-  padding: 3rem 4rem;
-  text-align: center;
-`;
-
-export const StatusNote = styled.p`
-  color: ${props => props.theme.textSecondary.default.toString()};
-  font-size: 2.4rem;
-
-  span {
-    display: block;
-    color: ${props => props.theme.buttonResponseYes.default.toString()};
-    font-family: 'Futura PT Heavy';
-  }
-`;
-
-export const ErrorCaption = styled.div`
-  text-align: center;
-  background-color: rgba(208, 2, 27, 0.2);
-  padding: 1.5rem 2.5rem;
-  border: 1px solid #d0021b;
-  color: #d0021b;
-  margin-bottom: 4rem;
-  font-family: 'Futura PT Medium';
-  border-radius: 0.5rem;
-  box-shadow: ${props => props.theme.boxShadow};
-`;
-
-export const Wrapper = css`
-  display: flex;
-`;
-
-export const Card = css`
-  display: flex;
-  flex-grow: 1;
-  background: ${props => props.theme.backgroundDefault.default.toString()};
-  border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-  border-radius: ${props => props.theme.borderRadius};
-  box-shadow: ${props => props.theme.boxShadow};
-  margin-bottom: 3em;
-  padding: 3rem;
-`;
-
-export const CardItem = css`
-  display: flex;
-  flex-direction: ${props => (props.column ? 'column' : '')};
-  flex-grow: 1;
-`;
-
-export const TransparentOverlay = styled.div`
-  background-color: #000;
-  opacity: 0.75;
-  transition: ${props => props.theme.transition};
-  width: 75%;
-
-  ${props =>
-    props.large &&
-    css`
-      width: 25%;
-      ${media.tablet`width: 0%`};
-    `}
-
-  ${media.tablet`width: 40%`}
-  ${media.mobile`width: 0%`}
-`;
-
-export const DrawerContainer = styled.div`
-  background-color: ${props => props.theme.backgroundDefault.default.toString()};
-  padding: 5rem;
-  width: 25%;
-  overflow-y: scroll;
-  ${props =>
-    props.large &&
-    css`
-      overflow-y: scroll;
-      width: 75%;
-      background: ${props.theme.backgroundTertiary.lightest.toString()};
-
-      ${media.tablet`width: 100%`};
-    `}
-  ${media.tablet`width: 60%`}
-  ${media.mobile`width: 100%`}
-`;
-
-export const Notifications = styled.div`
-  padding: 1.5rem 3rem;
-  font-family: 'Futura PT Book', sans-serif;
-  border-radius: ${props => props.theme.borderRadius};
-  margin-bottom: 3rem;
-
-  span {
-    font-family: 'Futura PT Medium', sans-serif;
-  }
-  ${props =>
-    props.info &&
-    css`
-      background: ${props.theme.textSecondary.fade.toString()};
-      border: 1px solid ${props.theme.alertMessage.info.light.toString()};
-      color: ${props.theme.textSecondary.default.toString()};
-    `};
-`;
-
-export const Label = styled.label`
-  font-family: 'Futura PT Book', sans-serif;
-  margin-bottom: 0.5rem;
-
-  span {
-    ${props =>
-      props.req &&
-      css`
-        color: ${props.theme.alertMessage.error.default.toString()};
-      `};
-  }
-
-  ${props =>
-    props.error &&
-    css`
-      color: ${props.theme.alertMessage.error.default.toString()};
-    `};
-`;
-
-export const Hint = styled.div`
-  color: ${props => props.theme.textDefault.light.toString()};
-  font-family: 'Futura PT Book', sans-serif;
-  font-size: 1.4rem;
-  ${props =>
-    props.error &&
-    css`
-      color: ${props.theme.alertMessage.error.default.toString()};
-    `};
-`;
-
-export const FieldItem = styled.div``;

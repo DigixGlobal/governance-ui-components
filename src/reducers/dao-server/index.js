@@ -19,12 +19,6 @@ const defaultState = {
     error: null,
     fetching: null,
   },
-  ProposalDaoDetails: {
-    history: [],
-    data: {},
-    error: null,
-    fetching: null,
-  },
   Transactions: {
     history: [],
     data: {},
@@ -32,24 +26,6 @@ const defaultState = {
     fetching: null,
   },
   TransactionStatus: {
-    history: [],
-    data: [],
-    error: null,
-    fetching: null,
-  },
-  UserProposalLike: {
-    history: [],
-    data: undefined,
-    error: null,
-    fetching: null,
-  },
-  UserLikedProposals: {
-    history: [],
-    data: undefined,
-    error: null,
-    fetching: null,
-  },
-  ProposalLikes: {
     history: [],
     data: undefined,
     error: null,
@@ -113,29 +89,6 @@ export default function(state = defaultState, action) {
                 .slice(0, 100),
         },
       };
-    case actions.GET_PROPOSAL_DETAILS:
-      return {
-        ...state,
-        ProposalDaoDetails: {
-          ...state.ProposalDaoDetails,
-          ...action.payload,
-          history: !action.payload.data
-            ? state.ProposalDaoDetails.history
-            : [
-                {
-                  ...action.payload.data,
-                  updated: action.payload.updated,
-                },
-              ]
-                .concat(state.ProposalDaoDetails.history)
-                .slice(0, 100),
-        },
-      };
-    case actions.CLEAR_PROPOSAL_DETAILS:
-      return {
-        ...state,
-        ProposalDaoDetails: defaultState.ProposalDaoDetails,
-      };
     case actions.GET_TRANSACION_STATUS:
       return {
         ...state,
@@ -169,60 +122,6 @@ export default function(state = defaultState, action) {
                 },
               ]
                 .concat(state.Transactions.history)
-                .slice(0, 100),
-        },
-      };
-    case actions.GET_USER_PROPOSAL_LIKE_STATUS:
-      return {
-        ...state,
-        UserProposalLike: {
-          ...state.UserProposalLike,
-          ...action.payload,
-          history: !action.payload
-            ? state.UserProposalLike.history
-            : [
-                {
-                  ...action.payload,
-                  updated: action.payload.updated,
-                },
-              ]
-                .concat(state.UserProposalLike.history)
-                .slice(0, 100),
-        },
-      };
-    case actions.GET_PROPOSAL_LIKES_BY_USER:
-      return {
-        ...state,
-        UserLikedProposals: {
-          ...state.UserLikedProposals,
-          ...action.payload,
-          history: !action.payload
-            ? state.UserLikedProposals.history
-            : [
-                {
-                  ...action.payload,
-                  updated: action.payload.updated,
-                },
-              ]
-                .concat(state.UserLikedProposals.history)
-                .slice(0, 100),
-        },
-      };
-    case actions.GET_PROPOSAL_LIKES_STATS:
-      return {
-        ...state,
-        ProposalLikes: {
-          ...state.ProposalLikes,
-          ...action.payload,
-          history: !action.payload
-            ? state.ProposalLikes.history
-            : [
-                {
-                  ...action.payload,
-                  updated: action.payload.updated,
-                },
-              ]
-                .concat(state.ProposalLikes.history)
                 .slice(0, 100),
         },
       };

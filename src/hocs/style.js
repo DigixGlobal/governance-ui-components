@@ -1,19 +1,15 @@
 import styled from 'styled-components';
-import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: row;
   min-height: 100vh;
-  height: 100vh;
-  background: ${props => props.theme.backgroundTertiary.lightest.toString()};
 `;
 
 export const ContentWrapper = styled.div`
-  background: ${props => props.theme.backgroundTertiary.lightest.toString()};
-  min-height: 100vh;
-  padding: 12em 8rem;
-
-  ${media.tablet`padding: 12rem 8rem;`}
-  ${media.mobile`padding: 12rem 3rem;`}
-
-  overflow: auto;
+  background: ${props => props.theme.backgroundLayout.lightest.toString()};
+  flex: 5 0 0;
+  padding: 8em 10em;
+  margin-left: 280px;
+  max-width: 1600px;
 `;

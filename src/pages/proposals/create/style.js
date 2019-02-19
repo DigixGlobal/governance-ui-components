@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Container, FieldsetStyle, LabelStyle, H1 } from '../../../components/common/common-styles';
+import { Container, FieldsetStyle, LabelStyle } from '../../../components/common/common-styles';
 
 export const CreateWrapper = styled.div``;
 
@@ -22,7 +22,7 @@ export const MenuItem = styled.div`
     props.active &&
     css`
       color: ${props.theme.textSecondary.default.toString()};
-      border-bottom: 4px solid ${props.theme.buttonBorderSecondary.default.toString()};
+      border-bottom: 4px solid ${props.theme.buttonBorderSecondary.toString()};
     `};
 `;
 
@@ -30,7 +30,6 @@ export const Header = styled.div`
   ${Container};
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
-  border-radius: ${props => props.theme.borderRadius};
   justify-content: space-between;
   padding: 1rem 2rem;
   margin-bottom: 3rem;
@@ -40,14 +39,9 @@ export const LeftCol = styled.div`
   display: flex;
   align-items: center;
 `;
-export const RightCol = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+export const RightCol = styled.div``;
 
-export const Heading = styled(H1)`
-  font-size: 2rem;
-`;
+export const Heading = styled.h1``;
 
 export const Fieldset = styled.div`
   ${FieldsetStyle};
@@ -88,7 +82,7 @@ export const ImageHolder = styled.div`
 `;
 
 export const CreateMilestone = styled.div`
-  background: ${props => props.theme.backgroundTertiary.default.toString()};
+  background: ${props => props.theme.backgroundLayout.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: 3px;
   padding: 2rem;

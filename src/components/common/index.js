@@ -2,7 +2,6 @@ export { default as Accordion } from './elements/accordion/index';
 export { default as Button } from './elements/buttons/index';
 export { default as Icon } from './elements/icons/index';
 export { default as Input } from './elements/textfield/index';
-export { default as Textfield } from './elements/textfield/index';
 export { default as Label } from './elements/label/index';
 export { default as Modal } from './elements/modal/index';
 export { default as Select } from './elements/select/index';

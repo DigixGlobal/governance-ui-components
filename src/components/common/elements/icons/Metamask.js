@@ -25,7 +25,7 @@ const MetamaskIcon = props => (
 
 MetamaskIcon.defaultProps = {
   width: '4rem',
-  height: '4rem',
+  height: '3.6rem',
 };
 
 export default MetamaskIcon;

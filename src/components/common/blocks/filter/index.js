@@ -20,23 +20,18 @@ export default class ProposalCardFilter extends React.Component {
     return (
       <FilterWrapper>
         <Heading>
-          <H1>Projects</H1>
+          <div>
+            <H1>Projects</H1>
+          </div>
           {canCreate && (
-            <Link
-              to="/proposals/create"
-              href="/proposals/create"
-              style={{ display: 'inline-block' }}
-            >
-              <Button
-                kind="round"
-                primary
-                showIcon
-                style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
-              >
-                <Icon kind="plus" />
-                Create
-              </Button>
-            </Link>
+            <div>
+              <Link to="/proposals/create" href="/proposals/create">
+                <Button primary ghost iconButton>
+                  <Icon kind="plus" />
+                  Create
+                </Button>
+              </Link>
+            </div>
           )}
         </Heading>
         <Filter>

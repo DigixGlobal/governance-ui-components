@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { RoundBtn } from './style';
+import { RoundBtn } from '../style';
 
 const RoundButton = props => <RoundBtn {...props}>{props.children}</RoundBtn>;
 

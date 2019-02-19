@@ -3,18 +3,42 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { getTransactions, getChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
-import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getTransactions, getChallenge } from '../../../../reducers/dao-server/actions';
+import { getAddressDetails } from '../../../../reducers/info-server/actions';
 
-import Icon from '@digix/gov-ui/components/common/elements/icons';
+import Icon from '../../elements/icons';
 
-import { UtilityWrapper } from './style';
+import {
+  UtilityWrapper,
+  Notification,
+  NotificationCount,
+  NotificationHeader,
+  NotificationContent,
+  TxHash,
+  NotificationItem,
+  TxStatus,
+} from './style';
 
 class Utility extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showNotice: false,
+    };
+  }
+
+  componentWillMount = () => {
+    const { transactions } = this.props;
+    this.interval = setInterval(() => {
+      if (!transactions.fetching || transactions.fetching === null) {
+        this.getNotifications();
+      }
+    }, 1000 * 60);
+  };
+
   componentWillReceiveProps = nextProps => {
     if (!_.isEqual(nextProps, this.props)) {
       const { userAddress } = nextProps;
-      if (!userAddress) return;
       if (!this.props.challenge.data && userAddress) {
         this.getDetailsInterval = setInterval(() => {
           if (!this.props.challenge.data && userAddress) {
@@ -51,17 +75,34 @@ class Utility extends React.Component {
   };
 
   showHideNotifications = () => {
-    const { challengeProof, history } = this.props;
-    if (challengeProof.data && challengeProof.data.client) history.push('/history');
+    if (!this.state.showNotice) this.getNotifications();
+    this.setState({ showNotice: !this.state.showNotice });
   };
   render() {
+    const { showNotice } = this.state;
+    const { transactions } = this.props;
+
     return (
       <UtilityWrapper>
-        <Icon
-          kind="notification"
-          onClick={this.showHideNotifications}
-          style={{ cursor: 'pointer' }}
-        />
+        <Icon kind="notification" onClick={this.showHideNotifications} />
+        {transactions.data.transactions && (
+          <NotificationCount>{transactions.data.transactions.length}</NotificationCount>
+        )}
+        {showNotice && (
+          <Notification>
+            <NotificationHeader>Notifications</NotificationHeader>
+            <NotificationContent>
+              {transactions.data.transactions &&
+                transactions.data.transactions.map(t => (
+                  <NotificationItem key={t.id}>
+                    <TxHash>{t.txhash}</TxHash>
+                    <TxStatus>{t.status}</TxStatus>
+                  </NotificationItem>
+                ))}
+              {!transactions && <NotificationItem>No Notifications available</NotificationItem>}
+            </NotificationContent>
+          </Notification>
+        )}
       </UtilityWrapper>
     );
   }
@@ -76,8 +117,7 @@ Utility.propTypes = {
   getTransactions: func.isRequired,
   getChallenge: func.isRequired,
   getAddressDetails: func.isRequired,
-  history: object,
-  userAddress: object, // eslint-disable-line
+  userAddress: object,
 };
 
 Utility.defaultProps = {
@@ -85,7 +125,6 @@ Utility.defaultProps = {
   challengeProof: undefined,
   userAddress: undefined,
   challenge: undefined,
-  history: undefined,
 };
 
 export default connect(

@@ -33,10 +33,6 @@ export default class IpfsViewer extends Component {
     }
   }
 
-  // componentWillReceiveProps = nextProps => {
-  //   this.fetchImages(nextProps);
-  // };
-
   componentWillUnmount = () => {
     this._isMounted = false;
   };

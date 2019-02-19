@@ -41,7 +41,7 @@ class Preview extends React.Component {
         <ProjectSummary>
           <Header>
             <div>
-              <Button kind="tag" showIcon>
+              <Button kind="tag" icon>
                 IDEA
               </Button>
               <Title primary>{form.title}</Title>

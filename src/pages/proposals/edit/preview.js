@@ -4,6 +4,9 @@ import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
 import Milestones from '@digix/gov-ui/pages/proposals/milestones';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
+
+import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
+
 import {
   ProposalsWrapper,
   ProjectSummary,
@@ -21,7 +24,7 @@ const getTotalFunds = source =>
 
 class Preview extends React.Component {
   render() {
-    const { form, onContinueEditing, proposer, milestoneFundings } = this.props;
+    const { form, onContinueEditing, milestoneFundings } = this.props;
     if (!form) {
       return null;
     }
@@ -49,7 +52,7 @@ class Preview extends React.Component {
               <InfoItem>
                 <ItemTitle>Submitted By</ItemTitle>
                 <Data>
-                  <span>{proposer}</span>
+                  <span>{renderDisplayName('Sidebar-DisplayName')}</span>
                 </Data>
               </InfoItem>
               <InfoItem>
@@ -94,7 +97,6 @@ const { object, func, array } = PropTypes;
 Preview.propTypes = {
   form: object.isRequired,
   onContinueEditing: func.isRequired,
-  proposer: object.isRequired,
   milestoneFundings: array.isRequired,
 };
 

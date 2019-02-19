@@ -30,7 +30,7 @@ class V3Keystore extends React.Component {
           onSuccess={() => this.props.onSuccess()}
           updateDefaultAddress
           trigger={
-            <Button kind="round" secondary large icon fluid>
+            <Button kind="round" secondary large showIcon fluid>
               <Icon kind="json" />
               Json File
             </Button>

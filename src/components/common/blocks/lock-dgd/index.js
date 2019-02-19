@@ -6,6 +6,7 @@ import PropTypes, { array } from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
+import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import {
   getDefaultAddress,
@@ -23,7 +24,7 @@ import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/ac
 import TextField from '@digix/gov-ui/components/common/elements/textfield';
 import Button from '@digix/gov-ui/components/common/elements/buttons';
 import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE, ETHERSCAN_URL } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 
 import {
@@ -35,13 +36,11 @@ import {
   TextCaption,
   StakeCaption,
   ErrorCaption,
-  ConfirmationBox,
   Note,
-} from './style';
-import { TransparentOverlay, DrawerContainer } from '../../common-styles';
-import Icon from '../../../common/elements/icons';
-
-import LockDgdTx from './tx-ui';
+} from '@digix/gov-ui/components/common/blocks/lock-dgd/style';
+import { TransparentOverlay, DrawerContainer } from '@digix/gov-ui/components/common/common-styles';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
+import LockDgdTx from '@digix/gov-ui/components/common/blocks/lock-dgd/tx-ui';
 
 const network = SpectrumConfig.defaultNetworks[0];
 
@@ -52,10 +51,10 @@ class LockDgd extends React.Component {
     super(props);
     this.state = {
       dgd: 0,
+      dgdBalance: 0,
       error: '',
       disableLockDgdButton: true,
       openError: false,
-      txHash: undefined,
     };
   }
 
@@ -67,6 +66,9 @@ class LockDgd extends React.Component {
     )
       if (defaultAddress && lockDgdOverlay.show) {
         this.getMaxAllowance();
+        this.getDgdBalance().then(dgdBalance => {
+          this.setState({ dgdBalance });
+        });
       }
   };
 
@@ -75,12 +77,16 @@ class LockDgd extends React.Component {
 
   onDgdInputChange = e => {
     const { value } = e.target;
+    const { dgdBalance } = this.state;
     const { addressMaxAllowance } = this.props;
     let disableLockDgdButton = true;
     let error;
 
     if (!value || Number(value) <= 0) {
       disableLockDgdButton = true;
+    } else if (Number(value) > dgdBalance) {
+      disableLockDgdButton = true;
+      error = `Cannot lock more than your balance (${dgdBalance} DGD)`;
     } else if (Number(`${value}e9`) > Number(addressMaxAllowance)) {
       disableLockDgdButton = true;
       error = `You can only stake up to ${addressMaxAllowance} DGDs`;
@@ -126,9 +132,20 @@ class LockDgd extends React.Component {
     return stake;
   };
 
+  getDgdBalance() {
+    const { defaultAddress, web3Redux } = this.props;
+    const { abi, address: contractAddress } = getDGDBalanceContract(network);
+    const { web3 } = web3Redux.networks[network];
+    const contract = web3.eth.contract(abi).at(contractAddress);
+
+    return contract.balanceOf
+      .call(defaultAddress.address)
+      .then(balance => parseBigNumber(balance, 9, false));
+  }
+
   setError = error =>
     this.setState({
-      error: JSON.stringify((error && error.message) || error),
+      error: (error && error.message) || error,
       openError: !!error,
     });
 
@@ -141,7 +158,7 @@ class LockDgd extends React.Component {
   };
 
   handleCloseLockDgd = () => {
-    this.setState({ txHash: undefined, error: undefined, openError: false, dgd: undefined }, () => {
+    this.setState({ error: undefined, openError: false, dgd: undefined }, () => {
       this.props.showHideLockDgdOverlay(false);
     });
   };
@@ -175,14 +192,12 @@ class LockDgd extends React.Component {
 
     const onTransactionAttempt = txHash => {
       if (challengeProof.data) {
-        this.setState({ txHash, dgd: undefined }, () => {
-          sendTransactionToDaoServerAction({
-            txHash,
-            title: 'Lock DGD',
-            token: challengeProof.data['access-token'],
-            client: challengeProof.data.client,
-            uid: challengeProof.data.uid,
-          });
+        sendTransactionToDaoServerAction({
+          txHash,
+          title: 'Lock DGD',
+          token: challengeProof.data['access-token'],
+          client: challengeProof.data.client,
+          uid: challengeProof.data.uid,
         });
       }
     };
@@ -199,6 +214,7 @@ class LockDgd extends React.Component {
       }
 
       this.props.getAddressDetails(sourceAddress.address);
+      this.handleCloseLockDgd();
     };
 
     this.setError();
@@ -218,42 +234,6 @@ class LockDgd extends React.Component {
     };
 
     return executeContractFunction(payload);
-  };
-
-  renderConfirmation = () => {
-    const { txHash } = this.state;
-    return (
-      <DrawerContainer>
-        <CloseButton>
-          <Header>CONFIRMATION</Header>
-          <Icon kind="close" onClick={this.handleCloseLockDgd} />
-        </CloseButton>
-        <ConfirmationBox>
-          <h2>Congratulations!</h2>
-          <div>
-            You now have voting power in DigixDAO. With great power comes great responsibility.
-          </div>
-          <div>
-            Want to check transaction? Click{' '}
-            <a href={`${ETHERSCAN_URL}${txHash}`} target="_blank" rel="noopener noreferrer">
-              here
-            </a>
-            .
-          </div>
-        </ConfirmationBox>
-
-        <Button
-          kind="round"
-          primary
-          fill
-          fluid
-          onClick={this.handleCloseLockDgd}
-          style={{ marginTop: '4rem' }}
-        >
-          Get Started
-        </Button>
-      </DrawerContainer>
-    );
   };
 
   renderLockDgd = () => {
@@ -304,23 +284,22 @@ class LockDgd extends React.Component {
         >
           Lock DGD
         </Button>
-        {openError && <ErrorCaption>{error}</ErrorCaption>}
+        {openError && <ErrorCaption data-digix="LockDgdOverlay-Error">{error}</ErrorCaption>}
       </DrawerContainer>
     );
   };
 
   render() {
-    const { txHash } = this.state;
     const { lockDgdOverlay } = this.props;
+    if (!lockDgdOverlay || !lockDgdOverlay.show) {
+      return null;
+    }
 
     this.toggleBodyOverflow(lockDgdOverlay);
-    if (!lockDgdOverlay || !lockDgdOverlay.show) return null;
-
     return (
       <Container>
         <TransparentOverlay />
-        {!txHash && this.renderLockDgd()}
-        {txHash && this.renderConfirmation()}
+        {this.renderLockDgd()}
       </Container>
     );
   }
@@ -354,7 +333,6 @@ const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
   addresses: getAddresses(state),
   networks: getDefaultNetworks(state),
-  addressDetails: state.infoServer.AddressDetails,
   challenge: state.daoServer.Challenge,
   challengeProof: state.daoServer.ChallengeProof,
   lockDgdOverlay: state.govUI.lockDgdOverlay,

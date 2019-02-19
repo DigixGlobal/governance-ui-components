@@ -35,7 +35,7 @@ class Ledger extends React.Component {
           hideSelector
           allowedKeystoreTypes={['ledger']}
           trigger={
-            <Button kind="round" secondary large icon fluid>
+            <Button kind="round" secondary large showIcon fluid>
               <Icon kind="ledger" />
               Ledger
             </Button>

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
 import ImportKeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/import_keystore_modal';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/';
-import Icon from '@digix/gov-ui/components/common/elements/icons';
+import { WalletItem } from '../style';
+import Button from '../../../../common/elements/buttons/index';
+import Icon from '../../../../common/elements/icons';
 
 class V3Keystore extends React.Component {
   render() {
@@ -27,13 +28,15 @@ class V3Keystore extends React.Component {
           submitFunc={this.props.createKeystore}
           header="Import Wallet"
           skipConfirmation
-          onSuccess={() => this.props.onSuccess()}
+          onClose={() => this.props.onClose()}
           updateDefaultAddress
           trigger={
-            <Button kind="round" secondary large showIcon fluid>
-              <Icon kind="json" />
-              Json File
-            </Button>
+            <WalletItem>
+              <Button primary ghost fluid iconButton>
+                <Icon kind="json" />
+                Json File
+              </Button>
+            </WalletItem>
           }
         />
       )
@@ -45,7 +48,7 @@ const { func } = PropTypes;
 
 V3Keystore.propTypes = {
   createKeystore: func,
-  onSuccess: func.isRequired,
+  onClose: func.isRequired,
 };
 
 V3Keystore.defaultProps = {

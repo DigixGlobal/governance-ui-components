@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-import { getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
+import { getDefaultAddress, getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
 import { showMsgSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { connect } from 'react-redux';
 
@@ -13,21 +13,25 @@ import {
   deleteKeystore,
 } from 'spectrum-lightsuite/src/actions/keystore';
 
-import {
-  setAuthentationStatus,
-  showHideAlert,
-  showSignChallenge,
-  showHideWalletOverlay,
-} from '@digix/gov-ui/reducers/gov-ui/actions';
-import { getChallenge, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
-
-import { Container } from './style';
-import { TransparentOverlay, DrawerContainer } from '../../common-styles';
+import { Container, TransparentOverlay, WalletContainer } from './style';
 import Intro from './intro';
 import LoadWallet from './load-wallet';
 import ConnectedWallet from './connected-wallet';
 
 import { Stage } from './constants';
+
+import { getAddressDetails } from '../../../../reducers/info-server/actions';
+import {
+  setUserAddress,
+  showHideAlert,
+  showSignChallenge,
+  showHideWalletOverlay,
+} from '../../../../reducers/gov-ui/actions';
+import {
+  getChallenge,
+  proveChallenge,
+  // getTransactions,
+} from '../../../../reducers/dao-server/actions';
 
 export class Wallet extends React.Component {
   constructor(props) {
@@ -35,165 +39,152 @@ export class Wallet extends React.Component {
     this.state = {
       stage: Stage.Intro,
       signed: false,
-      proving: false,
     };
-  }
-
-  componentDidMount() {
-    this._isMounted = true;
   }
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(nextProps, this.props)) {
       const {
-        AddressDetails,
+        defaultAddress,
+        AddressDetails: { error, fetching, data },
         Challenge,
+        getAddressDetailsAction,
         getChallengeAction,
         ChallengeProof,
-        isAuthenticated,
       } = nextProps;
-      if (!AddressDetails.data.address) return;
-      const hasChallenge = Challenge.data;
+
+      const hasChallenge = Challenge.data && Challenge.data.challenge;
       const hasProof = (ChallengeProof.data && ChallengeProof.data.client) || this.state.signed;
 
-      if (AddressDetails && AddressDetails.data) {
+      if ((fetching === null && defaultAddress) || (error && defaultAddress)) {
+        getAddressDetailsAction(defaultAddress.address);
+      } else if (data && data.isParticipant) {
         if (Challenge.fetching === null || Challenge.error) {
-          getChallengeAction(AddressDetails.data.address);
+          getChallengeAction(data.address);
         }
       }
 
-      if (hasChallenge && !hasProof && !isAuthenticated) {
-        const message = Challenge.data.challenge;
-        const network = this.props.defaultNetworks[0];
-        const caption =
-          'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
-        const signMessage = new Promise(resolve =>
-          resolve(
-            this.props.showSigningModal({
-              txData: { message, caption },
-              network,
-            })
-          )
-        );
-        signMessage.then(signature => {
-          const {
-            data: { address },
-          } = AddressDetails;
+      if (defaultAddress) {
+        this.props.setUserAddress(defaultAddress.address);
+      }
 
-          if (this._isMounted) {
-            this.setState({ signed: true });
-          }
-          if (this.state.proving) return;
-          return this.props
-            .proveChallengeAction({
-              address,
-              challengeId: Challenge.data.id,
-              message,
-              signature: signature.signedTx,
-            })
-            .then(
-              this.setState({ proving: true }, () => {
-                this.props.setAuthentationStatus(true);
-              })
-            );
-        });
+      if (hasChallenge && !hasProof) {
+        this.props.showSignChallenge(true);
+        // this.setState({ showSigning: true });
       } else {
         this.props.showSignChallenge(false);
+        // this.setState({ showSigning: false });
       }
     }
   }
 
-  shouldComponentUpdate = (nextProps, nextState) =>
-    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
-
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  _isMounted = false;
   updateStage = stage => {
-    if (this._isMounted) {
-      this.setState({ stage });
-    }
+    this.setState({ stage });
+  };
+
+  renderChallenge = () => {
+    const {
+      showSigningModal,
+      Challenge,
+      defaultNetworks,
+      proveChallengeAction,
+      AddressDetails,
+    } = this.props;
+    const network = defaultNetworks[0];
+
+    const message = Challenge.data.challenge.challenge;
+    const caption =
+      'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
+    const signMessage = new Promise(resolve =>
+      resolve(showSigningModal({ txData: { message, caption }, network }))
+    );
+
+    return signMessage.then(signature => {
+      const {
+        data: { address },
+      } = AddressDetails;
+
+      this.setState({ signed: true });
+      return proveChallengeAction({
+        address,
+        challenge: Challenge.data.challenge.id,
+        message,
+        signature: signature.signedTx,
+      });
+    });
   };
 
   render() {
-    const { stage } = this.state;
-    const { showWallet, isAuthenticated, ...rest } = this.props;
+    const { stage, signed } = this.state;
+    const { showWallet, defaultAddress, signChallenge, ...rest } = this.props;
+    if (signChallenge && signChallenge.show && !signed) this.renderChallenge();
     if (!showWallet || !showWallet.show) return null;
     return (
       <Container>
         <TransparentOverlay />
-        <DrawerContainer>
-          {stage === Stage.Intro && !isAuthenticated && (
-            <Intro
-              onClose={() => this.props.showHideWalletOverlay(!showWallet)}
-              onChangeStage={this.updateStage}
-            />
-          )}
-          {stage === Stage.LoadingWallet && !isAuthenticated && (
-            <LoadWallet {...rest} onChangeStage={this.updateStage} />
-          )}
-          {(stage === Stage.WalletLoaded || isAuthenticated) && (
+        <WalletContainer>
+          {stage === Stage.Intro &&
+            !defaultAddress && (
+              <Intro
+                onClose={() => this.props.showHideWalletOverlay(!showWallet)}
+                onChangeStage={this.updateStage}
+              />
+            )}
+          {stage === Stage.LoadingWallet &&
+            !defaultAddress && <LoadWallet {...rest} onChangeStage={this.updateStage} />}
+          {defaultAddress && (
             <ConnectedWallet
               {...rest}
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}
+              address={defaultAddress}
             />
           )}
-        </DrawerContainer>
+        </WalletContainer>
       </Container>
     );
   }
 }
 
-const { func, object, bool, array } = PropTypes;
+const { func, bool, object } = PropTypes;
 Wallet.propTypes = {
+  // show: bool,
+  onClose: func.isRequired,
   signChallenge: object,
-  Challenge: object,
-  ChallengeProof: object,
-  showWallet: object,
-  isAuthenticated: bool,
-  defaultNetworks: array.isRequired,
-  AddressDetails: object,
-  getChallengeAction: func.isRequired,
+  getAddressDetailsAction: func.isRequired,
   showSigningModal: func.isRequired,
   showHideAlert: func.isRequired,
-  setAuthentationStatus: func.isRequired,
   showSignChallenge: func.isRequired,
-  showHideWalletOverlay: func.isRequired,
-  proveChallengeAction: func.isRequired,
 };
 
 Wallet.defaultProps = {
+  // show: false,
   signChallenge: undefined,
-  showWallet: undefined,
-  isAuthenticated: false,
-  Challenge: undefined,
-  ChallengeProof: undefined,
-  AddressDetails: undefined,
 };
 
 const actions = {
   createKeystore,
   updateKeystore,
   deleteKeystore,
+  getAddressDetailsAction: getAddressDetails,
   getChallengeAction: getChallenge,
   proveChallengeAction: proveChallenge,
   showSigningModal: showMsgSigningModal,
   showHideAlert,
-  setAuthentationStatus,
+  setUserAddress,
   showSignChallenge,
   showHideWalletOverlay,
+  // getTransactions,
 };
 
 const mapStateToProps = state => ({
+  // networks: getNetworks(state),
+  defaultAddress: getDefaultAddress(state),
   defaultNetworks: getDefaultNetworks(state),
   AddressDetails: state.infoServer.AddressDetails,
   signChallenge: state.govUI.SignChallenge,
   Challenge: state.daoServer.Challenge,
   ChallengeProof: state.daoServer.ChallengeProof,
   showWallet: state.govUI.ShowWallet,
-  isAuthenticated: state.govUI.isAuthenticated,
 });
 
 export default web3Connect(

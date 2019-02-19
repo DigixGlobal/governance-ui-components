@@ -5,18 +5,12 @@ import CapsuleButton from './capsule-button';
 import FlatButton from './flat-button';
 import RoundButton from './round-button';
 import LabeledIconButton from './labeled-icon-button';
-import LinkButton from './link-button';
-import UploadButton from './upload-button';
-import TextButton from './text-button';
 
 const buttons = {
   round: RoundButton,
   capsule: CapsuleButton,
   flat: FlatButton,
   iconLabeled: LabeledIconButton,
-  link: LinkButton,
-  upload: UploadButton,
-  text: TextButton,
 };
 
 const Button = props => {

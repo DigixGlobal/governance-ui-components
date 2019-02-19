@@ -3,35 +3,15 @@ import { REDUX_PREFIX, DAO_SERVER } from './constants';
 export const actions = {
   GET_CHALLENGE: `${REDUX_PREFIX}GET_CHALLENGE`,
   PROVE_CHALLENGE: `${REDUX_PREFIX}PROVE_CHALLENGE`,
-
   ADD_TRANSACTION: `${REDUX_PREFIX}ADD_TRANSACTION`,
   GET_TRANSACTIONS: `${REDUX_PREFIX}GET_TRANSACTIONS`,
   GET_TRANSACION_STATUS: `${REDUX_PREFIX}GET_TRANSACION_STATUS`,
-  GET_USER_PROPOSAL_LIKE_STATUS: `${REDUX_PREFIX}GET_USER_PROPOSAL_LIKE_STATUS`,
-
-  GET_PROPOSAL_LIKES_BY_USER: `${REDUX_PREFIX}GET_PROPOSAL_LIKES_BY_USER`,
-
-  GET_PROPOSAL_LIKES_STATS: `${REDUX_PREFIX}GET_PROPOSAL_LIKES_STATS`,
-
-  GET_PROPOSAL_DETAILS: `${REDUX_PREFIX}GET_PROPOSAL_DETAILS`,
-  CLEAR_PROPOSAL_DETAILS: `${REDUX_PREFIX}CLEAR_PROPOSAL_DETAILS`,
 };
 
-function fetchData(url, type, authToken, client, uid) {
+function fetchData(url, type) {
   return dispatch => {
     dispatch({ type, payload: { fetching: true } });
-    return fetch(url, {
-      method: 'GET',
-      mode: 'cors', // no-cors, cors, *same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'access-token': authToken,
-        client,
-        uid,
-      },
-    })
+    return fetch(url)
       .then(res =>
         res
           .json()
@@ -41,11 +21,11 @@ function fetchData(url, type, authToken, client, uid) {
           })
       )
       .then(({ json, res }) => {
-        if (json.result) {
+        if (res.status === 200) {
           return dispatch({
             type,
             payload: {
-              data: json.result,
+              data: json,
               fetching: false,
               error: null,
               updated: new Date(),
@@ -53,17 +33,17 @@ function fetchData(url, type, authToken, client, uid) {
           });
         }
 
-        throw json.error;
+        throw json;
       })
       .catch(error => dispatch({ type, payload: { fetching: false, error } }));
   };
 }
 
-function sendData(method, url, type, data, authToken, client, uid) {
+function postData(url, type, data, authToken, client, uid) {
   return dispatch => {
     dispatch({ type, payload: { fetching: true } });
     return fetch(url, {
-      method,
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, cors, *same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
@@ -86,11 +66,11 @@ function sendData(method, url, type, data, authToken, client, uid) {
           })
       )
       .then(({ json, res }) => {
-        if (json.result) {
+        if (res.status === 200) {
           return dispatch({
             type,
             payload: {
-              data: json.result,
+              data: json,
               fetching: false,
               error: null,
               updated: new Date(),
@@ -98,73 +78,32 @@ function sendData(method, url, type, data, authToken, client, uid) {
           });
         }
 
-        throw json.error;
+        throw json;
       })
       .catch(error => dispatch({ type, payload: { fetching: false, error } }));
   };
 }
 
-function putData(url, type, data, authToken, client, uid) {
-  return sendData('PUT', url, type, data, authToken, client, uid);
-}
-
-function postData(url, type, data, authToken, client, uid) {
-  return sendData('POST', url, type, data, authToken, client, uid);
-}
-
 export function getChallenge(address) {
-  return postData(`${DAO_SERVER}/authorization?address=${address}`, actions.GET_CHALLENGE);
+  return fetchData(`${DAO_SERVER}/get_challenge?address=${address}`, actions.GET_CHALLENGE);
 }
 
 export function proveChallenge(payload) {
-  const { challengeId, address, message, signature } = payload;
-  return putData(
-    `${DAO_SERVER}/authorization?address=${address}&challenge_id=${challengeId}&message=${message}&signature=${signature}`,
+  const { address, challenge, message, signature } = payload;
+  return fetchData(
+    `${DAO_SERVER}/prove?address=${address}&challenge_id=${challenge}&message=${message}&signature=${signature}`,
     actions.PROVE_CHALLENGE
   );
 }
 
-export function getUserProposalLikeStatus(payload) {
-  const { proposalId, token, client, uid } = payload;
-  return fetchData(
-    `${DAO_SERVER}/proposals/${proposalId}`,
-    actions.GET_USER_PROPOSAL_LIKE_STATUS,
-    token,
-    client,
-    uid
-  );
-}
-
-export function likeProposal(payload) {
-  const { proposalId, token, client, uid } = payload;
-  return postData(
-    `${DAO_SERVER}/proposals/${proposalId}/likes`,
-    actions.GET_USER_PROPOSAL_LIKE_STATUS,
-    undefined,
-    token,
-    client,
-    uid
-  );
-}
-
-export function unlikeProposal(payload) {
-  const { proposalId, token, client, uid } = payload;
-  return sendData(
-    'DELETE',
-    `${DAO_SERVER}/proposals/${proposalId}/likes`,
-    actions.GET_USER_PROPOSAL_LIKE_STATUS,
-    undefined,
-    token,
-    client,
-    uid
-  );
+export function getTransactionStatus(payload) {
+  return fetchData(`${DAO_SERVER}/status?txhash=${payload}`, actions.GET_TRANSACION_STATUS);
 }
 
 export function getTransactions(payload) {
   const { token, client, uid } = payload;
-  return sendData(
-    'GET',
-    `${DAO_SERVER}/transactions`,
+  return postData(
+    `${DAO_SERVER}/transactions/list`,
     actions.GET_TRANSACTIONS,
     undefined,
     token,
@@ -176,53 +115,11 @@ export function getTransactions(payload) {
 export function sendTransactionToDaoServer(payload) {
   const { txHash, title, token, client, uid } = payload;
   const data = { txhash: txHash, title };
-  return postData(`${DAO_SERVER}/transactions`, actions.ADD_TRANSACTION, data, token, client, uid);
-}
-
-/**
- * Proposals
- */
-
-export function clearDaoProposalDetails() {
-  return dispatch => {
-    dispatch({ type: actions.CLEAR_PROPOSAL_DETAILS, payload: {} });
-  };
-}
-
-export function getDaoProposalDetails(payload) {
-  const { client, proposalId, authToken, uid } = payload;
-  return sendData(
-    'GET',
-    `${DAO_SERVER}/proposals/${proposalId}`,
-    actions.GET_PROPOSAL_DETAILS,
-    undefined,
-    authToken,
-    client,
-    uid
-  );
-}
-
-export function getProposalLikesByUser(payload) {
-  const { client, stage, authToken, uid } = payload;
-  return sendData(
-    'GET',
-    stage ? `${DAO_SERVER}/proposals?liked=` : `${DAO_SERVER}/proposals?liked=`,
-    actions.GET_PROPOSAL_LIKES_BY_USER,
-    undefined,
-    authToken,
-    client,
-    uid
-  );
-}
-
-export function getProposalLikesStats(payload) {
-  const { client, stage, authToken, uid } = payload;
-  return sendData(
-    'GET',
-    stage ? `${DAO_SERVER}/proposals?stage=${stage}` : `${DAO_SERVER}/proposals`,
-    actions.GET_PROPOSAL_LIKES_STATS,
-    undefined,
-    authToken,
+  return postData(
+    `${DAO_SERVER}/transactions/new`,
+    actions.ADD_TRANSACTION,
+    data,
+    token,
     client,
     uid
   );

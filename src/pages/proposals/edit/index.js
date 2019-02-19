@@ -1,25 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
-
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
-import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
-import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
-import { getAddresses } from 'spectrum-lightsuite/src/selectors';
-import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
-import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { dijix } from '@digix/gov-ui/utils/dijix';
-import { encodeHash } from '@digix/gov-ui/utils/helpers';
-import getContract from '@digix/gov-ui/utils/contracts';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
-import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
-import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
-import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
-import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
+import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
+import Dao from '@digix/dao-contracts/build/contracts/Dao.json';
+
+import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
+
+import { Button } from '../../../components/common/elements/index';
 
 import Details from '../forms/details';
 import Milestones from '../forms/milestones';
@@ -28,7 +18,22 @@ import Overview from '../forms/overview';
 import Preview from './preview';
 import Confirm from '../confirm';
 
+// import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions';
+import { dijix } from '../../../utils/dijix';
+import { encodeHash } from '../../../utils/helpers';
+
+import getContract from '../../../utils/contracts';
+
+import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '../../../constants';
+
+import TxVisualization from '../../../components/common/blocks/tx-visualization';
+
+import { showHideAlert } from '../../../reducers/gov-ui/actions';
+import { sendTransactionToDaoServer } from '../../../reducers/dao-server/actions';
+
 import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
+
+import { getProposalDetails } from '../../../reducers/info-server/actions';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 
@@ -42,37 +47,36 @@ class EditProposal extends React.Component {
     this.state = {
       form: {},
       currentStep: 0,
+      txHash: undefined,
+      error: undefined,
+      openError: false,
       canMoveNext: true,
       canMovePrevious: false,
       showPreview: false,
       showConfirmPage: false,
       validForm: true,
       proposalId: undefined,
-      exceedsLimit: false,
     };
   }
 
   componentWillMount = () => {
-    const {
-      getProposalDetailsAction,
-      ChallengeProof,
-      history,
-      location,
-      proposalDetails,
-    } = this.props;
-    if (!ChallengeProof.data) history.push('/');
+    const { getProposalDetailsAction, location } = this.props;
     if (location.pathname) {
       const path = location.pathname.split('/');
       const proposalId = path[path.length - 1];
       if (proposalId) getProposalDetailsAction(proposalId);
     }
+  };
 
-    if (proposalDetails.data.proposalId) {
+  componentWillReceiveProps = nextProps => {
+    const { proposalDetails } = nextProps;
+    if (!proposalDetails.fething && proposalDetails.data.proposalId) {
       const currentVersion = proposalDetails.data.proposalVersions
         ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
         : {};
       const form = { ...currentVersion.dijixObject };
       form.finalReward = Number(currentVersion.finalReward);
+      // console.log(form.finalReward, currentVersion.finalReward);
       this.setState({
         form: { ...form },
         proposalId: proposalDetails.data.proposalId,
@@ -108,36 +112,21 @@ class EditProposal extends React.Component {
       form[e] = value;
     }
 
-    this.setState({ form: { ...form } }, () => {
-      this.checkFundingLimit();
-    });
+    const validForm = form.milestones && form.milestones.length > 0;
+
+    this.setState({ form: { ...form }, validForm });
   };
 
   setError = error =>
-    this.props.showHideAlert({ message: JSON.stringify(error && error.message) || error });
-
-  checkFundingLimit = () => {
-    const { daoConfig } = this.props;
-    const { form } = this.state;
-
-    const validForm = form.milestones && form.milestones.length > 0;
-
-    const limit = daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
-
-    const totalFunds = this.computeTotalFunds();
-    const exceedsLimit = totalFunds > Number(limit);
-    this.setState({ exceedsLimit, validForm: validForm && !exceedsLimit });
-  };
-
-  computeTotalFunds = () => {
-    const { form } = this.state;
-    if (!form.milestones && form.finalReward) return Number(form.finalReward);
-    else if (!form.milestones && !form.finalReward) return 0;
-
-    const milestoneFunds = (acc, currentValue) => acc + Number(currentValue.fund);
-
-    return Number(form.milestones.reduce(milestoneFunds, 0)) + Number(form.finalReward);
-  };
+    this.setState(
+      {
+        error: JSON.stringify((error && error.message) || error),
+        openError: !!error,
+      },
+      () => {
+        this.props.showHideAlert({ message: JSON.stringify((error && error.message) || error) });
+      }
+    );
 
   useStep = step => {
     this.setState({
@@ -159,7 +148,7 @@ class EditProposal extends React.Component {
           details,
           milestones,
         },
-        proofs: images && images[0] !== null ? images.concat(proofs) : proofs,
+        proofs: images ? images.concat(proofs) : proofs,
       })
       .then(({ ipfsHash }) => {
         const encodedHash = encodeHash(ipfsHash);
@@ -176,10 +165,10 @@ class EditProposal extends React.Component {
   };
 
   handleSubmit = () => {
-    const { web3Redux, ChallengeProof, addresses } = this.props;
+    const { web3Redux, ChallengeProof } = this.props;
     const { form, proposalId } = this.state;
     const { milestones } = form;
-    const funds = milestones.map(ms => toBigNumber(ms.fund).times(toBigNumber(1e18)));
+    const funds = milestones.map(ms => toBigNumber(parseInt(ms.fund, 0) * 1e18));
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -188,7 +177,7 @@ class EditProposal extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Edit Proposal',
+      caption: 'Requires 2 ETH to Submit Proposal',
       header: 'Proposal',
       type: 'txVisualization',
     };
@@ -198,77 +187,50 @@ class EditProposal extends React.Component {
       ui,
     };
 
-    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
-
-    const onTransactionAttempt = txHash => {
-      if (ChallengeProof.data) {
-        this.props.sendTransactionToDaoServer({
-          txHash,
-          title: 'Edit Proposal',
-          token: ChallengeProof.data['access-token'],
-          client: ChallengeProof.data.client,
-          uid: ChallengeProof.data.uid,
-        });
-      }
-    };
-
-    const onTransactionSuccess = txHash => {
-      this.props.showHideAlert({
-        message: 'Proposal Updated',
-        txHash,
-      });
-
-      this.props.history.push('/');
-    };
-
     this.createAttestation().then(ipfsHash => {
-      const payload = {
-        address: sourceAddress,
-        contract,
-        func: contract.modifyProposal,
-        params: [
+      contract.modifyProposal
+        .sendTransaction(
           proposalId,
           ipfsHash,
           funds,
-          toBigNumber(parseFloat(form.finalReward, 0) * 1e18),
-          web3Params,
-        ],
-        onFailure: this.setError,
-        onFinally: txHash => onTransactionAttempt(txHash),
-        onSuccess: txHash => onTransactionSuccess(txHash),
-        network,
-        web3Params,
-        ui,
-        showTxSigningModal: this.props.showTxSigningModal,
-      };
-      return executeContractFunction(payload);
+          toBigNumber(parseInt(form.finalReward, 0) * 1e18),
+          web3Params
+        )
+
+        .then(txHash => {
+          if (ChallengeProof.data) {
+            this.setState({ txHash }, () => {
+              Promise.all([
+                this.props.sendTransactionToDaoServer({
+                  txHash,
+                  title: 'Submit Proposal',
+                  token: ChallengeProof.data['access-token'],
+                  client: ChallengeProof.data.client,
+                  uid: ChallengeProof.data.uid,
+                }),
+                this.props.showHideAlert({ message: 'Proposal Updated' }),
+                this.props.history.push('/'),
+              ]);
+            });
+          }
+        })
+        .catch(this.setError);
     });
   };
 
   renderStep = () => {
-    const { currentStep, form, exceedsLimit } = this.state;
+    const { currentStep, form } = this.state;
     const Step = steps[currentStep];
-    return (
-      <Step
-        onChange={this.onChangeHandler}
-        form={form}
-        edit
-        exceedsLimit={exceedsLimit}
-        daoConfig={this.props.daoConfig}
-      />
-    );
+    return <Step onChange={this.onChangeHandler} form={form} />;
   };
 
   renderPreview = () => {
-    const { addresses } = this.props;
-    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
-    const { milestoneFundings } = this.props.proposalDetails.data.proposalVersions[0];
+    const { address } = this.props;
     return (
       <Preview
         form={this.state.form}
         onContinueEditing={this.handleShowPreview}
-        milestoneFundings={milestoneFundings}
-        proposer={sourceAddress ? sourceAddress.address : ''}
+        proposer={address ? address.address : ''}
       />
     );
   };
@@ -283,6 +245,7 @@ class EditProposal extends React.Component {
 
   renderCreate = () => {
     const { currentStep, canMoveNext, canMovePrevious, validForm } = this.state;
+    const { proposalDetails } = this.props;
     return (
       <CreateWrapper>
         <TabPanel>
@@ -304,7 +267,7 @@ class EditProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button tertiary onClick={this.handleShowPreview}>
+            <Button secondary onClick={this.handleShowPreview}>
               Preview
             </Button>
             <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
@@ -315,11 +278,12 @@ class EditProposal extends React.Component {
                 Next
               </Button>
             )}
-            {!canMoveNext && validForm && (
-              <Button primary ghost onClick={this.handleShowConfirmPage}>
-                Update Now
-              </Button>
-            )}
+            {!canMoveNext &&
+              validForm && (
+                <Button primary ghost onClick={this.handleShowConfirmPage}>
+                  Update Now
+                </Button>
+              )}
           </RightCol>
         </Header>
         {this.renderStep()}
@@ -336,39 +300,29 @@ class EditProposal extends React.Component {
   }
 }
 
-const { object, func, array } = PropTypes;
+const { object, func } = PropTypes;
 EditProposal.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
-  proposalDetails: object.isRequired,
-  location: object.isRequired,
-  history: object.isRequired,
-  daoConfig: object.isRequired,
-  addresses: array,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
+  address: object.isRequired,
+
+  proposalDetails: object.isRequired,
   getProposalDetailsAction: func.isRequired,
-  showTxSigningModal: func.isRequired,
+  location: object.isRequired,
+  history: object.isRequired,
 };
 
-EditProposal.defaultProps = {
-  addresses: undefined,
-};
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
-  addresses: getAddresses(state),
+  address: state.govUI.UserAddress,
   proposalDetails: state.infoServer.ProposalDetails,
-  daoConfig: state.infoServer.DaoConfig,
 });
 
 export default web3Connect(
   connect(
     mapStateToProps,
-    {
-      showHideAlert,
-      sendTransactionToDaoServer,
-      getProposalDetailsAction: getProposalDetails,
-      showTxSigningModal,
-    }
+    { showHideAlert, sendTransactionToDaoServer, getProposalDetailsAction: getProposalDetails }
   )(EditProposal)
 );

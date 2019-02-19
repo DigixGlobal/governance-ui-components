@@ -1,39 +1,26 @@
 import React, { Fragment } from 'react';
-import _ from 'lodash';
-import NavBar from '@digix/gov-ui/components/common/blocks/navbar';
-import WalletContainer from '@digix/gov-ui/components/common/blocks/wallet';
 
-import LeftMenu from '@digix/gov-ui/components/common/blocks/collapsible-menu';
-import LockDgdOverlay from '@digix/gov-ui/components/common/blocks/lock-dgd';
-import SnackBar from '@digix/gov-ui/components/common/elements/snackbar';
-import RightPanelOverlay from '@digix/gov-ui/components/common/blocks/right-panel-overlay';
+import NavBar from '../components/common/blocks/navbar';
+import WalletContainer from '../components/common/blocks/wallet';
+
+import LeftMenu from '../components/common/blocks/collapsible-menu';
+import LockDgdOverlay from '../components/common/blocks/lock-dgd';
+import Alert from '../components/common/elements/alert';
 
 import { Container, ContentWrapper } from './style';
-import './style.css';
 
 function withHeaderAndPanel(WrappedComponent) {
   return class TemplateContainer extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        menuOpen: false,
-      };
-    }
-
-    shouldComponentUpdate = (nextProps, nextState) =>
-      !_.isEqual(this.props, nextProps) && !_.isEqual(this.state, nextState);
-
     render() {
       return (
         <Fragment>
           <LockDgdOverlay />
-          <SnackBar />
+          <Alert />
           <WalletContainer />
-          <RightPanelOverlay />
           <NavBar />
-          <Container id="App" style={{ height: '100%' }}>
-            <LeftMenu location={this.props.location} />
-            <ContentWrapper id="page-wrap">
+          <Container>
+            <LeftMenu />
+            <ContentWrapper>
               <WrappedComponent {...this.props} />
             </ContentWrapper>
           </Container>

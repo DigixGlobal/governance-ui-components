@@ -4,7 +4,7 @@ import { Container } from './style';
 
 const HomeIcon = props => (
   <Container {...props}>
-    <svg viewBox="0 0 24 23">
+    <svg width="24px" height="23px" viewBox="0 0 24 23">
       <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g
           id="sidepanel"
@@ -12,8 +12,8 @@ const HomeIcon = props => (
           fillRule="nonzero"
           stroke={
             props.selected
-              ? props.theme.iconSecondaryColor.default.toString()
-              : props.theme.iconColor.light.toString()
+              ? props.theme.textSecondary.default.toString()
+              : props.theme.textPrimary.default.toString()
           }
         >
           <g id="Home-Icon" transform="translate(25.000000, 291.000000)">
@@ -31,12 +31,12 @@ const HomeIcon = props => (
 const { string, object } = PropTypes;
 HomeIcon.propTypes = {
   theme: object.isRequired,
-  // width: string,
-  // height: string,
+  width: string,
+  height: string,
 };
 HomeIcon.defaultProps = {
-  // width: '2.5rem',
-  // height: '2.5rem',
+  width: '2.5rem',
+  height: '2.5rem',
 };
 
 export default HomeIcon;

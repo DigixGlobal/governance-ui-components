@@ -7,9 +7,11 @@ export const FilterWrapper = styled.div`
 export const Heading = styled.div`
   display: flex;
   flex-direction: row;
-  flex-direction: flex-start;
-  h1 {
-    margin-right: 2rem;
+  div:first-child {
+    flex: 0.7;
+  }
+  div:last-child {
+    flex: 5 0 0;
   }
 `;
 export const Filter = styled.div`

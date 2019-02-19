@@ -1,6 +1,8 @@
 import React from 'react';
-import { TextArea as StyledTextArea } from './style';
+// import PropTypes from 'prop-types';
 
-const TextArea = props => <StyledTextArea {...props} />;
+import { SyledTextArea } from './style';
+
+const TextArea = props => <SyledTextArea {...props} />;
 
 export default TextArea;

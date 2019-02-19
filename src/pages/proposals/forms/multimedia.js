@@ -1,14 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import Modal from 'react-responsive-modal';
-
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
-
-import { dijixImageConfig, dijixPdfConfig, dijix } from '@digix/gov-ui/utils/dijix';
-import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
-
 import { Fieldset, FormItem, Label, MediaUploader, ImageHolder, LeftCol, RightCol } from './style';
+
+import { dijixImageConfig, dijixPdfConfig, dijix } from '../../../utils/dijix';
+import { UploadButtonContainer, UploadButton, UploadInput } from './multimediaStyles';
+import ImageViewer from '../../../components/common/ipfs-viewer';
 
 class Multimedia extends React.Component {
   constructor(props) {
@@ -17,10 +14,6 @@ class Multimedia extends React.Component {
       thumbnails: undefined,
     };
   }
-
-  showHideImage = () => {
-    this.setState({ open: !this.state.open });
-  };
 
   handleUpload = e => {
     const { onChange } = this.props;
@@ -44,6 +37,10 @@ class Multimedia extends React.Component {
         const reader = new FileReader();
         reader.onloadend = () => {
           const { result } = reader;
+
+          if (error) {
+            return;
+          }
 
           if (supported.findIndex(item => item === file.type) === -1) {
             error = `Unsupported ${file.type} file type`;
@@ -90,33 +87,11 @@ class Multimedia extends React.Component {
   renderImages = (proofs, preview) => {
     if (!proofs) return null;
     const images = proofs.map((img, i) => (
-      <Fragment>
-        {/* eslint-disable */}
-        <img
-          key={`img-${i + 1}`}
-          alt=""
-          onClick={this.showHideImage}
-          src={
-            preview
-              ? img.thumbnail
-              : `${dijix.config.httpEndpoint}/${img.thumbnail}?q=${Date.now()}`
-          }
-        />
-        <Modal open={this.state.open} onClose={this.showHideImage}>
-          <div>
-            <img
-              key={`img-${i + 1}`}
-              alt=""
-              style={{width:'100%'}}
-              src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
-              />
-            <Button kind="round" small onClick={this.showHideImage}>
-              Close
-            </Button>
-          </div>
-        </Modal>
-        {/* eslint-enable */}
-      </Fragment>
+      <img
+        key={`img-${i + 1}`}
+        alt=""
+        src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
+      />
     ));
     return images;
   };
@@ -131,22 +106,22 @@ class Multimedia extends React.Component {
           <Label>Upload Project Images</Label>
           <MediaUploader>
             <LeftCol>
-              <Button
-                kind="upload"
-                accept="image/*"
-                primary
-                fluid
-                large
-                multiple
-                id="image-upload"
-                onChange={this.handleUpload}
-                type="file"
-                caption="Select Images to Upload"
-              >
+              <UploadButtonContainer>
+                <UploadInput
+                  accept="image/*"
+                  // className={classes.input}
+                  id="image-upload"
+                  multiple
+                  onChange={this.handleUpload}
+                  type="file"
+                />
+                <UploadButton primary ghost htmlFor="image-upload">
+                  Select Images to Upload
+                </UploadButton>
                 <div>
                   Image must be in JPEG or PNG format &amp; file size must be lesser than 10MB.
                 </div>
-              </Button>
+              </UploadButtonContainer>
             </LeftCol>
             <RightCol>
               <ImageHolder>

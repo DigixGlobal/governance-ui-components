@@ -1,16 +1,18 @@
 import styled from 'styled-components';
 
 export const MenuContainer = styled.div`
-  flex: 1;
+  position: fixed;
+  height: 100%;
+  width: 280px;
+  max-width: 280px;
+  padding: 8rem 2.5rem;
+  padding-right: 0;
   background: ${props => props.theme.backgroundLeftPanel.default.toString()};
   border-right: ${props => props.theme.borderColor.lightest.toString()};
   color: ${props => props.theme.textContrast.default.toString()};
   font-size: 1.4rem;
-  width: 100%;
-  padding: 2.5rem;
-  padding-right: 0;
-  z-index: 1;
-  outline: none;
+  box-shadow: ${props => props.theme.boxShadow};
+  flex: 1 0 0;
 `;
 
 export const CloseMenu = styled.div`
@@ -38,23 +40,24 @@ export const ProfileContainer = styled.div`
 
 export const Welcome = styled.div`
   margin: 2rem 0;
+  font-size: 1.4rem;
   font-family: 'Futura PT Medium';
   color: ${props => props.theme.textPrimary.default.toString()};
   span {
-    font-family: 'Futura PT Book';
+    font-family: 'Futura PT Light';
+    display: block;
+    font-size: 1.2rem;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 180px;
   }
 `;
 
 export const UserType = styled.p`
   margin-top: 0.5rem;
   font-size: 1.4rem;
-  font-family: 'Futura PT Medium';
-  color: ${props => props.theme.textSecondary.default.toString()};
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  color: #c19f58;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid ${props => props.theme.borderColor.default.toString()};
 `;
 
 export const MenuList = styled.ul`

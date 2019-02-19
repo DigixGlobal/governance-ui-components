@@ -19,8 +19,8 @@ const TrezorIcon = props => (
 );
 
 TrezorIcon.defaultProps = {
-  width: '4rem',
-  height: '4rem',
+  width: '4.6rem',
+  height: '4.6rem',
 };
 
 export default TrezorIcon;

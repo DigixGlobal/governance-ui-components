@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { CapsuleBtn } from '../style';
+import { CapsuleBtn } from './style';
 
 const CapsuleButton = props => <CapsuleBtn {...props}>{props.children}</CapsuleBtn>;
 

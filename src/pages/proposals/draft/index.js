@@ -27,8 +27,8 @@ class Draft extends React.Component {
         <ProjectSummary>
           <Header>
             <div>
-              <Button kind="flat" style={{ pointerEvents: 'none' }}>
-                asd
+              <Button kind="tag" icon>
+                Draft
               </Button>
               <Title primary>Title</Title>
             </div>

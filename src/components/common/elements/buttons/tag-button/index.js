@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { FlatBtn } from '../style';
+import { TagBtn } from './style';
 
-const TagButton = props => <FlatBtn {...props}>{props.children}</FlatBtn>;
+const TagButton = props => <TagBtn {...props}>{props.children}</TagBtn>;
 
 const { object, string, node, oneOfType } = PropTypes;
 TagButton.propTypes = {

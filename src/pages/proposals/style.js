@@ -103,7 +103,7 @@ export const SubTitle = styled(H2)`
 export const FundingSummary = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 4rem 0;
+  margin: 3rem 0;
 `;
 
 export const SummaryInfo = styled.div`
@@ -119,7 +119,7 @@ export const InfoItem = styled.div`
 `;
 
 export const ItemTitle = styled.div`
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const Data = styled.div`
@@ -144,12 +144,12 @@ export const DetailsContainer = styled.div``;
 export const ShortDescription = styled.div`
   border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   padding: 3rem 0 2em 0;
-  margin-bottom: 6rem;
+  margin-bottom: 3rem;
 `;
 
 export const ProjectSummary = styled.div`
   border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 `;
 
 export const TrackActivity = styled.label`

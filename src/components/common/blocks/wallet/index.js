@@ -13,7 +13,6 @@ import {
   deleteKeystore,
 } from 'spectrum-lightsuite/src/actions/keystore';
 
-import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import {
   setAuthentationStatus,
   showHideAlert,
@@ -38,6 +37,10 @@ export class Wallet extends React.Component {
       signed: false,
       proving: false,
     };
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -77,7 +80,9 @@ export class Wallet extends React.Component {
             data: { address },
           } = AddressDetails;
 
-          this.setState({ signed: true });
+          if (this._isMounted) {
+            this.setState({ signed: true });
+          }
           if (this.state.proving) return;
           return this.props
             .proveChallengeAction({
@@ -101,15 +106,21 @@ export class Wallet extends React.Component {
   shouldComponentUpdate = (nextProps, nextState) =>
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  _isMounted = false;
   updateStage = stage => {
-    this.setState({ stage });
+    if (this._isMounted) {
+      this.setState({ stage });
+    }
   };
 
   render() {
     const { stage } = this.state;
     const { showWallet, isAuthenticated, ...rest } = this.props;
     if (!showWallet || !showWallet.show) return null;
-
     return (
       <Container>
         <TransparentOverlay />
@@ -144,7 +155,6 @@ Wallet.propTypes = {
   isAuthenticated: bool,
   defaultNetworks: array.isRequired,
   AddressDetails: object,
-  getAddressDetailsAction: func.isRequired,
   getChallengeAction: func.isRequired,
   showSigningModal: func.isRequired,
   showHideAlert: func.isRequired,
@@ -167,7 +177,6 @@ const actions = {
   createKeystore,
   updateKeystore,
   deleteKeystore,
-  getAddressDetailsAction: getAddressDetails,
   getChallengeAction: getChallenge,
   proveChallengeAction: proveChallenge,
   showSigningModal: showMsgSigningModal,

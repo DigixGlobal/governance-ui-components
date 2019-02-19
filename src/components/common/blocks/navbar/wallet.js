@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/';
 import { WalletWrapper, AddressLabel } from '@digix/gov-ui/components/common/blocks/navbar/style';
+
 import {
   showHideLockDgdOverlay,
   showHideWalletOverlay,
@@ -43,7 +44,18 @@ class WalletButton extends React.Component {
           </Button>
         )}
         {defaultAddress && (
-          <AddressLabel data-digix="Header-Address">{defaultAddress.address}</AddressLabel>
+          <Fragment>
+            <Button
+              kind="round"
+              primary
+              small
+              data-digix="Header-LoadWallet"
+              onClick={() => window.location.reload()}
+            >
+              Logout
+            </Button>
+            <AddressLabel data-digix="Header-Address">{defaultAddress.address}</AddressLabel>
+          </Fragment>
         )}
       </WalletWrapper>
     );

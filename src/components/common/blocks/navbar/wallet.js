@@ -1,32 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
 
-import { showHideLockDgdOverlay } from '../../../../reducers/gov-ui/actions';
-
-import Button from '../../elements/buttons/';
-
-import { WalletWrapper, AddressLabel } from './style';
+import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import { WalletWrapper, AddressLabel } from '@digix/gov-ui/components/common/blocks/navbar/style';
+import {
+  showHideLockDgdOverlay,
+  showHideWalletOverlay,
+} from '@digix/gov-ui/reducers/gov-ui/actions';
 
 class WalletButton extends React.Component {
+  onWalletClick = () => {
+    this.props.showHideWalletOverlay(true);
+  };
+
   render() {
-    const { onWalletClick, defaultAddress, addressDetails, showHideLockDgd } = this.props;
-    const canLockDgd = defaultAddress && addressDetails.data !== 'notFound';
+    const { defaultAddress, showHideLockDgd, canLockDgd } = this.props;
+
     return (
       <WalletWrapper>
         {!defaultAddress && (
-          <Button kind="capsule" primary sm onClick={onWalletClick}>
-            {'Load Wallet'}
+          <Button
+            kind="round"
+            primary
+            small
+            data-digix="Header-LoadWallet"
+            onClick={() => this.onWalletClick()}
+          >
+            Load Wallet
           </Button>
         )}
-        {canLockDgd && (
-          <Button kind="capsule" primary sm onClick={showHideLockDgd}>
-            {'Lock DGD'}
+        {canLockDgd && canLockDgd.show && (
+          <Button
+            kind="round"
+            primary
+            small
+            data-digix="Header-LockDgd"
+            onClick={() => showHideLockDgd(true)}
+          >
+            Lock DGD
           </Button>
         )}
-        {defaultAddress && <AddressLabel>{defaultAddress.address}</AddressLabel>}
+        {defaultAddress && (
+          <AddressLabel data-digix="Header-Address">{defaultAddress.address}</AddressLabel>
+        )}
       </WalletWrapper>
     );
   }
@@ -34,23 +52,27 @@ class WalletButton extends React.Component {
 
 const { func, string, object, oneOfType } = PropTypes;
 WalletButton.propTypes = {
-  onWalletClick: func.isRequired,
   showHideLockDgd: func.isRequired,
+  showHideWalletOverlay: func.isRequired,
   defaultAddress: oneOfType([string, object]),
-  addressDetails: object,
+  canLockDgd: object,
 };
 
 WalletButton.defaultProps = {
   defaultAddress: undefined,
-  addressDetails: undefined,
+  canLockDgd: undefined,
 };
 
 const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
   addressDetails: state.infoServer.AddressDetails,
+  canLockDgd: state.govUI.CanLockDgd,
 });
 
 export default connect(
   mapStateToProps,
-  { showHideLockDgd: showHideLockDgdOverlay }
+  {
+    showHideLockDgd: showHideLockDgdOverlay,
+    showHideWalletOverlay,
+  }
 )(WalletButton);

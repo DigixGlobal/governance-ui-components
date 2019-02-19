@@ -4,9 +4,8 @@ import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/com
 import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
 import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
 
-import { WalletItem } from '../style';
-import Button from '../../../../common/elements/buttons/index';
-import Icon from '../../../../common/elements/icons';
+import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
 
 class Ledger extends React.Component {
   render() {
@@ -25,7 +24,7 @@ class Ledger extends React.Component {
       (
         <KeystoreModal
           createKeystore={this.props.createKeystore}
-          onClose={this.resetState}
+          onSuccess={() => this.props.onSuccess()}
           showBalances
           key="keystore-popup"
           submitFunc={this.props.createKeystore}
@@ -36,12 +35,10 @@ class Ledger extends React.Component {
           hideSelector
           allowedKeystoreTypes={['ledger']}
           trigger={
-            <WalletItem>
-              <Button primary ghost fluid iconButton>
-                <Icon kind="ledger" />
-                Ledger
-              </Button>
-            </WalletItem>
+            <Button kind="round" secondary large showIcon fluid>
+              <Icon kind="ledger" />
+              Ledger
+            </Button>
           }
         />
       )
@@ -49,8 +46,11 @@ class Ledger extends React.Component {
   }
 }
 
+const { func } = PropTypes;
+
 Ledger.propTypes = {
-  createKeystore: PropTypes.func,
+  createKeystore: func,
+  onSuccess: func.isRequired,
 };
 
 Ledger.defaultProps = {

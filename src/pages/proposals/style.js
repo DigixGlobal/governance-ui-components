@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { H1, H2, Container } from '../../components/common/common-styles';
+import { Button } from '../../components/common/elements/buttons/style';
 
 export const ProposalsWrapper = styled.div``;
 
@@ -29,7 +30,7 @@ export const BrowseVersionHistory = styled.div`
       flex: 2;
       justify-content: center;
       font-family: 'Futura PT Medium';
-      font-size: 2rem;
+      font-size: 1.6rem;
 
       text-transform: capitalize;
     }
@@ -65,33 +66,16 @@ export const BrowseVersionHistory = styled.div`
 `;
 
 export const PreviousWrapper = styled.div`
-  text-transform: uppercase;
-  i {
-    &:before {
-      transform: rotate(-90deg);
-      margin-right: 0.5rem;
-      ${props =>
-        props.disabled &&
-        css`
-          border-bottom: 9px solid #f2f2f2 !important;
-        `};
-    }
+  ${Container};
+  align-items: center;
+  svg {
+    transform: rotate(180deg);
   }
 `;
 
 export const NextWrapper = styled.div`
-  text-transform: uppercase;
-  i {
-    &:before {
-      transform: rotate(90deg);
-      margin-left: 0.5rem;
-      ${props =>
-        props.disabled &&
-        css`
-          border-bottom: 9px solid #f2f2f2 !important;
-        `};
-    }
-  }
+  ${Container};
+  align-items: center;
 `;
 
 export const Header = styled.div`
@@ -100,51 +84,56 @@ export const Header = styled.div`
   justify-content: space-between;
 `;
 
+export const CTAButtons = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+`;
+
 export const Title = styled(H1)`
   font-size: 3.6rem;
   font-family: 'Futura PT Medium';
 `;
 
 export const SubTitle = styled(H2)`
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Book';
+  font-size: 2rem;
   color: ${props => props.theme.textPrimary.light.toString()};
 `;
 
-export const LatestActivity = styled.div`
+export const FundingSummary = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 4rem 0;
+`;
+
+export const SummaryInfo = styled.div`
   color: ${props => props.theme.textDefault.light.toString()};
   display: flex;
   flex-direction: row;
-  margin: 3rem 0;
   text-transform: uppercase;
+`;
+export const InfoItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 5rem;
+`;
 
-  > div {
-    display: flex;
-    flex-direction: column;
-  }
+export const ItemTitle = styled.div`
+  margin-bottom: 1.5rem;
+`;
 
+export const Data = styled.div`
+  font-size: 1.8rem;
+  color: ${props => props.theme.textPrimary.default.toString()};
   span {
-    font-size: 2rem;
-    font-family: 'Futura PT Medium';
-    color: ${props => props.theme.textPrimary.default.toString()};
-    margin-top: 1rem;
+    &:not(:first-child) {
+      color: ${props => props.theme.textSecondary.default.toString()};
+    }
   }
 `;
-export const SubmittedBy = styled.div`
-  flex: 4;
-`;
-export const FundingStatus = styled.div`
-  flex: 1;
-`;
-export const MilestonesStatus = styled.div`
-  flex: 1;
-`;
 
-export const Reward = styled.div`
-  flex: 1;
-`;
-
-export const UpvoteStatus = styled.div`
-  flex: 1;
+export const Upvote = styled.div`
+  display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   margin-right: 2rem;
@@ -153,13 +142,15 @@ export const UpvoteStatus = styled.div`
 export const DetailsContainer = styled.div``;
 
 export const ShortDescription = styled.div`
-  border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   padding: 3rem 0 2em 0;
-  margin-bottom: 3rem;
+  margin-bottom: 6rem;
 `;
 
-export const ProjectSummary = styled.div``;
+export const ProjectSummary = styled.div`
+  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  margin-bottom: 4rem;
+`;
 
 export const TrackActivity = styled.label`
   padding: 3rem 0;
@@ -173,19 +164,99 @@ export const TrackActivity = styled.label`
 export const ImageHolder = styled.div`
   border-radius: 3px;
   min-width: 500px;
-  height: 40rem;
   padding: 0rem;
   overflow: auto;
   & > img {
     height: 30rem;
     width: 33rem;
-    margin: 1rem;
-    border: 2px solid ${props => props.theme.borderColor.default.toString()};
+    margin: 2rem 2rem 0 0;
   }
 `;
 
 export const Details = styled.div`
-  padding-top: 2rem;
+  margin-bottom: 6rem;
 `;
 
-export const MilestonesContainer = styled.div``;
+export const MilestonesContainer = styled.div`
+  margin-bottom: 6rem;
+`;
+
+export const VotingResultWrapper = styled.div`
+  ${Container};
+  flex-direction: column;
+  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+`;
+
+export const VotingResultContainer = styled.div`
+  ${Container};
+  margin-bottom: 4rem;
+`;
+export const ProgressCol = styled.div`
+  flex-grow: 1;
+  margin-right: 2rem;
+`;
+
+export const Label = styled.div`
+  ${Container};
+  flex-wrap: nowrap;
+`;
+
+const LabelStyle = css`
+  color: ${props => props.theme.textPrimary.default.toString()};
+  font-family: 'Futura PT Heavy';
+  padding-bottom: 2rem;
+  text-transform: uppercase;
+  flex-basis: 100%;
+
+  &:last-child > span {
+    margin-left: 2rem;
+  }
+`;
+
+export const QuorumLabel = styled.div`
+  ${LabelStyle};
+  flex: ${props => props.flexWidth};
+`;
+export const QuorumMinLabel = styled.div`
+  ${LabelStyle};
+  border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
+  flex: ${props => props.flexWidth};
+`;
+
+export const ApprovalLabel = styled.div`
+  ${LabelStyle};
+  flex: ${props => props.flexWidth};
+`;
+export const ApprovalMinLabel = styled.div`
+  ${LabelStyle};
+  border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
+  flex: ${props => props.flexWidth};
+`;
+
+export const QuorumInfoCol = styled.div`
+  ${Container};
+  align-items: flex-end;
+  justify-content: flex-end;
+
+  flex-basis: ${props => (props.countdown ? 130 : 220)}px;
+
+  color: ${props => props.theme.textDefault.light.toString()};
+  font-family: 'Futura PT Medium';
+  text-transform: uppercase;
+
+  span:not(:last-child) {
+    border-right: 1px solid #ccc;
+    margin-right: 1.5rem;
+    padding-right: 1.5rem;
+  }
+`;
+
+export const CloseButton = styled(Button)`
+  position: absolute;
+  background: #fff;
+  border: 0;
+  top: 10px;
+  right: 5px;
+  margin: 0;
+  padding: 1rem 1.5rem;
+`;

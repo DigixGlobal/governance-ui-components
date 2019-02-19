@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import ProgressBar from '../blocks/progress-bar';
+import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { DEFAULT_LOCKED_DGD } from '@digix/gov-ui/constants';
 
 const TimelineWrapper = styled.div`
   display: flex;
@@ -51,7 +53,7 @@ const MainPhase = styled.div`
   padding-left: 1em;
 
   & > div:last-child {
-    color: ${props => props.theme.textDefault.light.toString()};
+    color: ${props => props.theme.textDefault.default.toString()};
     letter-spacing: 0.2em;
     span {
       margin: 0 1.5em;
@@ -97,9 +99,10 @@ class Timeline extends React.Component {
     const ellapsed = now.diff(start, 'days');
     const mainPhase = 100 * (ellapsed / 90);
 
-    // const startStake = moment(new Date(stats.data.startOfMainphase * 1000)).add(-10);
-    // const stakeEllapsed =
-    const stakingPhase = stakeDuration > 0 ? stakeDuration : 100;
+    const stakingPhase = stakeDuration > 0 && Date.now() < start ? stakeDuration : 100;
+
+    let lockedDgd = stats.data ? stats.data.totalLockedDgds : DEFAULT_LOCKED_DGD;
+    lockedDgd = truncateNumber(lockedDgd);
 
     return (
       <TimelineWrapper>
@@ -112,7 +115,7 @@ class Timeline extends React.Component {
               <div>MAIN PHASE</div>
               <MainPhaseValue>
                 DAY {ellapsed} / 90 <span>|</span>
-                {stats.data ? stats.data.totalLockedDgds / 1e9 : 83423.45} STAKE
+                {lockedDgd} STAKE
               </MainPhaseValue>
             </MainPhase>
           </TimelineLabel>

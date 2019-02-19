@@ -1,32 +1,23 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: ${props => props.width || '3rem'};
-  height: ${props => props.height || '3rem'};
+  width: ${props => props.width || '2.8rem'};
+  height: ${props => props.height || '2.8rem'};
   margin-right: 1rem;
 
-  /* :hover {
-    border-radius: 50%;
-    background-color: #284b82;
-    transition: background-color 0.4s ease;
-  } */
   > svg {
-    color: ${props =>
-      props.selected
-        ? props.theme.textSecondary.default.toString()
-        : props.theme.iconColor.toString()};
-    fill: ${props =>
-      props.selected
-        ? props.theme.textSecondary.default.toString()
-        : props.theme.iconColor.toString()};
-    stroke: ${props =>
-      props.selected
-        ? props.theme.textSecondary.default.toString()
-        : props.theme.iconColor.toString()};
+    fill: ${props => {
+      if (props.active) {
+        return props.theme.buttonBgSecondary.default.toString();
+      }
 
+      return props.selected
+        ? props.theme.iconSecondaryColor.default.toString()
+        : props.theme.iconColor.light.toString();
+    }};
     width: 100%;
     height: 100%;
   }

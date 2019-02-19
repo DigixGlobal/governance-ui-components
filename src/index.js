@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
@@ -7,19 +8,26 @@ import { ThemeProvider } from 'styled-components';
 
 import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
 
-import './global-styles';
-import infoServerReducer from './reducers/info-server';
-import daoServerReducer from './reducers/dao-server';
-import govUiReducer from './reducers/gov-ui';
+import '@digix/gov-ui/global-styles';
+import infoServerReducer from '@digix/gov-ui/reducers/info-server';
+import daoServerReducer from '@digix/gov-ui/reducers/dao-server';
+import govUiReducer from '@digix/gov-ui/reducers/gov-ui';
 
-import LandingPage from './pages';
-import Proposals from './pages/proposals';
-import CreateProposals from './pages/proposals/create';
-import EditProposal from './pages/proposals/edit';
+import { Provider as GraphqlProvider } from '@digix/gov-ui/api/graphql';
 
-import lightTheme from './theme/light';
+import LandingPage from '@digix/gov-ui/pages';
+import Proposals from '@digix/gov-ui/pages/proposals';
+import CreateProposals from '@digix/gov-ui/pages/proposals/create';
+import EditProposal from '@digix/gov-ui/pages/proposals/edit';
+import TransactionHistory from '@digix/gov-ui/pages/user/history';
+import Profile from '@digix/gov-ui/pages/user/profile';
+import Help from '@digix/gov-ui/pages/help';
+import Wallet from '@digix/gov-ui/pages/user/wallet';
+import KycOfficerDashboard from '@digix/gov-ui/pages/kyc/officer';
 
-import withHeaderAndPanel from './hocs/withHeaderAndPanel';
+import lightTheme from '@digix/gov-ui/theme/light';
+
+import withHeaderAndPanel from '@digix/gov-ui/hocs/withHeaderAndPanel';
 
 registerReducers({
   infoServer: { src: infoServerReducer },
@@ -27,61 +35,79 @@ registerReducers({
   govUI: { src: govUiReducer },
 });
 
-const ParticipantsRoute = ({ component: Component, isParticipant, ...rest }) => (
+// eslint-disable-next-line
+const AuthenticatedRoute = ({ component: Component, isAuthenticated, ...rest }) => (
   <Route
     {...rest}
-    render={props => (isParticipant ? <Component {...props} /> : <Redirect to="/login" />)}
+    render={props => (isAuthenticated ? <Component {...props} /> : <Redirect to="/" />)}
   />
 );
 export class Governance extends React.Component {
   render() {
-    console.count(1);
-    const { addressDetails } = this.props;
+    const { isAuthenticated } = this.props;
     return (
-      <HashRouter>
-        <ThemeProvider theme={lightTheme}>
-          <Switch>
-            {addressDetails.data && [
-              <ParticipantsRoute
+      <GraphqlProvider>
+        <HashRouter>
+          <ThemeProvider theme={lightTheme}>
+            <Switch>
+              <AuthenticatedRoute
                 path="/proposals/create"
                 component={withHeaderAndPanel(CreateProposals)}
-                isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
-              />,
-              <ParticipantsRoute
+                isAuthenticated={isAuthenticated}
+              />
+              <AuthenticatedRoute
                 path="/proposals/edit"
                 component={withHeaderAndPanel(EditProposal)}
-                isParticipant={addressDetails ? addressDetails.data.isParticipant : false}
-              />,
-            ]}
-            <Route path="/proposals" component={withHeaderAndPanel(Proposals)} />
-            <Route path="/" component={withHeaderAndPanel(LandingPage)} />
-          </Switch>
-        </ThemeProvider>
-      </HashRouter>
+                isAuthenticated={isAuthenticated}
+              />
+              <AuthenticatedRoute
+                path="/proposals"
+                component={withHeaderAndPanel(Proposals)}
+                isAuthenticated={isAuthenticated}
+              />
+              <AuthenticatedRoute
+                path="/wallet"
+                component={withHeaderAndPanel(Wallet)}
+                isAuthenticated={isAuthenticated}
+              />
+
+              <AuthenticatedRoute
+                path="/kyc/admin"
+                component={withHeaderAndPanel(KycOfficerDashboard)}
+                isAuthenticated={isAuthenticated}
+              />
+              <AuthenticatedRoute
+                path="/profile"
+                component={withHeaderAndPanel(Profile)}
+                isAuthenticated={isAuthenticated}
+              />
+
+              <AuthenticatedRoute
+                path="/history"
+                component={withHeaderAndPanel(TransactionHistory)}
+                isAuthenticated={isAuthenticated}
+              />
+              <Route path="/help" component={withHeaderAndPanel(Help)} />
+              <Route path="/" component={withHeaderAndPanel(LandingPage)} />
+            </Switch>
+          </ThemeProvider>
+        </HashRouter>
+      </GraphqlProvider>
     );
   }
 }
 
 Governance.propTypes = {
-  addressDetails: PropTypes.object,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
-Governance.defaultProps = {
-  addressDetails: undefined,
-};
-
-const mapStateToProps = state => ({
-  addressDetails: state.infoServer.AddressDetails,
-});
+export default withRouter(
+  connect(
+    ({ govUI: { isAuthenticated } }) => ({
+      isAuthenticated,
+    }),
+    {}
+  )(Governance)
+);
 
 // export default Governance;
-
-export default connect(
-  ({ infoServer: { AddressDetails } }) => ({ addressDetails: AddressDetails }),
-  {}
-)(Governance);
-
-// export default connect(
-//   mapStateToProps,
-//   {}
-// )(Governance);

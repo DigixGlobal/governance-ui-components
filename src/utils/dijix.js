@@ -49,6 +49,7 @@ export const dijixPdfConfig = new DijixPDF({
 });
 
 export function fetchFromDijix(id, hash, ipfsHash) {
+  if (hash === null || ipfsHash === null) return;
   const decodedHash =
     (ipfsHash && dgxHashToIPFSHash(ipfsHash)) || dgxHashToIPFSHash(decodeHash(hash));
   return dijix.fetch(decodedHash).catch(() => null);
@@ -91,7 +92,6 @@ export function createAttestation(attestation) {
   if (!attestation) return undefined;
 
   return dijix.create('attestation', attestation).then(({ ipfsHash }) => {
-    // console.log('ipfsHash', ipfsHash);
     const hex = encodeHash(ipfsHash);
     return hex;
   });

@@ -1,15 +1,17 @@
-import styled, { css } from 'styled-components';
-import { H3 } from '../../common-styles';
+import styled from 'styled-components';
+// import { H3 } from '../../common-styles';
+// import { EDEADLK } from 'constants';
 
 export const AccordionItem = styled.div`
   position: relative;
   padding: 2rem 3rem;
-  margin: 0.5rem 0;
+  margin: 1rem 0;
   background: ${props =>
     props.isOpen
       ? props.theme.backgroundDefault.default.toString()
       : props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  box-shadow: ${props => props.theme.boxShadow};
   animation: flipdown 0.5s ease both;
 
   &:nth-of-type(1) {
@@ -56,12 +58,32 @@ export const AccordionItem = styled.div`
   }
 `;
 
-export const Header = styled(H3)`
-  margin-bottom: 0;
+export const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
+export const Title = styled.div`
+  margin-bottom: 0;
+  font-size: 1.8rem;
+`;
+
+export const Funding = styled.div`
+  display: flex;
+  justify-content: flex-end;
   svg {
     width: 100%;
     height: 100%;
+  }
+`;
+
+export const Amount = styled.div`
+  margin-right: 3rem;
+  font-size: 1.8rem;
+  font-style: italic;
+
+  span {
+    color: ${props => props.theme.textSecondary.default.toString()};
   }
 `;
 

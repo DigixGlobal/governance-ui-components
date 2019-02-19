@@ -5,8 +5,6 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './quill.css';
 
-// import PropTypes from 'prop-types';
-
 import { Fieldset, FormItem, Label, EditorContainer } from './style';
 
 class Details extends React.Component {

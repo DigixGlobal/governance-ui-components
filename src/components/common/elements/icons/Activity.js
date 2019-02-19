@@ -3,7 +3,7 @@ import { Container } from './style';
 
 const ActivityIcon = props => (
   <Container {...props}>
-    <svg width="26px" height="26px" viewBox="0 0 26 26">
+    <svg viewBox="0 0 26 26">
       <g
         id="Symbols"
         stroke="none"
@@ -18,7 +18,7 @@ const ActivityIcon = props => (
             stroke={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="0.5"
             y="2.5"
@@ -31,7 +31,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="6"
             y="12"
@@ -43,7 +43,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="11"
             y="9"
@@ -55,7 +55,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="16"
             y="15"
@@ -72,7 +72,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="18"
             y="2"
@@ -84,7 +84,7 @@ const ActivityIcon = props => (
             fill={
               props.selected
                 ? props.theme.iconSecondaryColor.default.toString()
-                : props.theme.iconDefaultColor.default.toString()
+                : props.theme.iconDefaultColor.light.toString()
             }
             x="14"
             y="6"
@@ -98,8 +98,8 @@ const ActivityIcon = props => (
 );
 
 ActivityIcon.defaultProps = {
-  width: '2.2rem',
-  height: '2.2rem',
+  // width: '2.2rem',
+  // height: '2.2rem',
 };
 
 export default ActivityIcon;

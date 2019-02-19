@@ -1,24 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Point } from './style';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { Container, Point } from '@digix/gov-ui/components/common/blocks/user-DAO-stats/style';
 
 class UserDAOStats extends React.Component {
   render() {
     const { stats } = this.props;
+    const stake = truncateNumber(stats.data.lockedDgdStake || 0);
 
     return (
       <Container>
         <Point>
           Quarter Points
-          <span>{stats.data.quarterPoint || 0}</span>
+          <span data-digix="Dashboard-Stats-QuarterPoints">{stats.data.quarterPoint || 0}</span>
         </Point>
         <Point>
-          Reputation Points <span>{stats.data.reputationPoint || 0}</span>
+          Reputation Points
+          <span data-digix="Dashboard-Stats-ReputationPoints">
+            {stats.data.reputationPoint || 0}
+          </span>
         </Point>
         <Point>
           My Stake
-          <span>{stats.data.lockedDgdStake || 0}</span>
+          <span data-digix="Dashboard-Stats-Stake">{stake}</span>
         </Point>
       </Container>
     );
@@ -26,7 +31,9 @@ class UserDAOStats extends React.Component {
 }
 
 const { object } = PropTypes;
+
 UserDAOStats.propTypes = {
   stats: object.isRequired,
 };
+
 export default UserDAOStats;

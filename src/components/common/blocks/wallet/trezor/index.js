@@ -4,9 +4,8 @@ import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/com
 import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
 import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
 
-import { WalletItem } from '../style';
-import Button from '../../../../common/elements/buttons/index';
-import Icon from '../../../../common/elements/icons';
+import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
 
 class Trezor extends React.Component {
   render() {
@@ -25,7 +24,7 @@ class Trezor extends React.Component {
       (
         <KeystoreModal
           createKeystore={this.props.createKeystore}
-          onClose={this.resetState}
+          onSuccess={() => this.props.onSuccess()}
           showBalances
           key="trezor-popup"
           submitFunc={this.props.createKeystore}
@@ -36,12 +35,10 @@ class Trezor extends React.Component {
           hideSelector
           allowedKeystoreTypes={['trezor']}
           trigger={
-            <WalletItem>
-              <Button primary ghost fluid iconButton>
-                <Icon kind="trezor" />
-                Trezor
-              </Button>
-            </WalletItem>
+            <Button kind="round" secondary fluid showIcon large>
+              <Icon kind="trezor" />
+              Trezor
+            </Button>
           }
         />
       )
@@ -49,8 +46,11 @@ class Trezor extends React.Component {
   }
 }
 
+const { func } = PropTypes;
+
 Trezor.propTypes = {
-  createKeystore: PropTypes.func,
+  createKeystore: func,
+  onSuccess: func.isRequired,
 };
 
 Trezor.defaultProps = {

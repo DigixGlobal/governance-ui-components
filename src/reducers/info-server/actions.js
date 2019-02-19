@@ -1,11 +1,13 @@
 import { REDUX_PREFIX, INFO_SERVER } from './constants';
 
 export const actions = {
+  GET_DAO_CONFIG: `${REDUX_PREFIX}GET_DAO_CONFIG`,
   GET_DAO_DETAILS: `${REDUX_PREFIX}GET_DAO_DETAILS`,
   GET_ADDRESS_DETAILS: `${REDUX_PREFIX}GET_ADDRESS_DETAILS`,
   GET_PROPOSALS: `${REDUX_PREFIX}GET_PROPOSALS`,
   GET_PROPOSALS_COUNT: `${REDUX_PREFIX}GET_PROPOSALS_COUNT`,
   GET_PROPOSAL_DETAILS: `${REDUX_PREFIX}GET_PROPOSAL_DETAILS`,
+  GET_BLOCK_CONFIG: `${REDUX_PREFIX}GET_BLOCK_CONFIG`,
 };
 
 function fetchData(url, type) {
@@ -39,6 +41,10 @@ function fetchData(url, type) {
   };
 }
 
+export function getDaoConfig() {
+  return fetchData(`${INFO_SERVER}/daoConfigs`, actions.GET_DAO_CONFIG);
+}
+
 export function getDaoDetails() {
   return fetchData(`${INFO_SERVER}/daoinfo`, actions.GET_DAO_DETAILS);
 }
@@ -57,4 +63,8 @@ export function getProposalsCount() {
 
 export function getProposalDetails(proposalId) {
   return fetchData(`${INFO_SERVER}/proposals/details/${proposalId}`, actions.GET_PROPOSAL_DETAILS);
+}
+
+export function getBlockConfig() {
+  return fetchData(`${INFO_SERVER}/config`, actions.GET_BLOCK_CONFIG);
 }

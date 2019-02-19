@@ -16,15 +16,31 @@ export const DGD_ADDRESS =
 export const REDUX_PREFIX = 'DIGIX_GOVERNANCE_';
 
 export const DEFAULT_GAS =
-  (process.env.ENVIRONMENT === 'production' && 25e4) ||
-  (process.env.ENVIRONMENT === 'kovan' && 25e4) ||
+  (process.env.ENVIRONMENT === 'production' && 100e4) ||
+  (process.env.ENVIRONMENT === 'kovan' && 100e4) ||
   150e4;
+
+export const ETHERSCAN_URL =
+  (process.env.ENVIRONMENT === 'production' && 'https://etherscan.io/tx/') ||
+  (process.env.ENVIRONMENT === 'kovan' && 'https://kovan.etherscan.io/tx/') ||
+  'https://kovan.etherscan.io/tx/';
 
 export const DEFAULT_GAS_PRICE = 30 * 1e9;
 export const ONE_BILLION = 1000000000;
 
 export const CONVERSIONS = {
   XAUUSD: 1 / 31.1035,
+};
+
+export const DEFAULT_STAKE_PER_DGD = 1;
+export const DEFAULT_LOCKED_DGD = 83423.45;
+export const EMPTY_HASH = '0x0000000000000000000000000000000000000000';
+export const EMPTY_HASH_LONG = '0x0000000000000000000000000000000000000000000000000000000000000000';
+
+export const WalletStages = {
+  Intro: 1,
+  LoadingWallet: 2,
+  WalletLoaded: 3,
 };
 
 export const ProposalStages = {
@@ -34,4 +50,24 @@ export const ProposalStages = {
   ongoing: 'ongoing',
   review: 'review',
   archived: 'archived',
+};
+
+export const VotingStages = {
+  draft: 'draftVoting',
+  commit: 'commit',
+  reveal: 'reveal',
+};
+
+export const UserStatus = {
+  moderator: 'Moderator',
+  participant: 'Participant',
+  pastParticipant: 'Past Participant',
+  guest: 'Have not participated',
+};
+
+export const KycStatus = {
+  pending: 'PENDING',
+  rejected: 'REJECTED',
+  expired: 'EXPIRED',
+  approved: 'APPROVED',
 };

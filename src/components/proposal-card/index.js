@@ -8,24 +8,45 @@ import { ProposalWrapper, ProposalContainer } from './style';
 
 export default class ProposalCard extends React.Component {
   render() {
-    const { proposal, userDetails } = this.props;
+    const { history, proposal, userDetails, liked, likes, displayName } = this.props;
+    const currentTime = Date.now();
+    const { currentVotingRound } = proposal;
+    const withinDeadline =
+      currentVotingRound > -1
+        ? proposal.votingRounds[currentVotingRound].commitDeadline * 1000 < currentTime &&
+          currentTime < proposal.votingRounds[currentVotingRound].revealDeadline * 1000
+        : false;
+    const votingStage = withinDeadline ? 'reveal' : proposal.votingStage;
     return (
       <ProposalWrapper>
         <ProposalContainer>
-          <Proposal details={proposal} />
-          <Stats details={proposal} />
-          <Milestones details={proposal} userDetails={userDetails} />
+          <Proposal
+            displayName={displayName}
+            details={proposal}
+            userDetails={userDetails}
+            liked={liked}
+            likes={likes}
+          />
+          <Stats details={proposal} votingStage={votingStage} />
+          <Milestones details={proposal} history={history} userDetails={userDetails} />
         </ProposalContainer>
-        {/* <ProgressContainer>
-          <Progress />
-        </ProgressContainer> */}
       </ProposalWrapper>
     );
   }
 }
 
-const { object } = PropTypes;
+const { object, bool, number, string } = PropTypes;
 ProposalCard.propTypes = {
+  history: object.isRequired,
   proposal: object.isRequired,
   userDetails: object.isRequired,
+  displayName: string,
+  liked: bool,
+  likes: number,
+};
+
+ProposalCard.defaultProps = {
+  liked: false,
+  likes: undefined,
+  displayName: '',
 };

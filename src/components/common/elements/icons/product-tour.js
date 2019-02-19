@@ -3,7 +3,7 @@ import { Container } from './style';
 
 const ProductTourIcon = props => (
   <Container {...props}>
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <svg width="27px" height="26px" version="1.1" viewBox="0 0 27 26">
       <desc>Created with Sketch.</desc>
       <defs />
       <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -18,7 +18,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                   />
                   <path
@@ -27,7 +27,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -42,7 +42,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -52,7 +52,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -62,7 +62,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -72,7 +72,7 @@ const ProductTourIcon = props => (
                     stroke={
                       props.selected
                         ? props.theme.backgroundSecondary.default.toString()
-                        : props.theme.backgroundPrimary.default.toString()
+                        : props.theme.iconDefaultColor.light.toString()
                     }
                     strokeLinecap="square"
                   />
@@ -86,9 +86,6 @@ const ProductTourIcon = props => (
   </Container>
 );
 
-ProductTourIcon.defaultProps = {
-  width: '2.7rem',
-  height: '2.8rem',
-};
+ProductTourIcon.defaultProps = {};
 
 export default ProductTourIcon;

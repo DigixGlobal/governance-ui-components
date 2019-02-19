@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Button } from '../common/elements/index';
 
 export const ProposalWrapper = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
@@ -16,11 +17,17 @@ export const ProposalContainer = styled.div`
 
   height: 36.6rem;
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+
+  transition: ${props => props.theme.transition};
+
+  &:hover {
+    border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+  }
 `;
 
 export const ProposaDetaillWrapper = styled.div`
   flex: 4 1 0;
-  padding: 2.5em 3em;
+  padding: 2.5rem 3rem;
 `;
 
 export const ProposalCard = styled.div`
@@ -51,7 +58,10 @@ export const ProposalLink = styled(Link)`
   &:link,
   &:visited {
     text-decoration: underline;
-    color: ${props => props.theme.linkPrimaryColor.light.toString()};
+    color: ${props =>
+      props.disabled
+        ? props.theme.linkDefaultColor.light.toString()
+        : props.theme.linkPrimaryColor.default.toString()};
   }
 
   &:hover {
@@ -119,9 +129,10 @@ export const StatItem = styled.div`
   flex: 1;
   ${props =>
     props.stage &&
-    props.stage.toLowerCase() === 'idea' &&
+    (props.stage.toLowerCase() === 'idea' ||
+      (props.votingStage && props.votingStage.toLowerCase() === 'commit')) &&
     css`
-      color: ${props.theme.textDefault.lighter.toString()};
+      color: ${props.theme.textDefault.light.toString()};
     `};
   display: flex;
   flex-direction: column;
@@ -184,3 +195,8 @@ export const CallToAction = styled.div``;
 //   height: 0.8rem;
 //   background-color: #243961;
 // `;
+
+export const LikeButton = styled(Button)`
+  margin: 0;
+  padding: 0;
+`;

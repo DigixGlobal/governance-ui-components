@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
+import Modal from 'react-responsive-modal';
+
+import Icon from '@digix/gov-ui/components/common/elements/icons';
+import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
 import { dijix } from '../../utils/dijix';
 
 import {
   DetailsContainer,
   ShortDescription,
-  TrackActivity,
+  // TrackActivity,
   Details,
   SubTitle,
   ImageHolder,
+  CloseButton,
 } from './style';
 
-import ImageViewer from '../../components/common/ipfs-viewer';
-
 export default class ProjectDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { open: false };
+  }
+  showHideImage = () => {
+    this.setState({ open: !this.state.open });
+  };
+
   renderDocuments(documents) {
     if (!documents) return null;
 
@@ -23,13 +34,51 @@ export default class ProjectDetails extends React.Component {
 
   renderImages = (proofs, preview) => {
     if (!proofs) return null;
-    const images = proofs.map((img, i) => (
-      <img
-        key={`img-${i + 1}`}
-        alt=""
-        src={preview ? img.src : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`}
-      />
-    ));
+    const images = proofs.map((img, i) =>
+      img.src ? (
+        <Fragment key={`frag-${i + 1}`}>
+          {/* eslint-disable */}
+          <img
+            key={`img-${i + 1}`}
+            alt=""
+            onClick={this.showHideImage}
+            src={
+              !preview && img.thumbnail
+                ? `${dijix.config.httpEndpoint}/${img.thumbnail}`
+                : img.src
+            }
+            style={{ cursor: 'pointer' }}
+          />
+          <Modal
+            open={this.state.open}
+            showCloseIcon={false}
+            onClose={this.showHideImage}
+            center
+          >
+            <div>
+              <img
+                key={`img-${i + 1}`}
+                alt=""
+                style={{ width: '100%' }}
+                src={
+                  preview
+                    ? img.src
+                    : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`
+                }
+              />
+
+              <CloseButton
+                onClick={this.showHideImage}
+                style={{ boxShadow: 'none' }}
+              >
+                <Icon kind="close" style={{ marginRight: 0 }} />
+              </CloseButton>
+            </div>
+          </Modal>
+          {/* eslint-enable */}
+        </Fragment>
+      ) : null
+    );
     return <ImageHolder>{images}</ImageHolder>;
   };
 
@@ -38,15 +87,16 @@ export default class ProjectDetails extends React.Component {
     const hasImages = project.images && project.images.length > 0;
     return (
       <DetailsContainer>
+        <SubTitle>Short Description</SubTitle>
         <ShortDescription>
           {project.description
             ? project.description
             : 'No short description content has been created yet.'}
         </ShortDescription>
-        <TrackActivity>
+        {/* <TrackActivity>
           <input type="checkbox" />
           Track change from previous version
-        </TrackActivity>
+        </TrackActivity> */}
         <Details>
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />

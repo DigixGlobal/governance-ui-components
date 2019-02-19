@@ -4,21 +4,20 @@ import PropTypes from 'prop-types';
 import { fetchFromDijix } from '../../../utils/dijix';
 
 const initialState = {
-  // data: {},
   loading: true,
   thumbnails: [],
 };
 
-export default class MultipleResolver extends Component {
+// eslint-disable
+export default class IpfsViewer extends Component {
   static propTypes = {
-    thumbnailSize: PropTypes.string.isRequired,
-    hashes: PropTypes.array,
     renderResolved: PropTypes.func.isRequired,
     renderLoading: PropTypes.object,
+    hashes: PropTypes.array,
   };
   static defaultProps = {
-    hashes: undefined,
     renderLoading: undefined,
+    hashes: undefined,
   };
 
   constructor(props) {
@@ -26,35 +25,42 @@ export default class MultipleResolver extends Component {
     this.state = { ...initialState };
   }
 
-  componentWillMount() {
-    this.fetchImages(this.props);
+  componentDidMount() {
+    const { hashes } = this.props;
+    this._isMounted = true;
+    if (this._isMounted) {
+      if (hashes && hashes.length > 0) this.fetchImages(this.props);
+    }
   }
 
-  componentWillReceiveProps = nextProps => {
-    this.fetchImages(nextProps);
+  componentWillUnmount = () => {
+    this._isMounted = false;
   };
 
-  componentWillUnmount = () => {
-    this.setState({ loading: false, thumbnails: undefined });
-  };
+  _isMounted = false;
 
   fetchImages = props => {
     const { hashes, thumbnailSize } = props;
     Promise.all(
-      hashes.map(hash =>
-        fetchFromDijix(0, undefined, hash).then(({ data: { thumbnails } }) => thumbnails)
-      )
+      hashes.map(hash => {
+        if (hash === null || !hash) return undefined;
+        return fetchFromDijix(0, undefined, hash).then(data => data);
+      })
     ).then(images => {
-      const thumbs = images.map(image => ({ src: image[thumbnailSize] }));
-      this.setState({ thumbnails: thumbs, loading: false });
+      if (!images[0]) return undefined;
+      const files = images.map(image => ({
+        thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
+        src: image ? image.data.src : undefined,
+      }));
+      this.setState({ files, loading: false });
     });
   };
 
   render() {
-    const { loading, thumbnails } = this.state;
+    const { loading, files } = this.state;
     if (loading) {
       return this.props.renderLoading || null;
     }
-    return this.props.renderResolved(thumbnails);
+    return this.props.renderResolved(files);
   }
 }

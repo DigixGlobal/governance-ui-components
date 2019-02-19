@@ -14,11 +14,15 @@ import { Button } from '../common/elements/index';
 
 const determineDeadline = proposal => {
   let deadline = Date.now();
-  const mileStone = proposal.currentMilestone + 1; // > 0 ? proposal.currentMilestone : 0;
+  const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
 
   switch (proposal.stage.toLowerCase()) {
     case 'draft':
-      deadline = proposal.draftVoting.votingDeadline;
+      if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
+        deadline = proposal.draftVoting.votingDeadline;
+      } else {
+        return undefined;
+      }
       break;
     case 'proposal':
       if (Date.now() < proposal.votingRounds[0].commitDeadline) {
@@ -41,7 +45,6 @@ const determineDeadline = proposal => {
   }
 
   if (deadline) return new Intl.DateTimeFormat('en-US').format(deadline * 1000);
-  // console.log(moment(new Date(deadline * 1000)).format('MM/DD/YYYY'));
   return deadline;
 };
 
@@ -64,6 +67,11 @@ const disableParticipateWhen = (proposal, user) => {
   }
 };
 export default class ProposalCardMilestone extends React.Component {
+  redirectToProposalPage = () => {
+    const { details, history } = this.props;
+    history.push(`/proposals/${details.proposalId}`);
+  };
+
   render() {
     const { details, userDetails } = this.props;
     const { currentMilestone } = details;
@@ -73,7 +81,6 @@ export default class ProposalCardMilestone extends React.Component {
       <MilestonesWrapper>
         <Milestones>
           <MilestoneStatus>
-            {/* {mileStones.length > 0 && <Label>Milestones Completed</Label>} */}
             <Label>Milestones</Label>
             <ul>{mileStones && mileStones.map(milestone => <li key={milestone} />)}</ul>
           </MilestoneStatus>
@@ -81,14 +88,8 @@ export default class ProposalCardMilestone extends React.Component {
             <Label>Voting Deadline</Label>
             <Data>{determineDeadline(details) || 'N/A'} </Data>
           </Deadline>
-          <CallToAction>
-            <Button
-              kind="round"
-              primary
-              ghost
-              disabled={disabledParticipate}
-              style={{ pointerEvents: 'none' }}
-            >
+          <CallToAction onClick={this.redirectToProposalPage}>
+            <Button kind="round" primary disabled={disabledParticipate}>
               Participate
             </Button>
           </CallToAction>
@@ -100,5 +101,6 @@ export default class ProposalCardMilestone extends React.Component {
 
 ProposalCardMilestone.propTypes = {
   details: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   userDetails: PropTypes.object.isRequired,
 };

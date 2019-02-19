@@ -30,7 +30,7 @@ export default class ProposalCardFilter extends React.Component {
               <Button
                 kind="round"
                 primary
-                icon
+                showIcon
                 style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
               >
                 <Icon kind="plus" />

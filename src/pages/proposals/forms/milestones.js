@@ -138,13 +138,17 @@ class Milestones extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, bool } = PropTypes;
 
 Milestones.propTypes = {
   onChange: func.isRequired,
   form: object.isRequired,
   daoConfig: object.isRequired,
-  exceedsLimit: func.isRequired,
+  exceedsLimit: bool,
+};
+
+Milestones.defaultProps = {
+  exceedsLimit: false,
 };
 
 export default Milestones;

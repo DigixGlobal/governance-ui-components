@@ -34,7 +34,7 @@ class ImToken extends React.Component {
           hideSelector
           allowedKeystoreTypes={['imtoken']}
           trigger={
-            <Button kind="round" secondary large fluid icon>
+            <Button kind="round" secondary large fluid showIcon>
               <Icon kind="imtoken" />
               ImToken
             </Button>

@@ -210,20 +210,38 @@ export const DrawerContainer = styled.div`
 `;
 
 export const Notifications = styled.div`
-  padding: 1.5rem 3rem;
   font-family: 'Futura PT Book', sans-serif;
   border-radius: ${props => props.theme.borderRadius};
+  box-shadow: ${props => props.theme.boxShadow};
   margin-bottom: 3rem;
+  padding: 3rem;
+  text-align: center;
 
   span {
     font-family: 'Futura PT Medium', sans-serif;
   }
+
+  span.highlight {
+    display: block;
+    font-size: 2.4rem;
+    font-family: 'Futura PT Heavy', sans-serif;
+    margin: 2rem 0;
+  }
+
   ${props =>
     props.info &&
     css`
       background: ${props.theme.textSecondary.fade.toString()};
       border: 1px solid ${props.theme.alertMessage.info.light.toString()};
       color: ${props.theme.textSecondary.default.toString()};
+    `};
+
+  ${props =>
+    props.error &&
+    css`
+      background: ${props.theme.alertMessage.error.fade.toString()};
+      border: 1px solid ${props.theme.alertMessage.error.light.toString()};
+      color: ${props.theme.alertMessage.error.default.toString()};
     `};
 `;
 

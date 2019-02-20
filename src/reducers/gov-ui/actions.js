@@ -13,8 +13,8 @@ export const actions = {
   GET_ADDRESS_MAX_ALLOWANCE: `${REDUX_PREFIX}GET_ADDRESS_MAX_ALLOWANCE`,
 
   SET_AUTHENTICATION_STATUS: `${REDUX_PREFIX}SET_AUTHENTICATION_STATUS`,
-
   SHOW_LEFT_MENU: `${REDUX_PREFIX}SHOW_LEFT_MENU`,
+  GET_TOKEN_USD_VALUE: `${REDUX_PREFIX}GET_TOKEN_USD_VALUE`,
 };
 
 function fetchConfig(contract, config, type) {
@@ -90,5 +90,11 @@ export function showRightPanel(payload) {
 export function setAuthentationStatus(payload) {
   return dispatch => {
     dispatch({ type: actions.SET_AUTHENTICATION_STATUS, payload });
+  };
+}
+
+export function getTokenUsdValue(payload) {
+  return dispatch => {
+    dispatch({ type: actions.GET_TOKEN_USD_VALUE, payload });
   };
 }

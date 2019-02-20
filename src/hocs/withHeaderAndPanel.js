@@ -1,10 +1,12 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import NavBar from '@digix/gov-ui/components/common/blocks/navbar';
 import WalletContainer from '@digix/gov-ui/components/common/blocks/wallet';
 
 import LeftMenu from '@digix/gov-ui/components/common/blocks/collapsible-menu';
 import LockDgdOverlay from '@digix/gov-ui/components/common/blocks/lock-dgd';
+import AddressWatcher from '@digix/gov-ui/components/common/blocks/address-watcher';
 import SnackBar from '@digix/gov-ui/components/common/elements/snackbar';
 import RightPanelOverlay from '@digix/gov-ui/components/common/blocks/right-panel-overlay';
 
@@ -12,7 +14,7 @@ import { Container, ContentWrapper } from './style';
 import './style.css';
 
 function withHeaderAndPanel(WrappedComponent) {
-  return class TemplateContainer extends React.Component {
+  class TemplateContainer extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -27,6 +29,7 @@ function withHeaderAndPanel(WrappedComponent) {
       return (
         <Fragment>
           <LockDgdOverlay />
+          <AddressWatcher />
           <SnackBar />
           <WalletContainer />
           <RightPanelOverlay />
@@ -40,7 +43,13 @@ function withHeaderAndPanel(WrappedComponent) {
         </Fragment>
       );
     }
+  }
+
+  TemplateContainer.propTypes = {
+    location: PropTypes.object.isRequired,
   };
+
+  return TemplateContainer;
 }
 
 export default withHeaderAndPanel;

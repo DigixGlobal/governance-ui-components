@@ -12,7 +12,7 @@ import {
 } from '@digix/gov-ui/reducers/info-server/actions';
 import { getTokenUsdValue, setAuthentationStatus } from '@digix/gov-ui/reducers/gov-ui/actions';
 
-import { getChallenge, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
+import { getChallengeVanilla, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
 
 class AddressWatcher extends React.PureComponent {
   state = {
@@ -40,7 +40,7 @@ class AddressWatcher extends React.PureComponent {
         .then(({ json: { result } }) => result)
         .then(details => {
           if (!details.isParticipant) return undefined;
-          return getChallenge(address).then(({ json: { result } }) => {
+          return getChallengeVanilla(address).then(({ json: { result } }) => {
             const message = result.challenge;
             const network = this.props.defaultNetworks[0];
             const caption =

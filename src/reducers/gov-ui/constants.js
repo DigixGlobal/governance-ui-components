@@ -6,4 +6,4 @@ export const DAO_SERVER =
   'http://localhost:3005';
 
 export const CMC_ENDPOINT =
-  'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=df78d6f3-d31d-4fc0-a525-30c967dda14f&symbol=DGD,DGX,ETH';
+  'https://min-api.cryptocompare.com/data/pricemulti?fsyms=DGD,DGX,ETH&tsyms=USD';

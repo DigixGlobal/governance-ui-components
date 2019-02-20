@@ -1,5 +1,5 @@
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
-import { REDUX_PREFIX } from './constants';
+import { REDUX_PREFIX, CMC_ENDPOINT } from './constants';
 
 export const actions = {
   SHOW_LOCK_DGD_OVERLAY: `${REDUX_PREFIX}SHOW_LOCK_DGD_OVERLAY`,
@@ -16,6 +16,37 @@ export const actions = {
   SHOW_LEFT_MENU: `${REDUX_PREFIX}SHOW_LEFT_MENU`,
   GET_TOKEN_USD_VALUE: `${REDUX_PREFIX}GET_TOKEN_USD_VALUE`,
 };
+
+function fetchData(url, type) {
+  return dispatch => {
+    dispatch({ type, payload: { fetching: true } });
+    return fetch(url)
+      .then(res =>
+        res
+          .json()
+          .then(json => ({ json, res }))
+          .catch(() => {
+            throw res.statusText;
+          })
+      )
+      .then(({ json, res }) => {
+        if (res.status === 200) {
+          return dispatch({
+            type,
+            payload: {
+              data: json,
+              fetching: false,
+              error: null,
+              updated: new Date(),
+            },
+          });
+        }
+
+        throw json;
+      })
+      .catch(error => dispatch({ type, payload: { fetching: false, error } }));
+  };
+}
 
 function fetchConfig(contract, config, type) {
   return dispatch => {
@@ -93,8 +124,6 @@ export function setAuthentationStatus(payload) {
   };
 }
 
-export function getTokenUsdValue(payload) {
-  return dispatch => {
-    dispatch({ type: actions.GET_TOKEN_USD_VALUE, payload });
-  };
+export function getTokenUsdValue() {
+  return fetchData(CMC_ENDPOINT, actions.GET_TOKEN_USD_VALUE);
 }

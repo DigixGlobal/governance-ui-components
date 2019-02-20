@@ -16,10 +16,8 @@ import {
 import {
   setAuthentationStatus,
   showHideAlert,
-  showSignChallenge,
   showHideWalletOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { getChallenge, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import { Container } from './style';
 import { TransparentOverlay, DrawerContainer } from '../../common-styles';
@@ -43,66 +41,6 @@ export class Wallet extends React.Component {
     this._isMounted = true;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(nextProps, this.props)) {
-      const {
-        AddressDetails,
-        Challenge,
-        getChallengeAction,
-        ChallengeProof,
-        isAuthenticated,
-      } = nextProps;
-      if (!AddressDetails.data.address) return;
-      const hasChallenge = Challenge.data;
-      const hasProof = (ChallengeProof.data && ChallengeProof.data.client) || this.state.signed;
-
-      if (AddressDetails && AddressDetails.data) {
-        if (Challenge.fetching === null || Challenge.error) {
-          getChallengeAction(AddressDetails.data.address);
-        }
-      }
-
-      if (hasChallenge && !hasProof && !isAuthenticated) {
-        const message = Challenge.data.challenge;
-        const network = this.props.defaultNetworks[0];
-        const caption =
-          'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
-        const signMessage = new Promise(resolve =>
-          resolve(
-            this.props.showSigningModal({
-              txData: { message, caption },
-              network,
-            })
-          )
-        );
-        signMessage.then(signature => {
-          const {
-            data: { address },
-          } = AddressDetails;
-
-          if (this._isMounted) {
-            this.setState({ signed: true });
-          }
-          if (this.state.proving) return;
-          return this.props
-            .proveChallengeAction({
-              address,
-              challengeId: Challenge.data.id,
-              message,
-              signature: signature.signedTx,
-            })
-            .then(
-              this.setState({ proving: true }, () => {
-                this.props.setAuthentationStatus(true);
-              })
-            );
-        });
-      } else {
-        this.props.showSignChallenge(false);
-      }
-    }
-  }
-
   shouldComponentUpdate = (nextProps, nextState) =>
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
@@ -119,8 +57,14 @@ export class Wallet extends React.Component {
 
   render() {
     const { stage } = this.state;
-    const { showWallet, isAuthenticated, ...rest } = this.props;
-    if (!showWallet || !showWallet.show) return null;
+    const { showWallet, isAuthenticated, addressDetails, ...rest } = this.props;
+
+    const details = addressDetails.data;
+    const hasParticipated = details
+      ? details.isParticipant || details.lastParticipatedQuarter > 0
+      : false;
+
+    if (!showWallet || !showWallet.show || hasParticipated) return null;
     return (
       <Container>
         <TransparentOverlay />
@@ -134,7 +78,7 @@ export class Wallet extends React.Component {
           {stage === Stage.LoadingWallet && !isAuthenticated && (
             <LoadWallet {...rest} onChangeStage={this.updateStage} />
           )}
-          {(stage === Stage.WalletLoaded || isAuthenticated) && (
+          {!hasParticipated && (stage === Stage.WalletLoaded || isAuthenticated) && (
             <ConnectedWallet
               {...rest}
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}
@@ -148,52 +92,34 @@ export class Wallet extends React.Component {
 
 const { func, object, bool, array } = PropTypes;
 Wallet.propTypes = {
-  signChallenge: object,
-  Challenge: object,
-  ChallengeProof: object,
+  addressDetails: object,
   showWallet: object,
   isAuthenticated: bool,
   defaultNetworks: array.isRequired,
-  AddressDetails: object,
-  getChallengeAction: func.isRequired,
-  showSigningModal: func.isRequired,
   showHideAlert: func.isRequired,
-  setAuthentationStatus: func.isRequired,
-  showSignChallenge: func.isRequired,
   showHideWalletOverlay: func.isRequired,
-  proveChallengeAction: func.isRequired,
 };
 
 Wallet.defaultProps = {
-  signChallenge: undefined,
   showWallet: undefined,
+  addressDetails: undefined,
   isAuthenticated: false,
-  Challenge: undefined,
-  ChallengeProof: undefined,
-  AddressDetails: undefined,
 };
 
 const actions = {
   createKeystore,
   updateKeystore,
   deleteKeystore,
-  getChallengeAction: getChallenge,
-  proveChallengeAction: proveChallenge,
-  showSigningModal: showMsgSigningModal,
   showHideAlert,
   setAuthentationStatus,
-  showSignChallenge,
   showHideWalletOverlay,
 };
 
 const mapStateToProps = state => ({
   defaultNetworks: getDefaultNetworks(state),
-  AddressDetails: state.infoServer.AddressDetails,
-  signChallenge: state.govUI.SignChallenge,
-  Challenge: state.daoServer.Challenge,
-  ChallengeProof: state.daoServer.ChallengeProof,
   showWallet: state.govUI.ShowWallet,
   isAuthenticated: state.govUI.isAuthenticated,
+  addressDetails: state.infoServer.AddressDetails,
 });
 
 export default web3Connect(

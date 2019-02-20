@@ -47,12 +47,17 @@ class LandingPage extends React.PureComponent {
   };
 
   componentWillReceiveProps = (nextProps, nextState) => {
-    const { ChallengeProof } = nextProps;
-    if (ChallengeProof.data && ChallengeProof.data.client && !this.state.loadingLikes) {
-      this.setState({ loadingLikes: true }, () => {
-        this.getLikeStatus();
-      });
-    }
+    // const { ChallengeProof, AddressDetails } = nextProps;
+    // if (
+    //   AddressDetails.data.address &&
+    //   ChallengeProof.data &&
+    //   ChallengeProof.data.client &&
+    //   !this.state.loadingLikes
+    // ) {
+    //   this.setState({ loadingLikes: true }, () => {
+    //     this.getLikeStatus();
+    //   });
+    // }
   };
 
   onOrderChange = order => {

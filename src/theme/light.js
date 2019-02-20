@@ -77,7 +77,7 @@ const red = {
   light: redHex.lighten(0.5),
   lighter: redHex.lighten(0.8),
   lightest: redHex.lighten(1.9),
-  fade: redHex.fade(0.8),
+  fade: redHex.fade(0.9),
 };
 
 const greenHex = Color('#417505');

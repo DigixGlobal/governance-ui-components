@@ -24,6 +24,7 @@ import Profile from '@digix/gov-ui/pages/user/profile';
 import Help from '@digix/gov-ui/pages/help';
 import Wallet from '@digix/gov-ui/pages/user/wallet';
 import KycOfficerDashboard from '@digix/gov-ui/pages/kyc/officer';
+import ForumOfficerDashboard from '@digix/gov-ui/pages/forum/officer';
 
 import lightTheme from '@digix/gov-ui/theme/light';
 
@@ -74,6 +75,11 @@ export class Governance extends React.Component {
               <AuthenticatedRoute
                 path="/kyc/admin"
                 component={withHeaderAndPanel(KycOfficerDashboard)}
+                isAuthenticated={isAuthenticated}
+              />
+              <AuthenticatedRoute
+                path="/forum/admin"
+                component={withHeaderAndPanel(ForumOfficerDashboard)}
                 isAuthenticated={isAuthenticated}
               />
               <AuthenticatedRoute

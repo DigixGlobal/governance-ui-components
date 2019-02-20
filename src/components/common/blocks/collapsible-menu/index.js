@@ -26,34 +26,52 @@ import { getUserStatus } from '@digix/gov-ui/utils/helpers';
 
 const DEFAULT_MENU = [
   {
-    kind: 'home',
-    caption: 'Home',
+    icon: 'home',
+    title: 'Home',
     url: '/',
     public: true,
   },
   {
-    kind: 'wallet',
-    caption: 'Wallet',
+    icon: 'wallet',
+    title: 'Wallet',
     url: '/wallet',
     public: false,
   },
   {
-    kind: 'profile',
-    caption: 'Profile',
+    icon: 'profile',
+    title: 'Profile',
     url: '/profile',
     public: false,
   },
   {
-    kind: 'history',
-    caption: 'Transaction History',
+    icon: 'history',
+    title: 'Transaction History',
     url: '/history',
     public: false,
   },
   {
-    kind: 'product',
-    caption: 'Help / DAO Tour',
+    icon: 'product',
+    title: 'Help / DAO Tour',
     url: '/help',
     public: true,
+  },
+];
+
+const ADMIN_MENU = [
+  {
+    icon: 'dashboard',
+    title: 'KYC Dashboard',
+    url: '/kyc/admin',
+    requirement: 'isKycOfficer',
+  },
+  {
+    // FIXME (for CSS): change to appropriate icon
+    icon: 'face',
+    title: 'Admin',
+    url: '/forum/admin',
+
+    // FIXME (for javascript): change to proper requirement (isForumOfficer?) once it's implemented in the dao-server
+    requirement: 'isKycOfficer',
   },
 ];
 
@@ -92,34 +110,35 @@ class CollapsibleMenu extends React.Component {
     }
 
     return (
-      <MenuItem key={item.caption} selected={samePath}>
+      <MenuItem key={item.title} selected={samePath}>
         <Link to={item.url} href={item.url}>
-          <Icon kind={item.kind} theme={theme || lightTheme} selected={samePath} />
-          <span>{item.caption}</span>
+          <Icon kind={item.icon} theme={theme || lightTheme} selected={samePath} />
+          <span>{item.title}</span>
         </Link>
       </MenuItem>
     );
   };
 
-  renderKycOfficerMenu = () => (
+  renderAdminMenuItem = menu => (
     <Query query={fetchUserQuery}>
       {({ loading, error, data }) => {
-        if (loading) {
+        const isAllowed = data.currentUser && data.currentUser[menu.requirement];
+        if (loading || error || !isAllowed) {
           return null;
         }
 
-        if (error) {
-          return null;
-        }
-        const samePath = this.props.location.pathname.toLowerCase() === '/kyc/admin';
-        return data.currentUser !== null && data.currentUser.isKycOfficer ? (
+        const path = menu.url;
+        const currentPath = this.props.location.pathname.toLowerCase();
+        const samePath = currentPath === path;
+
+        return (
           <MenuItem selected={samePath}>
-            <Link to="/kyc/admin" href="/kyc/admin">
-              <Icon kind="dashboard" theme={this.props.theme || lightTheme} selected={samePath} />
-              <span>KYC Dashboard</span>
+            <Link to={path} href={path}>
+              <Icon kind={menu.icon} theme={this.props.theme || lightTheme} selected={samePath} />
+              <span>{menu.title}</span>
             </Link>
           </MenuItem>
-        ) : null;
+        );
       }}
     </Query>
   );
@@ -129,6 +148,7 @@ class CollapsibleMenu extends React.Component {
     const userType = getUserStatus(addressDetails.data);
     const menu = menuItems || DEFAULT_MENU;
     const menuItemElements = menu.map(item => this.renderMenuItem(item));
+    const adminMenuItems = ADMIN_MENU.map(item => this.renderAdminMenuItem(item));
 
     return (
       <Menu
@@ -151,7 +171,7 @@ class CollapsibleMenu extends React.Component {
           )}
           <MenuList>
             {menuItemElements}
-            {ChallengeProof.data && this.renderKycOfficerMenu()}
+            {ChallengeProof.data && adminMenuItems}
           </MenuList>
         </MenuContainer>
       </Menu>

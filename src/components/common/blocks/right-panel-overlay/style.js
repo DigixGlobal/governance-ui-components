@@ -13,4 +13,9 @@ export const Container = styled.div`
 export const CloseButton = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 3rem;
+  cursor: pointer;
+  position: absolute;
+  right: 6rem;
+  pointer-events: all;
 `;

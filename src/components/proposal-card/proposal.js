@@ -30,14 +30,14 @@ import {
 class Proposal extends React.Component {
   componentWillMount = () => {
     const { getUserProposalLikeStatusAction, ChallengeProof, details } = this.props;
-    if (ChallengeProof.data) {
-      getUserProposalLikeStatusAction({
-        proposalId: details.proposalId,
-        client: ChallengeProof.data.client,
-        token: ChallengeProof.data['access-token'],
-        uid: ChallengeProof.data.uid,
-      });
-    }
+    // if (ChallengeProof.data) {
+    //   getUserProposalLikeStatusAction({
+    //     proposalId: details.proposalId,
+    //     client: ChallengeProof.data.client,
+    //     token: ChallengeProof.data['access-token'],
+    //     uid: ChallengeProof.data.uid,
+    //   });
+    // }
   };
 
   shouldComponentUpdate = (nextProps, nextState) =>

@@ -15,7 +15,6 @@ export const actions = {
   SET_AUTHENTICATION_STATUS: `${REDUX_PREFIX}SET_AUTHENTICATION_STATUS`,
 
   SHOW_LEFT_MENU: `${REDUX_PREFIX}SHOW_LEFT_MENU`,
-
 };
 
 function fetchConfig(contract, config, type) {
@@ -41,9 +40,9 @@ export function fetchConfigPreproposalCollateral(contract, config) {
   return fetchConfig(contract, config, actions.GET_CONFIG_PREPROPOSAL_COLLATERAL);
 }
 
-export function showHideLockDgdOverlay(show, onSuccess) {
+export function showHideLockDgdOverlay(show, onSuccess, source) {
   return dispatch => {
-    dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show, onSuccess } });
+    dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show, onSuccess, source } });
   };
 }
 

@@ -47,6 +47,10 @@ class Wallet extends React.Component {
     });
   };
 
+  showLockDgdOverlay() {
+    this.props.showHideLockDgdOverlay(true, this.onLockDgd, 'Wallet Page');
+  }
+
   showUnlockDgdOverlay() {
     const { lockedDgd } = this.props;
     this.props.showRightPanel({
@@ -86,7 +90,7 @@ class Wallet extends React.Component {
               primary
               data-digix="Wallet-LockDgd"
               disabled={!canLockDgd}
-              onClick={() => this.props.showHideLockDgdOverlay(true, this.onLockDgd)}
+              onClick={() => this.showLockDgdOverlay()}
             >
               Lock DGD
             </Button>

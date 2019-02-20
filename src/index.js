@@ -30,6 +30,9 @@ import lightTheme from '@digix/gov-ui/theme/light';
 
 import withHeaderAndPanel from '@digix/gov-ui/hocs/withHeaderAndPanel';
 
+import ReactGA from 'react-ga';
+import Analytics from '@digix/gov-ui/analytics';
+
 registerReducers({
   infoServer: { src: infoServerReducer },
   daoServer: { src: daoServerReducer },
@@ -44,6 +47,11 @@ const AuthenticatedRoute = ({ component: Component, isAuthenticated, ...rest }) 
   />
 );
 export class Governance extends React.Component {
+  componentDidMount() {
+    Analytics.init();
+    ReactGA.pageview(window.location.pathname);
+  }
+
   render() {
     const { isAuthenticated } = this.props;
     return (

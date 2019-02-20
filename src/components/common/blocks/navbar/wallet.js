@@ -15,8 +15,12 @@ class WalletButton extends React.Component {
     this.props.showHideWalletOverlay(true);
   };
 
+  showLockDgdOverlay = () => {
+    this.props.showHideLockDgd(true, null, 'Header');
+  };
+
   render() {
-    const { defaultAddress, showHideLockDgd, canLockDgd } = this.props;
+    const { defaultAddress, canLockDgd } = this.props;
 
     return (
       <WalletWrapper>
@@ -37,7 +41,7 @@ class WalletButton extends React.Component {
             primary
             small
             data-digix="Header-LockDgd"
-            onClick={() => showHideLockDgd(true)}
+            onClick={() => this.showLockDgdOverlay()}
           >
             Lock DGD
           </Button>

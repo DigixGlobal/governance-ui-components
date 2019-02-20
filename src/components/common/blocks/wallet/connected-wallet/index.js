@@ -53,8 +53,9 @@ class ConnectedWallet extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { defaultAddress } = this.props;
+    this._isMounted = true;
     if (defaultAddress && defaultAddress.address) {
       Promise.all([
         this.getEthBalance(),
@@ -68,8 +69,9 @@ class ConnectedWallet extends React.Component {
         if (hasParticipated && !this.showRenderApproval()) {
           this.props.showHideWalletOverlay(false);
         }
-
-        this.setState({ dgdBalance: dgd, ethBalance: eth });
+        if (this._isMounted) {
+          this.setState({ dgdBalance: dgd, ethBalance: eth });
+        }
       });
     }
 
@@ -78,6 +80,10 @@ class ConnectedWallet extends React.Component {
 
   shouldComponentUpdate = (nextProps, nextState) =>
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   getMaxAllowance = () => {
     const { defaultAddress, web3Redux } = this.props;
@@ -118,6 +124,8 @@ class ConnectedWallet extends React.Component {
         .then(balance => parseBigNumber(balance, 18));
     }
   }
+
+  _isMounted = false;
 
   handleApprove = () => {
     const { web3Redux, challengeProof, addresses } = this.props;

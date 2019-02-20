@@ -212,10 +212,10 @@ class Proposal extends React.Component {
           )}
           <Header>
             <div>
-              <Button kind="tag" fill>
+              <Button kind="tag" filled>
                 Special
               </Button>
-              <Button kind="tag" icon>
+              <Button kind="tag" showIcon>
                 {proposalDetails.data.stage}
               </Button>
               <Title primary>{dijixObject.title}</Title>

@@ -16,9 +16,7 @@ export const WalletAddress = styled.div`
     min-width: 10rem;
   }
 `;
-export const WalletDetails = styled.div`
-  ${Card};
-
+export const WalletDetails = styled(Card)`
   ${media.mobile`flex-direction: column;`};
 `;
 export const WalletItem = styled.div`
@@ -47,8 +45,7 @@ export const Title = styled.div`
   font-size: 2rem;
   margin-bottom: 2rem;
 `;
-export const Content = styled.div`
-  ${Card};
+export const Content = styled(Card)`
   flex-direction: column;
   flex: 1 0 auto;
 `;

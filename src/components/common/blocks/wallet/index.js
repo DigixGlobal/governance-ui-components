@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
-import { showMsgSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { connect } from 'react-redux';
 
 import {
@@ -27,22 +25,17 @@ import ConnectedWallet from './connected-wallet';
 
 import { Stage } from './constants';
 
-export class Wallet extends React.Component {
+export class Wallet extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       stage: Stage.Intro,
-      signed: false,
-      proving: false,
     };
   }
 
   componentDidMount() {
     this._isMounted = true;
   }
-
-  shouldComponentUpdate = (nextProps, nextState) =>
-    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   componentWillUnmount() {
     this._isMounted = false;
@@ -63,8 +56,11 @@ export class Wallet extends React.Component {
     const hasParticipated = details
       ? details.isParticipant || details.lastParticipatedQuarter > 0
       : false;
+    const showConnectedWallet =
+      !hasParticipated && stage === Stage.WalletLoaded && !isAuthenticated;
 
-    if (!showWallet || !showWallet.show || hasParticipated) return null;
+    if ((!showWallet || !showWallet.show || hasParticipated) && !showConnectedWallet) return null;
+
     return (
       <Container>
         <TransparentOverlay />
@@ -78,7 +74,7 @@ export class Wallet extends React.Component {
           {stage === Stage.LoadingWallet && !isAuthenticated && (
             <LoadWallet {...rest} onChangeStage={this.updateStage} />
           )}
-          {!hasParticipated && (stage === Stage.WalletLoaded || isAuthenticated) && (
+          {showConnectedWallet && (
             <ConnectedWallet
               {...rest}
               onClose={() => this.props.showHideWalletOverlay(!showWallet)}

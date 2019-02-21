@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
@@ -10,17 +10,17 @@ import {
   getAddressDetailsVanilla,
   setAddressDetails,
 } from '@digix/gov-ui/reducers/info-server/actions';
-import { getTokenUsdValue, setAuthentationStatus } from '@digix/gov-ui/reducers/gov-ui/actions';
+import {
+  getTokenUsdValue,
+  setAuthentationStatus,
+  showHideWalletOverlay,
+} from '@digix/gov-ui/reducers/gov-ui/actions';
 
 import { getChallengeVanilla, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
 
 class AddressWatcher extends React.PureComponent {
   state = {
-    addressDetails: undefined,
-    addressDetailsFetched: false,
-    isParticipant: false,
-    challengeFetched: false,
-    proofFetched: false,
+    verifyingUser: false,
   };
   componentDidMount = () => {
     const { defaultAddress } = this.props;
@@ -31,11 +31,11 @@ class AddressWatcher extends React.PureComponent {
 
   componentWillReceiveProps = nextProps => {
     const { defaultAddress, challengeProof } = nextProps;
+    const { verifyingUser } = this.state;
     const { address } = defaultAddress;
     const hasProof = challengeProof.data && challengeProof.data.client;
-    if (address && !this.state.addressDetailsFetched && !hasProof) {
-      console.log('proof', hasProof);
-      this.setState({ addressDetailsFetched: true });
+    if (address && !verifyingUser && !hasProof) {
+      this.setState({ verifyingUser: true });
       getAddressDetailsVanilla(address)
         .then(({ json: { result } }) => result)
         .then(details => {
@@ -66,52 +66,17 @@ class AddressWatcher extends React.PureComponent {
                   Promise.all([
                     this.props.setAuthentationStatus(true),
                     this.props.setAddressDetails(details),
+                    this.props.showHideWalletOverlay(false),
                   ]);
                 })
             );
           });
         });
     }
-
-    // const hasChallenge = challenge.data;
-    // const hasProof = challengeProof.data;
-
-    // if (addressDetails.data.address && !this.state.challengeFetched) {
-    //   if (!hasChallenge) {
-    //     this.setState({ challengeFetched: true }, () => this.props.getChallenge(address));
-    //   }
-    // }
-
-    // if (hasProof) this.props.setAuthentationStatus(true);
-
-    // if (hasChallenge && !hasProof && !this.state.proofFetched) {
-    //   this.setState({ proofFetched: true }, () => {
-    //     const message = challenge.data.challenge;
-    //     const network = this.props.defaultNetworks[0];
-    //     const caption =
-    //       'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
-    //     const signMessage = new Promise(resolve =>
-    //       resolve(
-    //         this.props.showMsgSigningModal({
-    //           txData: { message, caption },
-    //           network,
-    //         })
-    //       )
-    //     );
-    //     signMessage.then(signature =>
-    //       this.props.proveChallenge({
-    //         address,
-    //         challengeId: challenge.data.id,
-    //         message,
-    //         signature: signature.signedTx,
-    //       })
-    //     );
-    //   });
-    // }
   };
 
   render() {
-    return <div />;
+    return <Fragment />;
   }
 }
 
@@ -122,7 +87,7 @@ AddressWatcher.propTypes = {
   setAuthentationStatus: func.isRequired,
   setAddressDetails: func.isRequired,
   getTokenUsdValue: func.isRequired,
-  // getChallenge: func.isRequired,
+  showHideWalletOverlay: func.isRequired,
   showMsgSigningModal: func.isRequired,
   proveChallenge: func.isRequired,
 };
@@ -132,10 +97,10 @@ AddressWatcher.defaultProps = {
 };
 const mapStateToProps = state => ({
   defaultNetworks: getDefaultNetworks(state),
+  defaultAddress: getDefaultAddress(state),
   addressDetails: state.infoServer.AddressDetails,
   challenge: state.daoServer.Challenge,
   challengeProof: state.daoServer.ChallengeProof,
-  defaultAddress: getDefaultAddress(state),
 });
 
 export default connect(
@@ -143,7 +108,7 @@ export default connect(
   {
     setAddressDetails,
     getTokenUsdValue,
-    // getChallenge,
+    showHideWalletOverlay,
     setAuthentationStatus,
     showMsgSigningModal,
     proveChallenge,

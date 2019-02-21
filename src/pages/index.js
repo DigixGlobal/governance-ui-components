@@ -25,13 +25,11 @@ class LandingPage extends React.PureComponent {
     super(props);
     this.state = {
       order: 'latest',
-      loadingLikes: false,
     };
   }
 
   componentWillMount = () => {
     const { AddressDetails, getDaoDetailsAction, getProposalsAction, ChallengeProof } = this.props;
-
     getDaoDetailsAction();
     getProposalsAction();
     this.getProposalLikes(undefined, ChallengeProof);
@@ -44,20 +42,6 @@ class LandingPage extends React.PureComponent {
     if (window.Cookiebot) {
       window.Cookiebot.show();
     }
-  };
-
-  componentWillReceiveProps = (nextProps, nextState) => {
-    // const { ChallengeProof, AddressDetails } = nextProps;
-    // if (
-    //   AddressDetails.data.address &&
-    //   ChallengeProof.data &&
-    //   ChallengeProof.data.client &&
-    //   !this.state.loadingLikes
-    // ) {
-    //   this.setState({ loadingLikes: true }, () => {
-    //     this.getLikeStatus();
-    //   });
-    // }
   };
 
   onOrderChange = order => {

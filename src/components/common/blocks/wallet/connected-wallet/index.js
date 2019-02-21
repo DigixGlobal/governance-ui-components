@@ -215,8 +215,19 @@ class ConnectedWallet extends React.Component {
   );
 
   renderDefault = () => {
-    const { defaultAddress, enableLockDgd } = this.props;
+    const { defaultAddress, enableLockDgd, tokenUsdValues } = this.props;
     const { dgdBalance, ethBalance } = this.state;
+
+    const tokensInUsd = tokenUsdValues && tokenUsdValues.data ? tokenUsdValues.data : undefined;
+
+    let dgdInUsd = dgdBalance !== 0 ? dgdBalance.replace(',', '') : dgdBalance;
+    let ethInUsd = ethBalance !== 0 ? ethBalance.replace(',', '').replace('...', '') : ethBalance;
+    if (dgdInUsd > 0 && tokensInUsd && tokensInUsd.DGD)
+      dgdInUsd = Number(dgdInUsd) * Number(tokensInUsd.DGD.USD);
+
+    if (ethInUsd > 0 && tokensInUsd && tokensInUsd.ETH)
+      ethInUsd = Number(ethInUsd) * Number(tokensInUsd.ETH.USD);
+
     return (
       <Fragment>
         <CloseButtonWithHeader>
@@ -238,7 +249,9 @@ class ConnectedWallet extends React.Component {
                 <span>ETH</span>
               </TokenValue>
               <UsdEquivalent>
-                0.0
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  ethInUsd
+                )}
                 <span>USD</span>
               </UsdEquivalent>
             </TokenDetails>
@@ -252,7 +265,12 @@ class ConnectedWallet extends React.Component {
                 {dgdBalance || 0}
                 <span>DGD</span>
               </TokenValue>
-              <UsdEquivalent>0.0 USD</UsdEquivalent>
+              <UsdEquivalent>
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  dgdInUsd
+                )}{' '}
+                USD
+              </UsdEquivalent>
             </TokenDetails>
           </TokenInfo>
           <Button kind="round" primary fluid>
@@ -319,6 +337,7 @@ ConnectedWallet.propTypes = {
   showTxSigningModal: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   defaultAddress: object.isRequired,
+  tokenUsdValues: object,
   web3Redux: object.isRequired,
   addressMaxAllowance: oneOfType([number, object]),
   challengeProof: object.isRequired,
@@ -329,6 +348,7 @@ ConnectedWallet.propTypes = {
 ConnectedWallet.defaultProps = {
   AddressDetails: undefined,
   addressMaxAllowance: undefined,
+  tokenUsdValues: undefined,
   DaoDetails: {
     data: {
       isGlobalRewardsSet: false,
@@ -345,6 +365,7 @@ const mapStateToProps = state => ({
   lockDgdOverlay: state.govUI.lockDgdOverlay,
   addressMaxAllowance: state.govUI.addressMaxAllowance,
   challengeProof: state.daoServer.ChallengeProof,
+  tokenUsdValues: state.govUI.tokenUsdValues,
   DaoDetails: state.infoServer.DaoDetails,
   addresses: getAddresses(state),
   enableLockDgd: state.govUI.CanLockDgd,

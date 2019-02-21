@@ -83,7 +83,6 @@ export default function(state = defaultState, action) {
         },
       };
     case actions.GET_ADDRESS_DETAILS: {
-      console.log({ payload: action.payload });
       return {
         ...state,
         AddressDetails: {

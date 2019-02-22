@@ -30,6 +30,7 @@ export class Wallet extends React.PureComponent {
     super(props);
     this.state = {
       stage: Stage.Intro,
+      lockingDgd: false,
     };
   }
 
@@ -48,8 +49,13 @@ export class Wallet extends React.PureComponent {
     }
   };
 
+  handleCloseConnectedWallet = () => {
+    this.setState({ lockingDgd: true }, () =>
+      this.props.showHideWalletOverlay(this.props.showWallet)
+    );
+  };
   render() {
-    const { stage } = this.state;
+    const { stage, lockingDgd } = this.state;
     const { showWallet, isAuthenticated, addressDetails, ...rest } = this.props;
 
     const details = addressDetails.data;
@@ -57,9 +63,9 @@ export class Wallet extends React.PureComponent {
       ? details.isParticipant || details.lastParticipatedQuarter > 0
       : false;
     const showConnectedWallet =
-      !hasParticipated && stage === Stage.WalletLoaded && !isAuthenticated;
+      !hasParticipated && stage === Stage.WalletLoaded && !isAuthenticated && !lockingDgd;
 
-    if ((!showWallet || !showWallet.show) && !showConnectedWallet) return null;
+    if ((!showWallet || !showWallet.show || lockingDgd) && !showConnectedWallet) return null;
 
     return (
       <Container>
@@ -75,10 +81,7 @@ export class Wallet extends React.PureComponent {
             <LoadWallet {...rest} onChangeStage={this.updateStage} />
           )}
           {showConnectedWallet && (
-            <ConnectedWallet
-              {...rest}
-              onClose={() => this.props.showHideWalletOverlay(!showWallet)}
-            />
+            <ConnectedWallet {...rest} onClose={() => this.handleCloseConnectedWallet()} />
           )}
         </DrawerContainer>
       </Container>

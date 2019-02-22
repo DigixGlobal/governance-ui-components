@@ -10,9 +10,7 @@ export const Title = styled(H1)`
   font-family: 'Futura PT Book', sans-serif;
 `;
 
-export const SummaryReport = styled.div`
-  ${Card};
-`;
+export const SummaryReport = styled(Card)``;
 export const ReportItem = styled.div``;
 
 export const CTAContainer = styled.div`

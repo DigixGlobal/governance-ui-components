@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { Card } from '../../common-styles';
 
-export const SnackbarContainer = styled.div`
-  ${Card};
+export const SnackbarContainer = styled(Card)`
   justify-content: space-between;
   background-color: ${props => props.theme.backgroundPrimary.default.toString()};
   padding: 0 3rem;

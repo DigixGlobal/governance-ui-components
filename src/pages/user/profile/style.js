@@ -25,9 +25,7 @@ export const UserData = styled.span`
   margin-right: 1rem;
 `;
 
-export const RewardSummary = styled.div`
-  ${Card};
-
+export const RewardSummary = styled(Card)`
   color: ${props => props.theme.textPrimary.default.toString()};
   font-family: 'Futura PT Medium', sans-serif;
   margin-bottom: 5rem;
@@ -60,8 +58,7 @@ export const ActivitySummary = styled.div`
   display: flex;
   ${media.mobile`flex-direction: column;`}
 `;
-export const ActivityItem = styled.div`
-  ${Card};
+export const ActivityItem = styled(Card)`
   color: ${props => props.theme.textPrimary.default.toString()};
   flex-direction: column;
   flex-grow: 1;
@@ -73,8 +70,7 @@ export const ActivityItem = styled.div`
     margin-right: 0;
   }
 `;
-export const Moderation = styled.div`
-  ${Card};
+export const Moderation = styled(Card)`
   color: ${props => props.theme.textPrimary.default.toString()};
   flex-direction: column;
   font-family: 'Futura PT Medium', sans-serif;

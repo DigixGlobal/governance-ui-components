@@ -157,9 +157,11 @@ export const Wrapper = css`
   display: flex;
 `;
 
-export const Card = css`
+export const Card = styled.div`
   display: flex;
+  flex-direction: ${props => (props.column ? 'column' : '')};
   flex-grow: 1;
+
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};

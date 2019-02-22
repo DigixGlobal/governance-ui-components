@@ -1,17 +1,17 @@
 import styled, { css } from 'styled-components';
-import { H1, H2, Container } from '../../components/common/common-styles';
-import { Button } from '../../components/common/elements/buttons/style';
+import { H1, H2, Container } from '@digix/gov-ui/components/common/common-styles';
+import { Icon } from '@digix/gov-ui/components/common/elements/index';
 
 export const ProposalsWrapper = styled.div``;
 
-export const BrowseVersionHistory = styled.div`
+export const VersionHistory = styled.div`
   ${Container}
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lightest.toString()};
   box-shadow: ${props => props.theme.boxShadow};
 
   justify-content: space-between;
-  margin-bottom: 7rem;
+  margin-bottom: 5rem;
   padding: 2rem 2.5rem;
   position: relative;
 
@@ -84,7 +84,7 @@ export const Header = styled.div`
   justify-content: space-between;
 `;
 
-export const CTAButtons = styled.div`
+export const CtaButtons = styled.div`
   display: flex;
   flex-wrap: nowrap;
 `;
@@ -119,11 +119,11 @@ export const InfoItem = styled.div`
 `;
 
 export const ItemTitle = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 `;
 
 export const Data = styled.div`
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: ${props => props.theme.textPrimary.default.toString()};
   span {
     &:not(:first-child) {
@@ -251,12 +251,8 @@ export const QuorumInfoCol = styled.div`
   }
 `;
 
-export const CloseButton = styled(Button)`
-  position: absolute;
-  background: #fff;
-  border: 0;
-  top: 10px;
-  right: 5px;
-  margin: 0;
-  padding: 1rem 1.5rem;
+export const WarningIcon = styled(Icon)`
+  margin: -1rem 1.5rem -1rem 0;
+  width: 3rem;
+  height: 3rem;
 `;

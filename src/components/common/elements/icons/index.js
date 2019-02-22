@@ -32,6 +32,7 @@ import Ethereum from './Ethereum';
 import Dgd from './DGD';
 import XMark from './XMark';
 import Alarm from './Alarm';
+import Warning from './Warning';
 
 const icons = {
   arrow: Arrow,
@@ -65,6 +66,7 @@ const icons = {
   dgd: Dgd,
   xmark: XMark,
   alarm: Alarm,
+  warning: Warning,
 };
 
 const Icon = props => {

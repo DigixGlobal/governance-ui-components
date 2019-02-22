@@ -212,11 +212,12 @@ class Proposal extends React.Component {
             </VersionHistory>
           )}
 
-          <Notifications warning>
+          {/* NOTE: Use 'warning' props for the notification with blue see-through background box */}
+          {/* <Notifications warning>
             <WarningIcon kind="warning" />
             Your project was not approved by the moderators. To receive your deposit of ETH back,
             please claim the approval results.
-          </Notifications>
+          </Notifications> */}
 
           <Header>
             <div>

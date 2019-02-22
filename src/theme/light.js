@@ -23,7 +23,7 @@ const darkBlue = {
   light: darkBlueHex.lighten(1),
   lighter: darkBlueHex.lighten(1.5),
   lightest: darkBlueHex.lighten(2),
-  fade: darkBlueHex.fade(0.8),
+  fade: darkBlueHex.fade(0.85),
 };
 
 const goldHex = Color('#E3C88E');
@@ -171,8 +171,10 @@ const LightTheme = {
   alertMessage: {
     success: secondaryColor,
     error: red,
-    response: green,
+    warning: primaryColor,
     info: secondaryColor,
+
+    response: green,
   },
 
   transaction: {

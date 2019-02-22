@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import Like from '@digix/gov-ui/components/common/elements/like';
 import { getProposalDetails, getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import {
@@ -15,33 +15,34 @@ import {
 
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
-import PreviousVersion from './previous';
-import NextVersion from './next';
+import PreviousVersion from '@digix/gov-ui/pages/proposals/previous';
+import NextVersion from '@digix/gov-ui/pages/proposals/next';
 
-import ProjectDetails from './details';
-import Milestones from './milestones';
+import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
+import Milestones from '@digix/gov-ui/pages/proposals/milestones';
 
-import ParticipantButtons from './proposal-buttons/participants';
-import ModeratorButtons from './proposal-buttons/moderators';
+import ParticipantButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/participants';
+import ModeratorButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/moderators';
 
-import VotingResult from './voting-result';
+import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
+import CommentThread from '@digix/gov-ui/pages/proposals/comment';
 
-import CommentThread from './comment/index';
-
+import { Notifications } from '@digix/gov-ui/components/common/common-styles';
 import {
   ProposalsWrapper,
-  BrowseVersionHistory,
+  VersionHistory,
   ProjectSummary,
   Header,
   Title,
-  CTAButtons,
+  CtaButtons,
   FundingSummary,
   SummaryInfo,
   InfoItem,
   Upvote,
   ItemTitle,
   Data,
-} from './style';
+  WarningIcon,
+} from '@digix/gov-ui/pages/proposals/style';
 
 class Proposal extends React.Component {
   constructor(props) {
@@ -194,7 +195,7 @@ class Proposal extends React.Component {
       <ProposalsWrapper>
         <ProjectSummary>
           {versions && versions.length > 1 && (
-            <BrowseVersionHistory>
+            <VersionHistory>
               <PreviousVersion
                 disabled={currentVersion === 0}
                 onClick={this.handlePreviousVersionClick}
@@ -204,8 +205,16 @@ class Proposal extends React.Component {
                 disabled={currentVersion + 1 === versionCount}
                 onClick={this.handleNextVersionClick}
               />
-            </BrowseVersionHistory>
+            </VersionHistory>
           )}
+
+          {/* NOTE: Use 'warning' props for the notification with blue see-through background box */}
+          {/* <Notifications warning>
+            <WarningIcon kind="warning" />
+            Your project was not approved by the moderators. To receive your deposit of ETH back,
+            please claim the approval results.
+          </Notifications> */}
+
           <Header>
             <div>
               <Button kind="tag" filled>
@@ -216,7 +225,7 @@ class Proposal extends React.Component {
               </Button>
               <Title primary>{dijixObject.title}</Title>
             </div>
-            <CTAButtons>
+            <CtaButtons>
               <ParticipantButtons
                 isProposer={isProposer}
                 proposal={proposalDetails}
@@ -229,7 +238,7 @@ class Proposal extends React.Component {
                 addressDetails={addressDetails}
                 history={history}
               />
-            </CTAButtons>
+            </CtaButtons>
           </Header>
           <FundingSummary>
             <SummaryInfo>

@@ -19,6 +19,7 @@ import {
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import Snackbar from '@digix/gov-ui/components/common/elements/snackbar/index';
+import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 
 class LandingPage extends React.PureComponent {
   constructor(props) {
@@ -123,10 +124,12 @@ class LandingPage extends React.PureComponent {
       return proposal.liked;
     };
 
-    const getProposer = proposalId => {
+    const getProposer = (proposalId, proposer) => {
       if (!ProposalLikes.data) return '';
       const proposal = ProposalLikes.data.find(p => p.proposalId === proposalId);
-      if (!proposal) return '';
+      if (!proposal && proposer === AddressDetails.data.address)
+        return renderDisplayName('Proposer-DisplayName');
+      else if (!proposal) return '';
       return proposal.user.displayName;
     };
 
@@ -154,7 +157,7 @@ class LandingPage extends React.PureComponent {
               liked={checkIfLiked(proposal.proposalId)}
               likes={getLikesCount(proposal.proposalId)}
               proposal={proposal}
-              displayName={getProposer(proposal.proposalId)}
+              displayName={getProposer(proposal.proposalId, proposal.proposer)}
               userDetails={AddressDetails}
             />
           ))}

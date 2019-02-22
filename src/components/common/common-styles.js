@@ -212,12 +212,16 @@ export const DrawerContainer = styled.div`
 `;
 
 export const Notifications = styled.div`
-  font-family: 'Futura PT Book', sans-serif;
+  ${Container};
+  justify-content: ${props => (props.centered ? 'center' : '')};
+  align-items: center;
+
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
+  font-family: 'Futura PT Book', sans-serif;
+  font-size: 1.6rem;
   margin-bottom: 3rem;
   padding: 3rem;
-  text-align: center;
 
   h3 {
     font-size: 2rem;
@@ -257,9 +261,9 @@ export const Notifications = styled.div`
   ${props =>
     props.warning &&
     css`
-      background: ${props.theme.alertMessage.error.fade.toString()};
-      border: 1px solid ${props.theme.alertMessage.error.light.toString()};
-      color: ${props.theme.alertMessage.error.default.toString()};
+      background: ${props.theme.alertMessage.warning.fade.toString()};
+      border: 1px solid ${props.theme.alertMessage.warning.light.toString()};
+      color: ${props.theme.alertMessage.warning.default.toString()};
     `};
 
   ${props =>

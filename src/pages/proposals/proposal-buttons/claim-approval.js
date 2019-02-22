@@ -97,7 +97,7 @@ class ClaimApprovalButton extends React.Component {
       address: sourceAddress,
       contract,
       func: contract.claimDraftVotingResult,
-      params: [proposalId, toBigNumber(50)],
+      params: [proposalId, toBigNumber(MAX_PEOPLE_PER_CLAIM)],
       onFailure: this.setError,
       onFinally: txHash => onTransactionAttempt(txHash),
       onSuccess: txHash => onTransactionSuccess(txHash),

@@ -51,9 +51,15 @@ export class Wallet extends React.PureComponent {
 
   handleCloseConnectedWallet = () => {
     this.setState({ lockingDgd: true }, () =>
-      this.props.showHideWalletOverlay(this.props.showWallet)
+      this.props.showHideWalletOverlay(!this.props.showWallet)
     );
   };
+
+  handleCloseWallet = () => {
+    this.props.showHideWalletOverlay(!this.props.showWallet);
+    document.body.classList.remove('modal-is-open');
+  };
+
   render() {
     const { stage, lockingDgd } = this.state;
     const { showWallet, isAuthenticated, addressDetails, ...rest } = this.props;
@@ -72,13 +78,14 @@ export class Wallet extends React.PureComponent {
         <TransparentOverlay />
         <DrawerContainer>
           {stage === Stage.Intro && !isAuthenticated && (
-            <Intro
-              onClose={() => this.props.showHideWalletOverlay(!showWallet)}
-              onChangeStage={this.updateStage}
-            />
+            <Intro onClose={() => this.handleCloseWallet()} onChangeStage={this.updateStage} />
           )}
           {stage === Stage.LoadingWallet && !isAuthenticated && (
-            <LoadWallet {...rest} onChangeStage={this.updateStage} />
+            <LoadWallet
+              {...rest}
+              onChangeStage={this.updateStage}
+              onClose={() => this.handleCloseWallet()}
+            />
           )}
           {showConnectedWallet && (
             <ConnectedWallet {...rest} onClose={() => this.handleCloseConnectedWallet()} />

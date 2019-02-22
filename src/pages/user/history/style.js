@@ -58,8 +58,7 @@ export const HistoryListView = styled.div`
   flex-direction: column;
 `;
 
-export const HistoryCard = styled.div`
-  ${Card};
+export const HistoryCard = styled(Card)`
   margin-bottom: 2rem;
   padding: 1rem;
 `;

@@ -42,7 +42,6 @@ class AddressWatcher extends React.PureComponent {
     ) {
       this.setState({ verifyingUser: true });
 
-      console.log('address details not set');
       getAddressDetailsVanilla(address)
         .then(({ json: { result } }) => result)
         .then(details => {

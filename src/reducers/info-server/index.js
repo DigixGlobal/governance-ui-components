@@ -82,7 +82,7 @@ export default function(state = defaultState, action) {
                 .slice(0, 100),
         },
       };
-    case actions.GET_ADDRESS_DETAILS: {
+    case actions.GET_ADDRESS_DETAILS:
       return {
         ...state,
         AddressDetails: {
@@ -100,7 +100,7 @@ export default function(state = defaultState, action) {
                 .slice(0, 100),
         },
       };
-    }
+
     case actions.GET_PROPOSALS:
       return {
         ...state,

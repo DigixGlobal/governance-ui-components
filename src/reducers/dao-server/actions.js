@@ -135,11 +135,9 @@ export function getChallengeVanilla(address) {
         throw res.statusText;
       })
   );
-  // return postData(`${DAO_SERVER}/authorization?address=${address}`, actions.GET_CHALLENGE);
 }
 
 export function setChallenge(challenge) {
-  // return postData(`${DAO_SERVER}/authorization?address=${address}`, actions.GET_CHALLENGE);
   return {
     type: actions.GET_CHALLENGE,
     payload: {

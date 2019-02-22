@@ -59,7 +59,7 @@ export class Wallet extends React.PureComponent {
     const showConnectedWallet =
       !hasParticipated && stage === Stage.WalletLoaded && !isAuthenticated;
 
-    if ((!showWallet || !showWallet.show || hasParticipated) && !showConnectedWallet) return null;
+    if ((!showWallet || !showWallet.show) && !showConnectedWallet) return null;
 
     return (
       <Container>

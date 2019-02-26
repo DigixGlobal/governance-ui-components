@@ -8,7 +8,15 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import { dijixImageConfig, dijixPdfConfig, dijix } from '@digix/gov-ui/utils/dijix';
 import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
 
-import { Fieldset, FormItem, Label, MediaUploader, ImageHolder, LeftCol, RightCol } from './style';
+import {
+  Fieldset,
+  FormItem,
+  Label,
+  MediaUploader,
+  ImageHolder,
+  LeftCol,
+  RightCol,
+} from '@digix/gov-ui/pages/proposals/forms/style';
 
 class Multimedia extends React.Component {
   constructor(props) {

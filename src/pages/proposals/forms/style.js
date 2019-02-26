@@ -1,5 +1,10 @@
 import styled, { css } from 'styled-components';
-import { Container, FieldsetStyle, LabelStyle } from '../../../components/common/common-styles';
+import {
+  Container,
+  FieldsetStyle,
+  LabelStyle,
+} from '@digix/gov-ui/components/common/common-styles';
+import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const CreateWrapper = styled.div``;
 
@@ -66,23 +71,33 @@ export const MediaUploader = styled.div`
   border-radius: 3px;
   padding: 2rem;
 
+  ${media.mobile`
+    flex-direction: column;
+  `}
+
   & > div {
     flex: 1;
+    width: 100%;
   }
 `;
 
 export const ImageHolder = styled.div`
   background-color: ${props => props.theme.backgroundPrimary.default.toString()};
   border-radius: 3px;
-  min-width: 500px;
+  width: 100%;
   min-height: 200px;
   padding: 0.5rem;
   overflow: auto;
+
   & > img {
     height: auto;
     width: 100%;
     margin: 2px;
   }
+
+  ${media.mobile`
+    margin-top: 2rem;
+  `}
 `;
 
 export const CreateMilestone = styled.div`

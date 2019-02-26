@@ -1,11 +1,16 @@
 import styled, { css } from 'styled-components';
 import { ButtonGlobalStyles } from '@digix/gov-ui/components/common/elements/buttons/style';
+import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const UploadInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 2rem;
   width: 100%;
+
+  ${media.mobile`
+  margin-right: 0;
+  `}
 `;
 
 export const UploadInput = styled.input`

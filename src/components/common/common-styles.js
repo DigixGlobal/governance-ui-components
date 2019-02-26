@@ -221,7 +221,9 @@ export const Notifications = styled.div`
   font-family: 'Futura PT Book', sans-serif;
   font-size: 1.6rem;
   margin-bottom: 3rem;
-  padding: 3rem;
+  padding: 2rem 3rem;
+  flex-wrap: wrap;
+  white-space: pre-wrap;
 
   h3 {
     font-size: 2rem;
@@ -252,6 +254,11 @@ export const Notifications = styled.div`
     css`
       background: ${props.theme.alertMessage.error.fade.toString()};
       border: 1px solid ${props.theme.alertMessage.error.light.toString()};
+      color: ${props.theme.alertMessage.error.default.toString()};
+
+      .description {
+        color: ${props.theme.textDefault.default.toString()};
+      }
 
       h3 {
         color: ${props.theme.alertMessage.error.default.toString()};

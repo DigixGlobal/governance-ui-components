@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { ErrorCaption, Notifications } from '@digix/gov-ui/components/common/common-styles';
 import { TextArea, Input, Select } from '@digix/gov-ui/components/common/elements/index';
-import { ErrorCaption } from '@digix/gov-ui/components/common/common-styles';
-
-import { Fieldset, FormItem, Label, CreateMilestone } from './style';
+import {
+  Fieldset,
+  FormItem,
+  Label,
+  CreateMilestone,
+} from '@digix/gov-ui/pages/proposals/forms/style';
 
 class Milestones extends React.Component {
   constructor(props) {
@@ -106,6 +110,10 @@ class Milestones extends React.Component {
     const noOfMilestones = milestoneCount;
     return (
       <Fieldset>
+        <Notifications error>
+          Sum of <strong>Reward Expected</strong> and <strong>Milestone Fundings</strong> must not
+          exceed 20 ETH.
+        </Notifications>
         <FormItem>
           <Label>Reward Expected</Label>
           <Input

@@ -110,7 +110,7 @@ class Milestones extends React.Component {
     const noOfMilestones = milestoneCount;
     return (
       <Fieldset>
-        {/* Required for DGDG-311: Adds a `error` prop to the `<Notifications />` styled component to denote that it is an error message.  */}
+        {/* Required for DGDG-311: Adds an `error` prop to the `<Notifications />` styled component to denote that it is an error message.  */}
         {/* <Notifications error>
           Sum of <strong>Reward Expected</strong> and <strong>Milestone Fundings</strong> must not
           exceed 20 ETH.

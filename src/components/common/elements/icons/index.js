@@ -1,72 +1,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Arrow from './Arrow';
-import Close from './Close';
-import Face from './Face';
-import Check from './Check';
-import Dashboard from './Dashboard';
-// import DigixLogo from './Brand';
-import Magnifier from './Magnifier';
-import Menu from './Menu';
-import Notification from './Notification';
-import Ribbon from './Ribbon';
-import Home from './Home';
 import Activity from './Activity';
-import Wallet from './Wallet';
-import Profile from './Profile';
+import Alarm from './Alarm';
+import Arrow from './Arrow';
+import Check from './Check';
+import Close from './Close';
+import Dashboard from './Dashboard';
+import Dgd from './DGD';
+import Ethereum from './Ethereum';
+import Face from './Face';
 import Help from './Help';
 import History from './History';
-import Option from './Options';
-import Product from './product-tour';
+import Home from './Home';
+import ImToken from './ImToken';
 import JsonWallet from './JsonWallet';
 import Ledger from './Ledger';
 import Like from './Like';
+import Magnifier from './Magnifier';
+import Menu from './Menu';
 import Metamask from './Metamask';
+import Notification from './Notification';
+import Option from './Options';
+import Product from './product-tour';
+import Profile from './Profile';
 import Plus from './Plus';
 import Reply from './Reply';
+import Ribbon from './Ribbon';
 import Trash from './Trash';
 import Trezor from './Trezor';
-import ImToken from './ImToken';
-import Ethereum from './Ethereum';
-import Dgd from './DGD';
-import XMark from './XMark';
-import Alarm from './Alarm';
+import Wallet from './Wallet';
 import Warning from './Warning';
+import XMark from './XMark';
 
 const icons = {
-  arrow: Arrow,
-  close: Close,
-  face: Face,
-  check: Check,
-  dashboard: Dashboard,
-  // digixLogo: DigixLogo,
-  magnifier: Magnifier,
-  menu: Menu,
-  notification: Notification,
-  ribbon: Ribbon,
-  home: Home,
   activity: Activity,
-  wallet: Wallet,
-  profile: Profile,
+  alarm: Alarm,
+  arrow: Arrow,
+  check: Check,
+  close: Close,
+  dashboard: Dashboard,
+  dgd: Dgd,
+  ethereum: Ethereum,
+  face: Face,
   help: Help,
   history: History,
-  option: Option,
-  product: Product,
+  home: Home,
+  imtoken: ImToken,
   json: JsonWallet,
   ledger: Ledger,
   like: Like,
+  magnifier: Magnifier,
+  menu: Menu,
   metamask: Metamask,
+  notification: Notification,
+  option: Option,
+  product: Product,
+  profile: Profile,
   plus: Plus,
   reply: Reply,
+  ribbon: Ribbon,
   trash: Trash,
   trezor: Trezor,
-  imtoken: ImToken,
-  ethereum: Ethereum,
-  dgd: Dgd,
-  xmark: XMark,
-  alarm: Alarm,
+  wallet: Wallet,
   warning: Warning,
+  xmark: XMark,
 };
 
 const Icon = props => {

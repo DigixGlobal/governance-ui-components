@@ -230,6 +230,11 @@ export const Notifications = styled.div`
     margin-bottom: 2rem;
   }
 
+  h3 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
   span {
     font-family: 'Futura PT Medium', sans-serif;
   }
@@ -254,6 +259,17 @@ export const Notifications = styled.div`
     css`
       background: ${props.theme.alertMessage.error.fade.toString()};
       border: 1px solid ${props.theme.alertMessage.error.light.toString()};
+
+      h3 {
+        color: ${props.theme.alertMessage.error.default.toString()};
+      }
+    `};
+
+  ${props =>
+    props.warning &&
+    css`
+      background: ${props.theme.alertMessage.error.fade.toString()};
+      border: 1px solid ${props.theme.alertMessage.error.light.toString()};
       color: ${props.theme.alertMessage.error.default.toString()};
 
       .description {
@@ -271,6 +287,14 @@ export const Notifications = styled.div`
       background: ${props.theme.alertMessage.warning.fade.toString()};
       border: 1px solid ${props.theme.alertMessage.warning.light.toString()};
       color: ${props.theme.alertMessage.warning.default.toString()};
+    `};
+
+  ${props =>
+    props.info &&
+    css`
+      background: ${props.theme.textSecondary.fade.toString()};
+      border: 1px solid ${props.theme.alertMessage.info.light.toString()};
+      color: ${props.theme.alertMessage.info.default.toString()};
     `};
 
   ${props =>

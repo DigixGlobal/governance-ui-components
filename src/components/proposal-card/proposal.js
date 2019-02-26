@@ -103,8 +103,8 @@ class Proposal extends React.Component {
             </Button>
           </TagsContainer>
           <Description>
-            <H2>{proposalVersion.dijixObject.title}</H2>
-            <p>{proposalVersion.dijixObject.description}</p>
+            <H2>{proposalVersion ? proposalVersion.dijixObject.title : ''}</H2>
+            <p>{proposalVersion ? proposalVersion.dijixObject.description : ''}</p>
 
             {canCreate ? (
               <ProposalLink

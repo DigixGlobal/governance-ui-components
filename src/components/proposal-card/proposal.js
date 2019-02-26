@@ -87,7 +87,10 @@ class Proposal extends React.Component {
         ? userProposalLike.data
         : { liked, likes };
 
-    const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
+    const proposalVersion =
+      details.proposalVersions && details.proposalVersions.length > 0
+        ? details.proposalVersions[details.proposalVersions.length - 1]
+        : undefined;
     const canCreate = userDetails && userDetails.data.isParticipant;
     const canLike = userDetails && userDetails.data.address;
 

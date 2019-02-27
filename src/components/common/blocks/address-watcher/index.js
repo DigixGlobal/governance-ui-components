@@ -45,7 +45,7 @@ class AddressWatcher extends React.PureComponent {
       getAddressDetailsVanilla(address)
         .then(({ json: { result } }) => result)
         .then(details => {
-          if (!details.isParticipant) {
+          if (!details.isParticipant && !details.isKycOfficer) {
             this.props.setUserAddress(address);
             this.setState({ verifyingUser: false });
 

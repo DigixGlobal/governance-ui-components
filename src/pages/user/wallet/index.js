@@ -24,9 +24,8 @@ import {
   WalletWrapper,
   Heading,
   Address,
-  // TODO: for showing tokens
-  // WalletDetails,
-  // WalletItem,
+  WalletDetails,
+  WalletItem,
   QtrSummary,
   QtrParticipation,
   Title,
@@ -130,12 +129,38 @@ class Wallet extends React.Component {
           <span>Address:</span>
           <span data-digix="Wallet-Address">{address.address}</span>
         </Address>
-        {/* TODO: show tokens */}
-        {/* <WalletDetails>
-          <WalletItem>&nbsp;</WalletItem>
-          <WalletItem>&nbsp;</WalletItem>
-          <WalletItem>&nbsp;</WalletItem>
-        </WalletDetails> */}
+        <WalletDetails>
+          <WalletItem data-digix="Wallet-DGD-Balance">
+            <div>{dgdBalance} DGD</div>
+            <br />
+            <div>
+              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                dgdInUsd
+              )}{' '}
+              USD
+            </div>
+          </WalletItem>
+          <WalletItem data-digix="Wallet-DGX-Balance">
+            <div>{dgxBalance} DGX</div>
+            <br />
+            <div>
+              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                dgxInUsd
+              )}{' '}
+              USD
+            </div>
+          </WalletItem>
+          <WalletItem data-digix="Wallet-ETH-Balance">
+            <div>{ethBalance} ETH</div>
+            <br />
+            <div>
+              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                ethInUsd
+              )}{' '}
+              USD
+            </div>
+          </WalletItem>
+        </WalletDetails>
         <QtrSummary>
           <VotingStake lockedDgd={lockedDgd} stake={stake} />
           <ParticipationReward claimableDgx={claimableDgx} />

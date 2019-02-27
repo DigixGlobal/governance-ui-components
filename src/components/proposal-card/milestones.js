@@ -16,39 +16,43 @@ const determineDeadline = proposal => {
   let deadline = Date.now();
   const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
 
-  switch (proposal.stage.toLowerCase()) {
-    case 'draft':
-      if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
-        deadline = proposal.draftVoting.votingDeadline;
-      } else {
+  if (proposal.stage) {
+    switch (proposal.stage.toLowerCase()) {
+      case 'draft':
+        if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
+          deadline = proposal.draftVoting.votingDeadline;
+        } else {
+          return undefined;
+        }
+        break;
+      case 'proposal':
+        if (Date.now() < proposal.votingRounds[0].commitDeadline) {
+          deadline = proposal.votingRounds[0].commitDeadline || undefined;
+        }
+        deadline = proposal.votingRounds[0].revealDeadline;
+        break;
+      case 'ongoing':
         return undefined;
-      }
-      break;
-    case 'proposal':
-      if (Date.now() < proposal.votingRounds[0].commitDeadline) {
-        deadline = proposal.votingRounds[0].commitDeadline || undefined;
-      }
-      deadline = proposal.votingRounds[0].revealDeadline;
-      break;
-    case 'ongoing':
-      return undefined;
 
-    case 'review':
-      if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
-        deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
-      }
-      deadline = proposal.votingRounds[mileStone].revealDeadline;
-      break;
-    default:
-      deadline = proposal.votingRounds ? proposal.votingRounds[0].commitDeadline : undefined;
-      break;
+      case 'review':
+        if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
+          deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
+        }
+        deadline = proposal.votingRounds[mileStone].revealDeadline;
+        break;
+      default:
+        deadline = proposal.votingRounds ? proposal.votingRounds[0].commitDeadline : undefined;
+        break;
+    }
+  } else {
+    deadline = proposal.voting.revealDeadline; // TODO: this is intended for special proposals. We need to consider the CommitDeadline too
   }
-
   if (deadline) return new Intl.DateTimeFormat('en-US').format(deadline * 1000);
   return deadline;
 };
 
 const disableParticipateWhen = (proposal, user) => {
+  if (!proposal.stage) return true; // TODO: determine whether special proposals has a property we can use to check
   switch (proposal.stage.toLowerCase()) {
     case 'idea':
       return true;
@@ -75,7 +79,7 @@ export default class ProposalCardMilestone extends React.Component {
   render() {
     const { details, userDetails } = this.props;
     const { currentMilestone } = details;
-    const mileStones = Object.keys(currentMilestone);
+    const mileStones = currentMilestone ? Object.keys(currentMilestone) : [];
     const disabledParticipate = disableParticipateWhen(details, userDetails);
     return (
       <MilestonesWrapper>

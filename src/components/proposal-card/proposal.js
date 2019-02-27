@@ -70,7 +70,10 @@ class Proposal extends React.PureComponent {
         ? userProposalLike.data
         : { liked, likes };
 
-    const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
+    const proposalVersion =
+      details.proposalVersions && details.proposalVersions.length > 0
+        ? details.proposalVersions[details.proposalVersions.length - 1]
+        : undefined;
     const canCreate = userDetails && userDetails.data.isParticipant;
     const canLike = userDetails && userDetails.data.address;
 
@@ -83,8 +86,8 @@ class Proposal extends React.PureComponent {
             </Button>
           </TagsContainer>
           <Description>
-            <H2>{proposalVersion.dijixObject.title}</H2>
-            <p>{proposalVersion.dijixObject.description}</p>
+            <H2>{proposalVersion ? proposalVersion.dijixObject.title : ''}</H2>
+            <p>{proposalVersion ? proposalVersion.dijixObject.description : ''}</p>
 
             {canCreate ? (
               <ProposalLink

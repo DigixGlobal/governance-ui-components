@@ -1,29 +1,64 @@
 import styled from 'styled-components';
+import { Card } from '@digix/gov-ui/components/common/common-styles';
+import { media } from '@digix/gov-ui/components/common/breakpoints';
 
-export const Container = styled.div`
-  color: ${props => props.theme.textPrimary.default.toString()};
-  background-color: ${props => props.theme.backgroundDefault.default.toString()};
-  margin-bottom: 4rem;
-  padding: 2rem 4rem;
+export const UserStats = styled(Card)`
   text-transform: uppercase;
-  text-align: center;
-  border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-  box-shadow: ${props => props.theme.boxShadow};
+
+  ${media.mobile`
+      flex-direction: column;
+  `};
 `;
 
-export const Point = styled.div`
-  width: 33.33333%;
-  display: inline-block;
-  span {
-    margin-top: 1rem;
-    display: block;
-    font-family: 'Futura PT Medium';
-    font-size: 3.6rem;
-  }
-
+export const Item = styled.div`
   border-right: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+  display: inline-block;
+  padding-left: 5%;
+  flex: 1;
 
   :last-child {
     border-right: none;
   }
+
+  ${media.mobile`
+    border-right: none;
+    margin-bottom: 2rem;
+    padding-left: 0;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  `};
+`;
+
+export const Label = styled.div`
+  text-align: left;
+  ${media.mobile`
+    text-align: center;
+  `};
+`;
+
+export const Data = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  font-family: 'Futura PT Medium';
+  font-size: 3.6rem;
+  text-align: left;
+
+  span {
+    &.equiv {
+      font-family: 'Futura PT Book', sans-serif;
+      font-size: 1.4rem;
+      margin-left: 1rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  ${media.mobile`
+      flex-direction: column;
+      align-items: center;
+      margin-top: 0;
+  `};
 `;

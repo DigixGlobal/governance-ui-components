@@ -166,8 +166,8 @@ export const Card = styled.div`
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
-  margin-bottom: 3em;
-  padding: 3rem;
+  margin-bottom: 5rem;
+  padding: ${props => props.theme.cardPaddingX}rem ${props => props.theme.cardPaddingY}rem;
 `;
 
 export const CardItem = css`

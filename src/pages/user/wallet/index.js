@@ -17,14 +17,14 @@ import {
 import {
   WalletWrapper,
   Heading,
-  WalletAddress,
+  Address,
   // TODO: for showing tokens
   // WalletDetails,
   // WalletItem,
-  DigixDAO,
-  StakeRewards,
+  QtrSummary,
+  QtrParticipation,
   Title,
-  Content,
+  Detail,
   Label,
   Data,
   Desc,
@@ -51,22 +51,22 @@ class Wallet extends React.Component {
     return (
       <WalletWrapper>
         <Heading>Wallet</Heading>
-        <WalletAddress>
+        <Address>
           <span>Address:</span>
           <span data-digix="Wallet-Address">{address.address}</span>
-        </WalletAddress>
+        </Address>
         {/* TODO: show tokens */}
         {/* <WalletDetails>
           <WalletItem>&nbsp;</WalletItem>
           <WalletItem>&nbsp;</WalletItem>
           <WalletItem>&nbsp;</WalletItem>
         </WalletDetails> */}
-        <DigixDAO>
+        <QtrSummary>
           <VotingStake lockedDgd={lockedDgd} stake={stake} />
           <ParticipationReward claimableDgx={claimableDgx} />
-          <StakeRewards>
+          <QtrParticipation>
             <Title>DigixDAO Project Funding</Title>
-            <Content>
+            <Detail>
               <Label>Your Funding Amount</Label>
               <Data>
                 <span data-digix="Wallet-EthFund">{eth}</span>
@@ -80,9 +80,9 @@ class Wallet extends React.Component {
                   Claim Funding
                 </Button>
               </Actions>
-            </Content>
-          </StakeRewards>
-        </DigixDAO>
+            </Detail>
+          </QtrParticipation>
+        </QtrSummary>
       </WalletWrapper>
     );
   }

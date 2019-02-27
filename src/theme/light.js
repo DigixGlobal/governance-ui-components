@@ -95,6 +95,9 @@ const primaryColor = darkBlue;
 const secondaryColor = darkGold;
 const tertiaryColor = darkGray;
 
+const baseFontSize = '1rem';
+const basePaddingX = 1;
+const basePaddingY = 1;
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
 const transitionStyle = 'all .25s ease';
 const borderRadiusStyle = '0.25rem';
@@ -140,6 +143,8 @@ const LightTheme = {
 
   errorBorder: red.default,
 
+  fontSize: baseFontSize,
+
   iconDefaultColor: tertiaryColor,
   iconPrimaryColor: primaryColor,
   iconSecondaryColor: secondaryColor,
@@ -167,6 +172,8 @@ const LightTheme = {
 
   cardBorderColor: tertiaryColor,
   cardBorderColorHover: primaryColor,
+  cardPaddingX: basePaddingX * 3,
+  cardPaddingY: basePaddingY * 3,
 
   alertMessage: {
     success: secondaryColor,

@@ -23,13 +23,14 @@ import {
 import {
   WalletWrapper,
   Heading,
-  WalletAddress,
-  WalletDetails,
-  WalletItem,
-  DigixDAO,
-  StakeRewards,
+  Address,
+  // TODO: for showing tokens
+  // WalletDetails,
+  // WalletItem,
+  QtrSummary,
+  QtrParticipation,
   Title,
-  Content,
+  Detail,
   Label,
   Data,
   Desc,
@@ -125,48 +126,22 @@ class Wallet extends React.Component {
     return (
       <WalletWrapper>
         <Heading>Wallet</Heading>
-        <WalletAddress>
+        <Address>
           <span>Address:</span>
           <span data-digix="Wallet-Address">{address.address}</span>
-        </WalletAddress>
-        <WalletDetails>
-          <WalletItem data-digix="Wallet-DGD-Balance">
-            <div>{dgdBalance} DGD</div>
-            <br />
-            <div>
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                dgdInUsd
-              )}{' '}
-              USD
-            </div>
-          </WalletItem>
-          <WalletItem data-digix="Wallet-DGX-Balance">
-            <div>{dgxBalance} DGX</div>
-            <br />
-            <div>
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                dgxInUsd
-              )}{' '}
-              USD
-            </div>
-          </WalletItem>
-          <WalletItem data-digix="Wallet-ETH-Balance">
-            <div>{ethBalance} ETH</div>
-            <br />
-            <div>
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                ethInUsd
-              )}{' '}
-              USD
-            </div>
-          </WalletItem>
-        </WalletDetails>
-        <DigixDAO>
+        </Address>
+        {/* TODO: show tokens */}
+        {/* <WalletDetails>
+          <WalletItem>&nbsp;</WalletItem>
+          <WalletItem>&nbsp;</WalletItem>
+          <WalletItem>&nbsp;</WalletItem>
+        </WalletDetails> */}
+        <QtrSummary>
           <VotingStake lockedDgd={lockedDgd} stake={stake} />
           <ParticipationReward claimableDgx={claimableDgx} />
-          <StakeRewards>
+          <QtrParticipation>
             <Title>DigixDAO Project Funding</Title>
-            <Content>
+            <Detail>
               <Label>Your Funding Amount</Label>
               <Data>
                 <span data-digix="Wallet-EthFund">{eth}</span>
@@ -180,9 +155,9 @@ class Wallet extends React.Component {
                   Claim Funding
                 </Button>
               </Actions>
-            </Content>
-          </StakeRewards>
-        </DigixDAO>
+            </Detail>
+          </QtrParticipation>
+        </QtrSummary>
       </WalletWrapper>
     );
   }

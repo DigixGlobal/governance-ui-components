@@ -14,9 +14,9 @@ import {
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import {
-  StakeRewards,
+  QtrParticipation,
   Title,
-  Content,
+  Detail,
   Label,
   Data,
   Desc,
@@ -73,10 +73,10 @@ class Wallet extends React.Component {
       inLockingPhase && stake > 0 && isGlobalRewardsSet && !hasPendingUnlockTransaction;
 
     return (
-      <StakeRewards>
-        <Title>DigixDAO Voting Stake</Title>
-        <Content>
-          <Label>Your Current Stake</Label>
+      <QtrParticipation>
+        <Title>Your Locked DGD</Title>
+        <Detail>
+          <Label>Your Current Lock-up</Label>
           <Data>
             <span data-digix="Wallet-Stake">{stake}</span>
             <span>&nbsp;Stake</span>
@@ -103,8 +103,8 @@ class Wallet extends React.Component {
               Unlock DGD
             </Button>
           </Actions>
-        </Content>
-      </StakeRewards>
+        </Detail>
+      </QtrParticipation>
     );
   }
 }

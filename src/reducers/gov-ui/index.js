@@ -20,6 +20,7 @@ const defaultState = {
   configPreProposalCollateral: undefined,
   addressMaxAllowance: undefined,
   isAuthenticated: false,
+  tokenUsdValues: undefined,
 };
 
 export default function(state = defaultState, action) {
@@ -100,6 +101,11 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         isAuthenticated: action.payload,
+      };
+    case actions.GET_TOKEN_USD_VALUE:
+      return {
+        ...state,
+        tokenUsdValues: action.payload,
       };
 
     default:

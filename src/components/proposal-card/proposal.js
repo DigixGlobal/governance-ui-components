@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import _ from 'lodash';
-
 import { connect } from 'react-redux';
 
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
@@ -27,22 +25,7 @@ import {
   getUserProposalLikeStatus,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
-class Proposal extends React.Component {
-  componentWillMount = () => {
-    const { getUserProposalLikeStatusAction, ChallengeProof, details } = this.props;
-    if (ChallengeProof.data) {
-      getUserProposalLikeStatusAction({
-        proposalId: details.proposalId,
-        client: ChallengeProof.data.client,
-        token: ChallengeProof.data['access-token'],
-        uid: ChallengeProof.data.uid,
-      });
-    }
-  };
-
-  shouldComponentUpdate = (nextProps, nextState) =>
-    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
-
+class Proposal extends React.PureComponent {
   toggleLike = () => {
     const {
       ChallengeProof,

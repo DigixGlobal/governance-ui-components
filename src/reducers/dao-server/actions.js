@@ -116,6 +116,36 @@ export function getChallenge(address) {
   return postData(`${DAO_SERVER}/authorization?address=${address}`, actions.GET_CHALLENGE);
 }
 
+export function getChallengeVanilla(address) {
+  return fetch(`${DAO_SERVER}/authorization?address=${address}`, {
+    method: 'POST',
+    mode: 'cors', // no-cors, cors, *same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrer: 'no-referrer', // no-referrer, *client
+  }).then(res =>
+    res
+      .json()
+      .then(json => ({ json, res }))
+      .catch(() => {
+        throw res.statusText;
+      })
+  );
+}
+
+export function setChallenge(challenge) {
+  return {
+    type: actions.GET_CHALLENGE,
+    payload: {
+      data: challenge,
+    },
+  };
+}
+
 export function proveChallenge(payload) {
   const { challengeId, address, message, signature } = payload;
   return putData(

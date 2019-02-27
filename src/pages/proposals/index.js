@@ -162,7 +162,7 @@ class Proposal extends React.Component {
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
     const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
 
-    let funding = proposalDetails.data.changedFundings
+    const funding = proposalDetails.data.isFundingChanged
       ? proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
       : proposalVersion.milestoneFundings.reduce(milestoneFundings, 0);
     let reward = truncateNumber(proposalVersion.finalReward);
@@ -171,10 +171,6 @@ class Proposal extends React.Component {
     let updatedReward;
 
     if (proposalDetails.data.isFundingChanged) {
-      funding = truncateNumber(
-        proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
-      );
-
       reward = truncateNumber(proposalDetails.data.changedFundings.finalReward.original);
 
       if (Number(proposalDetails.data.changedFundings.finalReward.updated) > 0) {

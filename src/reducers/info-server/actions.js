@@ -10,18 +10,21 @@ export const actions = {
   GET_BLOCK_CONFIG: `${REDUX_PREFIX}GET_BLOCK_CONFIG`,
 };
 
+function doFetch(url) {
+  return fetch(url).then(res =>
+    res
+      .json()
+      .then(json => ({ json, res }))
+      .catch(() => {
+        throw res.statusText;
+      })
+  );
+}
+
 function fetchData(url, type) {
   return dispatch => {
     dispatch({ type, payload: { fetching: true } });
-    return fetch(url)
-      .then(res =>
-        res
-          .json()
-          .then(json => ({ json, res }))
-          .catch(() => {
-            throw res.statusText;
-          })
-      )
+    return doFetch(url)
       .then(({ json, res }) => {
         if (res.status === 200) {
           return dispatch({
@@ -51,6 +54,16 @@ export function getDaoDetails() {
 
 export function getAddressDetails(address) {
   return fetchData(`${INFO_SERVER}/address/${address}`, actions.GET_ADDRESS_DETAILS);
+}
+export function getAddressDetailsVanilla(address) {
+  return doFetch(`${INFO_SERVER}/address/${address}`);
+}
+
+export function setAddressDetails(details) {
+  return {
+    type: actions.GET_ADDRESS_DETAILS,
+    payload: { data: details },
+  };
 }
 
 export function getProposals(stage = 'all') {

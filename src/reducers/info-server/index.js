@@ -100,6 +100,7 @@ export default function(state = defaultState, action) {
                 .slice(0, 100),
         },
       };
+
     case actions.GET_PROPOSALS:
       return {
         ...state,

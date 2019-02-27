@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import { showHideAlert } from '../../../../reducers/gov-ui/actions';
+import { showHideAlert } from '@digix/gov-ui/reducers/reducers/gov-ui/actions';
 
 import { Container } from './style';
 
-class Alert extends React.Component {
+class Alert extends React.PureComponent {
   componentWillReceiveProps = nextProps => {
     const { alertData } = nextProps;
     if (alertData && alertData.message) {
@@ -16,6 +16,10 @@ class Alert extends React.Component {
         1000 * 10
       );
     }
+  };
+
+  componentWillUnmount = () => {
+    this.interval = undefined;
   };
 
   render() {

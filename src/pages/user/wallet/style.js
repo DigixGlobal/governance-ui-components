@@ -4,48 +4,60 @@ import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const WalletWrapper = styled.div``;
 export const Heading = styled(H1)``;
-export const WalletAddress = styled.div`
+export const Address = styled.div`
   color: ${props => props.theme.textPrimary.light.toString()};
   font-family: 'Futura PT Book', sans-serif;
-  font-weight: 500;
-  font-size: 2rem;
-  margin-top: 3rem;
+  font-size: 1.8rem;
+  margin-bottom: 5rem;
 
   span {
     display: inline-block;
     min-width: 10rem;
+
+    &:last-child {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 `;
 export const WalletDetails = styled(Card)`
-  ${media.mobile`flex-direction: column;`};
+  ${media.mobile`
+    flex-direction: column;
+  `};
 `;
 export const WalletItem = styled.div`
   ${CardItem};
 `;
-export const DigixDAO = styled.div`
+export const QtrSummary = styled.div`
   display: flex;
-  ${media.mobile`flex-direction: column;`}
+
+  ${media.tablet`
+    flex-direction: column;
+  `}
 `;
-export const StakeRewards = styled.div`
-  width: calc(100% / 3);
+
+export const QtrParticipation = styled.div`
+  flex: 1;
   color: ${props => props.theme.textPrimary.default.toString()};
   display: flex;
   flex-direction: column;
-  margin-top: 5rem;
   margin-right: 3rem;
   &:last-child {
     margin-right: 0;
   }
-  ${media.mobile`margin-top: 1rem; margin-right: 0;`}
+  ${media.tablet`
+    margin-top: 1rem; 
+    margin-right: 0;
+  `}
 `;
 export const Title = styled.div`
-  color: ${props => props.theme.textPrimary.default.toString()};
-  font-family: 'Futura PT Book', sans-serif;
-  font-weight: 500;
-  font-size: 2rem;
+  color: ${props => props.theme.textPrimary.light.toString()};
+  font-family: 'Futura PT Medium', sans-serif;
+  font-size: 1.8rem;
   margin-bottom: 2rem;
 `;
-export const Content = styled(Card)`
+export const Detail = styled(Card)`
   flex-direction: column;
   flex: 1 0 auto;
 `;
@@ -58,7 +70,7 @@ export const Data = styled.div`
   margin: 1rem 0 0;
   text-transform: uppercase;
 `;
-export const Desc = styled.div`
+export const Desc = styled.p`
   margin-top: 3rem;
 `;
 export const Actions = styled.div`

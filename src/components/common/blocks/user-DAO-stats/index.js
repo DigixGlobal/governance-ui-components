@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
-import { Container, Point } from '@digix/gov-ui/components/common/blocks/user-DAO-stats/style';
+import {
+  UserStats,
+  Item,
+  Label,
+  Data,
+} from '@digix/gov-ui/components/common/blocks/user-DAO-stats/style';
 
 class UserDAOStats extends React.Component {
   render() {
@@ -10,22 +15,24 @@ class UserDAOStats extends React.Component {
     const stake = truncateNumber(stats.data.lockedDgdStake || 0);
 
     return (
-      <Container>
-        <Point>
-          Quarter Points
-          <span data-digix="Dashboard-Stats-QuarterPoints">{stats.data.quarterPoint || 0}</span>
-        </Point>
-        <Point>
-          Reputation Points
-          <span data-digix="Dashboard-Stats-ReputationPoints">
+      <UserStats>
+        <Item>
+          <Label>Quarter Points</Label>
+          <Data data-digix="Dashboard-Stats-QuarterPoints">{stats.data.quarterPoint || 0}</Data>
+        </Item>
+        <Item>
+          <Label>Reputation Points</Label>
+          <Data data-digix="Dashboard-Stats-ReputationPoints">
             {stats.data.reputationPoint || 0}
-          </span>
-        </Point>
-        <Point>
-          My Stake
-          <span data-digix="Dashboard-Stats-Stake">{stake}</span>
-        </Point>
-      </Container>
+          </Data>
+        </Item>
+        <Item>
+          <Label>My Stake</Label>
+          <Data data-digix="Dashboard-Stats-Stake">
+            <span>{stake}</span> <span className="equiv">(0 DGD LOCKED)</span>
+          </Data>
+        </Item>
+      </UserStats>
     );
   }
 }

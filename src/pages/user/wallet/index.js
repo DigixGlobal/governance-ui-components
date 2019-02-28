@@ -131,13 +131,13 @@ class Wallet extends React.Component {
           <span data-digix="Wallet-Address">{address.address}</span>
         </Address>
         <WalletDetails>
-          <Item data-digix="Wallet-DGD-Balance">
+          <Item>
             <Icon kind="dgd" width="5rem" />
             <Amount>
               <div>
-                <span>{dgdBalance}</span> DGD
+                <span data-digix="Wallet-DGD-Balance">{dgdBalance}</span> DGD
               </div>
-              <div>
+              <div data-digix="Wallet-DgdUsd-Balance">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                   dgdInUsd
                 )}{' '}
@@ -145,14 +145,14 @@ class Wallet extends React.Component {
               </div>
             </Amount>
           </Item>
-          <Item data-digix="Wallet-DGX-Balance">
+          <Item>
             <Icon kind="dgx" width="5rem" />
 
             <Amount>
               <div>
-                <span>{dgxBalance}</span> DGX
+                <span data-digix="Wallet-DGX-Balance">{dgxBalance}</span> DGX
               </div>
-              <div>
+              <div data-digix="Wallet-DgxUsd-Balance">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                   dgxInUsd
                 )}{' '}
@@ -160,13 +160,13 @@ class Wallet extends React.Component {
               </div>
             </Amount>
           </Item>
-          <Item data-digix="Wallet-ETH-Balance">
+          <Item>
             <Icon kind="ethereum" width="5rem" />
             <Amount>
               <div>
-                <span>{ethBalance}</span> ETH
+                <span data-digix="Wallet-ETH-Balance">{ethBalance}</span> ETH
               </div>
-              <div>
+              <div data-digix="Wallet-EthUsd-Balance">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                   ethInUsd
                 )}{' '}

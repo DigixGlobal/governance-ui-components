@@ -8,6 +8,7 @@ import Check from './Check';
 import Close from './Close';
 import Dashboard from './Dashboard';
 import Dgd from './DGD';
+import Dgx from './Dgx';
 import Ethereum from './Ethereum';
 import Face from './Face';
 import Help from './Help';
@@ -41,6 +42,7 @@ const icons = {
   close: Close,
   dashboard: Dashboard,
   dgd: Dgd,
+  dgx: Dgx,
   ethereum: Ethereum,
   face: Face,
   help: Help,

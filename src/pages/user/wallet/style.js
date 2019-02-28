@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { H1, Card, CardItem } from '@digix/gov-ui/components/common/common-styles';
+import { H1, Card } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const WalletWrapper = styled.div``;
@@ -22,13 +22,53 @@ export const Address = styled.div`
   }
 `;
 export const WalletDetails = styled(Card)`
-  ${media.mobile`
+  ${media.tablet`
     flex-direction: column;
   `};
 `;
-export const WalletItem = styled.div`
-  ${CardItem};
+export const Item = styled.div`
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  border-radius: ${props => props.theme.borderRadius};
+  flex: 1;
+  margin-right: 3rem;
+  padding: 3rem 5rem;
+
+  display: flex;
+
+  > div {
+    height: 100%;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  ${media.tablet`
+    margin-right: 0;
+    margin-bottom: 2rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  `};
 `;
+
+export const Amount = styled.div`
+  font-family: 'Futura PT Light', sans-serif;
+  div {
+    &:first-child {
+      font-size: 2rem;
+    }
+    &:last-child {
+      font-size: 1.6rem;
+      color: ${props => props.theme.textDefault.light.toString()};
+    }
+  }
+  span {
+    font-family: 'Futura PT Medium', sans-serif;
+  }
+`;
+
 export const QtrSummary = styled.div`
   display: flex;
 
@@ -66,15 +106,15 @@ export const Label = styled.div`
   margin-top: 1rem;
 `;
 export const Data = styled.div`
-  font-size: 3.8em;
+  font-size: 3.6rem;
   margin: 1rem 0 0;
   text-transform: uppercase;
 `;
 export const Desc = styled.p`
-  margin-top: 3rem;
+  margin-top: 1rem;
 `;
 export const Actions = styled.div`
-  margin-top: 3rem;
+  margin-top: 2rem;
   & > button:first-child {
     margin-left: 0;
   }

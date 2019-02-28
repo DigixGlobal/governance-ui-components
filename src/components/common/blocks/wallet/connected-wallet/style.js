@@ -32,7 +32,6 @@ export const TokenInfo = styled.div`
 `;
 
 export const TokenIcon = styled.div`
-  border: 3px solid ${props => props.theme.borderColor.darker.toString()};
   border-radius: 50%;
   margin-right: 1rem;
   height: 3.2rem;

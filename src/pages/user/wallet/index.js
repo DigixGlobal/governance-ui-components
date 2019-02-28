@@ -8,7 +8,7 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import ParticipationReward from '@digix/gov-ui/pages/user/wallet/sections/participation-reward';
 import VotingStake from '@digix/gov-ui/pages/user/wallet/sections/voting-stake';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getAddressDetails, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
 
@@ -25,7 +25,8 @@ import {
   Heading,
   Address,
   WalletDetails,
-  WalletItem,
+  Item,
+  Amount,
   QtrSummary,
   QtrParticipation,
   Title,
@@ -130,36 +131,49 @@ class Wallet extends React.Component {
           <span data-digix="Wallet-Address">{address.address}</span>
         </Address>
         <WalletDetails>
-          <WalletItem data-digix="Wallet-DGD-Balance">
-            <div>{dgdBalance} DGD</div>
-            <br />
-            <div>
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                dgdInUsd
-              )}{' '}
-              USD
-            </div>
-          </WalletItem>
-          <WalletItem data-digix="Wallet-DGX-Balance">
-            <div>{dgxBalance} DGX</div>
-            <br />
-            <div>
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                dgxInUsd
-              )}{' '}
-              USD
-            </div>
-          </WalletItem>
-          <WalletItem data-digix="Wallet-ETH-Balance">
-            <div>{ethBalance} ETH</div>
-            <br />
-            <div>
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                ethInUsd
-              )}{' '}
-              USD
-            </div>
-          </WalletItem>
+          <Item data-digix="Wallet-DGD-Balance">
+            <Icon kind="dgd" width="5rem" />
+            <Amount>
+              <div>
+                <span>{dgdBalance}</span> DGD
+              </div>
+              <div>
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  dgdInUsd
+                )}{' '}
+                USD
+              </div>
+            </Amount>
+          </Item>
+          <Item data-digix="Wallet-DGX-Balance">
+            <Icon kind="dgx" width="5rem" />
+
+            <Amount>
+              <div>
+                <span>{dgxBalance}</span> DGX
+              </div>
+              <div>
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  dgxInUsd
+                )}{' '}
+                USD
+              </div>
+            </Amount>
+          </Item>
+          <Item data-digix="Wallet-ETH-Balance">
+            <Icon kind="ethereum" width="5rem" />
+            <Amount>
+              <div>
+                <span>{ethBalance}</span> ETH
+              </div>
+              <div>
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  ethInUsd
+                )}{' '}
+                USD
+              </div>
+            </Amount>
+          </Item>
         </WalletDetails>
         <QtrSummary>
           <VotingStake lockedDgd={lockedDgd} stake={stake} />

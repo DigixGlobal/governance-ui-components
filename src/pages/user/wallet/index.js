@@ -132,7 +132,7 @@ class Wallet extends React.Component {
         </Address>
         <WalletDetails>
           <Item data-digix="Wallet-DGD-Balance">
-            <Icon kind="dgd" width="5rem" />
+            <Icon kind="dgx" width="5rem" />
             <Amount>
               <div>
                 <span>{dgdBalance}</span> DGD

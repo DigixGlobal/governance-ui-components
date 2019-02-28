@@ -69,9 +69,7 @@ const ADMIN_MENU = [
     icon: 'face',
     title: 'Admin',
     url: '/forum/admin',
-
-    // FIXME (for javascript): change to proper requirement (isForumOfficer?) once it's implemented in the dao-server
-    requirement: 'isKycOfficer',
+    requirement: 'isForumAdmin',
   },
 ];
 
@@ -132,7 +130,7 @@ class CollapsibleMenu extends React.Component {
         const samePath = currentPath === path;
 
         return (
-          <MenuItem selected={samePath}>
+          <MenuItem key={menu.title} selected={samePath}>
             <Link to={path} href={path}>
               <Icon kind={menu.icon} theme={this.props.theme || lightTheme} selected={samePath} />
               <span>{menu.title}</span>

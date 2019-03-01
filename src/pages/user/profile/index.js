@@ -242,7 +242,6 @@ class Profile extends React.Component {
             {!usernameIsSet && (
               <Button
                 primary
-                icon
                 xsmall
                 data-digix="Profile-UserName-Cta"
                 onClick={() => this.showSetUsernameOverlay()}

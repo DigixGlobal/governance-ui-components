@@ -8,9 +8,9 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
-  NoteContainer,
-  StatusNote,
+  Notifications,
   ErrorCaption,
+  H3,
 } from '@digix/gov-ui/components/common/common-styles';
 
 import Dao from '@digix/dao-contracts/build/contracts/DaoVoting.json';
@@ -159,15 +159,17 @@ class RevealVote extends React.Component {
         </p>
         {error && <ErrorCaption>{error}</ErrorCaption>}
         {uploaded && !error && (
-          <NoteContainer>
-            <StatusNote>
-              Your vote is <span>{voteObject.vote ? 'YES' : 'NO'}</span>
-            </StatusNote>
+          <Notifications info centered>
+            <H3>
+              Your vote is
+              <br />
+              <span className="vote">{voteObject.vote ? 'YES' : 'NO'}</span>
+            </H3>
             <p>
               Your vote is only valid and counted as activity on the DigixDAO after your
               confirmation.
             </p>
-          </NoteContainer>
+          </Notifications>
         )}
         {!uploaded && (
           <Button

@@ -29,7 +29,16 @@ import Overview from '../forms/overview';
 import Preview from './preview';
 import Confirm from '../confirm';
 
-import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
+import {
+  CreateWrapper,
+  TabPanel,
+  MenuItem,
+  Header,
+  LeftCol,
+  RightCol,
+  Heading,
+  PreviewButton,
+} from './style';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 
@@ -274,27 +283,31 @@ class CreateProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button tertiary onClick={this.handleShowPreview} data-digix="Create-Proposal-Preview">
+            <PreviewButton
+              tertiary
+              onClick={this.handleShowPreview}
+              data-digix="Create-Proposal-Preview"
+            >
               Preview
-            </Button>
+            </PreviewButton>
             <Button
-              disabled={!canMovePrevious}
               primary
+              disabled={!canMovePrevious}
               onClick={this.onPreviousButtonClick}
               data-digix="Create-Proposal-Previous"
             >
               Previous
             </Button>
-            {canMoveNext && (
-              <Button
-                disabled={!canMoveNext}
-                primary
-                onClick={this.onNextButtonClick}
-                data-digix="Create-Proposal-Next"
-              >
-                Next
-              </Button>
-            )}
+
+            <Button
+              primary
+              disabled={!canMoveNext}
+              onClick={this.onNextButtonClick}
+              data-digix="Create-Proposal-Next"
+            >
+              Next
+            </Button>
+
             {!canMoveNext && validForm && (
               <Button
                 primary

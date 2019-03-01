@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { getDefaultAddress, getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
 import { showMsgSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
+import { setDaoAuthorization, setInfoAuthorization } from '@digix/gov-ui/api/graphql';
 import {
   getAddressDetailsVanilla,
   setAddressDetails,
@@ -77,8 +78,15 @@ class AddressWatcher extends React.PureComponent {
         )
       );
 
-      return signMessage.then(signature =>
-        this.props
+      return signMessage.then(signature => {
+        const requestPayload = {
+          address,
+          challengeId: result.id,
+          message,
+          signature: signature.signedTx,
+        };
+
+        return this.props
           .proveChallenge({
             address,
             challengeId: result.id,
@@ -89,6 +97,9 @@ class AddressWatcher extends React.PureComponent {
             const { payload } = response;
 
             if (payload.data) {
+              setDaoAuthorization(payload.data);
+              setInfoAuthorization(requestPayload);
+
               Promise.all([
                 this.props.setAuthentationStatus(true),
                 this.props.setAddressDetails(details),
@@ -102,8 +113,8 @@ class AddressWatcher extends React.PureComponent {
           })
           .catch(() => {
             this.props.showHideAlert({ message: 'Unable to sign. Please try again.' });
-          })
-      );
+          });
+      });
     });
   };
 

@@ -13,6 +13,8 @@ import {
   clearDaoProposalDetails,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
+import moment from 'moment';
+
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import PreviousVersion from '@digix/gov-ui/pages/proposals/previous';
@@ -47,52 +49,75 @@ import {
 const getVotingStruct = proposal => {
   let deadline = Date.now();
   const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
+  let votingStruct;
   if (!proposal.isSpecial) {
     switch (proposal.stage.toLowerCase()) {
       case 'draft':
         if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
-          return {
-            passed: proposal.draftVoting.passed,
+          votingStruct = {
+            yes: proposal.draftVoting.yes,
+            no: proposal.draftVoting.no,
+            quota: proposal.draftVoting.quota,
+            quorum: proposal.draftVoting.quorum,
+            claimed: proposal.draftVoting.claimed,
             deadline: proposal.draftVoting.votingDeadline,
           };
         }
-        return undefined;
+        break;
 
       case 'proposal':
         if (Date.now() < proposal.votingRounds[0].commitDeadline) {
           deadline = proposal.votingRounds[0].commitDeadline || undefined;
         }
         deadline = proposal.votingRounds[0].revealDeadline;
-        return {
-          passed: proposal.votingRounds[0].passed,
+
+        votingStruct = {
+          yes: proposal.votingRounds[0].yes,
+          no: proposal.votingRounds[0].no,
+          quota: proposal.votingRounds[0].quota,
+          claimed: proposal.votingRounds[0].claimed,
+          quorum: proposal.votingRounds[0].quorum,
           deadline,
         };
+
+        break;
       case 'review':
         if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
           deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
         }
         deadline = proposal.votingRounds[mileStone].revealDeadline;
-        return {
-          passed: proposal.votingRounds[mileStone].passed,
+
+        votingStruct = {
+          yes: proposal.votingRounds[mileStone].yes,
+          no: proposal.votingRounds[mileStone].no,
+          claimed: proposal.votingRounds[mileStone].claimed,
+          quota: proposal.votingRounds[mileStone].quota,
+          quorum: proposal.votingRounds[mileStone].quorum,
           deadline,
         };
-      case 'archived':
-        return {
-          passed: false,
+
+        break;
+
+      default:
+        votingStruct = {
+          yes: 0,
+          no: 0,
+          quota: 0,
+          quorum: 0,
+          claimed: true,
           deadline: undefined,
         };
-      default:
-        return {
-          passed: proposal.draftVoting ? proposal.draftVoting.passed : false,
-          deadline: proposal.draftVoting ? proposal.draftVoting.votingDeadline : undefined,
-        };
+        break;
     }
-  } else {
-    return {
-      passed: proposal.voting.passed,
-      deadline: proposal.voting.revealDeadline,
-    };
+    return votingStruct;
   }
+  return {
+    yes: proposal.voting.yes,
+    no: proposal.voting.no,
+    quota: proposal.voting.quota,
+    quorum: proposal.voting.quorum,
+    deadline: proposal.voting.revealDeadline,
+  };
 };
 class Proposal extends React.Component {
   constructor(props) {
@@ -198,33 +223,48 @@ class Proposal extends React.Component {
     ) : null;
 
   renderClaimApprovalAlert = () => {
-    const { proposalDetails, daoConfig } = this.props;
-    const votingStruct = getVotingStruct(proposalDetails.data);
+    const {
+      proposalDetails: {
+        data: { proposer },
+        data,
+      },
+      addressDetails: {
+        data: { address: currentUser },
+      },
+      daoConfig,
+    } = this.props;
+
+    if (data.claimed) return null;
+
+    const votingStruct = getVotingStruct(data);
+    if (!votingStruct) return null;
+
     const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;
     const currentTime = Date.now();
-    console.log({ votingStruct });
+    const { yes = 0, no = 0, quorum, quota } = votingStruct;
+    const tentativePassed =
+      Number(yes) + Number(no) > Number(quorum) &&
+      Number(yes) / (Number(yes) + Number(no)) > Number(quota);
+    const deadline = new Date((votingStruct.deadline + Number(voteClaimingDeadline)) * 1000);
+
+    const pastDeadline = votingStruct && currentTime >= deadline;
+
     const canClaim =
       votingStruct &&
-      votingStruct.passed &&
-      currentTime > votingStruct.deadline * 1000 &&
-      currentTime < new Date((votingStruct.deadline + Number(voteClaimingDeadline)) * 1000);
+      tentativePassed &&
+      !pastDeadline &&
+      currentTime > votingStruct.deadline * 1000;
 
-    const pastDeadline =
-      votingStruct &&
-      votingStruct.passed &&
-      currentTime >= new Date((votingStruct.deadline + Number(voteClaimingDeadline)) * 1000);
-
-    if (canClaim)
+    if (canClaim && currentUser === proposer)
       return (
         <Notifications warning>
           <WarningIcon kind="warning" />
           The voting result shows that your project passes the voting. Please click the button below
           to send transaction(s) to claim this result on the blockchain. You need to do this action
-          before {new Intl.DateTimeFormat('en-US').format(votingStruct.deadline * 1000)}, or your
-          proposal will auto fail.
+          before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
         </Notifications>
       );
-    if (pastDeadline)
+    if (tentativePassed && pastDeadline && currentUser !== proposer)
       return (
         <Notifications warning>
           <WarningIcon kind="warning" />
@@ -244,13 +284,41 @@ class Proposal extends React.Component {
         data: { address: currentUser },
       },
     } = this.props;
+
+    const { daoConfig } = this.props;
     const votingStruct = getVotingStruct(data);
-    if (votingStruct && !votingStruct.passed && currentUser === proposer)
+    if (!votingStruct) return null;
+    const { yes, no, quorum, quota, claimed } = votingStruct;
+
+    const currentTime = Date.now();
+
+    const tentativePassed =
+      Number(yes) + Number(no) > Number(quorum) &&
+      Number(yes) / (Number(yes) + Number(no)) > Number(quota);
+
+    const isVotingDeadlineOver = currentTime > new Date(votingStruct.deadline * 1000);
+    const pastDeadline =
+      votingStruct &&
+      currentTime > votingStruct.deadline * 1000 &&
+      currentTime >=
+        new Date(
+          (votingStruct.deadline + Number(daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE)) * 1000
+        );
+
+    if (
+      votingStruct &&
+      !claimed &&
+      ((!tentativePassed && isVotingDeadlineOver) || pastDeadline) &&
+      currentUser === proposer
+    )
       return (
         <Notifications warning>
           <WarningIcon kind="warning" />
-          The voting result shows that your project fails the voting. Please click the button below
-          to {data.currentVotingRound <= 0 ? 'get back your collateral and' : ''} close the project.
+          Your project fails the voting, either by voting results or its already past the deadline
+          for claiming voting results.
+          {data.currentVotingRound <= 0
+            ? ' Please click the button below to claim your failed project and get back your collateral.'
+            : ''}
         </Notifications>
       );
     return null;

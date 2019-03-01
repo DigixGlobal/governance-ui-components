@@ -6,7 +6,6 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import RevealVoteOverlay from '@digix/gov-ui/components/common/blocks/overlay/vote/reveal';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-// import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { VotingStages } from '@digix/gov-ui/constants';
 
 class RevealVoteButton extends React.PureComponent {
@@ -40,6 +39,7 @@ class RevealVoteButton extends React.PureComponent {
     }
 
     const currentTime = Date.now();
+
     const withinDeadline =
       proposal.votingRounds[currentVotingRound].commitDeadline * 1000 < currentTime &&
       currentTime < proposal.votingRounds[currentVotingRound].revealDeadline * 1000;
@@ -60,8 +60,6 @@ RevealVoteButton.propTypes = {
   proposalId: string.isRequired,
   history: object.isRequired,
   votes: object,
-  // addressDetails: object.isRequired,
-  // getAddressDetailsAction: func.isRequired,
   showRightPanelAction: func.isRequired,
 };
 
@@ -79,7 +77,6 @@ export default web3Connect(
     mapStateToProps,
     {
       showRightPanelAction: showRightPanel,
-      // getAddressDetailsAction: getAddressDetails,
     }
   )(RevealVoteButton)
 );

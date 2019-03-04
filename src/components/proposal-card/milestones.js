@@ -39,7 +39,7 @@ const determineDeadline = proposal => {
       } else deadline = proposal.votingRounds[mileStone].revealDeadline;
       break;
     default:
-      deadline = proposal.votingRounds[0].commitDeadline;
+      deadline = proposal.votingRounds ? proposal.votingRounds[0].commitDeadline : undefined;
       break;
   }
 

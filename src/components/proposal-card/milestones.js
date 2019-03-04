@@ -15,39 +15,34 @@ import { Button } from '../common/elements/index';
 const determineDeadline = proposal => {
   let deadline = Date.now();
   const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
-  if (!proposal.isSpecial) {
-    switch (proposal.stage.toLowerCase()) {
-      case 'draft':
-        if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
-          deadline = proposal.draftVoting.votingDeadline;
-        } else {
-          return undefined;
-        }
-        break;
-      case 'proposal': {
-        if (Date.now() < proposal.votingRounds[0].commitDeadline) {
-          deadline = proposal.votingRounds[0].commitDeadline || undefined;
-        } else deadline = proposal.votingRounds[0].revealDeadline;
-        break;
-      }
-      case 'ongoing':
-        return undefined;
 
-      case 'review':
-        if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
-          deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
-        } else deadline = proposal.votingRounds[mileStone].revealDeadline;
-        break;
-      default:
-        deadline = proposal.votingRounds ? proposal.votingRounds[0].commitDeadline : undefined;
-        break;
+  switch (proposal.stage.toLowerCase()) {
+    case 'draft':
+      if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
+        deadline = proposal.draftVoting.votingDeadline;
+      } else {
+        return undefined;
+      }
+      break;
+    case 'proposal': {
+      if (Date.now() < proposal.votingRounds[0].commitDeadline) {
+        deadline = proposal.votingRounds[0].commitDeadline || undefined;
+      } else deadline = proposal.votingRounds[0].revealDeadline;
+      break;
     }
-  } else {
-    if (Date.now() < proposal.voting.commitDeadline) {
-      deadline = proposal.voting.commitDeadline || undefined;
-    }
-    deadline = proposal.voting.revealDeadline;
+    case 'ongoing':
+      return undefined;
+
+    case 'review':
+      if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
+        deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
+      } else deadline = proposal.votingRounds[mileStone].revealDeadline;
+      break;
+    default:
+      deadline = proposal.votingRounds[0].commitDeadline;
+      break;
   }
+
   if (deadline) return new Intl.DateTimeFormat('en-US').format(deadline * 1000);
   return deadline;
 };

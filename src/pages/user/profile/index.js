@@ -149,7 +149,8 @@ class Profile extends React.Component {
 
     return (
       <ActivitySummary>
-        <ActivityItem column>
+        {/* NOTE: no data to show yet, so we're hiding them for now */}
+        {/* <ActivityItem column>
           <Label>Participated In</Label>
           <Data data-digix="Profile-QuarterParticipation">12</Data>
           <Label>Quarter(s)</Label>
@@ -180,7 +181,7 @@ class Profile extends React.Component {
               More Info
             </Button>
           </Actions>
-        </ActivityItem>
+        </ActivityItem> */}
 
         <ActivityItem column>
           <Label>KYC Status</Label>

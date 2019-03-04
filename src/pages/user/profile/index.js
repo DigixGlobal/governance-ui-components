@@ -13,7 +13,7 @@ import {
   getDaoConfig,
   getDaoDetails,
 } from '@digix/gov-ui/reducers/info-server/actions';
-import { getUserStatus, truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { getUserStatus, inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { showHideLockDgdOverlay, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
@@ -70,12 +70,11 @@ class Profile extends React.Component {
     const { DaoDetails } = this.props;
     const { startOfMainphase, startOfNextQuarter } = DaoDetails.data;
 
-    const currentTime = Date.now() / 1000;
-    const inLockingPhase = currentTime < startOfMainphase;
-    if (inLockingPhase) {
+    if (inLockingPhase(DaoDetails.data)) {
       return DEFAULT_STAKE_PER_DGD;
     }
 
+    const currentTime = Date.now() / 1000;
     return (startOfNextQuarter - currentTime) / (startOfNextQuarter - startOfMainphase);
   };
 

@@ -1,4 +1,9 @@
 import styled, { css } from 'styled-components';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
+
+export const CreateProjectBtn = styled(Button)`
+  padding: 1rem 2rem;
+`;
 
 export const FilterWrapper = styled.div`
   margin-bottom: 3em;

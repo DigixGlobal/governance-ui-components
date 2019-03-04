@@ -20,9 +20,9 @@ import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import {
-  StakeRewards,
+  QtrParticipation,
   Title,
-  Content,
+  Detail,
   Label,
   Data,
   Desc,
@@ -120,9 +120,9 @@ class ParticipationReward extends React.Component {
     claimableDgx = truncateNumber(claimableDgx);
 
     return (
-      <StakeRewards>
+      <QtrParticipation>
         <Title>DigixDAO Participation Reward</Title>
-        <Content>
+        <Detail>
           <Label>Your Unclaimed Reward</Label>
           <Data>
             <span data-digix="Wallet-DGXReward">{claimableDgx}</span>
@@ -141,8 +141,8 @@ class ParticipationReward extends React.Component {
               Claim Reward
             </Button>
           </Actions>
-        </Content>
-      </StakeRewards>
+        </Detail>
+      </QtrParticipation>
     );
   }
 }

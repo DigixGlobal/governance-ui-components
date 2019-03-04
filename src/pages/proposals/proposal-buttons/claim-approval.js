@@ -128,6 +128,11 @@ class ClaimApprovalButton extends React.Component {
     )
       return null;
 
+    const { yes, no, quorum, quota, claimed } = draftVoting;
+    const isVotingDeadlineOver = currentTime > new Date(draftVoting.votingDeadline * 1000);
+
+    if (claimed || !isVotingDeadlineOver) return null;
+
     const canClaim =
       currentTime > draftVoting.votingDeadline * 1000 &&
       currentTime < new Date((draftVoting.votingDeadline + Number(voteClaimingDeadline)) * 1000);
@@ -136,6 +141,10 @@ class ClaimApprovalButton extends React.Component {
     const totalTransactions = Math.ceil(daoDetails.nModerators / MAX_PEOPLE_PER_CLAIM);
 
     if (!canClaim) return null;
+    const tentativePassed =
+      Number(yes) + Number(no) > Number(quorum) &&
+      Number(yes) / (Number(yes) + Number(no)) > Number(quota);
+
     return (
       <Button
         kind="round"
@@ -151,7 +160,7 @@ class ClaimApprovalButton extends React.Component {
         }
         data-digix="Create-Proposal-Claim-Approval"
       >
-        Claim Approval
+        {canClaim && tentativePassed ? 'Claim Approval' : 'Claim Failed Project'}
       </Button>
     );
   }

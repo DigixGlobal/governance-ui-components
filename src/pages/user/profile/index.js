@@ -24,8 +24,8 @@ import {
   UserItem,
   UserLabel,
   UserData,
-  RewardSummary,
-  RewardItem,
+  UserStats,
+  Item,
   Label,
   Data,
   ActivitySummary,
@@ -150,7 +150,7 @@ class Profile extends React.Component {
 
     return (
       <ActivitySummary>
-        <ActivityItem>
+        <ActivityItem column>
           <Label>Participated In</Label>
           <Data data-digix="Profile-QuarterParticipation">12</Data>
           <Label>Quarter(s)</Label>
@@ -161,7 +161,7 @@ class Profile extends React.Component {
           </Actions>
         </ActivityItem>
 
-        <ActivityItem>
+        <ActivityItem column>
           <Label>Proposed</Label>
           <Data data-digix="Profile-Proposals">0</Data>
           <Label>Project(s)</Label>
@@ -172,7 +172,7 @@ class Profile extends React.Component {
           </Actions>
         </ActivityItem>
 
-        <ActivityItem>
+        <ActivityItem column>
           <Label>Claimed</Label>
           <Data data-digix="Profile-DgxClaimed">12</Data>
           <Label>DGX</Label>
@@ -183,7 +183,7 @@ class Profile extends React.Component {
           </Actions>
         </ActivityItem>
 
-        <ActivityItem>
+        <ActivityItem column>
           <Label>KYC Status</Label>
           <Data data-digix="Profile-KycStatus">{currentKycStatus}</Data>
           <Label>&nbsp;</Label>
@@ -278,20 +278,25 @@ class Profile extends React.Component {
           </UserItem>
         </UserInfo>
 
-        <RewardSummary>
-          <RewardItem column>
+        <UserStats>
+          <Item>
             <Label>Quarter Points</Label>
             <Data data-digix="Profile-QuarterPoints">{address.quarterPoint}</Data>
-          </RewardItem>
-          <RewardItem column>
+          </Item>
+          <Item>
             <Label>Reputation Points</Label>
             <Data data-digix="Profile-ReputationPoints">{address.reputationPoint}</Data>
-          </RewardItem>
-          <RewardItem column>
+          </Item>
+          <Item>
             <Label>My Stake</Label>
-            <Data data-digix="Profile-Stake">{stake}</Data>
-          </RewardItem>
-        </RewardSummary>
+            <Data data-digix="Profile-Stake">
+              <span>{stake}</span>
+              <span className="equiv" data-digix="Profile-DGD-Locked">
+                ({AddressDetails.data.lockedDgd} DGD LOCKED)
+              </span>
+            </Data>
+          </Item>
+        </UserStats>
         {this.renderActivitySummary()}
 
         {hasUnmetModerationRequirements && (

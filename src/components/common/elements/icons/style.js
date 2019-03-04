@@ -15,10 +15,14 @@ export const Container = styled.div`
       }
 
       return props.selected
-        ? props.theme.iconSecondaryColor.default.toString()
-        : props.theme.iconColor.light.toString();
+        ? props.theme.icon.secondary.default.toString()
+        : props.theme.icon.default.light.toString();
     }};
     width: 100%;
     height: 100%;
+
+    .color {
+      fill: #d8d8d8;
+    }
   }
 `;

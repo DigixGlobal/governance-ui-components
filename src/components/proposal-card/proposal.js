@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import _ from 'lodash';
-
 import { connect } from 'react-redux';
 
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
@@ -27,22 +25,7 @@ import {
   getUserProposalLikeStatus,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
-class Proposal extends React.Component {
-  componentWillMount = () => {
-    const { getUserProposalLikeStatusAction, ChallengeProof, details } = this.props;
-    if (ChallengeProof.data) {
-      getUserProposalLikeStatusAction({
-        proposalId: details.proposalId,
-        client: ChallengeProof.data.client,
-        token: ChallengeProof.data['access-token'],
-        uid: ChallengeProof.data.uid,
-      });
-    }
-  };
-
-  shouldComponentUpdate = (nextProps, nextState) =>
-    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
-
+class Proposal extends React.PureComponent {
   toggleLike = () => {
     const {
       ChallengeProof,
@@ -81,13 +64,16 @@ class Proposal extends React.Component {
   };
 
   render() {
-    const { details, userDetails, likes, liked, userProposalLike, displayName } = this.props;
+    const { details, userDetails, likes, liked, userProposalLike, displayName, title } = this.props;
     const likeStatus =
       userProposalLike.data && userProposalLike.data.proposalId === details.proposalId
         ? userProposalLike.data
         : { liked, likes };
 
-    const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
+    const proposalVersion =
+      details.proposalVersions && details.proposalVersions.length > 0
+        ? details.proposalVersions[details.proposalVersions.length - 1]
+        : undefined;
     const canCreate = userDetails && userDetails.data.isParticipant;
     const canLike = userDetails && userDetails.data.address;
 
@@ -100,8 +86,8 @@ class Proposal extends React.Component {
             </Button>
           </TagsContainer>
           <Description>
-            <H2>{proposalVersion.dijixObject.title}</H2>
-            <p>{proposalVersion.dijixObject.description}</p>
+            <H2>{proposalVersion ? proposalVersion.dijixObject.title : title}</H2>
+            <p>{proposalVersion ? proposalVersion.dijixObject.description : ''}</p>
 
             {canCreate ? (
               <ProposalLink
@@ -148,6 +134,7 @@ Proposal.propTypes = {
   details: object.isRequired,
   liked: bool,
   likes: number,
+  title: string,
   displayName: string.isRequired,
   likeProposalAction: func.isRequired,
   unlikeProposalAction: func.isRequired,
@@ -165,6 +152,7 @@ Proposal.defaultProps = {
   ChallengeProof: undefined,
   liked: false,
   likes: undefined,
+  title: '',
 };
 
 export default connect(

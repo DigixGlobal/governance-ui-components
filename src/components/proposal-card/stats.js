@@ -54,8 +54,8 @@ export default class ProposalCardStats extends React.Component {
     }
     const { approvalRating, participantCount } = this.getStats(details);
 
-    const versionCount = details.proposalVersions.length;
-    let funding = details.proposalVersions[versionCount - 1].totalFunding / 1e18;
+    const versionCount = details.proposalVersions ? details.proposalVersions.length : undefined;
+    let funding = versionCount ? details.proposalVersions[versionCount - 1].totalFunding / 1e18 : 0;
     funding = truncateNumber(funding);
 
     return (

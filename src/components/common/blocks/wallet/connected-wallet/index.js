@@ -20,7 +20,7 @@ import {
   showHideWalletOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
-import { getAddressDetails, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
@@ -54,28 +54,24 @@ class ConnectedWallet extends React.Component {
   }
 
   componentDidMount() {
-    const { defaultAddress } = this.props;
+    const { defaultAddress, AddressDetails } = this.props;
     this._isMounted = true;
-    if (defaultAddress && defaultAddress.address) {
-      Promise.all([
-        this.getEthBalance(),
-        this.getDgdBalance(),
-        this.props.getAddressDetails(defaultAddress.address),
-      ]).then(([eth, dgd]) => {
-        const { AddressDetails } = this.props;
-        const address = AddressDetails.data;
-        const hasParticipated = address.isParticipant || address.lastParticipatedQuarter > 0;
+    if (defaultAddress.address && AddressDetails.data) {
+      const address = AddressDetails.data;
+      const hasParticipated = address.isParticipant || address.lastParticipatedQuarter > 0;
 
-        if (hasParticipated && !this.showRenderApproval()) {
-          this.props.showHideWalletOverlay(false);
-        }
-        if (this._isMounted) {
-          this.setState({ dgdBalance: dgd, ethBalance: eth });
-        }
-      });
+      if (hasParticipated && !this.showRenderApproval()) {
+        this.props.showHideWalletOverlay(false);
+      } else {
+        Promise.all([this.getEthBalance(), this.getDgdBalance(), this.getMaxAllowance()]).then(
+          ([eth, dgd]) => {
+            if (this._isMounted) {
+              this.setState({ dgdBalance: dgd, ethBalance: eth });
+            }
+          }
+        );
+      }
     }
-
-    this.getMaxAllowance();
   }
 
   shouldComponentUpdate = (nextProps, nextState) =>
@@ -94,7 +90,7 @@ class ConnectedWallet extends React.Component {
       .web3(network)
       .eth.contract(abi)
       .at(address);
-    this.props.fetchMaxAllowance(contract, defaultAddress.address, DaoStakingContract);
+    return this.props.fetchMaxAllowance(contract, defaultAddress.address, DaoStakingContract);
   };
 
   getDgdBalance() {
@@ -118,7 +114,7 @@ class ConnectedWallet extends React.Component {
   getEthBalance() {
     const { defaultAddress, web3Redux } = this.props;
     const { web3 } = web3Redux.networks[network];
-    if (defaultAddress) {
+    if (defaultAddress && defaultAddress.address) {
       return web3.eth
         .getBalance(defaultAddress.address)
         .then(balance => parseBigNumber(balance, 18));
@@ -219,8 +215,19 @@ class ConnectedWallet extends React.Component {
   );
 
   renderDefault = () => {
-    const { defaultAddress, enableLockDgd } = this.props;
+    const { defaultAddress, enableLockDgd, tokenUsdValues } = this.props;
     const { dgdBalance, ethBalance } = this.state;
+
+    const tokensInUsd = tokenUsdValues && tokenUsdValues.data ? tokenUsdValues.data : undefined;
+
+    let dgdInUsd = dgdBalance !== 0 ? dgdBalance.replace(',', '') : dgdBalance;
+    let ethInUsd = ethBalance !== 0 ? ethBalance.replace(',', '').replace('...', '') : ethBalance;
+    if (dgdInUsd > 0 && tokensInUsd && tokensInUsd.DGD)
+      dgdInUsd = Number(dgdInUsd) * Number(tokensInUsd.DGD.USD);
+
+    if (ethInUsd > 0 && tokensInUsd && tokensInUsd.ETH)
+      ethInUsd = Number(ethInUsd) * Number(tokensInUsd.ETH.USD);
+
     return (
       <Fragment>
         <CloseButtonWithHeader>
@@ -242,7 +249,9 @@ class ConnectedWallet extends React.Component {
                 <span>ETH</span>
               </TokenValue>
               <UsdEquivalent>
-                0.0
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  ethInUsd
+                )}
                 <span>USD</span>
               </UsdEquivalent>
             </TokenDetails>
@@ -256,7 +265,12 @@ class ConnectedWallet extends React.Component {
                 {dgdBalance || 0}
                 <span>DGD</span>
               </TokenValue>
-              <UsdEquivalent>0.0 USD</UsdEquivalent>
+              <UsdEquivalent>
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  dgdInUsd
+                )}{' '}
+                USD
+              </UsdEquivalent>
             </TokenDetails>
           </TokenInfo>
           <Button kind="round" primary fluid>
@@ -313,7 +327,6 @@ const { object, func, number, oneOfType, array } = PropTypes;
 ConnectedWallet.propTypes = {
   AddressDetails: object,
   onClose: func.isRequired,
-  getAddressDetails: func.isRequired,
   getDaoDetails: func.isRequired,
   canLockDgd: func.isRequired,
   DaoDetails: object,
@@ -324,6 +337,7 @@ ConnectedWallet.propTypes = {
   showTxSigningModal: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   defaultAddress: object.isRequired,
+  tokenUsdValues: object,
   web3Redux: object.isRequired,
   addressMaxAllowance: oneOfType([number, object]),
   challengeProof: object.isRequired,
@@ -334,6 +348,7 @@ ConnectedWallet.propTypes = {
 ConnectedWallet.defaultProps = {
   AddressDetails: undefined,
   addressMaxAllowance: undefined,
+  tokenUsdValues: undefined,
   DaoDetails: {
     data: {
       isGlobalRewardsSet: false,
@@ -350,6 +365,7 @@ const mapStateToProps = state => ({
   lockDgdOverlay: state.govUI.lockDgdOverlay,
   addressMaxAllowance: state.govUI.addressMaxAllowance,
   challengeProof: state.daoServer.ChallengeProof,
+  tokenUsdValues: state.govUI.tokenUsdValues,
   DaoDetails: state.infoServer.DaoDetails,
   addresses: getAddresses(state),
   enableLockDgd: state.govUI.CanLockDgd,
@@ -362,7 +378,6 @@ export default connect(
     showHideWalletOverlay,
     showHideLockDgdOverlayAction: showHideLockDgdOverlay,
     canLockDgd,
-    getAddressDetails,
     getDaoDetails,
     fetchMaxAllowance,
     showTxSigningModal,

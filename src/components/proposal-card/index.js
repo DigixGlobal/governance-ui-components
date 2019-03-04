@@ -23,6 +23,7 @@ export default class ProposalCard extends React.Component {
           <Proposal
             displayName={displayName}
             details={proposal}
+            title={proposal.title}
             userDetails={userDetails}
             liked={liked}
             likes={likes}

@@ -160,6 +160,7 @@ class LockDgd extends React.Component {
 
   handleCloseLockDgd = () => {
     this.setState({ error: undefined, openError: false, dgd: undefined }, () => {
+      document.body.classList.remove('modal-is-open');
       this.props.showHideLockDgdOverlay(false);
     });
   };

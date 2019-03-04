@@ -221,6 +221,7 @@ class Profile extends React.Component {
     const { hasPendingLockTransaction } = this.state;
 
     const address = AddressDetails.data;
+    const lockedDgd = truncateNumber(AddressDetails.data.lockedDgd);
     let stake = Number(address.lockedDgdStake);
     const usernameIsSet = this.props.userData.username;
 
@@ -291,7 +292,7 @@ class Profile extends React.Component {
             <Label>My Stake</Label>
             <Data data-digix="Profile-Stake">
               <span>{stake}</span>
-              <span className="equiv">({AddressDetails.data.lockedDgd} DGD LOCKED)</span>
+              <span className="equiv">({lockedDgd} DGD LOCKED)</span>
             </Data>
           </Item>
         </UserStats>

@@ -76,7 +76,7 @@ class CommentThread extends React.Component {
     let threads = { ...this.state.threads };
     const { ChallengeProof, rootCommentId } = this.props;
 
-    if (!ChallengeProof || !rootCommentId) {
+    if (!ChallengeProof || !rootCommentId.data) {
       return;
     }
 
@@ -99,12 +99,12 @@ class CommentThread extends React.Component {
 
   fetchThreads = (fetchParams, reset = false) => {
     const { ChallengeProof, rootCommentId } = this.props;
-    if (!ChallengeProof.data || !rootCommentId) {
+    if (!ChallengeProof.data || !rootCommentId.data) {
       return;
     }
 
     const payload = initializePayload(ChallengeProof);
-    CommentsApi.getThread(rootCommentId, fetchParams, payload)
+    CommentsApi.getThread(rootCommentId.data.commentId, fetchParams, payload)
       .then(newThreads => {
         let { threads } = this.state;
         const newComments = newThreads.data;
@@ -227,7 +227,7 @@ class CommentThread extends React.Component {
   }
 }
 
-const { func, number, object, string } = PropTypes;
+const { func, object, string } = PropTypes;
 
 CommentThread.propTypes = {
   addressDetails: object,
@@ -235,7 +235,7 @@ CommentThread.propTypes = {
   getAddressDetailsAction: func.isRequired,
   getDaoProposalDetailsActions: func.isRequired,
   proposalId: string.isRequired,
-  rootCommentId: number,
+  rootCommentId: object,
   showHideAlert: func.isRequired,
   uid: string,
 };
@@ -246,14 +246,14 @@ CommentThread.defaultProps = {
     quarterPoint: 0,
   },
   ChallengeProof: undefined,
-  rootCommentId: 0,
+  rootCommentId: undefined,
   uid: '',
 };
 
 const mapStateToProps = ({ daoServer, infoServer }) => ({
   addressDetails: infoServer.AddressDetails.data,
   ChallengeProof: daoServer.ChallengeProof,
-  rootCommentId: daoServer.ProposalDaoDetails.data.commentId,
+  rootCommentId: daoServer.ProposalDaoDetails,
 });
 
 export default connect(

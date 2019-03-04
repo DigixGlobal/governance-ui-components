@@ -100,6 +100,10 @@ class ClaimResultsButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
 
+  claimResults() {
+    this.props.checkProposalRequirements(this.handleSubmit);
+  }
+
   render() {
     const {
       isProposer,
@@ -129,10 +133,10 @@ class ClaimResultsButton extends React.PureComponent {
     return (
       <Button
         disabled={claimed}
-        data-digix="Propsal-Claim-Results"
         kind="round"
         large
-        onClick={this.handleSubmit}
+        data-digix="ProposalAction-Results"
+        onClick={() => this.claimResults()}
       >
         Claim Results
       </Button>
@@ -147,6 +151,7 @@ ClaimResultsButton.propTypes = {
   isProposer: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   daoConfig: object.isRequired,
   showHideAlert: func.isRequired,
   getDaoConfig: func.isRequired,

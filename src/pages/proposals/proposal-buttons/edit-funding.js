@@ -21,6 +21,10 @@ class EditFundingButton extends React.PureComponent {
     });
   };
 
+  editFunding() {
+    this.props.checkProposalRequirements(this.showOverlay);
+  }
+
   render() {
     const { isProposer, proposal } = this.props;
     const canEdit = proposal.stage === ProposalStages.ongoing && isProposer;
@@ -31,7 +35,12 @@ class EditFundingButton extends React.PureComponent {
     if (!canEdit || !hasUnfinishedMilestones) return null;
 
     return (
-      <Button kind="round" large onClick={() => this.showOverlay()}>
+      <Button
+        kind="round"
+        large
+        data-digix="ProposalAction-EditFunding"
+        onClick={() => this.editFunding()}
+      >
         Edit Funding
       </Button>
     );
@@ -41,6 +50,7 @@ class EditFundingButton extends React.PureComponent {
 const { bool, func, object } = PropTypes;
 
 EditFundingButton.propTypes = {
+  checkProposalRequirements: func.isRequired,
   isProposer: bool,
   proposal: object.isRequired,
   history: object.isRequired,

@@ -13,7 +13,7 @@ class UserDAOStats extends React.Component {
   render() {
     const { stats } = this.props;
     const stake = truncateNumber(stats.data.lockedDgdStake || 0);
-
+    if (!stats.data.address) return null;
     return (
       <UserStats>
         <Item>
@@ -29,7 +29,7 @@ class UserDAOStats extends React.Component {
         <Item>
           <Label>My Stake</Label>
           <Data data-digix="Dashboard-Stats-Stake">
-            <span>{stake}</span> <span className="equiv">(0 DGD LOCKED)</span>
+            <span>{stake}</span> <span className="equiv">({stats.data.lockedDgd} DGD LOCKED)</span>
           </Data>
         </Item>
       </UserStats>

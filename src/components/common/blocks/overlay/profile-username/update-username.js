@@ -11,14 +11,14 @@ class UpdateUsernameButton extends React.Component {
 
     return (
       <Button
-        primary
+        secondary
         fluid
         large
         disabled={disableButton}
         data-digix="UsernameOverlay-SetUsername"
         onClick={() => changeUsername(username)}
       >
-        Change Username
+        Assign Username
       </Button>
     );
   }

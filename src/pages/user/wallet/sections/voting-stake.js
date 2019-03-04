@@ -11,7 +11,7 @@ import {
   showRightPanel,
   showHideLockDgdOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import {
   QtrParticipation,
@@ -66,11 +66,9 @@ class Wallet extends React.Component {
     const lockedDgd = truncateNumber(this.props.lockedDgd);
     const canLockDgd = this.props.CanLockDgd.show && !hasPendingLockTransaction;
 
-    const currentTime = Date.now() / 1000;
     const isGlobalRewardsSet = DaoDetails ? DaoDetails.isGlobalRewardsSet : false;
-    const inLockingPhase = currentTime < DaoDetails.startOfMainphase;
     const canUnlockDgd =
-      inLockingPhase && stake > 0 && isGlobalRewardsSet && !hasPendingUnlockTransaction;
+      inLockingPhase(DaoDetails) && stake > 0 && isGlobalRewardsSet && !hasPendingUnlockTransaction;
 
     return (
       <QtrParticipation>

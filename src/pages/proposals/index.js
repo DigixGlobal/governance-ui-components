@@ -31,7 +31,7 @@ import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
 import CommentThread from '@digix/gov-ui/pages/proposals/comment';
 
-import { Notifications } from '@digix/gov-ui/components/common/common-styles';
+import { Notifications, Message } from '@digix/gov-ui/components/common/common-styles';
 import {
   ProposalsWrapper,
   VersionHistory,
@@ -252,19 +252,23 @@ class Proposal extends React.Component {
 
     if (canClaim && currentUser === proposer)
       return (
-        <Notifications warning>
+        <Notifications warning withIcon>
           <WarningIcon kind="warning" />
-          The voting result shows that your project passes the voting. Please click the button below
-          to send transaction(s) to claim this result on the blockchain. You need to do this action
-          before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
+          <Message>
+            The voting result shows that your project passes the voting. Please click the button to
+            send transaction(s) to claim this result on the blockchain. You need to do this action
+            before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
+          </Message>
         </Notifications>
       );
     if (tentativePassed && pastDeadline && currentUser !== proposer)
       return (
-        <Notifications warning>
-          <WarningIcon kind="warning" />
-          The voting result was not claimed before the claiming deadline. This project will be auto
-          failed.
+        <Notifications warning withIcon>
+          <WarningIcon kind="warning" small />
+          <Message>
+            The voting result was not claimed before the claiming deadline. This project will be
+            auto failed.
+          </Message>
         </Notifications>
       );
   };
@@ -307,7 +311,7 @@ class Proposal extends React.Component {
       currentUser === proposer
     )
       return (
-        <Notifications warning>
+        <Notifications warning withIcon>
           <WarningIcon kind="warning" />
           Your project fails the voting, either by voting results or its already past the deadline
           for claiming voting results.

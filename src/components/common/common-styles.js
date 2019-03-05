@@ -221,8 +221,7 @@ export const Message = styled.p`
 export const Notifications = styled.div`
   ${Container};
   justify-content: ${props => (props.centered ? 'center' : '')};
-  align-items: flex-start;
-  // flex-wrap: wrap;
+  align-items: ${props => (props.centered ? 'center' : '')};
 
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};

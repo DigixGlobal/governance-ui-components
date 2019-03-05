@@ -214,6 +214,7 @@ class CommitVote extends React.Component {
                 <Message title uppercase>
                   This Json file is only valid for this commit
                 </Message>
+                <br />
                 <p>
                   In the case you change your mind or make another commit, this file is no longer
                   valid.

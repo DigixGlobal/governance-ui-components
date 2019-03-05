@@ -159,12 +159,13 @@ class RevealVote extends React.Component {
         </p>
         {error && <ErrorCaption>{error}</ErrorCaption>}
         {uploaded && !error && (
-          <Notifications info centered>
+          <Notifications column info centered>
             <Message title uppercase>
               Your vote is
               <br />
               <span>{voteObject.vote ? 'YES' : 'NO'}</span>
             </Message>
+            <br />
             <p>
               Your vote is only valid and counted as activity on the DigixDAO after your
               confirmation.

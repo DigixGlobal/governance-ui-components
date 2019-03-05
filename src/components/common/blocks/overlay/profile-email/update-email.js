@@ -11,7 +11,7 @@ class UpdateEmailButton extends React.Component {
 
     return (
       <Button
-        secondary
+        primary
         fluid
         large
         disabled={disableButton}

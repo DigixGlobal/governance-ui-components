@@ -29,7 +29,7 @@ import ModeratorButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/mod
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import CommentThread from '@digix/gov-ui/pages/proposals/comment';
 
-import { Notifications, Message } from '@digix/gov-ui/components/common/common-styles';
+import { Notifications } from '@digix/gov-ui/components/common/common-styles';
 import {
   ProposalsWrapper,
   VersionHistory,
@@ -261,21 +261,17 @@ class Proposal extends React.Component {
       return (
         <Notifications warning>
           <WarningIcon kind="warning" />
-          <Message>
-            The voting result shows that your project passes the voting. Please click the button to
-            send transaction(s) to claim this result on the blockchain. You need to do this action
-            before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
-          </Message>
+          The voting result shows that your project passes the voting. Please click the button below
+          to send transaction(s) to claim this result on the blockchain. You need to do this action
+          before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
         </Notifications>
       );
     if (tentativePassed && pastDeadline && currentUser !== proposer)
       return (
         <Notifications warning>
-          <WarningIcon kind="warning" small />
-          <Message>
-            The voting result was not claimed before the claiming deadline. This project will be
-            auto failed.
-          </Message>
+          <WarningIcon kind="warning" />
+          The voting result was not claimed before the claiming deadline. This project will be auto
+          failed.
         </Notifications>
       );
   };

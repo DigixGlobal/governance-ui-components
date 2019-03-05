@@ -13,7 +13,6 @@ import {
   IntroContainer,
   OverlayHeader as Header,
   Notifications,
-  Message,
   Label,
   Hint,
 } from '@digix/gov-ui/components/common/common-styles';
@@ -84,10 +83,8 @@ class UsernameOverlay extends React.Component {
     return (
       <IntroContainer>
         <Header uppercase>Assign Username</Header>
-        <Notifications info>
-          <Message>
-            You can only assign a username to yourself <span>ONCE</span>.
-          </Message>
+        <Notifications warning>
+          You can only assign a username to yourself <span>ONCE</span>.
         </Notifications>
         <Button
           secondary

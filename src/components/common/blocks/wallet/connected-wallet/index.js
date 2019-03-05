@@ -23,8 +23,7 @@ import {
 import { getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
-import Icon from '@digix/gov-ui/components/common/elements/icons';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { HR } from '@digix/gov-ui/components/common/common-styles';
 
 import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
@@ -208,7 +207,7 @@ class ConnectedWallet extends React.Component {
         In order to participate in DigixDAO, we need your approval in order for our contracts to
         interact with your DGD.
       </p>
-      <Button kind="round" primary fluid filled onClick={this.handleApprove}>
+      <Button primary fluid large onClick={this.handleApprove}>
         Approve the interaction
       </Button>
     </Fragment>
@@ -273,7 +272,7 @@ class ConnectedWallet extends React.Component {
               </UsdEquivalent>
             </TokenDetails>
           </TokenInfo>
-          <Button kind="round" primary fluid>
+          <Button primary fluid large>
             Buy DGD
           </Button>
           <HR />
@@ -283,9 +282,9 @@ class ConnectedWallet extends React.Component {
             community and of course gives you voting power on the proposals you love to support
           </p>
           <Button
-            kind="round"
             secondary
             fluid
+            large
             disabled={!enableLockDgd.show}
             onClick={this.showLockDgdOverlay}
           >

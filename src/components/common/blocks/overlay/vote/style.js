@@ -1,8 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { Notifications } from '@digix/gov-ui/components/common/common-styles';
-
-export const Message = styled.div``;
+import { Notifications, Message } from '@digix/gov-ui/components/common/common-styles';
 
 export const VoteButton = styled(Button)`
   padding: 6rem;
@@ -42,8 +40,8 @@ export const DownloadJson = styled(Notifications)`
     color: ${props => props.theme.alertMessage.response.base.toString()};
   }
 
-  h3 {
-    font-family: 'Futura PT Medium', sans-serif;
+  ${Message} {
+    margin-bottom: 2rem;
   }
 `;
 

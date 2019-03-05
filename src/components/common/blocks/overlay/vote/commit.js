@@ -210,7 +210,7 @@ class CommitVote extends React.Component {
             </ResponseButton>
 
             {hasVoted && (
-              <DownloadJson info centered>
+              <DownloadJson info centered column>
                 <Message title uppercase>
                   This Json file is only valid for this commit
                 </Message>

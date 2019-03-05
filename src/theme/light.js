@@ -4,6 +4,7 @@ const blackHex = Color('#000');
 const black = {
   default: blackHex,
   darker: blackHex.darken(0.5),
+  base: blackHex,
   lighter: blackHex.lighten(0.5),
 };
 
@@ -167,6 +168,7 @@ const LightTheme = {
     background: transparent,
     border: tertiaryColor,
     iconColor: tertiaryColor,
+    color: tertiaryColor,
   },
 
   // Refactoring WIP: For deletion
@@ -210,6 +212,10 @@ const LightTheme = {
     primary: primaryColor,
     secondary: secondaryColor,
     disabled: tertiaryColor,
+  },
+
+  textColor: {
+    black,
   },
 
   linkDefaultColor: tertiaryColor,

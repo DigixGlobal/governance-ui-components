@@ -24,22 +24,6 @@ export const ButtonGlobalStyles = css`
       width: 100%;
       margin: 1rem 0;
     `};
-
-  ${props =>
-    props.disabled &&
-    css`
-      background: ${props.theme.buttonDisabled.background.toString()} !important;
-      border: 2px solid ${props.theme.buttonDisabled.border.lighter.toString()} !important;
-      box-shadow: none;
-      color: ${props.theme.buttonDisabled.textColor.light.toString()} !important;
-      cursor: default;
-
-      &:hover {
-        background: ${props.theme.buttonDisabled.background.toString()} !important;
-        border: 2px solid ${props.theme.buttonDisabled.border.lighter.toString()} !important;
-        color: ${props.theme.buttonDisabled.textColor.light.toString()} !important;
-      }
-    `};
 `;
 
 export const Button = styled.button`
@@ -97,9 +81,25 @@ export const Button = styled.button`
     css`
       justify-content: space-between;
     `};
+
+  ${props =>
+    props.disabled &&
+    css`
+      background: ${props.theme.buttonDisabled.background.toString()};
+      border: 2px solid ${props.theme.buttonDisabled.border.lighter.toString()};
+      box-shadow: none;
+      color: ${props.theme.buttonDisabled.textColor.light.toString()};
+      cursor: default;
+
+      &:hover {
+        background: ${props.theme.buttonDisabled.background.toString()};
+        border: 2px solid ${props.theme.buttonDisabled.border.lighter.toString()};
+        color: ${props.theme.buttonDisabled.textColor.light.toString()};
+      }
+    `};
 `;
 
-// Refactoring WIP: For Deletion in Sprint 5
+// Refactoring WIP: For Deletion in Sprint 5; used by Capsule
 export const ButtonStyles = css`
   background: ${props =>
     props.primary
@@ -112,10 +112,7 @@ export const ButtonStyles = css`
         ? props.theme.buttonBorderPrimary.default.toString()
         : props.theme.buttonBorderSecondary.default.toString()};
 
-  color: ${props =>
-    props.primary
-      ? props.theme.buttonTextPrimary.default.toString()
-      : props.theme.buttonTextSecondary.toString()};
+  color: #c00;
 
   text-align: center;
 
@@ -132,6 +129,7 @@ export const ButtonStyles = css`
   }
 `;
 
+// used by Capusule and Labeled Icon
 export const GhostBtn = css`
   background-color: transparent;
 

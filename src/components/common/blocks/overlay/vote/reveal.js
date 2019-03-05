@@ -9,8 +9,8 @@ import {
   IntroContainer,
   OverlayHeader as Header,
   Notifications,
+  Message,
   ErrorCaption,
-  H3,
 } from '@digix/gov-ui/components/common/common-styles';
 
 import Dao from '@digix/dao-contracts/build/contracts/DaoVoting.json';
@@ -160,11 +160,11 @@ class RevealVote extends React.Component {
         {error && <ErrorCaption>{error}</ErrorCaption>}
         {uploaded && !error && (
           <Notifications info centered>
-            <H3>
+            <Message title uppercase>
               Your vote is
               <br />
-              <span className="vote">{voteObject.vote ? 'YES' : 'NO'}</span>
-            </H3>
+              <span>{voteObject.vote ? 'YES' : 'NO'}</span>
+            </Message>
             <p>
               Your vote is only valid and counted as activity on the DigixDAO after your
               confirmation.

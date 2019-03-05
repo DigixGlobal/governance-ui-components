@@ -12,6 +12,7 @@ import {
   OverlayHeader as Header,
   Note,
   Notifications,
+  Message,
 } from '@digix/gov-ui/components/common/common-styles';
 
 import {
@@ -171,11 +172,11 @@ class CommitVote extends React.Component {
         <Header uppercase>Vote on Proposal (Commit)</Header>
         {revoting && !changeVote && (
           <Fragment>
-            <Notifications>
-              <p>
+            <Notifications info centered>
+              <Message>
                 You have already committed for this proposal. This action will overwrite the
                 previous commit.
-              </p>
+              </Message>
             </Notifications>
             <Button
               secondary
@@ -210,14 +211,16 @@ class CommitVote extends React.Component {
 
             {hasVoted && (
               <DownloadJson info centered>
-                <h3>This Json file is only valid for this commit</h3>
+                <Message title uppercase>
+                  This Json file is only valid for this commit
+                </Message>
                 <p>
                   In the case you change your mind or make another commit, this file is no longer
                   valid.
                 </p>
 
                 <DownloadButton
-                  tertiary
+                  kind="link"
                   large
                   fluid
                   download={`${proposalId}-${currentVotingRound}.json`}

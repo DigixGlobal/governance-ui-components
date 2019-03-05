@@ -212,6 +212,11 @@ export const StatusNote = styled.p`
   }
 `;
 
+export const Message = styled.p`
+  font-size: ${props => (props.title ? '2.4rem' : '')};
+  text-transform: ${props => (props.uppercase ? 'uppercase' : '')};
+`;
+
 export const Notifications = styled.div`
   ${Container};
   justify-content: ${props => (props.centered ? 'center' : '')};
@@ -223,12 +228,18 @@ export const Notifications = styled.div`
   font-family: 'Futura PT Book', sans-serif;
   font-size: 1.6rem;
   margin-bottom: 3rem;
-  padding: 2rem 3rem;
+  padding: 3rem 3rem;
   text-align: ${props => (props.centered ? 'center' : '')};
   white-space: pre-wrap;
 
+  ${Message} {
+    span {
+      font-family: 'Futura PT Heavy', sans-serif;
+    }
+  }
+
   h3 {
-    font-size: 2rem;
+    font-size: 2.4rem;
     margin-bottom: 2rem;
     text-transform: uppercase;
   }
@@ -281,7 +292,11 @@ export const Notifications = styled.div`
     css`
       background: ${props.theme.textSecondary.fade.toString()};
       border: 1px solid ${props.theme.alertMessage.info.light.toString()};
-      color: ${props.theme.alertMessage.info.default.toString()};
+      color: ${props.theme.textColor.black.toString()};
+
+      ${Message} {
+        color: ${props.theme.alertMessage.info.default.toString()};
+      }
     `};
 `;
 

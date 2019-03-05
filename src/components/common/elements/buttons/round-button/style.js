@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components';
 import { Button } from '../style';
 
+// eslint-disable-next-line no-undef
+
 export const RoundBtn = styled(Button)`
   background: ${props => props.theme.buttonDefault.background.base.toString()};
   border: none;
@@ -25,15 +27,28 @@ export const RoundBtn = styled(Button)`
     props.primary &&
     css`
       background: ${props.theme.buttonPrimary.background.toString()};
-      border: 2px solid ${props.theme.buttonPrimary.border.base.toString()};
+      border-width: 2px;
+      border-style: solid;
+      border-color: ${
+        props.disabled
+          ? props.theme.buttonDisabled.color.lighter.toString()
+          : props.theme.buttonPrimary.border.base.toString()
+      };
       box-shadow: none;
-      color: ${props.theme.buttonPrimary.textColor.base.toString()};
+      color: ${
+        props.disabled
+          ? props.theme.buttonDisabled.color.lighter.toString()
+          : props.theme.buttonPrimary.textColor.base.toString()
+      };
 
       svg {
         fill: ${props.theme.buttonPrimary.iconColor.light.toString()};
       }
 
       &:hover {
+        background: ${props.disabled ? props.theme.buttonDisabled.background.toString() : ''};
+        color: ${props.disabled ? props.theme.buttonDisabled.color.lighter.toString() : ''};
+
         svg {
           fill: ${props.theme.iconColorReverse.default.toString()};
         }
@@ -100,22 +115,6 @@ export const RoundBtn = styled(Button)`
       &:hover {
         background: transparent;
         color: ${props.theme.buttonPrimary.textColor.base.toString()};
-      }
-    `};
-
-  ${props =>
-    props.disabled &&
-    css`
-      background: ${props.theme.buttonDisabled.background.toString()} !important;
-      border: 2px solid ${props.theme.buttonDisabled.border.lighter.toString()} !important;
-      box-shadow: none;
-      color: ${props.theme.buttonDisabled.textColor.light.toString()};
-      cursor: default;
-
-      &:hover {
-        background: ${props.theme.buttonDisabled.background.toString()};
-        border: 2px solid ${props.theme.buttonDisabled.border.lighter.toString()};
-        color: ${props.theme.buttonDisabled.textColor.light.toString()};
       }
     `};
 

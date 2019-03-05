@@ -80,8 +80,6 @@ class SpecialProjectVotingResult extends React.Component {
 
     const stats = this.getProposalVotingPhaseStats(proposal);
 
-    console.log(stats);
-
     const yesVotes = truncateNumber(stats.yesVotes);
     const noVotes = truncateNumber(stats.noVotes);
 

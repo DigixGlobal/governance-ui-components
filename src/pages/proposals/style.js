@@ -252,7 +252,7 @@ export const QuorumInfoCol = styled.div`
 `;
 
 export const WarningIcon = styled(Icon)`
-  margin: -1rem 1.5rem -1rem 0;
-  width: 3rem;
-  height: 3rem;
+  margin-right: 2rem;
+  width: 60px;
+  height: auto;
 `;

@@ -48,7 +48,6 @@ const determineDeadline = proposal => {
 };
 
 const disableParticipateWhen = (proposal, user) => {
-  if (proposal.isSpecial) return true;
   switch (proposal.stage.toLowerCase()) {
     case 'idea':
       return true;

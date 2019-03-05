@@ -11,6 +11,7 @@ import Dgd from './DGD';
 import Dgx from './Dgx';
 import Ethereum from './Ethereum';
 import Face from './Face';
+import File from './File';
 import Help from './Help';
 import History from './History';
 import Home from './Home';
@@ -45,6 +46,7 @@ const icons = {
   dgx: Dgx,
   ethereum: Ethereum,
   face: Face,
+  file: File,
   help: Help,
   history: History,
   home: Home,

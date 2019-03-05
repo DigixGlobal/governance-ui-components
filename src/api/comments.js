@@ -66,25 +66,56 @@ export const CommentsApi = {
    */
 
   generateNewThread: comment => ({
-    hasMore: false,
-    data: [comment],
+    edges: [comment],
+    endCursor: '',
+    hasNextPage: false,
+    __typename: 'CommentEdge',
   }),
 
-  getUniqueUsers(users, threads) {
-    const { data } = threads;
-    if (!threads || data.length === 0) {
-      return users;
+  generateNewComment: (node, currentUser, parentId) => {
+    const { address, displayName } = currentUser;
+
+    return {
+      node: {
+        body: node.body,
+        createdAt: node.createdAt,
+        id: String(node.id),
+        liked: node.liked,
+        likes: 0,
+        parentId: String(parentId),
+
+        user: {
+          address,
+          displayName,
+          __typename: 'User',
+        },
+        replies: {
+          edges: [],
+          endCursor: '',
+          hasNextPage: false,
+          __typename: 'CommentConnection',
+        },
+        __typename: 'Comment',
+      },
+      __typename: 'CommentEdge',
+    };
+  },
+
+  getUniqueUsers(userAddresses, threads) {
+    if (!threads || !threads.edges.length) {
+      return userAddresses;
     }
 
-    data.forEach(thread => {
-      if (!users.includes(thread.user.address)) {
-        users.push(thread.user.address);
+    threads.edges.forEach(thread => {
+      const { address } = thread.node.user;
+      if (!userAddresses.includes(address)) {
+        userAddresses.push(address);
       }
 
-      this.getUniqueUsers(users, thread.replies);
+      this.getUniqueUsers(userAddresses, thread.replies);
     });
 
-    return users;
+    return userAddresses;
   },
 
   ERROR_MESSAGES: {

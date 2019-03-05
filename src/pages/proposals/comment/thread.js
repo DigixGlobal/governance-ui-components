@@ -1,6 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withApollo } from 'react-apollo';
 
 import Comment from '@digix/gov-ui/pages/proposals/comment/comment';
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
@@ -8,6 +9,7 @@ import CommentReply from '@digix/gov-ui/pages/proposals/comment/reply';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { CommentsApi } from '@digix/gov-ui/api/comments';
 import { CommentReplyPost, ParentCommentItem } from '@digix/gov-ui/pages/proposals/comment/style';
+import { fetchRepliesQuery } from '@digix/gov-ui/api/graphql-queries/comments';
 import { initializePayload } from '@digix/gov-ui/api';
 
 class ParentThread extends React.Component {
@@ -15,86 +17,44 @@ class ParentThread extends React.Component {
     super(props);
     const { thread } = this.props;
 
-    let lastSeenId = thread.id;
-    const replies = thread.replies.data;
-    if (thread.replies && replies.length > 0) {
-      lastSeenId = replies[replies.length - 1].id;
-    }
-
     this.state = {
       thread,
-      lastSeenId,
       showEditor: false,
     };
   }
 
   addReply = body => {
     const thread = { ...this.state.thread };
-    const { ChallengeProof } = this.props;
+    const { ChallengeProof, currentUser, setError } = this.props;
 
-    if (ChallengeProof.data) {
-      const payload = initializePayload(ChallengeProof);
-      CommentsApi.create(thread.id, body, payload).then(newComment => {
-        if (!thread.replies) {
-          thread.replies = CommentsApi.generateNewThread(newComment);
+    if (!ChallengeProof.data) {
+      setError(CommentsApi.ERROR_MESSAGES.createComment);
+      return;
+    }
+
+    const payload = initializePayload(ChallengeProof);
+    CommentsApi.create(thread.id, body, payload)
+      .then(node => {
+        const newComment = CommentsApi.generateNewComment(node, currentUser, thread.id);
+        let replyList = thread.replies.edges;
+
+        if (!replyList) {
+          replyList = CommentsApi.generateNewThread(newComment);
         } else {
-          thread.replies.data.push(newComment);
+          replyList.push(newComment);
         }
 
+        thread.replies.edges = replyList;
         this.setState({ thread });
-      });
-    }
-  };
-
-  fetchThreads = fetchParams => {
-    const { ChallengeProof, fetchUserPoints } = this.props;
-    if (!ChallengeProof.data) {
-      return null;
-    }
-
-    const { thread } = this.state;
-    const payload = initializePayload(ChallengeProof);
-
-    CommentsApi.getThread(thread.id, fetchParams, payload)
-      .then(newComments => {
-        const newReplies = newComments.data;
-        const lastSeenId =
-          newComments && newReplies.length > 0
-            ? newReplies[newReplies.length - 1].id
-            : this.state.lastSeenId;
-
-        thread.replies = {
-          ...thread.replies,
-          hasMore: newComments.hasMore,
-          data: thread.replies.data.concat(newReplies),
-        };
-
-        this.setState({ lastSeenId, thread });
-        return newComments;
-      })
-      .then(() => {
-        fetchUserPoints();
       })
       .catch(() => {
-        this.setError(CommentsApi.ERROR_MESSAGES.fetch);
+        setError(CommentsApi.ERROR_MESSAGES.createReply);
       });
-
-    return null;
   };
 
   hideEditor = () => {
     this.setState({
       showEditor: false,
-    });
-  };
-
-  loadMoreComments = () => {
-    const { lastSeenId } = this.state;
-    const { sortBy } = this.props;
-
-    this.fetchThreads({
-      last_seen_id: lastSeenId,
-      sort_by: sortBy,
     });
   };
 
@@ -105,32 +65,57 @@ class ParentThread extends React.Component {
     });
   };
 
-  renderThreadReplies = replies => {
-    const { fetchUserPoints, setError, sortBy, uid, userPoints } = this.props;
-    if (!replies) {
-      return null;
-    }
+  loadMore = endCursor => {
+    const { thread } = this.state;
+    const apollo = this.props.client;
+    const variables = {
+      ...this.props.queryVariables,
+      endCursor,
+      sortBy: 'OLDEST',
+    };
 
-    const replyElements = replies.data.map(comment => (
-      <CommentReply
-        comment={comment}
-        fetchUserPoints={fetchUserPoints}
-        key={comment.id}
-        setError={setError}
-        sortBy={sortBy}
-        renderThreadReplies={this.renderThreadReplies}
-        uid={uid}
-        userPoints={userPoints}
-      />
-    ));
+    apollo
+      .query({
+        fetchPolicy: 'network-only',
+        query: fetchRepliesQuery,
+        variables,
+      })
+      .then(result => {
+        const data = result.data.commentThreads;
+        thread.replies.edges = thread.replies.edges.concat(data.edges);
+        thread.replies.hasNextPage = data.hasNextPage;
+        thread.replies.endCursor = data.endCursor;
+        this.setState({ thread });
+      });
+  };
 
-    const hasMoreSiblings = replies.data && replies.data.length > 0 && replies.hasMore;
+  renderThreadReplies = replyList => {
+    const { currentUser, setError, userPoints } = this.props;
+    const replies = replyList.edges;
+
+    const replyElements = replies.map(reply => {
+      const comment = reply.node;
+
+      return (
+        <CommentReply
+          comment={comment}
+          currentUser={currentUser}
+          key={comment.id}
+          queryVariables={this.props.queryVariables}
+          setError={setError}
+          renderThreadReplies={this.renderThreadReplies}
+          userPoints={userPoints}
+        />
+      );
+    });
+
+    const hasSiblings = replyList.hasNextPage && replyList.edges.length > 0;
     return (
       <section className="comment-reply">
         {replyElements}
-        {hasMoreSiblings && (
+        {hasSiblings && (
           <CommentReplyPost>
-            <Button kind="text" xsmall onClick={() => this.loadMoreComments()}>
+            <Button kind="text" xsmall onClick={() => this.loadMore(replyList.endCursor)}>
               Load more replies...
             </Button>
           </CommentReplyPost>
@@ -140,7 +125,7 @@ class ParentThread extends React.Component {
   };
 
   render() {
-    const { setError, uid, userPoints } = this.props;
+    const { currentUser, setError, userPoints } = this.props;
     const { thread, showEditor } = this.state;
     if (!thread) {
       return null;
@@ -150,9 +135,9 @@ class ParentThread extends React.Component {
       <ParentCommentItem>
         <Comment
           comment={thread}
+          currentUser={currentUser}
           setError={setError}
           toggleEditor={this.toggleEditor}
-          uid={uid}
           userPoints={userPoints}
         />
         {showEditor && <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} />}
@@ -162,15 +147,15 @@ class ParentThread extends React.Component {
   }
 }
 
-const { func, object, string } = PropTypes;
+const { func, object } = PropTypes;
 
 ParentThread.propTypes = {
   ChallengeProof: object,
-  fetchUserPoints: func.isRequired,
+  client: object.isRequired,
+  currentUser: object.isRequired,
+  queryVariables: object.isRequired,
   setError: func.isRequired,
-  sortBy: string.isRequired,
   thread: object.isRequired,
-  uid: string.isRequired,
   userPoints: object.isRequired,
 };
 
@@ -182,7 +167,9 @@ const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
 });
 
-export default connect(
-  mapStateToProps,
-  {}
-)(ParentThread);
+export default withApollo(
+  connect(
+    mapStateToProps,
+    {}
+  )(ParentThread)
+);

@@ -147,7 +147,8 @@ class LandingPage extends React.PureComponent {
         <ProposalFilter
           onStageChange={this.getProposals}
           onOrderChange={this.onOrderChange}
-          addressDetails={AddressDetails}
+          AddressDetails={AddressDetails}
+          history={history}
         />
         {hasProposals &&
           orderedProposals.map(proposal => (

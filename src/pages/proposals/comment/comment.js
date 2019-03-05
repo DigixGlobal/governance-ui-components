@@ -19,7 +19,7 @@ class Comment extends React.Component {
       comment: this.props.comment,
     };
 
-    this.DELETE_MESSAGE = 'This message has been removed by the user.';
+    this.DELETE_MESSAGE = 'This message has been removed.';
   }
 
   deleteComment() {
@@ -55,11 +55,13 @@ class Comment extends React.Component {
   };
 
   render() {
-    const { toggleEditor, uid, userPoints } = this.props;
+    const { currentUser, toggleEditor, userPoints } = this.props;
     const { comment } = this.state;
     const { body, liked, likes, user } = comment;
-    const isAuthor = uid === user.address;
+
+    const isAuthor = user && currentUser.address === user.address;
     const isDeleted = !body;
+    const likeLabel = likes === 1 ? 'Like' : 'Likes';
 
     return (
       <article className="comment">
@@ -79,7 +81,9 @@ class Comment extends React.Component {
                 onClick={() => this.toggleLike()}
               >
                 <Icon active={liked} kind="like" />
-                <span>{likes}&nbsp;Likes</span>
+                <span>
+                  {likes}&nbsp;{likeLabel}
+                </span>
               </ActionCommentButton>
               {isAuthor && (
                 <ActionCommentButton kind="text" small onClick={() => this.deleteComment()}>
@@ -99,10 +103,10 @@ const { func, object, string } = PropTypes;
 
 Comment.propTypes = {
   comment: object.isRequired,
+  currentUser: object.isRequired,
   ChallengeProof: object,
   setError: func.isRequired,
   toggleEditor: func,
-  uid: string.isRequired,
   userPoints: object.isRequired,
 };
 

@@ -28,6 +28,11 @@ export const TextBtn = styled(Button)`
       svg {
         fill: ${props.theme.icon.disabled.lighter.toString()};
       }
+
+      &:hover {
+        color: ${props.theme.buttonTextDefault.lighter.toString()};
+        border: none;
+      }
     `};
 
   ${props =>

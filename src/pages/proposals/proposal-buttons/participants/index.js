@@ -70,6 +70,7 @@ class ParticantButtons extends React.Component {
           isProposer={isProposer}
           draftVoting={data.draftVoting}
           history={history}
+          onCompleted={this.props.onCompleted}
           votingStage={data.votingStage}
           proposalId={data.proposalId}
         />
@@ -89,8 +90,18 @@ class ParticantButtons extends React.Component {
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
         />
-        <ClaimResultsButton isProposer={isProposer} proposal={data} history={history} />
-        <ClaimFundingButton isProposer={isProposer} proposal={data} history={history} />
+        <ClaimResultsButton
+          isProposer={isProposer}
+          proposal={data}
+          history={history}
+          onCompleted={this.props.onCompleted}
+        />
+        <ClaimFundingButton
+          isProposer={isProposer}
+          proposal={data}
+          history={history}
+          onCompleted={this.props.onCompleted}
+        />
         <MilestoneCompletedButton isProposer={isProposer} proposal={data} history={history} />
       </Fragment>
     );

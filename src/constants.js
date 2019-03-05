@@ -46,7 +46,7 @@ export const WalletStages = {
 export const MAX_PEOPLE_PER_CLAIM =
   (process.env.ENVIRONMENT === 'production' && 50) ||
   (process.env.ENVIRONMENT === 'kovan' && 50) ||
-  1;
+  2;
 
 export const ProposalStages = {
   idea: 'idea',

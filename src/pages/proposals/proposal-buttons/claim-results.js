@@ -14,10 +14,14 @@ import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS, DEFAULT_GAS_PRICE, MAX_PEOPLE_PER_CLAIM } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
-import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
+import MultiStepClaim from '@digix/gov-ui/components/common/blocks/overlay/claim-approval';
+import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
+import {
+  sendTransactionToDaoServer,
+  getPendingTransactions,
+} from '@digix/gov-ui/reducers/dao-server/actions';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
@@ -27,8 +31,31 @@ registerUIs({ txVisualization: { component: TxVisualization } });
 const network = SpectrumConfig.defaultNetworks[0];
 
 class ClaimResultsButton extends React.PureComponent {
+  state = {
+    isMultiStep: false,
+    claiming: false,
+    totalTransactions: 0,
+  };
+
   componentWillMount = () => {
-    this.props.getDaoConfig();
+    const {
+      daoDetails: { data: daoDetails },
+      proposal,
+      ChallengeProof,
+    } = this.props;
+    Promise.all([
+      this.props.getDaoConfig(),
+      this.props.getPendingTransactions({
+        token: ChallengeProof.data['access-token'],
+        client: ChallengeProof.data.client,
+        uid: ChallengeProof.data.uid,
+      }),
+    ]);
+    const isMultiStep = Number(daoDetails.nParticipants) > MAX_PEOPLE_PER_CLAIM;
+    const nParticipants =
+      proposal.stage === 'review' ? 2 * daoDetails.nParticipants : daoDetails.nParticipants;
+    const totalTransactions = Math.ceil(nParticipants / MAX_PEOPLE_PER_CLAIM);
+    this.setState({ isMultiStep, totalTransactions });
   };
 
   setError = error =>
@@ -36,13 +63,24 @@ class ClaimResultsButton extends React.PureComponent {
       message: JSON.stringify(error && error.message) || error,
     });
 
-  handleSubmit = () => {
+  showOverlay = txns => {
+    const { history } = this.props;
+    this.props.showRightPanel({
+      component: <MultiStepClaim history={history} {...txns} onCompleted={this.onPanelClose} />,
+      show: true,
+    });
+  };
+
+  handleSubmit = useMaxClaim => () => {
     const {
       web3Redux,
       ChallengeProof,
       addresses,
+      proposal,
       proposal: { currentVotingRound, proposalId },
     } = this.props;
+
+    const { totalTransactions } = this.state;
 
     const { abi, address } = getContract(DaoVotingClaims, network);
     const contract = web3Redux
@@ -64,31 +102,47 @@ class ClaimResultsButton extends React.PureComponent {
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
     const onTransactionAttempt = txHash => {
+      this.setState({ claiming: true }, () => {
+        this.props.showRightPanel({ show: false });
+      });
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
           title: 'Claim Voting Result',
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
+          type: 1,
+          project: proposalId,
           uid: ChallengeProof.data.uid,
         });
       }
     };
 
     const onTransactionSuccess = txHash => {
+      const { onCompleted } = this.props;
+
       this.props.showHideAlert({
-        message: 'Voting Result Claimed',
+        message: useMaxClaim
+          ? `Claiming Voting Result ${
+              proposal.votingRounds[currentVotingRound].currentClaimStep
+            } of ${totalTransactions}`
+          : 'Claiming Voting Result',
         txHash,
       });
-
-      this.props.history.push('/');
+      setTimeout(() => {
+        this.setState({ claiming: false }, () => onCompleted());
+      }, 1000);
     };
 
     const payload = {
       address: sourceAddress,
       contract,
       func: contract.claimProposalVotingResult,
-      params: [proposalId, currentVotingRound, toBigNumber(50)],
+      params: [
+        proposalId,
+        currentVotingRound,
+        toBigNumber(useMaxClaim ? MAX_PEOPLE_PER_CLAIM : 50),
+      ],
       onFailure: this.setError,
       onFinally: txHash => onTransactionAttempt(txHash),
       onSuccess: txHash => onTransactionSuccess(txHash),
@@ -107,6 +161,8 @@ class ClaimResultsButton extends React.PureComponent {
       proposal: { currentVotingRound },
       daoConfig,
     } = this.props;
+
+    const { isMultiStep, claiming, totalTransactions } = this.state;
 
     if (
       !isProposer ||
@@ -137,11 +193,19 @@ class ClaimResultsButton extends React.PureComponent {
 
     return (
       <Button
-        disabled={claimed}
+        disabled={claimed || claiming}
         data-digix="Propsal-Claim-Results"
         kind="round"
         large
-        onClick={this.handleSubmit}
+        onClick={() =>
+          isMultiStep && tentativePassed && withinDeadline
+            ? this.showOverlay({
+                total: totalTransactions,
+                current: proposal.votingRounds[currentVotingRound].currentClaimStep,
+                onClaim: this.handleSubmit(true),
+              })
+            : this.handleSubmit(false)()
+        }
       >
         {withinDeadline && tentativePassed ? 'Claim Results' : 'Claim Failed Project'}
       </Button>
@@ -157,10 +221,14 @@ ClaimResultsButton.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   daoConfig: object.isRequired,
+  daoDetails: object.isRequired,
   showHideAlert: func.isRequired,
   getDaoConfig: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
+  getPendingTransactions: func.isRequired,
+  showRightPanel: func.isRequired,
   showTxSigningModal: func.isRequired,
+  onCompleted: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
 };
@@ -173,6 +241,7 @@ const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
   daoConfig: state.infoServer.DaoConfig,
+  daoDetails: state.infoServer.DaoDetails,
 });
 
 export default web3Connect(
@@ -180,7 +249,9 @@ export default web3Connect(
     mapStateToProps,
     {
       showHideAlert,
+      showRightPanel,
       sendTransactionToDaoServer,
+      getPendingTransactions,
       showTxSigningModal,
       getDaoConfig,
     }

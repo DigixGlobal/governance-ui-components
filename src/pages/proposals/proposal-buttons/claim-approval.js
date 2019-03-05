@@ -101,11 +101,20 @@ class ClaimApprovalButton extends React.Component {
     const currentTime = Date.now();
     if (!draftVoting || !isProposer || votingStage !== VotingStages.draft || !voteClaimingDeadline)
       return null;
+
+    const { yes, no, quorum, quota, claimed } = draftVoting;
+    const isVotingDeadlineOver = currentTime > new Date(draftVoting.votingDeadline * 1000);
+
+    if (claimed || !isVotingDeadlineOver) return null;
+
     const canClaim =
       currentTime > draftVoting.votingDeadline * 1000 &&
       currentTime < new Date((draftVoting.votingDeadline + Number(voteClaimingDeadline)) * 1000);
 
-    if (!canClaim) return null;
+    const tentativePassed =
+      Number(yes) + Number(no) > Number(quorum) &&
+      Number(yes) / (Number(yes) + Number(no)) > Number(quota);
+
     return (
       <Button
         kind="round"
@@ -113,7 +122,7 @@ class ClaimApprovalButton extends React.Component {
         onClick={this.handleSubmit}
         data-digix="Create-Proposal-Claim-Approval"
       >
-        Claim Approval
+        {canClaim && tentativePassed ? 'Claim Approval' : 'Claim Failed Project'}
       </Button>
     );
   }

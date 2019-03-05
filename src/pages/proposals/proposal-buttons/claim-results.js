@@ -115,16 +115,25 @@ class ClaimResultsButton extends React.PureComponent {
       !daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE
     )
       return null;
-    const { claimed } = proposal.votingRounds[currentVotingRound];
+
     const currentTime = Date.now();
+    const { yes, no, quorum, quota, claimed } = proposal.votingRounds[currentVotingRound];
+
+    const isVotingDeadlineOver =
+      currentTime > new Date(proposal.votingRounds[currentVotingRound].revealDeadline * 1000);
+
+    if (claimed || !isVotingDeadlineOver) return null;
+
+    const tentativePassed =
+      Number(yes) + Number(no) > Number(quorum) &&
+      Number(yes) / (Number(yes) + Number(no)) > Number(quota);
+
     const withinDeadline =
       currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&
       currentTime <
         (proposal.votingRounds[currentVotingRound].revealDeadline +
           Number(daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE)) *
           1000;
-
-    if (!withinDeadline) return null;
 
     return (
       <Button
@@ -134,7 +143,7 @@ class ClaimResultsButton extends React.PureComponent {
         large
         onClick={this.handleSubmit}
       >
-        Claim Results
+        {withinDeadline && tentativePassed ? 'Claim Results' : 'Claim Failed Project'}
       </Button>
     );
   }

@@ -13,6 +13,8 @@ import {
   clearDaoProposalDetails,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
+import moment from 'moment';
+
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import PreviousVersion from '@digix/gov-ui/pages/proposals/previous';
@@ -44,6 +46,81 @@ import {
   WarningIcon,
 } from '@digix/gov-ui/pages/proposals/style';
 
+const getVotingStruct = proposal => {
+  let deadline = Date.now();
+  const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
+  let votingStruct;
+  if (!proposal.isSpecial) {
+    switch (proposal.stage.toLowerCase()) {
+      case 'draft':
+        if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
+          votingStruct = {
+            yes: proposal.draftVoting.yes,
+            no: proposal.draftVoting.no,
+            quota: proposal.draftVoting.quota,
+            quorum: proposal.draftVoting.quorum,
+            claimed: proposal.draftVoting.claimed,
+            deadline: proposal.draftVoting.votingDeadline,
+          };
+        }
+        break;
+
+      case 'proposal':
+        if (Date.now() < proposal.votingRounds[0].commitDeadline) {
+          deadline = proposal.votingRounds[0].commitDeadline || undefined;
+        } else {
+          deadline = proposal.votingRounds[0].revealDeadline;
+        }
+
+        votingStruct = {
+          yes: proposal.votingRounds[0].yes,
+          no: proposal.votingRounds[0].no,
+          quota: proposal.votingRounds[0].quota,
+          claimed: proposal.votingRounds[0].claimed,
+          quorum: proposal.votingRounds[0].quorum,
+          deadline,
+        };
+
+        break;
+      case 'review':
+        if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
+          deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
+        } else {
+          deadline = proposal.votingRounds[mileStone].revealDeadline;
+        }
+
+        votingStruct = {
+          yes: proposal.votingRounds[mileStone].yes,
+          no: proposal.votingRounds[mileStone].no,
+          claimed: proposal.votingRounds[mileStone].claimed,
+          quota: proposal.votingRounds[mileStone].quota,
+          quorum: proposal.votingRounds[mileStone].quorum,
+          deadline,
+        };
+
+        break;
+
+      default:
+        votingStruct = {
+          yes: 0,
+          no: 0,
+          quota: 0,
+          quorum: 0,
+          claimed: true,
+          deadline: undefined,
+        };
+        break;
+    }
+    return votingStruct;
+  }
+  return {
+    yes: proposal.voting.yes,
+    no: proposal.voting.no,
+    quota: proposal.voting.quota,
+    quorum: proposal.voting.quorum,
+    deadline: proposal.voting.revealDeadline,
+  };
+};
 class Proposal extends React.Component {
   constructor(props) {
     super(props);
@@ -138,6 +215,116 @@ class Proposal extends React.Component {
     });
   };
 
+  renderPrlAlert = prl =>
+    prl ? (
+      <Notifications warning>
+        <WarningIcon kind="warning" />
+        This proposal can no longer claim funding due to Policy, Regulatory or Legal reasons, even
+        if voting passes. Please contact us if you have any queries.
+      </Notifications>
+    ) : null;
+
+  renderClaimApprovalAlert = () => {
+    const {
+      proposalDetails: {
+        data: { proposer },
+        data,
+      },
+      addressDetails: {
+        data: { address: currentUser },
+      },
+      daoConfig,
+    } = this.props;
+
+    if (data.claimed) return null;
+
+    const votingStruct = getVotingStruct(data);
+    if (!votingStruct) return null;
+
+    const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;
+    const currentTime = Date.now();
+    const { yes = 0, no = 0, quorum, quota } = votingStruct;
+    const tentativePassed =
+      Number(yes) + Number(no) > Number(quorum) &&
+      Number(yes) / (Number(yes) + Number(no)) > Number(quota);
+    const deadline = new Date((votingStruct.deadline + Number(voteClaimingDeadline)) * 1000);
+
+    const pastDeadline = votingStruct && currentTime >= deadline;
+
+    const canClaim =
+      votingStruct &&
+      tentativePassed &&
+      !pastDeadline &&
+      currentTime > votingStruct.deadline * 1000;
+
+    if (canClaim && currentUser === proposer)
+      return (
+        <Notifications warning>
+          <WarningIcon kind="warning" />
+          The voting result shows that your project passes the voting. Please click the button below
+          to send transaction(s) to claim this result on the blockchain. You need to do this action
+          before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
+        </Notifications>
+      );
+    if (tentativePassed && pastDeadline && currentUser !== proposer)
+      return (
+        <Notifications warning>
+          <WarningIcon kind="warning" />
+          The voting result was not claimed before the claiming deadline. This project will be auto
+          failed.
+        </Notifications>
+      );
+  };
+
+  renderProposerDidNotPassAlert = () => {
+    const {
+      proposalDetails: {
+        data: { proposer },
+        data,
+      },
+      addressDetails: {
+        data: { address: currentUser },
+      },
+    } = this.props;
+
+    const { daoConfig } = this.props;
+    const votingStruct = getVotingStruct(data);
+    if (!votingStruct) return null;
+    const { yes, no, quorum, quota, claimed } = votingStruct;
+
+    const currentTime = Date.now();
+
+    const tentativePassed =
+      Number(yes) + Number(no) > Number(quorum) &&
+      Number(yes) / (Number(yes) + Number(no)) > Number(quota);
+
+    const isVotingDeadlineOver = currentTime > new Date(votingStruct.deadline * 1000);
+    const pastDeadline =
+      votingStruct &&
+      currentTime > votingStruct.deadline * 1000 &&
+      currentTime >=
+        new Date(
+          (votingStruct.deadline + Number(daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE)) * 1000
+        );
+
+    if (
+      votingStruct &&
+      !claimed &&
+      ((!tentativePassed && isVotingDeadlineOver) || pastDeadline) &&
+      currentUser === proposer
+    )
+      return (
+        <Notifications warning>
+          <WarningIcon kind="warning" />
+          Your project fails the voting, either by voting results or its already past the deadline
+          for claiming voting results.
+          {data.currentVotingRound <= 0
+            ? ' Please click the button below to claim your failed project and get back your collateral.'
+            : ''}
+        </Notifications>
+      );
+    return null;
+  };
   render() {
     const { currentVersion, versions } = this.state;
     const { proposalDetails, addressDetails, history, daoInfo, userProposalLike } = this.props;
@@ -207,13 +394,9 @@ class Proposal extends React.Component {
               />
             </VersionHistory>
           )}
-
-          {/* NOTE: Use 'warning' props for the notification with blue see-through background box */}
-          {/* <Notifications warning>
-            <WarningIcon kind="warning" />
-            Your project was not approved by the moderators. To receive your deposit of ETH back,
-            please claim the approval results.
-          </Notifications> */}
+          {this.renderPrlAlert(proposalDetails.data.prl)}
+          {this.renderClaimApprovalAlert()}
+          {this.renderProposerDidNotPassAlert()}
 
           <Header>
             <div>
@@ -327,6 +510,7 @@ Proposal.propTypes = {
   unlikeProposalAction: func.isRequired,
   addressDetails: object.isRequired,
   challengeProof: object,
+  daoConfig: object.isRequired,
   userProposalLike: object,
   location: object.isRequired,
   history: object.isRequired,
@@ -342,6 +526,7 @@ export default connect(
     infoServer: {
       ProposalDetails,
       AddressDetails,
+      DaoConfig,
       DaoDetails: { data },
     },
     daoServer: { ChallengeProof, UserProposalLike },
@@ -350,6 +535,7 @@ export default connect(
     addressDetails: AddressDetails,
     challengeProof: ChallengeProof,
     daoInfo: data,
+    daoConfig: DaoConfig,
     userProposalLike: UserProposalLike,
   }),
   {

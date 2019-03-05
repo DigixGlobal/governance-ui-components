@@ -15,8 +15,7 @@ import { Button } from '../common/elements/index';
 const determineDeadline = proposal => {
   let deadline = Date.now();
   const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
-
-  if (proposal.stage) {
+  if (!proposal.isSpecial) {
     switch (proposal.stage.toLowerCase()) {
       case 'draft':
         if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
@@ -25,34 +24,36 @@ const determineDeadline = proposal => {
           return undefined;
         }
         break;
-      case 'proposal':
+      case 'proposal': {
         if (Date.now() < proposal.votingRounds[0].commitDeadline) {
           deadline = proposal.votingRounds[0].commitDeadline || undefined;
-        }
-        deadline = proposal.votingRounds[0].revealDeadline;
+        } else deadline = proposal.votingRounds[0].revealDeadline;
         break;
+      }
       case 'ongoing':
         return undefined;
 
       case 'review':
         if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
           deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
-        }
-        deadline = proposal.votingRounds[mileStone].revealDeadline;
+        } else deadline = proposal.votingRounds[mileStone].revealDeadline;
         break;
       default:
         deadline = proposal.votingRounds ? proposal.votingRounds[0].commitDeadline : undefined;
         break;
     }
   } else {
-    deadline = proposal.voting.revealDeadline; // TODO: this is intended for special proposals. We need to consider the CommitDeadline too
+    if (Date.now() < proposal.voting.commitDeadline) {
+      deadline = proposal.voting.commitDeadline || undefined;
+    }
+    deadline = proposal.voting.revealDeadline;
   }
   if (deadline) return new Intl.DateTimeFormat('en-US').format(deadline * 1000);
   return deadline;
 };
 
 const disableParticipateWhen = (proposal, user) => {
-  if (!proposal.stage) return true; // TODO: determine whether special proposals has a property we can use to check
+  if (proposal.isSpecial) return true;
   switch (proposal.stage.toLowerCase()) {
     case 'idea':
       return true;

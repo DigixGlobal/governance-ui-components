@@ -30,7 +30,10 @@ class UserDAOStats extends React.Component {
         <Item>
           <Label>My Stake</Label>
           <Data data-digix="Dashboard-Stats-Stake">
-            <span>{stake}</span> <span className="equiv">({lockedDgd} DGD LOCKED)</span>
+            <span data-digix="Dashboard-DGD-Stake">{stake}</span>{' '}
+            <span className="equiv" data-digix="Dashboard-DGD-Stake">
+              ({lockedDgd} DGD LOCKED)
+            </span>
           </Data>
         </Item>
       </UserStats>

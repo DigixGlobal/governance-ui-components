@@ -34,6 +34,7 @@ class LandingPage extends React.PureComponent {
 
     getDaoDetailsAction();
     getProposalsAction();
+    this.getProposalLikes(undefined, ChallengeProof);
     if (AddressDetails.data.address && (ChallengeProof.data && ChallengeProof.data.client)) {
       this.getLikeStatus();
     }
@@ -67,7 +68,6 @@ class LandingPage extends React.PureComponent {
     } = this.props;
     return Promise.all([getAddressDetailsAction(AddressDetails.data.address)]).then(() => {
       this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
-      this.getProposalLikes(undefined, ChallengeProof);
     });
   };
 
@@ -77,26 +77,13 @@ class LandingPage extends React.PureComponent {
     Promise.all([
       getProposalsAction(param),
       this.getUserLikes(param, ChallengeProof, getProposalLikesByUserAction),
-      this.getProposalLikes(param, ChallengeProof),
     ]);
   };
 
-  getProposalLikes = (param = undefined, ChallengeProof) => {
-    const { getProposalLikesStatsAction } = this.props;
-    if (
-      !ChallengeProof ||
-      !ChallengeProof.data ||
-      (ChallengeProof.data && !ChallengeProof.data.client)
-    )
-      return undefined;
-
-    return getProposalLikesStatsAction({
+  getProposalLikes = (param = undefined) =>
+    this.props.getProposalLikesStatsAction({
       param,
-      authToken: ChallengeProof.data['access-token'],
-      client: ChallengeProof.data.client,
-      uid: ChallengeProof.data.uid,
     });
-  };
 
   getUserLikes = (stage, ChallengeProof, getProposalLikesByUserAction) => {
     if (
@@ -147,10 +134,18 @@ class LandingPage extends React.PureComponent {
       return proposal.liked;
     };
 
-    const getLikesCount = proposalId => {
-      if (!ProposalLikes.data) return false;
+    const getProposer = proposalId => {
+      if (!ProposalLikes.data) return '';
       const proposal = ProposalLikes.data.find(p => p.proposalId === proposalId);
-      if (!proposal) return false;
+      if (!proposal) return '';
+      return proposal.user.displayName;
+    };
+
+    const getLikesCount = proposalId => {
+      if (!ProposalLikes.data) return 0;
+      const proposal = ProposalLikes.data.find(p => p.proposalId === proposalId);
+
+      if (!proposal) return 0;
       return proposal.likes;
     };
     return (
@@ -170,6 +165,7 @@ class LandingPage extends React.PureComponent {
               liked={checkIfLiked(proposal.proposalId)}
               likes={getLikesCount(proposal.proposalId)}
               proposal={proposal}
+              displayName={getProposer(proposal.proposalId)}
               userDetails={AddressDetails}
             />
           ))}

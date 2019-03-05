@@ -81,7 +81,7 @@ class Proposal extends React.Component {
   };
 
   render() {
-    const { details, userDetails, likes, liked, userProposalLike } = this.props;
+    const { details, userDetails, likes, liked, userProposalLike, displayName } = this.props;
     const likeStatus =
       userProposalLike.data && userProposalLike.data.proposalId === details.proposalId
         ? userProposalLike.data
@@ -95,7 +95,7 @@ class Proposal extends React.Component {
       <ProposaDetaillWrapper>
         <ProposalCard>
           <TagsContainer>
-            <Button kind="flat" style={{ pointerEvents: 'none' }}>
+            <Button kind="tag" icon>
               {details.stage}
             </Button>
           </TagsContainer>
@@ -123,7 +123,7 @@ class Proposal extends React.Component {
           </Description>
           <ProposalFooter>
             <PostedBy>
-              BY <PostedByLink style={{ pointerEvents: 'none' }}>{details.proposer}</PostedByLink>
+              BY <PostedByLink style={{ pointerEvents: 'none' }}>{displayName}</PostedByLink>
             </PostedBy>
             {canLike && (
               <LikeButton
@@ -141,13 +141,14 @@ class Proposal extends React.Component {
   }
 }
 
-const { bool, func, object, number } = PropTypes;
+const { bool, func, object, number, string } = PropTypes;
 
 Proposal.propTypes = {
   ChallengeProof: object,
   details: object.isRequired,
   liked: bool,
   likes: number,
+  displayName: string.isRequired,
   likeProposalAction: func.isRequired,
   unlikeProposalAction: func.isRequired,
   getUserProposalLikeStatusAction: func.isRequired,

@@ -17,6 +17,7 @@ import {
   canLockDgd,
   fetchMaxAllowance,
   showHideAlert,
+  showHideWalletOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 import { getAddressDetails, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
@@ -59,8 +60,19 @@ class ConnectedWallet extends React.Component {
         this.getEthBalance(),
         this.getDgdBalance(),
         this.props.getAddressDetails(defaultAddress.address),
-      ]).then(([eth, dgd]) => this.setState({ dgdBalance: dgd, ethBalance: eth }));
+      ]).then(([eth, dgd]) => {
+        const { AddressDetails } = this.props;
+        const address = AddressDetails.data;
+        const hasParticipated = address.isParticipant || address.lastParticipatedQuarter > 0;
+
+        if (hasParticipated && !this.showRenderApproval()) {
+          this.props.showHideWalletOverlay(false);
+        }
+
+        this.setState({ dgdBalance: dgd, ethBalance: eth });
+      });
     }
+
     this.getMaxAllowance();
   }
 
@@ -173,6 +185,15 @@ class ConnectedWallet extends React.Component {
     showHideLockDgdOverlayAction(true);
   };
 
+  showRenderApproval = () => {
+    const { addressMaxAllowance } = this.props;
+    const { dgdBalance, showLockDgd } = this.state;
+    const showApproval =
+      parseFloat(dgdBalance) > 0 && Number(addressMaxAllowance) <= 2 ** 100 && !showLockDgd;
+
+    return showApproval;
+  };
+
   renderApproval = () => (
     <Fragment>
       <CloseButtonWithHeader>
@@ -269,12 +290,12 @@ class ConnectedWallet extends React.Component {
   };
 
   render() {
-    const { addressMaxAllowance } = this.props;
-    const { dgdBalance, showLockDgd } = this.state;
-    const showApproval =
-      parseFloat(dgdBalance) > 0 && Number(addressMaxAllowance) <= 2 ** 100 && !showLockDgd;
+    const showApproval = this.showRenderApproval();
+
     return (
-      <InnerContainer>{showApproval ? this.renderApproval() : this.renderDefault()}</InnerContainer>
+      <InnerContainer data-digix="ConnectedWalletComponent">
+        {showApproval ? this.renderApproval() : this.renderDefault()}
+      </InnerContainer>
     );
   }
 }
@@ -282,6 +303,7 @@ class ConnectedWallet extends React.Component {
 const { object, func, number, oneOfType, array } = PropTypes;
 
 ConnectedWallet.propTypes = {
+  AddressDetails: object,
   onClose: func.isRequired,
   getAddressDetails: func.isRequired,
   getDaoDetails: func.isRequired,
@@ -289,6 +311,7 @@ ConnectedWallet.propTypes = {
   DaoDetails: object,
   fetchMaxAllowance: func.isRequired,
   showHideAlert: func.isRequired,
+  showHideWalletOverlay: func.isRequired,
   showHideLockDgdOverlayAction: func.isRequired,
   showTxSigningModal: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
@@ -301,6 +324,7 @@ ConnectedWallet.propTypes = {
 };
 
 ConnectedWallet.defaultProps = {
+  AddressDetails: undefined,
   addressMaxAllowance: undefined,
   DaoDetails: {
     data: {
@@ -313,6 +337,7 @@ ConnectedWallet.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+  AddressDetails: state.infoServer.AddressDetails,
   defaultAddress: getDefaultAddress(state),
   lockDgdOverlay: state.govUI.lockDgdOverlay,
   addressMaxAllowance: state.govUI.addressMaxAllowance,
@@ -326,6 +351,7 @@ export default connect(
   mapStateToProps,
   {
     showHideAlert,
+    showHideWalletOverlay,
     showHideLockDgdOverlayAction: showHideLockDgdOverlay,
     canLockDgd,
     getAddressDetails,

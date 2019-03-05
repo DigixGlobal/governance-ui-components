@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@digix/dao-contracts": "0.0.5",
+    "@digix/dao-contracts": "0.0.6",
     "@digix/multi-hash": "0.0.2",
     "@digix/react-webcam": "^0.2.5",
     "@material-ui/core": "^3.1.1",
@@ -76,7 +76,7 @@
     "eslint-config-with-prettier": "^4.2.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-prettier": "^2.7.0",
     "eslint-plugin-react": "^7.11.1",
     "lint-staged": "^8.1.0",
     "pre-commit": "^1.2.2",

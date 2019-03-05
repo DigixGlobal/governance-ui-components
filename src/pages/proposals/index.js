@@ -159,7 +159,9 @@ class Proposal extends React.Component {
 
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
-    let funding = proposalDetails.data.changedFundings
+    const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
+
+    const funding = proposalDetails.data.isFundingChanged
       ? proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
       : proposalVersion.milestoneFundings.reduce(milestoneFundings, 0);
     let reward = truncateNumber(proposalVersion.finalReward);
@@ -168,10 +170,6 @@ class Proposal extends React.Component {
     let updatedReward;
 
     if (proposalDetails.data.isFundingChanged) {
-      funding = truncateNumber(
-        proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
-      );
-
       reward = truncateNumber(proposalDetails.data.changedFundings.finalReward.original);
 
       if (Number(proposalDetails.data.changedFundings.finalReward.updated) > 0) {
@@ -210,7 +208,12 @@ class Proposal extends React.Component {
           )}
           <Header>
             <div>
-              <Button kind="flat">{proposalDetails.data.stage}</Button>
+              <Button kind="tag" fill>
+                Special
+              </Button>
+              <Button kind="tag" icon>
+                {proposalDetails.data.stage}
+              </Button>
               <Title primary>{dijixObject.title}</Title>
             </div>
             <CTAButtons>
@@ -233,7 +236,7 @@ class Proposal extends React.Component {
               <InfoItem>
                 <ItemTitle>Submitted By</ItemTitle>
                 <Data>
-                  <span>{proposalDetails.data.proposer}</span>
+                  <span>{displayName}</span>
                 </Data>
               </InfoItem>
               <InfoItem>

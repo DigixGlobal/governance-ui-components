@@ -68,7 +68,7 @@ export default class CommentTextEditor extends React.Component {
   }
 }
 
-const { func, string } = PropTypes;
+const { func } = PropTypes;
 
 CommentTextEditor.propTypes = {
   addComment: func.isRequired,

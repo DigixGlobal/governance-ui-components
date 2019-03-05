@@ -11,7 +11,7 @@ import {
   showRightPanel,
   showHideLockDgdOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import {
   QtrParticipation,
@@ -63,14 +63,12 @@ class Wallet extends React.Component {
     const { hasPendingLockTransaction, hasPendingUnlockTransaction } = this.state;
     const stake = truncateNumber(this.props.stake);
     const DaoDetails = this.props.DaoDetails.data;
-
+    const lockedDgd = truncateNumber(this.props.lockedDgd);
     const canLockDgd = this.props.CanLockDgd.show && !hasPendingLockTransaction;
 
-    const currentTime = Date.now() / 1000;
     const isGlobalRewardsSet = DaoDetails ? DaoDetails.isGlobalRewardsSet : false;
-    const inLockingPhase = currentTime < DaoDetails.startOfMainphase;
     const canUnlockDgd =
-      inLockingPhase && stake > 0 && isGlobalRewardsSet && !hasPendingUnlockTransaction;
+      inLockingPhase(DaoDetails) && stake > 0 && isGlobalRewardsSet && !hasPendingUnlockTransaction;
 
     return (
       <QtrParticipation>
@@ -78,8 +76,8 @@ class Wallet extends React.Component {
         <Detail>
           <Label>Your Current Lock-up</Label>
           <Data>
-            <span data-digix="Wallet-Stake">{stake}</span>
-            <span>&nbsp;Stake</span>
+            <span data-digix="Wallet-Locked-DGD">{lockedDgd}</span>
+            <span>&nbsp;DGD</span>
           </Data>
           <Desc>
             You can lock more DGD to increase your voting power or unlock after a quarter to move

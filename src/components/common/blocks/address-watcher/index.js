@@ -45,7 +45,7 @@ class AddressWatcher extends React.PureComponent {
       getAddressDetailsVanilla(address)
         .then(({ json: { result } }) => result)
         .then(details => {
-          if (!details.isParticipant && !details.isKycOfficer) {
+          if (!details.isParticipant && !details.isKycOfficer && !details.isForumAdmin) {
             this.props.setUserAddress(address);
             this.setState({ verifyingUser: false });
 
@@ -64,7 +64,7 @@ class AddressWatcher extends React.PureComponent {
       const message = result.challenge;
       const network = this.props.defaultNetworks[0];
       const caption =
-        'By signing this message, I am proving that I control the selected account for use on DigixDAO.';
+        'This signing is to prove to our server that you are in control of the Ethereum account that was loaded. By signing this message, you are proving that you control the selected account for use on DigixDAO.';
       const signMessage = new Promise(resolve =>
         resolve(
           this.props.showMsgSigningModal({

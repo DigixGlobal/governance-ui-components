@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
+
+import { VoteButton } from '@digix/gov-ui/components/common/blocks/overlay/vote/style';
 import {
   IntroContainer,
   OverlayHeader as Header,
@@ -116,11 +118,9 @@ class ApproveProposalOverlay extends React.Component {
     const votedNo = hasVoted && !vote;
 
     const ResponseButton = props => (
-      <Button
+      <VoteButton
         {...props}
-        kind="round"
         primary
-        xlarge
         fluid
         yes={props.voteValue}
         no={!props.voteValue}
@@ -137,10 +137,12 @@ class ApproveProposalOverlay extends React.Component {
           Approval from moderators is needed in order to move a draft to the proposal stage. Please
           make your vote here if you’re in approval for the draft.
         </p>
-        <ResponseButton voteValue>Yes</ResponseButton>
+        <ResponseButton voteValue style={{ marginBottom: '0' }}>
+          Yes
+        </ResponseButton>
         <ResponseButton voteValue={false}>No</ResponseButton>
         {hasVoted && (
-          <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
+          <Button secondary large fluid onClick={this.handleSubmit}>
             Confirm My Vote
           </Button>
         )}

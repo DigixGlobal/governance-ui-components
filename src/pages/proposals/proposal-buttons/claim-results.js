@@ -154,6 +154,17 @@ class ClaimResultsButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
 
+  hasPendingClaim = () => {
+    const {
+      pendingTransactions,
+      proposal: { proposalId },
+    } = this.props;
+    if (!pendingTransactions.data) return false;
+
+    const transaction = pendingTransactions.data.find(p => p.project === proposalId);
+    return transaction !== undefined;
+  };
+
   render() {
     const {
       isProposer,
@@ -193,7 +204,7 @@ class ClaimResultsButton extends React.PureComponent {
 
     return (
       <Button
-        disabled={claimed || claiming}
+        // disabled={claimed || claiming || this.hasPendingClaim()} // TODO: This has to be enabled once Transactions from DAO-Server are properly updated. i.e. Turns a pending transaction to Successful
         data-digix="Propsal-Claim-Results"
         kind="round"
         large
@@ -222,6 +233,7 @@ ClaimResultsButton.propTypes = {
   ChallengeProof: object.isRequired,
   daoConfig: object.isRequired,
   daoDetails: object.isRequired,
+  pendingTransactions: object,
   showHideAlert: func.isRequired,
   getDaoConfig: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
@@ -235,10 +247,12 @@ ClaimResultsButton.propTypes = {
 
 ClaimResultsButton.defaultProps = {
   isProposer: false,
+  pendingTransactions: undefined,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
+  pendingTransactions: state.daoServer.PendingTransactions,
   addresses: getAddresses(state),
   daoConfig: state.infoServer.DaoConfig,
   daoDetails: state.infoServer.DaoDetails,

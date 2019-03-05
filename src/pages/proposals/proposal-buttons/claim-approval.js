@@ -187,7 +187,7 @@ class ClaimApprovalButton extends React.Component {
       <Button
         kind="round"
         large
-        disabled={claiming}
+        // disabled={claiming || this.hasPendingClaim()} // TODO: This has to be enabled once Transactions from DAO-Server are properly updated. i.e. Turns a pending transaction to Successful
         onClick={() =>
           isMultiStep && tentativePassed && canClaim
             ? this.showOverlay({

@@ -151,7 +151,6 @@ export default function(state = defaultState, action) {
         },
       };
     case actions.GET_PENDING_TRANSACTIONS:
-      console.log(action.payload);
       return {
         ...state,
         PendingTransactions: {

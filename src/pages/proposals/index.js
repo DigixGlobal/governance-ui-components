@@ -68,8 +68,9 @@ const getVotingStruct = proposal => {
       case 'proposal':
         if (Date.now() < proposal.votingRounds[0].commitDeadline) {
           deadline = proposal.votingRounds[0].commitDeadline || undefined;
+        } else {
+          deadline = proposal.votingRounds[0].revealDeadline;
         }
-        deadline = proposal.votingRounds[0].revealDeadline;
 
         votingStruct = {
           yes: proposal.votingRounds[0].yes,
@@ -84,8 +85,9 @@ const getVotingStruct = proposal => {
       case 'review':
         if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
           deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
+        } else {
+          deadline = proposal.votingRounds[mileStone].revealDeadline;
         }
-        deadline = proposal.votingRounds[mileStone].revealDeadline;
 
         votingStruct = {
           yes: proposal.votingRounds[mileStone].yes,

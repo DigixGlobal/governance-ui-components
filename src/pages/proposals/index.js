@@ -400,9 +400,11 @@ class Proposal extends React.Component {
 
           <Header>
             <div>
+              {/*
               <Button kind="tag" filled>
                 Special
-              </Button>
+              </Button> 
+              */}
               <Button kind="tag" showIcon>
                 {proposalDetails.data.stage}
               </Button>

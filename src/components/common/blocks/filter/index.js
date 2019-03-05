@@ -49,7 +49,7 @@ class ProposalCardFilter extends React.Component {
   }
 
   getUnmetCreateRequirements = () => {
-    const { DaoConfig, DaoDetails, client } = this.props;
+    const { DaoDetails, client } = this.props;
     const dataCalls = [
       getUnmetProposalRequirements(client, DaoDetails),
       this.props.getDaoConfig(),
@@ -57,7 +57,7 @@ class ProposalCardFilter extends React.Component {
     ];
 
     return Promise.all(dataCalls).then(([errors, config, ethBalance]) => {
-      const requiredCollateral = Number(DaoConfig.CONFIG_PREPROPOSAL_COLLATERAL);
+      const requiredCollateral = Number(this.props.DaoConfig.CONFIG_PREPROPOSAL_COLLATERAL);
       if (ethBalance < requiredCollateral) {
         errors.push(ProposalErrors.insufficientCollateral(requiredCollateral));
       }

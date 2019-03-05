@@ -4,6 +4,7 @@ const blackHex = Color('#000');
 const black = {
   default: blackHex,
   darker: blackHex.darken(0.5),
+  base: blackHex,
   lighter: blackHex.lighten(0.5),
 };
 
@@ -20,6 +21,7 @@ const darkBlueHex = Color('#131F35');
 const darkBlue = {
   darker: darkBlueHex.darken(1),
   default: darkBlueHex,
+  base: darkBlueHex,
   light: darkBlueHex.lighten(1),
   lighter: darkBlueHex.lighten(1.5),
   lightest: darkBlueHex.lighten(2),
@@ -40,10 +42,11 @@ const darkGoldHex = Color('#C2A059');
 const darkGold = {
   default: darkGoldHex,
   darker: darkGoldHex.darken(0.05),
+  base: darkGoldHex,
   light: darkGoldHex.lighten(0.5),
   lighter: darkGoldHex.lighten(1),
   lightest: darkGoldHex.lighten(1.9),
-  fade: darkGoldHex.fade(0.8),
+  fade: darkGoldHex.fade(0.85),
 };
 
 const grayHex = Color('#E8ECF2');
@@ -70,7 +73,9 @@ const whiteHex = Color('#fff');
 const white = {
   default: whiteHex,
   darker: whiteHex.darken(0.05),
+  base: whiteHex,
   lighter: whiteHex.lighten(0.05),
+  fade: whiteHex.fade(0.9),
 };
 
 const redHex = Color('#D0021B');
@@ -98,6 +103,7 @@ const green = {
 const primaryColor = darkBlue;
 const secondaryColor = darkGold;
 const tertiaryColor = darkGray;
+const transparent = 'transparent';
 
 const baseFontSize = '1rem';
 const basePaddingX = 1;
@@ -121,6 +127,51 @@ const LightTheme = {
   boxShadow: boxShadowStyle,
   borderRadius: borderRadiusStyle,
 
+  // Refactoring WIP: To be used moving forward
+  buttonDefault: {
+    textColor: primaryColor,
+    background: white,
+    border: primaryColor,
+    iconColor: tertiaryColor,
+  },
+
+  buttonPrimary: {
+    textColor: primaryColor,
+    background: transparent,
+    border: primaryColor,
+    iconColor: primaryColor,
+  },
+
+  buttonSecondary: {
+    textColor: primaryColor,
+    background: primaryColor,
+    border: primaryColor,
+    iconColor: primaryColor,
+  },
+
+  buttonTertiary: {
+    textColor: secondaryColor,
+    background: secondaryColor,
+    border: secondaryColor,
+    iconColor: secondaryColor,
+  },
+
+  buttonInverted: {
+    textColor: white,
+    background: primaryColor,
+    border: primaryColor,
+    iconColor: white,
+  },
+
+  buttonDisabled: {
+    textColor: tertiaryColor,
+    background: transparent,
+    border: tertiaryColor,
+    iconColor: tertiaryColor,
+    color: tertiaryColor,
+  },
+
+  // Refactoring WIP: For deletion
   buttonBgPrimary: white,
   buttonBgHoverPrimary: primaryColor,
   buttonBgSecondary: primaryColor,
@@ -163,6 +214,10 @@ const LightTheme = {
     disabled: tertiaryColor,
   },
 
+  textColor: {
+    black,
+  },
+
   linkDefaultColor: tertiaryColor,
   linkPrimaryColor: primaryColor,
   linkSecondaryColor: secondaryColor,
@@ -192,7 +247,6 @@ const LightTheme = {
     error: red,
     warning: primaryColor,
     info: secondaryColor,
-
     response: green,
   },
 

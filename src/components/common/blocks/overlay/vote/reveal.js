@@ -8,8 +8,8 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
-  NoteContainer,
-  StatusNote,
+  Notifications,
+  Message,
   ErrorCaption,
 } from '@digix/gov-ui/components/common/common-styles';
 
@@ -159,15 +159,17 @@ class RevealVote extends React.Component {
         </p>
         {error && <ErrorCaption>{error}</ErrorCaption>}
         {uploaded && !error && (
-          <NoteContainer>
-            <StatusNote>
-              Your vote is <span>{voteObject.vote ? 'YES' : 'NO'}</span>
-            </StatusNote>
+          <Notifications info centered>
+            <Message title uppercase>
+              Your vote is
+              <br />
+              <span>{voteObject.vote ? 'YES' : 'NO'}</span>
+            </Message>
             <p>
               Your vote is only valid and counted as activity on the DigixDAO after your
               confirmation.
             </p>
-          </NoteContainer>
+          </Notifications>
         )}
         {!uploaded && (
           <Button

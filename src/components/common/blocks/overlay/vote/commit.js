@@ -6,15 +6,20 @@ import secureRandom from 'secure-random';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
   Note,
-  NoteContainer,
+  Notifications,
+  Message,
 } from '@digix/gov-ui/components/common/common-styles';
 
-import { LinkButton } from '@digix/gov-ui/components/common/blocks/overlay/vote/style';
+import {
+  DownloadButton,
+  VoteButton,
+  DownloadJson,
+} from '@digix/gov-ui/components/common/blocks/overlay/vote/style';
 
 import { buffer2Hex } from '@digix/gov-ui/utils/helpers';
 
@@ -150,12 +155,10 @@ class CommitVote extends React.Component {
     const votedNo = hasVoted && !vote;
     const showVoting = !revoting || changeVote;
     const ResponseButton = props => (
-      <Button
+      <VoteButton
         {...props}
-        kind="round"
         primary
         fluid
-        xlarge
         yes={props.voteValue}
         no={!props.voteValue}
         confirmedYes={votedYes && props.voteValue}
@@ -169,13 +172,19 @@ class CommitVote extends React.Component {
         <Header uppercase>Vote on Proposal (Commit)</Header>
         {revoting && !changeVote && (
           <Fragment>
-            <NoteContainer>
-              <p>
+            <Notifications info centered>
+              <Message>
                 You have already committed for this proposal. This action will overwrite the
                 previous commit.
-              </p>
-            </NoteContainer>
-            <Button kind="round" secondary large fluid onClick={this.handleChangeVote}>
+              </Message>
+            </Notifications>
+            <Button
+              secondary
+              large
+              fluid
+              onClick={this.handleChangeVote}
+              data-digix="Commit-Change-Vote"
+            >
               Change My Vote
             </Button>
           </Fragment>
@@ -193,23 +202,46 @@ class CommitVote extends React.Component {
                 Please keep the file in a safe place as you will not be able to download it again.
               </strong>
             </Note>
-            <ResponseButton voteValue>Yes</ResponseButton>
-            <ResponseButton voteValue={false}>No</ResponseButton>
+            <ResponseButton voteValue data-digix="Commit-Vote-Yes" style={{ marginBottom: '0' }}>
+              Yes
+            </ResponseButton>
+            <ResponseButton voteValue={false} data-digix="Commit-Vote-No">
+              No
+            </ResponseButton>
+
             {hasVoted && (
-              <LinkButton
-                kind="link"
-                large
-                fluid
-                download={`${proposalId}-${currentVotingRound}.json`}
-                onClick={this.handleDownload}
-                href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
-              >
-                Download JSON File
-              </LinkButton>
+              <DownloadJson info centered>
+                <Message title uppercase>
+                  This Json file is only valid for this commit
+                </Message>
+                <p>
+                  In the case you change your mind or make another commit, this file is no longer
+                  valid.
+                </p>
+
+                <DownloadButton
+                  kind="link"
+                  large
+                  fluid
+                  download={`${proposalId}-${currentVotingRound}.json`}
+                  onClick={this.handleDownload}
+                  href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
+                  data-digix="Commit-Download-Json"
+                >
+                  <Icon kind="file" />
+                  Download JSON File
+                </DownloadButton>
+              </DownloadJson>
             )}
 
             {hasDownloaded && (
-              <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
+              <Button
+                secondary
+                large
+                fluid
+                onClick={this.handleSubmit}
+                data-digix="Commit-Confirm-Vote"
+              >
                 Confirm Commit
               </Button>
             )}

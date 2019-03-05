@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
-import { connect } from 'react-redux';
 
 import {
   createKeystore,
@@ -12,6 +13,7 @@ import {
 } from 'spectrum-lightsuite/src/actions/keystore';
 
 import {
+  getTokenUsdValue,
   setAuthentationStatus,
   showHideAlert,
   showHideWalletOverlay,
@@ -36,6 +38,7 @@ export class Wallet extends React.PureComponent {
 
   componentDidMount() {
     this._isMounted = true;
+    this.props.getTokenUsdValue();
   }
 
   componentWillUnmount() {
@@ -100,16 +103,19 @@ const { func, object, bool, array } = PropTypes;
 Wallet.propTypes = {
   addressDetails: object,
   showWallet: object,
+  signingModal: object,
   isAuthenticated: bool,
   defaultNetworks: array.isRequired,
   showHideAlert: func.isRequired,
   showHideWalletOverlay: func.isRequired,
+  getTokenUsdValue: func.isRequired,
 };
 
 Wallet.defaultProps = {
   showWallet: undefined,
   addressDetails: undefined,
   isAuthenticated: false,
+  signingModal: undefined,
 };
 
 const actions = {
@@ -119,6 +125,7 @@ const actions = {
   showHideAlert,
   setAuthentationStatus,
   showHideWalletOverlay,
+  getTokenUsdValue,
 };
 
 const mapStateToProps = state => ({

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import PropTypes, { array } from 'prop-types';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
@@ -243,10 +243,7 @@ class LockDgd extends React.Component {
   renderLockDgd = () => {
     const { dgd, disableLockDgdButton, openError, error } = this.state;
     const { daoDetails } = this.props;
-
-    const currentTime = Date.now() / 1000;
-    const inLockingPhase = currentTime < Number(daoDetails.startOfMainphase);
-    const phase = inLockingPhase ? 'Staking' : 'Main';
+    const phase = inLockingPhase(daoDetails) ? 'Staking' : 'Main';
 
     const stake = truncateNumber(this.getStake(dgd));
 

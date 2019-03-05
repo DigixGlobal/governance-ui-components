@@ -13,7 +13,7 @@ import {
   getDaoConfig,
   getDaoDetails,
 } from '@digix/gov-ui/reducers/info-server/actions';
-import { getUserStatus, truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { getUserStatus, inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { showHideLockDgdOverlay, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
@@ -70,12 +70,11 @@ class Profile extends React.Component {
     const { DaoDetails } = this.props;
     const { startOfMainphase, startOfNextQuarter } = DaoDetails.data;
 
-    const currentTime = Date.now() / 1000;
-    const inLockingPhase = currentTime < startOfMainphase;
-    if (inLockingPhase) {
+    if (inLockingPhase(DaoDetails.data)) {
       return DEFAULT_STAKE_PER_DGD;
     }
 
+    const currentTime = Date.now() / 1000;
     return (startOfNextQuarter - currentTime) / (startOfNextQuarter - startOfMainphase);
   };
 
@@ -150,7 +149,8 @@ class Profile extends React.Component {
 
     return (
       <ActivitySummary>
-        <ActivityItem column>
+        {/* NOTE: no data to show yet, so we're hiding them for now */}
+        {/* <ActivityItem column>
           <Label>Participated In</Label>
           <Data data-digix="Profile-QuarterParticipation">12</Data>
           <Label>Quarter(s)</Label>
@@ -181,7 +181,7 @@ class Profile extends React.Component {
               More Info
             </Button>
           </Actions>
-        </ActivityItem>
+        </ActivityItem> */}
 
         <ActivityItem column>
           <Label>KYC Status</Label>
@@ -221,6 +221,7 @@ class Profile extends React.Component {
     const { hasPendingLockTransaction } = this.state;
 
     const address = AddressDetails.data;
+    const lockedDgd = truncateNumber(AddressDetails.data.lockedDgd);
     let stake = Number(address.lockedDgdStake);
     const usernameIsSet = this.props.userData.username;
 
@@ -242,7 +243,6 @@ class Profile extends React.Component {
             {!usernameIsSet && (
               <Button
                 primary
-                icon
                 xsmall
                 data-digix="Profile-UserName-Cta"
                 onClick={() => this.showSetUsernameOverlay()}
@@ -292,7 +292,7 @@ class Profile extends React.Component {
             <Data data-digix="Profile-Stake">
               <span>{stake}</span>
               <span className="equiv" data-digix="Profile-DGD-Locked">
-                ({AddressDetails.data.lockedDgd} DGD LOCKED)
+                ({lockedDgd} DGD LOCKED)
               </span>
             </Data>
           </Item>

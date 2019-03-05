@@ -34,6 +34,7 @@ export const H3 = styled.h3`
   font-family: 'Futura PT Light';
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
+  text-transform: ${props => (props.uppercase ? 'uppercase' : 'inherit')};
 `;
 
 export const H4 = styled.h4`
@@ -120,27 +121,6 @@ export const Note = styled.p`
   color: ${props => props.theme.textSecondary.default.toString()};
 `;
 
-export const NoteContainer = styled.div`
-  background-color: ${props => props.theme.backgroundSecondary.fade.toString()};
-  border: 1px solid ${props => props.theme.buttonBorderSecondary.default.toString()};
-  border-radius: 3px;
-  box-shadow: ${props => props.theme.boxShadow};
-  margin: 3rem 0;
-  padding: 3rem 4rem;
-  text-align: center;
-`;
-
-export const StatusNote = styled.p`
-  color: ${props => props.theme.textSecondary.default.toString()};
-  font-size: 2.4rem;
-
-  span {
-    display: block;
-    color: ${props => props.theme.buttonResponseYes.default.toString()};
-    font-family: 'Futura PT Heavy';
-  }
-`;
-
 export const ErrorCaption = styled.div`
   text-align: center;
   background-color: rgba(208, 2, 27, 0.2);
@@ -210,24 +190,58 @@ export const DrawerContainer = styled.div`
   ${media.tablet`width: 60%`}
   ${media.mobile`width: 100%`}
 `;
+// TODO: Update NoteContainer on Overlay/KYC/index before deleting this
+export const NoteContainer = styled.div`
+  background-color: ${props => props.theme.backgroundSecondary.fade.toString()};
+  border: 1px solid ${props => props.theme.buttonBorderSecondary.default.toString()};
+  border-radius: 3px;
+  box-shadow: ${props => props.theme.boxShadow};
+  margin: 3rem 0;
+  padding: 3rem 4rem;
+  text-align: center;
+`;
+
+export const StatusNote = styled.p`
+  color: ${props => props.theme.textSecondary.default.toString()};
+  font-size: 2.4rem;
+
+  span {
+    display: block;
+    color: ${props => props.theme.buttonResponseYes.default.toString()};
+    font-family: 'Futura PT Heavy';
+  }
+`;
+
+export const Message = styled.p`
+  font-size: ${props => (props.title ? '2.4rem' : '')};
+  text-transform: ${props => (props.uppercase ? 'uppercase' : '')};
+`;
 
 export const Notifications = styled.div`
   ${Container};
   justify-content: ${props => (props.centered ? 'center' : '')};
   align-items: center;
+  flex-wrap: wrap;
 
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   font-family: 'Futura PT Book', sans-serif;
   font-size: 1.6rem;
   margin-bottom: 3rem;
-  padding: 2rem 3rem;
-  flex-wrap: wrap;
+  padding: 3rem 3rem;
+  text-align: ${props => (props.centered ? 'center' : '')};
   white-space: pre-wrap;
 
+  ${Message} {
+    span {
+      font-family: 'Futura PT Heavy', sans-serif;
+    }
+  }
+
   h3 {
-    font-size: 2rem;
+    font-size: 2.4rem;
     margin-bottom: 2rem;
+    text-transform: uppercase;
   }
 
   span {
@@ -278,7 +292,11 @@ export const Notifications = styled.div`
     css`
       background: ${props.theme.textSecondary.fade.toString()};
       border: 1px solid ${props.theme.alertMessage.info.light.toString()};
-      color: ${props.theme.alertMessage.info.default.toString()};
+      color: ${props.theme.textColor.black.toString()};
+
+      ${Message} {
+        color: ${props.theme.alertMessage.info.default.toString()};
+      }
     `};
 `;
 

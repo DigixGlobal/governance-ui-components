@@ -21,10 +21,23 @@ export const fetchUserQuery = gql`
       username
       displayName
       createdAt
+      isForumAdmin
       isKycOfficer
       kyc {
         id
         status
+      }
+    }
+  }
+`;
+
+export const searchUserQuery = gql`
+  query searchUsers($query: String!) {
+    searchDaoUsers(first: 10, term: $query) {
+      nodes {
+        id
+        displayName
+        isBanned
       }
     }
   }
@@ -57,6 +70,34 @@ export const UserMutations = {
         errors {
           field
           message
+        }
+      }
+    }
+  `,
+
+  ban: gql`
+    mutation ban($id: String!) {
+      banUser(input: { id: $id }) {
+        errors {
+          field
+          message
+        }
+        user {
+          isBanned
+        }
+      }
+    }
+  `,
+
+  unban: gql`
+    mutation unban($id: String!) {
+      unbanUser(input: { id: $id }) {
+        errors {
+          field
+          message
+        }
+        user {
+          isBanned
         }
       }
     }

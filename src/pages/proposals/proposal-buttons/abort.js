@@ -91,6 +91,11 @@ class AbortProjectButton extends React.PureComponent {
     };
     return executeContractFunction(payload);
   };
+
+  abortProject() {
+    this.props.checkProposalRequirements(this.handleSubmit);
+  }
+
   render() {
     const { stage, isProposer, finalVersionIpfsDoc } = this.props;
     const stagesThatCanAbort = [ProposalStages.idea, ProposalStages.draft];
@@ -103,7 +108,12 @@ class AbortProjectButton extends React.PureComponent {
     }
 
     return (
-      <Button kind="round" large onClick={this.handleSubmit}>
+      <Button
+        kind="round"
+        large
+        data-digix="ProposalAction-Abort"
+        onClick={() => this.abortProject()}
+      >
         Abort
       </Button>
     );
@@ -119,6 +129,7 @@ AbortProjectButton.propTypes = {
   isProposer: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,

@@ -95,6 +95,10 @@ class ClaimApprovalButton extends React.Component {
     return executeContractFunction(payload);
   };
 
+  claimApproval() {
+    this.props.checkProposalRequirements(this.handleSubmit);
+  }
+
   render() {
     const { draftVoting, isProposer, votingStage, daoConfig } = this.props;
     const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;
@@ -119,8 +123,8 @@ class ClaimApprovalButton extends React.Component {
       <Button
         kind="round"
         large
-        onClick={this.handleSubmit}
-        data-digix="Create-Proposal-Claim-Approval"
+        data-digix="ProposalAction-Approval"
+        onClick={() => this.claimApproval()}
       >
         {canClaim && tentativePassed ? 'Claim Approval' : 'Claim Failed Project'}
       </Button>
@@ -136,6 +140,7 @@ ClaimApprovalButton.propTypes = {
   daoConfig: object.isRequired,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   getDaoConfig: func.isRequired,

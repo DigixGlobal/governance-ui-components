@@ -51,6 +51,8 @@ class ConnectedWallet extends React.Component {
       ethBalance: 0,
       showLockDgd: false,
     };
+
+    this._isMounted = false;
   }
 
   componentDidMount() {
@@ -121,7 +123,11 @@ class ConnectedWallet extends React.Component {
     }
   }
 
-  _isMounted = false;
+  setError = error => {
+    this.props.showHideAlert({
+      message: JSON.stringify(error && error.message) || error,
+    });
+  };
 
   handleApprove = () => {
     const { web3Redux, challengeProof, addresses } = this.props;

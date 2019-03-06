@@ -47,6 +47,7 @@ import {
   Data,
   WarningIcon,
 } from '@digix/gov-ui/pages/proposals/style';
+import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
 const getVotingStruct = proposal => {
   let deadline = Date.now();
@@ -112,6 +113,7 @@ const getVotingStruct = proposal => {
   }
   return votingStruct;
 };
+
 class Proposal extends React.Component {
   constructor(props) {
     super(props);
@@ -318,8 +320,17 @@ class Proposal extends React.Component {
   };
 
   renderSpecialProposal = () => {
-    const { proposalDetails, addressDetails, history, daoInfo, userProposalLike } = this.props;
+    const {
+      addressDetails,
+      daoInfo,
+      history,
+      proposalDetails,
+      userData,
+      userProposalLike,
+    } = this.props;
+
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
+    const isForumAdmin = userData && userData.isForumAdmin;
 
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
@@ -342,20 +353,22 @@ class Proposal extends React.Component {
               </Button>
               <Title primary>{proposalDetails.data.title}</Title>
             </div>
-            <CtaButtons>
-              <ParticipantButtons
-                isProposer={isProposer}
-                proposal={proposalDetails}
-                addressDetails={addressDetails}
-                onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
-                history={history}
-              />
-              <ModeratorButtons
-                proposal={proposalDetails}
-                addressDetails={addressDetails}
-                history={history}
-              />
-            </CtaButtons>
+            {!isForumAdmin && (
+              <CtaButtons>
+                <ParticipantButtons
+                  isProposer={isProposer}
+                  proposal={proposalDetails}
+                  addressDetails={addressDetails}
+                  onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
+                  history={history}
+                />
+                <ModeratorButtons
+                  proposal={proposalDetails}
+                  addressDetails={addressDetails}
+                  history={history}
+                />
+              </CtaButtons>
+            )}
           </Header>
           <FundingSummary>
             <SummaryInfo>
@@ -385,8 +398,17 @@ class Proposal extends React.Component {
 
   renderNormalProposal = () => {
     const { currentVersion, versions } = this.state;
-    const { proposalDetails, addressDetails, history, daoInfo, userProposalLike } = this.props;
+    const {
+      addressDetails,
+      daoInfo,
+      history,
+      proposalDetails,
+      userData,
+      userProposalLike,
+    } = this.props;
+
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
+    const isForumAdmin = userData && userData.isForumAdmin;
 
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
@@ -460,20 +482,22 @@ class Proposal extends React.Component {
               </Button>
               <Title primary>{dijixObject.title}</Title>
             </div>
-            <CtaButtons>
-              <ParticipantButtons
-                isProposer={isProposer}
-                proposal={proposalDetails}
-                addressDetails={addressDetails}
-                onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
-                history={history}
-              />
-              <ModeratorButtons
-                proposal={proposalDetails}
-                addressDetails={addressDetails}
-                history={history}
-              />
-            </CtaButtons>
+            {!isForumAdmin && (
+              <CtaButtons>
+                <ParticipantButtons
+                  isProposer={isProposer}
+                  proposal={proposalDetails}
+                  addressDetails={addressDetails}
+                  onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
+                  history={history}
+                />
+                <ModeratorButtons
+                  proposal={proposalDetails}
+                  addressDetails={addressDetails}
+                  history={history}
+                />
+              </CtaButtons>
+            )}
           </Header>
           <FundingSummary>
             <SummaryInfo>
@@ -575,6 +599,7 @@ Proposal.propTypes = {
   addressDetails: object.isRequired,
   challengeProof: object,
   daoConfig: object.isRequired,
+  userData: object,
   userProposalLike: object,
   location: object.isRequired,
   history: object.isRequired,
@@ -582,32 +607,35 @@ Proposal.propTypes = {
 
 Proposal.defaultProps = {
   challengeProof: undefined,
+  userData: undefined,
   userProposalLike: undefined,
 };
 
-export default connect(
-  ({
-    infoServer: {
-      ProposalDetails,
-      AddressDetails,
-      DaoConfig,
-      DaoDetails: { data },
-    },
-    daoServer: { ChallengeProof, UserProposalLike },
-  }) => ({
-    proposalDetails: ProposalDetails,
-    addressDetails: AddressDetails,
-    challengeProof: ChallengeProof,
-    daoInfo: data,
-    daoConfig: DaoConfig,
-    userProposalLike: UserProposalLike,
-  }),
-  {
-    getProposalDetailsAction: getProposalDetails,
-    getUserProposalLikeStatusAction: getUserProposalLikeStatus,
-    getAddressDetailsAction: getAddressDetails,
-    likeProposalAction: likeProposal,
-    unlikeProposalAction: unlikeProposal,
-    clearDaoProposalDetailsAction: clearDaoProposalDetails,
-  }
-)(Proposal);
+export default withFetchUser(
+  connect(
+    ({
+      infoServer: {
+        ProposalDetails,
+        AddressDetails,
+        DaoConfig,
+        DaoDetails: { data },
+      },
+      daoServer: { ChallengeProof, UserProposalLike },
+    }) => ({
+      proposalDetails: ProposalDetails,
+      addressDetails: AddressDetails,
+      challengeProof: ChallengeProof,
+      daoInfo: data,
+      daoConfig: DaoConfig,
+      userProposalLike: UserProposalLike,
+    }),
+    {
+      getProposalDetailsAction: getProposalDetails,
+      getUserProposalLikeStatusAction: getUserProposalLikeStatus,
+      getAddressDetailsAction: getAddressDetails,
+      likeProposalAction: likeProposal,
+      unlikeProposalAction: unlikeProposal,
+      clearDaoProposalDetailsAction: clearDaoProposalDetails,
+    }
+  )(Proposal)
+);

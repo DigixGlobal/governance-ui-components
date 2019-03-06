@@ -64,7 +64,7 @@ class Proposal extends React.PureComponent {
   };
 
   render() {
-    const { details, userDetails, likes, liked, userProposalLike, displayName } = this.props;
+    const { details, userDetails, likes, liked, userProposalLike, displayName, title } = this.props;
     const likeStatus =
       userProposalLike.data && userProposalLike.data.proposalId === details.proposalId
         ? userProposalLike.data
@@ -86,7 +86,7 @@ class Proposal extends React.PureComponent {
             </Button>
           </TagsContainer>
           <Description>
-            <H2>{proposalVersion ? proposalVersion.dijixObject.title : ''}</H2>
+            <H2>{proposalVersion ? proposalVersion.dijixObject.title : title}</H2>
             <p>{proposalVersion ? proposalVersion.dijixObject.description : ''}</p>
 
             {canCreate ? (
@@ -134,6 +134,7 @@ Proposal.propTypes = {
   details: object.isRequired,
   liked: bool,
   likes: number,
+  title: string,
   displayName: string.isRequired,
   likeProposalAction: func.isRequired,
   unlikeProposalAction: func.isRequired,
@@ -151,6 +152,7 @@ Proposal.defaultProps = {
   ChallengeProof: undefined,
   liked: false,
   likes: undefined,
+  title: '',
 };
 
 export default connect(

@@ -27,6 +27,7 @@ class EditFundingButton extends React.PureComponent {
 
   render() {
     const { isProposer, proposal } = this.props;
+    if (proposal.isSpecial) return null;
     const canEdit = proposal.stage === ProposalStages.ongoing && isProposer;
     const proposalDetails = proposal.proposalVersions[proposal.proposalVersions.length - 1];
     const hasUnfinishedMilestones =

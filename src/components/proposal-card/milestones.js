@@ -15,6 +15,7 @@ import { Button } from '../common/elements/index';
 const determineDeadline = proposal => {
   let deadline = Date.now();
   const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
+
   switch (proposal.stage.toLowerCase()) {
     case 'draft':
       if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
@@ -47,7 +48,6 @@ const determineDeadline = proposal => {
 };
 
 const disableParticipateWhen = (proposal, user) => {
-  if (proposal.isSpecial) return true;
   switch (proposal.stage.toLowerCase()) {
     case 'idea':
       return true;

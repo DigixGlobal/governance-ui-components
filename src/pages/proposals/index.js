@@ -21,12 +21,14 @@ import PreviousVersion from '@digix/gov-ui/pages/proposals/previous';
 import NextVersion from '@digix/gov-ui/pages/proposals/next';
 
 import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
+import SpecialProjectDetails from '@digix/gov-ui/pages/proposals/special-project-details';
 import Milestones from '@digix/gov-ui/pages/proposals/milestones';
 
 import ParticipantButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/participants';
 import ModeratorButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/moderators';
 
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
+import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
 import CommentThread from '@digix/gov-ui/pages/proposals/comment';
 
 import { Notifications } from '@digix/gov-ui/components/common/common-styles';
@@ -50,76 +52,65 @@ const getVotingStruct = proposal => {
   let deadline = Date.now();
   const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
   let votingStruct;
-  if (!proposal.isSpecial) {
-    switch (proposal.stage.toLowerCase()) {
-      case 'draft':
-        if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
-          votingStruct = {
-            yes: proposal.draftVoting.yes,
-            no: proposal.draftVoting.no,
-            quota: proposal.draftVoting.quota,
-            quorum: proposal.draftVoting.quorum,
-            claimed: proposal.draftVoting.claimed,
-            deadline: proposal.draftVoting.votingDeadline,
-          };
-        }
-        break;
-
-      case 'proposal':
-        if (Date.now() < proposal.votingRounds[0].commitDeadline) {
-          deadline = proposal.votingRounds[0].commitDeadline || undefined;
-        } else {
-          deadline = proposal.votingRounds[0].revealDeadline;
-        }
-
+  switch (proposal.stage.toLowerCase()) {
+    case 'draft':
+      if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
         votingStruct = {
-          yes: proposal.votingRounds[0].yes,
-          no: proposal.votingRounds[0].no,
-          quota: proposal.votingRounds[0].quota,
-          claimed: proposal.votingRounds[0].claimed,
-          quorum: proposal.votingRounds[0].quorum,
-          deadline,
+          yes: proposal.draftVoting.yes,
+          no: proposal.draftVoting.no,
+          quota: proposal.draftVoting.quota,
+          quorum: proposal.draftVoting.quorum,
+          claimed: proposal.draftVoting.claimed,
+          deadline: proposal.draftVoting.votingDeadline,
         };
+      }
+      break;
 
-        break;
-      case 'review':
-        if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
-          deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
-        } else {
-          deadline = proposal.votingRounds[mileStone].revealDeadline;
-        }
+    case 'proposal':
+      if (Date.now() < proposal.votingRounds[0].commitDeadline) {
+        deadline = proposal.votingRounds[0].commitDeadline || undefined;
+      }
+      deadline = proposal.votingRounds[0].revealDeadline;
 
-        votingStruct = {
-          yes: proposal.votingRounds[mileStone].yes,
-          no: proposal.votingRounds[mileStone].no,
-          claimed: proposal.votingRounds[mileStone].claimed,
-          quota: proposal.votingRounds[mileStone].quota,
-          quorum: proposal.votingRounds[mileStone].quorum,
-          deadline,
-        };
+      votingStruct = {
+        yes: proposal.votingRounds[0].yes,
+        no: proposal.votingRounds[0].no,
+        quota: proposal.votingRounds[0].quota,
+        claimed: proposal.votingRounds[0].claimed,
+        quorum: proposal.votingRounds[0].quorum,
+        deadline,
+      };
 
-        break;
+      break;
+    case 'review':
+      if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
+        deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
+      }
+      deadline = proposal.votingRounds[mileStone].revealDeadline;
 
-      default:
-        votingStruct = {
-          yes: 0,
-          no: 0,
-          quota: 0,
-          quorum: 0,
-          claimed: true,
-          deadline: undefined,
-        };
-        break;
-    }
-    return votingStruct;
+      votingStruct = {
+        yes: proposal.votingRounds[mileStone].yes,
+        no: proposal.votingRounds[mileStone].no,
+        claimed: proposal.votingRounds[mileStone].claimed,
+        quota: proposal.votingRounds[mileStone].quota,
+        quorum: proposal.votingRounds[mileStone].quorum,
+        deadline,
+      };
+
+      break;
+
+    default:
+      votingStruct = {
+        yes: 0,
+        no: 0,
+        quota: 0,
+        quorum: 0,
+        claimed: true,
+        deadline: undefined,
+      };
+      break;
   }
-  return {
-    yes: proposal.voting.yes,
-    no: proposal.voting.no,
-    quota: proposal.voting.quota,
-    quorum: proposal.voting.quorum,
-    deadline: proposal.voting.revealDeadline,
-  };
+  return votingStruct;
 };
 class Proposal extends React.Component {
   constructor(props) {
@@ -325,14 +316,78 @@ class Proposal extends React.Component {
       );
     return null;
   };
-  render() {
+
+  renderSpecialProposal = () => {
+    const { proposalDetails, addressDetails, history, daoInfo, userProposalLike } = this.props;
+    const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
+
+    const liked = userProposalLike.data ? userProposalLike.data.liked : false;
+    const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
+    const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
+
+    return (
+      <ProposalsWrapper>
+        <ProjectSummary>
+          {this.renderPrlAlert(proposalDetails.data.prl)}
+          {this.renderClaimApprovalAlert()}
+          {this.renderProposerDidNotPassAlert()}
+
+          <Header>
+            <div>
+              <Button kind="tag" filled>
+                Special
+              </Button>
+              <Button kind="tag" showIcon>
+                {proposalDetails.data.stage}
+              </Button>
+              <Title primary>{proposalDetails.data.title}</Title>
+            </div>
+            <CtaButtons>
+              <ParticipantButtons
+                isProposer={isProposer}
+                proposal={proposalDetails}
+                addressDetails={addressDetails}
+                onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
+                history={history}
+              />
+              <ModeratorButtons
+                proposal={proposalDetails}
+                addressDetails={addressDetails}
+                history={history}
+              />
+            </CtaButtons>
+          </Header>
+          <FundingSummary>
+            <SummaryInfo>
+              <InfoItem>
+                <ItemTitle>Submitted By</ItemTitle>
+                <Data>
+                  <span>{displayName}</span>
+                </Data>
+              </InfoItem>
+            </SummaryInfo>
+            <Upvote>
+              <Like
+                hasVoted={liked}
+                likes={likes}
+                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
+              />
+            </Upvote>
+          </FundingSummary>
+        </ProjectSummary>
+        <SpecialProjectVotingResult proposal={proposalDetails.data} daoInfo={daoInfo} />
+        <SpecialProjectDetails uintConfigs={proposalDetails.data.uintConfigs} />
+
+        <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
+      </ProposalsWrapper>
+    );
+  };
+
+  renderNormalProposal = () => {
     const { currentVersion, versions } = this.state;
     const { proposalDetails, addressDetails, history, daoInfo, userProposalLike } = this.props;
-
-    if (proposalDetails.fetching === null || proposalDetails.fetching)
-      return <div>Fetching Proposal Details</div>;
-
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
+
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
@@ -400,11 +455,6 @@ class Proposal extends React.Component {
 
           <Header>
             <div>
-              {/*
-              <Button kind="tag" filled>
-                Special
-              </Button> 
-              */}
               <Button kind="tag" showIcon>
                 {proposalDetails.data.stage}
               </Button>
@@ -496,6 +546,18 @@ class Proposal extends React.Component {
         <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>
     );
+  };
+
+  render() {
+    const { proposalDetails } = this.props;
+
+    if (proposalDetails.fetching === null || proposalDetails.fetching)
+      return <div>Fetching Proposal Details</div>;
+
+    if (proposalDetails.data.isSpecial) {
+      return this.renderSpecialProposal();
+    }
+    return this.renderNormalProposal();
   }
 }
 

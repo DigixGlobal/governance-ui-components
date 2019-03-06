@@ -14,11 +14,14 @@ import {
 import {
   getTokenUsdValue,
   setAuthentationStatus,
+  showHideAlert,
   showHideWalletOverlay,
   setUserAddress,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
+import { fetchDisplayName, fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 import { getChallengeVanilla, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
+import { withApollo } from 'react-apollo';
 
 class AddressWatcher extends React.PureComponent {
   state = {
@@ -73,6 +76,7 @@ class AddressWatcher extends React.PureComponent {
           })
         )
       );
+
       return signMessage.then(signature =>
         this.props
           .proveChallenge({
@@ -81,13 +85,23 @@ class AddressWatcher extends React.PureComponent {
             message,
             signature: signature.signedTx,
           })
-          .then(({ payload: { data: { client } } }) => {
-            if (!client) return undefined;
-            Promise.all([
-              this.props.setAuthentationStatus(true),
-              this.props.setAddressDetails(details),
-              this.props.showHideWalletOverlay(false),
-            ]);
+          .then(response => {
+            const { payload } = response;
+
+            if (payload.data) {
+              Promise.all([
+                this.props.setAuthentationStatus(true),
+                this.props.setAddressDetails(details),
+                this.props.showHideWalletOverlay(false),
+                this.props.client.query({ query: fetchDisplayName, fetchPolicy: 'network-only' }),
+                this.props.client.query({ query: fetchUserQuery, fetchPolicy: 'network-only' }),
+              ]);
+            } else {
+              this.props.showHideAlert({ message: payload.error.message });
+            }
+          })
+          .catch(() => {
+            this.props.showHideAlert({ message: 'Unable to sign. Please try again.' });
           })
       );
     });
@@ -100,11 +114,13 @@ class AddressWatcher extends React.PureComponent {
 
 const { object, func, array } = PropTypes;
 AddressWatcher.propTypes = {
+  client: object.isRequired,
   defaultAddress: object,
   defaultNetworks: array.isRequired,
   setAuthentationStatus: func.isRequired,
   setAddressDetails: func.isRequired,
   getTokenUsdValue: func.isRequired,
+  showHideAlert: func.isRequired,
   showHideWalletOverlay: func.isRequired,
   showMsgSigningModal: func.isRequired,
   proveChallenge: func.isRequired,
@@ -114,6 +130,7 @@ AddressWatcher.propTypes = {
 AddressWatcher.defaultProps = {
   defaultAddress: undefined,
 };
+
 const mapStateToProps = state => ({
   defaultNetworks: getDefaultNetworks(state),
   defaultAddress: getDefaultAddress(state),
@@ -123,15 +140,18 @@ const mapStateToProps = state => ({
   signChallenge: state.govUI.SignChallenge,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    setAddressDetails,
-    getTokenUsdValue,
-    showHideWalletOverlay,
-    setAuthentationStatus,
-    showMsgSigningModal,
-    proveChallenge,
-    setUserAddress,
-  }
-)(AddressWatcher);
+export default withApollo(
+  connect(
+    mapStateToProps,
+    {
+      setAddressDetails,
+      getTokenUsdValue,
+      showHideAlert,
+      showHideWalletOverlay,
+      setAuthentationStatus,
+      showMsgSigningModal,
+      proveChallenge,
+      setUserAddress,
+    }
+  )(AddressWatcher)
+);

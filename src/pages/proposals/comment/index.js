@@ -15,8 +15,8 @@ import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
 import ParentThread from '@digix/gov-ui/pages/proposals/comment/thread';
 
 import { CommentsApi } from '@digix/gov-ui/api/comments';
-import { fetchDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 import { fetchThreadsQuery } from '@digix/gov-ui/api/graphql-queries/comments';
+import { fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { getDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
@@ -27,6 +27,11 @@ class CommentThread extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentUser: {
+        address: props.uid,
+        displayName: '',
+        isForumAdmin: false,
+      },
       sortBy: 'LATEST',
       threads: null,
       userAddresses: [],
@@ -44,12 +49,6 @@ class CommentThread extends React.Component {
       },
     ];
 
-    // to be defined in componentDidMount
-    this.currentUser = {
-      address: undefined,
-      displayName: undefined,
-    };
-
     // for invalidating comments cache in apollo
     this.CACHED_COMMENT_KEYS = /^(Comment|\$Comment|commentThreads|\$ROOT_QUERY\.commentThreads)/;
 
@@ -60,16 +59,11 @@ class CommentThread extends React.Component {
 
   componentDidMount() {
     const { sortBy } = this.state;
-    const { ChallengeProof, proposalId, uid } = this.props;
-    const apollo = this.props.client;
+    const { ChallengeProof, proposalId } = this.props;
 
     this.fetchThreads({ sortBy });
     this.fetchUserPoints(this.state.threads);
-    const cache = apollo.readQuery({ query: fetchDisplayName });
-    this.currentUser = {
-      address: uid,
-      displayName: cache.currentUser.displayName,
-    };
+    this.fetchCurrentUser();
 
     if (!ChallengeProof.data) {
       return;
@@ -109,6 +103,12 @@ class CommentThread extends React.Component {
     };
   }
 
+  setCommentingPrivileges = canComment => {
+    const { currentUser } = this.state;
+    currentUser.canComment = canComment;
+    this.setState({ currentUser });
+  };
+
   setError = error => {
     const message = JSON.stringify(error && error.message) || error;
     this.props.showHideAlert({ message });
@@ -128,12 +128,12 @@ class CommentThread extends React.Component {
     }
 
     let { threads } = this.state;
-    const { sortBy } = this.state;
+    const { currentUser, sortBy } = this.state;
     const payload = initializePayload(ChallengeProof);
 
     CommentsApi.create(rootCommentId, body, payload)
       .then(node => {
-        const newComment = CommentsApi.generateNewComment(node, this.currentUser, rootCommentId);
+        const newComment = CommentsApi.generateNewComment(node, currentUser, rootCommentId);
         if (!threads || !threads.edges.length) {
           threads = CommentsApi.generateNewThread(newComment);
         } else if (sortBy === 'OLDEST') {
@@ -145,10 +145,29 @@ class CommentThread extends React.Component {
 
         this.setState({ threads });
       })
-      .catch(() => {
-        this.setError(CommentsApi.ERROR_MESSAGES.createComment);
+      .catch(message => {
+        const error = CommentsApi.ERROR_MESSAGES;
+        if (message === 'unauthorized_action') {
+          this.setCommentingPrivileges(false);
+          this.setError(error.bannedUser);
+        } else {
+          this.setError(error.createReply);
+        }
       });
   };
+
+  fetchCurrentUser() {
+    const apollo = this.props.client;
+    const query = {
+      query: fetchUserQuery,
+      fetchPolicy: 'network-only',
+    };
+
+    apollo.query(query).then(response => {
+      const { currentUser } = response.data;
+      this.setState({ currentUser });
+    });
+  }
 
   fetchThreads(vars) {
     const apollo = this.props.client;
@@ -226,16 +245,17 @@ class CommentThread extends React.Component {
   };
 
   renderThreads(threadList) {
-    const { userPoints } = this.state;
+    const { currentUser, userPoints } = this.state;
 
     return threadList.edges.map(thread => {
       const comment = thread.node;
 
       return (
         <ParentThread
-          currentUser={this.currentUser}
+          currentUser={currentUser}
           key={comment.id}
           queryVariables={this.getQueryVariables()}
+          setCommentingPrivileges={this.setCommentingPrivileges}
           setError={this.setError}
           thread={comment}
           userPoints={userPoints}
@@ -245,12 +265,13 @@ class CommentThread extends React.Component {
   }
 
   render() {
-    const { sortBy, threads } = this.state;
+    const { currentUser, sortBy, threads } = this.state;
+    const { canComment } = currentUser;
 
     return (
       <ThreadedComments>
         <Title>Discussions</Title>
-        <CommentTextEditor addComment={this.addThread} />
+        <CommentTextEditor addComment={this.addThread} canComment={canComment} />
         {!threads && <p>There are no comments to show.</p>}
         {threads && (
           <section>

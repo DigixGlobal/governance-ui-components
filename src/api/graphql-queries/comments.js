@@ -5,6 +5,7 @@ const fragments = {
     fragment comment on Comment {
       body
       createdAt
+      isBanned
       id
       liked
       likes
@@ -149,5 +150,35 @@ export const fetchCommentsQuery = gql`
     }
   }
 
+  ${fragments.comment}
+`;
+
+export const hideComment = gql`
+  mutation hideComment($id: String!) {
+    banComment(input: { commentId: $id }) {
+      comment {
+        ...comment
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
+  ${fragments.comment}
+`;
+
+export const unhideComment = gql`
+  mutation hideComment($id: String!) {
+    unbanComment(input: { commentId: $id }) {
+      comment {
+        ...comment
+      }
+      errors {
+        field
+        message
+      }
+    }
+  }
   ${fragments.comment}
 `;

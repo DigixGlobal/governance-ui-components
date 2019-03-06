@@ -17,6 +17,7 @@ export const fetchUserQuery = gql`
     currentUser {
       id
       address
+      canComment
       email
       username
       displayName

@@ -43,6 +43,7 @@ class ForumOfficerDashboard extends React.Component {
 
     apollo
       .query({
+        fetchPolicy: 'network-only',
         query: searchUserQuery,
         variables: {
           query: input,

@@ -230,6 +230,7 @@ const LightTheme = {
 
   textWhite: white,
   textBlack: black,
+  textError: red,
   textDefault: tertiaryColor,
   textPrimary: primaryColor,
   textSecondary: secondaryColor,

@@ -72,7 +72,7 @@ class RevealVote extends React.Component {
     const {
       web3Redux,
       addresses,
-      proposal: { currentVotingRound, proposalId },
+      proposal: { currentVotingRound, proposalId, isSpecial },
     } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -97,7 +97,7 @@ class RevealVote extends React.Component {
     const payload = {
       address: sourceAddress,
       contract,
-      func: contract.revealVoteOnProposal,
+      func: isSpecial ? contract.revealVoteOnSpecialProposal : contract.revealVoteOnProposal,
       params: [proposalId, currentVotingRound, voteObject.vote, voteObject.salt],
       onFailure: this.setError,
       onFinally: txHash => this.onTransactionAttempt(txHash),

@@ -83,13 +83,19 @@ export const Message = styled.p`
   font-size: ${props => (props.title ? '1.8rem' : '')};
   text-transform: ${props => (props.uppercase ? 'uppercase' : '')};
   font-family: ${props => (props.title ? 'Futura PT Medium, sans-serif' : '')};
+
+  ${props =>
+    props.note &&
+    css`
+      margin-bottom: 0;
+    `}
 `;
 
 export const Notifications = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: ${props => (props.centered ? 'center' : '')};
-  align-items: ${props => (props.centered ? 'center' : '')};
+  align-items: center;
 
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
@@ -104,8 +110,6 @@ export const Notifications = styled.div`
     props.withIcon &&
     css`
       flex-direction: row;
-      height: auto;
-      flex: 30px 0 0;
     `};
 
   ${Message} {
@@ -115,7 +119,7 @@ export const Notifications = styled.div`
   }
 
   svg {
-    margin-top: -1remrem;
+    margin-top: 0rem;
   }
 
   h3 {

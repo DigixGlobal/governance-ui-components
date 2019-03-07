@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Icon from '../icons';
-import { Button } from '../index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 
 class LikeButton extends React.Component {
   render() {

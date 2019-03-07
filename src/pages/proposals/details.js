@@ -10,7 +10,6 @@ import { dijix } from '../../utils/dijix';
 import {
   DetailsContainer,
   ShortDescription,
-  // TrackActivity,
   Details,
   SubTitle,
   ImageHolder,
@@ -93,13 +92,8 @@ export default class ProjectDetails extends React.Component {
             ? project.description
             : 'No short description content has been created yet.'}
         </ShortDescription>
-        {/* <TrackActivity>
-          <input type="checkbox" />
-          Track change from previous version
-        </TrackActivity> */}
+
         <Details>
-          {/* TO DO: Please pass condition for below subheadings */}
-          <SubTitle>Configuration Details</SubTitle>
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
           {hasImages && (

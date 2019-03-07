@@ -7,6 +7,7 @@ import {
   IntroContainer,
   OverlayHeader as Header,
   Notifications,
+  Message,
 } from '@digix/gov-ui/components/common/common-styles';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 
@@ -19,7 +20,9 @@ class ErrorMessageOverlay extends React.Component {
 
   renderNotification = error => (
     <Notifications error key={error.title} data-digix="ProjectError-Notification">
-      <h3 data-digix="ProjectError-Notification-Title">{error.title}</h3>
+      <Message title uppercase data-digix="ProjectError-Notification-Title">
+        {error.title}
+      </Message>
       <p>{error.description}</p>
       <p>{error.details}</p>
     </Notifications>

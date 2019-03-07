@@ -103,7 +103,7 @@ class CommitVote extends React.Component {
       web3Redux,
       addresses,
       proposalId,
-      proposal: { currentVotingRound },
+      proposal: { currentVotingRound, isSpecial },
     } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -133,7 +133,7 @@ class CommitVote extends React.Component {
     const payload = {
       address: sourceAddress,
       contract,
-      func: contract.commitVoteOnProposal,
+      func: isSpecial ? contract.commitVoteOnSpecialProposal : contract.commitVoteOnProposal,
       params: [proposalId, currentVotingRound, hash],
       onFailure: this.setError,
       onFinally: txHash => this.onTransactionAttempt(txHash),
@@ -210,10 +210,11 @@ class CommitVote extends React.Component {
             </ResponseButton>
 
             {hasVoted && (
-              <DownloadJson info centered>
+              <DownloadJson info centered column>
                 <Message title uppercase>
                   This Json file is only valid for this commit
                 </Message>
+                <br />
                 <p>
                   In the case you change your mind or make another commit, this file is no longer
                   valid.

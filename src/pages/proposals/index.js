@@ -31,18 +31,16 @@ import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
 import CommentThread from '@digix/gov-ui/pages/proposals/comment';
 
-import { Notifications } from '@digix/gov-ui/components/common/common-styles';
+import { Notifications, Message } from '@digix/gov-ui/components/common/common-styles';
 import {
   ProposalsWrapper,
   VersionHistory,
   ProjectSummary,
   Header,
   Title,
-  CtaButtons,
-  FundingSummary,
-  SummaryInfo,
+  CallToAction,
+  FundingInfo,
   InfoItem,
-  Upvote,
   ItemTitle,
   Data,
   WarningIcon,
@@ -252,19 +250,23 @@ class Proposal extends React.Component {
 
     if (canClaim && currentUser === proposer)
       return (
-        <Notifications warning>
+        <Notifications warning withIcon>
           <WarningIcon kind="warning" />
-          The voting result shows that your project passes the voting. Please click the button below
-          to send transaction(s) to claim this result on the blockchain. You need to do this action
-          before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
+          <Message note>
+            The voting result shows that your project passes the voting. Please click the button to
+            send transaction(s) to claim this result on the blockchain. You need to do this action
+            before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
+          </Message>
         </Notifications>
       );
     if (tentativePassed && pastDeadline && currentUser !== proposer)
       return (
-        <Notifications warning>
-          <WarningIcon kind="warning" />
-          The voting result was not claimed before the claiming deadline. This project will be auto
-          failed.
+        <Notifications warning withIcon>
+          <WarningIcon kind="warning" small />
+          <Message note>
+            The voting result was not claimed before the claiming deadline. This project will be
+            auto failed.
+          </Message>
         </Notifications>
       );
   };
@@ -307,22 +309,31 @@ class Proposal extends React.Component {
       currentUser === proposer
     )
       return (
-        <Notifications warning>
+        <Notifications warning withIcon>
           <WarningIcon kind="warning" />
-          Your project fails the voting, either by voting results or its already past the deadline
-          for claiming voting results.
-          {data.currentVotingRound <= 0
-            ? ' Please click the button below to claim your failed project and get back your collateral.'
-            : ''}
+          <Message note>
+            Your project fails the voting, either by voting results or its already past the deadline
+            for claiming voting results.
+            {data.currentVotingRound <= 0
+              ? ' Please click the button below to claim your failed project and get back your collateral.'
+              : ''}
+          </Message>
         </Notifications>
       );
     return null;
   };
 
   renderSpecialProposal = () => {
-    const { proposalDetails, addressDetails, history, daoInfo, userProposalLike } = this.props;
+    const {
+      proposalDetails,
+      addressDetails,
+      history,
+      daoInfo,
+      userProposalLike,
+      userData,
+    } = this.props;
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
-
+    const isForumAdmin = userData && userData.isForumAdmin;
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
     const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
@@ -344,38 +355,38 @@ class Proposal extends React.Component {
               </Button>
               <Title primary>{proposalDetails.data.title}</Title>
             </div>
-            <CtaButtons>
-              <ParticipantButtons
-                isProposer={isProposer}
-                proposal={proposalDetails}
-                addressDetails={addressDetails}
-                onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
-                history={history}
-              />
-              <ModeratorButtons
-                proposal={proposalDetails}
-                addressDetails={addressDetails}
-                history={history}
-              />
-            </CtaButtons>
+            {!isForumAdmin && (
+              <CallToAction>
+                <ParticipantButtons
+                  isProposer={isProposer}
+                  proposal={proposalDetails}
+                  addressDetails={addressDetails}
+                  onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
+                  history={history}
+                />
+                <ModeratorButtons
+                  proposal={proposalDetails}
+                  addressDetails={addressDetails}
+                  history={history}
+                />
+              </CallToAction>
+            )}
           </Header>
-          <FundingSummary>
-            <SummaryInfo>
-              <InfoItem>
-                <ItemTitle>Submitted By</ItemTitle>
-                <Data>
-                  <span>{displayName}</span>
-                </Data>
-              </InfoItem>
-            </SummaryInfo>
-            <Upvote>
+          <FundingInfo>
+            <InfoItem>
+              <ItemTitle>Submitted By</ItemTitle>
+              <Data>
+                <span>{displayName}</span>
+              </Data>
+            </InfoItem>
+            <InfoItem>
               <Like
                 hasVoted={liked}
                 likes={likes}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
-            </Upvote>
-          </FundingSummary>
+            </InfoItem>
+          </FundingInfo>
         </ProjectSummary>
         <SpecialProjectVotingResult proposal={proposalDetails.data} daoInfo={daoInfo} />
         <SpecialProjectDetails uintConfigs={proposalDetails.data.uintConfigs} />
@@ -470,7 +481,7 @@ class Proposal extends React.Component {
               <Title primary>{dijixObject.title}</Title>
             </div>
             {!isForumAdmin && (
-              <CtaButtons>
+              <CallToAction>
                 <ParticipantButtons
                   isProposer={isProposer}
                   proposal={proposalDetails}
@@ -483,20 +494,28 @@ class Proposal extends React.Component {
                   addressDetails={addressDetails}
                   history={history}
                 />
-              </CtaButtons>
+              </CallToAction>
             )}
           </Header>
-          <FundingSummary>
-            <SummaryInfo>
-              <InfoItem>
-                <ItemTitle>Submitted By</ItemTitle>
-                <Data>
-                  <span>{displayName}</span>
-                </Data>
-              </InfoItem>
-              <InfoItem>
-                <ItemTitle>Funding</ItemTitle>
-                <Data>
+
+          <FundingInfo>
+            <InfoItem column>
+              <ItemTitle>Submitted By</ItemTitle>
+              <Data>
+                <span>{displayName}</span>
+              </Data>
+            </InfoItem>
+
+            <InfoItem outlined>
+              <ItemTitle>Milestones</ItemTitle>
+              <Data>
+                <span data-digix="milestone-label">{dijixObject.milestones.length || 0}</span>
+              </Data>
+            </InfoItem>
+            <InfoItem outlined>
+              <ItemTitle>Funding</ItemTitle>
+              <Data>
+                <div className="milestones">
                   <span data-digix="funding-amount-label">{funding}</span>
                   {updatedFunding && (
                     <span data-digix="edit-funding-amount-label">
@@ -505,18 +524,9 @@ class Proposal extends React.Component {
                         : ` - ${Math.abs(updatedFunding)}`}
                     </span>
                   )}
-                  {` ETH`}
-                </Data>
-              </InfoItem>
-              <InfoItem>
-                <ItemTitle>Milestones</ItemTitle>
-                <Data>
-                  <span data-digix="milestone-label">{dijixObject.milestones.length || 0}</span>
-                </Data>
-              </InfoItem>
-              <InfoItem>
-                <ItemTitle>Reward</ItemTitle>
-                <Data>
+                  {` ETH`} <span className="label">Milestones</span>
+                </div>
+                <div className="reward">
                   <span data-digix="reward-amount-label">{reward} </span>
                   {updatedReward && (
                     <span data-digix="edit-reward-amount-label">
@@ -525,18 +535,18 @@ class Proposal extends React.Component {
                         : ` - ${Math.abs(updatedReward)} `}
                     </span>
                   )}
-                  ETH
-                </Data>
-              </InfoItem>
-            </SummaryInfo>
-            <Upvote>
+                  ETH <span className="label">Reward</span>
+                </div>
+              </Data>
+            </InfoItem>
+            <InfoItem>
               <Like
                 hasVoted={liked}
                 likes={likes}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
-            </Upvote>
-          </FundingSummary>
+            </InfoItem>
+          </FundingInfo>
         </ProjectSummary>
         <VotingResult
           proposal={proposalDetails.data}

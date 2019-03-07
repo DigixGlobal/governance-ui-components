@@ -216,6 +216,9 @@ const LightTheme = {
 
   textColor: {
     black,
+    default: tertiaryColor,
+    primary: primaryColor,
+    secondary: secondaryColor,
   },
 
   linkDefaultColor: tertiaryColor,

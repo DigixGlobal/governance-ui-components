@@ -165,6 +165,10 @@ class ClaimResultsButton extends React.PureComponent {
     return transaction !== undefined;
   };
 
+  claimResults = useMaxClaim => () => {
+    this.props.checkProposalRequirements(() => this.handleSubmit(useMaxClaim)());
+  };
+
   render() {
     const {
       isProposer,
@@ -205,7 +209,7 @@ class ClaimResultsButton extends React.PureComponent {
     return (
       <Button
         // disabled={claimed || claiming || this.hasPendingClaim()} // TODO: This has to be enabled once Transactions from DAO-Server are properly updated. i.e. Turns a pending transaction to Successful
-        data-digix="Propsal-Claim-Results"
+
         kind="round"
         large
         onClick={() =>
@@ -213,10 +217,12 @@ class ClaimResultsButton extends React.PureComponent {
             ? this.showOverlay({
                 total: totalTransactions,
                 current: proposal.votingRounds[currentVotingRound].currentClaimStep,
-                onClaim: this.handleSubmit(true),
+                onClaim: this.claimResults(true),
               })
             : this.handleSubmit(false)()
         }
+        disabled={claimed}
+        data-digix="ProposalAction-Results"
       >
         {withinDeadline && tentativePassed ? 'Claim Results' : 'Claim Failed Project'}
       </Button>
@@ -231,6 +237,7 @@ ClaimResultsButton.propTypes = {
   isProposer: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   daoConfig: object.isRequired,
   daoDetails: object.isRequired,
   pendingTransactions: object,

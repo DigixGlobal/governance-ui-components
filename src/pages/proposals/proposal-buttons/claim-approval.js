@@ -149,6 +149,9 @@ class ClaimApprovalButton extends React.Component {
     const transaction = pendingTransactions.data.find(p => p.project === proposalId);
     return transaction !== undefined;
   };
+  claimApproval = useMaxClaim => () => {
+    this.props.checkProposalRequirements(() => this.handleSubmit(useMaxClaim)());
+  };
 
   render() {
     const {
@@ -193,11 +196,11 @@ class ClaimApprovalButton extends React.Component {
             ? this.showOverlay({
                 total: totalTransactions,
                 current: draftVoting.currentClaimStep,
-                onClaim: this.handleSubmit(true),
+                onClaim: this.claimApproval(true),
               })
-            : this.handleSubmit(false)()
+            : this.claimApproval(false)()
         }
-        data-digix="Create-Proposal-Claim-Approval"
+        data-digix="ProposalAction-Approval"
       >
         {canClaim && tentativePassed ? 'Claim Approval' : 'Claim Failed Project'}
       </Button>
@@ -215,6 +218,7 @@ ClaimApprovalButton.propTypes = {
   pendingTransactions: object,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   showHideAlert: func.isRequired,
   showRightPanel: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,

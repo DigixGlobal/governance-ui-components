@@ -1,7 +1,9 @@
+/* eslint-disable react/jsx-no-bind */
+
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-
-import { ProposalStages } from '@digix/gov-ui/constants';
+import { connect } from 'react-redux';
+import { withApollo } from 'react-apollo';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import AbortButton from '@digix/gov-ui/pages/proposals/proposal-buttons/abort';
@@ -13,17 +15,46 @@ import ClaimFundingButton from '@digix/gov-ui/pages/proposals/proposal-buttons/c
 import VoteCommitButton from '@digix/gov-ui/pages/proposals/proposal-buttons/vote-commit';
 import RevealButton from '@digix/gov-ui/pages/proposals/proposal-buttons/reveal-button';
 import EditFundingButton from '@digix/gov-ui/pages/proposals/proposal-buttons/edit-funding';
+import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
+import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { getUnmetProposalRequirements } from '@digix/gov-ui/utils/helpers';
+import { ProposalStages } from '@digix/gov-ui/constants';
+import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 
-class ParticantButtons extends React.Component {
+class ParticipantButtons extends React.Component {
   constructor(props) {
     super(props);
     this.STAGES_THAT_CAN_EDIT = [ProposalStages.idea, ProposalStages.draft];
   }
 
-  handleEditClick = () => {
+  showErrorOverlay(errors) {
+    this.props.showRightPanel({
+      component: <ErrorMessageOverlay errors={errors} />,
+      show: true,
+    });
+  }
+
+  checkUnmetRequirements(proposalAction, customErrors) {
+    const { client, DaoDetails } = this.props;
+
+    getUnmetProposalRequirements(client, DaoDetails).then(errors => {
+      let totalErrors = errors;
+      if (customErrors) {
+        totalErrors = errors.concat(customErrors);
+      }
+
+      if (totalErrors.length) {
+        this.showErrorOverlay(totalErrors);
+      } else {
+        proposalAction();
+      }
+    });
+  }
+
+  editProject() {
     const { history, proposal } = this.props;
     history.push(`/proposals/edit/${proposal.data.proposalId}`);
-  };
+  }
 
   render() {
     const {
@@ -33,6 +64,8 @@ class ParticantButtons extends React.Component {
       addressDetails,
     } = this.props;
 
+    const checkProposalRequirements = this.checkUnmetRequirements.bind(this);
+    const editAction = this.editProject.bind(this);
     const showEditButton =
       isProposer && this.STAGES_THAT_CAN_EDIT.includes(data.stage) && !data.votingStage;
 
@@ -44,9 +77,10 @@ class ParticantButtons extends React.Component {
           proposalId={data.proposalId}
           finalVersionIpfsDoc={data.finalVersionIpfsDoc}
           history={history}
+          checkProposalRequirements={checkProposalRequirements}
         />
         {showEditButton && (
-          <Button kind="round" onClick={this.handleEditClick}>
+          <Button kind="round" onClick={() => checkProposalRequirements(editAction)}>
             Edit
           </Button>
         )}
@@ -56,6 +90,7 @@ class ParticantButtons extends React.Component {
           proposalId={data.proposalId}
           history={history}
           isProposer={isProposer}
+          checkProposalRequirements={checkProposalRequirements}
         />
         <FinalizeButton
           endorser={data.endorser}
@@ -65,6 +100,7 @@ class ParticantButtons extends React.Component {
           finalVersionIpfsDoc={data.finalVersionIpfsDoc}
           history={history}
           timeCreated={data.timeCreated}
+          checkProposalRequirements={checkProposalRequirements}
         />
         <ClaimApprovalButton
           isProposer={isProposer}
@@ -73,6 +109,7 @@ class ParticantButtons extends React.Component {
           onCompleted={this.props.onCompleted}
           votingStage={data.votingStage}
           proposalId={data.proposalId}
+          checkProposalRequirements={checkProposalRequirements}
         />
         <VoteCommitButton
           isParticipant={addressDetails.data.isParticipant}
@@ -91,18 +128,24 @@ class ParticantButtons extends React.Component {
           votes={addressDetails.data.votes}
         />
         <ClaimResultsButton
-          isProposer={isProposer}
-          proposal={data}
-          history={history}
+          checkProposalRequirements={checkProposalRequirements}
           onCompleted={this.props.onCompleted}
+          isProposer={isProposer}
+          history={history}
+          proposal={data}
         />
         <ClaimFundingButton
+          checkProposalRequirements={checkProposalRequirements}
           isProposer={isProposer}
-          proposal={data}
           history={history}
-          onCompleted={this.props.onCompleted}
+          proposal={data}
         />
-        <MilestoneCompletedButton isProposer={isProposer} proposal={data} history={history} />
+        <MilestoneCompletedButton
+          checkProposalRequirements={checkProposalRequirements}
+          isProposer={isProposer}
+          history={history}
+          proposal={data}
+        />
       </Fragment>
     );
   }
@@ -110,16 +153,32 @@ class ParticantButtons extends React.Component {
 
 const { object, bool, func } = PropTypes;
 
-ParticantButtons.propTypes = {
-  proposal: object.isRequired,
-  isProposer: bool.isRequired,
+ParticipantButtons.propTypes = {
   addressDetails: object.isRequired,
-  onCompleted: func,
+  client: object.isRequired,
+  DaoDetails: object.isRequired,
   history: object.isRequired,
+  isProposer: bool.isRequired,
+  onCompleted: func,
+  proposal: object.isRequired,
+  showRightPanel: func.isRequired,
 };
 
-ParticantButtons.defaultProps = {
+ParticipantButtons.defaultProps = {
   onCompleted: undefined,
 };
 
-export default ParticantButtons;
+const mapStateToProps = ({ infoServer }) => ({
+  DaoDetails: infoServer.DaoDetails.data,
+});
+
+export default withApollo(
+  web3Connect(
+    connect(
+      mapStateToProps,
+      {
+        showRightPanel,
+      }
+    )(ParticipantButtons)
+  )
+);

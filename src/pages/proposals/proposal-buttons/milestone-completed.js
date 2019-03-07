@@ -90,6 +90,11 @@ class CompleteMilestoneButton extends React.PureComponent {
     };
     return executeContractFunction(payload);
   };
+
+  completeMilestone() {
+    this.props.checkProposalRequirements(this.handleSubmit);
+  }
+
   render() {
     const { isProposer, proposal } = this.props;
     if (
@@ -105,7 +110,12 @@ class CompleteMilestoneButton extends React.PureComponent {
     if (!withinDeadline) return null;
 
     return (
-      <Button kind="round" large onClick={this.handleSubmit}>
+      <Button
+        kind="round"
+        large
+        data-digix="ProposalAction-CompleteMilestone"
+        onClick={() => this.completeMilestone()}
+      >
         My Milestone is completed
       </Button>
     );
@@ -119,6 +129,7 @@ CompleteMilestoneButton.propTypes = {
   isProposer: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,

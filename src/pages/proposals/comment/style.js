@@ -33,7 +33,25 @@ export const EditorContainer = styled.div`
   position: relative;
 `;
 
+export const CommentEditorContainer = styled.div`
+  position: relative;
+`;
+
 export const CommentEditor = styled.div``;
+
+export const BannedCommentEditor = styled.div`
+  background: rgba(0, 0, 0, 0.7);
+  color: ${props => props.theme.textWhite.default.toString()};
+  font-family: 'Futura PT Heavy';
+  padding: 2rem;
+  padding-top: 60px;
+  position: absolute;
+  text-align: center;
+  top: 10px;
+
+  height: calc(100% - 25px);
+  width: 100%;
+`;
 
 export const CommentTextArea = styled(TextArea)`
   height: 15rem;
@@ -63,6 +81,14 @@ export const UserInfo = styled.div`
   span {
     margin: 0 1.2rem;
   }
+`;
+
+export const CommentBody = styled.span`
+  color: ${props =>
+    props.isHidden
+      ? props.theme.textError.default.toString()
+      : props.theme.textDefault.default.toString()};
+  font-weight: ${props => (props.isHidden ? 'bold' : 'normal')};
 `;
 
 export const CommentPost = styled.div`

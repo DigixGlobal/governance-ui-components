@@ -25,7 +25,7 @@ class ParentThread extends React.Component {
 
   addReply = body => {
     const thread = { ...this.state.thread };
-    const { ChallengeProof, currentUser, setError } = this.props;
+    const { ChallengeProof, currentUser, setCommentingPrivileges, setError } = this.props;
 
     if (!ChallengeProof.data) {
       setError(CommentsApi.ERROR_MESSAGES.createComment);
@@ -47,8 +47,15 @@ class ParentThread extends React.Component {
         thread.replies.edges = replyList;
         this.setState({ thread });
       })
-      .catch(() => {
-        setError(CommentsApi.ERROR_MESSAGES.createReply);
+      .catch(message => {
+        const error = CommentsApi.ERROR_MESSAGES;
+        if (message === 'unauthorized_action') {
+          setCommentingPrivileges(false);
+          console.log(error.bannedUser);
+          setError(error.bannedUser);
+        } else {
+          setError(error.createReply);
+        }
       });
   };
 
@@ -90,7 +97,7 @@ class ParentThread extends React.Component {
   };
 
   renderThreadReplies = replyList => {
-    const { currentUser, setError, userPoints } = this.props;
+    const { currentUser, setCommentingPrivileges, setError, userPoints } = this.props;
     const replies = replyList.edges;
 
     const replyElements = replies.map(reply => {
@@ -102,6 +109,7 @@ class ParentThread extends React.Component {
           currentUser={currentUser}
           key={comment.id}
           queryVariables={this.props.queryVariables}
+          setCommentingPrivileges={setCommentingPrivileges}
           setError={setError}
           renderThreadReplies={this.renderThreadReplies}
           userPoints={userPoints}
@@ -136,6 +144,7 @@ class ParentThread extends React.Component {
         <Comment
           comment={thread}
           currentUser={currentUser}
+          hideEditor={this.hideEditor}
           setError={setError}
           toggleEditor={this.toggleEditor}
           userPoints={userPoints}
@@ -154,6 +163,7 @@ ParentThread.propTypes = {
   client: object.isRequired,
   currentUser: object.isRequired,
   queryVariables: object.isRequired,
+  setCommentingPrivileges: func.isRequired,
   setError: func.isRequired,
   thread: object.isRequired,
   userPoints: object.isRequired,

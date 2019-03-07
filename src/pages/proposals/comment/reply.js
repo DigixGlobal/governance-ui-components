@@ -24,7 +24,7 @@ class CommentReply extends React.Component {
 
   addReply = body => {
     const comment = { ...this.state.comment };
-    const { ChallengeProof, currentUser, setError } = this.props;
+    const { ChallengeProof, currentUser, setCommentingPrivileges, setError } = this.props;
 
     if (!ChallengeProof.data) {
       setError(CommentsApi.ERROR_MESSAGES.createComment);
@@ -46,8 +46,14 @@ class CommentReply extends React.Component {
         comment.replies.edges = replyList;
         this.setState({ comment });
       })
-      .catch(() => {
-        setError(CommentsApi.ERROR_MESSAGES.createReply);
+      .catch(message => {
+        const error = CommentsApi.ERROR_MESSAGES;
+        if (message === 'unauthorized_action') {
+          setCommentingPrivileges(false);
+          setError(error.bannedUser);
+        } else {
+          setError(error.createReply);
+        }
       });
   };
 
@@ -107,6 +113,7 @@ class CommentReply extends React.Component {
               comment={comment}
               currentUser={currentUser}
               setError={setError}
+              hideEditor={this.hideEditor}
               toggleEditor={this.toggleEditor}
               userPoints={userPoints}
             />
@@ -139,6 +146,7 @@ CommentReply.propTypes = {
   currentUser: object.isRequired,
   queryVariables: object.isRequired,
   renderThreadReplies: func.isRequired,
+  setCommentingPrivileges: func.isRequired,
   setError: func.isRequired,
   userPoints: object.isRequired,
 };

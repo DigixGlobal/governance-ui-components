@@ -119,11 +119,15 @@ export const CommentsApi = {
   },
 
   ERROR_MESSAGES: {
-    fetch: 'Unable to fetch comments.',
+    bannedUser:
+      'You have been banned by the administrators from commenting. Please contact Digix for more information.',
     createComment: 'Unable to create comment.',
     createReply: 'Unable to create reply.',
+    fetch: 'Unable to fetch comments.',
+    hideComment: 'Unable to remove comment.',
     like: 'Unable to like comment.',
     remove: 'Unable to delete comment.',
+    unhideComment: 'Unable to restore comment',
     unlike: 'Unable to unlike comment.',
   },
 };

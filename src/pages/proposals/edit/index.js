@@ -21,14 +21,23 @@ import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 
-import Details from '../forms/details';
-import Milestones from '../forms/milestones';
-import Multimedia from '../forms/multimedia';
-import Overview from '../forms/overview';
-import Preview from './preview';
-import Confirm from '../confirm';
+import Details from '@digix/gov-ui/pages/proposals/forms/details';
+import Milestones from '@digix/gov-ui/pages/proposals/forms/milestones';
+import Multimedia from '@digix/gov-ui/pages/proposals/forms/multimedia';
+import Overview from '@digix/gov-ui/pages/proposals/forms/overview';
+import Preview from '@digix/gov-ui/pages/proposals/edit/preview';
+import Confirm from '@digix/gov-ui/pages/proposals/confirm';
 
-import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
+import {
+  CreateWrapper,
+  TabPanel,
+  MenuItem,
+  Header,
+  LeftCol,
+  RightCol,
+  Heading,
+  PreviewButton,
+} from '@digix/gov-ui/pages/proposals/create/style';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 
@@ -304,9 +313,9 @@ class EditProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button tertiary onClick={this.handleShowPreview}>
+            <PreviewButton tertiary onClick={this.handleShowPreview}>
               Preview
-            </Button>
+            </PreviewButton>
             <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
               Previous
             </Button>

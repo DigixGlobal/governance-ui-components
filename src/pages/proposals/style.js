@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { H1, H2, Container } from '@digix/gov-ui/components/common/common-styles';
 import { Icon } from '@digix/gov-ui/components/common/elements/index';
+import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const ProposalsWrapper = styled.div``;
 
@@ -9,6 +10,7 @@ export const VersionHistory = styled.div`
   background: ${props => props.theme.backgroundDefault.default.toString()};
   border: 1px solid ${props => props.theme.borderColor.lightest.toString()};
   box-shadow: ${props => props.theme.boxShadow};
+  color: ${props => props.theme.textColor.default.base.toString()};
 
   justify-content: space-between;
   margin-bottom: 5rem;
@@ -16,10 +18,9 @@ export const VersionHistory = styled.div`
   position: relative;
 
   & > div {
-    color: ${props => props.theme.textDefault.default.toString()};
     display: flex;
     align-items: center;
-    font-family: 'Futura PT Book';
+    font-family: 'Futura PT Book', sans-serif;
 
     &:nth-of-type(1) {
       flex: 1;
@@ -29,7 +30,7 @@ export const VersionHistory = styled.div`
     &:nth-of-type(2) {
       flex: 2;
       justify-content: center;
-      font-family: 'Futura PT Medium';
+      font-family: 'Futura PT Medium', sans-serif;
       font-size: 1.6rem;
 
       text-transform: capitalize;
@@ -80,18 +81,26 @@ export const NextWrapper = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-`;
 
-export const CtaButtons = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
+  ${media.mobile`
+    flex-direction: column;
+  `}
 `;
 
 export const Title = styled(H1)`
   font-size: 3.6rem;
   font-family: 'Futura PT Medium';
+`;
+
+export const CallToAction = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+
+  ${media.mobile`
+    order: -1;
+    margin: 0 -1rem 3rem -1rem;
+  `}
 `;
 
 export const SubTitle = styled(H2)`
@@ -100,34 +109,107 @@ export const SubTitle = styled(H2)`
   color: ${props => props.theme.textPrimary.light.toString()};
 `;
 
-export const FundingSummary = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 3rem 0;
-`;
-
-export const SummaryInfo = styled.div`
+export const FundingInfo = styled.div`
   color: ${props => props.theme.textDefault.light.toString()};
   display: flex;
-  flex-direction: row;
-  text-transform: uppercase;
+  flex: 1;
+
+  margin: 2rem 0;
+
+  ${media.mobile`
+    flex-flow: row wrap;
+  `}
 `;
 export const InfoItem = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 5rem;
+  justify-content: flex-end;
+  margin: 0 2rem 1rem 0;
+
+  &:nth-of-type(1) {
+    flex: 1;
+
+    ${media.mobile`
+      order: -2;
+      margin-bottom: 3rem;
+    `}
+  }
+  &:nth-of-type(2) {
+    flex: 0 0 auto;
+
+    ${media.mobile`
+      flex-direcion: row;
+      margin-right: 0;
+      flex: 0 0 100%;
+    `}
+  }
+  &:nth-of-type(3) {
+    flex: 0 0 auto;
+
+    ${media.mobile`
+      flex: 0 0 100%;
+    `}
+  }
+
+  &:nth-of-type(4) {
+    flex: 0 0 90px;
+    margin-right: 0rem;
+
+    div {
+      margin-right: 1rem;
+    }
+
+    ${media.mobile`
+      order: -1;
+      margin-bottom: 3rem;
+    `}
+  }
+
+  ${props =>
+    props.outlined &&
+    css`
+      border-radius: ${props.theme.borderRadius};
+      justify-content: flex-start;
+      padding: 2rem 3rem;
+      border: 1px solid ${props.theme.borderColor.light.toString()};
+      margin-right: 2rem;
+    `};
 `;
 
 export const ItemTitle = styled.div`
   margin-bottom: 0.5rem;
+  font-family: 'Futura PT Medium', sans-serif;
+  text-transform: uppercase;
 `;
 
 export const Data = styled.div`
+  display: flex;
+  align-items: flex-end;
+  font-family: 'Futura PT Heavy', sans-serif;
   font-size: 1.6rem;
-  color: ${props => props.theme.textPrimary.default.toString()};
+  color: ${props => props.theme.textColor.primary.base.toString()};
+  text-transform: uppercase;
+
+  div:first-child {
+    margin-right: 2rem;
+  }
+
+  .label {
+    color: ${props => props.theme.textColor.default.base.toString()};
+    font-family: 'Futura PT Light', sans-serif;
+    font-size: 1.4rem;
+    text-transform: capitalize;
+  }
+
   span {
-    &:not(:first-child) {
-      color: ${props => props.theme.textSecondary.default.toString()};
+    &:nth-of-type(2) {
+      color: ${props => props.theme.textColor.secondary.base.toString()};
+    }
+    &:last-child {
+      color: ${props => props.theme.textColor.default.light.toString()};
+    }
+    &:first-child {
+      color: ${props => props.theme.textColor.primary.base.toString()};
     }
   }
 `;
@@ -136,7 +218,8 @@ export const Upvote = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  margin-right: 2rem;
+  width: 100px;
+  flex: none;
 `;
 
 export const DetailsContainer = styled.div``;
@@ -252,7 +335,15 @@ export const QuorumInfoCol = styled.div`
 `;
 
 export const WarningIcon = styled(Icon)`
-  margin: -1rem 1.5rem -1rem 0;
-  width: 3rem;
-  height: 3rem;
+  margin-right: 2rem;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+
+  ${props =>
+    props.small &&
+    css`
+      width: 25px;
+      height: 25px;
+    `}
 `;

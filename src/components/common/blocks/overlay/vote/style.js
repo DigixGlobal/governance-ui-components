@@ -1,13 +1,16 @@
 import styled, { css } from 'styled-components';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { Notifications } from '@digix/gov-ui/components/common/common-styles';
-
-export const Message = styled.div``;
+import { Notifications, Message } from '@digix/gov-ui/components/common/common-styles';
 
 export const VoteButton = styled(Button)`
   padding: 6rem;
   font-size: 3.6rem;
   font-family: 'Futura PT Heavy';
+
+  &:hover {
+    background-color: ${props => props.theme.buttonInverted.background.fade.toString()};
+    color: ${props => props.theme.buttonPrimary.textColor.base.toString()};
+  }
 
   ${props =>
     props.confirmedYes &&
@@ -42,8 +45,12 @@ export const DownloadJson = styled(Notifications)`
     color: ${props => props.theme.alertMessage.response.base.toString()};
   }
 
-  h3 {
-    font-family: 'Futura PT Medium', sans-serif;
+  ${Message} {
+    margin-bottom: 2rem;
+
+    span {
+      font-size: 3.8rem;
+    }
   }
 `;
 

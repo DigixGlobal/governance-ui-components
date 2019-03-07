@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { Container, FieldsetStyle, LabelStyle } from '../../../components/common/common-styles';
 
 export const CreateWrapper = styled.div``;
@@ -96,3 +97,11 @@ export const EditorContainer = styled.div`
 `;
 
 export const PreviewWrapper = styled.div``;
+
+export const PreviewButton = styled(Button)`
+  color: ${props => props.theme.buttonInverted.textColor.base.toString()};
+
+  &:hover {
+    color: ${props => props.theme.buttonTertiary.textColor.base.toString()};
+  }
+`;

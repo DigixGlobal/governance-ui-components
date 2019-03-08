@@ -107,7 +107,9 @@ const infoSocketLink = new ApolloLink((operation, forward) => {
   return null;
 });
 
-const daoSubscriptions = new RegExp(['commentPosted', 'commentUpdated'].join('|'));
+const daoSubscriptions = new RegExp(
+  ['commentPosted', 'commentUpdated', 'kycUpdated', 'transactionUpdated'].join('|')
+);
 
 const apiLink = authHttp.concat(httpLink);
 const socketLink = split(

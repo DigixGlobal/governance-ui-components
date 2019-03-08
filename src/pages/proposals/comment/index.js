@@ -272,13 +272,14 @@ class CommentThread extends React.Component {
   render() {
     const { currentUser, sortBy, threads } = this.state;
     const { canComment } = currentUser;
+    const hasComments = threads !== null && threads.edges.length > 0;
 
     return (
       <ThreadedComments>
         <Title>Discussions</Title>
         <CommentTextEditor addComment={this.addThread} canComment={canComment} />
-        {!threads && <p>There are no comments to show.</p>}
-        {threads && (
+        {!hasComments && <p>There are no comments to show.</p>}
+        {hasComments && (
           <section>
             <CommentFilter>
               <Select

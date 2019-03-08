@@ -291,6 +291,7 @@ export const DrawerContainer = styled.div`
     css`
       overflow-y: scroll;
       width: 75%;
+      max-width: 75%;
       background: ${props.theme.backgroundTertiary.lightest.toString()};
 
       ${media.tablet`width: 100%`};

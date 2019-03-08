@@ -106,6 +106,7 @@ class ParticipantButtons extends React.Component {
           isProposer={isProposer}
           draftVoting={data.draftVoting}
           history={history}
+          onCompleted={this.props.onCompleted}
           votingStage={data.votingStage}
           proposalId={data.proposalId}
           checkProposalRequirements={checkProposalRequirements}
@@ -128,6 +129,7 @@ class ParticipantButtons extends React.Component {
         />
         <ClaimResultsButton
           checkProposalRequirements={checkProposalRequirements}
+          onCompleted={this.props.onCompleted}
           isProposer={isProposer}
           history={history}
           proposal={data}

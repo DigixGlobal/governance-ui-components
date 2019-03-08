@@ -325,17 +325,15 @@ class Proposal extends React.Component {
 
   renderSpecialProposal = () => {
     const {
-      addressDetails,
-      daoInfo,
-      history,
       proposalDetails,
-      userData,
+      addressDetails,
+      history,
+      daoInfo,
       userProposalLike,
+      userData,
     } = this.props;
-
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
-
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
     const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
@@ -401,17 +399,15 @@ class Proposal extends React.Component {
   renderNormalProposal = () => {
     const { currentVersion, versions } = this.state;
     const {
-      addressDetails,
-      daoInfo,
-      history,
       proposalDetails,
-      userData,
+      addressDetails,
+      history,
+      daoInfo,
       userProposalLike,
+      userData,
     } = this.props;
-
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
-
     const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;

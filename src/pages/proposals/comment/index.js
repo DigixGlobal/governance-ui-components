@@ -121,7 +121,12 @@ class CommentThread extends React.Component {
   };
 
   addThread = body => {
-    const { ChallengeProof, rootCommentId } = this.props;
+    const {
+      ChallengeProof,
+      rootCommentId: {
+        data: { commentId: rootCommentId },
+      },
+    } = this.props;
     if (!ChallengeProof || !rootCommentId) {
       this.setError(CommentsApi.ERROR_MESSAGES.createComment);
       return;
@@ -297,7 +302,7 @@ class CommentThread extends React.Component {
   }
 }
 
-const { func, number, object, string } = PropTypes;
+const { func, object, string } = PropTypes;
 
 CommentThread.propTypes = {
   addressDetails: object,
@@ -306,7 +311,7 @@ CommentThread.propTypes = {
   getAddressDetails: func.isRequired,
   getDaoProposalDetails: func.isRequired,
   proposalId: string.isRequired,
-  rootCommentId: number,
+  rootCommentId: object,
   showHideAlert: func.isRequired,
   uid: string,
 };
@@ -318,14 +323,14 @@ CommentThread.defaultProps = {
   },
 
   ChallengeProof: undefined,
-  rootCommentId: 0,
+  rootCommentId: undefined,
   uid: '',
 };
 
 const mapStateToProps = ({ daoServer, infoServer }) => ({
   addressDetails: infoServer.AddressDetails.data,
   ChallengeProof: daoServer.ChallengeProof,
-  rootCommentId: daoServer.ProposalDaoDetails.data.commentId,
+  rootCommentId: daoServer.ProposalDaoDetails,
 });
 
 export default withApollo(

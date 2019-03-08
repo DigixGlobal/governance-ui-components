@@ -49,6 +49,7 @@ export const Button = styled.button`
   ${props =>
     props.small &&
     css`
+      border-width: 2px;
       padding: 1rem 1.5rem;
       font-size: 1.2rem;
       margin-right: 0.5rem;
@@ -57,6 +58,7 @@ export const Button = styled.button`
   ${props =>
     props.medium &&
     css`
+      border-width: 2px;
       font-size: 1.4rem;
       padding: 1rem 1.75rem;
     `};
@@ -64,6 +66,7 @@ export const Button = styled.button`
   ${props =>
     props.large &&
     css`
+      border-width: 2px;
       padding: 1.5rem 3rem;
       font-size: 1.6rem;
     `};

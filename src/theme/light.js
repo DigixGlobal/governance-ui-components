@@ -110,9 +110,15 @@ const basePaddingX = 1;
 const basePaddingY = 1;
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
 const transitionStyle = 'all .25s ease';
-const borderRadiusStyle = '0.25rem';
+const borderRadiusStyle = '0.3rem';
 
 const LightTheme = {
+  background: {
+    default: tertiaryColor,
+    primary: primaryColor,
+    secondary: secondaryColor,
+  },
+
   backgroundDefault: white,
   backgroundPrimary: primaryColor,
   backgroundSecondary: secondaryColor,
@@ -128,6 +134,7 @@ const LightTheme = {
   borderRadius: borderRadiusStyle,
 
   // Refactoring WIP: To be used moving forward
+
   buttonDefault: {
     textColor: primaryColor,
     background: white,

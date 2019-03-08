@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 export const HeaderWrapper = styled.section`
   display: flex;
@@ -43,17 +44,49 @@ export const WalletWrapper = styled.div`
   border-left: 0 !important;
 `;
 
-export const AddressLabel = styled.div`
-  border-radius: 3rem;
-  border: 1px solid ${props => props.theme.borderColor.default.toString()};
-  border-radius: 2rem;
-  color: ${props => props.theme.textPrimary.default.toString()};
-  padding: 0.8rem 2rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  width: 23rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
+export const Dropdown = styled.div`
+  position: relative;
+`;
+
+export const DropdownMenu = styled.div`
+  border-radius: 3px;
+  margin-left: 1rem;
+  position: absolute;
+  top: 90%;
+  right: 0;
+  width: 200px;
+  background: #fff;
+  border: 1px solid ${props => props.theme.background.default.lighter.toString()};
+  padding: 1.25rem 2rem;
+`;
+
+export const MenuItem = styled.a``;
+
+export const AddressButton = styled(Button)`
+  background: ${props => props.theme.background.default.lightest.toString()};
+  border: 1px solid ${props => props.theme.background.default.lightest.toString()};
+  box-shadow: none;
+  color: ${props => props.theme.textColor.primary.light.toString()};
+  font-family: 'Futura PT Heavy', sans-serif;
+  font-size: 1.4rem;
+  padding: 0.5rem 1.5rem;
+  // width: 200px;
+  white-space: nowrap;
+  text-transform: lowercase;
+
+  &:hover {
+    border: 1px solid ${props => props.theme.background.default.lighter.toString()};
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  div {
+    flex: 0 0 auto;
+    margin-right: 0;
+  }
 `;
 
 export const UtilityWrapper = styled.div`

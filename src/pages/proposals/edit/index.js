@@ -81,7 +81,6 @@ class EditProposal extends React.Component {
         ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
         : {};
       const form = { ...currentVersion.dijixObject };
-      form.finalReward = Number(currentVersion.finalReward);
       this.setState({
         form: { ...form },
         proposalId: proposalDetails.data.proposalId,
@@ -158,7 +157,7 @@ class EditProposal extends React.Component {
 
   createAttestation = () => {
     const { form } = this.state;
-    const { title, description, details, milestones, proofs, images } = form;
+    const { title, description, details, finalReward, milestones, proofs, images } = form;
 
     return dijix
       .create('attestation', {
@@ -167,6 +166,7 @@ class EditProposal extends React.Component {
           description,
           details,
           milestones,
+          finalReward,
         },
         proofs: images && images[0] !== null ? images.concat(proofs) : proofs,
       })

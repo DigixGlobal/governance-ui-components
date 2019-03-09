@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icons from '../../elements/icons/Icons';
-import { AccordionItem, Header, Content, Title, Funding, Amount } from './styles';
+import Icons from '@digix/gov-ui/components/common/elements/icons/Icons';
+import {
+  Amount,
+  AccordionItem,
+  ChevronContainer,
+  Content,
+  Funding,
+  Header,
+  Title,
+} from '@digix/gov-ui/components/common/elements/accordion/styles';
 
 export default class AccordionSelection extends React.Component {
   onClickItemHandler = () => {
@@ -16,27 +24,30 @@ export default class AccordionSelection extends React.Component {
 
     const svgIcon = isOpen ? '#arrow_up' : '#arrow_down';
 
+    let difference = '';
+    if (milestoneFund) {
+      const sign = milestoneFund > 0 ? `+` : `-`;
+      difference = `${sign} ${Math.abs(milestoneFund)}`;
+    }
+
     return (
       <AccordionItem>
         <Header onClick={onClickItemHandler} style={{ cursor: 'pointer' }}>
           <Title>{label}</Title>
           <Funding>
             <Amount>
-              {funding}{' '}
-              {milestoneFund && (
-                <span>
-                  {milestoneFund > 0 ? ` + ${milestoneFund}` : ` - ${Math.abs(milestoneFund)}`}
-                </span>
-              )}
+              {funding}&nbsp;
+              <span>{difference}</span>
+              &nbsp;ETH
             </Amount>
-            <div style={{ width: '18px', height: '18px' }}>
+            <ChevronContainer>
               <Icons />
               <span>
                 <svg>
                   <use xlinkHref={svgIcon} />
                 </svg>
               </span>
-            </div>
+            </ChevronContainer>
           </Funding>
         </Header>
         {isOpen && <Content>{children}</Content>}

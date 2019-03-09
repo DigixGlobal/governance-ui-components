@@ -91,3 +91,8 @@ export const Content = styled.div`
   margin-top: 2rem;
   transition: all 0.25s ease-in-out;
 `;
+
+export const ChevronContainer = styled.div`
+  height: 18px;
+  width: 18px;
+`;

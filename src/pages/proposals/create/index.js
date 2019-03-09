@@ -134,7 +134,7 @@ class CreateProposal extends React.Component {
 
   createAttestation = () => {
     const { form } = this.state;
-    const { title, description, details, milestones, proofs } = form;
+    const { title, description, details, finalReward, milestones, proofs } = form;
 
     return dijix
       .create('attestation', {
@@ -143,6 +143,7 @@ class CreateProposal extends React.Component {
           description,
           details,
           milestones,
+          finalReward,
         },
         proofs: proofs && proofs.length > 0 ? [...proofs] : undefined,
       })

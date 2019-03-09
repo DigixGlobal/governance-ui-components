@@ -4,45 +4,54 @@ import Accordion from '@digix/gov-ui/components/common/elements/accordion/index'
 import { MilestonesContainer, SubTitle } from '@digix/gov-ui/pages/proposals/style';
 
 export default class Milestones extends React.Component {
+  constructor(props) {
+    super(props);
+    this.NO_MILESTONE_DESCRIPTION = 'No milestone description has been created yet.';
+  }
+
+  renderMilestone(milestone, index) {
+    const { changedFundings, fundingChanged } = this.props;
+
+    let funding;
+    let milestoneFund;
+    const description = milestone.description || this.NO_MILESTONE_DESCRIPTION;
+    const order = index + 1;
+
+    if (fundingChanged) {
+      const { original, updated } = changedFundings[index];
+      funding = Number(original);
+      milestoneFund = Number(updated) - funding;
+    } else {
+      funding = milestone.fund;
+    }
+
+    return (
+      <div
+        key={`ms-${order}`}
+        label={`Milestone ${order}: ${milestone.title || ''}`}
+        funding={funding}
+        milestoneFund={milestoneFund}
+      >
+        {description}
+      </div>
+    );
+  }
+
   render() {
-    const { milestones, milestoneFundings, changedFundings, fundingChanged } = this.props;
+    const { milestones } = this.props;
+    const milestoneElements = milestones.map((milestone, i) => this.renderMilestone(milestone, i));
 
     return (
       <MilestonesContainer>
         <SubTitle>Milestones</SubTitle>
-        <Accordion allowMultipleOpen>
-          {milestones.map((milestone, i) => {
-            // eslint-disable-next-line
-            const funding = fundingChanged
-              ? Number(changedFundings[i].original)
-              : milestoneFundings
-              ? milestoneFundings[i]
-              : milestones[i].fund;
-            const updatedFunding = fundingChanged ? Number(changedFundings[i].updated) : 0;
-            const milestoneFund = fundingChanged ? updatedFunding - funding : undefined;
-
-            return (
-              <div
-                key={`ms-${i + 1}`}
-                label={`Milestone ${i + 1}: ${milestone.title || ''}`}
-                funding={milestoneFundings ? milestoneFundings[i] : milestones[i].fund}
-                milestoneFund={milestoneFund !== 0 ? milestoneFund : undefined}
-              >
-                {milestone.description
-                  ? milestone.description
-                  : 'No milestone description has been created yet.'}
-              </div>
-            );
-          })}
-        </Accordion>
+        <Accordion allowMultipleOpen>{milestoneElements}</Accordion>
       </MilestonesContainer>
     );
   }
 }
 
 Milestones.propTypes = {
-  milestones: PropTypes.array.isRequired,
-  milestoneFundings: PropTypes.array.isRequired,
   changedFundings: PropTypes.array.isRequired,
   fundingChanged: PropTypes.bool.isRequired,
+  milestones: PropTypes.array.isRequired,
 };

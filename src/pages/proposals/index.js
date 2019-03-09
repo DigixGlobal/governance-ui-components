@@ -176,6 +176,47 @@ class Proposal extends React.Component {
     }
   };
 
+  getChangedFundings() {
+    const proposal = this.props.proposalDetails.data;
+    let milestoneFunds = null;
+    let milestoneFundDifference = null;
+    let reward = null;
+    let rewardDifference = null;
+
+    if (!proposal.isFundingChanged) {
+      return {
+        milestoneFunds,
+        milestoneFundDifference,
+        reward,
+        rewardDifference,
+      };
+    }
+
+    const { finalReward, milestones } = proposal.changedFundings;
+    milestoneFunds = milestones.reduce(
+      (acc, milestone) => Number(acc.original) + Number(milestone.original)
+    );
+
+    const updatedMilestoneFunds = milestones.reduce(
+      (acc, milestone) => Number(acc.updated) + Number(milestone.updated)
+    );
+
+    milestoneFundDifference = updatedMilestoneFunds - milestoneFunds;
+    milestoneFundDifference =
+      milestoneFundDifference === 0 ? undefined : truncateNumber(milestoneFundDifference);
+
+    reward = truncateNumber(Number(finalReward.original));
+    rewardDifference = Number(finalReward.updated) - Number(finalReward.original);
+    rewardDifference = rewardDifference === 0 ? undefined : truncateNumber(rewardDifference);
+
+    return {
+      milestoneFunds,
+      milestoneFundDifference,
+      reward,
+      rewardDifference,
+    };
+  }
+
   handlePreviousVersionClick = () => {
     this.setState({ currentVersion: Number(this.state.currentVersion) - 1 });
   };
@@ -270,6 +311,55 @@ class Proposal extends React.Component {
         </Notifications>
       );
   };
+
+  renderProposalFundings() {
+    const proposal = this.props.proposalDetails.data;
+    const proposalVersion = proposal.proposalVersions[this.state.currentVersion];
+    const { isFundingChanged } = proposal;
+
+    let {
+      milestoneFunds,
+      milestoneFundDifference,
+      reward,
+      rewardDifference,
+    } = this.getChangedFundings();
+
+    if (!isFundingChanged) {
+      const { finalReward, milestones } = proposalVersion.dijixObject;
+      reward = truncateNumber(finalReward);
+      milestoneFunds = milestones.reduce((total, milestone) => total + Number(milestone.fund), 0);
+    }
+
+    return (
+      <InfoItem outlined>
+        <ItemTitle>Funding</ItemTitle>
+        <Data>
+          <div className="milestones">
+            <span data-digix="funding-amount-label">{milestoneFunds}</span>
+            {milestoneFundDifference && (
+              <span data-digix="edit-funding-amount-label">
+                {milestoneFundDifference > 0
+                  ? ` + ${milestoneFundDifference}`
+                  : ` - ${Math.abs(milestoneFundDifference)}`}
+              </span>
+            )}
+            {` ETH`} <span className="label">Milestones</span>
+          </div>
+          <div className="reward">
+            <span data-digix="reward-amount-label">{reward} </span>
+            {rewardDifference && (
+              <span data-digix="edit-reward-amount-label">
+                {rewardDifference > 0
+                  ? ` + ${rewardDifference} `
+                  : ` - ${Math.abs(rewardDifference)} `}
+              </span>
+            )}
+            ETH <span className="label">Reward</span>
+          </div>
+        </Data>
+      </InfoItem>
+    );
+  }
 
   renderProposerDidNotPassAlert = () => {
     const {
@@ -406,53 +496,22 @@ class Proposal extends React.Component {
       userProposalLike,
       userData,
     } = this.props;
-    const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
+
+    const proposal = proposalDetails.data;
+    const { changedFundings } = proposal;
+
+    const isProposer = addressDetails.data.address === proposal.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
-    const proposalVersion = proposalDetails.data.proposalVersions[currentVersion];
+
+    const proposalVersion = proposal.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
     const versionCount = versions ? versions.length : 0;
 
-    const totalUpdatedFunds = (acc, currentValue) =>
-      Number(acc.updated) + Number(currentValue.updated);
+    const proposalLikes = userProposalLike.data;
+    const liked = proposalLikes ? proposalLikes.liked : false;
+    const likes = proposalLikes ? proposalLikes.likes : 0;
+    const displayName = proposalLikes ? proposalLikes.user.displayName : '';
 
-    const totalOriginalFunds = (acc, currentValue) =>
-      Number(acc.original) + Number(currentValue.original);
-
-    const milestoneFundings = (acc, currentValue) => Number(acc) + Number(currentValue);
-
-    const liked = userProposalLike.data ? userProposalLike.data.liked : false;
-    const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
-    const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
-
-    const funding = proposalDetails.data.isFundingChanged
-      ? proposalDetails.data.changedFundings.milestones.reduce(totalOriginalFunds)
-      : proposalVersion.milestoneFundings.reduce(milestoneFundings, 0);
-    let reward = truncateNumber(proposalVersion.finalReward);
-
-    let updatedFunding;
-    let updatedReward;
-
-    if (proposalDetails.data.isFundingChanged) {
-      reward = truncateNumber(proposalDetails.data.changedFundings.finalReward.original);
-
-      if (Number(proposalDetails.data.changedFundings.finalReward.updated) > 0) {
-        updatedReward = truncateNumber(
-          proposalDetails.data.changedFundings.finalReward.updated - reward
-        );
-        if (updatedReward === 0) updatedReward = -Math.abs(reward);
-      } else {
-        updatedReward = -Math.abs(reward);
-      }
-
-      if (proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) > 0) {
-        updatedFunding = truncateNumber(
-          proposalDetails.data.changedFundings.milestones.reduce(totalUpdatedFunds) - funding
-        );
-        if (updatedFunding === 0) updatedFunding = undefined; // set to undefined to ensure no change in fundng is displayed
-      } else {
-        updatedFunding = undefined;
-      }
-    }
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -469,14 +528,14 @@ class Proposal extends React.Component {
               />
             </VersionHistory>
           )}
-          {this.renderPrlAlert(proposalDetails.data.prl)}
+          {this.renderPrlAlert(proposal.prl)}
           {this.renderClaimApprovalAlert()}
           {this.renderProposerDidNotPassAlert()}
 
           <Header>
             <div>
               <Button kind="tag" showIcon>
-                {proposalDetails.data.stage}
+                {proposal.stage}
               </Button>
               <Title primary>{dijixObject.title}</Title>
             </div>
@@ -512,33 +571,7 @@ class Proposal extends React.Component {
                 <span data-digix="milestone-label">{dijixObject.milestones.length || 0}</span>
               </Data>
             </InfoItem>
-            <InfoItem outlined>
-              <ItemTitle>Funding</ItemTitle>
-              <Data>
-                <div className="milestones">
-                  <span data-digix="funding-amount-label">{funding}</span>
-                  {updatedFunding && (
-                    <span data-digix="edit-funding-amount-label">
-                      {updatedFunding && updatedFunding > 0
-                        ? ` + ${updatedFunding}`
-                        : ` - ${Math.abs(updatedFunding)}`}
-                    </span>
-                  )}
-                  {` ETH`} <span className="label">Milestones</span>
-                </div>
-                <div className="reward">
-                  <span data-digix="reward-amount-label">{reward} </span>
-                  {updatedReward && (
-                    <span data-digix="edit-reward-amount-label">
-                      {updatedReward > 0
-                        ? ` + ${updatedReward} `
-                        : ` - ${Math.abs(updatedReward)} `}
-                    </span>
-                  )}
-                  ETH <span className="label">Reward</span>
-                </div>
-              </Data>
-            </InfoItem>
+            {this.renderProposalFundings()}
             <InfoItem>
               <Like
                 hasVoted={liked}
@@ -548,21 +581,12 @@ class Proposal extends React.Component {
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
-        <VotingResult
-          proposal={proposalDetails.data}
-          draftVoting={proposalDetails.data.draftVoting}
-          daoInfo={daoInfo}
-        />
+        <VotingResult proposal={proposal} draftVoting={proposal.draftVoting} daoInfo={daoInfo} />
         <ProjectDetails project={dijixObject} />
         <Milestones
           milestones={dijixObject.milestones || []}
-          milestoneFundings={proposalVersion.milestoneFundings}
-          changedFundings={
-            proposalDetails.data.changedFundings
-              ? proposalDetails.data.changedFundings.milestones
-              : undefined
-          }
-          fundingChanged={proposalDetails.data.isFundingChanged}
+          changedFundings={changedFundings ? changedFundings.milestones : undefined}
+          fundingChanged={proposal.isFundingChanged}
         />
         <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
       </ProposalsWrapper>

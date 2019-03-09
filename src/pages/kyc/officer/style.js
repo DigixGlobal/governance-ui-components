@@ -79,3 +79,7 @@ export const FieldItemKYC = styled(FieldItem)`
     align-items: flex-end;
   }
 `;
+
+export const FieldImg = styled.img`
+  width: 100%;
+`;

@@ -1,16 +1,19 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-
 import moment from 'moment';
 
+import ApproveKyc from '@digix/gov-ui/pages/kyc/officer/approve';
+import RejectKyc from '@digix/gov-ui/pages/kyc/officer/reject';
 import Toggle from '@digix/gov-ui/components/common/elements/toggle';
-
-import { Container, Caption, Value, ValueWrapper, UserTitle } from './style';
-
-import { showStatusIcon } from './constants';
-
-import ApproveKyc from './approve';
-import RejectKyc from './reject';
+import { showStatusIcon } from '@digix/gov-ui/pages/kyc/officer/constants';
+import {
+  Container,
+  Caption,
+  FieldImg,
+  Value,
+  ValueWrapper,
+  UserTitle,
+} from '@digix/gov-ui/pages/kyc/officer/style';
 
 const renderIps = ips => (
   <ul>
@@ -160,7 +163,7 @@ class UserInfo extends React.Component {
             <ValueWrapper>
               <Caption>Webcam Proof</Caption>
               <Value>
-                <img src={user.identificationPose.image.dataUrl} alt="" />
+                <FieldImg src={user.identificationPose.image.dataUrl} alt="" />
               </Value>
             </ValueWrapper>
             <ValueWrapper>
@@ -179,7 +182,7 @@ class UserInfo extends React.Component {
           <ValueWrapper>
             <Caption>Residence Proof</Caption>
             <Value>
-              <img src={user.residenceProof.image.dataUrl} alt="" />
+              <FieldImg src={user.residenceProof.image.dataUrl} alt="" />
             </Value>
           </ValueWrapper>
         )}
@@ -203,7 +206,7 @@ class UserInfo extends React.Component {
             <ValueWrapper>
               <Caption>ID Proof</Caption>
               <Value>
-                <img src={user.identificationProof.image.dataUrl} alt="" />
+                <FieldImg src={user.identificationProof.image.dataUrl} alt="" />
               </Value>
             </ValueWrapper>
           </Fragment>

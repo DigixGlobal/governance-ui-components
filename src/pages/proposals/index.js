@@ -30,6 +30,7 @@ import ModeratorButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/mod
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
 import CommentThread from '@digix/gov-ui/pages/proposals/comment';
+import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
 
 import { Notifications, Message } from '@digix/gov-ui/components/common/common-styles';
 import {
@@ -245,6 +246,80 @@ class Proposal extends React.Component {
       token: challengeProof.data['access-token'],
       uid: challengeProof.data.uid,
     });
+  };
+
+  getPastVotingResults = () => {
+    const { daoInfo, proposalDetails } = this.props;
+    const pastVotes = [];
+    if (proposalDetails.data.isSpecial === true) {
+      pastVotes.push({
+        title: 'Proposal Vote Results',
+        voting: proposalDetails.data.votingRounds[0],
+        daoInfo,
+      });
+    }
+
+    if (proposalDetails.data.currentVotingRound === -1) {
+      pastVotes.push({
+        title: 'Moderator Approval Results',
+        voting: proposalDetails.data.draftVoting,
+        daoInfo,
+      });
+    }
+
+    if (proposalDetails.data.currentVotingRound === 0) {
+      pastVotes.push({
+        title: 'Moderator Approval Results',
+        voting: proposalDetails.data.draftVoting,
+        daoInfo,
+      });
+      pastVotes.push({
+        title: 'Proposal Vote Results',
+        voting: proposalDetails.data.votingRounds[0],
+        daoInfo,
+      });
+    }
+    if (proposalDetails.data.currentVotingRound === 1) {
+      pastVotes.push({
+        title: 'Moderator Approval Results',
+        voting: proposalDetails.data.draftVoting,
+        daoInfo,
+      });
+      pastVotes.push({
+        title: 'Proposal Vote Results',
+        voting: proposalDetails.data.votingRounds[0],
+        daoInfo,
+      });
+      pastVotes.push({
+        title: 'Review Vote 1 Results',
+        voting: proposalDetails.data.votingRounds[1],
+        daoInfo,
+      });
+    }
+    if (proposalDetails.data.currentVotingRound === 2) {
+      pastVotes.push({
+        title: 'Moderator Approval Results',
+        voting: proposalDetails.data.draftVoting,
+        daoInfo,
+      });
+      pastVotes.push({
+        title: 'Proposal Vote Results',
+        voting: proposalDetails.data.votingRounds[0],
+        daoInfo,
+      });
+      pastVotes.push({
+        title: 'Review Vote 1 Results',
+        voting: proposalDetails.data.votingRounds[1],
+        daoInfo,
+      });
+      pastVotes.push({
+        title: 'Review Vote 2 Results',
+        voting: proposalDetails.data.votingRounds[2],
+        daoInfo,
+      });
+    }
+
+    return pastVotes;
   };
 
   renderPrlAlert = prl =>
@@ -478,6 +553,7 @@ class Proposal extends React.Component {
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
+        <VotingAccordion votingResults={this.getPastVotingResults()} />
         <SpecialProjectVotingResult proposal={proposalDetails.data} daoInfo={daoInfo} />
         <SpecialProjectDetails uintConfigs={proposalDetails.data.uintConfigs} />
 
@@ -582,6 +658,13 @@ class Proposal extends React.Component {
           </FundingInfo>
         </ProjectSummary>
         <VotingResult proposal={proposal} draftVoting={proposal.draftVoting} daoInfo={daoInfo} />
+        <VotingAccordion votingResults={this.getPastVotingResults()} />
+        <VotingResult
+          proposal={proposalDetails.data}
+          draftVoting={proposalDetails.data.draftVoting}
+          daoInfo={daoInfo}
+        />
+
         <ProjectDetails project={dijixObject} />
         <Milestones
           milestones={dijixObject.milestones || []}

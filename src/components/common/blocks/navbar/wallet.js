@@ -7,6 +7,7 @@ import { Accordion, Button, Icon } from '@digix/gov-ui/components/common/element
 import {
   WalletWrapper,
   AddressButton,
+  LockDGDButton,
   Dropdown,
   DropdownMenu,
   MenuItem,
@@ -47,14 +48,14 @@ class WalletButton extends React.Component {
           </Button>
         )}
         {canLockDgd && canLockDgd.show && (
-          <Button
+          <LockDGDButton
             primary
             xsmall
             data-digix="Header-LockDgd"
             onClick={() => this.showLockDgdOverlay()}
           >
             Lock DGD
-          </Button>
+          </LockDGDButton>
         )}
         {defaultAddress && (
           <Fragment>

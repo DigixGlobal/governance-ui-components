@@ -44,17 +44,26 @@ export const WalletWrapper = styled.div`
   border-left: 0 !important;
 `;
 
+export const LockDGDButton = styled(Button)`
+  background: ${props => props.theme.buttonInverted.background.base.toString()};
+  color: ${props => props.theme.buttonInverted.textColor.base.toString()};
+
+  &:hover {
+    background: ${props => props.theme.buttonInverted.background.base.toString()};
+  }
+`;
+
 export const Dropdown = styled.div`
   position: relative;
 `;
 
 export const DropdownMenu = styled.div`
   border-radius: 3px;
-  margin-left: 1rem;
+  left: 2rem;
   position: absolute;
   top: 90%;
   right: 0;
-  width: 200px;
+  width: 230px;
   background: #fff;
   border: 1px solid ${props => props.theme.background.default.lighter.toString()};
   padding: 1.25rem 2rem;
@@ -64,18 +73,18 @@ export const MenuItem = styled.a``;
 
 export const AddressButton = styled(Button)`
   background: ${props => props.theme.background.default.lightest.toString()};
-  border: 1px solid ${props => props.theme.background.default.lightest.toString()};
+  border: 1px solid ${props => props.theme.background.default.lighter.toString()};
   box-shadow: none;
-  color: ${props => props.theme.textColor.primary.light.toString()};
-  font-family: 'Futura PT Heavy', sans-serif;
+  color: ${props => props.theme.textColor.default.base.toString()};
+  font-family: 'Futura PT Medium', sans-serif;
   font-size: 1.4rem;
-  padding: 0.5rem 1.5rem;
-  // width: 200px;
+  padding: 0.75rem 1.5rem;
+  width: 250px;
   white-space: nowrap;
   text-transform: lowercase;
 
   &:hover {
-    border: 1px solid ${props => props.theme.background.default.lighter.toString()};
+    color: ${props => props.theme.textColor.default.light.toString()};
   }
 
   span {

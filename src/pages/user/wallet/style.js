@@ -3,22 +3,19 @@ import { H1, Card } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const WalletWrapper = styled.div``;
-export const Heading = styled(H1)``;
+export const Heading = styled(H1)`
+  margin-bottom: 3rem;
+`;
+
 export const Address = styled.div`
-  color: ${props => props.theme.textPrimary.light.toString()};
+  color: ${props => props.theme.textColor.default.base.toString()};
   font-family: 'Futura PT Book', sans-serif;
-  font-size: 1.8rem;
-  margin-bottom: 5rem;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 
   span {
     display: inline-block;
-    min-width: 10rem;
-
-    &:last-child {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    margin-right: 1rem;
   }
 `;
 export const WalletDetails = styled(Card)`
@@ -79,7 +76,7 @@ export const QtrSummary = styled.div`
 
 export const QtrParticipation = styled.div`
   flex: 1;
-  color: ${props => props.theme.textPrimary.default.toString()};
+  color: ${props => props.theme.textColor.default.base.toString()};
   display: flex;
   flex-direction: column;
   margin-right: 3rem;
@@ -92,10 +89,10 @@ export const QtrParticipation = styled.div`
   `}
 `;
 export const Title = styled.div`
-  color: ${props => props.theme.textPrimary.light.toString()};
-  font-family: 'Futura PT Medium', sans-serif;
-  font-size: 1.8rem;
-  margin-bottom: 2rem;
+  color: ${props => props.theme.textColor.primary.base.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 `;
 export const Detail = styled(Card)`
   flex-direction: column;
@@ -106,6 +103,7 @@ export const Label = styled.div`
   margin-top: 1rem;
 `;
 export const Data = styled.div`
+  color: ${props => props.theme.textColor.primary.light.toString()};
   font-size: 3.6rem;
   margin: 1rem 0 0;
   text-transform: uppercase;

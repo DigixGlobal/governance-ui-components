@@ -65,8 +65,7 @@ const ADMIN_MENU = [
     requirement: 'isKycOfficer',
   },
   {
-    // FIXME (for CSS): change to appropriate icon
-    icon: 'face',
+    icon: 'user',
     title: 'Admin',
     url: '/forum/admin',
     requirement: 'isForumAdmin',

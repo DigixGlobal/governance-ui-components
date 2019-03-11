@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { H1, H2, Container } from '@digix/gov-ui/components/common/common-styles';
 import { Icon } from '@digix/gov-ui/components/common/elements/index';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
+import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 
 export const ProposalsWrapper = styled.div``;
 
@@ -69,6 +70,7 @@ export const VersionHistory = styled.div`
 export const PreviousWrapper = styled.div`
   ${Container};
   align-items: center;
+
   svg {
     transform: rotate(180deg);
   }
@@ -90,7 +92,8 @@ export const Header = styled.div`
 
 export const Title = styled(H1)`
   font-size: 3.6rem;
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Book';
+  text-transform: capitalize;
 `;
 
 export const CallToAction = styled.div`
@@ -114,7 +117,7 @@ export const FundingInfo = styled.div`
   display: flex;
   flex: 1;
 
-  margin: 2rem 0;
+  margin-bottom: 2rem 0;
 
   ${media.mobile`
     flex-flow: row wrap;
@@ -171,7 +174,7 @@ export const InfoItem = styled.div`
       border-radius: ${props.theme.borderRadius};
       justify-content: flex-start;
       padding: 2rem 3rem;
-      border: 1px solid ${props.theme.borderColor.light.toString()};
+      border: 1px solid ${props.theme.borderColor.lighter.toString()};
       margin-right: 2rem;
     `};
 `;
@@ -222,12 +225,14 @@ export const Upvote = styled.div`
   flex: none;
 `;
 
-export const DetailsContainer = styled.div``;
+export const DetailsContainer = styled.div`
+  padding-top: 2rem;
+`;
 
 export const ShortDescription = styled.div`
   border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
-  padding: 3rem 0 2em 0;
-  margin-bottom: 3rem;
+  padding: 0 0 2em 0;
+  margin: 1.5rem 0 3rem 0;
 `;
 
 export const ProjectSummary = styled.div`
@@ -267,16 +272,17 @@ export const MilestonesContainer = styled.div`
 export const VotingResultWrapper = styled.div`
   ${Container};
   flex-direction: column;
-  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
 `;
 
 export const VotingResultContainer = styled.div`
   ${Container};
   margin-bottom: 4rem;
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 export const ProgressCol = styled.div`
   flex-grow: 1;
-  margin-right: 2rem;
 `;
 
 export const Label = styled.div`
@@ -304,24 +310,29 @@ export const QuorumMinLabel = styled.div`
   ${LabelStyle};
   border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
   flex: ${props => props.flexWidth};
+
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const ApprovalLabel = styled.div`
   ${LabelStyle};
   flex: ${props => props.flexWidth};
 `;
+
 export const ApprovalMinLabel = styled.div`
   ${LabelStyle};
   border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
   flex: ${props => props.flexWidth};
+
+  display: flex;
+  justify-content: space-between;
 `;
 
-export const QuorumInfoCol = styled.div`
+export const QuorumInfoCol = styled.span`
   ${Container};
   align-items: flex-end;
   justify-content: flex-end;
-
-  flex-basis: ${props => (props.countdown ? 130 : 220)}px;
 
   color: ${props => props.theme.textDefault.light.toString()};
   font-family: 'Futura PT Medium';
@@ -346,4 +357,8 @@ export const WarningIcon = styled(Icon)`
       width: 25px;
       height: 25px;
     `}
+`;
+
+export const VotingProgressBar = styled(ProgressBar)`
+  border: 1px solid #ccc;
 `;

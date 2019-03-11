@@ -20,7 +20,10 @@ class VotingAccordion extends React.PureComponent {
     } else {
       acc.open = !acc.open;
     }
-    this.setState({ accordionItems: [...accordionItems], selectedIndex: index });
+    this.setState({
+      accordionItems: [...accordionItems],
+      selectedIndex: index,
+    });
   };
 
   renderAccordionItem = (item, i) => {
@@ -33,9 +36,9 @@ class VotingAccordion extends React.PureComponent {
     const show = acc && acc.open && i === selectedIndex;
     const svgIcon = show ? '#arrow_up' : '#arrow_down';
     return (
-      <AccordionItem>
+      <AccordionItem voting>
         <Header onClick={() => this.onClickItemHandler(i)}>
-          <Title>{item.title}</Title>
+          <Title uppercase>{item.title}</Title>
           <Funding>
             <div style={{ width: '18px', height: '18px' }}>
               <Icons />

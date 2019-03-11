@@ -58,6 +58,7 @@ class Profile extends React.Component {
     getDaoDetailsAction();
     getAddressDetailsAction(AddressDetails.data.address);
     this.props.refetchUser();
+    this.props.subscribeToKyc();
   }
 
   onLockDgd = () => {
@@ -117,11 +118,6 @@ class Profile extends React.Component {
 
   showKycOverlay() {
     const { refetchUser } = this.props;
-    const { kyc } = this.props.userData;
-
-    if (kyc && kyc.status === KycStatus.approved) {
-      return;
-    }
 
     this.props.showRightPanel({
       component: <KycOverlay refetchUser={refetchUser} />,
@@ -141,7 +137,7 @@ class Profile extends React.Component {
       currentKycStatus = kyc.status.charAt(0) + kyc.status.slice(1).toLowerCase();
     }
 
-    const kycStatusesForResubmission = [KycStatus.expired, KycStatus.approved, KycStatus.rejected];
+    const kycStatusesForResubmission = [KycStatus.expired, KycStatus.rejected];
     const canResubmitKyc = kyc ? kycStatusesForResubmission.includes(kyc.status) : false;
     const canSubmitKyc = (email && !kyc) || (kyc && kyc.status === KycStatus.pending);
     const showSubmitKycButton = canSubmitKyc || canResubmitKyc;
@@ -350,6 +346,7 @@ Profile.propTypes = {
   refetchUser: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
   showRightPanel: func.isRequired,
+  subscribeToKyc: func.isRequired,
   userData: shape({
     displayName: string,
     email: string,

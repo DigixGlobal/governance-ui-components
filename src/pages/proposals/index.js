@@ -657,7 +657,6 @@ class Proposal extends React.Component {
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
-        <VotingResult proposal={proposal} draftVoting={proposal.draftVoting} daoInfo={daoInfo} />
         <VotingAccordion votingResults={this.getPastVotingResults()} />
         <VotingResult
           proposal={proposalDetails.data}

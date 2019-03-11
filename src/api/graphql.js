@@ -19,11 +19,6 @@ import WebSocketLink from '@digix/gov-ui/api/webSocketLink';
 import { DAO_SERVER } from '@digix/gov-ui/reducers/dao-server/constants';
 import { INFO_SERVER } from '@digix/gov-ui/reducers/info-server/constants';
 
-const httpLink = createHttpLink({
-  uri: `${DAO_SERVER}/api`,
-  credentials: 'same-origin',
-});
-
 let daoAuthorization = null;
 let infoAuthorization = null;
 
@@ -35,17 +30,36 @@ export const setInfoAuthorization = payload => {
   infoAuthorization = _.pick(payload, ['address', 'message', 'signature']);
 };
 
+const daoHttpLink = createHttpLink({
+  uri: `${DAO_SERVER}/api`,
+  credentials: 'same-origin',
+});
+
+const infoHttpLink = createHttpLink({
+  uri: `${INFO_SERVER}/api`,
+  credentials: 'same-origin',
+});
+
 // eslint-disable-next-line
-const authHttp = setContext((_previous, { headers }) => ({
+const daoAuthHttpLink = setContext((_previous, { headers }) => ({
   headers: {
     ...headers,
     ...(daoAuthorization || {}),
   },
-}));
+})).concat(daoHttpLink);
+
+// eslint-disable-next-line
+const infoAuthHttpLink = setContext((_previous, { headers }) => ({
+  headers: {
+    ...headers,
+    ...(infoAuthorization || {}),
+  },
+})).concat(infoHttpLink);
 
 let daoCableLink = null;
 let daoCable = null;
 
+// eslint-disable-next-line
 const daoSocketLink = new ApolloLink((operation, _forward) => {
   if (daoAuthorization) {
     if (!daoCableLink) {
@@ -82,7 +96,8 @@ const daoSocketLink = new ApolloLink((operation, _forward) => {
 
 let infoWebSocketLink = null;
 
-const infoSocketLink = new ApolloLink((operation, forward) => {
+// eslint-disable-next-line
+const infoSocketLink = new ApolloLink((operation, _forward) => {
   if (infoAuthorization) {
     if (!infoWebSocketLink) {
       const socketClient = new SubscriptionClient(
@@ -107,11 +122,25 @@ const infoSocketLink = new ApolloLink((operation, forward) => {
   return null;
 });
 
-const daoSubscriptions = new RegExp(
-  ['commentPosted', 'commentUpdated', 'kycUpdated', 'transactionUpdated'].join('|')
-);
+const infoSubscriptions = new RegExp(['proposalUpdated', 'userUpdated'].join('|'));
 
-const apiLink = authHttp.concat(httpLink);
+const infoQueries = new RegExp(['fetchProposal', 'fetchCurrentUser'].join('|'));
+
+const apiLink = split(
+  ({
+    query: {
+      loc: {
+        source: { body },
+      },
+    },
+  }) => {
+    const x = infoQueries.test(body);
+
+    return infoQueries.test(body);
+  },
+  infoAuthHttpLink,
+  daoAuthHttpLink
+);
 const socketLink = split(
   ({
     query: {
@@ -119,9 +148,9 @@ const socketLink = split(
         source: { body },
       },
     },
-  }) => daoSubscriptions.test(body),
-  daoSocketLink,
-  infoSocketLink
+  }) => infoSubscriptions.test(body),
+  infoSocketLink,
+  daoSocketLink
 );
 
 const client = new ApolloClient({

@@ -140,7 +140,7 @@ class ClaimResultsButton extends React.PureComponent {
       func: contract.claimProposalVotingResult,
       params: [
         proposalId,
-        currentVotingRound,
+        proposal.isSpecial ? 0 : currentVotingRound,
         toBigNumber(useMaxClaim ? MAX_PEOPLE_PER_CLAIM : 50),
       ],
       onFailure: this.setError,
@@ -161,7 +161,9 @@ class ClaimResultsButton extends React.PureComponent {
     } = this.props;
     if (!pendingTransactions.data) return false;
 
-    const transaction = pendingTransactions.data.find(p => p.project === proposalId);
+    const transaction = pendingTransactions.data.find(
+      p => p.project === proposalId && p.status !== 'confirmed'
+    );
     return transaction !== undefined;
   };
 
@@ -188,10 +190,15 @@ class ClaimResultsButton extends React.PureComponent {
       return null;
 
     const currentTime = Date.now();
-    const { yes, no, quorum, quota, claimed } = proposal.votingRounds[currentVotingRound];
+    const { yes, no, quorum, quota, claimed } = proposal.isSpecial
+      ? proposal.votingRounds[0]
+      : proposal.votingRounds[currentVotingRound];
 
-    const isVotingDeadlineOver =
-      currentTime > new Date(proposal.votingRounds[currentVotingRound].revealDeadline * 1000);
+    const revealDeadline = proposal.isSpecial
+      ? proposal.votingRounds[0].revealDeadline
+      : proposal.votingRounds[currentVotingRound].revealDeadline;
+
+    const isVotingDeadlineOver = currentTime > new Date(revealDeadline * 1000);
 
     if (claimed || !isVotingDeadlineOver) return null;
 
@@ -200,16 +207,12 @@ class ClaimResultsButton extends React.PureComponent {
       Number(yes) / (Number(yes) + Number(no)) > Number(quota);
 
     const withinDeadline =
-      currentTime > proposal.votingRounds[currentVotingRound].revealDeadline * 1000 &&
-      currentTime <
-        (proposal.votingRounds[currentVotingRound].revealDeadline +
-          Number(daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE)) *
-          1000;
+      currentTime > revealDeadline * 1000 &&
+      currentTime < (revealDeadline + Number(daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE)) * 1000;
 
     return (
       <Button
-        // disabled={claimed || claiming || this.hasPendingClaim()} // TODO: This has to be enabled once Transactions from DAO-Server are properly updated. i.e. Turns a pending transaction to Successful
-
+        disabled={claimed || claiming || this.hasPendingClaim()}
         kind="round"
         large
         onClick={() =>
@@ -221,7 +224,6 @@ class ClaimResultsButton extends React.PureComponent {
               })
             : this.handleSubmit(false)()
         }
-        disabled={claimed}
         data-digix="ProposalAction-Results"
       >
         {withinDeadline && tentativePassed ? 'Claim Results' : 'Claim Failed Project'}

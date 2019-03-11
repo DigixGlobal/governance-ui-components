@@ -25,7 +25,14 @@ class ClaimApprovalOverlay extends React.Component {
           <ProgressBar variant="determinate" value={33} />
         </Notifications>
 
-        <Button secondary disabled={!enableClaim} fluid large onClick={onClaim}>
+        <Button
+          secondary
+          disabled={!enableClaim}
+          data-digix="Confirm-Claim-Button"
+          fluid
+          large
+          onClick={onClaim}
+        >
           Confirming Claim [{current}/{total}]
         </Button>
       </IntroContainer>

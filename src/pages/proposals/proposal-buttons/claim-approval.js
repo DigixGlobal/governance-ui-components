@@ -146,7 +146,9 @@ class ClaimApprovalButton extends React.Component {
     const { pendingTransactions, proposalId } = this.props;
     if (!pendingTransactions.data) return false;
 
-    const transaction = pendingTransactions.data.find(p => p.project === proposalId);
+    const transaction = pendingTransactions.data.find(
+      p => p.project === proposalId && p.status !== 'confirmed'
+    );
     return transaction !== undefined;
   };
   claimApproval = useMaxClaim => () => {
@@ -190,7 +192,7 @@ class ClaimApprovalButton extends React.Component {
       <Button
         kind="round"
         large
-        // disabled={claiming || this.hasPendingClaim()} // TODO: This has to be enabled once Transactions from DAO-Server are properly updated. i.e. Turns a pending transaction to Successful
+        disabled={claimed || claiming || this.hasPendingClaim()}
         onClick={() =>
           isMultiStep && tentativePassed && canClaim
             ? this.showOverlay({

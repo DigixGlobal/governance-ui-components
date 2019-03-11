@@ -10,7 +10,7 @@ import Dashboard from './Dashboard';
 import Dgd from './DGD';
 import Dgx from './Dgx';
 import Ethereum from './Ethereum';
-import Face from './Face';
+import User from './User';
 import File from './File';
 import Help from './Help';
 import History from './History';
@@ -45,7 +45,7 @@ const icons = {
   dgd: Dgd,
   dgx: Dgx,
   ethereum: Ethereum,
-  face: Face,
+  user: User,
   file: File,
   help: Help,
   history: History,
@@ -82,7 +82,7 @@ Icon.propTypes = {
 };
 
 Icon.defaultProps = {
-  kind: 'face',
+  kind: 'user',
 };
 
 export default Icon;

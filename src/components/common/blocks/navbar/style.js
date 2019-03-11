@@ -95,6 +95,9 @@ export const AddressButton = styled(Button)`
   div {
     flex: 0 0 auto;
     margin-right: 0;
+    margin-left: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 `;
 

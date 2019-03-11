@@ -4,11 +4,8 @@ import Countdown from 'react-countdown-now';
 import moment from 'moment';
 
 import TimeAgo from 'react-timeago';
-
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { formatPercentage, truncateNumber } from '@digix/gov-ui/utils/helpers';
-
-import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 
 import {
   VotingResultWrapper,
@@ -20,10 +17,18 @@ import {
   QuorumInfoCol,
   ApprovalLabel,
   ApprovalMinLabel,
+  VotingProgressBar,
 } from '@digix/gov-ui/pages/proposals/style';
 
 // eslint-disable-next-line
-const countdownRenderer = ({ date, days, hours, minutes, seconds, completed }) => {
+const countdownRenderer = ({
+  date,
+  days,
+  hours,
+  minutes,
+  seconds,
+  completed,
+}) => {
   const pastDate = moment().add(date, 'milliseconds');
 
   if (completed) {
@@ -89,18 +94,21 @@ class VotingResult extends React.Component {
               <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
               <QuorumMinLabel flexWidth={100 - stats.minimumQuorum}>
                 <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
+                <QuorumInfoCol>
+                  <span>{stats.votes} Votes</span>
+
+                  <Countdown
+                    date={stats.votingDeadline - Date.now()}
+                    renderer={countdownRenderer}
+                  />
+                </QuorumInfoCol>
               </QuorumMinLabel>
             </Label>
-            <ProgressBar
+            <VotingProgressBar
               variant="determinate"
               value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
             />
           </ProgressCol>
-          <QuorumInfoCol>
-            <span>{stats.votes} Votes</span>
-
-            <Countdown date={stats.votingDeadline - Date.now()} renderer={countdownRenderer} />
-          </QuorumInfoCol>
         </VotingResultContainer>
 
         <VotingResultContainer>
@@ -109,17 +117,17 @@ class VotingResult extends React.Component {
               <ApprovalLabel flexWidth={stats.minimumApproval}>Current Approval Rate</ApprovalLabel>
               <ApprovalMinLabel flexWidth={100 - stats.minimumApproval}>
                 <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
+                <QuorumInfoCol>
+                  <span>YES:&nbsp;{yesVotes} DGD</span>
+                  <span>NO:&nbsp;{noVotes} DGD</span>
+                </QuorumInfoCol>
               </ApprovalMinLabel>
             </Label>
-            <ProgressBar
+            <VotingProgressBar
               variant="determinate"
               value={Number(stats.approvalProgress) > 0 ? Number(stats.approvalProgress) : -1}
             />
           </ProgressCol>
-          <QuorumInfoCol>
-            <span>YES:&nbsp;{yesVotes} DGD</span>
-            <span>NO:&nbsp;{noVotes} DGD</span>
-          </QuorumInfoCol>
         </VotingResultContainer>
       </VotingResultWrapper>
     );

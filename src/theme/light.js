@@ -17,7 +17,7 @@ const blue = {
   lightest: blueHex.lighten(1.9),
 };
 
-const darkBlueHex = Color('#131F35');
+const darkBlueHex = Color('#131F35'); // 131F35
 const darkBlue = {
   darker: darkBlueHex.darken(1),
   default: darkBlueHex,
@@ -67,6 +67,7 @@ const darkGray = {
   light: darkGrayHex.lighten(1),
   lighter: darkGrayHex.lighten(1.875),
   lightest: darkGrayHex.lighten(2.075),
+  fade: darkGoldHex.fade(0.85),
 };
 
 const whiteHex = Color('#fff');
@@ -117,6 +118,7 @@ const LightTheme = {
     default: tertiaryColor,
     primary: primaryColor,
     secondary: secondaryColor,
+    white: white.base,
   },
 
   backgroundDefault: white,
@@ -227,6 +229,8 @@ const LightTheme = {
     primary: primaryColor,
     secondary: secondaryColor,
   },
+
+  textHeading: primaryColor,
 
   linkDefaultColor: tertiaryColor,
   linkPrimaryColor: primaryColor,

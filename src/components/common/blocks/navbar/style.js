@@ -26,7 +26,7 @@ export const HeaderWrapper = styled.section`
 
     &:nth-child(2) {
       justify-content: flex-end;
-      flex: 1 0 0;
+      flex: 0 0 auto;
     }
     &:nth-child(3) {
       flex: 0 0 180px;

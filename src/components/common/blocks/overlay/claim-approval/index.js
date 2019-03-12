@@ -18,11 +18,11 @@ class ClaimApprovalOverlay extends React.Component {
       <IntroContainer>
         <Header uppercase>Claim Approval</Header>
 
-        <Notifications info>
+        <Notifications info centered style={{ display: 'block' }}>
           Please note that there was a high volume of users who participated in this approval. As
           such, we have to split this claim into
           <span className="highlight">{total} Transactions</span>
-          <ProgressBar variant="determinate" value={33} />
+          <ProgressBar color="secondary" variant="determinate" value={33} />
         </Notifications>
 
         <Button

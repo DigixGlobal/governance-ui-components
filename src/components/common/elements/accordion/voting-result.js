@@ -12,11 +12,10 @@ import {
   VotingResultContainer,
   ProgressCol,
   QuorumLabel,
-  QuorumMinLabel,
+  MinimumLabel,
   Label,
   QuorumInfoCol,
   ApprovalLabel,
-  ApprovalMinLabel,
   VotingProgressBar,
 } from '@digix/gov-ui/pages/proposals/style';
 
@@ -89,10 +88,12 @@ class VotingResult extends React.Component {
     return (
       <VotingResultWrapper>
         <VotingResultContainer>
-          <ProgressCol>
+          <ProgressCol past>
             <Label>
-              <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
-              <QuorumMinLabel flexWidth={100 - stats.minimumQuorum}>
+              <QuorumLabel past flexWidth={stats.minimumQuorum}>
+                Quorum
+              </QuorumLabel>
+              <MinimumLabel past flexWidth={100 - stats.minimumQuorum}>
                 <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
                 <QuorumInfoCol>
                   <span>{stats.votes} Votes</span>
@@ -102,7 +103,7 @@ class VotingResult extends React.Component {
                     renderer={countdownRenderer}
                   />
                 </QuorumInfoCol>
-              </QuorumMinLabel>
+              </MinimumLabel>
             </Label>
             <VotingProgressBar
               variant="determinate"
@@ -112,16 +113,18 @@ class VotingResult extends React.Component {
         </VotingResultContainer>
 
         <VotingResultContainer>
-          <ProgressCol>
+          <ProgressCol past>
             <Label>
-              <ApprovalLabel flexWidth={stats.minimumApproval}>Current Approval Rate</ApprovalLabel>
-              <ApprovalMinLabel flexWidth={100 - stats.minimumApproval}>
+              <ApprovalLabel past flexWidth={stats.minimumApproval}>
+                Current Approval Rate
+              </ApprovalLabel>
+              <MinimumLabel past flexWidth={100 - stats.minimumApproval}>
                 <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
                 <QuorumInfoCol>
                   <span>YES:&nbsp;{yesVotes} DGD</span>
                   <span>NO:&nbsp;{noVotes} DGD</span>
                 </QuorumInfoCol>
-              </ApprovalMinLabel>
+              </MinimumLabel>
             </Label>
             <VotingProgressBar
               variant="determinate"

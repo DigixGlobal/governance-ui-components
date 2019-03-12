@@ -72,13 +72,19 @@ export const PreviousWrapper = styled.div`
   align-items: center;
 
   svg {
-    transform: rotate(180deg);
+    transform: rotate(90deg);
+    width: 80%;
   }
 `;
 
 export const NextWrapper = styled.div`
   ${Container};
   align-items: center;
+
+  svg {
+    transform: rotate(275deg);
+    width: 80%;
+  }
 `;
 
 export const Header = styled.div`
@@ -106,18 +112,12 @@ export const CallToAction = styled.div`
   `}
 `;
 
-export const SubTitle = styled(H2)`
-  font-family: 'Futura PT Book';
-  font-size: 2rem;
-  color: ${props => props.theme.textPrimary.light.toString()};
-`;
-
 export const FundingInfo = styled.div`
   color: ${props => props.theme.textDefault.light.toString()};
   display: flex;
   flex: 1;
 
-  margin-bottom: 2rem 0;
+  margin-bottom: 2rem;
 
   ${media.mobile`
     flex-flow: row wrap;
@@ -226,13 +226,24 @@ export const Upvote = styled.div`
 `;
 
 export const DetailsContainer = styled.div`
-  padding-top: 2rem;
+  margin-top: 2rem;
 `;
 
-export const ShortDescription = styled.div`
-  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
-  padding: 0 0 2em 0;
+export const Content = styled.div`
   margin: 1.5rem 0 3rem 0;
+`;
+
+export const SubTitle = styled(H2)`
+  font-family: 'Futura PT Book';
+  font-size: 2rem;
+  color: ${props => props.theme.textPrimary.light.toString()};
+`;
+
+export const AccordionHeading = styled(H2)`
+  font-family: 'Futura PT Medium', sans-serif;
+  font-size: 1.6rem;
+  color: ${props => props.theme.textPrimary.light.toString()};
+  margin: 0;
 `;
 
 export const ProjectSummary = styled.div`
@@ -261,14 +272,6 @@ export const ImageHolder = styled.div`
   }
 `;
 
-export const Details = styled.div`
-  margin-bottom: 6rem;
-`;
-
-export const MilestonesContainer = styled.div`
-  margin-bottom: 6rem;
-`;
-
 export const VotingResultWrapper = styled.div`
   ${Container};
   flex-direction: column;
@@ -283,6 +286,16 @@ export const VotingResultContainer = styled.div`
 `;
 export const ProgressCol = styled.div`
   flex-grow: 1;
+
+  ${props =>
+    props.past &&
+    css`
+      div:last-child {
+        & > div {
+          background-color: ${props => props.theme.background.default.light.toString()};
+        }
+      }
+    `};
 `;
 
 export const Label = styled.div`
@@ -291,7 +304,7 @@ export const Label = styled.div`
 `;
 
 const LabelStyle = css`
-  color: ${props => props.theme.textPrimary.default.toString()};
+  color: ${props => props.theme.textColor.primary.base.toString()};
   font-family: 'Futura PT Heavy';
   padding-bottom: 2rem;
   text-transform: uppercase;
@@ -300,16 +313,25 @@ const LabelStyle = css`
   &:last-child > span {
     margin-left: 2rem;
   }
+
+  ${props =>
+    props.past &&
+    css`
+      color: ${props.theme.textColor.default.light.toString()};
+    `};
 `;
 
 export const QuorumLabel = styled.div`
   ${LabelStyle};
+
   flex: ${props => props.flexWidth};
 `;
-export const QuorumMinLabel = styled.div`
+
+export const MinimumLabel = styled.div`
   ${LabelStyle};
   border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
   flex: ${props => props.flexWidth};
+  font-family: 'Futura PT Medium', sans-serif;
 
   display: flex;
   justify-content: space-between;
@@ -318,15 +340,6 @@ export const QuorumMinLabel = styled.div`
 export const ApprovalLabel = styled.div`
   ${LabelStyle};
   flex: ${props => props.flexWidth};
-`;
-
-export const ApprovalMinLabel = styled.div`
-  ${LabelStyle};
-  border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
-  flex: ${props => props.flexWidth};
-
-  display: flex;
-  justify-content: space-between;
 `;
 
 export const QuorumInfoCol = styled.span`

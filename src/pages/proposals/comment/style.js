@@ -16,11 +16,11 @@ export const Author = styled.div`
   }
 `;
 
-export const ThreadedComments = styled.div``;
-
 export const Title = styled(H2)`
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Book';
+  font-size: 2rem;
   color: ${props => props.theme.textPrimary.light.toString()};
+  margin-top: 0;
 `;
 
 export const CommentList = styled.div``;

@@ -13,12 +13,17 @@ import {
   VotingResultContainer,
   ProgressCol,
   QuorumLabel,
-  QuorumMinLabel,
+  MinimumLabel,
   Label,
   QuorumInfoCol,
   ApprovalLabel,
-  ApprovalMinLabel,
 } from './style';
+
+import {
+  AccordionItem,
+  Header,
+  Content,
+} from '@digix/gov-ui/components/common/elements/accordion/styles';
 
 import VotingResultHeader from './voting-result-header';
 
@@ -35,9 +40,9 @@ const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
 };
 
 // eslint-disable-next-line
-const commitCountdownRenderer = (props) => {
+const commitCountdownRenderer = props => {
   // eslint-disable-next-line
-  const {date, total, completed, baseLine } = props;
+  const { date, total, completed, baseLine } = props;
   const duration = date - baseLine;
   if (completed) {
     return <ProgressBar variant="determinate" value={100} />;
@@ -140,71 +145,80 @@ class VotingResult extends React.Component {
     const noVotes = truncateNumber(stats.noVotes);
 
     return (
-      <div>
-        <VotingResultHeader votingRound={proposal.currentVotingRound} />
-
-        <VotingResultWrapper>
-          <VotingResultContainer>
-            <ProgressCol>
-              <Label>
-                <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
-                <QuorumMinLabel flexWidth={100 - stats.minimumQuorum}>
-                  <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
-                </QuorumMinLabel>
-              </Label>
-              <ProgressBar
-                variant="determinate"
-                value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
-              />
-            </ProgressCol>
-            <QuorumInfoCol>
-              <span>{stats.votes} Votes</span>
-
-              <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
-            </QuorumInfoCol>
-          </VotingResultContainer>
-
-          <VotingResultContainer>
-            <ProgressCol>
-              <Label>
-                <ApprovalLabel flexWidth={stats.minimumApproval}>
-                  Current Approval Rate
-                </ApprovalLabel>
-                <ApprovalMinLabel flexWidth={100 - stats.minimumApproval}>
-                  <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
-                </ApprovalMinLabel>
-              </Label>
-              <ProgressBar
-                variant="determinate"
-                value={Number(stats.approvalProgress) > 0 ? Number(stats.approvalProgress) : -1}
-              />
-            </ProgressCol>
-            <QuorumInfoCol>
-              <span>YES:&nbsp;{yesVotes} DGD</span>
-              <span>NO:&nbsp;{noVotes} DGD</span>
-            </QuorumInfoCol>
-          </VotingResultContainer>
-
-          {isOnProposalVoting && (
+      <AccordionItem voting>
+        <Header>
+          <VotingResultHeader votingRound={proposal.currentVotingRound} />
+        </Header>
+        <Content>
+          <VotingResultWrapper>
             <VotingResultContainer>
               <ProgressCol>
                 <Label>
-                  <QuorumLabel>Time Left To End of Commit</QuorumLabel>
-                </Label>
+                  <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
+                  <MinimumLabel flexWidth={100 - stats.minimumQuorum}>
+                    <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
+                    <QuorumInfoCol>
+                      <span>{stats.votes} Votes</span>
 
-                <Countdown
-                  date={stats.commitDeadline}
-                  baseLine={Date.now()}
-                  renderer={props => commitCountdownRenderer(props)}
+                      <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
+                    </QuorumInfoCol>
+                  </MinimumLabel>
+                </Label>
+                <ProgressBar
+                  variant="determinate"
+                  value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
                 />
               </ProgressCol>
-              <QuorumInfoCol countdown>
-                <Countdown date={new Date(stats.commitDeadline)} renderer={countdownRenderer} />
-              </QuorumInfoCol>
             </VotingResultContainer>
-          )}
-        </VotingResultWrapper>
-      </div>
+
+            <VotingResultContainer>
+              <ProgressCol>
+                <Label>
+                  <ApprovalLabel flexWidth={stats.minimumApproval}>
+                    Current Approval Rate
+                  </ApprovalLabel>
+                  <MinimumLabel flexWidth={100 - stats.minimumApproval}>
+                    <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
+                    <QuorumInfoCol>
+                      <span>YES:&nbsp;{yesVotes} DGD</span>
+                      <span>NO:&nbsp;{noVotes} DGD</span>
+                    </QuorumInfoCol>
+                  </MinimumLabel>
+                </Label>
+                <ProgressBar
+                  variant="determinate"
+                  value={Number(stats.approvalProgress) > 0 ? Number(stats.approvalProgress) : -1}
+                />
+              </ProgressCol>
+            </VotingResultContainer>
+
+            {isOnProposalVoting && (
+              <VotingResultContainer>
+                <ProgressCol>
+                  <Label>
+                    <QuorumLabel>Time Left To End of Commit</QuorumLabel>
+                    <MinimumLabel>
+                      <span />
+                      <QuorumInfoCol countdown>
+                        <Countdown
+                          date={new Date(stats.commitDeadline)}
+                          renderer={countdownRenderer}
+                        />
+                      </QuorumInfoCol>
+                    </MinimumLabel>
+                  </Label>
+
+                  <Countdown
+                    date={stats.commitDeadline}
+                    baseLine={Date.now()}
+                    renderer={props => commitCountdownRenderer(props)}
+                  />
+                </ProgressCol>
+              </VotingResultContainer>
+            )}
+          </VotingResultWrapper>
+        </Content>
+      </AccordionItem>
     );
   }
 }

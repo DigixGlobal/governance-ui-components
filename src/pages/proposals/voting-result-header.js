@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { SubTitle } from './style';
+import { AccordionHeading } from './style';
 
 const VotingResultHeader = ({ votingRound }) => {
   switch (votingRound) {
     case -1:
-      return <SubTitle>Moderator Approval</SubTitle>;
+      return <AccordionHeading uppercase>Moderator Approval</AccordionHeading>;
     case 0:
-      return <SubTitle>Proposal Vote</SubTitle>;
+      return <AccordionHeading uppercase>Proposal Vote</AccordionHeading>;
     case 1:
-      return <SubTitle>Review Vote</SubTitle>;
+      return <AccordionHeading uppercase>Review Vote</AccordionHeading>;
     case 2:
-      return <SubTitle>Review Vote 2</SubTitle>;
+      return <AccordionHeading uppercase>Review Vote 2</AccordionHeading>;
 
     default:
       return null;

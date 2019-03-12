@@ -1,11 +1,13 @@
 import styled, { css } from 'styled-components';
-// import { H3 } from '../../common-styles';
-// import { EDEADLK } from 'constants';
+
+export const Wrapper = styled.div`
+  margin: 1.5rem 0 3rem 0;
+`;
 
 export const AccordionItem = styled.div`
   position: relative;
   padding: 2rem 3rem;
-  margin: 1rem 0;
+  margin: 0;
   background: ${props => props.theme.background.white.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   box-shadow: none;
@@ -14,7 +16,6 @@ export const AccordionItem = styled.div`
   ${props =>
     props.voting &&
     css`
-      margin: 0;
       border: 0;
       border-bottom: 1px solid ${props.theme.borderColor.lighter.toString()};
       &:last-child {

@@ -1,14 +1,20 @@
-export { default as Accordion } from './elements/accordion/index';
-export { default as Button } from './elements/buttons/index';
-export { default as Icon } from './elements/icons/index';
-export { default as Input } from './elements/textfield/index';
-export { default as Textfield } from './elements/textfield/index';
-export { default as Label } from './elements/label/index';
-export { default as Modal } from './elements/modal/index';
-export { default as Select } from './elements/select/index';
-export { default as TextArea } from './elements/textarea/index';
+export { default as Accordion } from '@digix/gov-ui/components/common/elements/accordion/';
+export { default as Button } from '@digix/gov-ui/components/common/elements/buttons/';
+export { default as Icon } from '@digix/gov-ui/components/common/elements/icons/';
+export { default as Input } from '@digix/gov-ui/components/common/elements/textfield/';
+export { default as Label } from '@digix/gov-ui/components/common/elements/label/';
+export { default as Modal } from '@digix/gov-ui/components/common/elements/modal/';
+export { default as Select } from '@digix/gov-ui/components/common/elements/select/';
+export { default as TextArea } from '@digix/gov-ui/components/common/elements/textarea/';
+export { default as Textfield } from '@digix/gov-ui/components/common/elements/textfield/';
 
-export { default as CollapsibleMenu } from './blocks/collapsible-menu/index';
-export { default as ProposalCardFilter } from './blocks/filter/index';
-export { default as NavBar } from './blocks/navbar/index';
-export { default as UserDAOStats } from './blocks/user-DAO-stats/index';
+export { default as ProposalCardFilter } from '@digix/gov-ui/components/common/blocks/filter';
+export { default as NavBar } from '@digix/gov-ui/components/common/blocks/navbar';
+
+export {
+  default as CollapsibleMenu,
+} from '@digix/gov-ui/components/common/blocks/collapsible-menu';
+
+export {
+  default as UserAddressStats,
+} from '@digix/gov-ui/components/common/blocks/user-address-stats/style';

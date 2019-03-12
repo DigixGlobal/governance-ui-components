@@ -20,6 +20,7 @@ import {
   setUserAddress,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
+import { fetchAddressQuery } from '@digix/gov-ui/api/graphql-queries/address';
 import { fetchDisplayName, fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 import { getChallengeVanilla, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
 import { withApollo } from 'react-apollo';
@@ -104,6 +105,7 @@ class AddressWatcher extends React.PureComponent {
                 this.props.setAuthentationStatus(true),
                 this.props.setAddressDetails(details),
                 this.props.showHideWalletOverlay(false),
+                this.props.client.query({ query: fetchAddressQuery, fetchPolicy: 'network-only' }),
                 this.props.client.query({ query: fetchDisplayName, fetchPolicy: 'network-only' }),
                 this.props.client.query({ query: fetchUserQuery, fetchPolicy: 'network-only' }),
               ]);

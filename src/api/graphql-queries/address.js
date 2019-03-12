@@ -6,6 +6,7 @@ export const fetchAddressQuery = gql`
   query fetchAddress {
     fetchCurrentUser {
       address
+      claimableDgx
       id
       isModerator
       isParticipant
@@ -21,6 +22,7 @@ export const addressSubscription = gql`
   subscription {
     userUpdated {
       address
+      claimableDgx
       id
       isModerator
       isParticipant

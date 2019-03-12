@@ -112,7 +112,6 @@ class UnlockDgdOverlay extends React.Component {
       });
 
       this.props.showRightPanel({ show: false });
-      this.props.onSuccess(unlockAmount);
     };
 
     const payload = {
@@ -232,7 +231,6 @@ UnlockDgdOverlay.propTypes = {
   DaoConfig: object.isRequired,
   getDaoConfig: func.isRequired,
   maxAmount: number.isRequired,
-  onSuccess: func.isRequired,
   showRightPanel: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlert: func.isRequired,

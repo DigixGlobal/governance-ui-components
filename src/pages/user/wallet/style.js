@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { H1, Card } from '@digix/gov-ui/components/common/common-styles';
+import { Icon } from '@digix/gov-ui/components/common/elements/index';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const WalletWrapper = styled.div``;
@@ -88,32 +89,42 @@ export const QtrParticipation = styled.div`
     margin-right: 0;
   `}
 `;
+
 export const Title = styled.div`
   color: ${props => props.theme.textColor.primary.base.toString()};
   font-family: 'Futura PT Book', sans-serif;
   font-size: 2rem;
   margin-bottom: 1rem;
 `;
+
 export const Detail = styled(Card)`
   flex-direction: column;
   flex: 1 0 auto;
 `;
+
 export const Label = styled.div`
   text-transform: uppercase;
   margin-top: 1rem;
 `;
+
 export const Data = styled.div`
   color: ${props => props.theme.textColor.primary.light.toString()};
   font-size: 3.6rem;
   margin: 1rem 0 0;
   text-transform: uppercase;
 `;
+
 export const Desc = styled.p`
   margin-top: 1rem;
 `;
+
 export const Actions = styled.div`
   margin-top: 2rem;
   & > button:first-child {
     margin-left: 0;
   }
+`;
+
+export const WalletCurrencyIcon = styled(Icon)`
+  width: 5rem;
 `;

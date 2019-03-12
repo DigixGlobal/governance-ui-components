@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Accordion from '@digix/gov-ui/components/common/elements/accordion/index';
 import { MilestonesContainer, SubTitle } from '@digix/gov-ui/pages/proposals/style';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 export default class Milestones extends React.Component {
   constructor(props) {
@@ -19,10 +20,10 @@ export default class Milestones extends React.Component {
 
     if (fundingChanged) {
       const { original, updated } = changedFundings[index];
-      funding = Number(original);
+      funding = truncateNumber(Number(original));
       milestoneFund = Number(updated) - funding;
     } else {
-      funding = milestone.fund;
+      funding = truncateNumber(milestone.fund);
     }
 
     return (

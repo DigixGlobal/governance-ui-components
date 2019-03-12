@@ -2,6 +2,7 @@
 
 import React from 'react';
 import gql from 'graphql-tag';
+import { kycSubscription } from '@digix/gov-ui/api/graphql-queries/kyc';
 import { Query, Mutation } from 'react-apollo';
 
 export const fetchDisplayName = gql`
@@ -119,12 +120,34 @@ export const renderDisplayName = dataDigixAttribute => (
 
 export const withFetchUser = Component => props => (
   <Query query={fetchUserQuery}>
-    {({ loading, error, data, refetch }) => {
+    {({ loading, error, data, refetch, subscribeToMore }) => {
       if (loading || error) {
         return null;
       }
 
-      return <Component {...props} userData={data.currentUser} refetchUser={refetch} />;
+      const subscribeToKyc = () => {
+        subscribeToMore({
+          document: kycSubscription,
+          updateQuery: (cache, { subscriptionData }) => {
+            const newData = subscriptionData.data;
+            if (!newData) {
+              return;
+            }
+
+            cache.currentUser.kyc.status = newData.kycUpdated.kyc.status;
+            return { ...cache };
+          },
+        });
+      };
+
+      return (
+        <Component
+          {...props}
+          userData={data.currentUser}
+          refetchUser={refetch}
+          subscribeToKyc={subscribeToKyc}
+        />
+      );
     }}
   </Query>
 );

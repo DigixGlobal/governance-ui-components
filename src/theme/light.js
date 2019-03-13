@@ -84,10 +84,10 @@ const red = {
   default: redHex,
   darker: redHex.darken(0.05),
   base: redHex,
-  light: redHex.lighten(0.5),
-  lighter: redHex.lighten(0.8),
-  lightest: redHex.lighten(1.9),
-  fade: redHex.fade(0.9),
+  light: redHex.lighten(0.1),
+  lighter: redHex.lighten(0.5),
+  lightest: redHex.lighten(1),
+  fade: redHex.fade(0.95),
 };
 
 const greenHex = Color('#417505');
@@ -202,6 +202,14 @@ const LightTheme = {
   buttonTextSecondaryReverse: white.default,
   buttonTextTertiary: white,
   buttonTextTertiaryReverse: secondaryColor,
+
+  commentPost: {
+    admin: red,
+    background: white,
+    border: tertiaryColor,
+    textColor: tertiaryColor,
+    icon: tertiaryColor,
+  },
 
   headerBorderColor: gray.default,
 

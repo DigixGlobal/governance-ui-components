@@ -119,11 +119,11 @@ class SpecialProjectVotingResult extends React.Component {
                 </ApprovalLabel>
                 <MinimumLabel flexWidth={100 - stats.minimumApproval}>
                   <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
+                  <QuorumInfoCol>
+                    <span>YES:&nbsp;{yesVotes} DGD</span>
+                    <span>NO:&nbsp;{noVotes} DGD</span>
+                  </QuorumInfoCol>
                 </MinimumLabel>
-                <QuorumInfoCol>
-                  <span>YES:&nbsp;{yesVotes} DGD</span>
-                  <span>NO:&nbsp;{noVotes} DGD</span>
-                </QuorumInfoCol>
               </Label>
               <ProgressBar
                 variant="determinate"
@@ -136,9 +136,12 @@ class SpecialProjectVotingResult extends React.Component {
             <ProgressCol>
               <Label>
                 <QuorumLabel>Time Left To End of Commit</QuorumLabel>
-                <QuorumInfoCol countdown>
-                  <Countdown date={new Date(stats.commitDeadline)} renderer={countdownRenderer} />
-                </QuorumInfoCol>
+                <MinimumLabel>
+                  <span />
+                  <QuorumInfoCol countdown>
+                    <Countdown date={new Date(stats.commitDeadline)} renderer={countdownRenderer} />
+                  </QuorumInfoCol>
+                </MinimumLabel>
               </Label>
 
               <Countdown

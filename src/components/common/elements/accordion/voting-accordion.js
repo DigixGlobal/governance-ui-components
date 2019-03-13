@@ -5,7 +5,6 @@ import Icons from '@digix/gov-ui/components/common/elements/icons/Icons';
 
 import VotingResult from './voting-result';
 import { Wrapper, AccordionItem, Header, Content, Title, Funding } from './styles';
-import { HR } from '@digix/gov-ui/components/common/common-styles';
 
 class VotingAccordion extends React.PureComponent {
   state = {
@@ -63,14 +62,7 @@ class VotingAccordion extends React.PureComponent {
     const { votingResults } = this.props;
     const ProposalVotingResult = votingResults.map((item, i) => this.renderAccordionItem(item, i));
 
-    return (
-      votingResults.length > 0 && (
-        <Wrapper>
-          {ProposalVotingResult}
-          <HR />
-        </Wrapper>
-      )
-    );
+    return votingResults.length > 0 && <Wrapper>{ProposalVotingResult}</Wrapper>;
   }
 }
 

@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
 export const AccordionItem = styled.div`
   position: relative;
   padding: 2rem 3rem;
-  margin: 0;
+  margin-bottom: 1rem;
   background: ${props => props.theme.background.white.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   box-shadow: none;
@@ -17,7 +17,6 @@ export const AccordionItem = styled.div`
     props.voting &&
     css`
       border: 0;
-      border-bottom: 1px solid ${props.theme.borderColor.lighter.toString()};
       &:last-child {
         border-bottom: 0;
       }

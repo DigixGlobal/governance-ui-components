@@ -22,12 +22,12 @@ import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 
-import Details from '../forms/details';
-import Milestones from '../forms/milestones';
-import Multimedia from '../forms/multimedia';
-import Overview from '../forms/overview';
-import Preview from './preview';
-import Confirm from '../confirm';
+import Details from '@digix/gov-ui/pages/proposals/forms/details';
+import Milestones from '@digix/gov-ui/pages/proposals/forms/milestones';
+import Multimedia from '@digix/gov-ui/pages/proposals/forms/multimedia';
+import Overview from '@digix/gov-ui/pages/proposals/forms/overview';
+import Preview from '@digix/gov-ui/pages/proposals/create/preview';
+import Confirm from '@digix/gov-ui/pages/proposals/confirm';
 
 import {
   CreateWrapper,
@@ -38,7 +38,7 @@ import {
   RightCol,
   Heading,
   PreviewButton,
-} from './style';
+} from '@digix/gov-ui/pages/proposals/create/style';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 

@@ -659,6 +659,7 @@ class Proposal extends React.Component {
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
+
         <VotingAccordion votingResults={this.getPastVotingResults()} />
 
         <VotingResult

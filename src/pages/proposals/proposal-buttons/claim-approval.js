@@ -19,10 +19,9 @@ import {
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import MultiStepClaim from '@digix/gov-ui/components/common/blocks/overlay/claim-approval';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-import {
-  sendTransactionToDaoServer,
-  getPendingTransactions,
-} from '@digix/gov-ui/reducers/dao-server/actions';
+import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
+
+import { withSearchTransactions } from '@digix/gov-ui/api/graphql-queries/transaction';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import DaoVotingClaims from '@digix/dao-contracts/build/contracts/DaoVotingClaims.json';
@@ -35,31 +34,27 @@ registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
 
-class ClaimApprovalButton extends React.Component {
+class ClaimApprovalButton extends React.PureComponent {
   state = {
     isMultiStep: false,
-    claiming: false,
     totalTransactions: 0,
+    claimingStep: undefined,
   };
 
   componentWillMount() {
     const {
       daoDetails: { data: daoDetails },
-      ChallengeProof,
     } = this.props;
 
-    Promise.all([
-      this.props.getDaoConfig(),
-      this.props.getPendingTransactions({
-        token: ChallengeProof.data['access-token'],
-        client: ChallengeProof.data.client,
-        uid: ChallengeProof.data.uid,
-      }),
-    ]);
+    Promise.all([this.props.getDaoConfig()]);
     const isMultiStep = Number(daoDetails.nModerators) > MAX_PEOPLE_PER_CLAIM;
     const totalTransactions = Math.ceil(daoDetails.nModerators / MAX_PEOPLE_PER_CLAIM);
     this.setState({ isMultiStep, totalTransactions });
   }
+
+  componentDidMount = () => {
+    this.props.subscribeToTransaction();
+  };
 
   setError = error =>
     this.props.showHideAlert({
@@ -69,13 +64,13 @@ class ClaimApprovalButton extends React.Component {
   showOverlay = txns => {
     const { history } = this.props;
     this.props.showRightPanel({
-      component: <MultiStepClaim history={history} {...txns} onCompleted={this.onPanelClose} />,
+      component: <MultiStepClaim history={history} {...txns} />,
       show: true,
     });
   };
 
   handleSubmit = useMaxClaim => () => {
-    const { web3Redux, ChallengeProof, addresses, proposalId, onCompleted } = this.props;
+    const { web3Redux, ChallengeProof, addresses, proposalId } = this.props;
     const { totalTransactions } = this.state;
     const { abi, address } = getContract(DaoVotingClaims, network);
     const contract = web3Redux
@@ -97,9 +92,6 @@ class ClaimApprovalButton extends React.Component {
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
     const onTransactionAttempt = txHash => {
-      this.setState({ claiming: true }, () => {
-        this.props.showRightPanel({ show: false });
-      });
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -121,9 +113,10 @@ class ClaimApprovalButton extends React.Component {
           : 'Claiming Approval',
         txHash,
       });
-      setTimeout(() => {
-        this.setState({ claiming: false }, () => onCompleted());
-      }, 1000);
+      this.props.showRightPanel({
+        show: false,
+      });
+      this.setState({ claimingStep: this.props.draftVoting.currentClaimStep });
     };
 
     const payload = {
@@ -143,14 +136,15 @@ class ClaimApprovalButton extends React.Component {
   };
 
   hasPendingClaim = () => {
-    const { pendingTransactions, proposalId } = this.props;
-    if (!pendingTransactions.data) return false;
+    const { transactions, proposalId } = this.props;
+    if (!transactions.edges || transactions.edges.length === 0) return false;
 
-    const transaction = pendingTransactions.data.find(
-      p => p.project === proposalId && p.status !== 'confirmed'
+    const transaction = transactions.edges.find(
+      p => p.node.project === proposalId && p.node.status.toLowerCase() !== 'confirmed'
     );
     return transaction !== undefined;
   };
+
   claimApproval = useMaxClaim => () => {
     this.props.checkProposalRequirements(() => this.handleSubmit(useMaxClaim)());
   };
@@ -163,7 +157,7 @@ class ClaimApprovalButton extends React.Component {
       daoConfig,
       daoDetails: { data: daoDetails },
     } = this.props;
-    const { isMultiStep, claiming, totalTransactions } = this.state;
+    const { isMultiStep, totalTransactions, claimingStep } = this.state;
     const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;
     const currentTime = Date.now();
     if (
@@ -188,11 +182,16 @@ class ClaimApprovalButton extends React.Component {
       Number(yes) + Number(no) > Number(quorum) &&
       Number(yes) / (Number(yes) + Number(no)) > Number(quota);
 
+    const hasPendingClaim =
+      this.hasPendingClaim() || (claimingStep && claimingStep === draftVoting.currentClaimStep);
+
+    const claimCaption = hasPendingClaim ? `Claiming ` : `Claim Approval `;
+
     return (
       <Button
         kind="round"
         large
-        disabled={claimed || claiming || this.hasPendingClaim()}
+        disabled={claimed || hasPendingClaim}
         onClick={() =>
           isMultiStep && tentativePassed && canClaim
             ? this.showOverlay({
@@ -204,7 +203,9 @@ class ClaimApprovalButton extends React.Component {
         }
         data-digix="ProposalAction-Approval"
       >
-        {canClaim && tentativePassed ? 'Claim Approval' : 'Claim Failed Project'}
+        {canClaim && tentativePassed
+          ? `${claimCaption} ${draftVoting.currentClaimStep}/${totalTransactions}`
+          : 'Claim Failed Project'}
       </Button>
     );
   }
@@ -224,12 +225,13 @@ ClaimApprovalButton.propTypes = {
   showHideAlert: func.isRequired,
   showRightPanel: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
-  getPendingTransactions: func.isRequired,
+  subscribeToTransaction: func.isRequired,
   getDaoConfig: func.isRequired,
   showTxSigningModal: func.isRequired,
-  onCompleted: func.isRequired,
+  onCompleted: func,
   addresses: array.isRequired,
   history: object.isRequired,
+  transactions: object,
   votingStage: string,
   isProposer: bool.isRequired,
 };
@@ -238,11 +240,12 @@ ClaimApprovalButton.defaultProps = {
   draftVoting: undefined,
   votingStage: undefined,
   pendingTransactions: undefined,
+  transactions: undefined,
+  onCompleted: undefined,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
-  pendingTransactions: state.daoServer.PendingTransactions,
   addresses: getAddresses(state),
   daoConfig: state.infoServer.DaoConfig,
   daoDetails: state.infoServer.DaoDetails,
@@ -257,7 +260,6 @@ export default web3Connect(
       showTxSigningModal,
       getDaoConfig,
       showRightPanel,
-      getPendingTransactions,
     }
-  )(ClaimApprovalButton)
+  )(withSearchTransactions(ClaimApprovalButton))
 );

@@ -5,13 +5,15 @@ import _ from 'lodash';
 
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import Like from '@digix/gov-ui/components/common/elements/like';
-import { getProposalDetails, getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import {
   getUserProposalLikeStatus,
   likeProposal,
   unlikeProposal,
   clearDaoProposalDetails,
 } from '@digix/gov-ui/reducers/dao-server/actions';
+
+import { withFetchProposal } from '@digix/gov-ui/api/graphql-queries/proposal';
 
 import moment from 'moment';
 
@@ -130,7 +132,6 @@ class Proposal extends React.Component {
     const {
       challengeProof,
       clearDaoProposalDetailsAction,
-      getProposalDetailsAction,
       getAddressDetailsAction,
       history,
       location,
@@ -140,13 +141,16 @@ class Proposal extends React.Component {
     if (location.pathname) {
       clearDaoProposalDetailsAction();
       if (this.PROPOSAL_ID) {
-        getProposalDetailsAction(this.PROPOSAL_ID);
         if (addressDetails.data.address) {
           getAddressDetailsAction(addressDetails.data.address);
         }
         this.getProposalLikes();
       }
     }
+  };
+
+  componentDidMount = () => {
+    this.props.subscribeToProposal();
   };
 
   componentWillReceiveProps = nextProps => {
@@ -217,36 +221,6 @@ class Proposal extends React.Component {
       rewardDifference,
     };
   }
-
-  handlePreviousVersionClick = () => {
-    this.setState({ currentVersion: Number(this.state.currentVersion) - 1 });
-  };
-
-  handleNextVersionClick = () => {
-    this.setState({ currentVersion: Number(this.state.currentVersion) + 1 });
-  };
-
-  handleLikeClick = e => {
-    e.preventDefault();
-    const { likeProposalAction, challengeProof } = this.props;
-    likeProposalAction({
-      proposalId: this.PROPOSAL_ID,
-      client: challengeProof.data.client,
-      token: challengeProof.data['access-token'],
-      uid: challengeProof.data.uid,
-    });
-  };
-
-  handleUnlikeClick = e => {
-    e.preventDefault();
-    const { unlikeProposalAction, challengeProof } = this.props;
-    unlikeProposalAction({
-      proposalId: this.PROPOSAL_ID,
-      client: challengeProof.data.client,
-      token: challengeProof.data['access-token'],
-      uid: challengeProof.data.uid,
-    });
-  };
 
   getPastVotingResults = () => {
     const { daoInfo, proposalDetails } = this.props;
@@ -320,6 +294,36 @@ class Proposal extends React.Component {
     }
 
     return pastVotes;
+  };
+
+  handlePreviousVersionClick = () => {
+    this.setState({ currentVersion: Number(this.state.currentVersion) - 1 });
+  };
+
+  handleNextVersionClick = () => {
+    this.setState({ currentVersion: Number(this.state.currentVersion) + 1 });
+  };
+
+  handleLikeClick = e => {
+    e.preventDefault();
+    const { likeProposalAction, challengeProof } = this.props;
+    likeProposalAction({
+      proposalId: this.PROPOSAL_ID,
+      client: challengeProof.data.client,
+      token: challengeProof.data['access-token'],
+      uid: challengeProof.data.uid,
+    });
+  };
+
+  handleUnlikeClick = e => {
+    e.preventDefault();
+    const { unlikeProposalAction, challengeProof } = this.props;
+    unlikeProposalAction({
+      proposalId: this.PROPOSAL_ID,
+      client: challengeProof.data.client,
+      token: challengeProof.data['access-token'],
+      uid: challengeProof.data.uid,
+    });
   };
 
   renderPrlAlert = prl =>
@@ -528,7 +532,7 @@ class Proposal extends React.Component {
                   isProposer={isProposer}
                   proposal={proposalDetails}
                   addressDetails={addressDetails}
-                  onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
+                  match={this.props.match}
                   history={history}
                 />
                 <ModeratorButtons
@@ -589,7 +593,6 @@ class Proposal extends React.Component {
     const liked = proposalLikes ? proposalLikes.liked : false;
     const likes = proposalLikes ? proposalLikes.likes : 0;
     const displayName = proposalLikes ? proposalLikes.user.displayName : '';
-
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -623,7 +626,7 @@ class Proposal extends React.Component {
                   isProposer={isProposer}
                   proposal={proposalDetails}
                   addressDetails={addressDetails}
-                  onCompleted={() => this.props.getProposalDetailsAction(this.PROPOSAL_ID)}
+                  match={this.props.match}
                   history={history}
                 />
                 <ModeratorButtons
@@ -697,7 +700,7 @@ const { object, func } = PropTypes;
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
   daoInfo: object.isRequired,
-  getProposalDetailsAction: func.isRequired,
+  subscribeToProposal: func.isRequired,
   getUserProposalLikeStatusAction: func.isRequired,
   clearDaoProposalDetailsAction: func.isRequired,
   getAddressDetailsAction: func.isRequired,
@@ -710,6 +713,7 @@ Proposal.propTypes = {
   userProposalLike: object,
   location: object.isRequired,
   history: object.isRequired,
+  match: object.isRequired,
 };
 
 Proposal.defaultProps = {
@@ -737,12 +741,11 @@ export default withFetchUser(
       userProposalLike: UserProposalLike,
     }),
     {
-      getProposalDetailsAction: getProposalDetails,
       getUserProposalLikeStatusAction: getUserProposalLikeStatus,
       getAddressDetailsAction: getAddressDetails,
       likeProposalAction: likeProposal,
       unlikeProposalAction: unlikeProposal,
       clearDaoProposalDetailsAction: clearDaoProposalDetails,
     }
-  )(Proposal)
+  )(withFetchProposal(Proposal))
 );

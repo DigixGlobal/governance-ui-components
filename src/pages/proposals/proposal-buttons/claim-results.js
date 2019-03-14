@@ -12,16 +12,15 @@ import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
+import { withSearchTransactions } from '@digix/gov-ui/api/graphql-queries/transaction';
+
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE, MAX_PEOPLE_PER_CLAIM } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import MultiStepClaim from '@digix/gov-ui/components/common/blocks/overlay/claim-approval';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-import {
-  sendTransactionToDaoServer,
-  getPendingTransactions,
-} from '@digix/gov-ui/reducers/dao-server/actions';
+import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
@@ -33,29 +32,25 @@ const network = SpectrumConfig.defaultNetworks[0];
 class ClaimResultsButton extends React.PureComponent {
   state = {
     isMultiStep: false,
-    claiming: false,
     totalTransactions: 0,
+    claimingStep: undefined,
   };
 
   componentWillMount = () => {
     const {
       daoDetails: { data: daoDetails },
       proposal,
-      ChallengeProof,
     } = this.props;
-    Promise.all([
-      this.props.getDaoConfig(),
-      this.props.getPendingTransactions({
-        token: ChallengeProof.data['access-token'],
-        client: ChallengeProof.data.client,
-        uid: ChallengeProof.data.uid,
-      }),
-    ]);
+    Promise.all([this.props.getDaoConfig()]);
     const isMultiStep = Number(daoDetails.nParticipants) > MAX_PEOPLE_PER_CLAIM;
     const nParticipants =
       proposal.stage === 'review' ? 2 * daoDetails.nParticipants : daoDetails.nParticipants;
     const totalTransactions = Math.ceil(nParticipants / MAX_PEOPLE_PER_CLAIM);
     this.setState({ isMultiStep, totalTransactions });
+  };
+
+  componentDidMount = () => {
+    this.props.subscribeToTransaction();
   };
 
   setError = error =>
@@ -77,7 +72,7 @@ class ClaimResultsButton extends React.PureComponent {
       ChallengeProof,
       addresses,
       proposal,
-      proposal: { currentVotingRound, proposalId },
+      proposal: { currentVotingRound = 0, proposalId },
     } = this.props;
 
     const { totalTransactions } = this.state;
@@ -102,9 +97,6 @@ class ClaimResultsButton extends React.PureComponent {
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
     const onTransactionAttempt = txHash => {
-      this.setState({ claiming: true }, () => {
-        this.props.showRightPanel({ show: false });
-      });
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -119,8 +111,6 @@ class ClaimResultsButton extends React.PureComponent {
     };
 
     const onTransactionSuccess = txHash => {
-      const { onCompleted } = this.props;
-
       this.props.showHideAlert({
         message: useMaxClaim
           ? `Claiming Voting Result ${
@@ -129,9 +119,10 @@ class ClaimResultsButton extends React.PureComponent {
           : 'Claiming Voting Result',
         txHash,
       });
-      setTimeout(() => {
-        this.setState({ claiming: false }, () => onCompleted());
-      }, 1000);
+      this.props.showRightPanel({
+        show: false,
+      });
+      this.setState({ claimingStep: proposal.votingRounds[currentVotingRound].currentClaimStep });
     };
 
     const payload = {
@@ -140,7 +131,7 @@ class ClaimResultsButton extends React.PureComponent {
       func: contract.claimProposalVotingResult,
       params: [
         proposalId,
-        proposal.isSpecial ? 0 : currentVotingRound,
+        currentVotingRound,
         toBigNumber(useMaxClaim ? MAX_PEOPLE_PER_CLAIM : 50),
       ],
       onFailure: this.setError,
@@ -156,13 +147,13 @@ class ClaimResultsButton extends React.PureComponent {
 
   hasPendingClaim = () => {
     const {
-      pendingTransactions,
+      transactions,
       proposal: { proposalId },
     } = this.props;
-    if (!pendingTransactions.data) return false;
+    if (!transactions.edges || transactions.edges.length === 0) return false;
 
-    const transaction = pendingTransactions.data.find(
-      p => p.project === proposalId && p.status !== 'confirmed'
+    const transaction = transactions.edges.find(
+      p => p.node.project === proposalId && p.node.status.toLowerCase() !== 'confirmed'
     );
     return transaction !== undefined;
   };
@@ -175,11 +166,11 @@ class ClaimResultsButton extends React.PureComponent {
     const {
       isProposer,
       proposal,
-      proposal: { currentVotingRound },
+      proposal: { currentVotingRound = 0 },
       daoConfig,
     } = this.props;
 
-    const { isMultiStep, claiming, totalTransactions } = this.state;
+    const { isMultiStep, claimingStep, totalTransactions } = this.state;
 
     if (
       !isProposer ||
@@ -190,13 +181,9 @@ class ClaimResultsButton extends React.PureComponent {
       return null;
 
     const currentTime = Date.now();
-    const { yes, no, quorum, quota, claimed } = proposal.isSpecial
-      ? proposal.votingRounds[0]
-      : proposal.votingRounds[currentVotingRound];
-
-    const revealDeadline = proposal.isSpecial
-      ? proposal.votingRounds[0].revealDeadline
-      : proposal.votingRounds[currentVotingRound].revealDeadline;
+    const { yes, no, quorum, quota, claimed, revealDeadline } = proposal.votingRounds[
+      currentVotingRound
+    ];
 
     const isVotingDeadlineOver = currentTime > new Date(revealDeadline * 1000);
 
@@ -210,9 +197,14 @@ class ClaimResultsButton extends React.PureComponent {
       currentTime > revealDeadline * 1000 &&
       currentTime < (revealDeadline + Number(daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE)) * 1000;
 
+    const hasPendingClaim =
+      this.hasPendingClaim() ||
+      (claimingStep && claimingStep === proposal.votingRounds[currentVotingRound].currentClaimStep);
+    const claimCaption = hasPendingClaim ? `Claiming ` : `Claim Result `;
+
     return (
       <Button
-        disabled={claimed || claiming || this.hasPendingClaim()}
+        disabled={claimed || hasPendingClaim}
         kind="round"
         large
         onClick={() =>
@@ -226,7 +218,11 @@ class ClaimResultsButton extends React.PureComponent {
         }
         data-digix="ProposalAction-Results"
       >
-        {withinDeadline && tentativePassed ? 'Claim Results' : 'Claim Failed Project'}
+        {withinDeadline && tentativePassed
+          ? `${claimCaption} ${
+              proposal.votingRounds[currentVotingRound].currentClaimStep
+            }/${totalTransactions}`
+          : 'Claim Failed Project'}
       </Button>
     );
   }
@@ -245,8 +241,9 @@ ClaimResultsButton.propTypes = {
   pendingTransactions: object,
   showHideAlert: func.isRequired,
   getDaoConfig: func.isRequired,
+  subscribeToTransaction: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
-  getPendingTransactions: func.isRequired,
+  transactions: object,
   showRightPanel: func.isRequired,
   showTxSigningModal: func.isRequired,
   onCompleted: func.isRequired,
@@ -257,11 +254,11 @@ ClaimResultsButton.propTypes = {
 ClaimResultsButton.defaultProps = {
   isProposer: false,
   pendingTransactions: undefined,
+  transactions: undefined,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
-  pendingTransactions: state.daoServer.PendingTransactions,
   addresses: getAddresses(state),
   daoConfig: state.infoServer.DaoConfig,
   daoDetails: state.infoServer.DaoDetails,
@@ -274,9 +271,8 @@ export default web3Connect(
       showHideAlert,
       showRightPanel,
       sendTransactionToDaoServer,
-      getPendingTransactions,
       showTxSigningModal,
       getDaoConfig,
     }
-  )(ClaimResultsButton)
+  )(withSearchTransactions(ClaimResultsButton))
 );

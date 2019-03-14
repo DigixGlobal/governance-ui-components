@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
-import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
@@ -57,56 +57,54 @@ export class Governance extends React.Component {
     const { isAuthenticated } = this.props;
     return (
       <GraphqlProvider>
-        <HashRouter>
-          <ThemeProvider theme={lightTheme}>
-            <Switch>
-              <AuthenticatedRoute
-                path="/proposals/create"
-                component={withHeaderAndPanel(CreateProposals)}
-                isAuthenticated={isAuthenticated}
-              />
-              <AuthenticatedRoute
-                path="/proposals/edit"
-                component={withHeaderAndPanel(EditProposal)}
-                isAuthenticated={isAuthenticated}
-              />
-              <AuthenticatedRoute
-                path="/proposals"
-                component={withHeaderAndPanel(Proposals)}
-                isAuthenticated={isAuthenticated}
-              />
-              <AuthenticatedRoute
-                path="/wallet"
-                component={withHeaderAndPanel(Wallet)}
-                isAuthenticated={isAuthenticated}
-              />
+        <ThemeProvider theme={lightTheme}>
+          <Switch>
+            <AuthenticatedRoute
+              path="/proposals/create"
+              component={withHeaderAndPanel(CreateProposals)}
+              isAuthenticated={isAuthenticated}
+            />
+            <AuthenticatedRoute
+              path="/proposals/edit/:id"
+              component={withHeaderAndPanel(EditProposal)}
+              isAuthenticated={isAuthenticated}
+            />
+            <AuthenticatedRoute
+              path="/proposals/:id"
+              component={withHeaderAndPanel(Proposals)}
+              isAuthenticated={isAuthenticated}
+            />
+            <AuthenticatedRoute
+              path="/wallet"
+              component={withHeaderAndPanel(Wallet)}
+              isAuthenticated={isAuthenticated}
+            />
 
-              <AuthenticatedRoute
-                path="/kyc/admin"
-                component={withHeaderAndPanel(KycOfficerDashboard)}
-                isAuthenticated={isAuthenticated}
-              />
-              <AuthenticatedRoute
-                path="/forum/admin"
-                component={withHeaderAndPanel(ForumOfficerDashboard)}
-                isAuthenticated={isAuthenticated}
-              />
-              <AuthenticatedRoute
-                path="/profile"
-                component={withHeaderAndPanel(Profile)}
-                isAuthenticated={isAuthenticated}
-              />
+            <AuthenticatedRoute
+              path="/kyc/admin"
+              component={withHeaderAndPanel(KycOfficerDashboard)}
+              isAuthenticated={isAuthenticated}
+            />
+            <AuthenticatedRoute
+              path="/forum/admin"
+              component={withHeaderAndPanel(ForumOfficerDashboard)}
+              isAuthenticated={isAuthenticated}
+            />
+            <AuthenticatedRoute
+              path="/profile"
+              component={withHeaderAndPanel(Profile)}
+              isAuthenticated={isAuthenticated}
+            />
 
-              <AuthenticatedRoute
-                path="/history"
-                component={withHeaderAndPanel(TransactionHistory)}
-                isAuthenticated={isAuthenticated}
-              />
-              <Route path="/help" component={withHeaderAndPanel(Help)} />
-              <Route path="/" component={withHeaderAndPanel(LandingPage)} />
-            </Switch>
-          </ThemeProvider>
-        </HashRouter>
+            <AuthenticatedRoute
+              path="/history"
+              component={withHeaderAndPanel(TransactionHistory)}
+              isAuthenticated={isAuthenticated}
+            />
+            <Route path="/help" component={withHeaderAndPanel(Help)} />
+            <Route path="/" component={withHeaderAndPanel(LandingPage)} />
+          </Switch>
+        </ThemeProvider>
       </GraphqlProvider>
     );
   }
@@ -124,5 +122,3 @@ export default withRouter(
     {}
   )(Governance)
 );
-
-// export default Governance;

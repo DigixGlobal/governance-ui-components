@@ -110,6 +110,7 @@ class ParticipantButtons extends React.Component {
           votingStage={data.votingStage}
           proposalId={data.proposalId}
           checkProposalRequirements={checkProposalRequirements}
+          match={this.props.match}
         />
         <VoteCommitButton
           isParticipant={addressDetails.data.isParticipant}
@@ -130,6 +131,7 @@ class ParticipantButtons extends React.Component {
         <ClaimResultsButton
           checkProposalRequirements={checkProposalRequirements}
           onCompleted={this.props.onCompleted}
+          match={this.props.match}
           isProposer={isProposer}
           history={history}
           proposal={data}
@@ -159,6 +161,7 @@ ParticipantButtons.propTypes = {
   DaoDetails: object.isRequired,
   history: object.isRequired,
   isProposer: bool.isRequired,
+  match: object.isRequired,
   onCompleted: func,
   proposal: object.isRequired,
   showRightPanel: func.isRequired,

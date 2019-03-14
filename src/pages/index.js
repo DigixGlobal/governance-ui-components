@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import ProposalCard from '@digix/gov-ui/components/proposal-card';
 import Timeline from '@digix/gov-ui/components/common/blocks/timeline';
-import DashboardStats from '@digix/gov-ui/components/common/blocks/user-DAO-stats/index';
+import UserAddressStats from '@digix/gov-ui/components/common/blocks/user-address-stats/index';
 import ProposalFilter from '@digix/gov-ui/components/common/blocks/filter/index';
 
 import {
@@ -143,7 +143,7 @@ class LandingPage extends React.PureComponent {
     return (
       <Fragment>
         <Timeline stats={DaoDetails} />
-        <DashboardStats stats={AddressDetails} />
+        <UserAddressStats />
         <ProposalFilter
           onStageChange={this.getProposals}
           onOrderChange={this.onOrderChange}

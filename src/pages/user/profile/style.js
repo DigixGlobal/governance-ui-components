@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { H1, Card, CardItem } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
@@ -27,6 +28,14 @@ export const UserData = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+
+// BEGIN: Styles for User Info
+
+export const SetUserInfoBtn = styled(Button)`
+  margin: 0;
+`;
+
+// END: Styles for User Stats
 
 // BEGIN: Styles for User Stats
 

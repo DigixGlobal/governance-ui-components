@@ -32,8 +32,8 @@ import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { InnerContainer, Header, CloseButtonWithHeader } from '../style';
 import {
   Container,
-  AddressInfo,
-  TokenInfo,
+  Address,
+  Token,
   TokenIcon,
   TokenDetails,
   TokenValue,
@@ -236,19 +236,17 @@ class ConnectedWallet extends React.Component {
     return (
       <Fragment>
         <CloseButtonWithHeader>
-          <Header uppercase>connected wallet </Header>
+          <Header uppercase>Connected Wallet </Header>
           <Icon kind="close" onClick={() => this.props.onClose()} />
         </CloseButtonWithHeader>
         <Container>
-          <AddressInfo>
+          <Address>
             Your Address
             <span>{defaultAddress.address}</span>
-          </AddressInfo>
-          <TokenInfo>
-            <TokenIcon>
-              <Icon kind="ethereum" />
-            </TokenIcon>
-            <TokenDetails>
+          </Address>
+          <Token>
+            <Icon kind="ethereum" width="48px" height="48px" />
+            <div>
               <TokenValue>
                 {ethBalance || 0}
                 <span>ETH</span>
@@ -256,19 +254,16 @@ class ConnectedWallet extends React.Component {
               <UsdEquivalent>
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                   ethInUsd
-                )}
+                )}{' '}
                 <span>USD</span>
               </UsdEquivalent>
-            </TokenDetails>
-          </TokenInfo>
-          <TokenInfo>
-            <TokenIcon>
-              <Icon kind="dgd" style={{ position: 'relative', top: '1px' }} />
-            </TokenIcon>
-            <TokenDetails>
+            </div>
+          </Token>
+          <Token>
+            <Icon kind="dgd" width="48px" height="48px" />
+            <div>
               <TokenValue>
-                {dgdBalance || 0}
-                <span>DGD</span>
+                {dgdBalance || 0} <span>DGD</span>
               </TokenValue>
               <UsdEquivalent>
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
@@ -276,12 +271,12 @@ class ConnectedWallet extends React.Component {
                 )}{' '}
                 USD
               </UsdEquivalent>
-            </TokenDetails>
-          </TokenInfo>
+            </div>
+          </Token>
           <Button primary fluid large>
             Buy DGD
           </Button>
-          <HR />
+          <HR style={{ marginBottom: '4rem' }} />
           <Header uppercase>lock dgd</Header>
           <p>
             Locking your DGD in DigixDAO helps us know you are committed to the growth of the

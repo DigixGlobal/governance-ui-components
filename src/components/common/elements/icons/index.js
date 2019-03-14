@@ -7,6 +7,7 @@ import Arrow from './Arrow';
 import Check from './Check';
 import Close from './Close';
 import Dashboard from './Dashboard';
+import Delete from './Delete';
 import Dgd from './DGD';
 import Dgx from './Dgx';
 import Ethereum from './Ethereum';
@@ -28,6 +29,7 @@ import Product from './product-tour';
 import Profile from './Profile';
 import Plus from './Plus';
 import Reply from './Reply';
+import Restore from './Restore';
 import Ribbon from './Ribbon';
 import Trash from './Trash';
 import Trezor from './Trezor';
@@ -42,6 +44,7 @@ const icons = {
   check: Check,
   close: Close,
   dashboard: Dashboard,
+  delete: Delete,
   dgd: Dgd,
   dgx: Dgx,
   ethereum: Ethereum,
@@ -63,6 +66,7 @@ const icons = {
   profile: Profile,
   plus: Plus,
   reply: Reply,
+  restore: Restore,
   ribbon: Ribbon,
   trash: Trash,
   trezor: Trezor,

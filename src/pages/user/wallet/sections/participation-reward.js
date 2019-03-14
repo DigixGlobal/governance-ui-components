@@ -18,6 +18,7 @@ import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/ac
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { withFetchAddress } from '@digix/gov-ui/api/graphql-queries/address';
 
 import {
   QtrParticipation,
@@ -36,10 +37,10 @@ class ParticipationReward extends React.Component {
   constructor(props) {
     super(props);
     this.MIN_CLAIMABLE_DGX = 0.001;
+  }
 
-    this.state = {
-      hasPendingTransaction: false,
-    };
+  componentDidMount() {
+    this.props.subscribeToAddress();
   }
 
   setError = error => {
@@ -87,8 +88,6 @@ class ParticipationReward extends React.Component {
         message: 'DGX Claimed',
         txHash,
       });
-
-      this.setState({ hasPendingTransaction: true });
     };
 
     const payload = {
@@ -110,12 +109,10 @@ class ParticipationReward extends React.Component {
 
   render() {
     const { DaoDetails } = this.props;
-    const { hasPendingTransaction } = this.state;
-    let { claimableDgx } = this.props;
+    let { claimableDgx } = this.props.AddressDetails;
 
     const isGlobalRewardsSet = DaoDetails ? DaoDetails.data.isGlobalRewardsSet : false;
-    const canClaimDgx =
-      claimableDgx > this.MIN_CLAIMABLE_DGX && isGlobalRewardsSet && !hasPendingTransaction;
+    const canClaimDgx = claimableDgx > this.MIN_CLAIMABLE_DGX && isGlobalRewardsSet;
 
     claimableDgx = truncateNumber(claimableDgx);
 
@@ -147,28 +144,28 @@ class ParticipationReward extends React.Component {
   }
 }
 
-const { array, func, number, object } = PropTypes;
+const { array, func, object } = PropTypes;
 
 ParticipationReward.propTypes = {
+  AddressDetails: object.isRequired,
   addresses: array.isRequired,
-  claimableDgx: number.isRequired,
   ChallengeProof: object.isRequired,
   DaoDetails: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlert: func.isRequired,
   showTxSigningModal: func.isRequired,
+  subscribeToAddress: func.isRequired,
   web3Redux: object.isRequired,
 };
 
 const mapStateToProps = state => ({
   addresses: getAddresses(state),
-  AddressDetails: state.infoServer.AddressDetails,
   CanLockDgd: state.govUI.CanLockDgd,
   ChallengeProof: state.daoServer.ChallengeProof,
   DaoDetails: state.infoServer.DaoDetails,
 });
 
-export default web3Connect(
+const ParticipationRewardComponent = web3Connect(
   connect(
     mapStateToProps,
     {
@@ -180,3 +177,5 @@ export default web3Connect(
     }
   )(ParticipationReward)
 );
+
+export default withFetchAddress(ParticipationRewardComponent);

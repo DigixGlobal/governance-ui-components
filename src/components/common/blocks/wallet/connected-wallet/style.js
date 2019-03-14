@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
-import { H5 } from '../../../common-styles';
-
-import { Container as IconContainer } from '../../../../common/elements/icons/style.js';
+import { Icon } from '@digix/gov-ui/components/common/elements/index';
 
 export const Container = styled.div`
   padding: 1rem 0;
@@ -10,62 +8,45 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const AddressInfo = styled.div`
+export const Address = styled.div`
   color: ${props => props.theme.borderColor.darker.toString()};
   text-transform: uppercase;
-  font-family: 'Futura PT Book';
+  font-family: 'Futura PT Book', sans-serif;
+  font-size: 1.4rem;
+  color: ${props => props.theme.textColor.default.light.toString()};
+  margin: 1rem 0;
+
   > span {
     color: ${props => props.theme.textPrimary.default.toString()};
-    font-family: 'Futura PT Medium';
     display: block;
+    font-size: 1.6rem;
+    margin-top: 0.5rem;
   }
 `;
 
-export const TokenInfo = styled.div`
+export const Token = styled.div`
   display: flex;
   align-items: center;
-  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+
+  background: ${props => props.theme.card.background.base.toString()};
+  border: 1px solid ${props => props.theme.card.border.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   padding: 2rem;
-  background-color: ${props => props.theme.textContrast.default.toString()};
   margin: 1rem 0;
-`;
 
-export const TokenIcon = styled.div`
-  border-radius: 50%;
-  margin-right: 1rem;
-  height: 3.2rem;
-  width: 3.2rem;
-  padding: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ${IconContainer} {
-    margin-right: 0;
+  div:first-child {
+    margin-right: 2rem;
   }
-`;
-
-export const TokenDetails = styled.div`
-  flex: 1;
 `;
 
 export const TokenValue = styled.div`
-  font-family: 'Futura PT Medium';
-  font-size: 1.6rem;
-  & > span {
-    margin-left: 0.5rem;
-    color: ${props => props.theme.borderColor.default.toString()};
-    font-family: 'Futura PT Book';
-  }
+  font-family: 'Futura PT Medium', sans-serif;
+  font-size: 1.8rem;
 `;
 
 export const UsdEquivalent = styled.div`
-  font-family: 'Futura PT Light';
+  font-family: 'Futura PT Light', sans-serif;
   font-size: 1.4rem;
-  & > span {
-    color: ${props => props.theme.textDefault.default.toString()};
-    margin-left: 0.5rem;
-  }
 `;
 
 export const Notes = styled.div`
@@ -73,5 +54,9 @@ export const Notes = styled.div`
 
   & > ul {
     margin-left: 1.5rem;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
   }
 `;

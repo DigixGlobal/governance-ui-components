@@ -203,6 +203,12 @@ const LightTheme = {
   buttonTextTertiary: white,
   buttonTextTertiaryReverse: secondaryColor,
 
+  card: {
+    background: white,
+    border: tertiaryColor,
+    textColor: tertiaryColor,
+  },
+
   commentPost: {
     admin: red,
     background: white,

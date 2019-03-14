@@ -10,8 +10,10 @@ import { initializePayload } from '@digix/gov-ui/api';
 import { withApollo } from 'react-apollo';
 
 import {
+  CommentListItem,
   ActionBar,
-  CommentBody,
+  ButtonGroup,
+  Content,
   CommentPost,
   ActionCommentButton,
 } from '@digix/gov-ui/pages/proposals/comment/style';
@@ -99,21 +101,22 @@ class Comment extends React.Component {
 
     if (isBanned) {
       return (
-        <ActionCommentButton kind="text" small onClick={() => this.showComment(true, id)}>
-          <Icon kind="plus" />
-          <span>Restore</span>
-        </ActionCommentButton>
+        <ButtonGroup first>
+          <ActionCommentButton kind="text" admin small onClick={() => this.showComment(true, id)}>
+            <Icon kind="restore" />
+            <span>Restore</span>
+          </ActionCommentButton>
+        </ButtonGroup>
       );
     }
 
     return (
-      <span>
-        <span>|&nbsp;</span>
-        <ActionCommentButton kind="text" small onClick={() => this.showComment(false, id)}>
-          <Icon kind="close" />
+      <ButtonGroup>
+        <ActionCommentButton kind="text" admin small onClick={() => this.showComment(false, id)}>
+          <Icon kind="delete" />
           <span>Remove</span>
         </ActionCommentButton>
-      </span>
+      </ButtonGroup>
     );
   }
 
@@ -133,7 +136,7 @@ class Comment extends React.Component {
     const likeLabel = likes === 1 ? 'Like' : 'Likes';
 
     return (
-      <span>
+      <ButtonGroup first>
         {canReply && (
           <ActionCommentButton kind="text" small onClick={() => toggleEditor()}>
             <Icon kind="reply" />
@@ -152,7 +155,7 @@ class Comment extends React.Component {
             <span>Trash</span>
           </ActionCommentButton>
         )}
-      </span>
+      </ButtonGroup>
     );
   }
 
@@ -168,10 +171,10 @@ class Comment extends React.Component {
     const commentMessage = isDeleted ? this.DELETE_MESSAGE : body;
 
     return (
-      <article className="comment">
+      <CommentListItem>
         <CommentAuthor hide={isDeleted} user={user} userPoints={userPoints} />
-        <CommentPost deleted={isDeleted}>
-          <CommentBody isHidden={isHidden}>{commentMessage}</CommentBody>
+        <CommentPost isHidden={isHidden} deleted={isDeleted}>
+          <Content>{commentMessage}</Content>
           {showActionBar && (
             <ActionBar>
               {this.renderActionBar()}
@@ -179,7 +182,7 @@ class Comment extends React.Component {
             </ActionBar>
           )}
         </CommentPost>
-      </article>
+      </CommentListItem>
     );
   }
 }

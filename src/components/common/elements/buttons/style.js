@@ -7,7 +7,7 @@ export const ButtonGlobalStyles = css`
 
   background: ${props => props.theme.buttonDefault.background.base.toString()};
   cursor: pointer;
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Medium', sans-serif;
   font-size: 1.4rem;
   margin: 1rem;
   outline: none;
@@ -67,16 +67,8 @@ export const Button = styled.button`
     props.large &&
     css`
       border-width: 2px;
-      padding: 1.5rem 3rem;
+      padding: 1.25rem 3rem;
       font-size: 1.6rem;
-    `};
-
-  ${props =>
-    props.xlarge &&
-    css`
-      // padding: 6rem;
-      // font-size: 3.6rem;
-      // font-family: 'Futura PT Heavy';
     `};
 
   ${props =>
@@ -116,7 +108,6 @@ export const ButtonStyles = css`
         : props.theme.buttonBorderSecondary.default.toString()};
 
   color: #c00;
-
   text-align: center;
 
   &:hover {

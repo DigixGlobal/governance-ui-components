@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ErrorCaption, Notifications } from '@digix/gov-ui/components/common/common-styles';
+import { ErrorCaption } from '@digix/gov-ui/components/common/common-styles';
 import { TextArea, Input, Select } from '@digix/gov-ui/components/common/elements/index';
 import {
   Fieldset,

@@ -54,9 +54,9 @@ class VotingResult extends React.Component {
     const totalModeratorLockedDgds = parseBigNumber(daoInfo.totalModeratorLockedDgds, 0, false);
     const totalVoterStake = parseBigNumber(voting.totalVoterStake, 0, false);
 
-    const votes = voting.totalVoterCount;
-    const yesVotes = voting.yes;
-    const noVotes = voting.no;
+    const votes = Number(voting.totalVoterCount);
+    const yesVotes = Number(voting.yes);
+    const noVotes = Number(voting.no);
 
     const minimumQuorum = formatPercentage(quorum / totalModeratorLockedDgds);
     const quorumProgress = formatPercentage(totalVoterStake / totalModeratorLockedDgds);

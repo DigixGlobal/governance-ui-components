@@ -97,6 +97,7 @@ class CompleteMilestoneButton extends React.PureComponent {
 
   render() {
     const { isProposer, proposal } = this.props;
+
     if (
       !isProposer ||
       !proposal ||

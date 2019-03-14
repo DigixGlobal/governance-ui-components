@@ -10,7 +10,7 @@ export default class PreviousVersion extends React.Component {
     return (
       <PreviousWrapper>
         <Button kind="text" small disabled={disabled} {...this.props}>
-          <Icon kind="arrow" style={{ marginRight: 0 }} />
+          <Icon kind="arrow" />
           See Previous Version
         </Button>
       </PreviousWrapper>

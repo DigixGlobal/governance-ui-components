@@ -1,18 +1,26 @@
-import styled from 'styled-components';
-// import { H3 } from '../../common-styles';
-// import { EDEADLK } from 'constants';
+import styled, { css } from 'styled-components';
+
+export const Wrapper = styled.div`
+  margin: 1.5rem 0 3rem 0;
+`;
 
 export const AccordionItem = styled.div`
   position: relative;
   padding: 2rem 3rem;
-  margin: 1rem 0;
-  background: ${props =>
-    props.isOpen
-      ? props.theme.backgroundDefault.default.toString()
-      : props.theme.backgroundDefault.default.toString()};
+  margin-bottom: 1rem;
+  background: ${props => props.theme.background.white.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
-  box-shadow: ${props => props.theme.boxShadow};
+  box-shadow: none;
   animation: flipdown 0.5s ease both;
+
+  ${props =>
+    props.voting &&
+    css`
+      border: 0;
+      &:last-child {
+        border-bottom: 0;
+      }
+    `}
 
   &:nth-of-type(1) {
     animation-delay: 0.5s;
@@ -61,11 +69,16 @@ export const AccordionItem = styled.div`
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 `;
 
 export const Title = styled.div`
   margin-bottom: 0;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
+  font-family: 'Futura PT Medium', sans-serif;
+  color: ${props => props.theme.textColor.primary.light.toString()};
+  text-transform: ${props => (props.uppercase ? 'uppercase' : 'inherit')};
 `;
 
 export const Funding = styled.div`
@@ -88,7 +101,10 @@ export const Amount = styled.div`
 `;
 
 export const Content = styled.div`
-  margin-top: 2rem;
+  border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  padding: 4rem 4rem 3rem 4rem;
+  margin: 2rem -3rem 0rem -3rem;
+
   transition: all 0.25s ease-in-out;
 `;
 

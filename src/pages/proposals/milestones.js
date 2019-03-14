@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Accordion from '@digix/gov-ui/components/common/elements/accordion/index';
-import { MilestonesContainer, SubTitle } from '@digix/gov-ui/pages/proposals/style';
+import { Content, SubTitle } from '@digix/gov-ui/pages/proposals/style';
 
 export default class Milestones extends React.Component {
   constructor(props) {
@@ -42,10 +42,10 @@ export default class Milestones extends React.Component {
     const milestoneElements = milestones.map((milestone, i) => this.renderMilestone(milestone, i));
 
     return (
-      <MilestonesContainer>
+      <Content>
         <SubTitle>Milestones</SubTitle>
         <Accordion allowMultipleOpen>{milestoneElements}</Accordion>
-      </MilestonesContainer>
+      </Content>
     );
   }
 }

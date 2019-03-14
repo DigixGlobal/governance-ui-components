@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
 import Milestones from '@digix/gov-ui/pages/proposals/milestones';

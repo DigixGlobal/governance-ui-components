@@ -1,6 +1,11 @@
 import styled, { css } from 'styled-components';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { Container, FieldsetStyle, LabelStyle, H1 } from '../../../components/common/common-styles';
+import {
+  Container,
+  FieldsetStyle,
+  LabelStyle,
+  H1,
+} from '@digix/gov-ui/components/common/common-styles';
 
 export const CreateWrapper = styled.div``;
 

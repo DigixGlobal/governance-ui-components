@@ -324,10 +324,12 @@ class Proposal extends React.Component {
 
   renderPrlAlert = prl =>
     prl ? (
-      <Notifications warning>
+      <Notifications warning withIcon>
         <WarningIcon kind="warning" />
-        This proposal can no longer claim funding due to Policy, Regulatory or Legal reasons, even
-        if voting passes. Please contact us if you have any queries.
+        <Message note>
+          This proposal can no longer claim funding due to Policy, Regulatory or Legal reasons, even
+          if voting passes. Please contact us if you have any queries.
+        </Message>
       </Notifications>
     ) : null;
 
@@ -518,7 +520,7 @@ class Proposal extends React.Component {
               <Button kind="tag" showIcon>
                 {proposalDetails.data.stage}
               </Button>
-              <Title primary>{proposalDetails.data.title}</Title>
+              <Title>{proposalDetails.data.title}</Title>
             </div>
             {!isForumAdmin && (
               <CallToAction>
@@ -657,7 +659,9 @@ class Proposal extends React.Component {
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
+
         <VotingAccordion votingResults={this.getPastVotingResults()} />
+
         <VotingResult
           proposal={proposalDetails.data}
           draftVoting={proposalDetails.data.draftVoting}

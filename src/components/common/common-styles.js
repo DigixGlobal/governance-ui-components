@@ -23,8 +23,8 @@ export const H2 = styled.h2`
   font-size: 2.4rem;
   margin-bottom: 1.5rem;
   margin-top: 2rem;
+  text-transform: ${props => (props.uppercase ? 'uppercase' : 'inherit')};
 `;
-export default H2;
 
 export const H3 = styled.h3`
   color: ${props =>
@@ -69,9 +69,9 @@ export const LeftPanel = css``;
 export const RightPanel = css``;
 
 export const HR = styled.hr`
-  border: 0.5px solid ${props => props.theme.backgroundTertiary.default.toString()};
+  border: 0.5px solid ${props => props.theme.background.default.lighter.toString()};
   width: 100%;
-  margin: 2rem 0;
+  margin-top: 4rem;
 `;
 
 export const Container = css`

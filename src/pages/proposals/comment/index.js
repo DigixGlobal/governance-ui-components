@@ -4,12 +4,7 @@ import { connect } from 'react-redux';
 import { withApollo } from 'react-apollo';
 
 import { Button, Select } from '@digix/gov-ui/components/common/elements/index';
-import {
-  Title,
-  CommentFilter,
-  CommentList,
-  ThreadedComments,
-} from '@digix/gov-ui/pages/proposals/comment/style';
+import { Title, CommentFilter, CommentList } from '@digix/gov-ui/pages/proposals/comment/style';
 
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
 import ParentThread from '@digix/gov-ui/pages/proposals/comment/thread';
@@ -275,7 +270,7 @@ class CommentThread extends React.Component {
     const hasComments = threads !== null && threads.edges.length > 0;
 
     return (
-      <ThreadedComments>
+      <div>
         <Title>Discussions</Title>
         <CommentTextEditor addComment={this.addThread} canComment={canComment} />
         {!hasComments && <p>There are no comments to show.</p>}
@@ -298,7 +293,7 @@ class CommentThread extends React.Component {
             )}
           </section>
         )}
-      </ThreadedComments>
+      </div>
     );
   }
 }

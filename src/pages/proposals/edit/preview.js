@@ -16,7 +16,7 @@ import {
   InfoItem,
   ItemTitle,
   Data,
-} from '../style';
+} from '@digix/gov-ui/pages/proposals/style';
 
 const getTotalFunds = source =>
   source.reduce((acc, currentValue) => Number(acc) + Number(currentValue.fund), 0);

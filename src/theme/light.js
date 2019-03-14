@@ -17,7 +17,7 @@ const blue = {
   lightest: blueHex.lighten(1.9),
 };
 
-const darkBlueHex = Color('#131F35');
+const darkBlueHex = Color('#131F35'); // 131F35
 const darkBlue = {
   darker: darkBlueHex.darken(1),
   default: darkBlueHex,
@@ -67,6 +67,7 @@ const darkGray = {
   light: darkGrayHex.lighten(1),
   lighter: darkGrayHex.lighten(1.875),
   lightest: darkGrayHex.lighten(2.075),
+  fade: darkGoldHex.fade(0.85),
 };
 
 const whiteHex = Color('#fff');
@@ -83,10 +84,10 @@ const red = {
   default: redHex,
   darker: redHex.darken(0.05),
   base: redHex,
-  light: redHex.lighten(0.5),
-  lighter: redHex.lighten(0.8),
-  lightest: redHex.lighten(1.9),
-  fade: redHex.fade(0.9),
+  light: redHex.lighten(0.1),
+  lighter: redHex.lighten(0.5),
+  lightest: redHex.lighten(1),
+  fade: redHex.fade(0.95),
 };
 
 const greenHex = Color('#417505');
@@ -117,6 +118,7 @@ const LightTheme = {
     default: tertiaryColor,
     primary: primaryColor,
     secondary: secondaryColor,
+    white: white.base,
   },
 
   backgroundDefault: white,
@@ -201,6 +203,14 @@ const LightTheme = {
   buttonTextTertiary: white,
   buttonTextTertiaryReverse: secondaryColor,
 
+  commentPost: {
+    admin: red,
+    background: white,
+    border: tertiaryColor,
+    textColor: tertiaryColor,
+    icon: tertiaryColor,
+  },
+
   headerBorderColor: gray.default,
 
   errorBorder: red.default,
@@ -227,6 +237,8 @@ const LightTheme = {
     primary: primaryColor,
     secondary: secondaryColor,
   },
+
+  textHeading: primaryColor,
 
   linkDefaultColor: tertiaryColor,
   linkPrimaryColor: primaryColor,

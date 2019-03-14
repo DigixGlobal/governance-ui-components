@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Icons from '@digix/gov-ui/components/common/elements/icons/Icons';
 
 import VotingResult from './voting-result';
-import { AccordionItem, Header, Content, Title, Funding } from './styles';
+import { Wrapper, AccordionItem, Header, Content, Title, Funding } from './styles';
 
 class VotingAccordion extends React.PureComponent {
   state = {
@@ -20,7 +20,10 @@ class VotingAccordion extends React.PureComponent {
     } else {
       acc.open = !acc.open;
     }
-    this.setState({ accordionItems: [...accordionItems], selectedIndex: index });
+    this.setState({
+      accordionItems: [...accordionItems],
+      selectedIndex: index,
+    });
   };
 
   renderAccordionItem = (item, i) => {
@@ -33,9 +36,9 @@ class VotingAccordion extends React.PureComponent {
     const show = acc && acc.open && i === selectedIndex;
     const svgIcon = show ? '#arrow_up' : '#arrow_down';
     return (
-      <AccordionItem>
+      <AccordionItem voting>
         <Header onClick={() => this.onClickItemHandler(i)}>
-          <Title>{item.title}</Title>
+          <Title uppercase>{item.title}</Title>
           <Funding>
             <div style={{ width: '18px', height: '18px' }}>
               <Icons />
@@ -57,7 +60,9 @@ class VotingAccordion extends React.PureComponent {
   };
   render() {
     const { votingResults } = this.props;
-    return votingResults.map((item, i) => this.renderAccordionItem(item, i));
+    const ProposalVotingResult = votingResults.map((item, i) => this.renderAccordionItem(item, i));
+
+    return votingResults.length > 0 && <Wrapper>{ProposalVotingResult}</Wrapper>;
   }
 }
 

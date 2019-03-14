@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { DetailsContainer, Details, SubTitle } from './style';
+import { DetailsContainer, Content, SubTitle } from './style';
 
 const SpecialProjectDetails = props => (
   <DetailsContainer>
-    <SubTitle>Configuration Details</SubTitle>
-    <Details>
+    <Content>
+      <SubTitle>Configuration Details</SubTitle>
       {Object.keys(props.uintConfigs).map(key => (
         <div>
           <span>
@@ -15,7 +15,7 @@ const SpecialProjectDetails = props => (
           <span>{props.uintConfigs[key]}</span>
         </div>
       ))}
-    </Details>
+    </Content>
   </DetailsContainer>
 );
 

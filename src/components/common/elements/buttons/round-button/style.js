@@ -57,18 +57,30 @@ export const RoundBtn = styled(Button)`
   ${props =>
     props.secondary &&
     css`
-      background: ${props.theme.buttonSecondary.background.fade.toString()};
-      border: 2px solid ${props.theme.buttonSecondary.border.base.toString()};
+      background: ${props.disabled
+        ? 'transparent'
+        : props.theme.buttonSecondary.background.fade.toString()};
+      border-width: 2px;
+      border-style: solid;
+      border-color: ${props.disabled
+        ? props.theme.buttonDisabled.color.lighter.toString()
+        : props.theme.buttonSecondary.border.base.toString()};
       box-shadow: none;
-      color: ${props.theme.buttonSecondary.textColor.base.toString()};
+      color: ${props.disabled
+        ? props.theme.buttonDisabled.color.lighter.toString()
+        : props.theme.buttonSecondary.textColor.base.toString()};
 
       svg {
         fill: ${props.theme.buttonSecondary.iconColor.light.toString()};
       }
 
       &:hover {
-        background: ${props.theme.buttonSecondary.background.base.toString()};
-        color: ${props.theme.buttonInverted.textColor.base.toString()};
+        background: ${props.disabled
+          ? 'transparent'
+          : props.theme.buttonSecondary.background.base.toString()};
+        color: ${props.disabled
+          ? props.theme.buttonDisabled.color.lighter.toString()
+          : props.theme.buttonInverted.textColor.base.toString()};
 
         svg {
           fill: ${props.theme.iconColorReverse.default.toString()};

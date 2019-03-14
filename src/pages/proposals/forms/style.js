@@ -3,6 +3,7 @@ import {
   Container,
   FieldsetStyle,
   LabelStyle,
+  Card,
 } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
@@ -62,22 +63,31 @@ export const Label = styled.label`
   font-family: 'Futura PT Medium';
 `;
 
-export const MediaUploader = styled.div`
-  ${Container};
-  justify-content: space-between;
+export const MediaUploader = styled(Card)`
   align-items: flex-start;
-  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
-  background: ${props => props.theme.backgroundDefault.default.toString()};
-  border-radius: 3px;
-  padding: 2rem;
 
   ${media.mobile`
     flex-direction: column;
   `}
 
-  & > div {
-    flex: 1;
-    width: 100%;
+  > div {
+    &:first-child {
+      margin-right: 2rem;
+      flex: 0 0 auto;
+
+      ${media.mobile`
+        width: 100%;
+      `}
+    }
+    &:last-child {
+      flex: 1 0 0;
+      margin-top: 5px;
+
+      ${media.tablet`
+        margin-top: 2rem;
+        width: 100%;
+      `}
+    }
   }
 `;
 
@@ -94,10 +104,6 @@ export const ImageHolder = styled.div`
     width: 100%;
     margin: 2px;
   }
-
-  ${media.mobile`
-    margin-top: 2rem;
-  `}
 `;
 
 export const CreateMilestone = styled.div`

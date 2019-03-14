@@ -14,8 +14,6 @@ import {
   Label,
   MediaUploader,
   ImageHolder,
-  LeftCol,
-  RightCol,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 class Multimedia extends React.Component {
@@ -138,7 +136,7 @@ class Multimedia extends React.Component {
         <FormItem>
           <Label>Upload Project Images</Label>
           <MediaUploader>
-            <LeftCol>
+            <div>
               <Button
                 kind="upload"
                 accept="image/*"
@@ -155,8 +153,8 @@ class Multimedia extends React.Component {
                   Image must be in JPEG or PNG format &amp; file size must be lesser than 10MB.
                 </div>
               </Button>
-            </LeftCol>
-            <RightCol>
+            </div>
+            <div>
               <ImageHolder>
                 {images &&
                   images.map(image => <img key={image.name} alt={image.name} src={image.src} />)}
@@ -169,7 +167,7 @@ class Multimedia extends React.Component {
                   />
                 )}
               </ImageHolder>
-            </RightCol>
+            </div>
           </MediaUploader>
         </FormItem>
       </Fieldset>

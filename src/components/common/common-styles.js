@@ -262,42 +262,49 @@ export const CardItem = css`
   flex-grow: 1;
 `;
 
-const OverLaySize = '480px';
+const WIDTH_OVERLAY = '480px';
+
 export const TransparentOverlay = styled.div`
   background-color: #000;
   opacity: 0.75;
   transition: ${props => props.theme.transition};
-  width: calc(100% - ${OverLaySize});
+  width: calc(100% - ${WIDTH_OVERLAY});
+
+  ${media.tablet`width: 40%`}
+  ${media.mobile`width: 0%`}
 
   ${props =>
     props.large &&
     css`
       width: 25%;
-      ${media.tablet`width: 0%`};
-    `}
 
-  ${media.tablet`width: 40%`}
-  ${media.mobile`width: 0%`}
+      ${media.tablet`
+        width: 0%
+      `};
+    `}
 `;
 
 export const DrawerContainer = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
   padding: 5rem;
-  width: ${OverLaySize};
-  max-width: ${OverLaySize};
+  width: ${WIDTH_OVERLAY};
   overflow-y: scroll;
+
+  ${media.tablet`width: 60%`}
+  ${media.mobile`width: 100%`}
+
   ${props =>
     props.large &&
     css`
       overflow-y: scroll;
       width: 75%;
-      max-width: 75%;
       background: ${props.theme.backgroundTertiary.lightest.toString()};
 
-      ${media.tablet`width: 100%`};
+      ${media.tablet`
+        width: 100%
+      `};
     `}
-  ${media.tablet`width: 60%`}
-  ${media.mobile`width: 100%`}
+
 `;
 // TODO: Update NoteContainer on Overlay/KYC/index before deleting this
 export const NoteContainer = styled.div`

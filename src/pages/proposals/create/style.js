@@ -5,6 +5,7 @@ import {
   FieldsetStyle,
   LabelStyle,
   H1,
+  Card,
 } from '@digix/gov-ui/components/common/common-styles';
 
 export const CreateWrapper = styled.div``;
@@ -69,15 +70,9 @@ export const Label = styled.label`
   font-family: 'Futura PT Medium';
 `;
 
-export const MediaUploader = styled.div`
-  ${Container};
-  justify-content: space-between;
-  align-items: flex-start;
-  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
-  background: ${props => props.theme.backgroundDefault.default.toString()};
-  border-radius: 3px;
-  padding: 2rem;
-`;
+// BEGIN : Styles for Create Forms
+
+export const MediaUploader = styled(Card)``;
 
 export const ImageHolder = styled.div`
   background-color: ${props => props.theme.backgroundPrimary.default.toString()};

@@ -82,11 +82,7 @@ class WalletCurrencies extends React.Component {
 
     let usdValue = balance;
     if (balance !== 0) {
-      if (currency === 'ETH') {
-        usdValue = balance.replace(',', '').replace('...', '');
-      } else {
-        usdValue = balance.replace(',', '');
-      }
+      usdValue = balance.replace(',', '').replace('...', '');
     }
 
     if (usdValue > 0 && tokensInUsd && tokensInUsd[currency]) {

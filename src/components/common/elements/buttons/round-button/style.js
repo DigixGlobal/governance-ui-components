@@ -4,19 +4,40 @@ import { Button } from '../style';
 // eslint-disable-next-line no-undef
 
 export const RoundBtn = styled(Button)`
-  background: ${props => props.theme.buttonDefault.background.base.toString()};
-  border: none;
+  background: ${props =>
+    props.disabled
+      ? props.theme.buttonDisabled.background
+      : props.theme.buttonDefault.background.base.toString()};
+  border-width: 2px;
+  border-style: solid;
+  border-color: ${props =>
+    props.disabled
+      ? props.theme.buttonDisabled.border.lighter.toString()
+      : props.theme.buttonDefault.border.base.toString()};
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
-  color: ${props => props.theme.buttonDefault.textColor.base.toString()};
+  color: ${props =>
+    props.disabled
+      ? props.theme.buttonDisabled.textColor.lighter.toString()
+      : props.theme.buttonDefault.textColor.base.toString()};
 
   svg {
     fill: ${props => props.theme.buttonDefault.iconColor.light.toString()};
   }
 
   &:hover {
-    background: ${props => props.theme.buttonInverted.background.base.toString()};
-    color: ${props => props.theme.buttonInverted.textColor.base.toString()};
+    background: ${props =>
+      props.disabled
+        ? props.theme.buttonDisabled.background
+        : props.theme.buttonSecondary.background.fade.toString()};
+    border-color: ${props =>
+      props.disabled
+        ? props.theme.buttonDisabled.border.lighter.toString()
+        : props.theme.buttonPrimary.border.base.toString()};
+    color: ${props =>
+      props.disabled
+        ? props.theme.buttonDisabled.textColor.lighter.toString()
+        : props.theme.buttonSecondary.textColor.base.toString()};
 
     svg {
       fill: ${props => props.theme.iconColorReverse.default.toString()};
@@ -27,8 +48,6 @@ export const RoundBtn = styled(Button)`
     props.primary &&
     css`
       background: ${props.theme.buttonPrimary.background.toString()};
-      border-width: 2px;
-      border-style: solid;
       border-color: ${
         props.disabled
           ? props.theme.buttonDisabled.color.lighter.toString()
@@ -46,8 +65,16 @@ export const RoundBtn = styled(Button)`
       }
 
       &:hover {
-        background: ${props.disabled ? props.theme.buttonDisabled.background.toString() : ''};
-        color: ${props.disabled ? props.theme.buttonDisabled.color.lighter.toString() : ''};
+        background: ${
+          props.disabled
+            ? props.theme.buttonDisabled.background.toString()
+            : props.theme.buttonInverted.background.base.toString()
+        };
+        color: ${
+          props.disabled
+            ? props.theme.buttonDisabled.color.lighter.toString()
+            : props.theme.buttonInverted.textColor.base.toString()
+        };
 
         svg {
           fill: ${props.theme.iconColorReverse.default.toString()};
@@ -60,8 +87,6 @@ export const RoundBtn = styled(Button)`
       background: ${props.disabled
         ? 'transparent'
         : props.theme.buttonSecondary.background.fade.toString()};
-      border-width: 2px;
-      border-style: solid;
       border-color: ${props.disabled
         ? props.theme.buttonDisabled.color.lighter.toString()
         : props.theme.buttonSecondary.border.base.toString()};
@@ -92,7 +117,7 @@ export const RoundBtn = styled(Button)`
     props.tertiary &&
     css`
       background: ${props.theme.buttonTertiary.background.base.toString()};
-      border: 2px solid ${props.theme.buttonTertiary.border.base.toString()};
+      border-color: ${props.theme.buttonTertiary.border.base.toString()};
       box-shadow: none;
       color: ${props.theme.buttonTertiary.textColor.base.toString()};
 

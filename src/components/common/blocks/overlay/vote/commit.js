@@ -223,7 +223,7 @@ class CommitVote extends React.Component {
                   kind="link"
                   large
                   fluid
-                  download={`${proposalId}-${currentVotingRound}.json`}
+                  download={`${proposalId}-${currentVotingRound || 0}.json`}
                   onClick={this.handleDownload}
                   href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
                   data-digix="Commit-Download-Json"

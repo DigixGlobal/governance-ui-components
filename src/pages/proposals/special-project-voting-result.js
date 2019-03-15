@@ -6,6 +6,7 @@ import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { formatPercentage, truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
+import { HR } from '@digix/gov-ui/components/common/common-styles';
 
 import {
   VotingResultWrapper,
@@ -16,9 +17,15 @@ import {
   Label,
   QuorumInfoCol,
   ApprovalLabel,
-} from './style';
+} from '@digix/gov-ui/pages/proposals/style';
 
-import VotingResultHeader from './voting-result-header';
+import {
+  AccordionItem,
+  Header,
+  Content,
+} from '@digix/gov-ui/components/common/elements/accordion/styles';
+
+import VotingResultHeader from '@digix/gov-ui/pages/proposals/voting-result-header';
 
 // eslint-disable-next-line
 const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
@@ -88,70 +95,79 @@ class SpecialProjectVotingResult extends React.Component {
 
     return (
       <div>
-        <VotingResultHeader votingRound={0} />
+        <AccordionItem voting>
+          <Header>
+            <VotingResultHeader votingRound={0} />
+          </Header>
+          <Content>
+            <VotingResultWrapper>
+              <VotingResultContainer>
+                <ProgressCol>
+                  <Label>
+                    <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
+                    <MinimumLabel flexWidth={100 - stats.minimumQuorum}>
+                      <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
+                      <QuorumInfoCol>
+                        <span>{stats.votes} Votes</span>
 
-        <VotingResultWrapper>
-          <VotingResultContainer>
-            <ProgressCol>
-              <Label>
-                <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
-                <MinimumLabel flexWidth={100 - stats.minimumQuorum}>
-                  <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
-                  <QuorumInfoCol>
-                    <span>{stats.votes} Votes</span>
+                        <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
+                      </QuorumInfoCol>
+                    </MinimumLabel>
+                  </Label>
+                  <ProgressBar
+                    variant="determinate"
+                    value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
+                  />
+                </ProgressCol>
+              </VotingResultContainer>
 
-                    <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
-                  </QuorumInfoCol>
-                </MinimumLabel>
-              </Label>
-              <ProgressBar
-                variant="determinate"
-                value={Number(stats.quorumProgress) > 0 ? Number(stats.quorumProgress) : -1}
-              />
-            </ProgressCol>
-          </VotingResultContainer>
+              <VotingResultContainer>
+                <ProgressCol>
+                  <Label>
+                    <ApprovalLabel flexWidth={stats.minimumApproval}>
+                      Current Approval Rate
+                    </ApprovalLabel>
+                    <MinimumLabel flexWidth={100 - stats.minimumApproval}>
+                      <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
+                      <QuorumInfoCol>
+                        <span>YES:&nbsp;{yesVotes} DGD</span>
+                        <span>NO:&nbsp;{noVotes} DGD</span>
+                      </QuorumInfoCol>
+                    </MinimumLabel>
+                  </Label>
+                  <ProgressBar
+                    variant="determinate"
+                    value={Number(stats.approvalProgress) > 0 ? Number(stats.approvalProgress) : -1}
+                  />
+                </ProgressCol>
+              </VotingResultContainer>
 
-          <VotingResultContainer>
-            <ProgressCol>
-              <Label>
-                <ApprovalLabel flexWidth={stats.minimumApproval}>
-                  Current Approval Rate
-                </ApprovalLabel>
-                <MinimumLabel flexWidth={100 - stats.minimumApproval}>
-                  <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
-                  <QuorumInfoCol>
-                    <span>YES:&nbsp;{yesVotes} DGD</span>
-                    <span>NO:&nbsp;{noVotes} DGD</span>
-                  </QuorumInfoCol>
-                </MinimumLabel>
-              </Label>
-              <ProgressBar
-                variant="determinate"
-                value={Number(stats.approvalProgress) > 0 ? Number(stats.approvalProgress) : -1}
-              />
-            </ProgressCol>
-          </VotingResultContainer>
+              <VotingResultContainer>
+                <ProgressCol>
+                  <Label>
+                    <QuorumLabel>Time Left To End of Commit</QuorumLabel>
+                    <MinimumLabel>
+                      <span />
+                      <QuorumInfoCol countdown>
+                        <Countdown
+                          date={new Date(stats.commitDeadline)}
+                          renderer={countdownRenderer}
+                        />
+                      </QuorumInfoCol>
+                    </MinimumLabel>
+                  </Label>
 
-          <VotingResultContainer>
-            <ProgressCol>
-              <Label>
-                <QuorumLabel>Time Left To End of Commit</QuorumLabel>
-                <MinimumLabel>
-                  <span />
-                  <QuorumInfoCol countdown>
-                    <Countdown date={new Date(stats.commitDeadline)} renderer={countdownRenderer} />
-                  </QuorumInfoCol>
-                </MinimumLabel>
-              </Label>
-
-              <Countdown
-                date={stats.commitDeadline}
-                baseLine={Date.now()}
-                renderer={props => commitCountdownRenderer(props)}
-              />
-            </ProgressCol>
-          </VotingResultContainer>
-        </VotingResultWrapper>
+                  <Countdown
+                    date={stats.commitDeadline}
+                    baseLine={Date.now()}
+                    renderer={props => commitCountdownRenderer(props)}
+                  />
+                </ProgressCol>
+              </VotingResultContainer>
+            </VotingResultWrapper>
+          </Content>
+        </AccordionItem>
+        <HR />
       </div>
     );
   }

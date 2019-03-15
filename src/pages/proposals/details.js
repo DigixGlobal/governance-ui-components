@@ -5,9 +5,9 @@ import Modal from 'react-responsive-modal';
 
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
-import { dijix } from '../../utils/dijix';
-
 import { HR } from '@digix/gov-ui/components/common/common-styles';
+
+import { dijix } from '../../utils/dijix';
 
 import { DetailsContainer, Content, SubTitle, ImageHolder, CloseButton } from './style';
 
@@ -79,6 +79,7 @@ export default class ProjectDetails extends React.Component {
   render() {
     const { project, preview } = this.props;
     const hasImages = project.images && project.images.length > 0;
+
     return (
       <DetailsContainer>
         <Content>

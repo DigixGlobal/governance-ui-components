@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { H1, H2, Container } from '@digix/gov-ui/components/common/common-styles';
-import { Icon } from '@digix/gov-ui/components/common/elements/index';
+import { Icon, Button } from '@digix/gov-ui/components/common/elements/index';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 
@@ -292,7 +292,7 @@ export const ProgressCol = styled.div`
     css`
       div:last-child {
         & > div {
-          background-color: ${props => props.theme.background.default.light.toString()};
+          background-color: ${props.theme.background.default.light.toString()};
         }
       }
     `};
@@ -374,4 +374,14 @@ export const WarningIcon = styled(Icon)`
 
 export const VotingProgressBar = styled(ProgressBar)`
   border: 1px solid #ccc;
+`;
+
+export const CloseButton = styled(Button)`
+  position: absolute;
+  background: #fff;
+  border: 0;
+  top: 10px;
+  right: 5px;
+  margin: 0;
+  padding: 1rem 1.5rem;
 `;

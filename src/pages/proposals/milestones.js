@@ -51,7 +51,11 @@ export default class Milestones extends React.Component {
 }
 
 Milestones.propTypes = {
-  changedFundings: PropTypes.array.isRequired,
+  changedFundings: PropTypes.array,
   fundingChanged: PropTypes.bool.isRequired,
   milestones: PropTypes.array.isRequired,
+};
+
+Milestones.defaultProps = {
+  changedFundings: undefined,
 };

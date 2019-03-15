@@ -82,7 +82,7 @@ export const Container = css`
 export const Message = styled.p`
   font-size: ${props => (props.title ? '1.8rem' : '')};
   text-transform: ${props => (props.uppercase ? 'uppercase' : '')};
-  font-family: ${props => (props.title ? 'Futura PT Medium, sans-serif' : '')};
+  font-family: ${props => (props.title !== undefined ? 'Futura PT Medium, sans-serif' : '')};
 
   ${props =>
     props.note &&

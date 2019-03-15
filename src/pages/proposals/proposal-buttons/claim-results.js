@@ -182,7 +182,7 @@ class ClaimResultsButton extends React.PureComponent {
 
     const currentTime = Date.now();
     const { yes, no, quorum, quota, claimed, revealDeadline } = proposal.votingRounds[
-      currentVotingRound
+      currentVotingRound || 0
     ];
 
     const isVotingDeadlineOver = currentTime > new Date(revealDeadline * 1000);

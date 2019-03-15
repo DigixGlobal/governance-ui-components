@@ -507,7 +507,6 @@ class Proposal extends React.Component {
           {this.renderPrlAlert(proposalDetails.data.prl)}
           {this.renderClaimApprovalAlert()}
           {this.renderProposerDidNotPassAlert()}
-
           <Header>
             <div>
               <Button kind="tag" filled>

@@ -106,6 +106,11 @@ class FinalizeProjectButton extends React.PureComponent {
     };
     return executeContractFunction(payload);
   };
+
+  finalizeProposal() {
+    this.props.checkProposalRequirements(this.handleSubmit);
+  }
+
   render() {
     const { stage, endorser, isProposer, timeCreated, finalVersionIpfsDoc, daoConfig } = this.props;
 
@@ -126,7 +131,12 @@ class FinalizeProjectButton extends React.PureComponent {
     }
 
     return (
-      <Button kind="round" large onClick={this.handleSubmit} data-digix="Create-Proposal-Finalize">
+      <Button
+        kind="round"
+        large
+        data-digix="ProposalAction-Finalize"
+        onClick={() => this.finalizeProposal()}
+      >
         Finalize
       </Button>
     );
@@ -144,6 +154,7 @@ FinalizeProjectButton.propTypes = {
   web3Redux: object.isRequired,
   daoConfig: object.isRequired,
   challengeProof: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   getDaoConfig: func.isRequired,

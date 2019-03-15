@@ -16,11 +16,11 @@ export const Author = styled.div`
   }
 `;
 
-export const ThreadedComments = styled.div``;
-
 export const Title = styled(H2)`
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Book';
+  font-size: 2rem;
   color: ${props => props.theme.textPrimary.light.toString()};
+  margin-top: 0;
 `;
 
 export const CommentList = styled.div``;
@@ -33,7 +33,25 @@ export const EditorContainer = styled.div`
   position: relative;
 `;
 
+export const CommentEditorContainer = styled.div`
+  position: relative;
+`;
+
 export const CommentEditor = styled.div``;
+
+export const BannedCommentEditor = styled.div`
+  background: rgba(0, 0, 0, 0.7);
+  color: ${props => props.theme.textWhite.default.toString()};
+  font-family: 'Futura PT Heavy';
+  padding: 2rem;
+  padding-top: 60px;
+  position: absolute;
+  text-align: center;
+  top: 10px;
+
+  height: calc(100% - 25px);
+  width: 100%;
+`;
 
 export const CommentTextArea = styled(TextArea)`
   height: 15rem;
@@ -42,70 +60,99 @@ export const CommentTextArea = styled(TextArea)`
 
 export const PostCommentButton = styled(Button)`
   margin-left: 0;
-  ${props =>
-    props.disabled &&
-    css`
-      border-width: 1px;
-      background-color: transparent;
-      border-color: ${props.theme.buttonBorderDisabled.light.toString()};
-      color: ${props.theme.buttonTextDefault.light.toString()};
-
-      &:hover {
-        border-color: ${props.theme.buttonBorderDisabled.light.toString()};
-        color: ${props.theme.buttonTextDefault.light.toString()};
-      }
-    `};
 `;
 
 export const UserInfo = styled.div`
+  color: ${props =>
+    props.isHidden
+      ? props.theme.commentPost.admin.base.toString()
+      : props.theme.commentPost.textColor.light.toString()};
   padding: 1rem 0;
-  font-family: 'Futura PT Medium';
+
   span {
-    margin: 0 1.2rem;
+    margin: 0 0.5rem;
+    text-transform: capitalize;
+
+    &:first-child {
+      font-family: 'Futura PT Medium', sans-serif;
+    }
   }
+`;
+
+export const Content = styled.div`
+  font-weight: ${props => (props.isHidden ? 'bold' : 'normal')};
+`;
+
+export const CommentListItem = styled.div`
+  ${props =>
+    props.isHidden &&
+    css`
+      // color: ${props.theme.commentPost.admin.base.toString()};
+    `};
 `;
 
 export const CommentPost = styled.div`
-  background: ${props =>
-    props.deleted
-      ? props.theme.backgroundTertiary.lightest.toString()
-      : props.theme.backgroundDefault.default.toString()};
-  border: 1px solid
-    ${props =>
-      props.deleted
-        ? props.theme.backgroundTertiary.lighter.toString()
-        : props.theme.borderColor.lighter.toString()};
-  border-radius: 4px;
+  background: ${props => props.theme.commentPost.background.base.toString()};
+  border: 1px solid ${props => props.theme.commentPost.border.lighter.toString()};
+  border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
-  color: ${props =>
-    props.deleted
-      ? props.theme.textDefault.light.toString()
-      : props.theme.textDefault.default.toString()};
+  color: ${props => props.theme.textDefault.default.toString()};
   padding: 2rem 3rem 2rem 3rem;
   margin-top: ${props => (props.deleted ? 2 : 0)}rem;
+
+  ${props =>
+    props.deleted &&
+    css`
+      background: transparent,
+      border: 1px solid ${props.theme.commentPost.border.lighter.toString()};
+      color: ${props.theme.commentPost.textColor.light.toString()};
+    `};
+
+  ${props =>
+    props.isHidden &&
+    css`
+      background: ${props.theme.commentPost.admin.fade.toString()};
+      border: 1px solid ${props.theme.commentPost.admin.lightest.toString()};
+      color: ${props.theme.commentPost.admin.base.toString()};
+    `};
 `;
 
 export const ActionBar = styled.div`
+  display: flex;
+  justify-content: flex-start;
   border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   margin-top: 2rem;
   margin-left: -1rem;
+  margin-bottom: -1rem;
+
+  ${props =>
+    props.isHidden &&
+    css`
+      border-top: 1px solid ${props.theme.commentPost.admin.fade.toString()};
+    `};
+`;
+
+export const ButtonGroup = styled.div`
+  margin-left: ${props => (props.first ? '-1rem' : '')};
 `;
 
 export const ActionCommentButton = styled(Button)`
-  margin: 1rem 0.5rem;
-  margin-bottom: -1rem;
-  padding: 1rem;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  width: 90px;
 
-  &:first-child {
-    margin-left: -1rem;
-  }
+  ${props =>
+    props.admin &&
+    css`
+      color: ${props.theme.commentPost.admin.light.toString()};
+
+      svg {
+        fill: ${props.theme.commentPost.admin.light.toString()};
+      }
+    `}
 `;
 
 export const CommentReplyPost = styled.div`
   margin-left: 5rem;
   margin-top: 1rem;
-`;
-
-export const LoadMoreButton = styled(Button)`
-  margin-left: -2rem;
 `;

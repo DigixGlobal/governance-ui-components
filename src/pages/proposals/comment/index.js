@@ -1,19 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withApollo } from 'react-apollo';
 
 import { Button, Select } from '@digix/gov-ui/components/common/elements/index';
-import {
-  Title,
-  CommentFilter,
-  CommentList,
-  ThreadedComments,
-} from '@digix/gov-ui/pages/proposals/comment/style';
+import { Title, CommentFilter, CommentList } from '@digix/gov-ui/pages/proposals/comment/style';
 
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
 import ParentThread from '@digix/gov-ui/pages/proposals/comment/thread';
 
 import { CommentsApi } from '@digix/gov-ui/api/comments';
+import { fetchThreadsQuery } from '@digix/gov-ui/api/graphql-queries/comments';
+import { fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { getDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
@@ -24,8 +22,12 @@ class CommentThread extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lastSeenId: 0,
-      sortBy: 'latest',
+      currentUser: {
+        address: props.uid,
+        displayName: '',
+        isForumAdmin: false,
+      },
+      sortBy: 'LATEST',
       threads: null,
       userAddresses: [],
       userPoints: {},
@@ -34,112 +36,162 @@ class CommentThread extends React.Component {
     this.FILTERS = [
       {
         text: 'Latest',
-        value: 'latest',
+        value: 'LATEST',
       },
       {
         text: 'Oldest',
-        value: 'oldest',
+        value: 'OLDEST',
       },
     ];
+
+    // for invalidating comments cache in apollo
+    this.CACHED_COMMENT_KEYS = /^(Comment|\$Comment|commentThreads|\$ROOT_QUERY\.commentThreads)/;
+
+    this.THREAD_COUNT = 10;
+    this.REPLY_COUNT = 5;
+    this.COMMENT_COUNT = 3;
   }
 
   componentDidMount() {
-    const { ChallengeProof, getDaoProposalDetailsActions, proposalId } = this.props;
+    const { sortBy } = this.state;
+    const { ChallengeProof, proposalId } = this.props;
+
+    this.fetchThreads({ sortBy });
+    this.fetchUserPoints(this.state.threads);
+    this.fetchCurrentUser();
+
     if (!ChallengeProof.data) {
       return;
     }
 
-    const { sortBy } = this.state;
     const payload = initializePayload(ChallengeProof);
-    getDaoProposalDetailsActions({ proposalId, ...payload })
-      .then(() => {
-        this.fetchThreads({ sort_by: sortBy }, true);
-      })
-      .catch(() => {
-        this.setError(CommentsApi.ERROR_MESSAGES.fetch);
-      });
+    this.props.getDaoProposalDetails({ proposalId, ...payload }).catch(() => {
+      this.setError(CommentsApi.ERROR_MESSAGES.fetch);
+    });
   }
 
+  // NOTE: there's no method for partial cache invalidation in apollo so we have to do it manually here.
+  // Ref: https://github.com/apollographql/apollo-feature-requests/issues/4
+  componentWillUnmount() {
+    const apollo = this.props.client;
+    const cache = apollo.store.cache.data;
+    if (!cache || !cache.data) {
+      return;
+    }
+
+    Object.keys(cache.data).forEach(key => {
+      if (key.match(this.CACHED_COMMENT_KEYS)) {
+        cache.delete(key);
+      }
+    });
+  }
+
+  getQueryVariables(vars) {
+    const { proposalId } = this.props;
+
+    return {
+      proposalId,
+      threadCount: this.THREAD_COUNT,
+      replyCount: this.REPLY_COUNT,
+      commentCount: this.COMMENT_COUNT,
+      ...vars,
+    };
+  }
+
+  setCommentingPrivileges = canComment => {
+    const { currentUser } = this.state;
+    currentUser.canComment = canComment;
+    this.setState({ currentUser });
+  };
+
   setError = error => {
-    const message = JSON.stringify((error && error.message) || error);
+    const message = JSON.stringify(error && error.message) || error;
     this.props.showHideAlert({ message });
-    document.body.scrollTop = 0;
   };
 
   handleFilterChange = e => {
     const sortBy = e.target.value;
-    this.fetchThreads({ sort_by: sortBy }, true);
+    this.fetchThreads({ sortBy });
     this.setState({ sortBy });
   };
 
   addThread = body => {
-    let threads = { ...this.state.threads };
-    const { ChallengeProof, rootCommentId } = this.props;
-
+    const {
+      ChallengeProof,
+      rootCommentId: {
+        data: { commentId: rootCommentId },
+      },
+    } = this.props;
     if (!ChallengeProof || !rootCommentId) {
+      this.setError(CommentsApi.ERROR_MESSAGES.createComment);
       return;
     }
 
+    let { threads } = this.state;
+    const { currentUser, sortBy } = this.state;
     const payload = initializePayload(ChallengeProof);
+
     CommentsApi.create(rootCommentId, body, payload)
-      .then(newComment => {
-        if (!threads) {
+      .then(node => {
+        const newComment = CommentsApi.generateNewComment(node, currentUser, rootCommentId);
+        if (!threads || !threads.edges.length) {
           threads = CommentsApi.generateNewThread(newComment);
+        } else if (sortBy === 'OLDEST') {
+          threads.edges.push(newComment);
+          window.scrollTo(0, document.body.scrollHeight);
         } else {
-          threads.data.push(newComment);
+          threads.edges.unshift(newComment);
         }
 
         this.setState({ threads });
-        window.scrollTo(0, document.body.scrollHeight);
       })
-      .catch(() => {
-        this.setError(CommentsApi.ERROR_MESSAGES.createComment);
-      });
-  };
-
-  fetchThreads = (fetchParams, reset = false) => {
-    const { ChallengeProof, rootCommentId } = this.props;
-    if (!ChallengeProof.data || !rootCommentId) {
-      return;
-    }
-
-    const payload = initializePayload(ChallengeProof);
-    CommentsApi.getThread(rootCommentId, fetchParams, payload)
-      .then(newThreads => {
-        let { threads } = this.state;
-        const newComments = newThreads.data;
-        const lastSeenId =
-          newThreads && newComments.length > 0
-            ? newComments[newComments.length - 1].id
-            : this.state.lastSeenId;
-
-        if (reset || !threads) {
-          threads = newThreads;
+      .catch(message => {
+        const error = CommentsApi.ERROR_MESSAGES;
+        if (message === 'unauthorized_action') {
+          this.setCommentingPrivileges(false);
+          this.setError(error.bannedUser);
         } else {
-          threads = {
-            ...threads,
-            hasMore: newThreads.hasMore,
-            data: threads.data.concat(newComments),
-          };
+          this.setError(error.createReply);
         }
-
-        this.setState({ lastSeenId, threads });
-      })
-      .then(() => {
-        this.fetchUserPoints();
-      })
-      .catch(() => {
-        this.setError(CommentsApi.ERROR_MESSAGES.fetch);
       });
   };
 
-  fetchUserPoints = () => {
-    const { threads, userAddresses } = this.state;
-    const { ChallengeProof, getAddressDetailsAction, uid } = this.props;
+  fetchCurrentUser() {
+    const apollo = this.props.client;
+    const query = {
+      query: fetchUserQuery,
+      fetchPolicy: 'network-only',
+    };
 
-    // reputation points for first-time commenters
-    // are not available in the previous endpoint
-    getAddressDetailsAction(uid);
+    apollo.query(query).then(response => {
+      const { currentUser } = response.data;
+      this.setState({ currentUser });
+    });
+  }
+
+  fetchThreads(vars) {
+    const apollo = this.props.client;
+    const variables = this.getQueryVariables(vars);
+
+    apollo
+      .query({
+        fetchPolicy: 'network-only',
+        query: fetchThreadsQuery,
+        variables,
+      })
+      .then(result => {
+        const threads = result.data.commentThreads;
+        this.setState({ threads });
+      });
+  }
+
+  fetchUserPoints = threads => {
+    const { userAddresses } = this.state;
+    const { ChallengeProof, uid } = this.props;
+
+    // reputation points for first-time commenters are not available in the previous endpoint
+    // so we need to call this to update the current user's data in case they haven't commented yet
+    this.props.getAddressDetails(uid);
 
     if (!ChallengeProof.data) {
       return;
@@ -147,7 +199,7 @@ class CommentThread extends React.Component {
 
     const previousUniqueAddressesCount = userAddresses.length;
     const newUniqueAddresses = CommentsApi.getUniqueUsers(userAddresses, threads);
-    if (threads.length && previousUniqueAddressesCount === newUniqueAddresses.length) {
+    if (previousUniqueAddressesCount === newUniqueAddresses.length) {
       return;
     }
 
@@ -169,73 +221,93 @@ class CommentThread extends React.Component {
       });
   };
 
-  loadMoreComments = () => {
-    const { lastSeenId, sortBy } = this.state;
-    this.fetchThreads({
-      last_seen_id: lastSeenId,
-      sort_by: sortBy,
+  loadMore = endCursor => {
+    const { sortBy, threads } = this.state;
+    const apollo = this.props.client;
+    const variables = this.getQueryVariables({
+      endCursor,
+      sortBy,
     });
+
+    apollo
+      .query({
+        fetchPolicy: 'network-only',
+        query: fetchThreadsQuery,
+        variables,
+      })
+      .then(result => {
+        const data = result.data.commentThreads;
+        threads.edges = threads.edges.concat(data.edges);
+        threads.hasNextPage = data.hasNextPage;
+        threads.endCursor = data.endCursor;
+        this.setState({ threads });
+      });
   };
 
-  renderThreads = threads => {
-    const { uid } = this.props;
-    const { sortBy, userPoints } = this.state;
+  renderThreads(threadList) {
+    const { currentUser, userPoints } = this.state;
 
-    return threads.data.map(thread => (
-      <ParentThread
-        key={thread.id}
-        fetchUserPoints={this.fetchUserPoints}
-        setError={this.setError}
-        sortBy={sortBy}
-        thread={thread}
-        uid={uid}
-        userPoints={userPoints}
-      />
-    ));
-  };
+    return threadList.edges.map(thread => {
+      const comment = thread.node;
+
+      return (
+        <ParentThread
+          currentUser={currentUser}
+          key={comment.id}
+          queryVariables={this.getQueryVariables()}
+          setCommentingPrivileges={this.setCommentingPrivileges}
+          setError={this.setError}
+          thread={comment}
+          userPoints={userPoints}
+        />
+      );
+    });
+  }
 
   render() {
-    const { rootCommentId } = this.props;
-    const { threads } = this.state;
-    const noComments = !rootCommentId || !threads || threads.data.length === 0;
+    const { currentUser, sortBy, threads } = this.state;
+    const { canComment } = currentUser;
+    const hasComments = threads !== null && threads.edges.length > 0;
 
     return (
-      <ThreadedComments>
+      <div>
         <Title>Discussions</Title>
-        <CommentTextEditor addComment={this.addThread} />
-        {noComments && <p>There are no comments to show.</p>}
-        {!noComments && (
-          <div>
+        <CommentTextEditor addComment={this.addThread} canComment={canComment} />
+        {!hasComments && <p>There are no comments to show.</p>}
+        {hasComments && (
+          <section>
             <CommentFilter>
               <Select
                 small
                 id="comment-filter"
                 items={this.FILTERS}
+                value={sortBy}
                 onChange={this.handleFilterChange}
               />
             </CommentFilter>
             <CommentList>{this.renderThreads(threads)}</CommentList>
-          </div>
+            {threads.hasNextPage && (
+              <Button kind="text" xsmall onClick={() => this.loadMore(threads.endCursor)}>
+                Load more comments...
+              </Button>
+            )}
+          </section>
         )}
-        {threads && threads.hasMore && (
-          <Button kind="text" xsmall onClick={() => this.loadMoreComments()}>
-            Load more comments...
-          </Button>
-        )}
-      </ThreadedComments>
+      </div>
     );
   }
 }
 
-const { func, number, object, string } = PropTypes;
+const { func, object, string } = PropTypes;
 
 CommentThread.propTypes = {
   addressDetails: object,
   ChallengeProof: object,
-  getAddressDetailsAction: func.isRequired,
-  getDaoProposalDetailsActions: func.isRequired,
+  client: object.isRequired,
+  getAddressDetails: func.isRequired,
+  getDaoProposalDetails: func.isRequired,
   proposalId: string.isRequired,
-  rootCommentId: number,
+  rootCommentId: object,
   showHideAlert: func.isRequired,
   uid: string,
 };
@@ -245,22 +317,25 @@ CommentThread.defaultProps = {
     reputationPoint: 0,
     quarterPoint: 0,
   },
+
   ChallengeProof: undefined,
-  rootCommentId: 0,
+  rootCommentId: undefined,
   uid: '',
 };
 
 const mapStateToProps = ({ daoServer, infoServer }) => ({
   addressDetails: infoServer.AddressDetails.data,
   ChallengeProof: daoServer.ChallengeProof,
-  rootCommentId: daoServer.ProposalDaoDetails.data.commentId,
+  rootCommentId: daoServer.ProposalDaoDetails,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getAddressDetailsAction: getAddressDetails,
-    getDaoProposalDetailsActions: getDaoProposalDetails,
-    showHideAlert,
-  }
-)(CommentThread);
+export default withApollo(
+  connect(
+    mapStateToProps,
+    {
+      getAddressDetails,
+      getDaoProposalDetails,
+      showHideAlert,
+    }
+  )(CommentThread)
+);

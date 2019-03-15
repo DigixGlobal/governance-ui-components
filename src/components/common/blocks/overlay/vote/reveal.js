@@ -8,8 +8,8 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
-  NoteContainer,
-  StatusNote,
+  Notifications,
+  Message,
   ErrorCaption,
 } from '@digix/gov-ui/components/common/common-styles';
 
@@ -72,7 +72,7 @@ class RevealVote extends React.Component {
     const {
       web3Redux,
       addresses,
-      proposal: { currentVotingRound, proposalId },
+      proposal: { currentVotingRound, proposalId, isSpecial },
     } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -97,8 +97,10 @@ class RevealVote extends React.Component {
     const payload = {
       address: sourceAddress,
       contract,
-      func: contract.revealVoteOnProposal,
-      params: [proposalId, currentVotingRound, voteObject.vote, voteObject.salt],
+      func: isSpecial ? contract.revealVoteOnSpecialProposal : contract.revealVoteOnProposal,
+      params: isSpecial
+        ? [proposalId, voteObject.vote, voteObject.salt]
+        : [proposalId, currentVotingRound, voteObject.vote, voteObject.salt],
       onFailure: this.setError,
       onFinally: txHash => this.onTransactionAttempt(txHash),
       onSuccess: txHash => this.onTransactionSuccess(txHash),
@@ -159,15 +161,18 @@ class RevealVote extends React.Component {
         </p>
         {error && <ErrorCaption>{error}</ErrorCaption>}
         {uploaded && !error && (
-          <NoteContainer>
-            <StatusNote>
-              Your vote is <span>{voteObject.vote ? 'YES' : 'NO'}</span>
-            </StatusNote>
+          <Notifications column info centered>
+            <Message title uppercase>
+              Your vote is
+              <br />
+              <span style={{ fontSize: '3.8rem' }}>{voteObject.vote ? 'YES' : 'NO'}</span>
+            </Message>
+            <br />
             <p>
               Your vote is only valid and counted as activity on the DigixDAO after your
               confirmation.
             </p>
-          </NoteContainer>
+          </Notifications>
         )}
         {!uploaded && (
           <Button

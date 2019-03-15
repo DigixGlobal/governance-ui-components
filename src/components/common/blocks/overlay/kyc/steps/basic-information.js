@@ -209,7 +209,7 @@ class KycOverlayBasicInformation extends KycFormStep {
           {this.renderField('incomeRange')}
         </FieldGroup>
 
-        <FieldGroup>
+        <FieldGroup upload>
           <FieldItem>
             <FieldGroup column>
               {this.renderField('identificationProofType')}

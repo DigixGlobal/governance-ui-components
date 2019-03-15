@@ -25,7 +25,6 @@ import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
-import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 const network = SpectrumConfig.defaultNetworks[0];
@@ -46,22 +45,20 @@ class ChangeFundingOverlay extends React.Component {
   }
 
   componentWillMount = () => {
-    const { proposalId, proposalDetails } = this.props;
-    if (proposalId) this.props.getProposalDetails(proposalId);
+    const { proposalDetails } = this.props;
     const { form } = this.state;
     if (proposalDetails) {
       if (!proposalDetails.isFundingChanged) {
         const currentVersion =
           proposalDetails.proposalVersions[proposalDetails.proposalVersions.length - 1];
         form.expectedReward = currentVersion.finalReward;
-
         form.milestoneFundings = currentVersion.milestoneFundings;
-        this.setState({ form: { ...form } });
       } else {
         const { changedFundings } = proposalDetails;
         form.expectedReward = changedFundings.finalReward.updated;
         form.milestoneFundings = changedFundings.milestones.map(ms => ms.updated);
       }
+      this.setState({ form: { ...form } });
     }
   };
 
@@ -283,17 +280,15 @@ class ChangeFundingOverlay extends React.Component {
   }
 }
 
-const { array, func, object, string } = PropTypes;
+const { array, func, object } = PropTypes;
 
 ChangeFundingOverlay.propTypes = {
   addresses: array.isRequired,
   daoConfig: object.isRequired,
   ChallengeProof: object.isRequired,
   history: object.isRequired,
-  proposalId: string.isRequired,
   proposalDetails: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
-  getProposalDetails: func.isRequired,
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -304,7 +299,6 @@ ChangeFundingOverlay.propTypes = {
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   daoConfig: state.infoServer.DaoConfig,
-  proposalDetails: state.infoServer.ProposalDetails.data,
   addresses: getAddresses(state),
 });
 
@@ -315,7 +309,6 @@ export default web3Connect(
       sendTransactionToDaoServer,
       showHideAlertAction: showHideAlert,
       showRightPanelAction: showRightPanel,
-      getProposalDetails,
       showTxSigningModal,
     }
   )(ChangeFundingOverlay)

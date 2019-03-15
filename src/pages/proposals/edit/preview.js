@@ -12,12 +12,11 @@ import {
   ProjectSummary,
   Header,
   Title,
-  FundingSummary,
-  SummaryInfo,
+  FundingInfo,
   InfoItem,
   ItemTitle,
   Data,
-} from '../style';
+} from '@digix/gov-ui/pages/proposals/style';
 
 const getTotalFunds = source =>
   source.reduce((acc, currentValue) => Number(acc) + Number(currentValue.fund), 0);
@@ -35,52 +34,54 @@ class Preview extends React.Component {
 
     return (
       <ProposalsWrapper>
-        <Button primary ghost onClick={onContinueEditing}>
+        <Button primary onClick={onContinueEditing}>
           Continue Editing
         </Button>
         <ProjectSummary>
           <Header>
             <div>
-              <Button kind="tag" icon>
+              <Button kind="tag" showIcon>
                 IDEA
               </Button>
               <Title primary>{form.title}</Title>
             </div>
           </Header>
-          <FundingSummary>
-            <SummaryInfo>
-              <InfoItem>
-                <ItemTitle>Submitted By</ItemTitle>
-                <Data>
-                  <span>{renderDisplayName('Sidebar-DisplayName')}</span>
-                </Data>
-              </InfoItem>
-              <InfoItem>
-                <ItemTitle>Funding</ItemTitle>
-                <Data>
+          <FundingInfo>
+            <InfoItem column>
+              <ItemTitle>Submitted By</ItemTitle>
+              <Data>
+                <span>{renderDisplayName('Sidebar-DisplayName')}</span>
+              </Data>
+            </InfoItem>
+
+            <InfoItem outlined>
+              <ItemTitle>Milestones</ItemTitle>
+              <Data>
+                <span data-digix="milestone-label">
+                  {form.milestones ? form.milestones.length : 0}
+                </span>
+              </Data>
+            </InfoItem>
+
+            <InfoItem outlined>
+              <ItemTitle>Funding</ItemTitle>
+              <Data>
+                <div className="milestones">
                   <span data-digix="funding-amount-label">{funding}</span>
-                  {` ETH`}
-                </Data>
-              </InfoItem>
-              <InfoItem>
-                <ItemTitle>Milestones</ItemTitle>
-                <Data>
-                  <span data-digix="milestone-label">
-                    {form.milestones ? form.milestones.length : 0}
-                  </span>
-                </Data>
-              </InfoItem>
-              <InfoItem>
-                <ItemTitle>Reward</ItemTitle>
-                <Data>
+                  {` ETH `} <span className="label">Milestones</span>
+                </div>
+                <div className="reward">
                   <span data-digix="reward-amount-label">{reward} </span>
-                  ETH
-                </Data>
-              </InfoItem>
-            </SummaryInfo>
-          </FundingSummary>
+                  ETH{` `}
+                  <span className="label">Reward</span>
+                </div>
+              </Data>
+            </InfoItem>
+          </FundingInfo>
         </ProjectSummary>
+
         <ProjectDetails project={form} preview />
+
         <Milestones
           preview
           milestones={form.milestones || []}

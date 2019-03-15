@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
@@ -11,25 +12,45 @@ import {
 
 class ClaimApprovalOverlay extends React.Component {
   render() {
+    const { total, current, onClaim } = this.props;
+    const enableClaim = current > 0 && current <= total && onClaim;
+    const progresss = (current / total) * 100;
     return (
       <IntroContainer>
         <Header uppercase>Claim Approval</Header>
 
-        <Notifications info>
+        <Notifications info centered style={{ display: 'block' }}>
           Please note that there was a high volume of users who participated in this approval. As
           such, we have to split this claim into
-          <span className="highlight">3 Transactions</span>
-          <ProgressBar variant="determinate" value={33} />
+          <span className="highlight">{total} Transactions</span>
+          <ProgressBar color="secondary" variant="determinate" value={progresss} />
         </Notifications>
 
-        <Button secondary fluid large onClick={this.handleButtonClick}>
-          Confirming Claim [1/3]
+        <Button
+          secondary
+          disabled={!enableClaim}
+          data-digix="Confirm-Claim-Button"
+          fluid
+          large
+          onClick={onClaim}
+        >
+          Confirming Claim [{current}/{total}]
         </Button>
       </IntroContainer>
     );
   }
 }
 
-ClaimApprovalOverlay.propTypes = {};
+const { number, func } = PropTypes;
+ClaimApprovalOverlay.propTypes = {
+  total: number,
+  current: number,
+  onClaim: func.isRequired,
+};
+
+ClaimApprovalOverlay.defaultProps = {
+  total: 0,
+  current: 0,
+};
 
 export default ClaimApprovalOverlay;

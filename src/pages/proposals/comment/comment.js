@@ -3,23 +3,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import CommentAuthor from '@digix/gov-ui/pages/proposals/comment/author';
+import { CommentsApi } from '@digix/gov-ui/api/comments';
+import { hideComment, unhideComment } from '@digix/gov-ui/api/graphql-queries/comments';
 import { Icon } from '@digix/gov-ui/components/common/elements/index';
+import { initializePayload } from '@digix/gov-ui/api';
+import { withApollo } from 'react-apollo';
+
 import {
+  CommentListItem,
   ActionBar,
+  ButtonGroup,
+  Content,
   CommentPost,
   ActionCommentButton,
 } from '@digix/gov-ui/pages/proposals/comment/style';
-import { CommentsApi } from '@digix/gov-ui/api/comments';
-import { initializePayload } from '@digix/gov-ui/api';
 
 class Comment extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      comment: this.props.comment,
+      comment: props.comment,
     };
 
-    this.DELETE_MESSAGE = 'This message has been removed by the user.';
+    this.DELETE_MESSAGE = 'This message has been removed.';
   }
 
   deleteComment() {
@@ -27,6 +33,7 @@ class Comment extends React.Component {
     const { ChallengeProof, setError } = this.props;
 
     comment.body = null;
+    this.props.hideEditor();
     this.setState({ comment });
 
     if (ChallengeProof.data) {
@@ -36,6 +43,36 @@ class Comment extends React.Component {
       });
     }
   }
+
+  showComment = (show, id) => {
+    const { comment } = this.state;
+    const apollo = this.props.client;
+    const mutation = show ? unhideComment : hideComment;
+    const mutationName = show ? 'unbanComment' : 'banComment';
+
+    if (!show) {
+      this.props.hideEditor();
+    }
+
+    apollo
+      .mutate({
+        mutation,
+        variables: { id },
+      })
+      .then(response => {
+        const { errors } = response.data[mutationName];
+        if (errors.length > 0) {
+          this.props.setError(errors.message[0]);
+          return;
+        }
+
+        comment.isBanned = !show;
+        this.setState({ comment });
+      })
+      .catch(() => {
+        this.props.setError(CommentsApi.ERROR_MESSAGES[mutation]);
+      });
+  };
 
   toggleLike = () => {
     const { comment } = this.state;
@@ -54,68 +91,126 @@ class Comment extends React.Component {
     }
   };
 
-  render() {
-    const { toggleEditor, uid, userPoints } = this.props;
+  renderForumAdminActionBar() {
+    if (!this.props.currentUser.isForumAdmin) {
+      return null;
+    }
+
     const { comment } = this.state;
-    const { body, liked, likes, user } = comment;
-    const isAuthor = uid === user.address;
-    const isDeleted = !body;
+    const { id, isBanned } = comment;
+
+    if (isBanned) {
+      return (
+        <ButtonGroup first>
+          <ActionCommentButton kind="text" admin small onClick={() => this.showComment(true, id)}>
+            <Icon kind="restore" />
+            <span>Restore</span>
+          </ActionCommentButton>
+        </ButtonGroup>
+      );
+    }
 
     return (
-      <article className="comment">
+      <ButtonGroup>
+        <ActionCommentButton kind="text" admin small onClick={() => this.showComment(false, id)}>
+          <Icon kind="delete" />
+          <span>Remove</span>
+        </ActionCommentButton>
+      </ButtonGroup>
+    );
+  }
+
+  renderActionBar() {
+    if (this.state.comment.isBanned) {
+      return null;
+    }
+
+    const { currentUser, toggleEditor } = this.props;
+    const { comment } = this.state;
+    const { body, liked, likes, user } = comment;
+    const { canComment, isForumAdmin } = currentUser;
+
+    const isDeleted = !body;
+    const canReply = canComment || (isForumAdmin && !isDeleted);
+    const isAuthor = user && currentUser.address === user.address;
+    const likeLabel = likes === 1 ? 'Like' : 'Likes';
+
+    return (
+      <ButtonGroup first>
+        {canReply && (
+          <ActionCommentButton kind="text" small onClick={() => toggleEditor()}>
+            <Icon kind="reply" />
+            <span>Reply</span>
+          </ActionCommentButton>
+        )}
+        <ActionCommentButton kind="text" small active={liked} onClick={() => this.toggleLike()}>
+          <Icon active={liked} kind="like" />
+          <span>
+            {likes}&nbsp;{likeLabel}
+          </span>
+        </ActionCommentButton>
+        {isAuthor && (
+          <ActionCommentButton kind="text" small onClick={() => this.deleteComment()}>
+            <Icon kind="trash" />
+            <span>Trash</span>
+          </ActionCommentButton>
+        )}
+      </ButtonGroup>
+    );
+  }
+
+  render() {
+    const { currentUser, userPoints } = this.props;
+    const { comment } = this.state;
+    const { body, isBanned, user } = comment;
+    const { isForumAdmin } = currentUser;
+
+    const isDeleted = !body;
+    const isHidden = isForumAdmin && isBanned;
+    const showActionBar = !isDeleted && (isForumAdmin || !isHidden);
+    const commentMessage = isDeleted ? this.DELETE_MESSAGE : body;
+
+    return (
+      <CommentListItem>
         <CommentAuthor hide={isDeleted} user={user} userPoints={userPoints} />
-        <CommentPost deleted={isDeleted}>
-          {body || this.DELETE_MESSAGE}
-          {body && (
+        <CommentPost isHidden={isHidden} deleted={isDeleted}>
+          <Content>{commentMessage}</Content>
+          {showActionBar && (
             <ActionBar>
-              <ActionCommentButton kind="text" small onClick={() => toggleEditor()}>
-                <Icon kind="reply" />
-                <span>Reply</span>
-              </ActionCommentButton>
-              <ActionCommentButton
-                kind="text"
-                small
-                active={liked}
-                onClick={() => this.toggleLike()}
-              >
-                <Icon active={liked} kind="like" />
-                <span>{likes}&nbsp;Likes</span>
-              </ActionCommentButton>
-              {isAuthor && (
-                <ActionCommentButton kind="text" small onClick={() => this.deleteComment()}>
-                  <Icon kind="trash" />
-                  <span>Trash</span>
-                </ActionCommentButton>
-              )}
+              {this.renderActionBar()}
+              {this.renderForumAdminActionBar()}
             </ActionBar>
           )}
         </CommentPost>
-      </article>
+      </CommentListItem>
     );
   }
 }
 
-const { func, object, string } = PropTypes;
+const { func, object } = PropTypes;
 
 Comment.propTypes = {
+  client: object.isRequired,
   comment: object.isRequired,
+  currentUser: object.isRequired,
   ChallengeProof: object,
+  hideEditor: func.isRequired,
   setError: func.isRequired,
-  toggleEditor: func,
-  uid: string.isRequired,
+  toggleEditor: func.isRequired,
   userPoints: object.isRequired,
 };
 
 Comment.defaultProps = {
   ChallengeProof: undefined,
-  toggleEditor: undefined,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
 });
 
-export default connect(
-  mapStateToProps,
-  {}
-)(Comment);
+export default withApollo(
+  connect(
+    mapStateToProps,
+    {}
+  )(Comment)
+);

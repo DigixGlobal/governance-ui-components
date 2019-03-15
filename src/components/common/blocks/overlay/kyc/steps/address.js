@@ -126,11 +126,13 @@ class KycOverlayAddress extends KycFormStep {
           {this.renderField('state', null, { col4: true })}
           {this.renderField('postalCode', null, { col4: true })}
         </FieldGroup>
-        <FieldGroup>
+        <FieldGroup upload>
           <FieldItem>
             <FieldGroup column>
               {this.renderField('residenceProofType')}
-              {this.renderField('residenceProofDataUrl', { caption: 'Residence Proof' })}
+              {this.renderField('residenceProofDataUrl', {
+                caption: 'Residence Proof',
+              })}
             </FieldGroup>
           </FieldItem>
           <FieldItem>

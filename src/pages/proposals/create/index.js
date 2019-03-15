@@ -22,14 +22,23 @@ import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 
-import Details from '../forms/details';
-import Milestones from '../forms/milestones';
-import Multimedia from '../forms/multimedia';
-import Overview from '../forms/overview';
-import Preview from './preview';
-import Confirm from '../confirm';
+import Details from '@digix/gov-ui/pages/proposals/forms/details';
+import Milestones from '@digix/gov-ui/pages/proposals/forms/milestones';
+import Multimedia from '@digix/gov-ui/pages/proposals/forms/multimedia';
+import Overview from '@digix/gov-ui/pages/proposals/forms/overview';
+import Preview from '@digix/gov-ui/pages/proposals/create/preview';
+import Confirm from '@digix/gov-ui/pages/proposals/confirm';
 
-import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
+import {
+  CreateWrapper,
+  TabPanel,
+  MenuItem,
+  Header,
+  LeftCol,
+  RightCol,
+  Heading,
+  PreviewButton,
+} from '@digix/gov-ui/pages/proposals/create/style';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 
@@ -125,7 +134,7 @@ class CreateProposal extends React.Component {
 
   createAttestation = () => {
     const { form } = this.state;
-    const { title, description, details, milestones, proofs } = form;
+    const { title, description, details, finalReward, milestones, proofs } = form;
 
     return dijix
       .create('attestation', {
@@ -134,6 +143,7 @@ class CreateProposal extends React.Component {
           description,
           details,
           milestones,
+          finalReward,
         },
         proofs: proofs && proofs.length > 0 ? [...proofs] : undefined,
       })
@@ -274,27 +284,31 @@ class CreateProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button tertiary onClick={this.handleShowPreview} data-digix="Create-Proposal-Preview">
+            <PreviewButton
+              tertiary
+              onClick={this.handleShowPreview}
+              data-digix="Create-Proposal-Preview"
+            >
               Preview
-            </Button>
+            </PreviewButton>
             <Button
-              disabled={!canMovePrevious}
               primary
+              disabled={!canMovePrevious}
               onClick={this.onPreviousButtonClick}
               data-digix="Create-Proposal-Previous"
             >
               Previous
             </Button>
-            {canMoveNext && (
-              <Button
-                disabled={!canMoveNext}
-                primary
-                onClick={this.onNextButtonClick}
-                data-digix="Create-Proposal-Next"
-              >
-                Next
-              </Button>
-            )}
+
+            <Button
+              primary
+              disabled={!canMoveNext}
+              onClick={this.onNextButtonClick}
+              data-digix="Create-Proposal-Next"
+            >
+              Next
+            </Button>
+
             {!canMoveNext && validForm && (
               <Button
                 primary

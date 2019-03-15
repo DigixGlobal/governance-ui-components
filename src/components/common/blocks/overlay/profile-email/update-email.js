@@ -11,7 +11,7 @@ class UpdateEmailButton extends React.Component {
 
     return (
       <Button
-        primary
+        secondary
         fluid
         large
         disabled={disableButton}
@@ -27,12 +27,13 @@ class UpdateEmailButton extends React.Component {
 const { bool, func, string } = PropTypes;
 
 UpdateEmailButton.propTypes = {
-  changeEmail: func.isRequired,
+  changeEmail: func,
   disable: bool.isRequired,
   email: string,
 };
 
 UpdateEmailButton.defaultProps = {
+  changeEmail: undefined,
   email: undefined,
 };
 

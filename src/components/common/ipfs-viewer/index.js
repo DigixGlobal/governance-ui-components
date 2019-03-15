@@ -13,11 +13,9 @@ export default class IpfsViewer extends Component {
   static propTypes = {
     renderResolved: PropTypes.func.isRequired,
     renderLoading: PropTypes.object,
-    hashes: PropTypes.array,
   };
   static defaultProps = {
     renderLoading: undefined,
-    hashes: undefined,
   };
 
   constructor(props) {
@@ -25,13 +23,13 @@ export default class IpfsViewer extends Component {
     this.state = { ...initialState };
   }
 
-  componentDidMount() {
-    const { hashes } = this.props;
+  componentWillReceiveProps = nextProps => {
+    const { hashes } = nextProps;
     this._isMounted = true;
     if (this._isMounted) {
       if (hashes && hashes.length > 0) this.fetchImages(this.props);
     }
-  }
+  };
 
   componentWillUnmount = () => {
     this._isMounted = false;

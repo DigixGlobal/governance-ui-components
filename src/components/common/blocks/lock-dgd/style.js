@@ -26,15 +26,15 @@ export const CloseButtonWithHeader = styled.div`
 export const TransparentOverlay = styled.div`
   background-color: #000;
   opacity: 0.75;
-  width: 75%;
+  width: calc(100% - 480px);
   transition: ${props => props.theme.transition};
 `;
 
 export const WalletContainer = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
   padding: 3rem;
-
-  width: 25%;
+  width: 480px;
+  max-width: 480px;
 `;
 
 export const InnerContainer = styled.div`

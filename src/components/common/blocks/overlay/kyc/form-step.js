@@ -103,8 +103,9 @@ class KycFormStep extends React.Component {
 
     const inputElement = this.getInputElement(fieldName);
     const date = new Date(inputElement.value);
-    const dateAt18 = new Date(date.getFullYear() + 18, date.getMonth(), date.getDay());
-    const isValid = dateAt18 <= Date.now();
+    const dateAt18 = new Date(date.getFullYear() + 18, date.getMonth(), date.getDate());
+    const dateNow = new Date();
+    const isValid = dateAt18 <= dateNow;
 
     return {
       isValid,

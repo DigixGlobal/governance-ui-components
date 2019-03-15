@@ -10,9 +10,7 @@ export const Title = styled(H1)`
   font-family: 'Futura PT Book', sans-serif;
 `;
 
-export const SummaryReport = styled.div`
-  ${Card};
-`;
+export const SummaryReport = styled(Card)``;
 export const ReportItem = styled.div``;
 
 export const CTAContainer = styled.div`
@@ -80,4 +78,8 @@ export const FieldItemKYC = styled(FieldItem)`
     display: flex;
     align-items: flex-end;
   }
+`;
+
+export const FieldImg = styled.img`
+  width: 100%;
 `;

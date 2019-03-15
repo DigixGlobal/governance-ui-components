@@ -1,49 +1,92 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/';
-import { WalletWrapper, AddressLabel } from '@digix/gov-ui/components/common/blocks/navbar/style';
+import { Accordion, Button, Icon } from '@digix/gov-ui/components/common/elements/index';
+import {
+  WalletWrapper,
+  AddressButton,
+  LockDGDButton,
+  Dropdown,
+  DropdownMenu,
+  MenuItem,
+} from '@digix/gov-ui/components/common/blocks/navbar/style';
+
 import {
   showHideLockDgdOverlay,
   showHideWalletOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 class WalletButton extends React.Component {
+  state = {
+    open: false,
+  };
+
   onWalletClick = () => {
     this.props.showHideWalletOverlay(true);
   };
 
+  showDropdownMenu = () => {
+    this.setState(state => ({
+      open: !state.open,
+    }));
+  };
+
+  showLockDgdOverlay = () => {
+    this.props.showHideLockDgd(true, null, 'Header');
+  };
+
   render() {
-    const { defaultAddress, showHideLockDgd, canLockDgd } = this.props;
+    const { defaultAddress, canLockDgd } = this.props;
 
     return (
       <WalletWrapper>
         {!defaultAddress && (
-          <Button
-            kind="round"
-            primary
-            small
-            data-digix="Header-LoadWallet"
-            onClick={() => this.onWalletClick()}
-          >
+          <Button primary small data-digix="Header-LoadWallet" onClick={() => this.onWalletClick()}>
             Load Wallet
           </Button>
         )}
         {canLockDgd && canLockDgd.show && (
-          <Button
-            kind="round"
+          <LockDGDButton
             primary
-            small
+            xsmall
             data-digix="Header-LockDgd"
-            onClick={() => showHideLockDgd(true)}
+            onClick={() => this.showLockDgdOverlay()}
           >
             Lock DGD
-          </Button>
+          </LockDGDButton>
         )}
         {defaultAddress && (
-          <AddressLabel data-digix="Header-Address">{defaultAddress.address}</AddressLabel>
+          <Fragment>
+            <Dropdown>
+              <AddressButton
+                kind="capsule"
+                xsmall
+                data-digix="Header-Address"
+                onClick={() => this.showDropdownMenu()}
+              >
+                <span>{defaultAddress.address}</span>
+                <Icon kind="arrow" />
+              </AddressButton>
+
+              {this.state.open && (
+                <DropdownMenu>
+                  <MenuItem>
+                    <Button
+                      kind="text"
+                      primary
+                      small
+                      data-digix="Header-LoadWallet"
+                      onClick={() => window.location.reload()}
+                    >
+                      Logout
+                    </Button>
+                  </MenuItem>
+                </DropdownMenu>
+              )}
+            </Dropdown>
+          </Fragment>
         )}
       </WalletWrapper>
     );

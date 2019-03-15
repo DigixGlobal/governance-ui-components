@@ -1,59 +1,37 @@
 import { actions } from './actions';
 
+const defaultProps = { history: [], data: undefined, error: null, fetching: null };
+
 const defaultState = {
   Challenge: {
-    history: [],
-    data: undefined,
-    error: null,
-    fetching: null,
+    ...defaultProps,
   },
   ChallengeProof: {
-    history: [],
-    data: undefined,
-    error: null,
-    fetching: null,
+    ...defaultProps,
   },
   AddTransaction: {
-    history: [],
-    data: undefined,
-    error: null,
-    fetching: null,
+    ...defaultProps,
   },
   ProposalDaoDetails: {
-    history: [],
-    data: {},
-    error: null,
-    fetching: null,
+    ...defaultProps,
   },
   Transactions: {
-    history: [],
-    data: {},
-    error: null,
-    fetching: null,
+    ...defaultProps,
   },
   TransactionStatus: {
-    history: [],
-    data: [],
-    error: null,
-    fetching: null,
+    ...defaultProps,
   },
   UserProposalLike: {
-    history: [],
-    data: undefined,
-    error: null,
-    fetching: null,
+    ...defaultProps,
   },
   UserLikedProposals: {
-    history: [],
-    data: undefined,
-    error: null,
-    fetching: null,
+    ...defaultProps,
   },
   ProposalLikes: {
-    history: [],
-    data: undefined,
-    error: null,
-    fetching: null,
+    ...defaultProps,
+  },
+  PendingTransactions: {
+    ...defaultProps,
   },
 };
 
@@ -169,6 +147,24 @@ export default function(state = defaultState, action) {
                 },
               ]
                 .concat(state.Transactions.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_PENDING_TRANSACTIONS:
+      return {
+        ...state,
+        PendingTransactions: {
+          ...state.PendingTransactions,
+          ...action.payload,
+          history: !action.payload
+            ? state.PendingTransactions.history
+            : [
+                {
+                  ...action.payload,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.PendingTransactions.history)
                 .slice(0, 100),
         },
       };

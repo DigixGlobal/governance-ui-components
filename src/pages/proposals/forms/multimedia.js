@@ -8,7 +8,13 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import { dijixImageConfig, dijixPdfConfig, dijix } from '@digix/gov-ui/utils/dijix';
 import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
 
-import { Fieldset, FormItem, Label, MediaUploader, ImageHolder, LeftCol, RightCol } from './style';
+import {
+  Fieldset,
+  FormItem,
+  Label,
+  MediaUploader,
+  ImageHolder,
+} from '@digix/gov-ui/pages/proposals/forms/style';
 
 class Multimedia extends React.Component {
   constructor(props) {
@@ -130,7 +136,7 @@ class Multimedia extends React.Component {
         <FormItem>
           <Label>Upload Project Images</Label>
           <MediaUploader>
-            <LeftCol>
+            <div>
               <Button
                 kind="upload"
                 accept="image/*"
@@ -147,8 +153,8 @@ class Multimedia extends React.Component {
                   Image must be in JPEG or PNG format &amp; file size must be lesser than 10MB.
                 </div>
               </Button>
-            </LeftCol>
-            <RightCol>
+            </div>
+            <div>
               <ImageHolder>
                 {images &&
                   images.map(image => <img key={image.name} alt={image.name} src={image.src} />)}
@@ -161,7 +167,7 @@ class Multimedia extends React.Component {
                   />
                 )}
               </ImageHolder>
-            </RightCol>
+            </div>
           </MediaUploader>
         </FormItem>
       </Fieldset>

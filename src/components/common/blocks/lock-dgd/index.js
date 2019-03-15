@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import PropTypes, { array } from 'prop-types';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
@@ -26,6 +26,7 @@ import Button from '@digix/gov-ui/components/common/elements/buttons';
 import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import LogLockDgd from '@digix/gov-ui/analytics/lockDgd';
 
 import {
   Container,
@@ -159,6 +160,7 @@ class LockDgd extends React.Component {
 
   handleCloseLockDgd = () => {
     this.setState({ error: undefined, openError: false, dgd: undefined }, () => {
+      document.body.classList.remove('modal-is-open');
       this.props.showHideLockDgdOverlay(false);
     });
   };
@@ -167,6 +169,7 @@ class LockDgd extends React.Component {
     const { dgd } = this.state;
     const addedStake = this.getStake(dgd);
     const addedDgd = Number(dgd);
+    LogLockDgd.submit(addedDgd);
 
     const {
       web3Redux,
@@ -231,6 +234,7 @@ class LockDgd extends React.Component {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      logTxn: LogLockDgd.txn,
     };
 
     return executeContractFunction(payload);
@@ -239,10 +243,7 @@ class LockDgd extends React.Component {
   renderLockDgd = () => {
     const { dgd, disableLockDgdButton, openError, error } = this.state;
     const { daoDetails } = this.props;
-
-    const currentTime = Date.now() / 1000;
-    const inLockingPhase = currentTime < Number(daoDetails.startOfMainphase);
-    const phase = inLockingPhase ? 'Staking' : 'Main';
+    const phase = inLockingPhase(daoDetails) ? 'Staking' : 'Main';
 
     const stake = truncateNumber(this.getStake(dgd));
 
@@ -296,6 +297,10 @@ class LockDgd extends React.Component {
     }
 
     this.toggleBodyOverflow(lockDgdOverlay);
+    if (!lockDgdOverlay || !lockDgdOverlay.show) {
+      return null;
+    }
+
     return (
       <Container>
         <TransparentOverlay />

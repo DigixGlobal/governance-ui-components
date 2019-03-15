@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import UpdateUsernameButton from '@digix/gov-ui/components/common/blocks/overlay/profile-username/update-username';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import {
   CallToAction,
   UsernameInput,
@@ -12,6 +13,7 @@ import {
   IntroContainer,
   OverlayHeader as Header,
   Notifications,
+  Message,
   Label,
   Hint,
 } from '@digix/gov-ui/components/common/common-styles';
@@ -21,8 +23,9 @@ class UsernameOverlay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
       error: undefined,
+      showIntro: true,
+      username: '',
     };
 
     this.USERNAME_REGEX = /^(?!user)[a-z0-9_]{2,20}$/;
@@ -62,6 +65,12 @@ class UsernameOverlay extends React.Component {
     this.setState({ username, error });
   };
 
+  showForm = () => {
+    this.setState({
+      showIntro: false,
+    });
+  };
+
   renderHint = () => {
     const { error } = this.state;
     if (!error) {
@@ -71,17 +80,36 @@ class UsernameOverlay extends React.Component {
     return <Hint error>{error}</Hint>;
   };
 
-  render() {
+  renderIntro() {
+    return (
+      <IntroContainer>
+        <Header uppercase>Assign Username</Header>
+        <Notifications info>
+          <Message>
+            You can only assign a username to yourself <span>ONCE</span>.
+          </Message>
+        </Notifications>
+        <Button
+          secondary
+          fluid
+          large
+          data-digix="UsernameOverlay-Proceed"
+          onClick={() => this.showForm()}
+        >
+          Proceed
+        </Button>
+      </IntroContainer>
+    );
+  }
+
+  renderForm() {
     const { username, error } = this.state;
     const invalidInput = !!error && error !== this.ERROR_MESSAGES.connectionError;
     const disableButton = !username || username === '' || invalidInput;
 
     return (
       <IntroContainer>
-        <Header uppercase>Set Username</Header>
-        <Notifications info>
-          You can only assign a username to yourself <span>ONCE</span>.
-        </Notifications>
+        <Header uppercase>Assign Username</Header>
         <Label>Please enter your desired user name</Label>
         <UsernameInput type="text" data-digix="SetUsername-TexBox" onChange={this.handleInput} />
         {this.renderHint()}
@@ -95,6 +123,15 @@ class UsernameOverlay extends React.Component {
         </CallToAction>
       </IntroContainer>
     );
+  }
+
+  render() {
+    const { showIntro } = this.state;
+    if (showIntro) {
+      return this.renderIntro();
+    }
+
+    return this.renderForm();
   }
 }
 

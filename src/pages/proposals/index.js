@@ -1,54 +1,46 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import CommentThread from '@digix/gov-ui/pages/proposals/comment';
 import Like from '@digix/gov-ui/components/common/elements/like';
+import Milestones from '@digix/gov-ui/pages/proposals/milestones';
+import ModeratorButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/moderators';
+import ParticipantButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/participants';
+import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
+import ProposalVersionNav from '@digix/gov-ui/pages/proposals/version-nav';
+import SpecialProjectDetails from '@digix/gov-ui/pages/proposals/special-project-details';
+import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
+import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
+import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { Message, Notifications } from '@digix/gov-ui/components/common/common-styles';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { withFetchProposal } from '@digix/gov-ui/api/graphql-queries/proposal';
+import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
+
 import {
+  clearDaoProposalDetails,
   getUserProposalLikeStatus,
   likeProposal,
   unlikeProposal,
-  clearDaoProposalDetails,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
-import { withFetchProposal } from '@digix/gov-ui/api/graphql-queries/proposal';
-
-import moment from 'moment';
-
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
-
-import PreviousVersion from '@digix/gov-ui/pages/proposals/previous';
-import NextVersion from '@digix/gov-ui/pages/proposals/next';
-
-import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
-import SpecialProjectDetails from '@digix/gov-ui/pages/proposals/special-project-details';
-import Milestones from '@digix/gov-ui/pages/proposals/milestones';
-
-import ParticipantButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/participants';
-import ModeratorButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/moderators';
-
-import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
-import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
-import CommentThread from '@digix/gov-ui/pages/proposals/comment';
-import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
-
-import { Notifications, Message } from '@digix/gov-ui/components/common/common-styles';
 import {
-  ProposalsWrapper,
-  VersionHistory,
-  ProjectSummary,
-  Header,
-  Title,
   CallToAction,
+  Data,
   FundingInfo,
+  Header,
   InfoItem,
   ItemTitle,
-  Data,
+  ProjectSummary,
+  ProposalsWrapper,
+  Title,
   WarningIcon,
 } from '@digix/gov-ui/pages/proposals/style';
-import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
 const getVotingStruct = proposal => {
   let deadline = Date.now();
@@ -571,10 +563,11 @@ class Proposal extends React.Component {
   renderNormalProposal = () => {
     const { currentVersion, versions } = this.state;
     const {
-      proposalDetails,
       addressDetails,
-      history,
       daoInfo,
+      history,
+      match,
+      proposalDetails,
       userProposalLike,
       userData,
     } = this.props;
@@ -587,28 +580,22 @@ class Proposal extends React.Component {
 
     const proposalVersion = proposal.proposalVersions[currentVersion];
     const { dijixObject } = proposalVersion;
-    const versionCount = versions ? versions.length : 0;
 
     const proposalLikes = userProposalLike.data;
     const liked = proposalLikes ? proposalLikes.liked : false;
     const likes = proposalLikes ? proposalLikes.likes : 0;
     const displayName = proposalLikes ? proposalLikes.user.displayName : '';
+
     return (
       <ProposalsWrapper>
         <ProjectSummary>
-          {versions && versions.length > 1 && (
-            <VersionHistory>
-              <PreviousVersion
-                disabled={currentVersion === 0}
-                onClick={this.handlePreviousVersionClick}
-              />
-              <div>Version {currentVersion + 1} </div>
-              <NextVersion
-                disabled={currentVersion + 1 === versionCount}
-                onClick={this.handleNextVersionClick}
-              />
-            </VersionHistory>
-          )}
+          <ProposalVersionNav
+            currentVersion={currentVersion}
+            handlePreviousVersionClick={this.handlePreviousVersionClick}
+            handleNextVersionClick={this.handleNextVersionClick}
+            match={match}
+            versions={versions}
+          />
           {this.renderPrlAlert(proposal.prl)}
           {this.renderClaimApprovalAlert()}
           {this.renderProposerDidNotPassAlert()}

@@ -103,7 +103,7 @@ class CommitVote extends React.Component {
       web3Redux,
       addresses,
       proposalId,
-      proposal: { currentVotingRound, isSpecial },
+      proposal: { currentVotingRound = 0, isSpecial },
     } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -134,7 +134,7 @@ class CommitVote extends React.Component {
       address: sourceAddress,
       contract,
       func: isSpecial ? contract.commitVoteOnSpecialProposal : contract.commitVoteOnProposal,
-      params: [proposalId, currentVotingRound, hash],
+      params: isSpecial ? [proposalId, hash] : [proposalId, currentVotingRound, hash],
       onFailure: this.setError,
       onFinally: txHash => this.onTransactionAttempt(txHash),
       onSuccess: txHash => this.onTransactionSuccess(txHash),

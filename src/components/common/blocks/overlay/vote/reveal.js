@@ -98,7 +98,9 @@ class RevealVote extends React.Component {
       address: sourceAddress,
       contract,
       func: isSpecial ? contract.revealVoteOnSpecialProposal : contract.revealVoteOnProposal,
-      params: [proposalId, currentVotingRound, voteObject.vote, voteObject.salt],
+      params: isSpecial
+        ? [proposalId, voteObject.vote, voteObject.salt]
+        : [proposalId, currentVotingRound, voteObject.vote, voteObject.salt],
       onFailure: this.setError,
       onFinally: txHash => this.onTransactionAttempt(txHash),
       onSuccess: txHash => this.onTransactionSuccess(txHash),

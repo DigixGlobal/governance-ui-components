@@ -14,6 +14,7 @@ class ClaimApprovalOverlay extends React.Component {
   render() {
     const { total, current, onClaim } = this.props;
     const enableClaim = current > 0 && current <= total && onClaim;
+    const progresss = (current / total) * 100;
     return (
       <IntroContainer>
         <Header uppercase>Claim Approval</Header>
@@ -22,7 +23,7 @@ class ClaimApprovalOverlay extends React.Component {
           Please note that there was a high volume of users who participated in this approval. As
           such, we have to split this claim into
           <span className="highlight">{total} Transactions</span>
-          <ProgressBar color="secondary" variant="determinate" value={33} />
+          <ProgressBar color="secondary" variant="determinate" value={progresss} />
         </Notifications>
 
         <Button

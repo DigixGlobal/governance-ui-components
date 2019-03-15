@@ -1,53 +1,118 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import Category from './category';
-import Icon from '../../elements/icons/Plus';
+import { connect } from 'react-redux';
+import { withApollo } from 'react-apollo';
 
-import { Button, Select } from '../../index';
+import Category from '@digix/gov-ui/components/common/blocks/filter/category.js';
+import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
+import Icon from '@digix/gov-ui/components/common/elements/icons/Plus';
+import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
+import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
+import { getUnmetProposalRequirements } from '@digix/gov-ui/utils/helpers';
+import { H1 } from '@digix/gov-ui/components/common/common-styles';
+import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { ProposalErrors } from '@digix/gov-ui/constants';
+import { Select } from '@digix/gov-ui/components/common/elements/index';
+import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
+import {
+  CreateProjectBtn,
+  Heading,
+  Filter,
+  FilterWrapper,
+  Pulldown,
+} from '@digix/gov-ui/components/common/blocks/filter/style';
 
-import { Heading, FilterWrapper, Filter, Pulldown } from './style';
-import { H1 } from '../../common-styles';
+const network = SpectrumConfig.defaultNetworks[0];
 
-export default class ProposalCardFilter extends React.Component {
+class ProposalCardFilter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.FILTERS = [
+      {
+        text: 'Latest',
+        value: 'latest',
+      },
+      {
+        text: 'Oldest',
+        value: 'oldest',
+      },
+    ];
+  }
+
+  getEthBalance() {
+    const { AddressDetails, web3Redux } = this.props;
+    const { web3 } = web3Redux.networks[network];
+    return web3.eth
+      .getBalance(AddressDetails.data.address)
+      .then(balance => parseBigNumber(balance, 18, false));
+  }
+
+  getUnmetCreateRequirements = () => {
+    const { DaoDetails, client } = this.props;
+    const dataCalls = [
+      getUnmetProposalRequirements(client, DaoDetails),
+      this.props.getDaoConfig(),
+      this.getEthBalance(),
+    ];
+
+    return Promise.all(dataCalls).then(([errors, config, ethBalance]) => {
+      const requiredCollateral = Number(this.props.DaoConfig.CONFIG_PREPROPOSAL_COLLATERAL);
+      if (ethBalance < requiredCollateral) {
+        errors.push(ProposalErrors.insufficientCollateral(requiredCollateral));
+      }
+
+      return errors;
+    });
+  };
+
   handleChange = e => {
     const { onOrderChange } = this.props;
-    if (onOrderChange) onOrderChange(e.target.value);
+    if (onOrderChange) {
+      onOrderChange(e.target.value);
+    }
   };
+
+  redirectToCreateProposal() {
+    this.getUnmetCreateRequirements().then(errors => {
+      if (errors.length) {
+        this.showErrorOverlay(errors);
+      } else {
+        this.props.history.push('/proposals/create');
+      }
+    });
+  }
+
+  showErrorOverlay(errors) {
+    this.props.showRightPanel({
+      component: <ErrorMessageOverlay errors={errors} location="Dashboard" />,
+      show: true,
+    });
+  }
+
   render() {
-    const { addressDetails } = this.props;
-    const canCreate = addressDetails && addressDetails.data.isParticipant;
+    const { AddressDetails } = this.props;
+    const canCreate = AddressDetails && AddressDetails.data.isParticipant;
     return (
       <FilterWrapper>
         <Heading>
           <H1>Projects</H1>
           {canCreate && (
-            <Link
-              to="/proposals/create"
-              href="/proposals/create"
-              style={{ display: 'inline-block' }}
+            <CreateProjectBtn
+              kind="round"
+              primary
+              showIcon
+              onClick={() => this.redirectToCreateProposal()}
             >
-              <Button
-                kind="round"
-                primary
-                showIcon
-                style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
-              >
-                <Icon kind="plus" />
-                Create
-              </Button>
-            </Link>
+              <Icon kind="plus" />
+              Create
+            </CreateProjectBtn>
           )}
         </Heading>
         <Filter>
           <Category {...this.props} />
           <Pulldown>
-            <Select
-              small
-              id="test"
-              items={[{ text: 'Latest', value: 'latest' }, { text: 'Oldest', value: 'oldest' }]}
-              onChange={this.handleChange}
-            />
+            <Select small id="test" items={this.FILTERS} onChange={this.handleChange} />
           </Pulldown>
         </Filter>
       </FilterWrapper>
@@ -58,6 +123,30 @@ export default class ProposalCardFilter extends React.Component {
 const { func, object } = PropTypes;
 
 ProposalCardFilter.propTypes = {
+  AddressDetails: object.isRequired,
+  client: object.isRequired,
+  DaoConfig: object.isRequired,
+  DaoDetails: object.isRequired,
+  getDaoConfig: func.isRequired,
+  history: object.isRequired,
   onOrderChange: func.isRequired,
-  addressDetails: object.isRequired,
+  showRightPanel: func.isRequired,
+  web3Redux: object.isRequired,
 };
+
+const mapStateToProps = ({ infoServer }) => ({
+  DaoConfig: infoServer.DaoConfig.data,
+  DaoDetails: infoServer.DaoDetails.data,
+});
+
+export default withApollo(
+  web3Connect(
+    connect(
+      mapStateToProps,
+      {
+        getDaoConfig,
+        showRightPanel,
+      }
+    )(ProposalCardFilter)
+  )
+);

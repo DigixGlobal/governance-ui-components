@@ -51,31 +51,72 @@ export const FormSection = styled.div`
   flex-direction: column;
 `;
 
-export const FieldGroup = styled.div`
-  display: flex;
-  flex-direction: ${props => (props.column ? 'column' : '')};
-  margin: 0 -1rem;
-`;
-
 export const FieldItem = styled.div`
   margin: 0 1rem 2rem 1rem;
   flex: 1;
 
   ${media.desktop``};
-  ${media.tablet``};
+  ${media.tablet`
+    margin-right: 1rem;
+  `};
   ${media.mobile``};
 `;
 
+export const FieldGroup = styled.div`
+  display: flex;
+  flex-direction: ${props => (props.column ? 'column' : '')};
+  margin: 0 -1rem;
+
+  ${media.tablet`
+    flex-direction: column;
+  `}
+
+  ${props =>
+    props.upload &&
+    css`
+      > ${FieldItem} {
+        &:first-child {
+          margin-right: 2rem;
+          flex: 0 0 500px;
+
+          ${media.tablet`
+            flex: 0 0 auto;
+            margin-right: 0;
+            width: 100%;
+        `}
+        }
+
+        &:last-child {
+          flex: 1 0 0;
+          margin-top: 5px;
+
+          ${media.tablet`
+          margin-top: 2rem;
+          width: 100%;
+        `}
+        }
+      }
+    `};
+`;
+
 export const PreviewImage = styled.div`
-  background: ${props => props.theme.backgroundPrimary.default.toString()};
-  height: 85%;
+  background: ${props => props.theme.card.border.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
-  margin: 2.5rem 0;
+  border: 1px solid ${props => props.theme.card.border.lighter.toString()};
+  height: 250px;
   max-height: ${MAX_PREVIEW_DIMENSION};
+  margin-top: 2.5rem;
 
   img {
-    max-height: inherit;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
   }
+
+  ${media.tablet`
+    margin-top: -3rem;
+  `}
 `;
 
 export const PhotoVerification = styled.div`

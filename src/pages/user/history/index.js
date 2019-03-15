@@ -40,7 +40,7 @@ class History extends React.Component {
   render() {
     const { transactions, blockConfig, challengeProof } = this.props;
     const notAuthorized = !challengeProof.data || !challengeProof.data.client;
-    const history = Array.from(transactions.data);
+    const history = transactions.data ? Array.from(transactions.data) : [];
     return (
       <div>
         <HistoryHeading>

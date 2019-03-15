@@ -1,9 +1,13 @@
 import styled, { css } from 'styled-components';
 
 export const ButtonGlobalStyles = css`
-  background: #fff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  background: ${props => props.theme.buttonDefault.background.base.toString()};
   cursor: pointer;
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Medium', sans-serif;
   font-size: 1.4rem;
   margin: 1rem;
   outline: none;
@@ -13,11 +17,12 @@ export const ButtonGlobalStyles = css`
   text-transform: uppercase;
   transition: ${props => props.theme.transition};
   width: ${props => (props.width ? '' : 'auto')};
+
   ${props =>
     props.fluid &&
     css`
       width: 100%;
-      margin: 2rem 0;
+      margin: 1rem 0;
     `};
 `;
 
@@ -27,6 +32,7 @@ export const Button = styled.button`
   ${props =>
     props.xsmall &&
     css`
+      border-width: 1px;
       padding: 0.75rem 1rem;
       font-size: 1.2rem;
       margin-right: 0.5rem;
@@ -43,6 +49,7 @@ export const Button = styled.button`
   ${props =>
     props.small &&
     css`
+      border-width: 2px;
       padding: 1rem 1.5rem;
       font-size: 1.2rem;
       margin-right: 0.5rem;
@@ -51,6 +58,7 @@ export const Button = styled.button`
   ${props =>
     props.medium &&
     css`
+      border-width: 2px;
       font-size: 1.4rem;
       padding: 1rem 1.75rem;
     `};
@@ -58,37 +66,35 @@ export const Button = styled.button`
   ${props =>
     props.large &&
     css`
-      padding: 1.5rem 3rem;
+      border-width: 2px;
+      padding: 1.25rem 3rem;
       font-size: 1.6rem;
-    `};
-
-  ${props =>
-    props.xlarge &&
-    css`
-      padding: 6rem;
-      font-size: 3.6rem;
-      font-family: 'Futura PT Heavy';
     `};
 
   ${props =>
     props.showIcon &&
     css`
-      display: flex;
-      align-items: center;
       justify-content: space-between;
+    `};
 
-      svg {
-        fill: ${props.theme.buttonBgSecondary.light.toString()};
-      }
+  ${props =>
+    props.disabled &&
+    css`
+      background: ${props.theme.buttonDisabled.background.toString()};
+      border: 2px solid ${props.theme.buttonDisabled.border.lighter.toString()};
+      box-shadow: none;
+      color: ${props.theme.buttonDisabled.textColor.light.toString()};
+      cursor: default;
 
       &:hover {
-        svg {
-          fill: ${props.theme.iconColorReverse.default.toString()};
-        }
+        background: ${props.theme.buttonDisabled.background.toString()};
+        border: 2px solid ${props.theme.buttonDisabled.border.lighter.toString()};
+        color: ${props.theme.buttonDisabled.textColor.light.toString()};
       }
     `};
 `;
 
+// Refactoring WIP: For Deletion in Sprint 5; used by Capsule
 export const ButtonStyles = css`
   background: ${props =>
     props.primary
@@ -101,11 +107,7 @@ export const ButtonStyles = css`
         ? props.theme.buttonBorderPrimary.default.toString()
         : props.theme.buttonBorderSecondary.default.toString()};
 
-  color: ${props =>
-    props.primary
-      ? props.theme.buttonTextPrimary.default.toString()
-      : props.theme.buttonTextSecondary.toString()};
-
+  color: #c00;
   text-align: center;
 
   &:hover {
@@ -121,6 +123,7 @@ export const ButtonStyles = css`
   }
 `;
 
+// used by Capusule and Labeled Icon
 export const GhostBtn = css`
   background-color: transparent;
 

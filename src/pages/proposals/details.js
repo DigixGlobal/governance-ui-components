@@ -5,17 +5,11 @@ import Modal from 'react-responsive-modal';
 
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
+import { HR } from '@digix/gov-ui/components/common/common-styles';
+
 import { dijix } from '../../utils/dijix';
 
-import {
-  DetailsContainer,
-  ShortDescription,
-  // TrackActivity,
-  Details,
-  SubTitle,
-  ImageHolder,
-  CloseButton,
-} from './style';
+import { DetailsContainer, Content, SubTitle, ImageHolder, CloseButton } from './style';
 
 export default class ProjectDetails extends React.Component {
   constructor(props) {
@@ -85,21 +79,20 @@ export default class ProjectDetails extends React.Component {
   render() {
     const { project, preview } = this.props;
     const hasImages = project.images && project.images.length > 0;
+
     return (
       <DetailsContainer>
-        <SubTitle>Short Description</SubTitle>
-        <ShortDescription>
-          {project.description
-            ? project.description
-            : 'No short description content has been created yet.'}
-        </ShortDescription>
-        {/* <TrackActivity>
-          <input type="checkbox" />
-          Track change from previous version
-        </TrackActivity> */}
-        <Details>
-          {/* TO DO: Please pass condition for below subheadings */}
-          <SubTitle>Configuration Details</SubTitle>
+        <Content>
+          <SubTitle>Short Description</SubTitle>
+          <div>
+            {project.description
+              ? project.description
+              : 'No short description content has been created yet.'}
+          </div>
+          <HR />
+        </Content>
+
+        <Content>
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
           {hasImages && (
@@ -113,7 +106,8 @@ export default class ProjectDetails extends React.Component {
             </div>
           )}
           {preview && this.renderImages(project.proofs || project.images, preview)}
-        </Details>
+          <HR />
+        </Content>
       </DetailsContainer>
     );
   }

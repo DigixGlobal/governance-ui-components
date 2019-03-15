@@ -78,6 +78,17 @@ const submitKycMutation = gql`
   }
 `;
 
+export const kycSubscription = gql`
+  subscription {
+    kycUpdated {
+      kyc {
+        id
+        status
+      }
+    }
+  }
+`;
+
 export const withFetchKycFormOptions = Component => props => (
   <Query query={fetchKycFormOptions}>
     {({ loading, error, data }) => {

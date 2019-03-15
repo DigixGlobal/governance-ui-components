@@ -1,5 +1,5 @@
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
-import { REDUX_PREFIX } from './constants';
+import { REDUX_PREFIX, CMC_ENDPOINT } from './constants';
 
 export const actions = {
   SHOW_LOCK_DGD_OVERLAY: `${REDUX_PREFIX}SHOW_LOCK_DGD_OVERLAY`,
@@ -13,10 +13,40 @@ export const actions = {
   GET_ADDRESS_MAX_ALLOWANCE: `${REDUX_PREFIX}GET_ADDRESS_MAX_ALLOWANCE`,
 
   SET_AUTHENTICATION_STATUS: `${REDUX_PREFIX}SET_AUTHENTICATION_STATUS`,
-
   SHOW_LEFT_MENU: `${REDUX_PREFIX}SHOW_LEFT_MENU`,
-
+  GET_TOKEN_USD_VALUE: `${REDUX_PREFIX}GET_TOKEN_USD_VALUE`,
 };
+
+function fetchData(url, type) {
+  return dispatch => {
+    dispatch({ type, payload: { fetching: true } });
+    return fetch(url)
+      .then(res =>
+        res
+          .json()
+          .then(json => ({ json, res }))
+          .catch(() => {
+            throw res.statusText;
+          })
+      )
+      .then(({ json, res }) => {
+        if (res.status === 200) {
+          return dispatch({
+            type,
+            payload: {
+              data: json,
+              fetching: false,
+              error: null,
+              updated: new Date(),
+            },
+          });
+        }
+
+        throw json;
+      })
+      .catch(error => dispatch({ type, payload: { fetching: false, error } }));
+  };
+}
 
 function fetchConfig(contract, config, type) {
   return dispatch => {
@@ -41,9 +71,9 @@ export function fetchConfigPreproposalCollateral(contract, config) {
   return fetchConfig(contract, config, actions.GET_CONFIG_PREPROPOSAL_COLLATERAL);
 }
 
-export function showHideLockDgdOverlay(show, onSuccess) {
+export function showHideLockDgdOverlay(show, onSuccess, source) {
   return dispatch => {
-    dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show, onSuccess } });
+    dispatch({ type: actions.SHOW_LOCK_DGD_OVERLAY, payload: { show, onSuccess, source } });
   };
 }
 
@@ -92,4 +122,8 @@ export function setAuthentationStatus(payload) {
   return dispatch => {
     dispatch({ type: actions.SET_AUTHENTICATION_STATUS, payload });
   };
+}
+
+export function getTokenUsdValue() {
+  return fetchData(CMC_ENDPOINT, actions.GET_TOKEN_USD_VALUE);
 }

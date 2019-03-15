@@ -62,6 +62,7 @@ export const ProposalLink = styled(Link)`
       props.disabled
         ? props.theme.linkDefaultColor.light.toString()
         : props.theme.linkPrimaryColor.default.toString()};
+    pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
   }
 
   &:hover {

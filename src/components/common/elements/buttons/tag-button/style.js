@@ -11,7 +11,7 @@ export const TagBtn = styled.button`
   pointer-events: none;
 
   ${props =>
-    props.fill &&
+    props.filled &&
     css`
       background: ${props.theme.buttonBgTertiaryReverse.default.toString()};
       border-radius: ${props.theme.borderRadius};
@@ -21,12 +21,12 @@ export const TagBtn = styled.button`
     `};
 
   ${props =>
-    props.icon &&
+    props.showIcon &&
     css`
     background: transparent;
     color: ${props.theme.buttonFlatColor.default.toString()};
     padding-left: 0;
-    
+
     ::before {
       content: '● ';
       color: ${props.theme.buttonFlatColor.default.toString()};

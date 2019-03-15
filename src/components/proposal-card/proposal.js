@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import _ from 'lodash';
-
 import { connect } from 'react-redux';
 
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
@@ -26,23 +24,9 @@ import {
   unlikeProposal,
   getUserProposalLikeStatus,
 } from '@digix/gov-ui/reducers/dao-server/actions';
+import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
-class Proposal extends React.Component {
-  componentWillMount = () => {
-    const { getUserProposalLikeStatusAction, ChallengeProof, details } = this.props;
-    if (ChallengeProof.data) {
-      getUserProposalLikeStatusAction({
-        proposalId: details.proposalId,
-        client: ChallengeProof.data.client,
-        token: ChallengeProof.data['access-token'],
-        uid: ChallengeProof.data.uid,
-      });
-    }
-  };
-
-  shouldComponentUpdate = (nextProps, nextState) =>
-    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
-
+class Proposal extends React.PureComponent {
   toggleLike = () => {
     const {
       ChallengeProof,
@@ -81,45 +65,49 @@ class Proposal extends React.Component {
   };
 
   render() {
-    const { details, userDetails, likes, liked, userProposalLike, displayName } = this.props;
+    const {
+      details,
+      displayName,
+      liked,
+      likes,
+      title,
+      userData,
+      userDetails,
+      userProposalLike,
+    } = this.props;
+
     const likeStatus =
       userProposalLike.data && userProposalLike.data.proposalId === details.proposalId
         ? userProposalLike.data
         : { liked, likes };
 
-    const proposalVersion = details.proposalVersions[details.proposalVersions.length - 1];
+    const proposalVersion =
+      details.proposalVersions && details.proposalVersions.length > 0
+        ? details.proposalVersions[details.proposalVersions.length - 1]
+        : undefined;
+
     const canCreate = userDetails && userDetails.data.isParticipant;
     const canLike = userDetails && userDetails.data.address;
+    const isForumAdmin = userData && userData.isForumAdmin;
 
     return (
       <ProposaDetaillWrapper>
         <ProposalCard>
           <TagsContainer>
-            <Button kind="tag" icon>
+            <Button kind="tag" showIcon>
               {details.stage}
             </Button>
           </TagsContainer>
           <Description>
-            <H2>{proposalVersion.dijixObject.title}</H2>
-            <p>{proposalVersion.dijixObject.description}</p>
-
-            {canCreate ? (
-              <ProposalLink
-                href={`/proposals/${details.proposalId}`}
-                to={`/proposals/${details.proposalId}`}
-              >
-                View Project
-              </ProposalLink>
-            ) : (
-              <ProposalLink
-                disabled
-                href={`/proposals/${details.proposalId}`}
-                to={`/proposals/${details.proposalId}`}
-                style={{ pointerEvents: 'none' }}
-              >
-                View Project
-              </ProposalLink>
-            )}
+            <H2>{proposalVersion ? proposalVersion.dijixObject.title : title}</H2>
+            <p>{proposalVersion ? proposalVersion.dijixObject.description : ''}</p>
+            <ProposalLink
+              disabled={!canCreate && !isForumAdmin}
+              href={`/proposals/${details.proposalId}`}
+              to={`/proposals/${details.proposalId}`}
+            >
+              View Project
+            </ProposalLink>
           </Description>
           <ProposalFooter>
             <PostedBy>
@@ -148,10 +136,12 @@ Proposal.propTypes = {
   details: object.isRequired,
   liked: bool,
   likes: number,
+  title: string,
   displayName: string.isRequired,
   likeProposalAction: func.isRequired,
   unlikeProposalAction: func.isRequired,
   getUserProposalLikeStatusAction: func.isRequired,
+  userData: object,
   userDetails: object.isRequired,
   userProposalLike: object.isRequired,
 };
@@ -165,13 +155,17 @@ Proposal.defaultProps = {
   ChallengeProof: undefined,
   liked: false,
   likes: undefined,
+  title: '',
+  userData: undefined,
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    likeProposalAction: likeProposal,
-    unlikeProposalAction: unlikeProposal,
-    getUserProposalLikeStatusAction: getUserProposalLikeStatus,
-  }
-)(Proposal);
+export default withFetchUser(
+  connect(
+    mapStateToProps,
+    {
+      likeProposalAction: likeProposal,
+      unlikeProposalAction: unlikeProposal,
+      getUserProposalLikeStatusAction: getUserProposalLikeStatus,
+    }
+  )(Proposal)
+);

@@ -12,11 +12,16 @@ import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE, ProposalStages } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import {
+  DEFAULT_GAS,
+  DEFAULT_GAS_PRICE,
+  ProposalErrors,
+  ProposalStages,
+} from '@digix/gov-ui/constants';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 
@@ -92,6 +97,17 @@ class ClaimFundingButton extends React.PureComponent {
     };
     return executeContractFunction(payload);
   };
+
+  claimFunding() {
+    const errors = [];
+    const { proposal } = this.props;
+    if (proposal.prl) {
+      errors.push(ProposalErrors.blockedByPRL);
+    }
+
+    this.props.checkProposalRequirements(this.handleSubmit, errors);
+  }
+
   render() {
     const { isProposer, proposal } = this.props;
     if (
@@ -102,7 +118,12 @@ class ClaimFundingButton extends React.PureComponent {
       return null;
 
     return (
-      <Button kind="round" large onClick={this.handleSubmit}>
+      <Button
+        kind="round"
+        large
+        data-digix="ProposalAction-ClaimFunding"
+        onClick={() => this.claimFunding()}
+      >
         Claim Funding
       </Button>
     );
@@ -116,6 +137,7 @@ ClaimFundingButton.propTypes = {
   isProposer: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,

@@ -1,152 +1,173 @@
 import styled, { css } from 'styled-components';
 import { Button } from '../style';
 
+// eslint-disable-next-line no-undef
+
 export const RoundBtn = styled(Button)`
-  background: ${props => props.theme.buttonBgPrimary.default.toString()};
-  border: none;
+  background: ${props =>
+    props.disabled
+      ? props.theme.buttonDisabled.background
+      : props.theme.buttonDefault.background.base.toString()};
+  border-width: 2px;
+  border-style: solid;
+  border-color: ${props =>
+    props.disabled
+      ? props.theme.buttonDisabled.border.lighter.toString()
+      : props.theme.buttonDefault.border.base.toString()};
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
-  color: ${props => props.theme.buttonTextPrimary.default.toString()};
+  color: ${props =>
+    props.disabled
+      ? props.theme.buttonDisabled.textColor.lighter.toString()
+      : props.theme.buttonDefault.textColor.base.toString()};
 
-  &:hover {
-    background: ${props => props.theme.buttonBgHoverPrimary.default.toString()};
-    color: ${props => props.theme.buttonTextPrimaryReverse.default.toString()};
+  svg {
+    fill: ${props => props.theme.buttonDefault.iconColor.light.toString()};
   }
 
-  ${props =>
-    props.active &&
-    css`
-      background: ${props.theme.buttonBgHoverPrimary.default.toString()};
-      color: ${props.theme.buttonTextPrimaryReverse.default.toString()};
-    `};
+  &:hover {
+    background: ${props =>
+      props.disabled
+        ? props.theme.buttonDisabled.background
+        : props.theme.buttonSecondary.background.fade.toString()};
+    border-color: ${props =>
+      props.disabled
+        ? props.theme.buttonDisabled.border.lighter.toString()
+        : props.theme.buttonPrimary.border.base.toString()};
+    color: ${props =>
+      props.disabled
+        ? props.theme.buttonDisabled.textColor.lighter.toString()
+        : props.theme.buttonSecondary.textColor.base.toString()};
+
+    svg {
+      fill: ${props => props.theme.iconColorReverse.default.toString()};
+    }
+  }
 
   ${props =>
     props.primary &&
     css`
-      background: ${props.theme.buttonBgPrimary.default.toString()};
-      border: 2px solid ${props.theme.buttonBorderPrimary.default.toString()};
+      background: ${props.theme.buttonPrimary.background.toString()};
+      border-color: ${
+        props.disabled
+          ? props.theme.buttonDisabled.color.lighter.toString()
+          : props.theme.buttonPrimary.border.base.toString()
+      };
       box-shadow: none;
-      color: ${props.theme.buttonTextPrimary.default.toString()};
+      color: ${
+        props.disabled
+          ? props.theme.buttonDisabled.color.lighter.toString()
+          : props.theme.buttonPrimary.textColor.base.toString()
+      };
+
+      svg {
+        fill: ${props.theme.buttonPrimary.iconColor.light.toString()};
+      }
+
+      &:hover {
+        background: ${
+          props.disabled
+            ? props.theme.buttonDisabled.background.toString()
+            : props.theme.buttonInverted.background.base.toString()
+        };
+        color: ${
+          props.disabled
+            ? props.theme.buttonDisabled.color.lighter.toString()
+            : props.theme.buttonInverted.textColor.base.toString()
+        };
+
+        svg {
+          fill: ${props.theme.iconColorReverse.default.toString()};
+        }
     `};
 
   ${props =>
     props.secondary &&
     css`
-      background: ${props.theme.buttonBgSecondary.fade.toString()};
-      border: 2px solid ${props.theme.buttonTextPrimary.default.toString()};
+      background: ${props.disabled
+        ? 'transparent'
+        : props.theme.buttonSecondary.background.fade.toString()};
+      border-color: ${props.disabled
+        ? props.theme.buttonDisabled.color.lighter.toString()
+        : props.theme.buttonSecondary.border.base.toString()};
       box-shadow: none;
-      color: ${props.theme.buttonTextPrimary.default.toString()};
+      color: ${props.disabled
+        ? props.theme.buttonDisabled.color.lighter.toString()
+        : props.theme.buttonSecondary.textColor.base.toString()};
+
+      svg {
+        fill: ${props.theme.buttonSecondary.iconColor.light.toString()};
+      }
+
       &:hover {
-        background: ${props.theme.buttonBgSecondary.default.toString()};
-        color: ${props.theme.buttonTextPrimaryReverse.default.toString()};
+        background: ${props.disabled
+          ? 'transparent'
+          : props.theme.buttonSecondary.background.base.toString()};
+        color: ${props.disabled
+          ? props.theme.buttonDisabled.color.lighter.toString()
+          : props.theme.buttonInverted.textColor.base.toString()};
+
+        svg {
+          fill: ${props.theme.iconColorReverse.default.toString()};
+        }
       }
     `};
+
   ${props =>
     props.tertiary &&
     css`
-      background: ${props.theme.buttonBgTertiaryReverse.default.toString()};
-      border: 2px solid ${props.theme.buttonBorderTertiary.default.toString()};
+      background: ${props.theme.buttonTertiary.background.base.toString()};
+      border-color: ${props.theme.buttonTertiary.border.base.toString()};
       box-shadow: none;
-      color: ${props.theme.buttonTextTertiary.default.toString()};
-      &:hover {
-        background: ${props.theme.buttonBgTertiary.default.toString()};
-        color: ${props.theme.buttonTextTertiaryReverse.default.toString()};
+      color: ${props.theme.buttonTertiary.textColor.base.toString()};
+
+      svg {
+        fill: ${props.theme.buttonTertiary.iconColor.base.toString()};
       }
+
+      &:hover {
+        background: ${props.theme.buttonTertiary.background.fade.toString()};
+        color: ${props.theme.buttonTertiary.textColor.base.toString()};
+
+        svg {
+          fill: ${props.theme.buttonTertiary.iconColor.base.toString()};
+        }
+      }
+    `};
+
+  ${props =>
+    props.active &&
+    css`
+      background: ${props.theme.buttonInverted.background.base.toString()};
+      color: ${props.theme.buttonInverted.textColor.base.toString()};
     `};
 
   ${props =>
     props.reverse &&
     css`
-      background: ${props.theme.buttonBgHoverPrimary.default.toString()};
+      background: ${props.theme.buttonInverted.background.base.toString()};
       box-shadow: none;
-      color: ${props.theme.buttonTextPrimaryReverse.default.toString()};
-      &:hover {
-        background: ${props.theme.buttonBgPrimary.default.toString()};
-        color: ${props.theme.buttonTextPrimary.default.toString()};
-      }
-    `};
+      color: ${props.theme.buttonInverted.textColor.base.toString()};
 
-  ${props =>
-    props.disabled &&
-    css`
-      background: transparent;
-      border: 2px solid ${props.theme.buttonBorderDisabled.lighter.toString()};
-      box-shadow: none;
-      color: ${props.theme.buttonTextDefault.lighter.toString()} !important;
-      cursor: not-allowed;
-      pointer-events: none;
       &:hover {
         background: transparent;
-        background: ${props.theme.buttonBorderDisabled.lighter.toString()};
-        color: ${props.theme.buttonTextDefaultReverse.default.toString()};
+        color: ${props.theme.buttonPrimary.textColor.base.toString()};
       }
     `};
 
   ${props =>
     props.success &&
     css`
-      background: ${props.theme.backgroundSecondary.fade.toString()};
-      border: 2px solid ${props.theme.buttonBorderSecondary.default.toString()};
-      box-shadow: none;
-      color: ${props.theme.textSecondary.default.toString()};
-      &:hover {
-        background: ${props.theme.backgroundSecondary.fade.toString()};
-        border-color: ${props.theme.buttonBorderSecondary.default.toString()};
-        color: ${props.theme.textSecondary.default.toString()};
-      }
-    `};
+  //  This looks like not in used. Will be deleted when no issues reported this sprint 5.
+  //     background: ${props.theme.backgroundSecondary.fade.toString()};
+  //     border: 2px solid ${props.theme.buttonBorderSecondary.default.toString()};
+  //     box-shadow: none;
+  //     color: ${props.theme.textSecondary.default.toString()};
 
-  ${props =>
-    props.yes &&
-    css`
-      &:hover,
-      &:focus {
-        color: ${props.theme.buttonResponseYes.default.toString()};
-        border: 2px solid ${props.theme.buttonResponseYes.default.toString()};
-        box-shadow: none;
-        background-color: ${props.theme.buttonResponseYes.fade.toString()};
-      }
-    `};
-  ${props =>
-    props.no &&
-    css`
-      &:hover,
-      &:focus {
-        color: ${props.theme.buttonResponseNo.default.toString()};
-        border: 2px solid ${props.theme.buttonResponseNo.default.toString()};
-        box-shadow: none;
-        background-color: ${props.theme.buttonResponseNo.fade.toString()};
-      }
-    `};
-
-  ${props =>
-    props.confirmedYes &&
-    css`
-      &,
-      &:hover,
-      &:focus {
-        color: ${props.theme.buttonResponseYes.default.toString()};
-        border: 2px solid ${props.theme.buttonResponseYes.default.toString()};
-        box-shadow: none;
-        background-color: ${props.theme.buttonResponseYes.fade.toString()};
-      }
-    `};
-  ${props =>
-    props.confirmedNo &&
-    css`
-      &,
-      &:hover,
-      &:focus {
-        color: ${props.theme.buttonResponseNo.default.toString()};
-        border: 2px solid ${props.theme.buttonResponseNo.default.toString()};
-        box-shadow: none;
-        background-color: ${props.theme.buttonResponseNo.fade.toString()};
-      }
-    `};
-
-  ${props =>
-    props.xsmall &&
-    css`
-      border-width: 1px;
+  //     &:hover {
+  //       background: ${props.theme.backgroundSecondary.fade.toString()};
+  //       border-color: ${props.theme.buttonBorderSecondary.default.toString()};
+  //       color: ${props.theme.textSecondary.default.toString()};
+  //     }
     `};
 `;

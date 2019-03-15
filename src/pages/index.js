@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import ProposalCard from '@digix/gov-ui/components/proposal-card';
 import Timeline from '@digix/gov-ui/components/common/blocks/timeline';
-import DashboardStats from '@digix/gov-ui/components/common/blocks/user-DAO-stats/index';
+import UserAddressStats from '@digix/gov-ui/components/common/blocks/user-address-stats/index';
 import ProposalFilter from '@digix/gov-ui/components/common/blocks/filter/index';
 
 import {
@@ -19,19 +19,18 @@ import {
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import Snackbar from '@digix/gov-ui/components/common/elements/snackbar/index';
+import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 
 class LandingPage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       order: 'latest',
-      loadingLikes: false,
     };
   }
 
   componentWillMount = () => {
     const { AddressDetails, getDaoDetailsAction, getProposalsAction, ChallengeProof } = this.props;
-
     getDaoDetailsAction();
     getProposalsAction();
     this.getProposalLikes(undefined, ChallengeProof);
@@ -43,15 +42,6 @@ class LandingPage extends React.PureComponent {
   componentDidMount = () => {
     if (window.Cookiebot) {
       window.Cookiebot.show();
-    }
-  };
-
-  componentWillReceiveProps = (nextProps, nextState) => {
-    const { ChallengeProof } = nextProps;
-    if (ChallengeProof.data && ChallengeProof.data.client && !this.state.loadingLikes) {
-      this.setState({ loadingLikes: true }, () => {
-        this.getLikeStatus();
-      });
     }
   };
 
@@ -134,10 +124,12 @@ class LandingPage extends React.PureComponent {
       return proposal.liked;
     };
 
-    const getProposer = proposalId => {
+    const getProposer = (proposalId, proposer) => {
       if (!ProposalLikes.data) return '';
       const proposal = ProposalLikes.data.find(p => p.proposalId === proposalId);
-      if (!proposal) return '';
+      if (!proposal && proposer === AddressDetails.data.address)
+        return renderDisplayName('Proposer-DisplayName');
+      else if (!proposal) return '';
       return proposal.user.displayName;
     };
 
@@ -151,11 +143,12 @@ class LandingPage extends React.PureComponent {
     return (
       <Fragment>
         <Timeline stats={DaoDetails} />
-        <DashboardStats stats={AddressDetails} />
+        <UserAddressStats />
         <ProposalFilter
           onStageChange={this.getProposals}
           onOrderChange={this.onOrderChange}
-          addressDetails={AddressDetails}
+          AddressDetails={AddressDetails}
+          history={history}
         />
         {hasProposals &&
           orderedProposals.map(proposal => (
@@ -165,7 +158,7 @@ class LandingPage extends React.PureComponent {
               liked={checkIfLiked(proposal.proposalId)}
               likes={getLikesCount(proposal.proposalId)}
               proposal={proposal}
-              displayName={getProposer(proposal.proposalId)}
+              displayName={getProposer(proposal.proposalId, proposal.proposer)}
               userDetails={AddressDetails}
             />
           ))}

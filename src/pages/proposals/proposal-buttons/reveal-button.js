@@ -6,7 +6,6 @@ import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import RevealVoteOverlay from '@digix/gov-ui/components/common/blocks/overlay/vote/reveal';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-// import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { VotingStages } from '@digix/gov-ui/constants';
 
 class RevealVoteButton extends React.PureComponent {
@@ -24,28 +23,34 @@ class RevealVoteButton extends React.PureComponent {
     const {
       isParticipant,
       proposal,
-      proposal: { currentVotingRound },
+      proposal: { currentVotingRound, isSpecial, isActive },
       votes,
     } = this.props;
+
     const vote = votes[proposal.proposalId];
-    const votingRound = vote ? vote.votingRound[currentVotingRound] : undefined;
+    const votingRound = vote ? vote.votingRound[currentVotingRound || 0] : undefined;
+    const hasVoted = votingRound ? votingRound.commit : false;
     const hasRevealed = votingRound ? votingRound.reveal : false;
     if (
-      !isParticipant ||
-      !proposal.draftVoting ||
-      proposal.votingStage !== VotingStages.commit ||
-      hasRevealed
+      (!isParticipant ||
+        !proposal.draftVoting ||
+        (proposal.votingStage !== VotingStages.commit && !isSpecial) ||
+        hasRevealed ||
+        !hasVoted) &&
+      (!isSpecial && !isActive)
     ) {
       return null;
     }
 
     const currentTime = Date.now();
+
     const withinDeadline =
-      proposal.votingRounds[currentVotingRound].commitDeadline * 1000 < currentTime &&
-      currentTime < proposal.votingRounds[currentVotingRound].revealDeadline * 1000;
+      proposal.votingRounds[isSpecial ? 0 : currentVotingRound].commitDeadline * 1000 <
+        currentTime &&
+      currentTime < proposal.votingRounds[isSpecial ? 0 : currentVotingRound].revealDeadline * 1000;
     if (!withinDeadline) return null;
     return (
-      <Button kind="round" large onClick={this.showOverlay}>
+      <Button kind="round" large onClick={this.showOverlay} data-digix="Proposal-Reveal-Vote">
         Reveal Vote
       </Button>
     );
@@ -60,8 +65,6 @@ RevealVoteButton.propTypes = {
   proposalId: string.isRequired,
   history: object.isRequired,
   votes: object,
-  // addressDetails: object.isRequired,
-  // getAddressDetailsAction: func.isRequired,
   showRightPanelAction: func.isRequired,
 };
 
@@ -79,7 +82,6 @@ export default web3Connect(
     mapStateToProps,
     {
       showRightPanelAction: showRightPanel,
-      // getAddressDetailsAction: getAddressDetails,
     }
   )(RevealVoteButton)
 );

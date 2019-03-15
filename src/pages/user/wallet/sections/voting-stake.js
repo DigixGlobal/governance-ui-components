@@ -5,41 +5,29 @@ import { connect } from 'react-redux';
 import UnlockDgdOverlay from '@digix/gov-ui/components/common/blocks/overlay/unlock-dgd/index';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { getAddresses } from 'spectrum-lightsuite/src/selectors';
+import { inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { withFetchAddress } from '@digix/gov-ui/api/graphql-queries/address';
+
 import {
   showHideAlert,
   showRightPanel,
   showHideLockDgdOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import {
-  StakeRewards,
-  Title,
-  Content,
-  Label,
+  Actions,
   Data,
   Desc,
-  Actions,
+  Detail,
+  Label,
+  QtrParticipation,
+  Title,
 } from '@digix/gov-ui/pages/user/wallet/style';
 
-class Wallet extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      hasPendingLockTransaction: false,
-      hasPendingUnlockTransaction: false,
-    };
+class VotingStake extends React.Component {
+  componentDidMount() {
+    this.props.subscribeToAddress();
   }
-
-  onLockDgd = () => {
-    this.setState({ hasPendingLockTransaction: true });
-  };
-
-  onUnlockDgd = () => {
-    this.setState({ hasPendingUnlockTransaction: true });
-  };
 
   setError = error => {
     this.props.showHideAlert({
@@ -47,35 +35,36 @@ class Wallet extends React.Component {
     });
   };
 
+  showLockDgdOverlay() {
+    this.props.showHideLockDgdOverlay(true, undefined, 'Wallet Page');
+  }
+
   showUnlockDgdOverlay() {
-    const { lockedDgd } = this.props;
+    const { lockedDgd } = this.props.AddressDetails;
     this.props.showRightPanel({
-      component: <UnlockDgdOverlay maxAmount={lockedDgd} onSuccess={this.onUnlockDgd} />,
+      component: <UnlockDgdOverlay maxAmount={lockedDgd} />,
       show: true,
     });
   }
 
   render() {
-    const { hasPendingLockTransaction, hasPendingUnlockTransaction } = this.state;
-    const stake = truncateNumber(this.props.stake);
+    const { lockedDgd, lockedDgdStake } = this.props.AddressDetails;
     const DaoDetails = this.props.DaoDetails.data;
 
-    const canLockDgd = this.props.CanLockDgd.show && !hasPendingLockTransaction;
-
-    const currentTime = Date.now() / 1000;
+    const stake = truncateNumber(lockedDgdStake);
+    const dgd = truncateNumber(lockedDgd);
+    const canLockDgd = this.props.CanLockDgd.show;
     const isGlobalRewardsSet = DaoDetails ? DaoDetails.isGlobalRewardsSet : false;
-    const inLockingPhase = currentTime < DaoDetails.startOfMainphase;
-    const canUnlockDgd =
-      inLockingPhase && stake > 0 && isGlobalRewardsSet && !hasPendingUnlockTransaction;
+    const canUnlockDgd = inLockingPhase(DaoDetails) && stake > 0 && isGlobalRewardsSet;
 
     return (
-      <StakeRewards>
-        <Title>DigixDAO Voting Stake</Title>
-        <Content>
-          <Label>Your Current Stake</Label>
+      <QtrParticipation>
+        <Title>Your Locked DGD</Title>
+        <Detail>
+          <Label>Your Current Lock-up</Label>
           <Data>
-            <span data-digix="Wallet-Stake">{stake}</span>
-            <span>&nbsp;Stake</span>
+            <span data-digix="Wallet-Locked-DGD">{dgd}</span>
+            <span>&nbsp;DGD</span>
           </Data>
           <Desc>
             You can lock more DGD to increase your voting power or unlock after a quarter to move
@@ -86,7 +75,7 @@ class Wallet extends React.Component {
               primary
               data-digix="Wallet-LockDgd"
               disabled={!canLockDgd}
-              onClick={() => this.props.showHideLockDgdOverlay(true, this.onLockDgd)}
+              onClick={() => this.showLockDgdOverlay()}
             >
               Lock DGD
             </Button>
@@ -99,25 +88,25 @@ class Wallet extends React.Component {
               Unlock DGD
             </Button>
           </Actions>
-        </Content>
-      </StakeRewards>
+        </Detail>
+      </QtrParticipation>
     );
   }
 }
 
-const { func, number, object } = PropTypes;
+const { func, object } = PropTypes;
 
-Wallet.propTypes = {
+VotingStake.propTypes = {
+  AddressDetails: object.isRequired,
   CanLockDgd: object,
   DaoDetails: object,
-  lockedDgd: number.isRequired,
-  showRightPanel: func.isRequired,
   showHideAlert: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
-  stake: number.isRequired,
+  showRightPanel: func.isRequired,
+  subscribeToAddress: func.isRequired,
 };
 
-Wallet.defaultProps = {
+VotingStake.defaultProps = {
   CanLockDgd: {
     show: false,
   },
@@ -125,14 +114,12 @@ Wallet.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  addresses: getAddresses(state),
-  AddressDetails: state.infoServer.AddressDetails,
   CanLockDgd: state.govUI.CanLockDgd,
   ChallengeProof: state.daoServer.ChallengeProof,
   DaoDetails: state.infoServer.DaoDetails,
 });
 
-export default web3Connect(
+const VotingStakeComponent = web3Connect(
   connect(
     mapStateToProps,
     {
@@ -140,5 +127,7 @@ export default web3Connect(
       showRightPanel,
       showHideLockDgdOverlay,
     }
-  )(Wallet)
+  )(VotingStake)
 );
+
+export default withFetchAddress(VotingStakeComponent);

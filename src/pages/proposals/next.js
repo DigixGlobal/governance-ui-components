@@ -11,7 +11,7 @@ export default class NextVersion extends React.Component {
       <NextWrapper disabled={disabled}>
         <Button kind="text" small {...this.props}>
           See Next Version
-          <Icon kind="arrow" style={{ marginRight: 0 }} />
+          <Icon kind="arrow" style={{ marginRight: 0, marginLeft: '1rem' }} />
         </Button>
       </NextWrapper>
     );

@@ -28,7 +28,7 @@ export const EmptyStateContainer = styled.div`
   margin: 0 auto;
 
   svg {
-    fill: ${props => props.theme.iconDefaultColor.light.toString()};
+    fill: ${props => props.theme.icon.default.light.toString()};
   }
 `;
 export const EmptyStateTitle = styled.div`
@@ -58,8 +58,7 @@ export const HistoryListView = styled.div`
   flex-direction: column;
 `;
 
-export const HistoryCard = styled.div`
-  ${Card};
+export const HistoryCard = styled(Card)`
   margin-bottom: 2rem;
   padding: 1rem;
 `;

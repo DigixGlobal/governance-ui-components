@@ -20,11 +20,10 @@ import {
   showHideWalletOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
-import { getAddressDetails, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
-import Icon from '@digix/gov-ui/components/common/elements/icons';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { HR } from '@digix/gov-ui/components/common/common-styles';
 
 import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
@@ -33,8 +32,8 @@ import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { InnerContainer, Header, CloseButtonWithHeader } from '../style';
 import {
   Container,
-  AddressInfo,
-  TokenInfo,
+  Address,
+  Token,
   TokenIcon,
   TokenDetails,
   TokenValue,
@@ -51,33 +50,37 @@ class ConnectedWallet extends React.Component {
       ethBalance: 0,
       showLockDgd: false,
     };
+
+    this._isMounted = false;
   }
 
-  componentWillMount() {
-    const { defaultAddress } = this.props;
-    if (defaultAddress && defaultAddress.address) {
-      Promise.all([
-        this.getEthBalance(),
-        this.getDgdBalance(),
-        this.props.getAddressDetails(defaultAddress.address),
-      ]).then(([eth, dgd]) => {
-        const { AddressDetails } = this.props;
-        const address = AddressDetails.data;
-        const hasParticipated = address.isParticipant || address.lastParticipatedQuarter > 0;
+  componentDidMount() {
+    const { defaultAddress, AddressDetails } = this.props;
+    this._isMounted = true;
+    if (defaultAddress.address && AddressDetails.data) {
+      const address = AddressDetails.data;
+      const hasParticipated = address.isParticipant || address.lastParticipatedQuarter > 0;
 
-        if (hasParticipated && !this.showRenderApproval()) {
-          this.props.showHideWalletOverlay(false);
-        }
-
-        this.setState({ dgdBalance: dgd, ethBalance: eth });
-      });
+      if (hasParticipated && !this.showRenderApproval()) {
+        this.props.showHideWalletOverlay(false);
+      } else {
+        Promise.all([this.getEthBalance(), this.getDgdBalance(), this.getMaxAllowance()]).then(
+          ([eth, dgd]) => {
+            if (this._isMounted) {
+              this.setState({ dgdBalance: dgd, ethBalance: eth });
+            }
+          }
+        );
+      }
     }
-
-    this.getMaxAllowance();
   }
 
   shouldComponentUpdate = (nextProps, nextState) =>
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   getMaxAllowance = () => {
     const { defaultAddress, web3Redux } = this.props;
@@ -88,7 +91,7 @@ class ConnectedWallet extends React.Component {
       .web3(network)
       .eth.contract(abi)
       .at(address);
-    this.props.fetchMaxAllowance(contract, defaultAddress.address, DaoStakingContract);
+    return this.props.fetchMaxAllowance(contract, defaultAddress.address, DaoStakingContract);
   };
 
   getDgdBalance() {
@@ -112,12 +115,18 @@ class ConnectedWallet extends React.Component {
   getEthBalance() {
     const { defaultAddress, web3Redux } = this.props;
     const { web3 } = web3Redux.networks[network];
-    if (defaultAddress) {
+    if (defaultAddress && defaultAddress.address) {
       return web3.eth
         .getBalance(defaultAddress.address)
         .then(balance => parseBigNumber(balance, 18));
     }
   }
+
+  setError = error => {
+    this.props.showHideAlert({
+      message: JSON.stringify(error && error.message) || error,
+    });
+  };
 
   handleApprove = () => {
     const { web3Redux, challengeProof, addresses } = this.props;
@@ -182,7 +191,7 @@ class ConnectedWallet extends React.Component {
   showLockDgdOverlay = () => {
     const { onClose, showHideLockDgdOverlayAction } = this.props;
     onClose();
-    showHideLockDgdOverlayAction(true);
+    showHideLockDgdOverlayAction(true, null, 'Load Wallet Overlay');
   };
 
   showRenderApproval = () => {
@@ -204,66 +213,79 @@ class ConnectedWallet extends React.Component {
         In order to participate in DigixDAO, we need your approval in order for our contracts to
         interact with your DGD.
       </p>
-      <Button kind="round" primary fluid filled onClick={this.handleApprove}>
+      <Button primary fluid large onClick={this.handleApprove}>
         Approve the interaction
       </Button>
     </Fragment>
   );
 
   renderDefault = () => {
-    const { defaultAddress, enableLockDgd } = this.props;
+    const { defaultAddress, enableLockDgd, tokenUsdValues } = this.props;
     const { dgdBalance, ethBalance } = this.state;
+
+    const tokensInUsd = tokenUsdValues && tokenUsdValues.data ? tokenUsdValues.data : undefined;
+
+    let dgdInUsd = dgdBalance !== 0 ? dgdBalance.replace(',', '') : dgdBalance;
+    let ethInUsd = ethBalance !== 0 ? ethBalance.replace(',', '').replace('...', '') : ethBalance;
+    if (dgdInUsd > 0 && tokensInUsd && tokensInUsd.DGD)
+      dgdInUsd = Number(dgdInUsd) * Number(tokensInUsd.DGD.USD);
+
+    if (ethInUsd > 0 && tokensInUsd && tokensInUsd.ETH)
+      ethInUsd = Number(ethInUsd) * Number(tokensInUsd.ETH.USD);
+
     return (
       <Fragment>
         <CloseButtonWithHeader>
-          <Header uppercase>connected wallet </Header>
+          <Header uppercase>Connected Wallet </Header>
           <Icon kind="close" onClick={() => this.props.onClose()} />
         </CloseButtonWithHeader>
         <Container>
-          <AddressInfo>
+          <Address>
             Your Address
             <span>{defaultAddress.address}</span>
-          </AddressInfo>
-          <TokenInfo>
-            <TokenIcon>
-              <Icon kind="ethereum" />
-            </TokenIcon>
-            <TokenDetails>
+          </Address>
+          <Token>
+            <Icon kind="ethereum" width="48px" height="48px" />
+            <div>
               <TokenValue>
                 {ethBalance || 0}
                 <span>ETH</span>
               </TokenValue>
               <UsdEquivalent>
-                0.0
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  ethInUsd
+                )}{' '}
                 <span>USD</span>
               </UsdEquivalent>
-            </TokenDetails>
-          </TokenInfo>
-          <TokenInfo>
-            <TokenIcon>
-              <Icon kind="dgd" style={{ position: 'relative', top: '1px' }} />
-            </TokenIcon>
-            <TokenDetails>
+            </div>
+          </Token>
+          <Token>
+            <Icon kind="dgd" width="48px" height="48px" />
+            <div>
               <TokenValue>
-                {dgdBalance || 0}
-                <span>DGD</span>
+                {dgdBalance || 0} <span>DGD</span>
               </TokenValue>
-              <UsdEquivalent>0.0 USD</UsdEquivalent>
-            </TokenDetails>
-          </TokenInfo>
-          <Button kind="round" primary fluid>
+              <UsdEquivalent>
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  dgdInUsd
+                )}{' '}
+                USD
+              </UsdEquivalent>
+            </div>
+          </Token>
+          <Button primary fluid large>
             Buy DGD
           </Button>
-          <HR />
+          <HR style={{ marginBottom: '4rem' }} />
           <Header uppercase>lock dgd</Header>
           <p>
             Locking your DGD in DigixDAO helps us know you are committed to the growth of the
             community and of course gives you voting power on the proposals you love to support
           </p>
           <Button
-            kind="round"
             secondary
             fluid
+            large
             disabled={!enableLockDgd.show}
             onClick={this.showLockDgdOverlay}
           >
@@ -305,7 +327,6 @@ const { object, func, number, oneOfType, array } = PropTypes;
 ConnectedWallet.propTypes = {
   AddressDetails: object,
   onClose: func.isRequired,
-  getAddressDetails: func.isRequired,
   getDaoDetails: func.isRequired,
   canLockDgd: func.isRequired,
   DaoDetails: object,
@@ -316,6 +337,7 @@ ConnectedWallet.propTypes = {
   showTxSigningModal: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   defaultAddress: object.isRequired,
+  tokenUsdValues: object,
   web3Redux: object.isRequired,
   addressMaxAllowance: oneOfType([number, object]),
   challengeProof: object.isRequired,
@@ -326,6 +348,7 @@ ConnectedWallet.propTypes = {
 ConnectedWallet.defaultProps = {
   AddressDetails: undefined,
   addressMaxAllowance: undefined,
+  tokenUsdValues: undefined,
   DaoDetails: {
     data: {
       isGlobalRewardsSet: false,
@@ -342,6 +365,7 @@ const mapStateToProps = state => ({
   lockDgdOverlay: state.govUI.lockDgdOverlay,
   addressMaxAllowance: state.govUI.addressMaxAllowance,
   challengeProof: state.daoServer.ChallengeProof,
+  tokenUsdValues: state.govUI.tokenUsdValues,
   DaoDetails: state.infoServer.DaoDetails,
   addresses: getAddresses(state),
   enableLockDgd: state.govUI.CanLockDgd,
@@ -354,7 +378,6 @@ export default connect(
     showHideWalletOverlay,
     showHideLockDgdOverlayAction: showHideLockDgdOverlay,
     canLockDgd,
-    getAddressDetails,
     getDaoDetails,
     fetchMaxAllowance,
     showTxSigningModal,

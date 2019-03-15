@@ -9,20 +9,30 @@ import { ProposalStages } from '@digix/gov-ui/constants';
 
 class EditFundingButton extends React.PureComponent {
   onPanelClose = () => {
-    this.props.onCompleted();
     this.props.showRightPanelAction({ show: false });
   };
 
   showOverlay = () => {
-    const { history, showRightPanelAction } = this.props;
+    const { history, proposal, showRightPanelAction } = this.props;
     showRightPanelAction({
-      component: <ChangeFundingOverlay history={history} onCompleted={this.onPanelClose} />,
+      component: (
+        <ChangeFundingOverlay
+          history={history}
+          proposalDetails={proposal}
+          onCompleted={this.onPanelClose}
+        />
+      ),
       show: true,
     });
   };
 
+  editFunding() {
+    this.props.checkProposalRequirements(this.showOverlay);
+  }
+
   render() {
     const { isProposer, proposal } = this.props;
+    if (proposal.isSpecial) return null;
     const canEdit = proposal.stage === ProposalStages.ongoing && isProposer;
     const proposalDetails = proposal.proposalVersions[proposal.proposalVersions.length - 1];
     const hasUnfinishedMilestones =
@@ -31,7 +41,12 @@ class EditFundingButton extends React.PureComponent {
     if (!canEdit || !hasUnfinishedMilestones) return null;
 
     return (
-      <Button kind="round" large onClick={() => this.showOverlay()}>
+      <Button
+        kind="round"
+        large
+        data-digix="ProposalAction-EditFunding"
+        onClick={() => this.editFunding()}
+      >
         Edit Funding
       </Button>
     );
@@ -41,10 +56,10 @@ class EditFundingButton extends React.PureComponent {
 const { bool, func, object } = PropTypes;
 
 EditFundingButton.propTypes = {
+  checkProposalRequirements: func.isRequired,
   isProposer: bool,
   proposal: object.isRequired,
   history: object.isRequired,
-  onCompleted: func.isRequired,
   showRightPanelAction: func.isRequired,
 };
 

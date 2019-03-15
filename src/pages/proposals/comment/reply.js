@@ -1,12 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withApollo } from 'react-apollo';
 
 import Comment from '@digix/gov-ui/pages/proposals/comment/comment';
 import CommentTextEditor from '@digix/gov-ui/pages/proposals/comment/editor';
-// import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { CommentReplyPost, LoadMoreButton } from '@digix/gov-ui/pages/proposals/comment/style';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { CommentReplyPost } from '@digix/gov-ui/pages/proposals/comment/style';
 import { CommentsApi } from '@digix/gov-ui/api/comments';
+import { fetchCommentsQuery } from '@digix/gov-ui/api/graphql-queries/comments';
 import { initializePayload } from '@digix/gov-ui/api';
 
 class CommentReply extends React.Component {
@@ -14,92 +16,50 @@ class CommentReply extends React.Component {
     super(props);
     const { comment } = this.props;
 
-    let lastSeenId = comment.id;
-    const replies = comment.replies.data;
-    if (comment.replies && replies.length > 0) {
-      lastSeenId = replies[replies.length - 1].id;
-    }
-
     this.state = {
       comment,
-      lastSeenId,
       showEditor: false,
     };
   }
 
   addReply = body => {
     const comment = { ...this.state.comment };
-    const { ChallengeProof, setError } = this.props;
+    const { ChallengeProof, currentUser, setCommentingPrivileges, setError } = this.props;
 
     if (!ChallengeProof.data) {
+      setError(CommentsApi.ERROR_MESSAGES.createComment);
       return;
     }
 
     const payload = initializePayload(ChallengeProof);
     CommentsApi.create(comment.id, body, payload)
-      .then(newComment => {
-        if (!comment.replies) {
-          comment.replies = CommentsApi.generateNewThread(newComment);
+      .then(node => {
+        const newComment = CommentsApi.generateNewComment(node, currentUser, comment.id);
+        let replyList = comment.replies.edges;
+
+        if (!replyList) {
+          replyList = CommentsApi.generateNewThread(newComment);
         } else {
-          comment.replies.data.push(newComment);
+          replyList.push(newComment);
         }
 
+        comment.replies.edges = replyList;
         this.setState({ comment });
       })
-      .catch(() => {
-        setError(CommentsApi.ERROR_MESSAGES.createReply);
+      .catch(message => {
+        const error = CommentsApi.ERROR_MESSAGES;
+        if (message === 'unauthorized_action') {
+          setCommentingPrivileges(false);
+          setError(error.bannedUser);
+        } else {
+          setError(error.createReply);
+        }
       });
-  };
-
-  fetchThreads = fetchParams => {
-    const { ChallengeProof, fetchUserPoints } = this.props;
-    if (!ChallengeProof.data) {
-      return null;
-    }
-
-    const { comment } = this.state;
-    const payload = initializePayload(ChallengeProof);
-
-    CommentsApi.getThread(comment.id, fetchParams, payload)
-      .then(newComments => {
-        const newReplies = newComments.data;
-        const lastSeenId =
-          newComments && newReplies.length > 0
-            ? newReplies[newReplies.length - 1].id
-            : this.state.lastSeenId;
-
-        comment.replies = {
-          ...comment.replies,
-          hasMore: newComments.hasMore,
-          data: comment.replies.data.concat(newReplies),
-        };
-
-        this.setState({ lastSeenId, comment });
-        return newComments;
-      })
-      .then(() => {
-        fetchUserPoints();
-      })
-      .catch(() => {
-        this.setError(CommentsApi.ERROR_MESSAGES.fetch);
-      });
-
-    return null;
   };
 
   hideEditor = () => {
     this.setState({
       showEditor: false,
-    });
-  };
-
-  loadMoreReplies = () => {
-    const { lastSeenId } = this.state;
-    const { sortBy } = this.props;
-
-    this.fetchThreads({
-      last_seen_id: lastSeenId,
-      sort_by: sortBy,
     });
   };
 
@@ -110,8 +70,32 @@ class CommentReply extends React.Component {
     });
   };
 
+  loadMore = endCursor => {
+    const { comment } = this.state;
+    const apollo = this.props.client;
+    const variables = {
+      ...this.props.queryVariables,
+      endCursor,
+      sortBy: 'OLDEST',
+    };
+
+    apollo
+      .query({
+        fetchPolicy: 'network-only',
+        query: fetchCommentsQuery,
+        variables,
+      })
+      .then(result => {
+        const data = result.data.commentThreads;
+        comment.replies.edges = comment.replies.edges.concat(data.edges);
+        comment.replies.hasNextPage = data.hasNextPage;
+        comment.replies.endCursor = data.endCursor;
+        this.setState({ comment });
+      });
+  };
+
   render() {
-    const { renderThreadReplies, setError, uid, userPoints } = this.props;
+    const { currentUser, renderThreadReplies, setError, userPoints } = this.props;
     const { comment, showEditor } = this.state;
 
     if (!comment) {
@@ -119,29 +103,33 @@ class CommentReply extends React.Component {
     }
 
     const { replies } = comment;
-    const hasMoreChildren = replies.data && replies.data.length === 0 && replies.hasMore;
+    const hasChildren = replies && replies.hasNextPage && !replies.edges.length;
 
     return (
       <section>
-        <CommentReplyPost>
-          <Comment
-            comment={comment}
-            setError={setError}
-            toggleEditor={this.toggleEditor}
-            uid={uid}
-            userPoints={userPoints}
-          />
-          {showEditor && (
-            <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} />
-          )}
-
-          {renderThreadReplies(comment.replies)}
-        </CommentReplyPost>
-        {hasMoreChildren && (
+        {comment.id && (
           <CommentReplyPost>
-            <LoadMoreButton kind="text" tertiary xsmall onClick={() => this.loadMoreReplies()}>
-              Load more replies...
-            </LoadMoreButton>
+            <Comment
+              comment={comment}
+              currentUser={currentUser}
+              setError={setError}
+              hideEditor={this.hideEditor}
+              toggleEditor={this.toggleEditor}
+              userPoints={userPoints}
+            />
+            {showEditor && (
+              <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} />
+            )}
+            {replies && renderThreadReplies(replies)}
+          </CommentReplyPost>
+        )}
+        {hasChildren && (
+          <CommentReplyPost>
+            <CommentReplyPost>
+              <Button kind="text" tertiary xsmall onClick={() => this.loadMore(replies.endCursor)}>
+                Load more comments...
+              </Button>
+            </CommentReplyPost>
           </CommentReplyPost>
         )}
       </section>
@@ -149,16 +137,17 @@ class CommentReply extends React.Component {
   }
 }
 
-const { func, object, string } = PropTypes;
+const { func, object } = PropTypes;
 
 CommentReply.propTypes = {
   ChallengeProof: object,
+  client: object.isRequired,
   comment: object.isRequired,
-  fetchUserPoints: func.isRequired,
+  currentUser: object.isRequired,
+  queryVariables: object.isRequired,
   renderThreadReplies: func.isRequired,
+  setCommentingPrivileges: func.isRequired,
   setError: func.isRequired,
-  sortBy: string.isRequired,
-  uid: string.isRequired,
   userPoints: object.isRequired,
 };
 
@@ -170,7 +159,9 @@ const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
 });
 
-export default connect(
-  mapStateToProps,
-  {}
-)(CommentReply);
+export default withApollo(
+  connect(
+    mapStateToProps,
+    {}
+  )(CommentReply)
+);

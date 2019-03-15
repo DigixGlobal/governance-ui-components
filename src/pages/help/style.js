@@ -13,7 +13,7 @@ export const EmptyStateContainer = styled.div`
   margin: 0 auto;
 
   svg {
-    fill: ${props => props.theme.iconDefaultColor.light.toString()};
+    fill: ${props => props.theme.icon.default.light.toString()};
   }
 `;
 export const EmptyStateTitle = styled.div`

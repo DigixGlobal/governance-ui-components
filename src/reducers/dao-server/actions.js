@@ -15,6 +15,8 @@ export const actions = {
 
   GET_PROPOSAL_DETAILS: `${REDUX_PREFIX}GET_PROPOSAL_DETAILS`,
   CLEAR_PROPOSAL_DETAILS: `${REDUX_PREFIX}CLEAR_PROPOSAL_DETAILS`,
+
+  GET_PENDING_TRANSACTIONS: `${REDUX_PREFIX}GET_PENDING_TRANSACTIONS`,
 };
 
 function fetchData(url, type, authToken, client, uid) {
@@ -116,6 +118,36 @@ export function getChallenge(address) {
   return postData(`${DAO_SERVER}/authorization?address=${address}`, actions.GET_CHALLENGE);
 }
 
+export function getChallengeVanilla(address) {
+  return fetch(`${DAO_SERVER}/authorization?address=${address}`, {
+    method: 'POST',
+    mode: 'cors', // no-cors, cors, *same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrer: 'no-referrer', // no-referrer, *client
+  }).then(res =>
+    res
+      .json()
+      .then(json => ({ json, res }))
+      .catch(() => {
+        throw res.statusText;
+      })
+  );
+}
+
+export function setChallenge(challenge) {
+  return {
+    type: actions.GET_CHALLENGE,
+    payload: {
+      data: challenge,
+    },
+  };
+}
+
 export function proveChallenge(payload) {
   const { challengeId, address, message, signature } = payload;
   return putData(
@@ -173,9 +205,22 @@ export function getTransactions(payload) {
   );
 }
 
+export function getPendingTransactions(payload) {
+  const { token, client, uid } = payload;
+  return sendData(
+    'GET',
+    `${DAO_SERVER}/transactions?status=pending`,
+    actions.GET_PENDING_TRANSACTIONS,
+    undefined,
+    token,
+    client,
+    uid
+  );
+}
+
 export function sendTransactionToDaoServer(payload) {
-  const { txHash, title, token, client, uid } = payload;
-  const data = { txhash: txHash, title };
+  const { txHash, title, token, client, uid, type, project } = payload;
+  const data = { txhash: txHash, title, type, project };
   return postData(`${DAO_SERVER}/transactions`, actions.ADD_TRANSACTION, data, token, client, uid);
 }
 

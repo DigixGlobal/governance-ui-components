@@ -14,8 +14,8 @@ const CloseIcon = props => (
 );
 
 CloseIcon.defaultProps = {
-  width: '1.75rem',
-  height: '1.75rem',
+  width: '1.5rem',
+  height: '1.5rem',
 };
 
 export default CloseIcon;

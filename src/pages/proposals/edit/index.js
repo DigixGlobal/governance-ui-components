@@ -17,18 +17,27 @@ import getContract from '@digix/gov-ui/utils/contracts';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { getProposalDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
+import { withFetchProposal } from '@digix/gov-ui/api/graphql-queries/proposal';
 
-import Details from '../forms/details';
-import Milestones from '../forms/milestones';
-import Multimedia from '../forms/multimedia';
-import Overview from '../forms/overview';
-import Preview from './preview';
-import Confirm from '../confirm';
+import Details from '@digix/gov-ui/pages/proposals/forms/details';
+import Milestones from '@digix/gov-ui/pages/proposals/forms/milestones';
+import Multimedia from '@digix/gov-ui/pages/proposals/forms/multimedia';
+import Overview from '@digix/gov-ui/pages/proposals/forms/overview';
+import Preview from '@digix/gov-ui/pages/proposals/edit/preview';
+import Confirm from '@digix/gov-ui/pages/proposals/confirm';
 
-import { CreateWrapper, TabPanel, MenuItem, Header, LeftCol, RightCol, Heading } from './style';
+import {
+  CreateWrapper,
+  TabPanel,
+  MenuItem,
+  Header,
+  LeftCol,
+  RightCol,
+  Heading,
+  PreviewButton,
+} from '@digix/gov-ui/pages/proposals/create/style';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 
@@ -53,26 +62,14 @@ class EditProposal extends React.Component {
   }
 
   componentWillMount = () => {
-    const {
-      getProposalDetailsAction,
-      ChallengeProof,
-      history,
-      location,
-      proposalDetails,
-    } = this.props;
+    const { ChallengeProof, history, proposalDetails } = this.props;
     if (!ChallengeProof.data) history.push('/');
-    if (location.pathname) {
-      const path = location.pathname.split('/');
-      const proposalId = path[path.length - 1];
-      if (proposalId) getProposalDetailsAction(proposalId);
-    }
 
     if (proposalDetails.data.proposalId) {
       const currentVersion = proposalDetails.data.proposalVersions
         ? proposalDetails.data.proposalVersions[proposalDetails.data.proposalVersions.length - 1]
         : {};
       const form = { ...currentVersion.dijixObject };
-      form.finalReward = Number(currentVersion.finalReward);
       this.setState({
         form: { ...form },
         proposalId: proposalDetails.data.proposalId,
@@ -149,7 +146,7 @@ class EditProposal extends React.Component {
 
   createAttestation = () => {
     const { form } = this.state;
-    const { title, description, details, milestones, proofs, images } = form;
+    const { title, description, details, finalReward, milestones, proofs, images } = form;
 
     return dijix
       .create('attestation', {
@@ -158,6 +155,7 @@ class EditProposal extends React.Component {
           description,
           details,
           milestones,
+          finalReward,
         },
         proofs: images && images[0] !== null ? images.concat(proofs) : proofs,
       })
@@ -304,9 +302,9 @@ class EditProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button tertiary onClick={this.handleShowPreview}>
+            <PreviewButton tertiary onClick={this.handleShowPreview}>
               Preview
-            </Button>
+            </PreviewButton>
             <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
               Previous
             </Button>
@@ -341,13 +339,11 @@ EditProposal.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   proposalDetails: object.isRequired,
-  location: object.isRequired,
   history: object.isRequired,
   daoConfig: object.isRequired,
   addresses: array,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
-  getProposalDetailsAction: func.isRequired,
   showTxSigningModal: func.isRequired,
 };
 
@@ -357,7 +353,6 @@ EditProposal.defaultProps = {
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
-  proposalDetails: state.infoServer.ProposalDetails,
   daoConfig: state.infoServer.DaoConfig,
 });
 
@@ -367,8 +362,7 @@ export default web3Connect(
     {
       showHideAlert,
       sendTransactionToDaoServer,
-      getProposalDetailsAction: getProposalDetails,
       showTxSigningModal,
     }
-  )(EditProposal)
+  )(withFetchProposal(EditProposal))
 );

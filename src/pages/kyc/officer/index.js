@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Modal from 'react-responsive-modal';
-import { Query } from 'react-apollo';
+import { ApolloConsumer } from 'react-apollo';
 
 import DigixTable from '@digix/gov-ui/components/common/blocks/digix-table';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
@@ -16,8 +16,6 @@ import { showStatusIcon } from '@digix/gov-ui/pages/kyc/officer/constants';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
 import { KycWrapper, Title, CTAContainer, TabButton } from '@digix/gov-ui/pages/kyc/officer/style';
-
-// import '@digix/gov-ui/pages/kyc/officer/modal_styles.css';
 
 const columns = [
   {
@@ -58,12 +56,11 @@ class KycOfficerDashboard extends React.Component {
       selected: undefined,
       selectedIndex: 0,
       filter: 'All',
-      reloading: false,
     };
   }
 
   onClose = message => {
-    this.setState({ selected: undefined, reloading: true }, () => {
+    this.setState({ selected: undefined }, () => {
       if (message) {
         this.props.showHideAlert({ message });
       }
@@ -72,16 +69,14 @@ class KycOfficerDashboard extends React.Component {
 
   handleLoadAllUsers = client => {
     client.query({ query: searchKycQuery }).then(result => {
-      this.setState({ filter: 'All' });
+      this.setState({ data: result.data });
     });
   };
 
-  handleAllUsersClick = () => {
-    this.setState({ filter: undefined });
-  };
-
-  handleListKycByStatus = (status = 'PENDING') => {
-    this.setState({ filter: status, reloading: false });
+  handleListKycByStatus = (status = 'PENDING', client) => () => {
+    client.query({ query: searchKycQuery, variables: { status } }).then(result => {
+      this.setState({ data: result.data, filter: status });
+    });
   };
 
   renderInfo = () => {
@@ -98,97 +93,88 @@ class KycOfficerDashboard extends React.Component {
   };
 
   render() {
-    const { selected, selectedIndex, filter, reloading } = this.state;
+    const { selected, selectedIndex, filter, data } = this.state;
     const { userData, history } = this.props;
     if (!userData || (userData && !userData.isKycOfficer)) history.push('/');
+
     return (
-      <KycWrapper>
-        <Title>KYC Dashboard</Title>
-        <CTAContainer>
-          <TabButton
-            kind="round"
-            large
-            onClick={this.handleAllUsersClick}
-            data-digix="Kyc-Admin-All-users"
-            active={filter === 'All'}
-          >
-            All Users
-          </TabButton>
-          <TabButton
-            kind="round"
-            large
-            onClick={() => this.handleListKycByStatus('PENDING')}
-            data-digix="Kyc-Admin-KYC-Requests"
-            active={filter === 'PENDING'}
-          >
-            KYC Requests
-          </TabButton>
-          <TabButton
-            kind="round"
-            large
-            onClick={() => this.handleListKycByStatus('APPROVED')}
-            data-digix="Kyc-Admin-Approved-Requests"
-            active={filter === 'APPROVED'}
-          >
-            Approved KYC Requests
-          </TabButton>
-          <TabButton
-            kind="round"
-            large
-            onClick={() => this.handleListKycByStatus('REJECTED')}
-            data-digix="Kyc-Admin-Rejected-Requests"
-            active={filter === 'REJECTED'}
-          >
-            Rejected KYC Requests
-          </TabButton>
-        </CTAContainer>
-        {/* <FilterLabel>Showing {filter || 'All'} KYC</FilterLabel> */}
-        <Query
-          query={searchKycQuery}
-          fetchPolicy="network-only"
-          variables={{ status: filter === 'All' ? undefined : filter }}
-        >
-          {({ data, loading, error, refetch }) => {
-            if (loading) {
-              return <div>Loading...</div>;
-            }
-
-            if (error) {
-              return null;
-            }
-            if (reloading) refetch();
-
+      <Fragment>
+        <ApolloConsumer>
+          {client => {
+            if (!data) this.handleLoadAllUsers(client);
             return (
-              <Fragment>
-                <DigixTable
-                  data={data.searchKycs.edges}
-                  columns={columns}
-                  getTrProps={(state, rowInfo) => {
-                    if (rowInfo && rowInfo.row) {
-                      return {
-                        onClick: () => {
-                          this.setState({
-                            selected: rowInfo.original,
-                            selectedIndex: rowInfo.index,
-                          });
-                        },
-                        style: {
-                          backgroundColor: rowInfo.index === selectedIndex ? '#f2f2f2' : '#fff',
-                          cursor: 'pointer',
-                        },
-                      };
-                    }
-                    return {};
-                  }}
-                />
-              </Fragment>
+              <KycWrapper>
+                <Title>KYC Dashboard</Title>
+                <CTAContainer>
+                  <TabButton
+                    kind="round"
+                    large
+                    onClick={this.handleListKycByStatus(undefined, client)}
+                    data-digix="Kyc-Admin-All-users"
+                    active={filter === 'All'}
+                  >
+                    All Users
+                  </TabButton>
+                  <TabButton
+                    kind="round"
+                    large
+                    onClick={this.handleListKycByStatus('PENDING', client)}
+                    data-digix="Kyc-Admin-KYC-Requests"
+                    active={filter === 'PENDING'}
+                  >
+                    KYC Requests
+                  </TabButton>
+                  <TabButton
+                    kind="round"
+                    large
+                    onClick={this.handleListKycByStatus('APPROVED', client)}
+                    data-digix="Kyc-Admin-Approved-Requests"
+                    active={filter === 'APPROVED'}
+                  >
+                    Approved KYC Requests
+                  </TabButton>
+                  <TabButton
+                    kind="round"
+                    large
+                    onClick={this.handleListKycByStatus('REJECTED', client)}
+                    data-digix="Kyc-Admin-Rejected-Requests"
+                    active={filter === 'REJECTED'}
+                  >
+                    Rejected KYC Requests
+                  </TabButton>
+                </CTAContainer>
+
+                <Modal open={selected !== undefined} onClose={() => this.onClose()}>
+                  {this.renderInfo()}
+                </Modal>
+              </KycWrapper>
             );
           }}
-        </Query>
-        <Modal open={selected !== undefined} onClose={() => this.onClose()}>
-          {this.renderInfo()}
-        </Modal>
-      </KycWrapper>
+        </ApolloConsumer>
+        {data && (
+          <DigixTable
+            data={data.searchKycs.edges}
+            columns={columns}
+            getTrProps={(state, rowInfo) => {
+              if (rowInfo && rowInfo.row) {
+                return {
+                  onClick: () => {
+                    this.setState({
+                      selected: rowInfo.original,
+                      selectedIndex: rowInfo.index,
+                    });
+                  },
+                  style: {
+                    backgroundColor: rowInfo.index === selectedIndex ? '#f2f2f2' : '#fff',
+                    cursor: 'pointer',
+                  },
+                };
+              }
+              return {};
+            }}
+          />
+        )}
+      </Fragment>
     );
   }
 }

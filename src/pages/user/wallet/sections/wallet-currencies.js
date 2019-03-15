@@ -25,11 +25,14 @@ import {
 const network = SpectrumConfig.defaultNetworks[0];
 
 class WalletCurrencies extends React.Component {
-  state = {
-    dgdBalance: 0,
-    dgxBalance: 0,
-    ethBalance: 0,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      dgdBalance: 0,
+      dgxBalance: 0,
+      ethBalance: 0,
+    };
+  }
 
   componentDidMount() {
     const { address } = this.props.AddressDetails;
@@ -46,8 +49,45 @@ class WalletCurrencies extends React.Component {
       const ethBalance = result[1];
       const dgdBalance = result[2];
       const dgxBalance = result[3];
+
       this.setState({ ethBalance, dgdBalance, dgxBalance });
+      this.props.subscribeToAddress();
     });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    let shouldUpdate = false;
+
+    const currentLockedDgd = this.props.AddressDetails.lockedDgd;
+    const nextLockedDgd = nextProps.AddressDetails.lockedDgd;
+    if (currentLockedDgd !== nextLockedDgd) {
+      shouldUpdate = true;
+      this.getDgdBalance().then(dgdBalance => {
+        this.setState({
+          dgdBalance,
+        });
+      });
+    }
+
+    const currentClaimableDgx = this.props.AddressDetails.claimableDgx;
+    const nextClaimableDgx = nextProps.AddressDetails.claimableDgx;
+    if (currentClaimableDgx !== nextClaimableDgx) {
+      shouldUpdate = true;
+      this.getDgxBalance().then(dgxBalance => {
+        this.setState({
+          dgxBalance,
+        });
+      });
+    }
+
+    const changeInDgd = this.state.dgdBalance !== nextState.dgdBalance;
+    const changeInDgx = this.state.dgxBalance !== nextState.dgxBalance;
+    const changeInEth = this.state.ethBalance !== nextState.ethBalance;
+    if (changeInDgd || changeInDgx || changeInEth) {
+      shouldUpdate = true;
+    }
+
+    return shouldUpdate;
   }
 
   getDgdBalance() {
@@ -155,6 +195,7 @@ WalletCurrencies.propTypes = {
   AddressDetails: object.isRequired,
   getDaoDetails: func.isRequired,
   tokenUsdValues: object.isRequired,
+  subscribeToAddress: func.isRequired,
   web3Redux: object.isRequired,
 };
 

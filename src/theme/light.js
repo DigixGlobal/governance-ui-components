@@ -140,7 +140,7 @@ const LightTheme = {
   buttonDefault: {
     textColor: primaryColor,
     background: white,
-    border: primaryColor,
+    border: white,
     iconColor: tertiaryColor,
   },
 

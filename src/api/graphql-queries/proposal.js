@@ -118,7 +118,6 @@ export const fetchProposal = gql`
         moreDocs
         totalFunding
         dijixObject {
-          id
           title
           description
           details

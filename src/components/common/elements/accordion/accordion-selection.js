@@ -29,8 +29,8 @@ export default class AccordionSelection extends React.Component {
     let difference = '';
     if (milestoneFund) {
       const sign = milestoneFund > 0 ? `+` : `-`;
-      difference = `${sign} ${Math.abs(milestoneFund)}`;
-      difference = truncateNumber(difference);
+      difference = truncateNumber(Math.abs(milestoneFund));
+      difference = `${sign} ${difference}`;
     }
 
     return (

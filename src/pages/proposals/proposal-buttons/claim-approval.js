@@ -228,7 +228,6 @@ ClaimApprovalButton.propTypes = {
   subscribeToTransaction: func.isRequired,
   getDaoConfig: func.isRequired,
   showTxSigningModal: func.isRequired,
-  onCompleted: func,
   addresses: array.isRequired,
   history: object.isRequired,
   transactions: object,
@@ -241,7 +240,6 @@ ClaimApprovalButton.defaultProps = {
   votingStage: undefined,
   pendingTransactions: undefined,
   transactions: undefined,
-  onCompleted: undefined,
 };
 
 const mapStateToProps = state => ({

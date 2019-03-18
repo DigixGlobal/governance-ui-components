@@ -162,7 +162,7 @@ class RevealVote extends React.Component {
         {error && <ErrorCaption>{error}</ErrorCaption>}
         {uploaded && !error && (
           <Notifications column info centered>
-            <Message title uppercase>
+            <Message uppercase>
               Your vote is
               <br />
               <span style={{ fontSize: '3.8rem' }}>{voteObject.vote ? 'YES' : 'NO'}</span>

@@ -69,7 +69,6 @@ class ProfileUserInfo extends React.Component {
           {email && <UserData data-digix="Profile-Email">{email}</UserData>}
           <SetUserInfoBtn
             primary
-            icon
             xsmall
             data-digix="Profile-Email-Cta"
             onClick={() => this.showSetEmailOverlay()}

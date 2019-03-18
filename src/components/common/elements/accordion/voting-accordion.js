@@ -36,7 +36,7 @@ class VotingAccordion extends React.PureComponent {
     const show = acc && acc.open && i === selectedIndex;
     const svgIcon = show ? '#arrow_up' : '#arrow_down';
     return (
-      <AccordionItem voting>
+      <AccordionItem voting key={i}>
         <Header onClick={() => this.onClickItemHandler(i)}>
           <Title uppercase>{item.title}</Title>
           <Funding>

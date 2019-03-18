@@ -85,7 +85,6 @@ class ParticipantButtons extends React.Component {
           </Button>
         )}
         <EditFundingButton
-          onCompleted={this.props.onCompleted}
           proposal={data}
           proposalId={data.proposalId}
           history={history}
@@ -106,7 +105,6 @@ class ParticipantButtons extends React.Component {
           isProposer={isProposer}
           draftVoting={data.draftVoting}
           history={history}
-          onCompleted={this.props.onCompleted}
           votingStage={data.votingStage}
           proposalId={data.proposalId}
           checkProposalRequirements={checkProposalRequirements}
@@ -130,7 +128,6 @@ class ParticipantButtons extends React.Component {
         />
         <ClaimResultsButton
           checkProposalRequirements={checkProposalRequirements}
-          onCompleted={this.props.onCompleted}
           match={this.props.match}
           isProposer={isProposer}
           history={history}
@@ -162,13 +159,8 @@ ParticipantButtons.propTypes = {
   history: object.isRequired,
   isProposer: bool.isRequired,
   match: object.isRequired,
-  onCompleted: func,
   proposal: object.isRequired,
   showRightPanel: func.isRequired,
-};
-
-ParticipantButtons.defaultProps = {
-  onCompleted: undefined,
 };
 
 const mapStateToProps = ({ infoServer }) => ({

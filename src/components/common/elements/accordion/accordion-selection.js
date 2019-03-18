@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icons from '@digix/gov-ui/components/common/elements/icons/Icons';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import {
   Amount,
   AccordionItem,
@@ -19,15 +20,17 @@ export default class AccordionSelection extends React.Component {
   render() {
     const {
       onClickItemHandler,
-      props: { children, isOpen, label, funding, milestoneFund },
+      props: { children, isOpen, label, milestoneFund },
     } = this;
 
+    const funding = truncateNumber(this.props.funding);
     const svgIcon = isOpen ? '#arrow_up' : '#arrow_down';
 
     let difference = '';
     if (milestoneFund) {
       const sign = milestoneFund > 0 ? `+` : `-`;
-      difference = `${sign} ${Math.abs(milestoneFund)}`;
+      difference = truncateNumber(Math.abs(milestoneFund));
+      difference = `${sign} ${difference}`;
     }
 
     return (

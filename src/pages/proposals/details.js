@@ -4,10 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import Modal from 'react-responsive-modal';
 
 import Icon from '@digix/gov-ui/components/common/elements/icons';
-import ImageViewer from '@digix/gov-ui/components/common/ipfs-viewer';
 import { HR } from '@digix/gov-ui/components/common/common-styles';
 
-import { dijix } from '../../utils/dijix';
+import { dijix, fetchFromDijix } from '@digix/gov-ui/utils/dijix';
 
 import { DetailsContainer, Content, SubTitle, ImageHolder, CloseButton } from './style';
 
@@ -16,15 +15,30 @@ export default class ProjectDetails extends React.Component {
     super(props);
     this.state = { open: false };
   }
+  componentWillReceiveProps = nextProps => {
+    this.fetchImages(nextProps.project.images);
+  };
+
   showHideImage = () => {
     this.setState({ open: !this.state.open });
   };
 
-  renderDocuments(documents) {
-    if (!documents) return null;
-
-    return this.renderImages(documents);
-  }
+  fetchImages = proofs => {
+    const thumbnailSize = 512;
+    Promise.all(
+      proofs.map(hash => {
+        if (hash === null || !hash) return undefined;
+        return fetchFromDijix(0, undefined, hash).then(data => data);
+      })
+    ).then(images => {
+      if (!images[0]) return undefined;
+      const files = images.map(image => ({
+        thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
+        src: image ? image.data.src : undefined,
+      }));
+      this.setState({ files });
+    });
+  };
 
   renderImages = (proofs, preview) => {
     if (!proofs) return null;
@@ -80,6 +94,7 @@ export default class ProjectDetails extends React.Component {
     const { project, preview } = this.props;
     const hasImages = project.images && project.images.length > 0;
 
+    console.log(project.proofs, project.images);
     return (
       <DetailsContainer>
         <Content>
@@ -95,17 +110,8 @@ export default class ProjectDetails extends React.Component {
         <Content>
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
-          {hasImages && (
-            <div>
-              <ImageViewer
-                thumbnailSize="512"
-                hashes={project.images || project.proofs}
-                renderLoading={null}
-                renderResolved={thumbnails => this.renderDocuments(thumbnails)}
-              />
-            </div>
-          )}
-          {preview && this.renderImages(project.proofs || project.images, preview)}
+          {hasImages && this.renderImages(this.state.files, false)}
+          {this.renderImages(project.proofs ? project.proofs : project.images, preview)}
           <HR />
         </Content>
       </DetailsContainer>

@@ -148,7 +148,8 @@ class Proposal extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     const { proposalDetails } = nextProps;
-    if (!proposalDetails.fetching && proposalDetails.data.proposalId) {
+
+    if (!proposalDetails.fetching && proposalDetails.data && proposalDetails.data.proposalId) {
       const currentVersion = proposalDetails.data.proposalVersions
         ? proposalDetails.data.proposalVersions.length - 1
         : 0;
@@ -627,8 +628,7 @@ class Proposal extends React.Component {
 
   render() {
     const { proposalDetails } = this.props;
-
-    if (proposalDetails.fetching === null || proposalDetails.fetching)
+    if (proposalDetails.fetching === null || proposalDetails.fetching || !proposalDetails.data)
       return <div>Fetching Proposal Details</div>;
 
     if (proposalDetails.data.isSpecial) {

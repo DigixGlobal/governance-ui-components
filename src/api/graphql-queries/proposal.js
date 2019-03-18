@@ -2,6 +2,7 @@
 
 import React from 'react';
 import gql from 'graphql-tag';
+
 import { Query } from 'react-apollo';
 
 export const fetchProposal = gql`
@@ -109,6 +110,7 @@ export const fetchProposal = gql`
         currentClaimStep
       }
       proposalVersions {
+        id
         docIpfsHash
         created
         milestoneFundings
@@ -308,11 +310,13 @@ export const withFetchProposal = Component => props => {
     <Query
       query={fetchProposal}
       fetchPolicy="network-only"
+      notifyOnNetworkStatusChange
       variables={{
         proposalId: id,
       }}
     >
-      {({ loading, error, data, refetch, subscribeToMore }) => {
+      {({ loading, error, data, refetch, subscribeToMore, networkStatus, updateQuery }) => {
+        if (networkStatus === 4) return <div>Refetching!</div>;
         if (loading || error) {
           return <div>Fetching Proposal Details</div>;
         }
@@ -335,6 +339,7 @@ export const withFetchProposal = Component => props => {
           <Component
             {...props}
             proposalDetails={{ data: data.fetchProposal }}
+            updateQuery={updateQuery}
             refetchProposal={refetch}
             subscribeToProposal={subscribeToProposal}
           />

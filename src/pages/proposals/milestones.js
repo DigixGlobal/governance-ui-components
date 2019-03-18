@@ -10,7 +10,7 @@ export default class Milestones extends React.Component {
   }
 
   renderMilestone(milestone, index) {
-    const { changedFundings, fundingChanged } = this.props;
+    const { changedFundings, fundingChanged, milestoneFundings } = this.props;
 
     let funding;
     let milestoneFund;
@@ -22,7 +22,7 @@ export default class Milestones extends React.Component {
       funding = Number(original);
       milestoneFund = Number(updated) - funding;
     } else {
-      funding = milestone.fund;
+      funding = Number(milestoneFundings[index]);
     }
 
     return (
@@ -53,6 +53,7 @@ export default class Milestones extends React.Component {
 Milestones.propTypes = {
   changedFundings: PropTypes.array,
   fundingChanged: PropTypes.bool.isRequired,
+  milestoneFundings: PropTypes.array.isRequired,
   milestones: PropTypes.array.isRequired,
 };
 

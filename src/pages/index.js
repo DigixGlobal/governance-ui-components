@@ -41,7 +41,11 @@ class LandingPage extends React.PureComponent {
 
   componentDidMount = () => {
     if (window.Cookiebot) {
-      window.Cookiebot.show();
+      try {
+        window.Cookiebot.show();
+      } catch (error) {
+        console.log('unable to initialize cookiebot');
+      }
     }
   };
 

@@ -246,7 +246,6 @@ ClaimResultsButton.propTypes = {
   transactions: object,
   showRightPanel: func.isRequired,
   showTxSigningModal: func.isRequired,
-  onCompleted: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
 };

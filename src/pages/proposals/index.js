@@ -10,6 +10,7 @@ import Milestones from '@digix/gov-ui/pages/proposals/milestones';
 import ModeratorButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/moderators';
 import ParticipantButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/participants';
 import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
+import ProposalFundings from '@digix/gov-ui/pages/proposals/fundings';
 import ProposalVersionNav from '@digix/gov-ui/pages/proposals/version-nav';
 import SpecialProjectDetails from '@digix/gov-ui/pages/proposals/special-project-details';
 import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
@@ -147,7 +148,8 @@ class Proposal extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     const { proposalDetails } = nextProps;
-    if (!proposalDetails.fetching && proposalDetails.data.proposalId) {
+
+    if (!proposalDetails.fetching && proposalDetails.data && proposalDetails.data.proposalId) {
       const currentVersion = proposalDetails.data.proposalVersions
         ? proposalDetails.data.proposalVersions.length - 1
         : 0;
@@ -385,55 +387,6 @@ class Proposal extends React.Component {
       );
   };
 
-  renderProposalFundings() {
-    const proposal = this.props.proposalDetails.data;
-    const proposalVersion = proposal.proposalVersions[this.state.currentVersion];
-    const { isFundingChanged } = proposal;
-
-    let {
-      milestoneFunds,
-      milestoneFundDifference,
-      reward,
-      rewardDifference,
-    } = this.getChangedFundings();
-
-    if (!isFundingChanged) {
-      const { finalReward, milestones } = proposalVersion.dijixObject;
-      reward = truncateNumber(finalReward);
-      milestoneFunds = milestones.reduce((total, milestone) => total + Number(milestone.fund), 0);
-    }
-
-    return (
-      <InfoItem outlined>
-        <ItemTitle>Funding</ItemTitle>
-        <Data>
-          <div className="milestones">
-            <span data-digix="funding-amount-label">{milestoneFunds}</span>
-            {milestoneFundDifference && (
-              <span data-digix="edit-funding-amount-label">
-                {milestoneFundDifference > 0
-                  ? ` + ${milestoneFundDifference}`
-                  : ` - ${Math.abs(milestoneFundDifference)}`}
-              </span>
-            )}
-            {` ETH`} <span className="label">Milestones</span>
-          </div>
-          <div className="reward">
-            <span data-digix="reward-amount-label">{reward} </span>
-            {rewardDifference && (
-              <span data-digix="edit-reward-amount-label">
-                {rewardDifference > 0
-                  ? ` + ${rewardDifference} `
-                  : ` - ${Math.abs(rewardDifference)} `}
-              </span>
-            )}
-            ETH <span className="label">Reward</span>
-          </div>
-        </Data>
-      </InfoItem>
-    );
-  }
-
   renderProposerDidNotPassAlert = () => {
     const {
       proposalDetails: {
@@ -638,7 +591,11 @@ class Proposal extends React.Component {
                 <span data-digix="milestone-label">{dijixObject.milestones.length || 0}</span>
               </Data>
             </InfoItem>
-            {this.renderProposalFundings()}
+            <ProposalFundings
+              currentVersion={currentVersion}
+              match={match}
+              proposalDetails={proposal}
+            />
             <InfoItem>
               <Like
                 hasVoted={liked}
@@ -660,6 +617,7 @@ class Proposal extends React.Component {
         <ProjectDetails project={dijixObject} />
         <Milestones
           milestones={dijixObject.milestones || []}
+          milestoneFundings={proposalVersion.milestoneFundings || []}
           changedFundings={changedFundings ? changedFundings.milestones : undefined}
           fundingChanged={proposal.isFundingChanged}
         />
@@ -670,8 +628,7 @@ class Proposal extends React.Component {
 
   render() {
     const { proposalDetails } = this.props;
-
-    if (proposalDetails.fetching === null || proposalDetails.fetching)
+    if (proposalDetails.fetching === null || proposalDetails.fetching || !proposalDetails.data)
       return <div>Fetching Proposal Details</div>;
 
     if (proposalDetails.data.isSpecial) {

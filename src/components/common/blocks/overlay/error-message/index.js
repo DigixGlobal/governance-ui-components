@@ -20,7 +20,7 @@ class ErrorMessageOverlay extends React.Component {
 
   renderNotification = error => (
     <Notifications error key={error.title} data-digix="ProjectError-Notification">
-      <Message title uppercase data-digix="ProjectError-Notification-Title">
+      <Message uppercase data-digix="ProjectError-Notification-Title">
         {error.title}
       </Message>
       <p>{error.description}</p>

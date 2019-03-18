@@ -53,7 +53,7 @@ class Multimedia extends React.Component {
 
           if (supported.findIndex(item => item === file.type) === -1) {
             error = `Unsupported ${file.type} file type`;
-            return;
+            return error;
           }
 
           if (file.type === 'image/png' || file.type === 'image/jpeg') {
@@ -96,7 +96,7 @@ class Multimedia extends React.Component {
   renderImages = (proofs, preview) => {
     if (!proofs) return null;
     const images = proofs.map((img, i) => (
-      <Fragment>
+      <Fragment key={`img-${i + 1}`}>
         {/* eslint-disable */}
         <img
           key={`img-${i + 1}`}

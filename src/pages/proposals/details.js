@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import Modal from 'react-responsive-modal';
@@ -19,8 +20,8 @@ export default class ProjectDetails extends React.Component {
     this.fetchImages(nextProps.project.images);
   };
 
-  showHideImage = () => {
-    this.setState({ open: !this.state.open });
+  showHideImage = source => () => {
+    this.setState({ open: !this.state.open, selectedImage: source });
   };
 
   fetchImages = proofs => {
@@ -42,56 +43,27 @@ export default class ProjectDetails extends React.Component {
 
   renderImages = (proofs, preview) => {
     if (!proofs) return null;
-    const images = proofs.map((img, i) =>
-      img.src ? (
-        <Fragment key={`frag-${i + 1}`}>
-          {/* eslint-disable */}
-          <img
-            key={`img-${i + 1}`}
-            alt=""
-            onClick={this.showHideImage}
-            src={
-              !preview && img.thumbnail
-                ? `${dijix.config.httpEndpoint}/${img.thumbnail}`
-                : img.src
-            }
-            style={{ cursor: 'pointer' }}
-          />
-          <Modal
-            open={this.state.open}
-            showCloseIcon={false}
-            onClose={this.showHideImage}
-            center
-          >
-            <div>
-              <img
-                key={`img-${i + 1}`}
-                alt=""
-                style={{ width: '100%' }}
-                src={
-                  preview
-                    ? img.src
-                    : `${dijix.config.httpEndpoint}/${img.src}?q=${Date.now()}`
-                }
-              />
+    const images = proofs.map((img, i) => {
+      const source =
+        !preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.thumbnail}` : img.src;
 
-              <CloseButton
-                onClick={this.showHideImage}
-                style={{ boxShadow: 'none' }}
-              >
-                <Icon kind="close" style={{ marginRight: 0 }} />
-              </CloseButton>
-            </div>
-          </Modal>
-          {/* eslint-enable */}
-        </Fragment>
-      ) : null
-    );
+      return img.src ? (
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+        <img
+          key={`img-${i + 1}`}
+          alt=""
+          onClick={this.showHideImage(source)}
+          src={source}
+          style={{ cursor: 'pointer' }}
+        />
+      ) : null;
+    });
     return <ImageHolder>{images}</ImageHolder>;
   };
 
   render() {
     const { project, preview } = this.props;
+    const { selectedImage } = this.state;
     const hasImages = project.images && project.images.length > 0;
 
     return (
@@ -113,6 +85,14 @@ export default class ProjectDetails extends React.Component {
           {this.renderImages(project.proofs ? project.proofs : project.images, preview)}
           <HR />
         </Content>
+        <Modal open={this.state.open} showCloseIcon={false} onClose={this.showHideImage()} center>
+          <div>
+            <img alt="" style={{ width: '100%' }} src={selectedImage} />
+            <CloseButton onClick={this.showHideImage()} style={{ boxShadow: 'none' }}>
+              <Icon kind="close" style={{ marginRight: 0 }} />
+            </CloseButton>
+          </div>
+        </Modal>
       </DetailsContainer>
     );
   }

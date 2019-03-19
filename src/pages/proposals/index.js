@@ -468,7 +468,7 @@ class Proposal extends React.Component {
               <Button kind="tag" showIcon>
                 {proposalDetails.data.stage}
               </Button>
-              <Title>{proposalDetails.data.title}</Title>
+              <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
             </div>
             {!isForumAdmin && (
               <CallToAction>

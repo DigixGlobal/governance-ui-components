@@ -95,7 +95,7 @@ export default class ProjectDetails extends React.Component {
       <DetailsContainer>
         <Content>
           <SubTitle>Short Description</SubTitle>
-          <div>
+          <div data-digix="Details-Short-Desc">
             {project.description
               ? project.description
               : 'No short description content has been created yet.'}
@@ -103,7 +103,7 @@ export default class ProjectDetails extends React.Component {
           <HR />
         </Content>
 
-        <Content>
+        <Content data-digix="Details-Desc">
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
           {hasImages && this.renderImages(this.state.files, false)}

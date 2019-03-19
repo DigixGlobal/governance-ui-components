@@ -314,7 +314,12 @@ class EditProposal extends React.Component {
               </Button>
             )}
             {!canMoveNext && validForm && (
-              <Button primary ghost onClick={this.handleShowConfirmPage}>
+              <Button
+                primary
+                ghost
+                onClick={this.handleShowConfirmPage}
+                data-digix="Create-Proposal-Button"
+              >
                 Update Now
               </Button>
             )}

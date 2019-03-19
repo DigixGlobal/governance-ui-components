@@ -44,7 +44,9 @@ class Preview extends React.Component {
               <Button kind="tag" showIcon>
                 IDEA
               </Button>
-              <Title primary>{form.title}</Title>
+              <Title primary data-digix="Proposal-Title">
+                {form.title}
+              </Title>
             </div>
           </Header>
           <FundingInfo>

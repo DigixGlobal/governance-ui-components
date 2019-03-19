@@ -42,11 +42,26 @@ export default class ProjectDetails extends React.Component {
     });
   };
 
-  renderDocuments(documents) {
-    if (!documents) return null;
+  showHideImage = source => () => {
+    this.setState({ open: !this.state.open, selectedImage: source });
+  };
 
-    return this.renderImages(documents);
-  }
+  fetchImages = proofs => {
+    const thumbnailSize = 512;
+    Promise.all(
+      proofs.map(hash => {
+        if (hash === null || !hash) return undefined;
+        return fetchFromDijix(0, undefined, hash).then(data => data);
+      })
+    ).then(images => {
+      if (!images[0]) return undefined;
+      const files = images.map(image => ({
+        thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
+        src: image ? image.data.src : undefined,
+      }));
+      this.setState({ files });
+    });
+  };
 
   renderImages = (proofs, preview) => {
     if (!proofs || proofs === null) return null;
@@ -98,7 +113,6 @@ export default class ProjectDetails extends React.Component {
         <Modal open={this.state.open} showCloseIcon={false} onClose={this.showHideImage()} center>
           <div>
             <img alt="" style={{ width: '100%' }} src={selectedImage} />
-
             <CloseButton onClick={this.showHideImage()} style={{ boxShadow: 'none' }}>
               <Icon kind="close" style={{ marginRight: 0 }} />
             </CloseButton>

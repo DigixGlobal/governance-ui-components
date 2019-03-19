@@ -258,6 +258,7 @@ const proposalSubscription = gql`
         currentClaimStep
       }
       proposalVersions {
+        id
         docIpfsHash
         created
         milestoneFundings

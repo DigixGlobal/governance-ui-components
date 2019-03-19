@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
@@ -14,10 +13,33 @@ import { DetailsContainer, Content, SubTitle, ImageHolder, CloseButton } from '.
 export default class ProjectDetails extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: false };
+    this.state = { open: false, selectedImage: undefined };
   }
+
   componentWillReceiveProps = nextProps => {
     this.fetchImages(nextProps.project.images);
+  };
+
+  showHideImage = source => () => {
+    this.setState({ open: !this.state.open, selectedImage: source });
+  };
+
+  fetchImages = proofs => {
+    if (!proofs) return;
+    const thumbnailSize = 512;
+    Promise.all(
+      proofs.map(hash => {
+        if (hash === null || !hash) return undefined;
+        return fetchFromDijix(0, undefined, hash).then(data => data);
+      })
+    ).then(images => {
+      if (!images[0]) return undefined;
+      const files = images.map(image => ({
+        thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
+        src: image ? image.data.src : undefined,
+      }));
+      this.setState({ files });
+    });
   };
 
   showHideImage = source => () => {
@@ -42,13 +64,15 @@ export default class ProjectDetails extends React.Component {
   };
 
   renderImages = (proofs, preview) => {
-    if (!proofs) return null;
+    if (!proofs || proofs === null) return null;
     const images = proofs.map((img, i) => {
+      if (!img.src) return null;
+
       const source =
         !preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.thumbnail}` : img.src;
 
-      return img.src ? (
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+      /* eslint-disable */
+      return (
         <img
           key={`img-${i + 1}`}
           alt=""
@@ -56,7 +80,8 @@ export default class ProjectDetails extends React.Component {
           src={source}
           style={{ cursor: 'pointer' }}
         />
-      ) : null;
+      );
+      /* eslint-enable */
     });
     return <ImageHolder>{images}</ImageHolder>;
   };
@@ -82,7 +107,7 @@ export default class ProjectDetails extends React.Component {
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
           {hasImages && this.renderImages(this.state.files, false)}
-          {this.renderImages(project.proofs ? project.proofs : project.images, preview)}
+          {preview && this.renderImages(project.proofs || project.images, preview)}
           <HR />
         </Content>
         <Modal open={this.state.open} showCloseIcon={false} onClose={this.showHideImage()} center>

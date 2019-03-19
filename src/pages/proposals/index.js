@@ -596,7 +596,7 @@ class Proposal extends React.Component {
               match={match}
               proposalDetails={proposal}
             />
-            <InfoItem>
+            <InfoItem data-digix="Proposal-Like">
               <Like
                 hasVoted={liked}
                 likes={likes}

@@ -27,12 +27,13 @@ class UpdateUsernameButton extends React.Component {
 const { bool, func, string } = PropTypes;
 
 UpdateUsernameButton.propTypes = {
-  changeUsername: func.isRequired,
+  changeUsername: func,
   disable: bool.isRequired,
   username: string,
 };
 
 UpdateUsernameButton.defaultProps = {
+  changeUsername: undefined,
   username: undefined,
 };
 

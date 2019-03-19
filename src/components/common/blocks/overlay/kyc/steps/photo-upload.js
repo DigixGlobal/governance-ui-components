@@ -319,6 +319,7 @@ class KycOverlayPhotoUpload extends KycFormStep {
             <Label>Photo Proof Method</Label>
             <Select
               fluid
+              id="photo-upload"
               item="upload"
               items={this.PHOTO_PROOF_METHODS}
               onChange={this.changeProofMethod}

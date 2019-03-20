@@ -29,7 +29,14 @@ class UserAddressStats extends React.Component {
       <UserStats>
         <Item>
           <Label>Quarter Points</Label>
-          <Data data-digix="Dashboard-Stats-QuarterPoints">{quarterPoint || 0}</Data>
+          <Data data-digix="Dashboard-Stats-QuarterPoints">
+            <span>{quarterPoint || 0}</span>
+            <span className="equiv">
+              <span>( + </span>
+              <span data-digix="Dashboard-Mod-QtrPts">100</span>
+              <span>&nbsp; Mod QUARTER Points )</span>
+            </span>
+          </Data>
         </Item>
         <Item>
           <Label>Reputation Points</Label>
@@ -40,9 +47,9 @@ class UserAddressStats extends React.Component {
           <Data data-digix="Dashboard-Stats-Stake">
             <span data-digix="Dashboard-DGD-Stake">{stake}</span>
             <span className="equiv">
-              <span>(</span>
+              <span>( </span>
               <span data-digix="Dashboard-DGD-Stake">{dgd}</span>
-              <span>&nbsp;DGD LOCKED)</span>
+              <span>&nbsp;DGD LOCKED )</span>
             </span>
           </Data>
         </Item>

@@ -146,6 +146,7 @@ export const RoundBtn = styled(Button)`
     props.reverse &&
     css`
       background: ${props.theme.buttonInverted.background.base.toString()};
+      border-color: ${props.theme.buttonInverted.border.base.toString()};
       box-shadow: none;
       color: ${props.theme.buttonInverted.textColor.base.toString()};
 

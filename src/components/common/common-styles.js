@@ -62,7 +62,7 @@ export const Link = styled.a`
 
 export const ContentWrapper = styled.div`
   flex: 5 0 0;
-  padding: 12em 8em;
+  padding: 12rem;
 `;
 
 export const LeftPanel = css``;

@@ -99,7 +99,7 @@ export const ImageHolder = styled.div`
   padding: 0.5rem;
   overflow: auto;
 
-  & > img {
+  & > div > img {
     height: auto;
     width: 100%;
     margin: 2px;

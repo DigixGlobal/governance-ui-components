@@ -103,6 +103,7 @@ class EditProposal extends React.Component {
       form[e.target.id] = e.target.value;
     } else if (e && value) {
       form[e] = value;
+      console.log({ e, value, form });
     }
 
     this.setState({ form: { ...form } }, () => {

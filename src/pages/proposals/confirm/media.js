@@ -23,7 +23,7 @@ export default class MediaAssets extends React.PureComponent {
 
   componentDidMount = () => {
     const { images } = this.props.form;
-    fetchImages(images).then(files => this.setState({ files }));
+    if (images) fetchImages(images).then(files => this.setState({ files }));
   };
 
   showHideImage = source => () => {

@@ -20,8 +20,7 @@ export default class ProjectDetails extends React.Component {
 
   componentDidMount = () => {
     const { images } = this.props.project;
-
-    fetchImages(images).then(files => this.setState({ files }));
+    if (images) fetchImages(images).then(files => this.setState({ files }));
   };
 
   componentWillReceiveProps = nextProps => {

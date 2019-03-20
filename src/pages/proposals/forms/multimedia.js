@@ -30,7 +30,7 @@ class Multimedia extends React.Component {
 
   componentDidMount = () => {
     const { images } = this.props.form;
-    fetchImages(images).then(files => this.setState({ files }));
+    if (images) fetchImages(images).then(files => this.setState({ files }));
   };
 
   showHideImage = source => () => {
@@ -42,10 +42,10 @@ class Multimedia extends React.Component {
     const { proofs } = this.props.form;
     if (index < 0 || (!thumbnails && !proofs)) return;
 
-    if (thumbnails) {
-      thumbnails.splice(index, 1);
-    }
+    if (thumbnails) thumbnails.splice(index, 1);
+
     if (proofs) proofs.splice(index, 1);
+
     this.setState({ thumbnails: thumbnails || proofs }, () => {
       this.props.onChange('proofs', proofs);
     });
@@ -146,14 +146,14 @@ class Multimedia extends React.Component {
         source = `${dijix.config.httpEndpoint}/${img.src}`;
       }
       return (
-        <div>
+        <div key={`img-${i + 1}`}>
           <Button
             onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
           >
             Delete
           </Button>
           {/* eslint-disable*/}
-          <img key={`img-${i + 1}`} alt="" onClick={this.showHideImage(source)} src={source} />;
+          <img  alt="" onClick={this.showHideImage(source)} src={source} />;
           {/* eslint-enable */}
         </div>
       );

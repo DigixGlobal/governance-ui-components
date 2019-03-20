@@ -468,7 +468,7 @@ class Proposal extends React.Component {
               <Button kind="tag" showIcon>
                 {proposalDetails.data.stage}
               </Button>
-              <Title>{proposalDetails.data.title}</Title>
+              <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
             </div>
             {!isForumAdmin && (
               <CallToAction>
@@ -596,7 +596,7 @@ class Proposal extends React.Component {
               match={match}
               proposalDetails={proposal}
             />
-            <InfoItem>
+            <InfoItem data-digix="Proposal-Like">
               <Like
                 hasVoted={liked}
                 likes={likes}

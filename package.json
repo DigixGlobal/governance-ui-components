@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@digix/dao-contracts": "0.1.0",
+    "@digix/dao-contracts": "0.0.6",
     "@digix/multi-hash": "0.0.2",
     "@digix/react-webcam": "^0.2.5",
     "@material-ui/core": "^3.1.1",

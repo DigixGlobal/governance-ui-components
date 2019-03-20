@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import StyledSelect from './style';
+import StyledSelect from '@digix/gov-ui/components/common/elements/select/style';
 
 class Select extends React.Component {
   render() {
@@ -9,7 +8,7 @@ class Select extends React.Component {
     return (
       <StyledSelect id={id} {...rest}>
         {showPlaceholder && (
-          <option disabled selected value="">
+          <option disabled value="">
             Please select option
           </option>
         )}

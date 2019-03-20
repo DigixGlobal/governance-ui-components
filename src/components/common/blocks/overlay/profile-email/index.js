@@ -99,13 +99,19 @@ class EmailOverlay extends React.Component {
 }
 
 const { func, string } = PropTypes;
+
 EmailOverlay.propTypes = {
-  currentEmail: string.isRequired,
+  currentEmail: string,
   showHideAlert: func.isRequired,
   showRightPanel: func.isRequired,
 };
 
+EmailOverlay.defaultProps = {
+  currentEmail: '',
+};
+
 const mapStateToProps = () => ({});
+
 export default web3Connect(
   connect(
     mapStateToProps,

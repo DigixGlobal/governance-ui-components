@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 
 import RedeemBadge from '@digix/gov-ui/pages/user/profile/buttons/redeem-badge';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements';
-import { DEFAULT_STAKE_PER_DGD } from '@digix/gov-ui/constants';
-import { getDaoConfig, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
-import { inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 import { showHideLockDgdOverlay } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { withFetchAddress } from '@digix/gov-ui/api/graphql-queries/address';
 
 import {
@@ -24,21 +23,8 @@ import {
 class ModeratorRequirements extends React.Component {
   componentDidMount() {
     this.props.getDaoConfig();
-    this.props.getDaoDetails();
     this.props.subscribeToAddress();
   }
-
-  getStakePerDgd = () => {
-    const DaoDetails = this.props.DaoDetails.data;
-    const { startOfMainphase, startOfNextQuarter } = DaoDetails;
-
-    if (inLockingPhase(DaoDetails)) {
-      return DEFAULT_STAKE_PER_DGD;
-    }
-
-    const currentTime = Date.now() / 1000;
-    return (startOfNextQuarter - currentTime) / (startOfNextQuarter - startOfMainphase);
-  };
 
   getModeratorRequirements = () => {
     const { DaoConfig } = this.props;
@@ -51,8 +37,7 @@ class ModeratorRequirements extends React.Component {
 
     const currentStake = Number(lockedDgdStake);
     const minStake = Number(config.CONFIG_MINIMUM_DGD_FOR_MODERATOR);
-    const stakePerDgd = this.getStakePerDgd();
-    const requiredStake = Math.max(0, (minStake - currentStake) / stakePerDgd);
+    const requiredStake = Math.max(0, minStake - currentStake);
 
     const requirements = {
       reputation: truncateNumber(requiredReputation),
@@ -113,17 +98,14 @@ const { func, object } = PropTypes;
 ModeratorRequirements.propTypes = {
   AddressDetails: object.isRequired,
   DaoConfig: object,
-  DaoDetails: object,
   history: object.isRequired,
   getDaoConfig: func.isRequired,
-  getDaoDetails: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
   subscribeToAddress: func.isRequired,
 };
 
 ModeratorRequirements.defaultProps = {
   DaoConfig: undefined,
-  DaoDetails: undefined,
 };
 
 const mapStateToProps = ({ infoServer }) => ({
@@ -136,7 +118,6 @@ export default withFetchAddress(
     mapStateToProps,
     {
       getDaoConfig,
-      getDaoDetails,
       showHideLockDgdOverlay,
     }
   )(ModeratorRequirements)

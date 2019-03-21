@@ -104,3 +104,12 @@ export const ProposalErrors = {
     details: "Let's try again when you have enough ETH.",
   }),
 };
+
+export const KycErrors = {
+  resubmit: {
+    title: 'Re-submit KYC',
+    description:
+      'Please contact us via our Zendesk widget for enquiries about changing your KYC information.',
+    details: null,
+  },
+};

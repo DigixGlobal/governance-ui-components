@@ -18,15 +18,19 @@ class ErrorMessageOverlay extends React.Component {
     });
   }
 
-  renderNotification = error => (
-    <Notifications error key={error.title} data-digix="ProjectError-Notification">
-      <Message uppercase data-digix="ProjectError-Notification-Title">
-        {error.title}
-      </Message>
-      <p>{error.description}</p>
-      <p>{error.details}</p>
-    </Notifications>
-  );
+  renderNotification = error => {
+    const { details, description, title } = error;
+
+    return (
+      <Notifications error key={title} data-digix="ProjectError-Notification">
+        <Message uppercase data-digix="ProjectError-Notification-Title">
+          {title}
+        </Message>
+        <p>{description}</p>
+        {details && <p>{details}</p>}
+      </Notifications>
+    );
+  };
 
   render() {
     const { errors, location } = this.props;

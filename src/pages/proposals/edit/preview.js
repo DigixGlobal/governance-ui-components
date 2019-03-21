@@ -23,10 +23,16 @@ const getTotalFunds = source =>
 
 class Preview extends React.Component {
   render() {
-    const { form, onContinueEditing, milestoneFundings } = this.props;
+    const { form, onContinueEditing } = this.props;
     if (!form) {
       return null;
     }
+
+    const milestoneFunds = (acc, currentValue) => {
+      acc.push(Number(currentValue.fund));
+      return acc;
+    };
+    const milestoneFundings = form.milestones ? form.milestones.reduce(milestoneFunds, []) : [];
 
     const totalFunding = form.milestones ? getTotalFunds(form.milestones) : 0;
     const funding = truncateNumber(totalFunding);
@@ -95,12 +101,11 @@ class Preview extends React.Component {
   }
 }
 
-const { object, func, array } = PropTypes;
+const { object, func } = PropTypes;
 
 Preview.propTypes = {
   form: object.isRequired,
   onContinueEditing: func.isRequired,
-  milestoneFundings: array.isRequired,
 };
 
 export default Preview;

@@ -29,6 +29,11 @@ class Preview extends React.Component {
     }
 
     const totalFunding = form.milestones ? getTotalFunds(form.milestones) : 0;
+    const milestoneFunds = (acc, currentValue) => {
+      acc.push(Number(currentValue.fund));
+      return acc;
+    };
+    const milestoneFundings = form.milestones ? form.milestones.reduce(milestoneFunds, []) : [];
     const funding = truncateNumber(totalFunding);
     const reward = truncateNumber(form.finalReward);
 
@@ -89,7 +94,7 @@ class Preview extends React.Component {
         <Milestones
           preview
           milestones={form.milestones || []}
-          milestoneFundings={[]}
+          milestoneFundings={milestoneFundings}
           fundingChanged={false}
         />
       </ProposalsWrapper>

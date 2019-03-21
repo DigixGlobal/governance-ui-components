@@ -22,12 +22,13 @@ import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 
+import Confirm from '@digix/gov-ui/pages/proposals/confirm';
 import Details from '@digix/gov-ui/pages/proposals/forms/details';
 import Milestones from '@digix/gov-ui/pages/proposals/forms/milestones';
 import Multimedia from '@digix/gov-ui/pages/proposals/forms/multimedia';
-import Overview from '@digix/gov-ui/pages/proposals/forms/overview';
 import Preview from '@digix/gov-ui/pages/proposals/create/preview';
-import Confirm from '@digix/gov-ui/pages/proposals/confirm';
+import Overview from '@digix/gov-ui/pages/proposals/forms/overview';
+import Spinner from '@digix/gov-ui/components/common/blocks/loader/spinner';
 
 import {
   CreateWrapper,
@@ -47,15 +48,21 @@ const steps = [Overview, Details, Multimedia, Milestones];
 class CreateProposal extends React.Component {
   constructor(props) {
     super(props);
+    this.RENDER_STEPS = {
+      form: 1,
+      confirm: 2,
+      loader: 3,
+      preview: 4,
+    };
+
     this.state = {
       form: {},
       currentStep: 0,
       canMoveNext: true,
       canMovePrevious: false,
-      showPreview: false,
-      showConfirmPage: false,
       validForm: false,
       exceedsLimit: false,
+      renderStep: this.RENDER_STEPS.form,
     };
   }
 
@@ -151,15 +158,20 @@ class CreateProposal extends React.Component {
       });
   };
 
-  handleShowPreview = () => {
-    this.setState({ showPreview: !this.state.showPreview });
+  showForm = () => {
+    this.setState({ renderStep: this.RENDER_STEPS.form });
   };
 
-  handleShowConfirmPage = () => {
-    this.setState({ showConfirmPage: !this.state.showConfirmPage });
+  showPreview = () => {
+    this.setState({ renderStep: this.RENDER_STEPS.preview });
+  };
+
+  showConfirmPage = () => {
+    this.setState({ renderStep: this.RENDER_STEPS.confirm });
   };
 
   handleSubmit = () => {
+    this.setState({ renderStep: this.RENDER_STEPS.loader });
     const { web3Redux, challengeProof, addresses, daoConfig } = this.props;
     const { form } = this.state;
     const { milestones } = form;
@@ -186,6 +198,7 @@ class CreateProposal extends React.Component {
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
     const onTransactionAttempt = txHash => {
+      this.setState({ renderStep: this.RENDER_STEPS.confirm });
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
@@ -243,20 +256,18 @@ class CreateProposal extends React.Component {
     const { addresses } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     return (
-      <Preview
-        form={this.state.form}
-        onContinueEditing={this.handleShowPreview}
-        proposer={sourceAddress ? sourceAddress.address : ''}
-      />
+      <div>
+        <Preview
+          form={this.state.form}
+          onContinueEditing={this.showForm}
+          proposer={sourceAddress ? sourceAddress.address : ''}
+        />
+      </div>
     );
   };
 
   renderConfirmPage = () => (
-    <Confirm
-      form={this.state.form}
-      onBack={this.handleShowConfirmPage}
-      onSubmit={this.handleSubmit}
-    />
+    <Confirm form={this.state.form} onBack={this.showForm} onSubmit={this.handleSubmit} />
   );
 
   renderCreate = () => {
@@ -280,12 +291,7 @@ class CreateProposal extends React.Component {
         <Header>
           <Heading>Basic Project Information</Heading>
           <CallToAction>
-            <Button
-              tertiary
-              invert
-              onClick={this.handleShowPreview}
-              data-digix="Create-Proposal-Preview"
-            >
+            <Button tertiary onClick={this.showPreview} data-digix="Create-Proposal-Preview">
               Preview
             </Button>
             <Button
@@ -310,7 +316,7 @@ class CreateProposal extends React.Component {
               <Button
                 primary
                 ghost
-                onClick={this.handleShowConfirmPage}
+                onClick={this.showConfirmPage}
                 data-digix="Create-Proposal-Button"
               >
                 Create Now
@@ -322,13 +328,22 @@ class CreateProposal extends React.Component {
       </CreateWrapper>
     );
   };
+
   render() {
-    const { showPreview, showConfirmPage } = this.state;
-    if (!showConfirmPage) {
-      if (!showPreview) return this.renderCreate();
-      if (showPreview) return this.renderPreview();
+    const { renderStep } = this.state;
+
+    switch (renderStep) {
+      case this.RENDER_STEPS.form:
+        return this.renderCreate();
+      case this.RENDER_STEPS.preview:
+        return this.renderPreview();
+      case this.RENDER_STEPS.confirm:
+        return this.renderConfirmPage();
+      case this.RENDER_STEPS.loader:
+        return <Spinner />;
+      default:
+        return this.renderCreate();
     }
-    if (showConfirmPage) return this.renderConfirmPage();
   }
 }
 

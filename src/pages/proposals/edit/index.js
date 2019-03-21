@@ -27,6 +27,7 @@ import Multimedia from '@digix/gov-ui/pages/proposals/forms/multimedia';
 import Overview from '@digix/gov-ui/pages/proposals/forms/overview';
 import Preview from '@digix/gov-ui/pages/proposals/edit/preview';
 import Confirm from '@digix/gov-ui/pages/proposals/confirm';
+import Spinner from '@digix/gov-ui/components/common/blocks/loader/spinner';
 
 import {
   CreateWrapper,
@@ -47,16 +48,22 @@ const steps = [Overview, Details, Multimedia, Milestones];
 class EditProposal extends React.Component {
   constructor(props) {
     super(props);
+
+    this.RENDER_STEPS = {
+      form: 1,
+      confirm: 2,
+      loader: 3,
+      preview: 4,
+    };
     this.state = {
       form: {},
       currentStep: 0,
       canMoveNext: true,
       canMovePrevious: false,
-      showPreview: false,
-      showConfirmPage: false,
       validForm: true,
       proposalId: undefined,
       exceedsLimit: false,
+      renderStep: this.RENDER_STEPS.form,
     };
   }
 
@@ -164,15 +171,20 @@ class EditProposal extends React.Component {
       });
   };
 
-  handleShowPreview = () => {
-    this.setState({ showPreview: !this.state.showPreview });
+  showForm = () => {
+    this.setState({ renderStep: this.RENDER_STEPS.form });
   };
 
-  handleShowConfirmPage = () => {
-    this.setState({ showConfirmPage: !this.state.showConfirmPage });
+  showPreview = () => {
+    this.setState({ renderStep: this.RENDER_STEPS.preview });
+  };
+
+  showConfirmPage = () => {
+    this.setState({ renderStep: this.RENDER_STEPS.confirm });
   };
 
   handleSubmit = () => {
+    this.setState({ renderStep: this.RENDER_STEPS.loader });
     const { web3Redux, ChallengeProof, addresses } = this.props;
     const { form, proposalId } = this.state;
     const { milestones } = form;
@@ -199,6 +211,7 @@ class EditProposal extends React.Component {
 
     const onTransactionAttempt = txHash => {
       if (ChallengeProof.data) {
+        this.setState({ renderStep: this.RENDER_STEPS.confirm });
         this.props.sendTransactionToDaoServer({
           txHash,
           title: 'Edit Proposal',
@@ -266,7 +279,7 @@ class EditProposal extends React.Component {
     return (
       <Preview
         form={this.state.form}
-        onContinueEditing={this.handleShowPreview}
+        onContinueEditing={this.showForm}
         milestoneFundings={milestoneFundings}
         proposer={sourceAddress ? sourceAddress.address : ''}
       />
@@ -274,11 +287,7 @@ class EditProposal extends React.Component {
   };
 
   renderConfirmPage = () => (
-    <Confirm
-      form={this.state.form}
-      onBack={this.handleShowConfirmPage}
-      onSubmit={this.handleSubmit}
-    />
+    <Confirm form={this.state.form} onBack={this.showForm} onSubmit={this.handleSubmit} />
   );
 
   renderCreate = () => {
@@ -304,7 +313,7 @@ class EditProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <Button tertiary invert onClick={this.handleShowPreview}>
+            <Button tertiary onClick={this.showPreview}>
               Preview
             </Button>
             <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
@@ -319,7 +328,7 @@ class EditProposal extends React.Component {
               <Button
                 primary
                 ghost
-                onClick={this.handleShowConfirmPage}
+                onClick={this.showConfirmPage}
                 data-digix="Create-Proposal-Button"
               >
                 Update Now
@@ -332,12 +341,20 @@ class EditProposal extends React.Component {
     );
   };
   render() {
-    const { showPreview, showConfirmPage } = this.state;
-    if (!showConfirmPage) {
-      if (!showPreview) return this.renderCreate();
-      if (showPreview) return this.renderPreview();
+    const { renderStep } = this.state;
+
+    switch (renderStep) {
+      case this.RENDER_STEPS.form:
+        return this.renderCreate();
+      case this.RENDER_STEPS.preview:
+        return this.renderPreview();
+      case this.RENDER_STEPS.confirm:
+        return this.renderConfirmPage();
+      case this.RENDER_STEPS.loader:
+        return <Spinner />;
+      default:
+        return this.renderCreate();
     }
-    if (showConfirmPage) return this.renderConfirmPage();
   }
 }
 

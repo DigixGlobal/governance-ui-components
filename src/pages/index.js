@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import CountdownPage from '@digix/gov-ui/components/common/blocks/loader/countdown';
 import ProposalCard from '@digix/gov-ui/components/proposal-card';
 import Timeline from '@digix/gov-ui/components/common/blocks/timeline';
 import UserAddressStats from '@digix/gov-ui/components/common/blocks/user-address-stats/index';
@@ -20,6 +21,7 @@ import {
 
 import Snackbar from '@digix/gov-ui/components/common/elements/snackbar/index';
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
+import { showCountdownPage } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 class LandingPage extends React.PureComponent {
   constructor(props) {
@@ -31,7 +33,13 @@ class LandingPage extends React.PureComponent {
 
   componentWillMount = () => {
     const { AddressDetails, getDaoDetailsAction, getProposalsAction, ChallengeProof } = this.props;
-    getDaoDetailsAction();
+    getDaoDetailsAction().then(() => {
+      const { currentQuarter } = this.props.DaoDetails.data;
+      if (currentQuarter === 0) {
+        this.props.showCountdownPage({ show: true });
+      }
+    });
+
     getProposalsAction();
     this.getProposalLikes(undefined, ChallengeProof);
     if (AddressDetails.data.address && (ChallengeProof.data && ChallengeProof.data.client)) {
@@ -103,7 +111,7 @@ class LandingPage extends React.PureComponent {
     }
   };
 
-  render() {
+  renderLandingPage() {
     const { order } = this.state;
     this.fixScrollbar(this.props.ShowWallet);
     const {
@@ -154,6 +162,7 @@ class LandingPage extends React.PureComponent {
           AddressDetails={AddressDetails}
           history={history}
         />
+        {!hasProposals && <p>There are no projects to show.</p>}
         {hasProposals &&
           orderedProposals.map(proposal => (
             <ProposalCard
@@ -170,9 +179,20 @@ class LandingPage extends React.PureComponent {
       </Fragment>
     );
   }
+
+  render() {
+    const { HasCountdown } = this.props;
+
+    if (HasCountdown) {
+      return <CountdownPage />;
+    }
+
+    return this.renderLandingPage();
+  }
 }
 
-const { object, func } = PropTypes;
+const { bool, object, func } = PropTypes;
+
 LandingPage.propTypes = {
   DaoDetails: object.isRequired,
   AddressDetails: object.isRequired,
@@ -180,6 +200,7 @@ LandingPage.propTypes = {
   ChallengeProof: object,
   UserLikedProposals: object,
   ProposalLikes: object,
+  HasCountdown: bool.isRequired,
   ShowWallet: object,
   history: object.isRequired,
   getAddressDetailsAction: func.isRequired,
@@ -187,6 +208,7 @@ LandingPage.propTypes = {
   getProposalsAction: func.isRequired,
   getProposalLikesByUserAction: func.isRequired,
   getProposalLikesStatsAction: func.isRequired,
+  showCountdownPage: func.isRequired,
 };
 
 LandingPage.defaultProps = {
@@ -200,7 +222,7 @@ export default connect(
   ({
     infoServer: { DaoDetails, Proposals, AddressDetails },
     daoServer: { ChallengeProof, UserLikedProposals, ProposalLikes },
-    govUI: { ShowWallet },
+    govUI: { HasCountdown, ShowWallet },
   }) => ({
     DaoDetails,
     Proposals,
@@ -208,6 +230,7 @@ export default connect(
     ChallengeProof,
     UserLikedProposals,
     ProposalLikes,
+    HasCountdown,
     ShowWallet,
   }),
   {
@@ -216,5 +239,6 @@ export default connect(
     getProposalsAction: getProposals,
     getProposalLikesByUserAction: getProposalLikesByUser,
     getProposalLikesStatsAction: getProposalLikesStats,
+    showCountdownPage,
   }
 )(LandingPage);

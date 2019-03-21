@@ -19,12 +19,12 @@ import {
   TimerContainer,
 } from '@digix/gov-ui/components/common/blocks/loader/style';
 
-const countdownRenderer = props => {
-  // eslint-disable-next-line
+const CountdownRenderer = props => {
   const { hours, minutes, seconds, completed } = props;
   if (completed) {
-    // eslint-disable-next-line
-    props.showCountdownPage({ show: false });
+    props.getDaoDetails().then(() => {
+      props.showCountdownPage({ show: false });
+    });
   }
 
   return (
@@ -48,6 +48,14 @@ const countdownRenderer = props => {
 };
 
 class CountdownPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // add additional buffer time to the countdown since it takes a while
+    // for info-server to update after the countdown ends
+    this.BUFFER_TIME = 5000;
+  }
+
   componentDidMount() {
     this.props.getDaoDetails();
   }
@@ -55,6 +63,7 @@ class CountdownPage extends React.Component {
   render() {
     let { startOfNextQuarter } = this.props.DaoDetails;
     startOfNextQuarter *= 1000;
+    const launchDate = startOfNextQuarter + this.BUFFER_TIME;
 
     return (
       <Preloaders>
@@ -80,9 +89,9 @@ class CountdownPage extends React.Component {
             </Label>
             <Countdown
               daysInHours
-              date={startOfNextQuarter}
+              date={launchDate}
               getDaoDetails={this.props.getDaoDetails}
-              renderer={countdownRenderer}
+              renderer={CountdownRenderer}
               showCountdownPage={this.props.showCountdownPage}
             />
             <Cta>
@@ -98,7 +107,17 @@ class CountdownPage extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { bool, func, object, string } = PropTypes;
+
+CountdownRenderer.propTypes = {
+  completed: bool.isRequired,
+  getDaoDetails: func.isRequired,
+  hours: string.isRequired,
+  minutes: string.isRequired,
+  seconds: string.isRequired,
+  showCountdownPage: func.isRequired,
+};
+
 CountdownPage.propTypes = {
   DaoDetails: object,
   getDaoDetails: func.isRequired,

@@ -34,9 +34,8 @@ import {
   TabPanel,
   MenuItem,
   Header,
-  LeftCol,
-  RightCol,
   Heading,
+  CallToAction,
   PreviewButton,
 } from '@digix/gov-ui/pages/proposals/create/style';
 
@@ -280,10 +279,8 @@ class CreateProposal extends React.Component {
           </MenuItem>
         </TabPanel>
         <Header>
-          <LeftCol>
-            <Heading>Basic Project Information</Heading>
-          </LeftCol>
-          <RightCol>
+          <Heading>Basic Project Information</Heading>
+          <CallToAction>
             <PreviewButton
               tertiary
               onClick={this.handleShowPreview}
@@ -319,7 +316,7 @@ class CreateProposal extends React.Component {
                 Create Now
               </Button>
             )}
-          </RightCol>
+          </CallToAction>
         </Header>
         {this.renderStep()}
       </CreateWrapper>

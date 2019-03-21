@@ -106,7 +106,7 @@ const secondaryColor = darkGold;
 const tertiaryColor = darkGray;
 const transparent = 'transparent';
 
-const baseFontSize = '1rem';
+const baseFontSize = '1.6rem';
 const basePaddingX = 1;
 const basePaddingY = 1;
 const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
@@ -114,6 +114,13 @@ const transitionStyle = 'all .25s ease';
 const borderRadiusStyle = '0.3rem';
 
 const LightTheme = {
+  fontSize: baseFontSize,
+
+  tabMenu: {
+    active: secondaryColor,
+    inactive: tertiaryColor,
+  },
+
   background: {
     default: tertiaryColor,
     primary: primaryColor,
@@ -220,8 +227,6 @@ const LightTheme = {
   headerBorderColor: gray.default,
 
   errorBorder: red.default,
-
-  fontSize: baseFontSize,
 
   iconDefaultColor: tertiaryColor,
   iconPrimaryColor: primaryColor,

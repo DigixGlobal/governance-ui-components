@@ -330,7 +330,8 @@ export const StatusNote = styled.p`
 
 export const Label = styled.label`
   font-family: 'Futura PT Book', sans-serif;
-  margin-bottom: 0.5rem;
+  font-size: ${props => props.theme.fontSize};
+  margin-bottom: 0.75rem;
 
   span {
     ${props =>
@@ -358,4 +359,6 @@ export const Hint = styled.div`
     `};
 `;
 
-export const FieldItem = styled.div``;
+export const FieldItem = styled.div`
+  margin: 2rem 0;
+`;

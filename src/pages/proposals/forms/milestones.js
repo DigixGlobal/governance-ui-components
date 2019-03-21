@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ErrorCaption } from '@digix/gov-ui/components/common/common-styles';
+import { ErrorCaption, FieldItem } from '@digix/gov-ui/components/common/common-styles';
 import { TextArea, Input, Select } from '@digix/gov-ui/components/common/elements/index';
 import {
   Fieldset,
@@ -88,15 +88,13 @@ class Milestones extends React.Component {
           </FormItem>
 
           <FormItem>
-            <FormItem>
-              <Label>Description of Milestone</Label>
-              <TextArea
-                name={index}
-                value={createdMilestones[index] ? createdMilestones[index].description : ''}
-                onChange={e => this.handleChange(e, index, 'description')}
-                placeholder="Explain what will be in this milestone"
-              />
-            </FormItem>
+            <Label>Description of Milestone</Label>
+            <TextArea
+              name={index}
+              value={createdMilestones[index] ? createdMilestones[index].description : ''}
+              onChange={e => this.handleChange(e, index, 'description')}
+              placeholder="Explain what will be in this milestone"
+            />
           </FormItem>
         </CreateMilestone>
       );

@@ -66,7 +66,7 @@ const darkGray = {
   base: darkGrayHex,
   light: darkGrayHex.lighten(1),
   lighter: darkGrayHex.lighten(1.875),
-  lightest: darkGrayHex.lighten(2.075),
+  lightest: darkGrayHex.lighten(2.05),
   fade: darkGoldHex.fade(0.85),
 };
 
@@ -247,6 +247,7 @@ const LightTheme = {
     default: tertiaryColor,
     primary: primaryColor,
     secondary: secondaryColor,
+    white: white.base,
   },
 
   textHeading: primaryColor,

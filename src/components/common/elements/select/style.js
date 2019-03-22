@@ -22,8 +22,6 @@ const StyledSelect = styled.select`
   background-size: 5px 5px, 5px 5px, 1px 80%;
   background-repeat: no-repeat;
 
-  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
-  border-radius: ${props => props.theme.borderRadius};
   color: ${props => props.color || props.theme.textDefault.default.toString()};
   padding: ${props => (props.small ? '1rem' : '1.75rem')};
   line-height: 1.6rem;
@@ -37,6 +35,10 @@ const StyledSelect = styled.select`
 
   -webkit-appearance: none;
   -moz-appearance: none;
+
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
 
   ${props =>
     props.small &&

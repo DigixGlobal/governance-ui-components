@@ -52,18 +52,19 @@ export const Item = styled.div`
 `;
 
 export const Amount = styled.div`
-  font-family: 'Futura PT Light', sans-serif;
+  font-family: 'Futura PT Medium', sans-serif;
   div {
     &:first-child {
-      font-size: 2rem;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
     }
     &:last-child {
-      font-size: 1.6rem;
-      color: ${props => props.theme.textDefault.light.toString()};
+      font-size: 1.4rem;
+      font-family: 'Futura PT Book', sans-serif;
+      color: ${props => props.theme.textColor.default.light.toString()};
     }
   }
   span {
-    font-family: 'Futura PT Medium', sans-serif;
   }
 `;
 
@@ -92,30 +93,35 @@ export const QtrParticipation = styled.div`
 
 export const Title = styled.div`
   color: ${props => props.theme.textColor.primary.base.toString()};
-  font-family: 'Futura PT Book', sans-serif;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-family: 'Futura PT Medium', sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
 `;
 
 export const Detail = styled(Card)`
   flex-direction: column;
   flex: 1 0 auto;
+
+  padding: 3rem 4rem;
 `;
 
 export const Label = styled.div`
   text-transform: uppercase;
   margin-top: 1rem;
+  font-family: 'Futura PT Heavy', sans-serif;
 `;
 
 export const Data = styled.div`
-  color: ${props => props.theme.textColor.primary.light.toString()};
-  font-size: 3.6rem;
+  color: ${props => props.theme.textColor.default.base.toString()};
+  font-size: 3.8rem;
+  font-family: 'Futura PT Heavy', sans-serif;
   margin: 1rem 0 0;
   text-transform: uppercase;
 `;
 
 export const Desc = styled.p`
   margin-top: 1rem;
+  font-size: ${props => props.theme.fontSize};
 `;
 
 export const Actions = styled.div`

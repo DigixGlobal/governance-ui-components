@@ -16,7 +16,7 @@ const TimelineWrapper = styled.div`
 `;
 const Quarter = styled.div`
   color: ${props => props.theme.textPrimary.default.toString()};
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Heavy';
   font-size: 6em;
   margin-right: 20px;
   line-height: 0.7em;
@@ -28,7 +28,7 @@ const TimelineBar = styled.div`
 `;
 
 const TimelineLabel = styled.div`
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Heavy';
   display: flex;
   flex-direction: row;
   height: 5.2rem;

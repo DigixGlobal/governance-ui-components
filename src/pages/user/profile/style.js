@@ -70,6 +70,8 @@ export const Item = styled.div`
 
 export const Label = styled.div`
   text-align: left;
+  font-family: 'Futura PT Heavy', sans-serif;
+
   ${media.mobile`
     text-align: center;
   `};

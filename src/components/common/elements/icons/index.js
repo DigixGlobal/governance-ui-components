@@ -25,6 +25,7 @@ import Menu from './Menu';
 import Metamask from './Metamask';
 import Notification from './Notification';
 import Option from './Options';
+import Padlock from './Padlock';
 import Product from './product-tour';
 import Profile from './Profile';
 import Plus from './Plus';
@@ -62,6 +63,7 @@ const icons = {
   metamask: Metamask,
   notification: Notification,
   option: Option,
+  padlock: Padlock,
   product: Product,
   profile: Profile,
   plus: Plus,

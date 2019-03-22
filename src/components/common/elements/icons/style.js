@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   display: inline-flex;
@@ -25,4 +25,12 @@ export const Container = styled.div`
       fill: #d8d8d8;
     }
   }
+
+  ${props =>
+    props.primary &&
+    css`
+      svg {
+        fill: ${props.theme.icon.primary.light.toString()};
+      }
+    `};
 `;

@@ -14,6 +14,7 @@ export const fetchAddressQuery = gql`
       lockedDgdStake
       reputationPoint
       quarterPoint
+      moderatorQuarterPoint
     }
   }
 `;

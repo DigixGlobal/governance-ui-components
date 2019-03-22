@@ -36,7 +36,6 @@ import {
   Header,
   Heading,
   CallToAction,
-  PreviewButton,
 } from '@digix/gov-ui/pages/proposals/create/style';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
@@ -281,13 +280,14 @@ class CreateProposal extends React.Component {
         <Header>
           <Heading>Basic Project Information</Heading>
           <CallToAction>
-            <PreviewButton
+            <Button
               tertiary
+              invert
               onClick={this.handleShowPreview}
               data-digix="Create-Proposal-Preview"
             >
               Preview
-            </PreviewButton>
+            </Button>
             <Button
               primary
               disabled={!canMovePrevious}

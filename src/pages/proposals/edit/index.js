@@ -36,7 +36,6 @@ import {
   LeftCol,
   RightCol,
   Heading,
-  PreviewButton,
 } from '@digix/gov-ui/pages/proposals/create/style';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
@@ -305,9 +304,9 @@ class EditProposal extends React.Component {
             <Heading>Basic Project Information</Heading>
           </LeftCol>
           <RightCol>
-            <PreviewButton tertiary onClick={this.handleShowPreview}>
+            <Button tertiary invert onClick={this.handleShowPreview}>
               Preview
-            </PreviewButton>
+            </Button>
             <Button disabled={!canMovePrevious} primary ghost onClick={this.onPreviousButtonClick}>
               Previous
             </Button>

@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
 import {
   Container,
   FieldsetStyle,
@@ -15,7 +14,7 @@ export const CreateWrapper = styled.div``;
 export const TabPanel = styled.div`
   ${Container};
   justify-content: center;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 `;
 export const MenuItem = styled.div`
   flex: 1;
@@ -124,11 +123,3 @@ export const EditorContainer = styled.div`
 `;
 
 export const PreviewWrapper = styled.div``;
-
-export const PreviewButton = styled(Button)`
-  color: ${props => props.theme.buttonInverted.textColor.base.toString()};
-
-  &:hover {
-    color: ${props => props.theme.buttonTertiary.textColor.base.toString()};
-  }
-`;

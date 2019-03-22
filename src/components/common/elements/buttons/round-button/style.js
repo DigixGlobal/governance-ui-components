@@ -116,18 +116,27 @@ export const RoundBtn = styled(Button)`
   ${props =>
     props.tertiary &&
     css`
-      background: ${props.theme.buttonTertiary.background.base.toString()};
+      background: ${props.invert
+        ? props.theme.buttonTertiary.background.base.toString()
+        : 'transparent'};
       border-color: ${props.theme.buttonTertiary.border.base.toString()};
       box-shadow: none;
-      color: ${props.theme.buttonTertiary.textColor.base.toString()};
+      color: ${props.invert
+        ? props.theme.buttonInverted.textColor.base.toString()
+        : props.theme.buttonTertiary.textColor.base.toString()};
 
       svg {
         fill: ${props.theme.buttonTertiary.iconColor.base.toString()};
       }
 
       &:hover {
-        background: ${props.theme.buttonTertiary.background.fade.toString()};
-        color: ${props.theme.buttonTertiary.textColor.base.toString()};
+        background: ${props.invert
+          ? props.theme.buttonTertiary.background.fade.toString()
+          : props.theme.buttonTertiary.background.base.toString()};
+        border-color: ${props.theme.buttonTertiary.border.base.toString()};
+        color: ${props.invert
+          ? props.theme.buttonTertiary.textColor.base.toString()
+          : props.theme.buttonInverted.textColor.base.toString()};
 
         svg {
           fill: ${props.theme.buttonTertiary.iconColor.base.toString()};

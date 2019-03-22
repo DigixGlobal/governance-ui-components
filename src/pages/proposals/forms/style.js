@@ -1,11 +1,12 @@
 import styled, { css } from 'styled-components';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { media } from '@digix/gov-ui/components/common/breakpoints';
 import {
   Container,
   FieldsetStyle,
   Label as FormLabel,
   Card,
 } from '@digix/gov-ui/components/common/common-styles';
-import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const CreateWrapper = styled.div``;
 
@@ -27,14 +28,14 @@ export const MenuItem = styled.div`
   ${props =>
     props.active &&
     css`
-      color: ${props.theme.textSecondary.default.toString()};
+      color: ${props.theme.textColor.secondary.base.toString()};
       border-bottom: 4px solid ${props.theme.buttonBorderSecondary.default.toString()};
     `};
 `;
 
 export const Header = styled.div`
   ${Container};
-  background: ${props => props.theme.backgroundDefault.default.toString()};
+  background: ${props => props.theme.background.default.base.toString()};
   justify-content: space-between;
   padding: 1rem 2rem;
   margin-bottom: 3rem;
@@ -89,23 +90,49 @@ export const MediaUploader = styled(Card)`
 `;
 
 export const ImageHolder = styled.div`
-  background-color: ${props => props.theme.background.default.lightest.toString()};
+  background-color: ${props => props.theme.background.default.lighter.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   width: 100%;
   min-height: 200px;
   padding: 0;
-  overflow: auto;
 
   & > div > img {
     height: auto;
     width: 100%;
-    margin: 3rem 0 0 0;
+    margin: 0;
+  }
+`;
+
+export const ImageItem = styled.div`
+  position: relative;
+  padding: 1rem;
+  border-bottom: 1px solid #fff;
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const CloseButton = styled(Button)`
+  position: absolute;
+  right: 1rem;
+  background: ${props => props.theme.background.white.toString()};
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  border-radius: ${props => props.theme.borderRadius};
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  padding: 1rem;
+
+  div {
+    svg {
+      fill: ${props => props.theme.icon.default.base.toString()};
+    }
   }
 `;
 
 export const CreateMilestone = styled.div`
-  background: ${props => props.theme.backgroundTertiary.lighter.toString()};
+  background: ${props => props.theme.background.default.lighter.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   padding: 2rem;

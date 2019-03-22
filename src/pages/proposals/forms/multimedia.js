@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Modal from 'react-responsive-modal';
 
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 
 import { dijixImageConfig, dijixPdfConfig, dijix } from '@digix/gov-ui/utils/dijix';
 
@@ -12,7 +12,9 @@ import {
   FormItem,
   Label,
   MediaUploader,
+  ImageItem,
   ImageHolder,
+  CloseButton,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
@@ -146,16 +148,17 @@ class Multimedia extends React.Component {
         source = `${dijix.config.httpEndpoint}/${img.src}`;
       }
       return (
-        <div key={`img-${i + 1}`}>
-          <Button
+        <ImageItem key={`img-${i + 1}`}>
+          <CloseButton
+            kind="text"
             onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
           >
-            Delete
-          </Button>
+            <Icon kind="trash" /> Remove
+          </CloseButton>
           {/* eslint-disable*/}
-          <img  alt="" onClick={this.showHideImage(source)} src={source} />;
+          <img alt="" onClick={this.showHideImage(source)} src={source} />
           {/* eslint-enable */}
-        </div>
+        </ImageItem>
       );
     });
     return images;
@@ -188,12 +191,11 @@ class Multimedia extends React.Component {
                 </div>
               </Button>
             </div>
-            <div>
-              <ImageHolder>
-                {images && this.renderDocuments(images)}
-                {imageHash && this.renderDocuments(files, true)}
-              </ImageHolder>
-            </div>
+
+            <ImageHolder>
+              {images && this.renderDocuments(images)}
+              {imageHash && this.renderDocuments(files, true)}
+            </ImageHolder>
           </MediaUploader>
         </FormItem>
         <Modal open={this.state.open} onClose={this.showHideImage()}>

@@ -53,7 +53,7 @@ class ApproveProposalOverlay extends React.Component {
   onTransactionSuccess = txHash => {
     const { history, showHideAlertAction } = this.props;
     showHideAlertAction({
-      message: 'Your Proposal Approval/Rejection is pending confirmation. See More',
+      message: 'Your Moderator Vote transaction is pending confirmation. See More',
       txHash,
     });
 

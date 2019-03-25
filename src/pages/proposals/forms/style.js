@@ -54,7 +54,7 @@ export const Fieldset = styled.div`
 `;
 
 export const FormItem = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
 `;
 
 export const Label = styled(FormLabel)`
@@ -140,11 +140,26 @@ export const CreateMilestone = styled.div`
 `;
 
 export const EditorContainer = styled.div`
+  border: none;
+  margin: 1rem 0 5rem;
+
   & > div {
     height: 20rem;
   }
-  border: none;
-  margin: 1rem 0;
+
+  ${props =>
+    props.error &&
+    css`
+      & .ql-snow {
+        border: 1px solid ${props.theme.alertMessage.error.default.toString()};
+      }
+    `};
 `;
 
 export const PreviewWrapper = styled.div``;
+
+export const ErrorMessage = styled.span`
+  color: ${props => props.theme.alertMessage.error.default.toString()};
+  display: inline-block;
+  font-size: 1.4rem;
+`;

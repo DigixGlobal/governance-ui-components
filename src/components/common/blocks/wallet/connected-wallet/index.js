@@ -165,7 +165,7 @@ class ConnectedWallet extends React.Component {
     const onTransactionSuccess = txHash => {
       this.setState({ showLockDgd: true }, () => {
         this.props.showHideAlert({
-          message: 'DGD Approved',
+          message: 'Your DGD Approval Transaction is pending confirmation. See More',
           txHash,
         });
       });

@@ -55,7 +55,7 @@ class RevealVote extends React.Component {
   onTransactionSuccess = txHash => {
     const { history, showHideAlertAction } = this.props;
     showHideAlertAction({
-      message: 'Vote Revealed',
+      message: 'Your Reveal Transaction is pending confirmation. See More',
       txHash,
     });
 

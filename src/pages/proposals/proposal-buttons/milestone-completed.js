@@ -68,7 +68,7 @@ class CompleteMilestoneButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Milestone Completed',
+        message: 'Your Milestone Completed Transaction is pending confirmation. See More',
         txHash,
       });
 

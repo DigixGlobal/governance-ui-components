@@ -208,7 +208,10 @@ class LockDgd extends React.Component {
     const onTransactionSuccess = txHash => {
       const { onSuccess } = this.props.lockDgdOverlay;
       this.props.showHideAlert({
-        message: 'DGD Locked',
+        message:
+          challengeProof.data && challengeProof.data.uid
+            ? 'Your Lock LDGD transaction is pending confirmation. See more'
+            : 'Your DGD Approval/Lock DGD transaction is pending confirmation. Please wait a while for it to be processed on the blockchain.',
         txHash,
       });
 

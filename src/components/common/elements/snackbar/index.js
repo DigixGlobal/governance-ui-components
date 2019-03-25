@@ -5,16 +5,13 @@ import { connect } from 'react-redux';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
 
-import { SnackbarContainer, SnackbarDesc, SnackbarAction } from './style';
+import { SnackbarContainer, SnackbarDesc, SnackbarAction, TransactionLink } from './style';
 
 class Snackbar extends React.Component {
   componentWillReceiveProps = nextProps => {
     const { alertData } = nextProps;
     if (alertData && alertData.message) {
-      this.interval = setInterval(
-        () => this.props.showHideAlert({ message: undefined }),
-        1000 * 10
-      );
+      this.interval = setTimeout(() => this.props.showHideAlert({ message: undefined }), 1000 * 5);
     }
   };
 
@@ -24,7 +21,9 @@ class Snackbar extends React.Component {
     return (
       <SnackbarContainer>
         <SnackbarDesc>
-          {alertData.message || 'Monkeys are now bringing your vote to the Ethereum tree'}
+          <TransactionLink to="/history" href="/history">
+            {alertData.message}
+          </TransactionLink>
         </SnackbarDesc>
         {alertData.txHash && (
           <SnackbarAction href={`${ETHERSCAN_URL}${alertData.txHash}`} target="_blank">

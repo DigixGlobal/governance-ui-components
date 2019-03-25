@@ -68,7 +68,7 @@ class CommitVote extends React.Component {
   onTransactionSuccess = txHash => {
     const { history, showHideAlertAction } = this.props;
     showHideAlertAction({
-      message: 'Vote Accepted',
+      message: 'Your Vote Transaction is pending confirmation. See More',
       txHash,
     });
 

@@ -110,7 +110,7 @@ class ChangeFundingOverlay extends React.Component {
   onTransactionSuccess = txHash => {
     const { showHideAlertAction, history } = this.props;
     showHideAlertAction({
-      message: 'Funding Changed',
+      message: 'Your Change Funding Transaction is pending confirmation. See More',
       txHash,
     });
     if (this.props.onCompleted) this.props.onCompleted();

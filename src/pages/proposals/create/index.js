@@ -199,7 +199,7 @@ class CreateProposal extends React.Component {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Proposal Created',
+        message: 'Your Create Proposal Transaction is pending confirmation. See More',
         txHash,
       });
 

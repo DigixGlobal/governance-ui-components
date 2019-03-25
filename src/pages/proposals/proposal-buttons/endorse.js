@@ -69,7 +69,7 @@ class EndorseProjectButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Proposal Endorsed',
+        message: 'Your Endorse Proposal Transaction is pending confirmation. See More',
         txHash,
       });
 

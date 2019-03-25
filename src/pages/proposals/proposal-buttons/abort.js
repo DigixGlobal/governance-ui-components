@@ -69,7 +69,7 @@ class AbortProjectButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Proposal Aborted',
+        message: 'Your About Proposal Transaction is pending confirmation. See More',
         txHash,
       });
 

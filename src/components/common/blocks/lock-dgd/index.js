@@ -205,7 +205,6 @@ class LockDgd extends React.Component {
       }
     };
 
-    console.log(challengeProof.data);
     const onTransactionSuccess = txHash => {
       const { onSuccess } = this.props.lockDgdOverlay;
       this.props.showHideAlert({

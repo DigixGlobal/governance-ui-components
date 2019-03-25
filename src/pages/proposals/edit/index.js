@@ -211,7 +211,7 @@ class EditProposal extends React.Component {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Proposal Updated',
+        message: 'Your Edit Proposal Transaction is pending confirmation. See More',
         txHash,
       });
 

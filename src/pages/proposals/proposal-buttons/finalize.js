@@ -84,7 +84,7 @@ class FinalizeProjectButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Proposal Finalized',
+        message: 'Your Finalize Proposal Transaction is pending confirmation. See More',
         txHash,
       });
 

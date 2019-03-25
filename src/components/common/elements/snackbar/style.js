@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Card } from '../../common-styles';
 
 export const SnackbarContainer = styled(Card)`
@@ -19,6 +20,12 @@ export const SnackbarDesc = styled.div`
 `;
 export const SnackbarAction = styled.a`
   color: ${props => props.theme.textSecondary.default.toString()};
+  font-family: 'Futura PT Medium';
+  padding: 3rem 0;
+`;
+
+export const TransactionLink = styled(Link)`
+  color: ${props => props.theme.textReverse.default.toString()};
   font-family: 'Futura PT Medium';
   padding: 3rem 0;
 `;

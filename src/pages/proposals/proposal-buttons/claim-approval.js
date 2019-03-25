@@ -109,8 +109,10 @@ class ClaimApprovalButton extends React.PureComponent {
       const { draftVoting } = this.props;
       this.props.showHideAlert({
         message: useMaxClaim
-          ? `Claiming Approval ${draftVoting.currentClaimStep} of ${totalTransactions}`
-          : 'Claiming Approval',
+          ? `Your Claim Approval Transaction ${
+              draftVoting.currentClaimStep
+            } of ${totalTransactions} is pending confirmation. See More`
+          : 'Your Claim Approval Transaction is pending confirmation. See More',
         txHash,
       });
       this.props.showRightPanel({

@@ -113,10 +113,10 @@ class ClaimResultsButton extends React.PureComponent {
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
         message: useMaxClaim
-          ? `Claiming Voting Result ${
+          ? `Your Claim Voting Result Transaction ${
               proposal.votingRounds[currentVotingRound].currentClaimStep
-            } of ${totalTransactions}`
-          : 'Claiming Voting Result',
+            } of ${totalTransactions} is pending confirmation. See More`
+          : 'Your Claim Voting Result Transaction is pending confirmation. See More',
         txHash,
       });
       this.props.showRightPanel({

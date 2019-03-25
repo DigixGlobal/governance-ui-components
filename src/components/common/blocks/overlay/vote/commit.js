@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import web3Utils from 'web3-utils';
 import secureRandom from 'secure-random';
+import moment from 'moment';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
@@ -149,8 +150,12 @@ class CommitVote extends React.Component {
 
   render() {
     const { hasVoted, vote, changeVote, hasDownloaded } = this.state;
-    const { proposalId, proposal, revoting } = this.props;
-    const { currentVotingRound } = proposal;
+    const { proposal, revoting } = this.props;
+    const { proposalVersions } = proposal;
+
+    const { title } = proposalVersions[proposalVersions.length - 1].dijixObject;
+    const fileName = `${title.replace(/\s+/g, '-').substr(0, 20)}-${moment().format()}`;
+
     const votedYes = hasVoted && vote;
     const votedNo = hasVoted && !vote;
     const showVoting = !revoting || changeVote;
@@ -221,7 +226,7 @@ class CommitVote extends React.Component {
                   kind="link"
                   large
                   fluid
-                  download={`${proposalId}-${currentVotingRound || 0}.json`}
+                  download={`${fileName}.json`}
                   onClick={this.handleDownload}
                   href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
                   data-digix="Commit-Download-Json"

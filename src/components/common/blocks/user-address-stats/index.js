@@ -21,21 +21,29 @@ class UserAddressStats extends React.Component {
       return null;
     }
 
-    const { lockedDgd, lockedDgdStake, quarterPoint, reputationPoint } = this.props.AddressDetails;
+    const {
+      lockedDgd,
+      lockedDgdStake,
+      quarterPoint,
+      reputationPoint,
+      isModerator,
+      moderatorQuarterPoint,
+    } = this.props.AddressDetails;
     const stake = truncateNumber(lockedDgdStake || 0);
     const dgd = truncateNumber(lockedDgd || 0);
-
     return (
       <UserStats>
         <Item>
           <Label>Quarter Points</Label>
           <Data data-digix="Dashboard-Stats-QuarterPoints">
             <span>{quarterPoint || 0}</span>
-            <span className="equiv">
-              <span>( + </span>
-              <span data-digix="Dashboard-Mod-QtrPts">100</span>
-              <span>&nbsp; Moderator Qtr Pts )</span>
-            </span>
+            {isModerator && (
+              <span className="equiv">
+                <span>( </span>
+                <span data-digix="Dashboard-Mod-QtrPts">{moderatorQuarterPoint}</span>
+                <span>&nbsp; Moderator Qtr Pts )</span>
+              </span>
+            )}
           </Data>
         </Item>
         <Item>

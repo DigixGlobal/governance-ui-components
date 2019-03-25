@@ -17,11 +17,10 @@ class Restriction extends React.Component {
           <Content>
             <Icon primary kind="padlock" width="12rem" height="12rem" />
             <p>&nbsp;</p>
-            <h1>You don't have permission to view this page.</h1>
+            <h1>DigixDAO isn't available in your country yet.</h1>
 
             <h2>
-              DigixDAO is not available in your current location. Please contact us for any
-              enquiries.
+              You don't have permission to view this page. Please contact us for any enquiries.
             </h2>
             <p>&nbsp;</p>
             <Button primary large>

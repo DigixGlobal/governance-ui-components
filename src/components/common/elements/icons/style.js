@@ -11,7 +11,7 @@ export const Container = styled.div`
   > svg {
     fill: ${props => {
       if (props.active) {
-        return props.theme.buttonBgSecondary.default.toString();
+        return props.theme.icon.secondary.base.toString();
       }
 
       return props.selected
@@ -22,7 +22,7 @@ export const Container = styled.div`
     height: 100%;
 
     .color {
-      fill: #d8d8d8;
+      fill: #c1c1c1;
     }
   }
 

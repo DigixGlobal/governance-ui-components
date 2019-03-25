@@ -10,13 +10,12 @@ import { DEFAULT_LOCKED_DGD } from '@digix/gov-ui/constants';
 
 const TimelineWrapper = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: flex-start;
   margin-bottom: 5em;
 `;
 const Quarter = styled.div`
   color: ${props => props.theme.textPrimary.default.toString()};
-  font-family: 'Futura PT Heavy';
+  font-family: 'Futura PT Heavy', sans-serif;
   font-size: 6em;
   margin-right: 20px;
   line-height: 0.7em;
@@ -28,10 +27,9 @@ const TimelineBar = styled.div`
 `;
 
 const TimelineLabel = styled.div`
-  font-family: 'Futura PT Heavy';
+  font-family: 'Futura PT Heavy', sans-serif;
   display: flex;
-  flex-direction: row;
-  height: 5.2rem;
+  height: 4.5rem;
 
   & > div {
     color: ${props => props.theme.textPrimary.default.toString()};
@@ -41,20 +39,18 @@ const TimelineLabel = styled.div`
 const StakingPhase = styled.div`
   width: 11.1111111%;
   border-right: 1px dashed ${props => props.theme.borderColor.lighter.toString()};
-  font-weight: 600 !important;
 `;
 
 const MainPhase = styled.div`
   color: ${props => props.theme.textPrimary.default.toString()};
   width: 88.8888889%;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   padding-left: 1em;
 
   & > div:last-child {
     color: ${props => props.theme.textDefault.default.toString()};
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15rem;
     span {
       margin: 0 1.5em;
     }
@@ -64,26 +60,30 @@ const MainPhase = styled.div`
 const MainPhaseValue = styled.div``;
 
 const TimelineDay = styled.div`
-  /* background: ${props => props.theme.timelineBgColor.lightest.toString()}; */
   display: flex;
   flex-direction: row;
   position: relative;
 `;
 
 const StakingPhaseStatus = styled.div`
-  /* background: ${props => props.theme.timelineCurrentBgColor.default.toString()}; */
-  /* width:131.938px; */
   width: 11.1111111%;
-  height: 8px;
   position: relative;
+  & > div {
+    height: 10px;
+    border-top-left-radius: 0.2rem;
+    border-bottom-left-radius: 0.2rem;
+  }
 `;
 
 const MainPhaseStatus = styled.div`
-  /* background: ${props => props.theme.timelineCurrentBgColor.default.toString()}; */
-  position: relative;
-  /* width:880.578px; */
   width: 88.8888889%;
-  height: 8px;
+  position: relative;
+
+  & > div {
+    height: 10px;
+    border-top-right-radius: 0.2rem;
+    border-bottom-right-radius: 0.2rem;
+  }
 `;
 
 class Timeline extends React.Component {

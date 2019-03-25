@@ -29,7 +29,7 @@ export const Item = styled.div`
   border-radius: ${props => props.theme.borderRadius};
   flex: 1;
   margin-right: 3rem;
-  padding: 3rem 5rem;
+  padding: 3rem;
 
   display: flex;
 
@@ -44,10 +44,15 @@ export const Item = styled.div`
   ${media.tablet`
     margin-right: 0;
     margin-bottom: 2rem;
+    
 
     &:last-child {
       margin-bottom: 0;
     }
+  `};
+
+  ${media.tablet`
+    padding: 2rem;
   `};
 `;
 

@@ -16,7 +16,7 @@ class Spinner extends React.Component {
           <Content>
             <Loader />
             <h1>Please wait.</h1>
-            <p>Hold tight while your proposal is being uploaded to IPFS.</p>
+            <p>Hold tight while your project is being uploaded to IPFS.</p>
           </Content>
         </SpinnerWrapper>
         <ScreenLoader />

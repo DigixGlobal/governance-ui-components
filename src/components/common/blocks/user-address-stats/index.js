@@ -31,7 +31,6 @@ class UserAddressStats extends React.Component {
     } = this.props.AddressDetails;
     const stake = truncateNumber(lockedDgdStake || 0);
     const dgd = truncateNumber(lockedDgd || 0);
-    console.log(this.props);
     return (
       <UserStats>
         <Item>

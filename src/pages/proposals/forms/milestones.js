@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ErrorCaption, FieldItem } from '@digix/gov-ui/components/common/common-styles';
-import { TextArea, Input, Select } from '@digix/gov-ui/components/common/elements/index';
+import { Input, Select, TextArea } from '@digix/gov-ui/components/common/elements/index';
+import { Notifications } from '@digix/gov-ui/components/common/common-styles';
 import {
   Fieldset,
   FormItem,
@@ -72,8 +72,7 @@ class Milestones extends React.Component {
     const createdMilestones = form.milestones || milestones;
     const fields = [];
 
-    // eslint-disable-next-line
-    for (let index = 0; index < count; index++) {
+    for (let index = 0; index < count; index += 1) {
       fields.push(
         <CreateMilestone key={index}>
           <FormItem>
@@ -106,13 +105,27 @@ class Milestones extends React.Component {
     const { onChange, form, daoConfig, exceedsLimit } = this.props;
     const { milestoneCount } = this.state;
     const noOfMilestones = milestoneCount;
+
+    const config = daoConfig.data;
+    const maxFundingAllowed = config.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
+    const maxMilestoneCount = Number(config.CONFIG_MAX_MILESTONES_FOR_NON_DIGIX);
+    const milestonesAllowed = [];
+
+    for (let i = 1; i <= maxMilestoneCount; i += 1) {
+      milestonesAllowed.push({
+        text: i,
+        value: i,
+      });
+    }
+
     return (
       <Fieldset>
-        {/* Required for DGDG-311: Adds an `error` prop to the `<Notifications />` styled component to denote that it is an error message.  */}
-        {/* <Notifications error>
-          Sum of <strong>Reward Expected</strong> and <strong>Milestone Fundings</strong> must not
-          exceed 20 ETH.
-        </Notifications> */}
+        {exceedsLimit && (
+          <Notifications error data-digix="Milestones-Error">
+            Sum of Reward Expected and Milestone Fundings must not exceed&nbsp;
+            {maxFundingAllowed} ETH.
+          </Notifications>
+        )}
         <FormItem>
           <Label>Reward Expected</Label>
           <Input
@@ -123,23 +136,16 @@ class Milestones extends React.Component {
             placeholder="Insert the amount of reward expected in ETH for completion of project."
           />
         </FormItem>
-        {/* <MilestoneList milestones={milestones} /> */}
         <FormItem>
           <Label>Number of Milestone(s)</Label>
           <Select
             id="noOfMilestones"
             value={noOfMilestones}
-            items={[{ text: '1', value: '1' }, { text: '2', value: '2' }]}
+            items={milestonesAllowed}
             onChange={this.handleMilestoneCountChange}
           />
         </FormItem>
         {this.renderMilestoneForm()}
-        <br />
-        {exceedsLimit && (
-          <ErrorCaption>{`Sum of Reward Expected and Milestone Fundings must not exceed ${
-            daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX
-          } ETH`}</ErrorCaption>
-        )}
       </Fieldset>
     );
   }

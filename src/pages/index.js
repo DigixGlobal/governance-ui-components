@@ -20,8 +20,7 @@ import {
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import Snackbar from '@digix/gov-ui/components/common/elements/snackbar/index';
-import Restriction from '@digix/gov-ui/components/common/blocks/loader/restrictions';
-import { renderDisplayName, withAppUser } from '@digix/gov-ui/api/graphql-queries/users';
+import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 import { showCountdownPage } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 class LandingPage extends React.PureComponent {
@@ -185,8 +184,7 @@ class LandingPage extends React.PureComponent {
   }
 
   render() {
-    const { HasCountdown, appUser } = this.props;
-    if (appUser && appUser.isUnavailable) return <Restriction />;
+    const { HasCountdown } = this.props;
     if (HasCountdown) {
       return <CountdownPage />;
     }
@@ -213,7 +211,6 @@ LandingPage.propTypes = {
   getProposalLikesByUserAction: func.isRequired,
   getProposalLikesStatsAction: func.isRequired,
   showCountdownPage: func.isRequired,
-  appUser: object.isRequired,
 };
 
 LandingPage.defaultProps = {
@@ -246,4 +243,4 @@ export default connect(
     getProposalLikesStatsAction: getProposalLikesStats,
     showCountdownPage,
   }
-)(withAppUser(LandingPage));
+)(LandingPage);

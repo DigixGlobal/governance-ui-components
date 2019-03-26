@@ -248,7 +248,7 @@ class LockDgd extends React.Component {
   renderLockDgd = () => {
     const { dgd, disableLockDgdButton, openError, error } = this.state;
     const { daoDetails } = this.props;
-    const phase = inLockingPhase(daoDetails) ? 'Staking' : 'Main';
+    const phase = inLockingPhase(daoDetails) ? 'Locking' : 'Main';
 
     const stake = truncateNumber(this.getStake(dgd));
 

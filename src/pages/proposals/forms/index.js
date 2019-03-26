@@ -205,19 +205,25 @@ class ProposalForms extends React.Component {
 
   validateMilestoneForm(field) {
     const { form, formErrors } = this.state;
-    const { finalReward, milestones } = form;
+    const { finalReward } = form;
+    let { milestones } = form;
     const config = this.props.DaoConfig.data;
+
+    if (!milestones) {
+      milestones = [];
+    }
 
     const totalFunds = this.computeTotalFunds();
     const milestoneFundsLimit = config.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
     const exceedsLimit = totalFunds > Number(milestoneFundsLimit);
 
     const hasReward = finalReward && Number(finalReward) > 0;
-    const hasMilestones = milestones && milestones.length > 0;
-    const hasMissingFunds =
-      hasMilestones && milestones.filter(m => !m.fund || m.fund === '').length > 0;
-    const hasMissingDescription =
-      hasMilestones && milestones.filter(m => !m.description || m.description === '').length > 0;
+    const hasMilestones = milestones.length > 0;
+    const hasMissingFunds = milestones.filter(m => !m.fund || m.fund === '').length > 0;
+    const milestonesWithMissingDescriptions = milestones.filter(
+      m => !m.description || m.description === '' || !this.NON_EMPTY_STRING.test(m.description)
+    );
+    const hasMissingDescription = milestonesWithMissingDescriptions.length > 0;
 
     if (field) {
       formErrors.invalidReward = !hasReward;

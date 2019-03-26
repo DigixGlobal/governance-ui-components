@@ -151,9 +151,11 @@ class CommitVote extends React.Component {
   render() {
     const { hasVoted, vote, changeVote, hasDownloaded } = this.state;
     const { proposal, revoting } = this.props;
-    const { proposalVersions } = proposal;
+    const { proposalVersions, isSpecial } = proposal;
 
-    const { title } = proposalVersions[proposalVersions.length - 1].dijixObject;
+    const { title } = !isSpecial
+      ? proposalVersions[proposalVersions.length - 1].dijixObject
+      : proposal;
     const fileName = `${title.replace(/\s+/g, '-').substr(0, 20)}-${moment().format()}`;
 
     const votedYes = hasVoted && vote;

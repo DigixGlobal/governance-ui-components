@@ -42,16 +42,10 @@ const infoHttpLink = createHttpLink({
 
 const httpAuthorizedLink = fetchAuth =>
   new ApolloLink((operation, forward) => {
-    const authorization = fetchAuth();
+    const authorization = fetchAuth() || {};
 
-    if (!authorization) {
-      throw new Error('Not authorized');
-    }
-
-    operation.setContext((_previous, __options) => ({
-      headers: {
-        ...(authorization || {}),
-      },
+    operation.setContext((_previous, _options) => ({
+      headers: authorization,
     }));
 
     return forward(operation);

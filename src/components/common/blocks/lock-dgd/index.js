@@ -32,14 +32,16 @@ import {
   Container,
   CloseButton,
   Header,
-  LockDgdBox,
-  InputDgxBox,
-  TextCaption,
-  StakeCaption,
-  ErrorCaption,
-  Note,
+  LockDGD,
+  Label,
+  FormNote,
 } from '@digix/gov-ui/components/common/blocks/lock-dgd/style';
-import { TransparentOverlay, DrawerContainer } from '@digix/gov-ui/components/common/common-styles';
+import {
+  TransparentOverlay,
+  DrawerContainer,
+  Notifications,
+  Message,
+} from '@digix/gov-ui/components/common/common-styles';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 import LockDgdTx from '@digix/gov-ui/components/common/blocks/lock-dgd/tx-ui';
 
@@ -256,28 +258,37 @@ class LockDgd extends React.Component {
           <Header>LOCK DGD</Header>
           <Icon kind="close" />
         </CloseButton>
-        <LockDgdBox>You are now locking DGD in the {phase} Phase</LockDgdBox>
-        <TextCaption>
-          <strong>Please enter the amount of DGD you wish to lock in:</strong>
-        </TextCaption>
-        <InputDgxBox>
+        {openError && (
+          <Notifications error data-digix="LockDgdOverlay-Error">
+            <Message note>{error}</Message>
+          </Notifications>
+        )}
+        <Notifications info>
+          <Message note>
+            You are now locking DGD in the <span>{phase} Phase</span>.
+          </Message>
+          <br />
+          <p>
+            Please note that once you locked, you can only unlock your DGDs in a{' '}
+            <span>Locking Phase</span>.
+          </p>
+        </Notifications>
+        <Label>Please enter the amount of DGD you wish to lock in:</Label>
+        <LockDGD>
           <TextField
             type="number"
             autoFocus
             data-digix="LockDgdOverlay-DgdAmount"
             onChange={this.onDgdInputChange}
           />
-          DGD
-        </InputDgxBox>
-        <Note>
-          {dgd > 0 && (
-            <StakeCaption>
-              This will give you <strong>{stake} STAKE</strong> in DigixDAO
-            </StakeCaption>
-          )}
-        </Note>
+          <span>DGD</span>
+        </LockDGD>
+        {dgd > 0 && (
+          <FormNote>
+            This will give you <strong>{stake} STAKE</strong> in DigixDAO
+          </FormNote>
+        )}
         <Button
-          kind="round"
           secondary
           large
           fluid
@@ -288,7 +299,6 @@ class LockDgd extends React.Component {
         >
           Lock DGD
         </Button>
-        {openError && <ErrorCaption data-digix="LockDgdOverlay-Error">{error}</ErrorCaption>}
       </DrawerContainer>
     );
   };

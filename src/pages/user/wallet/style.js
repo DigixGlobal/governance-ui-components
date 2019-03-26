@@ -117,7 +117,7 @@ export const Label = styled.div`
 `;
 
 export const Data = styled.div`
-  color: ${props => props.theme.textColor.default.base.toString()};
+  color: ${props => props.theme.textColor.primary.base.toString()};
   font-size: 3.8rem;
   font-family: 'Futura PT Heavy', sans-serif;
   margin: 1rem 0 0;

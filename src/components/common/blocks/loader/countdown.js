@@ -69,14 +69,11 @@ class CountdownPage extends React.Component {
       <Preloaders>
         <CountdownWrapper>
           <Content countdown>
-            <h1>
-              Introducing <span>DigixDAO</span> governance,
-              <br />
-              powered by the Ethereum blockchain.
-            </h1>
+            <h1>Creating a tokenised future together.</h1>
             <h2>
-              Our community-based governance system makes it possible to all DGD participants to
-              submit a proposal and equally contribute to the Digix ecosystem.
+              The DigixDAO Governance platform enables those who believe in the democratization of
+              hard assets like Gold in an increasingly digital and uncertain world to build the
+              Digix ecosystem together.
             </h2>
           </Content>
           <TimerContainer>

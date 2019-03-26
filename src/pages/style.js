@@ -11,3 +11,10 @@ export const ContentWrapper = styled.div`
   padding: 12em;
   margin-left: 15%;
 `;
+
+export const TosOverlay = styled.div`
+  max-height: 50vh;
+  overflow-y: scroll;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 1em;
+`;

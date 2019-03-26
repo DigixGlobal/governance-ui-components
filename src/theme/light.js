@@ -26,6 +26,8 @@ const darkBlue = {
   lighter: darkBlueHex.lighten(1.5),
   lightest: darkBlueHex.lighten(2),
   fade: darkBlueHex.fade(0.85),
+  fader: darkBlueHex.fade(0.9),
+  grayscale: darkBlueHex.grayscale(0.99),
 };
 
 const goldHex = Color('#E3C88E');

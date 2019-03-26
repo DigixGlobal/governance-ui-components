@@ -162,8 +162,8 @@ export const Notifications = styled.div`
   ${props =>
     props.warning &&
     css`
-      background: ${props.theme.alertMessage.warning.fade.toString()};
-      border: 1px solid ${props.theme.alertMessage.warning.light.toString()};
+      background: ${props.theme.alertMessage.warning.fader.toString()};
+      border: 1px solid ${props.theme.alertMessage.warning.grayscale.toString()};
       color: ${props.theme.alertMessage.warning.default.toString()};
 
       ${Message} {

@@ -78,48 +78,45 @@ export const ConfirmationBox = styled.div`
   }
 `;
 
-export const InputDgxBox = styled.div`
+export const LockDGD = styled.div`
   display: flex;
-  text-align: center;
+  justify-content: space-between;
+  align-items: center;
   border: 1px solid ${props => props.theme.backgroundPrimary.default.toString()};
   border-radius: ${props => props.theme.borderRadius};
-  align-items: center;
-  padding-right: 1rem;
-  font-size: 2rem;
   box-shadow: ${props => props.theme.boxShadow};
+  padding: 1rem 3rem 1rem 2rem;
+  font-size: 2rem;
+  font-family: 'Futura PT Medium', sans-serif;
+
   ${SyledInput} {
     height: 5rem;
+    font-family: 'Futura PT Medium', sans-serif;
     font-size: 2rem;
     border: none;
-    font-family: 'Futura PT Book';
+
     &:focus {
       box-shadow: none;
       border-color: #fff;
     }
   }
+
+  div {
+    flex: 1;
+  }
+
+  span {
+    flex: 0 0 auto;
+  }
 `;
 
-export const TextCaption = styled.p`
-  font-family: 'Futura PT Medium';
+export const Label = styled.p`
+  font-family: 'Futura PT Medium', sans-serif;
+  font-size: 1.6rem;
 `;
 
-export const StakeCaption = styled.p`
-  margin-top: 0.5rem;
-  color: ${props => props.theme.textDefault.default.toString()};
-`;
-
-export const ErrorCaption = styled.div`
-  text-align: center;
-  background-color: rgba(208, 2, 27, 0.2);
-  padding: 1.5rem 2.5rem;
-  border: 1px solid #d0021b;
-  color: #d0021b;
-  margin-bottom: 4rem;
-  font-family: 'Futura PT Medium';
-  border-radius: 0.5rem;
-  box-shadow: ${props => props.theme.boxShadow};
-`;
-
-export const Note = styled.span`
-  margin: 2rem;
+export const FormNote = styled.div`
+  margin-top: 2rem;
+  color: ${props => props.theme.textColor.default.light.toString()};
+  font-size: 1.6rem;
 `;

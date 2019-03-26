@@ -94,8 +94,8 @@ export const Message = styled.p`
 export const Notifications = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: ${props => (props.centered ? 'center' : '')};
-  align-items: center;
+  justify-content: ${props => (props.centered ? 'center' : 'flex-start')};
+  align-items: ${props => (props.centered ? 'center' : 'flex-start')};
 
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
@@ -103,7 +103,7 @@ export const Notifications = styled.div`
   font-size: 1.6rem;
   margin-bottom: 3rem;
   padding: 3rem 3rem;
-  text-align: ${props => (props.centered ? 'center' : '')};
+  text-align: ${props => (props.centered ? 'center' : 'left')};
   white-space: pre-wrap;
 
   ${props =>
@@ -151,7 +151,7 @@ export const Notifications = styled.div`
     props.error &&
     css`
       background: ${props.theme.alertMessage.error.fade.toString()};
-      border: 1px solid ${props.theme.alertMessage.error.light.toString()};
+      border: 1px solid ${props.theme.alertMessage.error.lightest.toString()};
       color: ${props.theme.textColor.black.toString()};
 
       ${Message} {

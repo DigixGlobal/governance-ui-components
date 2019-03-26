@@ -38,7 +38,7 @@ const gold = {
   lightest: goldHex.lighten(1.9),
 };
 
-const darkGoldHex = Color('#C2A059');
+const darkGoldHex = Color('#c09f57');
 const darkGold = {
   default: darkGoldHex,
   darker: darkGoldHex.darken(0.05),

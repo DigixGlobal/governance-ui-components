@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import { H2 } from '@digix/gov-ui/components/common/common-styles';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 import {
   ProposaDetaillWrapper,
   ProposalCard,
   TagsContainer,
+  Title,
   Description,
   ProposalLink,
   ProposalFooter,
@@ -99,7 +99,7 @@ class Proposal extends React.PureComponent {
             </Button>
           </TagsContainer>
           <Description>
-            <H2>{proposalVersion ? proposalVersion.dijixObject.title : title}</H2>
+            <Title>{proposalVersion ? proposalVersion.dijixObject.title : title}</Title>
             <p>{proposalVersion ? proposalVersion.dijixObject.description : ''}</p>
             <ProposalLink
               disabled={!canCreate && !isForumAdmin}

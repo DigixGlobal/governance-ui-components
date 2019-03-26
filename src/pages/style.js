@@ -17,14 +17,10 @@ export const Title = styled(H2)``;
 
 export const TosWrapper = styled.div`
   padding: 1rem 2rem;
-
-  + .closeButton {
-    border: 1px solid #000;
-  }
 `;
 
 export const TosOverlay = styled.div`
-  max-height: 50vh;
+  max-height: 65vh;
   overflow-y: scroll;
   background: none;
   border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};

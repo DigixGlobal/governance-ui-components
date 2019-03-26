@@ -22,14 +22,10 @@ class Restriction extends React.Component {
             <h1>DigixDAO isn't available in your country yet.</h1>
 
             <h2>
-              You don't have permission to view this page. Please contact us for any enquiries.
+              You don't have permission to view this page. Please contact us via the Help button
+              below for any enquiries.
             </h2>
             <p>&nbsp;</p>
-            <Button primary large>
-              <Link to="https://digix.global/contact/" href="https://digix.global/contact/">
-                Contact Us
-              </Link>
-            </Button>
           </Content>
         </SpinnerWrapper>
         <ScreenLoader />

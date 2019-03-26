@@ -152,10 +152,13 @@ class LandingPage extends React.PureComponent {
       if (!proposal) return 0;
       return proposal.likes;
     };
+
+    const isWalletLoaded = Boolean(AddressDetails.data.address);
+
     return (
       <Fragment>
         <Timeline stats={DaoDetails} />
-        <UserAddressStats />
+        {isWalletLoaded && <UserAddressStats />}
         <ProposalFilter
           onStageChange={this.getProposals}
           onOrderChange={this.onOrderChange}

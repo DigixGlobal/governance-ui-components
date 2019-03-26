@@ -235,7 +235,6 @@ class LandingPage extends React.PureComponent {
 
   render() {
     const { HasCountdown } = this.props;
-
     if (HasCountdown) {
       return <CountdownPage />;
     }

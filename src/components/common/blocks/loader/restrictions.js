@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 import ScreenLoader from '@digix/gov-ui/components/common/blocks/loader/screen';
 import {
   Preloaders,
@@ -24,7 +26,9 @@ class Restriction extends React.Component {
             </h2>
             <p>&nbsp;</p>
             <Button primary large>
-              Contact Us
+              <Link to="https://digix.global/contact/" href="https://digix.global/contact/">
+                Contact Us
+              </Link>
             </Button>
           </Content>
         </SpinnerWrapper>

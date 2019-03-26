@@ -9,6 +9,8 @@ import LockDgdOverlay from '@digix/gov-ui/components/common/blocks/lock-dgd';
 import AddressWatcher from '@digix/gov-ui/components/common/blocks/address-watcher';
 import SnackBar from '@digix/gov-ui/components/common/elements/snackbar';
 import RightPanelOverlay from '@digix/gov-ui/components/common/blocks/right-panel-overlay';
+import { withAppUser } from '@digix/gov-ui/api/graphql-queries/users';
+import Restriction from '@digix/gov-ui/components/common/blocks/loader/restrictions';
 
 import { Container, ContentWrapper } from './style';
 import './style.css';
@@ -26,6 +28,9 @@ function withHeaderAndPanel(WrappedComponent) {
       !_.isEqual(this.props, nextProps) && !_.isEqual(this.state, nextState);
 
     render() {
+      const { appUser } = this.props;
+      if (appUser && appUser.isUnavailable) return <Restriction />;
+
       return (
         <Fragment>
           <LockDgdOverlay />
@@ -47,9 +52,10 @@ function withHeaderAndPanel(WrappedComponent) {
 
   TemplateContainer.propTypes = {
     location: PropTypes.object.isRequired,
+    appUser: PropTypes.object.isRequired,
   };
 
-  return TemplateContainer;
+  return withAppUser(TemplateContainer);
 }
 
 export default withHeaderAndPanel;

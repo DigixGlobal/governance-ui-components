@@ -13,6 +13,14 @@ export const fetchDisplayName = gql`
   }
 `;
 
+export const fetchAppUser = gql`
+  query fetchAppUser {
+    appUser {
+      isUnavailable
+    }
+  }
+`;
+
 export const fetchUserQuery = gql`
   query fetchUser {
     currentUser {
@@ -114,6 +122,17 @@ export const renderDisplayName = dataDigixAttribute => (
       }
 
       return <span data-digix={dataDigixAttribute}>{data.currentUser.displayName}</span>;
+    }}
+  </Query>
+);
+
+export const withAppUser = Component => props => (
+  <Query query={fetchAppUser}>
+    {({ loading, error, data }) => {
+      if (loading || error) {
+        return null;
+      }
+      return <Component {...props} appUser={data.appUser} />;
     }}
   </Query>
 );

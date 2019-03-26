@@ -15,14 +15,14 @@ export const RoundBtn = styled(Button)`
       ? props.theme.buttonDisabled.border.lighter.toString()
       : props.theme.buttonDefault.border.base.toString()};
   border-radius: ${props => props.theme.borderRadius};
-  box-shadow: none;
+  box-shadow: ${props => props.theme.boxShadow};
   color: ${props =>
     props.disabled
       ? props.theme.buttonDisabled.textColor.lighter.toString()
       : props.theme.buttonDefault.textColor.base.toString()};
 
   svg {
-    fill: ${props => props.theme.buttonDefault.iconColor.light.toString()};
+    fill: ${props => props.theme.buttonDefault.iconColor.base.toString()};
   }
 
   &:hover {
@@ -40,7 +40,7 @@ export const RoundBtn = styled(Button)`
         : props.theme.buttonSecondary.textColor.base.toString()};
 
     svg {
-      fill: ${props => props.theme.iconColorReverse.default.toString()};
+      fill: ${props => props.theme.buttonDefault.invert.iconColor.base.toString()};
     }
   }
 

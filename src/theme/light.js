@@ -151,6 +151,11 @@ const LightTheme = {
     background: white,
     border: white,
     iconColor: tertiaryColor,
+    invert: {
+      textColor: primaryColor,
+      background: primaryColor,
+      iconColor: primaryColor,
+    },
   },
 
   buttonPrimary: {

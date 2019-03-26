@@ -120,7 +120,7 @@ class ApproveProposalOverlay extends React.Component {
     const ResponseButton = props => (
       <VoteButton
         {...props}
-        primary
+        secondary
         fluid
         yes={props.voteValue}
         no={!props.voteValue}

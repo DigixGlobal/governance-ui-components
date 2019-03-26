@@ -23,7 +23,6 @@ export const MenuItem = styled.div`
   justify-content: center;
 
   border-bottom: 1px solid ${props => props.theme.tabMenu.inactive.lighter.toString()};
-  cursor: pointer;
   font-family: 'Futura PT Medium';
   font-size: ${props => props.theme.fontSize};
   margin-bottom: 2rem;

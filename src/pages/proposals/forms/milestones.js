@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import { Input, Select, TextArea } from '@digix/gov-ui/components/common/elements/index';
 import { Notifications } from '@digix/gov-ui/components/common/common-styles';
 import {
+  CreateMilestone,
+  ErrorMessage,
   Fieldset,
   FormItem,
   Label,
-  CreateMilestone,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 class Milestones extends React.Component {
@@ -20,26 +21,37 @@ class Milestones extends React.Component {
   }
 
   componentWillMount = () => {
-    const { form } = this.props;
-    if (form.milestones && form.milestones.length > 0) {
+    const { milestones } = this.props.form;
+    if (milestones && milestones.length) {
       this.setState({
-        milestones: form.milestones,
-        milestoneCount: form.milestones.length,
+        milestones,
+        milestoneCount: milestones.length,
       });
     }
   };
 
   handleMilestoneCountChange = e => {
-    const { value } = e.target;
-    const { milestones } = this.state;
-    if (milestones.length > 1 && milestones.length > Number(value)) {
-      milestones.splice(milestones.length - 1);
+    let { milestones } = this.state;
+    const newCount = Number(e.target.value);
+    const oldCount = milestones.length;
+
+    if (oldCount < newCount) {
+      // add empty milestones if current count is less than the new count
+      // this is needed for the form validation
+      for (let i = oldCount + 1; i <= newCount; i += 1) {
+        milestones.push({ description: '', funds: '' });
+      }
+    } else if (oldCount > newCount) {
+      // remove milestones if current count exceeds new count
+      // NOTE: use Array#slice instead of Array#splice to ensure immutability
+      // See: https://stackoverflow.com/a/50579752
+      milestones = milestones.slice(0, newCount);
     }
 
     this.setState(
       {
-        milestoneCount: e.target.value,
-        milestones: [...milestones],
+        milestoneCount: newCount,
+        milestones,
       },
       () => {
         this.props.onChange('milestones', milestones);
@@ -51,6 +63,7 @@ class Milestones extends React.Component {
     const { milestones } = this.state;
     const { onChange } = this.props;
     const { value } = e.target;
+
     let currentField = milestones[i];
     if (currentField) {
       currentField[field] = value;
@@ -76,7 +89,10 @@ class Milestones extends React.Component {
       fields.push(
         <CreateMilestone key={index}>
           <FormItem>
-            <Label>Milestone - #{index + 1} Funds Required for This Milestone</Label>
+            <Label req>
+              Milestone - #{index + 1} Funds Required for This Milestone
+              <span>&nbsp;*</span>
+            </Label>
             <Input
               name={index}
               type="number"
@@ -87,7 +103,10 @@ class Milestones extends React.Component {
           </FormItem>
 
           <FormItem>
-            <Label>Description of Milestone</Label>
+            <Label req>
+              Description of Milestone
+              <span>&nbsp;*</span>
+            </Label>
             <TextArea
               name={index}
               value={createdMilestones[index] ? createdMilestones[index].description : ''}
@@ -103,6 +122,7 @@ class Milestones extends React.Component {
 
   render() {
     const { onChange, form, daoConfig, exceedsLimit } = this.props;
+    const { invalidReward } = this.props.errors;
     const { milestoneCount } = this.state;
     const noOfMilestones = milestoneCount;
 
@@ -127,14 +147,19 @@ class Milestones extends React.Component {
           </Notifications>
         )}
         <FormItem>
-          <Label>Reward Expected</Label>
+          <Label error={invalidReward} req>
+            Reward Expected
+            <span>&nbsp;*</span>
+          </Label>
           <Input
             type="number"
             id="finalReward"
+            error={invalidReward}
             value={form.finalReward || ''}
             onChange={onChange}
             placeholder="Insert the amount of reward expected in ETH for completion of project."
           />
+          {invalidReward && <ErrorMessage>This field is required.</ErrorMessage>}
         </FormItem>
         <FormItem>
           <Label>Number of Milestone(s)</Label>
@@ -154,10 +179,11 @@ class Milestones extends React.Component {
 const { func, object, bool } = PropTypes;
 
 Milestones.propTypes = {
-  onChange: func.isRequired,
-  form: object.isRequired,
   daoConfig: object.isRequired,
+  errors: object.isRequired,
   exceedsLimit: bool,
+  form: object.isRequired,
+  onChange: func.isRequired,
 };
 
 Milestones.defaultProps = {

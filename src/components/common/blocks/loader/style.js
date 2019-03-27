@@ -186,14 +186,12 @@ export const ParticipateButton = styled(Button)`
   letter-spacing: 0.05rem;
   padding: 1.5rem 2.5rem;
 
-  background: ${props => props.theme.buttonInverted.background.light.toString()};
-  border: ${props => props.theme.buttonInverted.border.light.toString()};
-  color: ${props => props.theme.buttonInverted.textColor.base.toString()};
+  color: ${props => props.theme.buttonPrimary.textColor.base.toString()};
   border-radius: 0;
 
   &:hover {
-    background: ${props => props.theme.buttonInverted.background.light.toString()};
-    color: ${props => props.theme.buttonInverted.textColor.base.toString()};
+    background: ${props => props.theme.buttonPrimary.background.light.toString()};
+    border-color: ${props => props.theme.buttonPrimary.border.light.toString()};
   }
 `;
 

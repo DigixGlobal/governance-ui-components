@@ -156,8 +156,9 @@ export const RoundBtn = styled(Button)`
   ${props =>
     props.active &&
     css`
-      background: ${props.theme.buttonInverted.background.base.toString()};
-      color: ${props.theme.buttonInverted.textColor.base.toString()};
+      background: ${props.theme.buttonPrimary.background.base.toString()};
+      color: ${props.theme.buttonPrimary.textColor.base.toString()};
+      border-color: ${props.theme.buttonPrimary.border.base.toString()};
     `};
 
   ${props =>

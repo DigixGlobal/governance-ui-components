@@ -8,8 +8,9 @@ export const Preloaders = styled.div`
   align-items: center;
   position: absolute;
   height: 100vh;
-  z-index: 9998;
+  z-index: 999;
   background: #fff;
+
   top: 0;
   left: 0;
   overflow: hidden;
@@ -227,7 +228,7 @@ export const Loader = styled.div`
   &:before {
     width: 5.2em;
     height: 10.2em;
-    background: ${props => props.theme.background.default.lightest.toString()};
+    background: #fff;
     border-radius: 10.2em 0 0 10.2em;
     top: -0.1em;
     left: -0.1em;
@@ -239,7 +240,7 @@ export const Loader = styled.div`
   &:after {
     width: 5.2em;
     height: 10.2em;
-    background: ${props => props.theme.background.default.lightest.toString()};
+    background: #fff;
     border-radius: 0 10.2em 10.2em 0;
     top: -0.1em;
     left: 5.1em;

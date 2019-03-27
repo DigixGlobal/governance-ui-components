@@ -26,6 +26,8 @@ const darkBlue = {
   lighter: darkBlueHex.lighten(1.5),
   lightest: darkBlueHex.lighten(2),
   fade: darkBlueHex.fade(0.85),
+  fader: darkBlueHex.fade(0.9),
+  grayscale: darkBlueHex.grayscale(0.75),
 };
 
 const goldHex = Color('#E3C88E');
@@ -149,13 +151,24 @@ const LightTheme = {
     background: white,
     border: white,
     iconColor: tertiaryColor,
+    invert: {
+      textColor: primaryColor,
+      background: primaryColor,
+      iconColor: primaryColor,
+    },
   },
 
   buttonPrimary: {
-    textColor: primaryColor,
-    background: transparent,
+    textColor: white,
+    background: primaryColor,
     border: primaryColor,
-    iconColor: primaryColor,
+    iconColor: white,
+    invert: {
+      textColor: primaryColor,
+      background: primaryColor,
+      border: primaryColor,
+      iconColor: primaryColor,
+    },
   },
 
   buttonSecondary: {
@@ -163,6 +176,10 @@ const LightTheme = {
     background: primaryColor,
     border: primaryColor,
     iconColor: primaryColor,
+    invert: {
+      textColor: white,
+      background: primaryColor,
+    },
   },
 
   buttonTertiary: {
@@ -170,10 +187,16 @@ const LightTheme = {
     background: secondaryColor,
     border: secondaryColor,
     iconColor: secondaryColor,
+    invert: {
+      textColor: white,
+      background: secondaryColor,
+      border: secondaryColor,
+      iconColor: white,
+    },
   },
 
   buttonInverted: {
-    textColor: white,
+    textColor: primaryColor,
     background: primaryColor,
     border: primaryColor,
     iconColor: white,

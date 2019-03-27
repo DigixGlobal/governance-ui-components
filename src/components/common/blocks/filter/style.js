@@ -22,7 +22,7 @@ export const Filter = styled.div`
     flex: 0 0 auto;
   }
   div:last-child {
-    flex: 0 0 auto;
+    flex: 0 0 150px;
   }
 `;
 export const Category = styled.div`

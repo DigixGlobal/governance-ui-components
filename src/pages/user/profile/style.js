@@ -33,6 +33,11 @@ export const UserData = styled.span`
 
 export const SetUserInfoBtn = styled(Button)`
   margin: 0;
+  border-width: 1px;
+
+  &:hover {
+    border-width: 1px;
+  }
 `;
 
 // END: Styles for User Stats

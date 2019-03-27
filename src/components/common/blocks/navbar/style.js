@@ -44,15 +44,6 @@ export const WalletWrapper = styled.div`
   border-left: 0 !important;
 `;
 
-export const LockDGDButton = styled(Button)`
-  background: ${props => props.theme.buttonInverted.background.base.toString()};
-  color: ${props => props.theme.buttonInverted.textColor.base.toString()};
-
-  &:hover {
-    background: ${props => props.theme.buttonInverted.background.base.toString()};
-  }
-`;
-
 export const Dropdown = styled.div`
   position: relative;
 `;

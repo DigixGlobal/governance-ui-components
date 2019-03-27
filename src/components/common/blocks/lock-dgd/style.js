@@ -117,6 +117,6 @@ export const Label = styled.p`
 
 export const FormNote = styled.div`
   margin-top: 2rem;
-  color: ${props => props.theme.textColor.default.light.toString()};
+  color: ${props => props.theme.textColor.default.base.toString()};
   font-size: 1.6rem;
 `;

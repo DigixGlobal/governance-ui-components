@@ -27,7 +27,7 @@ import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 import { showCountdownPage } from '@digix/gov-ui/reducers/gov-ui/actions';
 import ToS from '@digix/gov-ui/tos.md';
 
-import { TosOverlay } from '@digix/gov-ui/pages/style';
+import { TosWrapper, Title, TosOverlay } from '@digix/gov-ui/pages/style';
 
 class LandingPage extends React.PureComponent {
   constructor(props) {
@@ -216,18 +216,22 @@ class LandingPage extends React.PureComponent {
             />
           ))}
         <Snackbar />
-        <Modal open={showTos} onClose={this.handleModalClose}>
-          <h2>Terms and Conditions</h2>
-          <TosOverlay id="overlayDiv" onScroll={this.handleScroll}>
-            <ToS />
-          </TosOverlay>
-          <Button
-            data-digix="TOC-READ-AGREE"
-            disabled={disableButton}
-            onClick={this.handleTosClose}
-          >
-            I have read and agreed
-          </Button>
+        <Modal open={showTos} onClose={this.handleModalClose} showCloseIcon={false}>
+          <TosWrapper>
+            <Title>Terms and Conditions</Title>
+            <TosOverlay id="overlayDiv" onScroll={this.handleScroll}>
+              <ToS />
+            </TosOverlay>
+            <Button
+              primary
+              data-digix="TOC-READ-AGREE"
+              disabled={disableButton}
+              onClick={this.handleTosClose}
+              style={{ marginLeft: '0' }}
+            >
+              I have read and agreed
+            </Button>
+          </TosWrapper>
         </Modal>
       </Fragment>
     );

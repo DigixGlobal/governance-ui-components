@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Button } from '../common/elements/index';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { H2 } from '@digix/gov-ui/components/common/common-styles';
 
 export const ProposalWrapper = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
@@ -43,12 +44,17 @@ export const ProposalCard = styled.div`
 
 export const TagsContainer = styled.div``;
 
+export const Title = styled(H2)`
+  color: ${props => props.theme.textColor.primary.base.toString()};
+`;
+
 export const Description = styled.div`
   flex: 3 0 0;
 
   p {
     margin-bottom: 3em;
-    color: ${props => props.theme.textDefault.light.toString()};
+    color: ${props => props.theme.textColor.default.base.toString()};
+    font-size: 1.6rem;
   }
 `;
 
@@ -61,7 +67,7 @@ export const ProposalLink = styled(Link)`
     color: ${props =>
       props.disabled
         ? props.theme.linkDefaultColor.light.toString()
-        : props.theme.linkPrimaryColor.default.toString()};
+        : props.theme.textColor.primary.base.toString()};
     pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
   }
 

@@ -92,7 +92,7 @@ class CountdownPage extends React.Component {
               showCountdownPage={this.props.showCountdownPage}
             />
             <Cta>
-              <ParticipateButton reverse large>
+              <ParticipateButton primary large>
                 View the manual on how to participate in DigixDAO
               </ParticipateButton>
             </Cta>

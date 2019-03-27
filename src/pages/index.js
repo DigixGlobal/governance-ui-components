@@ -216,7 +216,13 @@ class LandingPage extends React.PureComponent {
             />
           ))}
         <Snackbar />
-        <Modal open={showTos} onClose={this.handleModalClose} showCloseIcon={false}>
+        <Modal
+          open={showTos}
+          onClose={this.handleModalClose}
+          showCloseIcon={false}
+          closeOnOverlayClick={false}
+          closeOnEsc={false}
+        >
           <TosWrapper>
             <Title>Terms and Conditions</Title>
             <TosOverlay id="overlayDiv" onScroll={this.handleScroll}>

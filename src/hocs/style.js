@@ -9,8 +9,9 @@ export const Container = styled.div`
 
 export const ContentWrapper = styled.div`
   background: ${props => props.theme.backgroundTertiary.lightest.toString()};
-  min-height: 100vh;
-  padding: 12em;
+  // min-height: 100vh;
+  min-height: 100%;
+  padding: 12rem;
 
   ${media.tablet`padding: 12rem 8rem;`}
   ${media.mobile`padding: 12rem 3rem;`}

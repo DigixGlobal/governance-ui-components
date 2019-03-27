@@ -128,10 +128,14 @@ export const ActivityItem = styled(Card)`
   }
 
   ${media.tablet`
-    align-items: center;
+    align-items: flex-start;
     flex-basis: auto;
     margin-right: 0;
   `}
+
+  ${media.mobile`
+  align-items: center;
+`}
 `;
 export const Moderation = styled(Card)`
   color: ${props => props.theme.textPrimary.default.toString()};
@@ -174,4 +178,9 @@ export const Actions = styled.div`
   & > button {
     margin-left: 0;
   }
+
+  ${media.mobile`
+    display: flex;
+    justify-content: center;
+`}
 `;

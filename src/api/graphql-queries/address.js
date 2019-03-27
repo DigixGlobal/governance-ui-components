@@ -31,6 +31,7 @@ export const addressSubscription = gql`
       lockedDgdStake
       reputationPoint
       quarterPoint
+      moderatorQuarterPoint
     }
   }
 `;

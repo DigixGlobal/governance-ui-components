@@ -629,7 +629,7 @@ class Proposal extends React.Component {
   render() {
     const { proposalDetails } = this.props;
     if (proposalDetails.fetching === null || proposalDetails.fetching || !proposalDetails.data)
-      return <div>Fetching Proposal Details</div>;
+      return <div>Fetching Project Details</div>;
 
     if (proposalDetails.data.isSpecial) {
       return this.renderSpecialProposal();

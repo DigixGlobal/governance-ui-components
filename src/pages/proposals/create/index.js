@@ -12,8 +12,8 @@ class CreateProposal extends React.Component {
         dataDigixPrefix="Create-Proposal"
         history={history}
         submitButtonLabel="Create Now"
-        successMessage="Your Create Proposal Transaction is pending confirmation. See More"
-        transactionTitle="Submit Proposal"
+        successMessage="Your Create Project Transaction is pending confirmation. See More"
+        transactionTitle="Submit Project"
       />
     );
   }

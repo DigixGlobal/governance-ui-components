@@ -334,14 +334,14 @@ class ProposalForms extends React.Component {
       .eth.contract(abi)
       .at(address);
 
-    let caption = `Requires ${preProposalCollateral} ETH to Submit Proposal`;
+    let caption = `Requires ${preProposalCollateral} ETH to Submit Project`;
     if (contractMethod === 'modifyProposal') {
       caption = transactionTitle;
     }
 
     const ui = {
       caption,
-      header: 'Proposal',
+      header: 'Project',
       type: 'txVisualization',
     };
 

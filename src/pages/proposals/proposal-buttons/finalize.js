@@ -58,8 +58,8 @@ class FinalizeProjectButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Finalize Proposal',
-      header: 'Proposal',
+      caption: 'Finalize Project',
+      header: 'Project',
       type: 'txVisualization',
     };
     const web3Params = {
@@ -74,7 +74,7 @@ class FinalizeProjectButton extends React.PureComponent {
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Finalize Proposal',
+          title: 'Finalize Project',
           token: challengeProof.data['access-token'],
           client: challengeProof.data.client,
           uid: challengeProof.data.uid,
@@ -84,7 +84,7 @@ class FinalizeProjectButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Your Finalize Proposal Transaction is pending confirmation. See More',
+        message: 'Your Finalize Project Transaction is pending confirmation. See More',
         txHash,
       });
 

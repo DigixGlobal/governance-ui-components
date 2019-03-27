@@ -40,7 +40,7 @@ class ApproveProposalOverlay extends React.Component {
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Approve Proposal',
+        title: 'Approve Project',
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -84,8 +84,8 @@ class ApproveProposalOverlay extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Approve Proposal',
-      header: 'Proposal',
+      caption: 'Approve Project',
+      header: 'Project',
       type: 'txVisualization',
     };
 

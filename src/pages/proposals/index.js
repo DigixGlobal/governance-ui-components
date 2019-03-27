@@ -325,7 +325,7 @@ class Proposal extends React.Component {
       <Notifications warning withIcon>
         <WarningIcon kind="warning" />
         <Message note>
-          This proposal can no longer claim funding due to Policy, Regulatory or Legal reasons, even
+          This project can no longer claim funding due to Policy, Regulatory or Legal reasons, even
           if voting passes. Please contact us if you have any queries.
         </Message>
       </Notifications>
@@ -371,7 +371,7 @@ class Proposal extends React.Component {
           <Message note>
             The voting result shows that your project passes the voting. Please click the button to
             send transaction(s) to claim this result on the blockchain. You need to do this action
-            before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
+            before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your project will auto fail.
           </Message>
         </Notifications>
       );

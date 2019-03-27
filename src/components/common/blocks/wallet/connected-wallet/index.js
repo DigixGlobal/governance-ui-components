@@ -277,7 +277,7 @@ class ConnectedWallet extends React.Component {
           <Header uppercase>lock dgd</Header>
           <p>
             Locking your DGD in DigixDAO helps us know you are committed to the growth of the
-            community and of course gives you voting power on the proposals you love to support
+            community and of course gives you voting power on the projects you love to support
           </p>
           <Button
             secondary

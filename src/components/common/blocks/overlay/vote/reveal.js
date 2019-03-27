@@ -84,7 +84,7 @@ class RevealVote extends React.Component {
 
     const ui = {
       caption: 'Reveal Vote',
-      header: 'Proposal',
+      header: 'Project',
       type: 'txVisualization',
     };
 
@@ -149,7 +149,7 @@ class RevealVote extends React.Component {
     const { uploaded, voteObject, error } = this.state;
     return (
       <IntroContainer>
-        <Header uppercase>Vote on Proposal (Reveal)</Header>
+        <Header uppercase>Vote on Project (Reveal)</Header>
         <p>
           The Reveal phase is to verify the choice you made in the Commit phsae. Please upload the
           JSON file that you received in the Commit phase. Your choice will then be verified and

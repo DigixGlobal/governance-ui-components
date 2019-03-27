@@ -55,7 +55,7 @@ class CommitVote extends React.Component {
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Vote on Proposal',
+        title: 'Vote on Project',
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -121,7 +121,7 @@ class CommitVote extends React.Component {
 
     const ui = {
       caption: 'Commit Vote',
-      header: 'Proposal',
+      header: 'Project',
       type: 'txVisualization',
     };
 

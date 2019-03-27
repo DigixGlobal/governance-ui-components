@@ -80,7 +80,7 @@ class ClaimApprovalButton extends React.PureComponent {
 
     const ui = {
       caption: 'Claim Approval',
-      header: 'Proposal',
+      header: 'Project',
       type: 'txVisualization',
     };
     const web3Params = {

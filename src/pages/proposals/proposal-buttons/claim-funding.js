@@ -50,7 +50,7 @@ class ClaimFundingButton extends React.PureComponent {
 
     const ui = {
       caption: 'Claim Funding',
-      header: 'Proposal',
+      header: 'Project',
       type: 'txVisualization',
     };
     const web3Params = {

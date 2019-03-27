@@ -14,8 +14,8 @@ class EditProposal extends React.Component {
         history={history}
         ProposalDetails={proposalDetails}
         submitButtonLabel="Update Now"
-        successMessage="Your Edit Proposal Transaction is pending confirmation. See More"
-        transactionTitle="Edit Proposal"
+        successMessage="Your Edit Project Transaction is pending confirmation. See More"
+        transactionTitle="Edit Project"
       />
     );
   }

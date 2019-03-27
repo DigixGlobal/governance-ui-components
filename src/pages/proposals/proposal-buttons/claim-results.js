@@ -85,7 +85,7 @@ class ClaimResultsButton extends React.PureComponent {
 
     const ui = {
       caption: 'Claim Voting Result',
-      header: 'Proposal',
+      header: 'Project',
       type: 'txVisualization',
     };
     const web3Params = {

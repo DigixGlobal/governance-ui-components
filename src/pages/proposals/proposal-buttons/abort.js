@@ -43,8 +43,8 @@ class AbortProjectButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Abort Proposal',
-      header: 'Proposal',
+      caption: 'Abort Project',
+      header: 'Project',
       type: 'txVisualization',
     };
     const web3Params = {
@@ -59,7 +59,7 @@ class AbortProjectButton extends React.PureComponent {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Submit Proposal',
+          title: 'Abort Project',
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
           uid: ChallengeProof.data.uid,
@@ -69,7 +69,7 @@ class AbortProjectButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Your About Proposal Transaction is pending confirmation. See More',
+        message: 'Your Abort Project Transaction is pending confirmation. See More',
         txHash,
       });
 

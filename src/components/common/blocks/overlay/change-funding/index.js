@@ -178,7 +178,7 @@ class ChangeFundingOverlay extends React.Component {
 
     const ui = {
       caption: 'Change Funding',
-      header: 'Proposal',
+      header: 'Project',
       type: 'txVisualization',
     };
 

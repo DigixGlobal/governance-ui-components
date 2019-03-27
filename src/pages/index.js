@@ -22,7 +22,6 @@ import {
   getProposalLikesStats,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
-import Snackbar from '@digix/gov-ui/components/common/elements/snackbar/index';
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 import { showCountdownPage } from '@digix/gov-ui/reducers/gov-ui/actions';
 import ToS from '@digix/gov-ui/tos.md';
@@ -215,7 +214,6 @@ class LandingPage extends React.PureComponent {
               userDetails={AddressDetails}
             />
           ))}
-        <Snackbar />
         <Modal open={showTos} onClose={this.handleModalClose} showCloseIcon={false}>
           <TosWrapper>
             <Title>Terms and Conditions</Title>

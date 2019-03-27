@@ -1,10 +1,16 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Card } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const UserStats = styled(Card)`
   text-transform: uppercase;
   padding: 0;
+
+  ${props =>
+    props.dashboard &&
+    css`
+      margin-bottom: 8rem;
+    `};
 
   ${media.mobile`
       flex-direction: column;

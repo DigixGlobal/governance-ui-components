@@ -28,7 +28,7 @@ export const ProposalContainer = styled.div`
 
 export const ProposaDetaillWrapper = styled.div`
   flex: 4 1 0;
-  padding: 2.5rem 3rem;
+  padding: 3.5rem 5rem 2.5rem 5rem;
 `;
 
 export const ProposalCard = styled.div`
@@ -46,15 +46,40 @@ export const TagsContainer = styled.div``;
 
 export const Title = styled(H2)`
   color: ${props => props.theme.textColor.primary.base.toString()};
+  margin-top: 0;
 `;
 
 export const Description = styled.div`
   flex: 3 0 0;
 
   p {
-    margin-bottom: 3em;
+    margin-bottom: 2em;
     color: ${props => props.theme.textColor.default.base.toString()};
     font-size: 1.6rem;
+
+    overflow: hidden;
+    position: relative;
+    line-height: 1.2em;
+    max-height: calc(1.2em * 4);
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
+
+    &:before {
+      content: '...';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      width: 1em;
+      height: 1em;
+      margin-top: 0.2em;
+      background: #fff;
+    }
   }
 `;
 

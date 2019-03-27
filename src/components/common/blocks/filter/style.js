@@ -3,6 +3,7 @@ import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 export const FilterWrapper = styled.div`
   margin-bottom: 2.5em;
+  margin-top: 8rem;
   border-bottom: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
 `;
 export const Heading = styled.div`

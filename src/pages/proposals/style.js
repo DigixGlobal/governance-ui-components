@@ -231,6 +231,7 @@ export const DetailsContainer = styled.div`
 
 export const Content = styled.div`
   margin: 1.5rem 0 3rem 0;
+  font-size: 1.6rem;
 `;
 
 export const SubTitle = styled(H2)`

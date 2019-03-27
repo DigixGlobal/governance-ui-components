@@ -55,8 +55,10 @@ export const ButtonBan = styled(Button)`
 export const SearchButton = styled(Button)`
   box-shadow: none;
   background: transparent;
+  border: 0;
 
   &:hover {
     background: none;
+    border: 0;
   }
 `;

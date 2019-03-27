@@ -1,11 +1,26 @@
 import styled, { css, keyframes } from 'styled-components';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const Preloaders = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  height: 100vh;
+  z-index: 9998;
+  background: #fff;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+`;
+
+export const Digix = styled(Icon)`
+  svg {
+    height: 65px;
+  }
+
+  margin-bottom: 4rem;
 `;
 
 const LOADING = keyframes`
@@ -21,11 +36,14 @@ const LOADING = keyframes`
 
 const PULSE = keyframes`
 0%    { background-color: rgba(165, 165, 165, 0.15) }
-50%   { background-color: rgba(165, 165, 165, 0.15) }
+50%   { background-color: rgba(165, 165, 165, 0.20) }
 100%  { background-color: rgba(165, 165, 165, 0.10) }
 `;
 
-export const LoaderWrapper = styled.div``;
+export const LoaderWrapper = styled.div`
+  padding: 15rem;
+  margin-top: 15rem;
+`;
 
 export const SpinnerWrapper = styled.div`
   display: flex;
@@ -62,7 +80,7 @@ export const Content = styled.div`
   ${props =>
     props.countdown &&
     css`
-      max-width: 1000px;
+      max-width: 1200px;
     `};
 
   h1 {

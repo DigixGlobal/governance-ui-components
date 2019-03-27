@@ -1,5 +1,11 @@
 import styled from 'styled-components';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
+
+export const Digix = styled(Icon)`
+  svg {
+    height: 45px;
+  }
+`;
 
 export const HeaderWrapper = styled.section`
   display: flex;

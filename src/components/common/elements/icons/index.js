@@ -20,6 +20,7 @@ import ImToken from './ImToken';
 import JsonWallet from './JsonWallet';
 import Ledger from './Ledger';
 import Like from './Like';
+import DigixLogo from './Brand';
 import Magnifier from './Magnifier';
 import Menu from './Menu';
 import Metamask from './Metamask';
@@ -57,6 +58,7 @@ const icons = {
   imtoken: ImToken,
   json: JsonWallet,
   ledger: Ledger,
+  logo: DigixLogo,
   like: Like,
   magnifier: Magnifier,
   menu: Menu,

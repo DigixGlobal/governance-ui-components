@@ -1,6 +1,17 @@
 import styled, { css } from 'styled-components';
 import { media } from './breakpoints';
 
+export const MainWrapper = styled.div`
+  padding: 12em;
+
+  ${media.tablet`
+    padding: 12rem 8rem;
+  `}
+  ${media.mobile`
+    padding: 12rem 3rem;
+  `}
+`;
+
 export const Avatar = styled.img`
   width: 5rem;
   height: 5rem;

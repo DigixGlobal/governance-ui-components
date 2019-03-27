@@ -8,6 +8,7 @@ import { getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { showCountdownPage } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 import {
+  Digix,
   Content,
   CountdownWrapper,
   Cta,
@@ -68,6 +69,7 @@ class CountdownPage extends React.Component {
     return (
       <Preloaders>
         <CountdownWrapper>
+          <Digix kind="logo" width="5rem" />
           <Content countdown>
             <h1>Creating a tokenised future together.</h1>
             <h2>

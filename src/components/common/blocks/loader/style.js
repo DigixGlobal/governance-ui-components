@@ -50,10 +50,8 @@ export const SpinnerWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   margin: 0 auto;
   width: 100%;
-  height: 100vh;
   position: absolute;
   background: rgba(255, 255, 255, 0.5);
 

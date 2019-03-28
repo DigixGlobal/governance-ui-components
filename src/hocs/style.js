@@ -9,7 +9,7 @@ export const Container = styled.div`
 
 export const ContentWrapper = styled.div`
   background: ${props => props.theme.backgroundTertiary.lightest.toString()};
-  min-height: 100%;
+  min-height: 100vh;
   overflow: auto;
   padding: 12em;
 

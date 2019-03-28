@@ -8,7 +8,7 @@ export const Preloaders = styled.div`
   align-items: center;
   position: absolute;
   height: 100vh;
-  z-index: 999;
+  z-index: 1001;
   background: #fff;
 
   top: 0;

@@ -139,6 +139,8 @@ export const Timer = styled.div`
         color: ${props => props.theme.textColor.primary.light.toString()};
         font-family: 'Futura PT Heavy', sans-serif;
         font-size: 8rem;
+        width: 120px;
+        text-align: center;
       }
     }
   }

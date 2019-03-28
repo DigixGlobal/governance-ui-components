@@ -112,6 +112,10 @@ export const CallToAction = styled.div`
     order: -1;
     margin: 0 -1rem 3rem -1rem;
   `}
+
+  button {
+    height: 55px;
+  }
 `;
 
 export const FundingInfo = styled.div`

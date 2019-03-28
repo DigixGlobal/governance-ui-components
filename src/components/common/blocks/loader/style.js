@@ -188,6 +188,8 @@ export const ParticipateButton = styled(Button)`
   letter-spacing: 0.05rem;
   padding: 1.5rem 2.5rem;
 
+  background: ${props => props.theme.buttonPrimary.background.base.toString()};
+  border-color: ${props => props.theme.buttonPrimary.border.base.toString()};
   color: ${props => props.theme.buttonPrimary.textColor.base.toString()};
   border-radius: 0;
 

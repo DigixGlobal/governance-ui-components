@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Countdown from 'react-countdown-now';
 import ScreenLoader from '@digix/gov-ui/components/common/blocks/loader/screen';
@@ -94,9 +95,16 @@ class CountdownPage extends React.Component {
               showCountdownPage={this.props.showCountdownPage}
             />
             <Cta>
-              <ParticipateButton reverse large>
-                View the manual on how to participate in DigixDAO
-              </ParticipateButton>
+              <a
+                href="https://ipfs.infura.io/ipfs/QmeSWs4xmy1yPx1HdmEwRSM9iqLWnyiQ8Udj4qiegoTmVK"
+                // eslint-disable-next-line react/jsx-no-target-blank
+                target="_blank"
+                style={{ marginTop: '-1rem' }}
+              >
+                <ParticipateButton kind="link" reverse large>
+                  View the manual on how to participate in DigixDAO
+                </ParticipateButton>
+              </a>
             </Cta>
           </TimerContainer>
         </CountdownWrapper>

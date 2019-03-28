@@ -56,7 +56,7 @@ export const executeContractFunction = payload => {
           logTxn.completeTransaction(false, error);
         }
 
-        if (typeof onFinally === 'function') {
+        if (typeof onFinally === 'function' && error.data) {
           const txHash = Object.keys(error.data)[0];
           onFinally(txHash);
         }

@@ -68,6 +68,7 @@ export const Button = styled.button`
     css`
       border-width: 2px;
       padding: 1.25rem 3rem;
+      max-height: 60px;
       font-size: 1.6rem;
     `};
 

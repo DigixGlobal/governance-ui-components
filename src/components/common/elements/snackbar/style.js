@@ -12,7 +12,7 @@ export const SnackbarContainer = styled(Card)`
 
   width: 60%;
   margin-bottom: 5rem;
-  z-index: 999;
+  z-index: 1110;
 `;
 export const SnackbarDesc = styled.div`
   color: ${props => props.theme.textReverse.default.toString()};

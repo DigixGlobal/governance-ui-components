@@ -157,6 +157,7 @@ class ProposalForms extends React.Component {
   };
 
   setError = error => {
+    if (!error) return;
     this.setState({
       renderStep: this.RENDER_STEP.confirm,
     });

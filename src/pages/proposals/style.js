@@ -97,14 +97,16 @@ export const Header = styled.div`
 `;
 
 export const Title = styled(H1)`
-  font-size: 3.6rem;
-  font-family: 'Futura PT Book';
+  font-size: 3.2rem;
+  font-family: 'Futura PT Book', sans-serif;
   text-transform: capitalize;
+  margin-right: 2rem;
 `;
 
 export const CallToAction = styled.div`
   display: flex;
   flex-wrap: nowrap;
+  margin-top: 2rem;
 
   ${media.mobile`
     order: -1;
@@ -118,6 +120,7 @@ export const FundingInfo = styled.div`
   flex: 1;
 
   margin-bottom: 2rem;
+  margin-top: 2rem;
 
   ${media.mobile`
     flex-flow: row wrap;

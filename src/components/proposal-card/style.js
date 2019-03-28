@@ -47,6 +47,29 @@ export const TagsContainer = styled.div``;
 export const Title = styled(H2)`
   color: ${props => props.theme.textColor.primary.base.toString()};
   margin-top: 0;
+
+  overflow: hidden;
+  position: relative;
+  line-height: 1.2em;
+  max-height: calc(1.2em * 2);
+  margin-right: 0em;
+  padding-right: 1em;
+
+  &:before {
+    content: '...';
+    position: absolute;
+    right: 2rem;
+    bottom: 0;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    right: 2rem;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: #fff;
+  }
 `;
 
 export const Description = styled.div`
@@ -62,7 +85,7 @@ export const Description = styled.div`
     line-height: 1.2em;
     max-height: calc(1.2em * 4);
     text-align: justify;
-    margin-right: -1em;
+    margin-right: 0;
     padding-right: 1em;
 
     &:before {

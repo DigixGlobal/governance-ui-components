@@ -1,11 +1,15 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Modal from 'react-responsive-modal';
+import util from 'ethereumjs-util';
 
+import CountdownPage from '@digix/gov-ui/components/common/blocks/loader/countdown';
 import ProposalCard from '@digix/gov-ui/components/proposal-card';
 import Timeline from '@digix/gov-ui/components/common/blocks/timeline';
 import UserAddressStats from '@digix/gov-ui/components/common/blocks/user-address-stats/index';
 import ProposalFilter from '@digix/gov-ui/components/common/blocks/filter/index';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 import {
   getAddressDetails,
@@ -18,20 +22,38 @@ import {
   getProposalLikesStats,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
-import Snackbar from '@digix/gov-ui/components/common/elements/snackbar/index';
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
+import { showCountdownPage } from '@digix/gov-ui/reducers/gov-ui/actions';
+import ToS from '@digix/gov-ui/tos.md';
+
+import { TosWrapper, Title, TosOverlay } from '@digix/gov-ui/pages/style';
 
 class LandingPage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       order: 'latest',
+      showTos: true,
+      disableButton: true,
     };
   }
 
   componentWillMount = () => {
     const { AddressDetails, getDaoDetailsAction, getProposalsAction, ChallengeProof } = this.props;
-    getDaoDetailsAction();
+
+    const storedHash = localStorage.getItem('GOVERNANCE_UI');
+    const hash = this.hashTos();
+    if (storedHash && storedHash === hash) {
+      this.setState({ showTos: false });
+    }
+
+    getDaoDetailsAction().then(() => {
+      const { currentQuarter } = this.props.DaoDetails.data;
+      if (currentQuarter === 0) {
+        this.props.showCountdownPage({ show: true });
+      }
+    });
+
     getProposalsAction();
     this.getProposalLikes(undefined, ChallengeProof);
     if (AddressDetails.data.address && (ChallengeProof.data && ChallengeProof.data.client)) {
@@ -95,6 +117,11 @@ class LandingPage extends React.PureComponent {
     });
   };
 
+  hashTos = () => {
+    const hash = util.sha256(ToS.toString()).toString('hex');
+    return hash;
+  };
+
   fixScrollbar = ShowWallet => {
     if (ShowWallet && ShowWallet.show) {
       document.body.classList.add('modal-is-open');
@@ -103,8 +130,25 @@ class LandingPage extends React.PureComponent {
     }
   };
 
-  render() {
-    const { order } = this.state;
+  handleTosClose = () => {
+    this.setState({ showTos: false }, () => {
+      localStorage.setItem('GOVERNANCE_UI', this.hashTos());
+    });
+  };
+
+  handleModalClose = () => {
+    this.setState({ showTos: false });
+  };
+
+  handleScroll = () => {
+    const element = document.getElementById('overlayDiv');
+    if (element.scrollTop + 1000 >= element.scrollHeight) {
+      this.setState({ disableButton: false });
+    }
+  };
+
+  renderLandingPage() {
+    const { order, showTos, disableButton } = this.state;
     this.fixScrollbar(this.props.ShowWallet);
     const {
       history,
@@ -144,16 +188,20 @@ class LandingPage extends React.PureComponent {
       if (!proposal) return 0;
       return proposal.likes;
     };
+
+    const isWalletLoaded = Boolean(AddressDetails.data.address);
+
     return (
       <Fragment>
         <Timeline stats={DaoDetails} />
-        <UserAddressStats />
+        {isWalletLoaded && <UserAddressStats />}
         <ProposalFilter
           onStageChange={this.getProposals}
           onOrderChange={this.onOrderChange}
           AddressDetails={AddressDetails}
           history={history}
         />
+        {!hasProposals && <p>There are no projects to show.</p>}
         {hasProposals &&
           orderedProposals.map(proposal => (
             <ProposalCard
@@ -166,13 +214,45 @@ class LandingPage extends React.PureComponent {
               userDetails={AddressDetails}
             />
           ))}
-        <Snackbar />
+        <Modal
+          open={showTos}
+          onClose={this.handleModalClose}
+          showCloseIcon={false}
+          closeOnEsc={false}
+          closeOnOverlayClick={false}
+        >
+          <TosWrapper>
+            <Title>Terms and Conditions</Title>
+            <TosOverlay id="overlayDiv" onScroll={this.handleScroll}>
+              <ToS />
+            </TosOverlay>
+            <Button
+              primary
+              data-digix="TOC-READ-AGREE"
+              disabled={disableButton}
+              onClick={this.handleTosClose}
+              style={{ marginLeft: '0' }}
+            >
+              I have read and agreed
+            </Button>
+          </TosWrapper>
+        </Modal>
       </Fragment>
     );
   }
+
+  render() {
+    const { HasCountdown } = this.props;
+    if (HasCountdown) {
+      return <CountdownPage />;
+    }
+
+    return this.renderLandingPage();
+  }
 }
 
-const { object, func } = PropTypes;
+const { bool, object, func } = PropTypes;
+
 LandingPage.propTypes = {
   DaoDetails: object.isRequired,
   AddressDetails: object.isRequired,
@@ -180,6 +260,7 @@ LandingPage.propTypes = {
   ChallengeProof: object,
   UserLikedProposals: object,
   ProposalLikes: object,
+  HasCountdown: bool.isRequired,
   ShowWallet: object,
   history: object.isRequired,
   getAddressDetailsAction: func.isRequired,
@@ -187,6 +268,7 @@ LandingPage.propTypes = {
   getProposalsAction: func.isRequired,
   getProposalLikesByUserAction: func.isRequired,
   getProposalLikesStatsAction: func.isRequired,
+  showCountdownPage: func.isRequired,
 };
 
 LandingPage.defaultProps = {
@@ -200,7 +282,7 @@ export default connect(
   ({
     infoServer: { DaoDetails, Proposals, AddressDetails },
     daoServer: { ChallengeProof, UserLikedProposals, ProposalLikes },
-    govUI: { ShowWallet },
+    govUI: { HasCountdown, ShowWallet },
   }) => ({
     DaoDetails,
     Proposals,
@@ -208,6 +290,7 @@ export default connect(
     ChallengeProof,
     UserLikedProposals,
     ProposalLikes,
+    HasCountdown,
     ShowWallet,
   }),
   {
@@ -216,5 +299,6 @@ export default connect(
     getProposalsAction: getProposals,
     getProposalLikesByUserAction: getProposalLikesByUser,
     getProposalLikesStatsAction: getProposalLikesStats,
+    showCountdownPage,
   }
 )(LandingPage);

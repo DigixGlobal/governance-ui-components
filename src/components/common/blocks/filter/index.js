@@ -5,7 +5,7 @@ import { withApollo } from 'react-apollo';
 
 import Category from '@digix/gov-ui/components/common/blocks/filter/category.js';
 import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
-import Icon from '@digix/gov-ui/components/common/elements/icons/Plus';
+import { Button, Icon, Select } from '@digix/gov-ui/components/common/elements/index';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
@@ -13,10 +13,8 @@ import { getUnmetProposalRequirements } from '@digix/gov-ui/utils/helpers';
 import { H1 } from '@digix/gov-ui/components/common/common-styles';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { ProposalErrors } from '@digix/gov-ui/constants';
-import { Select } from '@digix/gov-ui/components/common/elements/index';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import {
-  CreateProjectBtn,
   Heading,
   Filter,
   FilterWrapper,
@@ -98,15 +96,10 @@ class ProposalCardFilter extends React.Component {
         <Heading>
           <H1>Projects</H1>
           {canCreate && (
-            <CreateProjectBtn
-              kind="round"
-              primary
-              showIcon
-              onClick={() => this.redirectToCreateProposal()}
-            >
+            <Button primary large showIcon onClick={() => this.redirectToCreateProposal()}>
               <Icon kind="plus" />
               Create
-            </CreateProjectBtn>
+            </Button>
           )}
         </Heading>
         <Filter>

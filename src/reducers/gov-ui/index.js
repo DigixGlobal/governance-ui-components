@@ -10,6 +10,7 @@ const defaultState = {
   SignChallenge: undefined,
   ShowWallet: undefined,
   showLeftMenu: undefined,
+  HasCountdown: false,
   CanLockDgd: undefined,
   ShowRightPanel: {
     show: false,
@@ -86,6 +87,11 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         ShowRightPanel: action.payload,
+      };
+    case actions.SHOW_COUNTDOWN_PAGE:
+      return {
+        ...state,
+        HasCountdown: action.payload.show,
       };
     case actions.GET_CONFIG_PREPROPOSAL_COLLATERAL:
       return {

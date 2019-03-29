@@ -30,11 +30,10 @@ export function getDGDBalanceContract(network) {
   if (process.env.ENVIRONMENT === 'development') {
     rpcContract = getContract(DgdToken, network);
   }
-  const abi = (process.env.ENVIRONMENT !== 'production' && ERC20_ABI) || rpcContract.abi;
   const address =
     (process.env.ENVIRONMENT !== 'development' && getToken('DGD').address) || rpcContract.address;
 
-  return { abi, address };
+  return { abi: ERC20_ABI, address };
 }
 
 export function getDGXBalanceContract(network) {
@@ -42,11 +41,10 @@ export function getDGXBalanceContract(network) {
   if (process.env.ENVIRONMENT === 'development') {
     rpcContract = getContract(DgxToken, network);
   }
-  const abi = (process.env.ENVIRONMENT !== 'production' && ERC20_ABI) || rpcContract.abi;
   const address =
     (process.env.ENVIRONMENT !== 'development' && getToken('DGX').address) || rpcContract.address;
 
-  return { abi, address };
+  return { abi: ERC20_ABI, address };
 }
 
 export function getDGDBadgeBalanceContract(network) {
@@ -54,9 +52,8 @@ export function getDGDBadgeBalanceContract(network) {
   if (process.env.ENVIRONMENT === 'development') {
     rpcContract = getContract(DgdBadgeToken, network);
   }
-  const abi = (process.env.ENVIRONMENT !== 'production' && ERC20_ABI) || rpcContract.abi;
   const address =
     (process.env.ENVIRONMENT !== 'development' && getToken('DGDb').address) || rpcContract.address;
 
-  return { abi, address };
+  return { abi: ERC20_ABI, address };
 }

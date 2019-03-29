@@ -50,7 +50,6 @@ class ProfileUserInfo extends React.Component {
           <UserData data-digix="Profile-UserName">{displayName}</UserData>
           {!username && (
             <SetUserInfoBtn
-              primary
               xsmall
               data-digix="Profile-UserName-Cta"
               onClick={() => this.showSetUsernameOverlay()}
@@ -68,7 +67,6 @@ class ProfileUserInfo extends React.Component {
           <UserLabel>Email:</UserLabel>
           {email && <UserData data-digix="Profile-Email">{email}</UserData>}
           <SetUserInfoBtn
-            primary
             xsmall
             data-digix="Profile-Email-Cta"
             onClick={() => this.showSetEmailOverlay()}

@@ -20,11 +20,13 @@ import ImToken from './ImToken';
 import JsonWallet from './JsonWallet';
 import Ledger from './Ledger';
 import Like from './Like';
+import DigixLogo from './Brand';
 import Magnifier from './Magnifier';
 import Menu from './Menu';
 import Metamask from './Metamask';
 import Notification from './Notification';
 import Option from './Options';
+import Padlock from './Padlock';
 import Product from './product-tour';
 import Profile from './Profile';
 import Plus from './Plus';
@@ -56,12 +58,14 @@ const icons = {
   imtoken: ImToken,
   json: JsonWallet,
   ledger: Ledger,
+  logo: DigixLogo,
   like: Like,
   magnifier: Magnifier,
   menu: Menu,
   metamask: Metamask,
   notification: Notification,
   option: Option,
+  padlock: Padlock,
   product: Product,
   profile: Profile,
   plus: Plus,

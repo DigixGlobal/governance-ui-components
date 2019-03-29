@@ -1,5 +1,11 @@
 import styled from 'styled-components';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
+
+export const Digix = styled(Icon)`
+  svg {
+    height: 45px;
+  }
+`;
 
 export const HeaderWrapper = styled.section`
   display: flex;
@@ -42,15 +48,6 @@ export const WalletWrapper = styled.div`
   align-items: center;
 
   border-left: 0 !important;
-`;
-
-export const LockDGDButton = styled(Button)`
-  background: ${props => props.theme.buttonInverted.background.base.toString()};
-  color: ${props => props.theme.buttonInverted.textColor.base.toString()};
-
-  &:hover {
-    background: ${props => props.theme.buttonInverted.background.base.toString()};
-  }
 `;
 
 export const Dropdown = styled.div`

@@ -319,7 +319,7 @@ export const withFetchProposal = Component => props => {
       {({ loading, error, data, refetch, subscribeToMore, networkStatus, updateQuery }) => {
         if (networkStatus === 4) return <div>Refetching!</div>;
         if (loading || error) {
-          return <div>Fetching Proposal Details</div>;
+          return <div>Fetching Project Details</div>;
         }
 
         const subscribeToProposal = () => {

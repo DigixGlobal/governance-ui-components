@@ -1,31 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { Input, TextArea } from '../../../components/common/elements/index';
-import { Fieldset, FormItem, Label } from './style';
+import { Input, TextArea } from '@digix/gov-ui/components/common/elements';
+import { ErrorMessage, Fieldset, FormItem, Label } from '@digix/gov-ui/pages/proposals/forms/style';
 
 class OverView extends React.Component {
   render() {
-    const { onChange, form } = this.props;
+    const { errors, form, onChange } = this.props;
+    const { description, title } = form;
+    const { invalidDescription, invalidTitle } = errors;
+
     return (
       <Fieldset>
         <FormItem>
-          <Label>Project Title</Label>
+          <Label error={invalidTitle} req>
+            Project Title
+            <span>&nbsp;*</span>
+          </Label>
           <Input
             id="title"
-            value={form.title || ''}
+            error={invalidTitle}
+            value={title || ''}
             onChange={onChange}
             placeholder="i.e. Implementation of Silver tokens"
           />
+          {invalidTitle && <ErrorMessage>This field is required.</ErrorMessage>}
         </FormItem>
         <FormItem>
-          <Label>Short Description</Label>
+          <Label error={invalidDescription} req>
+            Short Description
+            <span>&nbsp;*</span>
+          </Label>
           <TextArea
-            value={form.description || ''}
+            error={invalidDescription}
+            value={description || ''}
             id="description"
             onChange={onChange}
             placeholder="Short description of your project"
           />
+          {invalidDescription && <ErrorMessage>This field is required.</ErrorMessage>}
         </FormItem>
       </Fieldset>
     );
@@ -35,7 +47,8 @@ class OverView extends React.Component {
 const { func, object } = PropTypes;
 
 OverView.propTypes = {
-  onChange: func.isRequired,
+  errors: object.isRequired,
   form: object.isRequired,
+  onChange: func.isRequired,
 };
 export default OverView;

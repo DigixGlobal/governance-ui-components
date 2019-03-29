@@ -119,8 +119,13 @@ class CollapsibleMenu extends React.Component {
   renderAdminMenuItem = menu => (
     <Query query={fetchUserQuery} key={menu.title}>
       {({ loading, error, data }) => {
+        if (loading || error) {
+          return null;
+        }
+
         const isAllowed = data.currentUser && data.currentUser[menu.requirement];
-        if (loading || error || !isAllowed) {
+
+        if (!isAllowed) {
           return null;
         }
 
@@ -141,6 +146,10 @@ class CollapsibleMenu extends React.Component {
   );
 
   render() {
+    if (this.props.HasCountdown) {
+      return null;
+    }
+
     const { addressDetails, ChallengeProof, menuItems, showLeftMenu } = this.props;
     const userType = getUserStatus(addressDetails.data);
     const menu = menuItems || DEFAULT_MENU;
@@ -176,7 +185,7 @@ class CollapsibleMenu extends React.Component {
   }
 }
 
-const { array, object, func } = PropTypes;
+const { array, bool, object, func } = PropTypes;
 CollapsibleMenu.propTypes = {
   menuItems: array,
   theme: object,
@@ -185,6 +194,7 @@ CollapsibleMenu.propTypes = {
   location: object.isRequired,
   ChallengeProof: object,
   showHideLeftMenu: func.isRequired,
+  HasCountdown: bool.isRequired,
 };
 
 CollapsibleMenu.defaultProps = {
@@ -199,6 +209,7 @@ const mapStateToProps = state => ({
   addressDetails: state.infoServer.AddressDetails,
   ChallengeProof: state.daoServer.ChallengeProof,
   showLeftMenu: state.govUI.showLeftMenu,
+  HasCountdown: state.govUI.HasCountdown,
 });
 
 export default connect(

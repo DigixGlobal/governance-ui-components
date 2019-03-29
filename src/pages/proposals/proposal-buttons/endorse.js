@@ -43,8 +43,8 @@ class EndorseProjectButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Endorse Proposal',
-      header: 'Proposal',
+      caption: 'Endorse Project',
+      header: 'Project',
       type: 'txVisualization',
     };
     const web3Params = {
@@ -59,7 +59,7 @@ class EndorseProjectButton extends React.PureComponent {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Endorse Proposal',
+          title: 'Endorse Project',
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
           uid: ChallengeProof.data.uid,
@@ -69,7 +69,7 @@ class EndorseProjectButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Proposal Endorsed',
+        message: 'Your Endorse Project Transaction is pending confirmation. See More',
         txHash,
       });
 

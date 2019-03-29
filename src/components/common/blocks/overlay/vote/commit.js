@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import web3Utils from 'web3-utils';
 import secureRandom from 'secure-random';
+import moment from 'moment';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
@@ -54,7 +55,7 @@ class CommitVote extends React.Component {
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Vote on Proposal',
+        title: 'Vote on Project',
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -67,7 +68,7 @@ class CommitVote extends React.Component {
   onTransactionSuccess = txHash => {
     const { history, showHideAlertAction } = this.props;
     showHideAlertAction({
-      message: 'Vote Accepted',
+      message: 'Your Vote Transaction is pending confirmation. See More',
       txHash,
     });
 
@@ -120,7 +121,7 @@ class CommitVote extends React.Component {
 
     const ui = {
       caption: 'Commit Vote',
-      header: 'Proposal',
+      header: 'Project',
       type: 'txVisualization',
     };
 
@@ -149,15 +150,21 @@ class CommitVote extends React.Component {
 
   render() {
     const { hasVoted, vote, changeVote, hasDownloaded } = this.state;
-    const { proposalId, proposal, revoting } = this.props;
-    const { currentVotingRound } = proposal;
+    const { proposal, revoting } = this.props;
+    const { proposalVersions, isSpecial } = proposal;
+
+    const { title } = !isSpecial
+      ? proposalVersions[proposalVersions.length - 1].dijixObject
+      : proposal;
+    const fileName = `${title.replace(/\s+/g, '-').substr(0, 20)}-${moment().format()}`;
+
     const votedYes = hasVoted && vote;
     const votedNo = hasVoted && !vote;
     const showVoting = !revoting || changeVote;
     const ResponseButton = props => (
       <VoteButton
         {...props}
-        primary
+        secondary
         fluid
         yes={props.voteValue}
         no={!props.voteValue}
@@ -221,7 +228,7 @@ class CommitVote extends React.Component {
                   kind="link"
                   large
                   fluid
-                  download={`${proposalId}-${currentVotingRound || 0}.json`}
+                  download={`${fileName}.json`}
                   onClick={this.handleDownload}
                   href={`data:text/json;charset=utf-8,${JSON.stringify(this.state.voteObject)}`}
                   data-digix="Commit-Download-Json"

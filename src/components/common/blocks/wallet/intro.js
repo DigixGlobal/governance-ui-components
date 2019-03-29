@@ -37,12 +37,6 @@ class Intro extends React.Component {
             Load Wallet
           </Button>
         </ActionContainer>
-
-        <p>
-          <Link href="#" secondary>
-            Don't have a wallet?
-          </Link>
-        </p>
       </IntroContainer>
     );
   }

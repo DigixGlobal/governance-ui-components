@@ -50,11 +50,15 @@ export const TabButton = styled(Button)`
   width: 25%;
   border-radius: 0;
   box-shadow: none;
-  border: 1px solid #ccc;
+  border: 1px solid ${props => props.theme.buttonPrimary.border.fade.toString()};
   border-right: 0;
   margin: 1rem 0;
   &:last-child {
-    border-right: 1px solid #ccc;
+    border-right: 1px solid ${props => props.theme.buttonPrimary.border.fade.toString()};
+  }
+
+  &:hover {
+    border-right: 1px solid ${props => props.theme.buttonPrimary.border.base.toString()};
   }
 `;
 

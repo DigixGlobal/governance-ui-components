@@ -1,6 +1,17 @@
 import styled, { css } from 'styled-components';
 import { media } from './breakpoints';
 
+export const MainWrapper = styled.div`
+  padding: 12em;
+
+  ${media.tablet`
+    padding: 12rem 8rem;
+  `}
+  ${media.mobile`
+    padding: 12rem 3rem;
+  `}
+`;
+
 export const Avatar = styled.img`
   width: 5rem;
   height: 5rem;
@@ -62,7 +73,7 @@ export const Link = styled.a`
 
 export const ContentWrapper = styled.div`
   flex: 5 0 0;
-  padding: 12em 8em;
+  padding: 12rem;
 `;
 
 export const LeftPanel = css``;
@@ -94,8 +105,8 @@ export const Message = styled.p`
 export const Notifications = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: ${props => (props.centered ? 'center' : '')};
-  align-items: center;
+  justify-content: ${props => (props.centered ? 'center' : 'flex-start')};
+  align-items: ${props => (props.centered ? 'center' : 'flex-start')};
 
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
@@ -103,7 +114,7 @@ export const Notifications = styled.div`
   font-size: 1.6rem;
   margin-bottom: 3rem;
   padding: 3rem 3rem;
-  text-align: ${props => (props.centered ? 'center' : '')};
+  text-align: ${props => (props.centered ? 'center' : 'left')};
   white-space: pre-wrap;
 
   ${props =>
@@ -151,7 +162,7 @@ export const Notifications = styled.div`
     props.error &&
     css`
       background: ${props.theme.alertMessage.error.fade.toString()};
-      border: 1px solid ${props.theme.alertMessage.error.light.toString()};
+      border: 1px solid ${props.theme.alertMessage.error.lightest.toString()};
       color: ${props.theme.textColor.black.toString()};
 
       ${Message} {
@@ -162,8 +173,8 @@ export const Notifications = styled.div`
   ${props =>
     props.warning &&
     css`
-      background: ${props.theme.alertMessage.warning.fade.toString()};
-      border: 1px solid ${props.theme.alertMessage.warning.light.toString()};
+      background: ${props.theme.alertMessage.warning.fader.toString()};
+      border: 1px solid ${props.theme.alertMessage.warning.grayscale.toString()};
       color: ${props.theme.alertMessage.warning.default.toString()};
 
       ${Message} {
@@ -330,7 +341,8 @@ export const StatusNote = styled.p`
 
 export const Label = styled.label`
   font-family: 'Futura PT Book', sans-serif;
-  margin-bottom: 0.5rem;
+  font-size: ${props => props.theme.fontSize};
+  margin-bottom: 0.75rem;
 
   span {
     ${props =>
@@ -358,4 +370,6 @@ export const Hint = styled.div`
     `};
 `;
 
-export const FieldItem = styled.div``;
+export const FieldItem = styled.div`
+  margin: 2rem 0;
+`;

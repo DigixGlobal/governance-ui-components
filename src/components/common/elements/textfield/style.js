@@ -16,7 +16,7 @@ export const SyledInput = styled.input.attrs({
   border-radius: ${props => props.theme.borderRadius};
   color: ${props => props.theme.textDefault.default.toString()};
   padding: 1.5rem 2rem;
-  font-size: 1.6rem;
+  font-size: ${props => props.theme.fontSize};
   margin: 0.5rem 0;
   width: ${props => props.width || '100%'};
   transition: opacity 650ms ease, border 650ms ease;
@@ -27,13 +27,13 @@ export const SyledInput = styled.input.attrs({
   }
 
   &::placeholder {
-    color: ${props => props.theme.textDefault.light.toString()};
+    color: ${props => props.theme.textColor.default.lighter.toString()};
   }
 
   &:focus {
     outline: none;
-    border: 1px solid ${props => props.theme.buttonBorderPrimary.default.toString()};
-    box-shadow: 0 0 1px ${props => props.theme.buttonBorderPrimary.light.toString()};
+    border: 1px solid ${props => props.theme.buttonPrimary.border.base.toString()};
+    box-shadow: 0 0 1px ${props => props.theme.buttonPrimary.border.light.toString()};
   }
 
   &:focus::-webkit-input-placeholder {

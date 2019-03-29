@@ -106,7 +106,6 @@ class KycOfficerDashboard extends React.Component {
         <Title>KYC Dashboard</Title>
         <CTAContainer>
           <TabButton
-            kind="round"
             large
             onClick={this.handleAllUsersClick}
             data-digix="Kyc-Admin-All-users"
@@ -115,7 +114,6 @@ class KycOfficerDashboard extends React.Component {
             All Users
           </TabButton>
           <TabButton
-            kind="round"
             large
             onClick={() => this.handleListKycByStatus('PENDING')}
             data-digix="Kyc-Admin-KYC-Requests"
@@ -124,7 +122,6 @@ class KycOfficerDashboard extends React.Component {
             KYC Requests
           </TabButton>
           <TabButton
-            kind="round"
             large
             onClick={() => this.handleListKycByStatus('APPROVED')}
             data-digix="Kyc-Admin-Approved-Requests"
@@ -133,7 +130,6 @@ class KycOfficerDashboard extends React.Component {
             Approved KYC Requests
           </TabButton>
           <TabButton
-            kind="round"
             large
             onClick={() => this.handleListKycByStatus('REJECTED')}
             data-digix="Kyc-Admin-Rejected-Requests"

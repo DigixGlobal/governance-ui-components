@@ -5,6 +5,7 @@ import moment from 'moment';
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { DEFAULT_LOCKED_DGD } from '@digix/gov-ui/constants';
+import { withFetchDaoInfo } from '@digix/gov-ui/api/graphql-queries/dao';
 import {
   MainPhase,
   MainPhaseInfoDivider,
@@ -22,7 +23,26 @@ import {
 class Timeline extends React.Component {
   constructor(props) {
     super(props);
+    this.hasSubscribed = false;
     this.QUARTER_DURATION = 90;
+  }
+
+  componentDidMount() {
+    const { subscribeToDao } = this.props;
+
+    if (subscribeToDao) {
+      subscribeToDao();
+      this.hasSubscribed = true;
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (!this.hasSubscribed && nextProps.subscribeToDao) {
+      nextProps.subscribeToDao();
+      this.hasSubscribed = true;
+    }
+
+    return true;
   }
 
   getDaysEllapsed() {
@@ -55,17 +75,23 @@ class Timeline extends React.Component {
   }
 
   render() {
-    const { stats } = this.props;
+    const { daoInfo, stats } = this.props;
     if (stats.fetching || stats.fetching === null) {
       return null;
     }
 
-    const { currentQuarter, totalLockedDgds } = stats.data;
+    const { currentQuarter } = stats.data;
     const daysEllapsed = this.getDaysEllapsed();
     const lockingPhaseProgress = this.getLockingProgress();
     const mainPhaseProgress = 100 * (daysEllapsed / this.QUARTER_DURATION);
 
-    let lockedDgd = totalLockedDgds || DEFAULT_LOCKED_DGD;
+    let lockedDgd = DEFAULT_LOCKED_DGD;
+    if (daoInfo) {
+      lockedDgd = daoInfo.totalLockedDgds;
+    } else if (stats.data) {
+      lockedDgd = stats.data.totalLockedDgds
+    }
+
     lockedDgd = truncateNumber(lockedDgd);
 
     return (
@@ -99,10 +125,17 @@ class Timeline extends React.Component {
   }
 }
 
-const { object } = PropTypes;
+const { func, object } = PropTypes;
 
 Timeline.propTypes = {
   stats: object.isRequired,
+  daoInfo: object,
+  subscribeToDao: func,
 };
 
-export default Timeline;
+Timeline.defaultProps = {
+  daoInfo: undefined,
+  subscribeToDao: undefined,
+};
+
+export default withFetchDaoInfo(Timeline);

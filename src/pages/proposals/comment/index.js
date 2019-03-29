@@ -293,7 +293,7 @@ class CommentThread extends React.Component {
             </CommentFilter>
             <CommentList>{this.renderThreads(threads)}</CommentList>
             {threads.hasNextPage && (
-              <Button kind="text" xsmall onClick={() => this.loadMore(threads.endCursor)}>
+              <Button data-digix="Comment-Load-Thread" kind="text" xsmall onClick={() => this.loadMore(threads.endCursor)}>
                 Load more comments...
               </Button>
             )}

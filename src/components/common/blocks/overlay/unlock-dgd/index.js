@@ -107,7 +107,7 @@ class UnlockDgdOverlay extends React.Component {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'DGD Unlocked',
+        message: 'Your Unlock DGD Transaction is pending confirmation. See More',
         txHash,
       });
 

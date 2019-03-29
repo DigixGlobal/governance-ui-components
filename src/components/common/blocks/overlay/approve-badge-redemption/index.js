@@ -45,7 +45,7 @@ class BadgeRedemptionApproval extends React.Component {
   onTransactionSuccess = txHash => {
     const { history, showHideAlertAction } = this.props;
     showHideAlertAction({
-      message: 'Badge Redemption Approved',
+      message: 'Your Redeem Badge Transaction is pending confirmation. See More',
       txHash,
     });
 

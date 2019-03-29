@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 
 import EmailOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile-email';
 import KycOverlay from '@digix/gov-ui/components/common/blocks/overlay/kyc';
+import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
 import { Button } from '@digix/gov-ui/components/common/elements';
-import { KycStatus } from '@digix/gov-ui/constants';
+import { KycErrors, KycStatus } from '@digix/gov-ui/constants';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
@@ -21,7 +22,7 @@ class ProfileActivitySummary extends React.Component {
   constructor(props) {
     super(props);
     this.DEFAULT_KYC_STATUS = 'Not Verified';
-    this.RESUBMIT_STATUSES = [KycStatus.expired, KycStatus.rejected];
+    this.RESUBMIT_STATUSES = [KycStatus.expired, KycStatus.approved, KycStatus.rejected];
   }
 
   componentDidMount() {
@@ -36,6 +37,13 @@ class ProfileActivitySummary extends React.Component {
     }
 
     return this.DEFAULT_KYC_STATUS;
+  }
+
+  showErrorOverlay() {
+    this.props.showRightPanel({
+      component: <ErrorMessageOverlay errors={[KycErrors.resubmit]} location="Profile" />,
+      show: true,
+    });
   }
 
   showKycOverlay() {
@@ -60,8 +68,10 @@ class ProfileActivitySummary extends React.Component {
     const { email, kyc } = this.props.userData;
 
     const currentKycStatus = this.getKycStatus();
+    const hasPendingKyc = kyc && kyc.status === KycStatus.pending;
+
     const canResubmitKyc = kyc ? this.RESUBMIT_STATUSES.includes(kyc.status) : false;
-    const canSubmitKyc = (email && !kyc) || (kyc && kyc.status === KycStatus.pending);
+    const canSubmitKyc = email && !kyc;
     const showSubmitKycButton = canSubmitKyc || canResubmitKyc;
     const setEmailForKyc = !email && !kyc;
 
@@ -81,15 +91,24 @@ class ProfileActivitySummary extends React.Component {
             </Button>
           )}
 
-          {showSubmitKycButton && (
+          {showSubmitKycButton && canSubmitKyc && (
             <Button
               primary
-              disabled={kyc && kyc.status === KycStatus.pending}
+              disabled={hasPendingKyc}
               data-digix="Profile-KycStatus-Submit"
               onClick={() => this.showKycOverlay()}
             >
-              {canSubmitKyc && <span>Submit KYC</span>}
-              {canResubmitKyc && <span>Re-submit KYC</span>}
+              Submit KYC
+            </Button>
+          )}
+          {showSubmitKycButton && canResubmitKyc && (
+            <Button
+              primary
+              disabled={hasPendingKyc}
+              data-digix="Profile-KycStatus-Submit"
+              onClick={() => this.showErrorOverlay()}
+            >
+              Re-submit KYC
             </Button>
           )}
         </Actions>

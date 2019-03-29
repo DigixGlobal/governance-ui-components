@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
-
 import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
 import Milestones from '@digix/gov-ui/pages/proposals/milestones';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 
@@ -21,6 +20,7 @@ import {
 
 const getTotalFunds = source =>
   source.reduce((acc, currentValue) => Number(acc) + Number(currentValue.fund), 0);
+
 class Preview extends React.Component {
   render() {
     const { form, onContinueEditing } = this.props;
@@ -28,23 +28,30 @@ class Preview extends React.Component {
       return null;
     }
 
+    const milestoneFunds = (acc, currentValue) => {
+      acc.push(Number(currentValue.fund));
+      return acc;
+    };
+    const milestoneFundings = form.milestones ? form.milestones.reduce(milestoneFunds, []) : [];
+
     const totalFunding = form.milestones ? getTotalFunds(form.milestones) : 0;
     const funding = truncateNumber(totalFunding);
     const reward = truncateNumber(form.finalReward);
 
     return (
       <ProposalsWrapper>
-        <Button primary onClick={onContinueEditing}>
+        <Button primary onClick={onContinueEditing} data-digix="Preview-Continue">
           Continue Editing
         </Button>
-
         <ProjectSummary>
           <Header>
             <div>
               <Button kind="tag" showIcon>
                 IDEA
               </Button>
-              <Title primary>{form.title}</Title>
+              <Title primary data-digix="Proposal-Title">
+                {form.title}
+              </Title>
             </div>
           </Header>
           <FundingInfo>
@@ -66,7 +73,6 @@ class Preview extends React.Component {
 
             <InfoItem outlined>
               <ItemTitle>Funding</ItemTitle>
-
               <Data>
                 <div className="milestones">
                   <span data-digix="funding-amount-label">{funding}</span>
@@ -87,8 +93,8 @@ class Preview extends React.Component {
         <Milestones
           preview
           milestones={form.milestones || []}
-          milestoneFundings={[]}
           fundingChanged={false}
+          milestoneFundings={milestoneFundings}
         />
       </ProposalsWrapper>
     );

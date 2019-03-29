@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+export const Preloaders = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+// Styles for Empty State Container
 export const EmptyStateContainer = styled.div`
   color: ${props => props.theme.textDefault.default.toString()};
   display: flex;

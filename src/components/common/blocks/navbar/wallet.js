@@ -7,7 +7,6 @@ import { Accordion, Button, Icon } from '@digix/gov-ui/components/common/element
 import {
   WalletWrapper,
   AddressButton,
-  LockDGDButton,
   Dropdown,
   DropdownMenu,
   MenuItem,
@@ -38,8 +37,11 @@ class WalletButton extends React.Component {
   };
 
   render() {
-    const { defaultAddress, canLockDgd } = this.props;
+    if (this.props.HasCountdown) {
+      return null;
+    }
 
+    const { defaultAddress, canLockDgd } = this.props;
     return (
       <WalletWrapper>
         {!defaultAddress && (
@@ -48,14 +50,14 @@ class WalletButton extends React.Component {
           </Button>
         )}
         {canLockDgd && canLockDgd.show && (
-          <LockDGDButton
+          <Button
             primary
             xsmall
             data-digix="Header-LockDgd"
             onClick={() => this.showLockDgdOverlay()}
           >
             Lock DGD
-          </LockDGDButton>
+          </Button>
         )}
         {defaultAddress && (
           <Fragment>
@@ -93,12 +95,13 @@ class WalletButton extends React.Component {
   }
 }
 
-const { func, string, object, oneOfType } = PropTypes;
+const { bool, func, string, object, oneOfType } = PropTypes;
 WalletButton.propTypes = {
   showHideLockDgd: func.isRequired,
   showHideWalletOverlay: func.isRequired,
   defaultAddress: oneOfType([string, object]),
   canLockDgd: object,
+  HasCountdown: bool.isRequired,
 };
 
 WalletButton.defaultProps = {
@@ -110,6 +113,7 @@ const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
   addressDetails: state.infoServer.AddressDetails,
   canLockDgd: state.govUI.CanLockDgd,
+  HasCountdown: state.govUI.HasCountdown,
 });
 
 export default connect(

@@ -55,10 +55,8 @@ class ApproveKyc extends React.Component {
           <Mutation mutation={approveKycMutation}>
             {approveKyc => (
               <Button
-                kind="round"
                 primary
                 large
-                reverse
                 fluid
                 disabled={!validDate}
                 onClick={() => this.onSubmit(approveKyc)}

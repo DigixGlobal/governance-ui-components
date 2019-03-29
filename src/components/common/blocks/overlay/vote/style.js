@@ -7,8 +7,11 @@ export const VoteButton = styled(Button)`
   font-size: 3.6rem;
   font-family: 'Futura PT Heavy';
 
+  background: ${props => props.theme.buttonDefault.background.fade.toString()}
+  color: ${props => props.theme.buttonPrimary.textColor.base.toString()};
+
   &:hover {
-    background-color: ${props => props.theme.buttonInverted.background.fade.toString()};
+    background-color: ${props => props.theme.buttonInverted.background.base.toString()};
     color: ${props => props.theme.buttonPrimary.textColor.base.toString()};
   }
 
@@ -18,7 +21,7 @@ export const VoteButton = styled(Button)`
       &,
       &:hover,
       &:focus {
-        color: ${props.theme.buttonInverted.textColor.base.toString()};
+        color: ${props.theme.buttonSecondary.invert.textColor.base.toString()};
         background-color: ${props.theme.buttonInverted.background.base.toString()};
         border: 2px solid ${props.theme.buttonInverted.border.base.toString()};
         box-shadow: none;
@@ -30,7 +33,7 @@ export const VoteButton = styled(Button)`
       &,
       &:hover,
       &:focus {
-        color: ${props.theme.buttonInverted.textColor.base.toString()};
+        color: ${props.theme.buttonSecondary.invert.textColor.base.toString()};
         background-color: ${props.theme.buttonInverted.background.base.toString()};
         border: 2px solid ${props.theme.buttonInverted.border.base.toString()};
         box-shadow: none;

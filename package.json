@@ -27,7 +27,7 @@
     "dijix-image": "0.0.10",
     "dijix-pdf": "0.0.8",
     "eventemitter3": "2.0.3",
-    "graphql": "^14.0.2",
+    "graphql": "14.1.1",
     "graphql-ruby-client": "^1.6.3",
     "graphql-tag": "^2.10.0",
     "lodash": "^4.17.11",

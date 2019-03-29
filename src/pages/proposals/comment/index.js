@@ -54,12 +54,24 @@ class CommentThread extends React.Component {
 
   componentDidMount() {
     const { sortBy } = this.state;
-    const { ChallengeProof, proposalId } = this.props;
+    const { ChallengeProof, proposalId, uid } = this.props;
+
+    this.props.getAddressDetails(uid).then(() => {
+      const { address, quarterPoint, reputationPoint } = this.props.addressDetails;
+      const userPoints = {};
+      userPoints[address] = {
+        reputation: reputationPoint,
+        quarterPoints: quarterPoint,
+      };
+
+      this.setState({
+        userAddresses: [address],
+        userPoints,
+      });
+    });
 
     this.fetchThreads({ sortBy });
-    this.fetchUserPoints(this.state.threads);
     this.fetchCurrentUser();
-
     if (!ChallengeProof.data) {
       return;
     }
@@ -181,7 +193,9 @@ class CommentThread extends React.Component {
       })
       .then(result => {
         const threads = result.data.commentThreads;
-        this.setState({ threads });
+        this.setState({ threads }, () => {
+          this.fetchUserPoints(threads);
+        });
       });
   }
 
@@ -189,20 +203,11 @@ class CommentThread extends React.Component {
     const { userAddresses } = this.state;
     const { ChallengeProof, uid } = this.props;
 
-    // reputation points for first-time commenters are not available in the previous endpoint
-    // so we need to call this to update the current user's data in case they haven't commented yet
-    this.props.getAddressDetails(uid);
-
     if (!ChallengeProof.data) {
       return;
     }
 
-    const previousUniqueAddressesCount = userAddresses.length;
     const newUniqueAddresses = CommentsApi.getUniqueUsers(userAddresses, threads);
-    if (previousUniqueAddressesCount === newUniqueAddresses.length) {
-      return;
-    }
-
     this.setState({ userAddresses: newUniqueAddresses });
     const payload = initializePayload(ChallengeProof);
 

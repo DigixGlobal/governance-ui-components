@@ -254,6 +254,7 @@ class KycFormStep extends React.Component {
       accept="image/*"
       dataDigix={`KycForm-${fieldName}`}
       fluid
+      id={fieldName}
       kind="upload"
       large
       name={fieldName}
@@ -292,6 +293,7 @@ class KycFormStep extends React.Component {
 
     return (
       <Select
+        id={fieldName}
         items={formOptions[fieldName]}
         data-digix={`KycForm-${fieldName}`}
         error={rules[fieldName].hasError}

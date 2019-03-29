@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Button } from '../common/elements/index';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { H2 } from '@digix/gov-ui/components/common/common-styles';
 
 export const ProposalWrapper = styled.div`
   background-color: ${props => props.theme.backgroundDefault.default.toString()};
@@ -27,7 +28,7 @@ export const ProposalContainer = styled.div`
 
 export const ProposaDetaillWrapper = styled.div`
   flex: 4 1 0;
-  padding: 2.5rem 3rem;
+  padding: 3.5rem 5rem 2.5rem 5rem;
 `;
 
 export const ProposalCard = styled.div`
@@ -43,12 +44,65 @@ export const ProposalCard = styled.div`
 
 export const TagsContainer = styled.div``;
 
+export const Title = styled(H2)`
+  color: ${props => props.theme.textColor.primary.base.toString()};
+  margin-top: 0;
+
+  overflow: hidden;
+  position: relative;
+  line-height: 1.2em;
+  max-height: calc(1.2em * 2);
+  margin-right: 0em;
+  padding-right: 1em;
+
+  &:before {
+    content: '...';
+    position: absolute;
+    right: 2rem;
+    bottom: 0;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    right: 2rem;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: #fff;
+  }
+`;
+
 export const Description = styled.div`
   flex: 3 0 0;
 
   p {
-    margin-bottom: 3em;
-    color: ${props => props.theme.textDefault.light.toString()};
+    margin-bottom: 2em;
+    color: ${props => props.theme.textColor.default.base.toString()};
+    font-size: 1.6rem;
+
+    overflow: hidden;
+    position: relative;
+    line-height: 1.2em;
+    max-height: calc(1.2em * 4);
+    text-align: justify;
+    margin-right: 0;
+    padding-right: 1em;
+
+    &:before {
+      content: '...';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      width: 1em;
+      height: 1em;
+      margin-top: 0.2em;
+      background: #fff;
+    }
   }
 `;
 
@@ -61,7 +115,7 @@ export const ProposalLink = styled(Link)`
     color: ${props =>
       props.disabled
         ? props.theme.linkDefaultColor.light.toString()
-        : props.theme.linkPrimaryColor.default.toString()};
+        : props.theme.textColor.primary.base.toString()};
     pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
   }
 

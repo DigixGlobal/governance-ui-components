@@ -325,7 +325,7 @@ class Proposal extends React.Component {
       <Notifications warning withIcon>
         <WarningIcon kind="warning" />
         <Message note>
-          This proposal can no longer claim funding due to Policy, Regulatory or Legal reasons, even
+          This project can no longer claim funding due to Policy, Regulatory or Legal reasons, even
           if voting passes. Please contact us if you have any queries.
         </Message>
       </Notifications>
@@ -371,7 +371,7 @@ class Proposal extends React.Component {
           <Message note>
             The voting result shows that your project passes the voting. Please click the button to
             send transaction(s) to claim this result on the blockchain. You need to do this action
-            before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your proposal will auto fail.
+            before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your project will auto fail.
           </Message>
         </Notifications>
       );
@@ -468,7 +468,7 @@ class Proposal extends React.Component {
               <Button kind="tag" showIcon>
                 {proposalDetails.data.stage}
               </Button>
-              <Title>{proposalDetails.data.title}</Title>
+              <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
             </div>
             {!isForumAdmin && (
               <CallToAction>
@@ -596,7 +596,7 @@ class Proposal extends React.Component {
               match={match}
               proposalDetails={proposal}
             />
-            <InfoItem>
+            <InfoItem data-digix="Proposal-Like">
               <Like
                 hasVoted={liked}
                 likes={likes}
@@ -629,7 +629,7 @@ class Proposal extends React.Component {
   render() {
     const { proposalDetails } = this.props;
     if (proposalDetails.fetching === null || proposalDetails.fetching || !proposalDetails.data)
-      return <div>Fetching Proposal Details</div>;
+      return <div>Fetching Project Details</div>;
 
     if (proposalDetails.data.isSpecial) {
       return this.renderSpecialProposal();

@@ -19,10 +19,12 @@ const StyledLink = styled.a`
 function Search() {
   return (
     <MenuWrapper>
+      {/*
       <StyledLink href="./" style={{ pointerEvents: 'none' }}>
         <Icon kind="magnifier" />
         <span>Search</span>
       </StyledLink>
+      */}
     </MenuWrapper>
   );
 }

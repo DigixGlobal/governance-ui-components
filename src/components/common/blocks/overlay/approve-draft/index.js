@@ -40,7 +40,7 @@ class ApproveProposalOverlay extends React.Component {
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Approve Proposal',
+        title: 'Approve Project',
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -53,7 +53,7 @@ class ApproveProposalOverlay extends React.Component {
   onTransactionSuccess = txHash => {
     const { history, showHideAlertAction } = this.props;
     showHideAlertAction({
-      message: 'Proposal Approved',
+      message: 'Your Moderator Vote transaction is pending confirmation. See More',
       txHash,
     });
 
@@ -84,8 +84,8 @@ class ApproveProposalOverlay extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Approve Proposal',
-      header: 'Proposal',
+      caption: 'Approve Project',
+      header: 'Project',
       type: 'txVisualization',
     };
 
@@ -120,7 +120,7 @@ class ApproveProposalOverlay extends React.Component {
     const ResponseButton = props => (
       <VoteButton
         {...props}
-        primary
+        secondary
         fluid
         yes={props.voteValue}
         no={!props.voteValue}

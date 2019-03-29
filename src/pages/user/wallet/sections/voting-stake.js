@@ -42,7 +42,7 @@ class VotingStake extends React.Component {
   showUnlockDgdOverlay() {
     const { lockedDgd } = this.props.AddressDetails;
     this.props.showRightPanel({
-      component: <UnlockDgdOverlay maxAmount={lockedDgd} />,
+      component: <UnlockDgdOverlay maxAmount={Number(lockedDgd)} />,
       show: true,
     });
   }

@@ -9,6 +9,7 @@ export const actions = {
   SHOW_WALLET: `${REDUX_PREFIX}SHOW_WALLET`,
   CAN_LOCK_DGD: `${REDUX_PREFIX}CAN_LOCK_DGD`,
   SHOW_RIGHT_PANEL: `${REDUX_PREFIX}SHOW_RIGHT_PANEL`,
+  SHOW_COUNTDOWN_PAGE: `${REDUX_PREFIX}SHOW_COUNTDOWN_PAGE`,
   GET_CONFIG_PREPROPOSAL_COLLATERAL: `${REDUX_PREFIX}GET_CONFIG_PREPROPOSAL_COLLATERAL`,
   GET_ADDRESS_MAX_ALLOWANCE: `${REDUX_PREFIX}GET_ADDRESS_MAX_ALLOWANCE`,
 
@@ -115,6 +116,12 @@ export function showHideAlert(alert) {
 export function showRightPanel(payload) {
   return dispatch => {
     dispatch({ type: actions.SHOW_RIGHT_PANEL, payload: { ...payload } });
+  };
+}
+
+export function showCountdownPage(payload) {
+  return dispatch => {
+    dispatch({ type: actions.SHOW_COUNTDOWN_PAGE, payload: { ...payload } });
   };
 }
 

@@ -72,10 +72,8 @@ class RejectKyc extends React.Component {
           <Mutation mutation={rejectKycMutation}>
             {rejectKyc => (
               <Button
-                kind="round"
                 primary
                 large
-                reverse
                 fluid
                 disabled={!hasReason}
                 onClick={() => this.onSubmit(rejectKyc)}

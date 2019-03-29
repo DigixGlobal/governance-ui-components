@@ -87,8 +87,8 @@ export default class ProposalCardMilestone extends React.Component {
             <Label>Voting Deadline</Label>
             <Data>{determineDeadline(details) || 'N/A'} </Data>
           </Deadline>
-          <CallToAction onClick={this.redirectToProposalPage}>
-            <Button kind="round" primary disabled={disabledParticipate}>
+          <CallToAction>
+            <Button primary disabled={disabledParticipate} onClick={this.redirectToProposalPage}>
               Participate
             </Button>
           </CallToAction>

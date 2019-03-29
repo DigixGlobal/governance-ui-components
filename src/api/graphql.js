@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
-import { ApolloLink, split } from 'apollo-link';
+import { ApolloLink, split, from } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { getMainDefinition } from 'apollo-utilities';
 
@@ -40,21 +40,20 @@ const infoHttpLink = createHttpLink({
   credentials: 'same-origin',
 });
 
-// eslint-disable-next-line
-const daoAuthHttpLink = setContext((_previous, { headers }) => ({
-  headers: {
-    ...headers,
-    ...(daoAuthorization || {}),
-  },
-})).concat(daoHttpLink);
+const httpAuthorizedLink = fetchAuth =>
+  new ApolloLink((operation, forward) => {
+    const authorization = fetchAuth() || {};
 
-// eslint-disable-next-line
-const infoAuthHttpLink = setContext((_previous, { headers }) => ({
-  headers: {
-    ...headers,
-    ...(infoAuthorization || {}),
-  },
-})).concat(infoHttpLink);
+    operation.setContext((_previous, _options) => ({
+      headers: authorization,
+    }));
+
+    return forward(operation);
+  });
+
+const daoAuthHttpLink = from([httpAuthorizedLink(() => daoAuthorization), daoHttpLink]);
+
+const infoAuthHttpLink = from([httpAuthorizedLink(() => infoAuthorization), infoHttpLink]);
 
 let daoCableLink = null;
 let daoCable = null;
@@ -133,11 +132,7 @@ const apiLink = split(
         source: { body },
       },
     },
-  }) => {
-    const x = infoQueries.test(body);
-
-    return infoQueries.test(body);
-  },
+  }) => infoQueries.test(body),
   infoAuthHttpLink,
   daoAuthHttpLink
 );

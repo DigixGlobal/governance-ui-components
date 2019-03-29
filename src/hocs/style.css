@@ -3,7 +3,7 @@
 
   /* Give app full page to work with */
   height: 100vh;
-  overflow-x: scroll !important;
+  overflow-x: scroll;
 }
 
 #page-wrap {
@@ -100,9 +100,9 @@
 /* Styling of overlay  */
 .bm-overlay {
   background: none !important;
-  z-index: 996 !important;
+  z-index: 996;
 }
 
 .bm-menu-wrap {
-  z-index: 998 !important;
+  z-index: 998;
 }

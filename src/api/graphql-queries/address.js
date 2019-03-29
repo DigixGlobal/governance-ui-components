@@ -14,6 +14,7 @@ export const fetchAddressQuery = gql`
       lockedDgdStake
       reputationPoint
       quarterPoint
+      moderatorQuarterPoint
     }
   }
 `;
@@ -30,6 +31,7 @@ export const addressSubscription = gql`
       lockedDgdStake
       reputationPoint
       quarterPoint
+      moderatorQuarterPoint
     }
   }
 `;

@@ -50,7 +50,7 @@ class ClaimFundingButton extends React.PureComponent {
 
     const ui = {
       caption: 'Claim Funding',
-      header: 'Proposal',
+      header: 'Project',
       type: 'txVisualization',
     };
     const web3Params = {
@@ -75,7 +75,7 @@ class ClaimFundingButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Funding Claimed',
+        message: 'Your Claim Funding Transaction is pending confirmation. See More',
         txHash,
       });
 

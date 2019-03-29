@@ -80,7 +80,7 @@ class ParticipantButtons extends React.Component {
           checkProposalRequirements={checkProposalRequirements}
         />
         {showEditButton && (
-          <Button kind="round" onClick={() => checkProposalRequirements(editAction)}>
+          <Button large onClick={() => checkProposalRequirements(editAction)}>
             Edit
           </Button>
         )}

@@ -6,7 +6,9 @@ import Modal from 'react-responsive-modal';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 import { HR } from '@digix/gov-ui/components/common/common-styles';
 
-import { dijix, fetchFromDijix } from '@digix/gov-ui/utils/dijix';
+import { dijix } from '@digix/gov-ui/utils/dijix';
+
+import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
 
 import { DetailsContainer, Content, SubTitle, ImageHolder, CloseButton } from './style';
 
@@ -16,51 +18,22 @@ export default class ProjectDetails extends React.Component {
     this.state = { open: false, selectedImage: undefined };
   }
 
+  componentDidMount = () => {
+    const { images } = this.props.project;
+    if (images) fetchImages(images).then(files => this.setState({ files }));
+  };
+
   componentWillReceiveProps = nextProps => {
-    this.fetchImages(nextProps.project.images);
+    const { images } = nextProps.project;
+    fetchImages(images).then(files => this.setState({ files }));
   };
 
   showHideImage = source => () => {
     this.setState({ open: !this.state.open, selectedImage: source });
   };
 
-  fetchImages = proofs => {
-    if (!proofs) return;
-    const thumbnailSize = 512;
-    Promise.all(
-      proofs.map(hash => {
-        if (hash === null || !hash) return undefined;
-        return fetchFromDijix(0, undefined, hash).then(data => data);
-      })
-    ).then(images => {
-      if (!images[0]) return undefined;
-      const files = images.map(image => ({
-        thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
-        src: image ? image.data.src : undefined,
-      }));
-      this.setState({ files });
-    });
-  };
-
   showHideImage = source => () => {
     this.setState({ open: !this.state.open, selectedImage: source });
-  };
-
-  fetchImages = proofs => {
-    const thumbnailSize = 512;
-    Promise.all(
-      proofs.map(hash => {
-        if (hash === null || !hash) return undefined;
-        return fetchFromDijix(0, undefined, hash).then(data => data);
-      })
-    ).then(images => {
-      if (!images[0]) return undefined;
-      const files = images.map(image => ({
-        thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
-        src: image ? image.data.src : undefined,
-      }));
-      this.setState({ files });
-    });
   };
 
   renderImages = (proofs, preview) => {
@@ -90,12 +63,11 @@ export default class ProjectDetails extends React.Component {
     const { project, preview } = this.props;
     const { selectedImage } = this.state;
     const hasImages = project.images && project.images.length > 0;
-
     return (
       <DetailsContainer>
         <Content>
           <SubTitle>Short Description</SubTitle>
-          <div>
+          <div data-digix="Details-Short-Desc">
             {project.description
               ? project.description
               : 'No short description content has been created yet.'}
@@ -103,11 +75,11 @@ export default class ProjectDetails extends React.Component {
           <HR />
         </Content>
 
-        <Content>
+        <Content data-digix="Details-Desc">
           <SubTitle>Project Details</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
+          {preview && this.renderImages(project.proofs, preview)}
           {hasImages && this.renderImages(this.state.files, false)}
-          {preview && this.renderImages(project.proofs || project.images, preview)}
           <HR />
         </Content>
         <Modal open={this.state.open} showCloseIcon={false} onClose={this.showHideImage()} center>

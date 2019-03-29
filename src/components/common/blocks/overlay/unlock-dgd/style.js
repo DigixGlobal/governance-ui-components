@@ -20,6 +20,11 @@ export const TextBox = styled(Input)`
   border: 0;
   outline: 0;
 
+  &:focus {
+    border: none;
+    box-shadow: none;
+  }
+
   ::placeholder {
     text-align: right;
     transition: opacity 0.5s 0.5s ease;

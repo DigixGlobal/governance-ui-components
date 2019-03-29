@@ -1,9 +1,16 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Card } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const UserStats = styled(Card)`
   text-transform: uppercase;
+  padding: 0;
+
+  ${props =>
+    props.dashboard &&
+    css`
+      margin-bottom: 8rem;
+    `};
 
   ${media.mobile`
       flex-direction: column;
@@ -13,7 +20,7 @@ export const UserStats = styled(Card)`
 export const Item = styled.div`
   border-right: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   display: inline-block;
-  padding-left: 5%;
+  padding: 3rem 5rem 2.5rem 5rem;
   flex: 1;
 
   :last-child {
@@ -33,6 +40,8 @@ export const Item = styled.div`
 
 export const Label = styled.div`
   text-align: left;
+  font-family: 'Futura PT Heavy', sans-serif;
+
   ${media.mobile`
     text-align: center;
   `};
@@ -43,14 +52,15 @@ export const Data = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
-  font-family: 'Futura PT Medium';
-  font-size: 3.6rem;
+  font-family: 'Futura PT Heavy';
+  font-size: 3.8rem;
   text-align: left;
 
   span {
     &.equiv {
-      font-family: 'Futura PT Book', sans-serif;
-      font-size: 1.4rem;
+      font-family: 'Futura PT Light', sans-serif;
+      font-size: 1.6rem;
+      color: ${props => props.theme.textColor.default.base.toString()};
       margin-left: 1rem;
       margin-bottom: 0.75rem;
     }

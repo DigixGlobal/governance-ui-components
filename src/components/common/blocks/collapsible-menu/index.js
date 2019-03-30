@@ -52,7 +52,7 @@ const DEFAULT_MENU = [
   {
     icon: 'product',
     title: 'Help / DAO Tour',
-    url: '/help',
+    url: 'https://ipfs.infura.io/ipfs/QmXg8UNeoStwFc561QzRedkpXJRZAnwikobRydjw3CDem9',
     public: true,
   },
 ];
@@ -104,6 +104,17 @@ class CollapsibleMenu extends React.Component {
 
     if (!item.public && !authorized) {
       return null;
+    }
+
+    if (item.icon === 'product') {
+      return (
+        <MenuItem key={item.title} selected={samePath}>
+          <a target="_blank" href={item.url}>
+            <Icon kind={item.icon} theme={theme || lightTheme} selected={samePath} />
+            <span>{item.title}</span>
+          </a>
+        </MenuItem>
+      );
     }
 
     return (

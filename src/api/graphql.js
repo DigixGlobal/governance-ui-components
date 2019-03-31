@@ -121,9 +121,9 @@ const infoSocketLink = new ApolloLink((operation, _forward) => {
   return null;
 });
 
-const infoSubscriptions = new RegExp(['proposalUpdated', 'userUpdated'].join('|'));
+const infoSubscriptions = new RegExp(['proposalUpdated', 'userUpdated', 'daoUpdated'].join('|'));
 
-const infoQueries = new RegExp(['fetchProposal', 'fetchCurrentUser'].join('|'));
+const infoQueries = new RegExp(['fetchProposal', 'fetchCurrentUser', 'fetchDao'].join('|'));
 
 const apiLink = split(
   ({

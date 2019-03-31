@@ -41,7 +41,7 @@ export default class LoadWallet extends React.Component {
           <Metamask createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
           <Ledger createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
           <Trezor createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
-          <ImToken createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
+          {/* <ImToken createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} /> */}
           <V3 createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
         </ActionContainer>
       </IntroContainer>

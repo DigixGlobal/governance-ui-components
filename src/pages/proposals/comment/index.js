@@ -56,7 +56,8 @@ class CommentThread extends React.Component {
     const { sortBy } = this.state;
     const { ChallengeProof, proposalId, uid } = this.props;
 
-    this.props.getAddressDetails(uid).then(() => {
+    this.props.getAddressDetails(uid)
+    .then(() => {
       const { address, quarterPoint, reputationPoint } = this.props.addressDetails;
       const userPoints = {};
       userPoints[address] = {

@@ -30,6 +30,7 @@ class Metamask extends React.Component {
           form={KeystoreCreationForm}
           creatingKeyStore
           data={{ type: 'metamask', updateDefaultAddress: true }}
+          keystoreType="metamask"
           header="Load MetaMask Wallet"
           hideSelector
           allowedKeystoreTypes={['metamask']}

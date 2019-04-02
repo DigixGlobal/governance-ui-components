@@ -21,7 +21,7 @@ export const executeContractFunction = payload => {
     },
   } = address;
   if (keystoreType === 'metamask' || keystoreType === 'imtoken') {
-    const data = func.getData(...params);
+    const data = params ? func.getData(...params) : func.getData();
     return showTxSigningModal({
       address,
       network,

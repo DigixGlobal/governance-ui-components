@@ -184,10 +184,7 @@ class CollapsibleMenu extends React.Component {
         <MenuContainer>
           {ChallengeProof.data && (
             <ProfileContainer>
-              <Welcome>
-                {sidebar.welcome}, &nbsp;
-                {renderDisplayName('Sidebar-DisplayName')} {'!'}
-              </Welcome>
+              <Welcome>{renderDisplayName('Sidebar-DisplayName', sidebar.welcome)} &nbsp;</Welcome>
               <UserType data-digix="Sidebar-UserStatus">{userType}</UserType>
             </ProfileContainer>
           )}

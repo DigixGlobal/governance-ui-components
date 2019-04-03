@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name, react/prop-types */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import gql from 'graphql-tag';
 import { kycSubscription } from '@digix/gov-ui/api/graphql-queries/kyc';
 import { Query, Mutation } from 'react-apollo';
@@ -114,14 +114,25 @@ export const UserMutations = {
   `,
 };
 
-export const renderDisplayName = dataDigixAttribute => (
+export const renderDisplayName = (dataDigixAttribute, welcome) => (
   <Query query={fetchDisplayName}>
     {({ loading, error, data }) => {
       if (loading || error || !data.currentUser) {
         return null;
       }
 
-      return <span data-digix={dataDigixAttribute}>{data.currentUser.displayName}</span>;
+      if (welcome) {
+        return (
+          <Fragment>
+            {welcome.replace('{{username}}!', '')}
+            <span data-digix={dataDigixAttribute}>{data.currentUser.displayName}</span>
+            {'!'}
+          </Fragment>
+        );
+      }
+
+      if (!welcome)
+        return <span data-digix={dataDigixAttribute}>{data.currentUser.displayName}</span>;
     }}
   </Query>
 );

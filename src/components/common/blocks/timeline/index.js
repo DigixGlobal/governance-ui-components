@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { DEFAULT_LOCKED_DGD } from '@digix/gov-ui/constants';
+import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
+import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { withFetchDaoInfo } from '@digix/gov-ui/api/graphql-queries/dao';
 import {
   MainPhase,
@@ -23,17 +25,27 @@ import {
 class Timeline extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      quarterDurationInDays: 90,
+    };
+
     this.hasSubscribed = false;
-    this.QUARTER_DURATION = 90;
   }
 
   componentDidMount() {
     const { subscribeToDao } = this.props;
-
     if (subscribeToDao) {
       subscribeToDao();
       this.hasSubscribed = true;
     }
+
+    this.props.getDaoConfig().then(() => {
+      let quarterDuration = Number(this.props.DaoConfig.CONFIG_QUARTER_DURATION);
+      quarterDuration = moment.duration(quarterDuration, 'seconds');
+
+      const quarterDurationInDays = Math.round(quarterDuration.asDays());
+      this.setState({ quarterDurationInDays });
+    });
   }
 
   shouldComponentUpdate(nextProps) {
@@ -46,53 +58,59 @@ class Timeline extends React.Component {
   }
 
   getDaysEllapsed() {
-    let { startOfMainphase } = this.props.stats.data;
+    let { startOfQuarter } = this.props.stats.data;
+    startOfQuarter *= 1000;
+
     let now = Date.now();
-    startOfMainphase *= 1000;
-
-    if (now < startOfMainphase) {
-      return 0;
-    }
-
     now = moment(now);
-    startOfMainphase = moment(new Date(startOfMainphase));
-    return now.diff(startOfMainphase, 'days') + 1;
+
+    startOfQuarter = moment(new Date(startOfQuarter));
+    return now.diff(startOfQuarter, 'days') + 1;
   }
 
-  getLockingProgress() {
-    let { startOfQuarter, startOfMainphase } = this.props.stats.data;
-    const now = Date.now();
-    startOfQuarter *= 1000;
-    startOfMainphase *= 1000;
+  getLockedDgd() {
+    const { daoInfo, stats } = this.props;
+    let lockedDgd = DEFAULT_LOCKED_DGD;
 
-    if (now >= startOfMainphase) {
+    if (daoInfo) {
+      lockedDgd = daoInfo.totalLockedDgds;
+    } else if (stats.data) {
+      lockedDgd = stats.data.totalLockedDgds
+    }
+
+    return truncateNumber(lockedDgd);
+  }
+
+  getProgress(startTime, endTime) {
+    const now = Date.now();
+    if (now >= endTime) {
       return 100;
     }
 
-    const duration = startOfMainphase - startOfQuarter;
-    const timeEllapsed = now - startOfQuarter;
+    const duration = endTime - startTime;
+    const timeEllapsed = now - startTime;
     return 100 * (timeEllapsed / duration);
   }
 
   render() {
-    const { daoInfo, stats } = this.props;
+    const { stats } = this.props;
     if (stats.fetching || stats.fetching === null) {
       return null;
     }
 
+    const { quarterDurationInDays } = this.state;
     const { currentQuarter } = stats.data;
+    let { startOfMainphase, startOfNextQuarter, startOfQuarter } = stats.data;
+
+    // convert to ms
+    startOfMainphase *= 1000;
+    startOfNextQuarter *= 1000;
+    startOfQuarter *= 1000;
+
     const daysEllapsed = this.getDaysEllapsed();
-    const lockingPhaseProgress = this.getLockingProgress();
-    const mainPhaseProgress = 100 * (daysEllapsed / this.QUARTER_DURATION);
-
-    let lockedDgd = DEFAULT_LOCKED_DGD;
-    if (daoInfo) {
-      lockedDgd = daoInfo.totalLockedDgds;
-    } else if (stats.data) {
-      lockedDgd = stats.data.totalLockedDgds;
-    }
-
-    lockedDgd = truncateNumber(lockedDgd);
+    const lockingPhaseProgress = this.getProgress(startOfQuarter, startOfMainphase);
+    const mainPhaseProgress = this.getProgress(startOfMainphase, startOfNextQuarter);
+    const lockedDgd = this.getLockedDgd();
 
     return (
       <TimelineWrapper>
@@ -104,7 +122,7 @@ class Timeline extends React.Component {
               <div>MAIN PHASE</div>
               <MainPhaseValue>
                 <span data-digix="Dashboard-Timeline-DaysEllpased">DAY {daysEllapsed}</span>
-                <span>&nbsp;/ {this.QUARTER_DURATION}</span>
+                <span>&nbsp;/ {quarterDurationInDays}</span>
                 <MainPhaseInfoDivider>|</MainPhaseInfoDivider>
                 <span data-digix="Dashboard-Timeline-TotalStake">{lockedDgd} STAKE</span>
               </MainPhaseValue>
@@ -128,8 +146,10 @@ class Timeline extends React.Component {
 const { func, object } = PropTypes;
 
 Timeline.propTypes = {
-  stats: object.isRequired,
+  DaoConfig: object.isRequired,
+  getDaoConfig: func.isRequired,
   daoInfo: object,
+  stats: object.isRequired,
   subscribeToDao: func,
 };
 
@@ -138,4 +158,16 @@ Timeline.defaultProps = {
   subscribeToDao: undefined,
 };
 
-export default withFetchDaoInfo(Timeline);
+const mapStateToProps = ({ infoServer }) => ({
+  DaoConfig: infoServer.DaoConfig.data,
+  DaoDetails: infoServer.DaoDetails.data,
+});
+
+const TimelineComponent = connect(
+  mapStateToProps,
+  {
+    getDaoConfig,
+  }
+)(Timeline);
+
+export default withFetchDaoInfo(TimelineComponent);

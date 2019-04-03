@@ -40,10 +40,6 @@ export default class ProjectDetails extends React.Component {
     this.setState({ open: !this.state.open, selectedImage: source });
   };
 
-  showHideImage = source => () => {
-    this.setState({ open: !this.state.open, selectedImage: source });
-  };
-
   renderImages = (proofs, preview) => {
     if (!proofs || proofs === null) return null;
     const images = proofs.map((img, i) => {

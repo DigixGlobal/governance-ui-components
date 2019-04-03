@@ -163,9 +163,12 @@ class CollapsibleMenu extends React.Component {
 
     const { addressDetails, ChallengeProof, showLeftMenu, Translations } = this.props;
     const userType = getUserStatus(addressDetails.data);
+    if (!Translations.data) return null;
+
     const {
       data: { sidebar },
     } = Translations;
+
     const menu = getDefaultMenu(sidebar);
     const menuItemElements = menu.map(item => this.renderMenuItem(item));
     const adminMenuItems = ADMIN_MENU.map(item => this.renderAdminMenuItem(item));

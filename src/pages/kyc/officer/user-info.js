@@ -1,11 +1,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Modal from 'react-responsive-modal';
 
 import ApproveKyc from '@digix/gov-ui/pages/kyc/officer/approve';
 import RejectKyc from '@digix/gov-ui/pages/kyc/officer/reject';
 import Toggle from '@digix/gov-ui/components/common/elements/toggle';
 import { showStatusIcon } from '@digix/gov-ui/pages/kyc/officer/constants';
+import Icon from '@digix/gov-ui/components/common/elements/icons';
+
 import {
   Container,
   Caption,
@@ -13,6 +16,7 @@ import {
   Value,
   ValueWrapper,
   UserTitle,
+  CloseButton,
 } from '@digix/gov-ui/pages/kyc/officer/style';
 
 const renderIps = ips => (
@@ -28,15 +32,21 @@ class UserInfo extends React.Component {
     super(props);
     this.state = {
       approve: false,
+      selectedImage: undefined,
     };
   }
 
-  handleChange = (value, event) => {
+  showHideImage = source => () => {
+    this.setState({ selectedImage: source });
+  };
+
+  handleChange = value => {
     this.setState({ approve: value });
   };
+
   render() {
     const { user, header } = this.props;
-    const { approve } = this.state;
+    const { approve, selectedImage } = this.state;
     return (
       <Container>
         <UserTitle>{`${header} ${user.firstName} ${user.lastName}`}</UserTitle>
@@ -163,7 +173,11 @@ class UserInfo extends React.Component {
             <ValueWrapper>
               <Caption>Webcam Proof</Caption>
               <Value>
-                <FieldImg src={user.identificationPose.image.dataUrl} alt="" />
+                <FieldImg
+                  src={user.identificationPose.image.dataUrl}
+                  alt=""
+                  onClick={this.showHideImage(user.identificationPose.image.dataUrl)}
+                />
               </Value>
             </ValueWrapper>
             <ValueWrapper>
@@ -182,7 +196,11 @@ class UserInfo extends React.Component {
           <ValueWrapper>
             <Caption>Residence Proof</Caption>
             <Value>
-              <FieldImg src={user.residenceProof.image.dataUrl} alt="" />
+              <FieldImg
+                src={user.residenceProof.image.dataUrl}
+                alt=""
+                onClick={this.showHideImage(user.residenceProof.image.dataUrl)}
+              />
             </Value>
           </ValueWrapper>
         )}
@@ -206,7 +224,11 @@ class UserInfo extends React.Component {
             <ValueWrapper>
               <Caption>ID Proof</Caption>
               <Value>
-                <FieldImg src={user.identificationProof.image.dataUrl} alt="" />
+                <FieldImg
+                  src={user.identificationProof.image.dataUrl}
+                  alt=""
+                  onClick={this.showHideImage(user.identificationProof.image.dataUrl)}
+                />
               </Value>
             </ValueWrapper>
           </Fragment>
@@ -240,6 +262,14 @@ class UserInfo extends React.Component {
             )}
           </Fragment>
         )}
+        <Modal open={selectedImage} showCloseIcon onClose={this.showHideImage()} center>
+          <div>
+            <img alt="" style={{ width: '100%' }} src={selectedImage} />
+            <CloseButton onClick={this.showHideImage()} style={{ boxShadow: 'none' }}>
+              <Icon kind="close" style={{ marginRight: 0 }} />
+            </CloseButton>
+          </div>
+        </Modal>
       </Container>
     );
   }

@@ -123,6 +123,14 @@ class KycOfficerDashboard extends React.Component {
           </TabButton>
           <TabButton
             large
+            onClick={() => this.handleListKycByStatus('APPROVING')}
+            data-digix="Kyc-Admin-Appriving-Requests"
+            active={filter === 'APPROVING'}
+          >
+            Pending Confirmation
+          </TabButton>
+          <TabButton
+            large
             onClick={() => this.handleListKycByStatus('APPROVED')}
             data-digix="Kyc-Admin-Approved-Requests"
             active={filter === 'APPROVED'}

@@ -6,8 +6,18 @@ const iconStatus = [
     status: 'PENDING',
     key: 'alarm',
   },
-  { status: 'APPROVED', key: 'check' },
-  { status: 'REJECTED', key: 'close' },
+  {
+    status: 'APPROVING',
+    key: 'alarm',
+  },
+  {
+    status: 'APPROVED',
+    key: 'check',
+  },
+  {
+    status: 'REJECTED',
+    key: 'close',
+  },
 ];
 
 export const showStatusIcon = status => {

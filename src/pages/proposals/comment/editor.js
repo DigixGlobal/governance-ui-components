@@ -70,12 +70,14 @@ export default class CommentTextEditor extends React.Component {
               onChange={this.onChange}
               placeholder="Write your comment here."
               value={content}
+              data-digix="Thread-Field"
             />
           </CommentEditorContainer>
           <PostCommentButton
             primary
             disabled={isContentEmpty || !canComment}
             onClick={() => this.createComment()}
+            data-digix="Thread-Button"
           >
             Post Comment
           </PostCommentButton>

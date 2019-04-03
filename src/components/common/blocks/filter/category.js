@@ -29,7 +29,13 @@ export class CategoryGroup extends React.Component {
 
   render() {
     const { stage } = this.state;
-    const { ProposalsCount } = this.props;
+    const { ProposalsCount, translations } = this.props;
+
+    const {
+      data: {
+        common: { projectStatus },
+      },
+    } = translations;
 
     return (
       <Category stage={stage}>
@@ -37,43 +43,43 @@ export class CategoryGroup extends React.Component {
           onClick={() => this.handleClick('all')}
           active={stage.toLowerCase() === 'all'}
         >
-          All <span>{ProposalsCount.data.all || '0'}</span>
+          {projectStatus.all} <span>{ProposalsCount.data.all || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('idea')}
           active={stage.toLowerCase() === 'idea'}
         >
-          Idea <span>{ProposalsCount.data.idea || '0'}</span>
+          {projectStatus.idea} <span>{ProposalsCount.data.idea || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('draft')}
           active={stage.toLowerCase() === 'draft'}
         >
-          Draft <span>{ProposalsCount.data.draft || '0'}</span>
+          {projectStatus.draft} <span>{ProposalsCount.data.draft || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('proposal')}
           active={stage.toLowerCase() === 'proposal'}
         >
-          Proposal <span>{ProposalsCount.data.proposal || '0'}</span>
+          {projectStatus.proposal} <span>{ProposalsCount.data.proposal || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('ongoing')}
           active={stage.toLowerCase() === 'ongoing'}
         >
-          Ongoing <span>{ProposalsCount.data.ongoing || '0'}</span>
+          {projectStatus.ongoing} <span>{ProposalsCount.data.ongoing || '0'}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('review')}
           active={stage.toLowerCase() === 'review'}
         >
-          Review <span>{ProposalsCount.data.review || 0}</span>
+          {projectStatus.review} <span>{ProposalsCount.data.review || 0}</span>
         </CategoryItem>
         <CategoryItem
           onClick={() => this.handleClick('archived')}
           active={stage.toLowerCase() === 'archived'}
         >
-          Archived <span>{ProposalsCount.data.archived || '0'}</span>
+          {projectStatus.archived} <span>{ProposalsCount.data.archived || '0'}</span>
         </CategoryItem>
       </Category>
     );
@@ -86,6 +92,7 @@ CategoryGroup.propTypes = {
   ProposalsCount: object.isRequired,
   onStageChange: func.isRequired,
   getProposalsCountAction: func.isRequired,
+  translations: object.isRequired,
 };
 
 export default connect(

@@ -48,7 +48,7 @@ export default class ProposalCardStats extends React.Component {
   };
 
   render() {
-    const { details, votingStage } = this.props;
+    const { details, votingStage, translations } = this.props;
     if (!details) {
       return null;
     }
@@ -58,19 +58,25 @@ export default class ProposalCardStats extends React.Component {
     let funding = versionCount ? details.proposalVersions[versionCount - 1].totalFunding / 1e18 : 0;
     funding = truncateNumber(funding);
 
+    const {
+      data: {
+        dashboard: { ProposalCard: cardTranslation },
+      },
+    } = translations;
+
     return (
       <StatsWrapper>
         <Stats>
           <StatItem>
-            Funding
+            {cardTranslation.funding}
             <span>{funding} ETH</span>
           </StatItem>
           <StatItem stage={details.stage} votingStage={votingStage}>
-            Approval
+            {cardTranslation.approval}
             <span>{approvalRating}%</span>
           </StatItem>
           <StatItem stage={details.stage} votingStage={votingStage}>
-            Participants
+            {cardTranslation.participants}
             <span>{participantCount}</span>
           </StatItem>
         </Stats>
@@ -81,6 +87,7 @@ export default class ProposalCardStats extends React.Component {
 ProposalCardStats.propTypes = {
   details: PropTypes.object.isRequired,
   votingStage: PropTypes.string,
+  translations: PropTypes.object.isRequired,
 };
 
 ProposalCardStats.defaultProps = {

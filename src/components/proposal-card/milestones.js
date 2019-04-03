@@ -72,24 +72,31 @@ export default class ProposalCardMilestone extends React.Component {
   };
 
   render() {
-    const { details, userDetails } = this.props;
+    const { details, userDetails, translations } = this.props;
     const { currentMilestone } = details;
     const mileStones = currentMilestone ? Object.keys(currentMilestone) : [];
     const disabledParticipate = disableParticipateWhen(details, userDetails);
+    const {
+      data: {
+        dashboard: { ProposalCard: cardTranslation },
+        common: { buttons },
+      },
+    } = translations;
+
     return (
       <MilestonesWrapper>
         <Milestones>
           <MilestoneStatus>
-            <Label>Milestones</Label>
+            <Label>{cardTranslation.milestones}</Label>
             <ul>{mileStones && mileStones.map(milestone => <li key={milestone} />)}</ul>
           </MilestoneStatus>
           <Deadline>
-            <Label>Voting Deadline</Label>
+            <Label>{cardTranslation.votingDeadline}</Label>
             <Data>{determineDeadline(details) || 'N/A'} </Data>
           </Deadline>
           <CallToAction>
             <Button primary disabled={disabledParticipate} onClick={this.redirectToProposalPage}>
-              Participate
+              {buttons.participate}
             </Button>
           </CallToAction>
         </Milestones>
@@ -102,4 +109,5 @@ ProposalCardMilestone.propTypes = {
   details: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   userDetails: PropTypes.object.isRequired,
+  translations: PropTypes.object.isRequired,
 };

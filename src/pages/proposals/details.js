@@ -20,16 +20,20 @@ export default class ProjectDetails extends React.Component {
 
   componentDidMount = () => {
     const { images } = this.props.project;
-    if (images) fetchImages(images).then(files => this.setState({ files }));
+    try {
+      if (images) fetchImages(images).then(files => this.setState({ files }));
+    } catch (error) {
+      // do nothing
+    }
   };
 
   componentWillReceiveProps = nextProps => {
     const { images } = nextProps.project;
-    fetchImages(images).then(files => this.setState({ files }));
-  };
-
-  showHideImage = source => () => {
-    this.setState({ open: !this.state.open, selectedImage: source });
+    try {
+      fetchImages(images).then(files => this.setState({ files }));
+    } catch (error) {
+      // do nothing
+    }
   };
 
   showHideImage = source => () => {

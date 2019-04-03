@@ -169,7 +169,6 @@ class CollapsibleMenu extends React.Component {
     const menu = getDefaultMenu(sidebar);
     const menuItemElements = menu.map(item => this.renderMenuItem(item));
     const adminMenuItems = ADMIN_MENU.map(item => this.renderAdminMenuItem(item));
-
     return (
       <Menu
         noOverlay
@@ -184,7 +183,7 @@ class CollapsibleMenu extends React.Component {
             <ProfileContainer>
               <Welcome>
                 {sidebar.welcome}, &nbsp;
-                {renderDisplayName('Sidebar-DisplayName')}
+                {renderDisplayName('Sidebar-DisplayName')} {'!'}
               </Welcome>
               <UserType data-digix="Sidebar-UserStatus">{userType}</UserType>
             </ProfileContainer>

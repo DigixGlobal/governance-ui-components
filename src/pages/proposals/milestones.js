@@ -9,8 +9,9 @@ export default class Milestones extends React.Component {
     this.NO_MILESTONE_DESCRIPTION = 'No milestone description has been created yet.';
   }
 
-  renderMilestone(milestone, index) {
-    const { changedFundings, fundingChanged, milestoneFundings } = this.props;
+  renderMilestone(milestoneFunding, index) {
+    const { changedFundings, fundingChanged, milestones } = this.props;
+    const milestone = milestones[index];
 
     let funding;
     let milestoneFund;
@@ -22,7 +23,7 @@ export default class Milestones extends React.Component {
       funding = Number(original);
       milestoneFund = Number(updated) - funding;
     } else {
-      funding = Number(milestoneFundings[index]);
+      funding = Number(milestoneFunding);
     }
 
     return (
@@ -38,8 +39,10 @@ export default class Milestones extends React.Component {
   }
 
   render() {
-    const { milestones } = this.props;
-    const milestoneElements = milestones.map((milestone, i) => this.renderMilestone(milestone, i));
+    const { milestoneFundings } = this.props;
+    const milestoneElements = milestoneFundings.map((milestoneFunding, i) =>
+      this.renderMilestone(milestoneFunding, i)
+    );
 
     return (
       <Content>

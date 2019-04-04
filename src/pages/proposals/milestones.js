@@ -12,6 +12,9 @@ export default class Milestones extends React.Component {
   renderMilestone(milestoneFunding, index) {
     const { changedFundings, fundingChanged, milestones } = this.props;
     const milestone = milestones[index];
+    if (!milestone) {
+      return null;
+    }
 
     let funding;
     let milestoneFund;
@@ -40,9 +43,10 @@ export default class Milestones extends React.Component {
 
   render() {
     const { milestoneFundings } = this.props;
-    const milestoneElements = milestoneFundings.map((milestoneFunding, i) =>
+    let milestoneElements = milestoneFundings.map((milestoneFunding, i) =>
       this.renderMilestone(milestoneFunding, i)
     );
+    milestoneElements = milestoneElements.filter(milestone => milestone !== null);
 
     return (
       <Content>

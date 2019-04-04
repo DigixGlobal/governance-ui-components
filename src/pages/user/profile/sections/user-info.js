@@ -23,30 +23,38 @@ class ProfileUserInfo extends React.Component {
   }
 
   showSetUsernameOverlay() {
+    const translations = this.props.translations.SetUsername;
+
     this.props.showRightPanel({
-      component: <UsernameOverlay />,
+      component: <UsernameOverlay translations={translations} />,
       show: true,
     });
   }
 
   showSetEmailOverlay() {
     const { email } = this.props.userData;
+    const translations = this.props.translations.SetEmail;
+
     this.props.showRightPanel({
-      component: <EmailOverlay currentEmail={email} />,
+      component: <EmailOverlay currentEmail={email} translations={translations} />,
       show: true,
     });
   }
 
   render() {
     const { displayName, email, username } = this.props.userData;
-    const { AddressDetails } = this.props;
+    const { AddressDetails, translations } = this.props;
     const { address } = AddressDetails;
     const status = getUserStatus(AddressDetails);
+
+    const tLabels = translations.Labels;
+    const tSetUsername = translations.SetUsername;
+    const tSetEmail = translations.SetEmail;
 
     return (
       <UserInfo>
         <UserItem>
-          <UserLabel>User:</UserLabel>
+          <UserLabel>{tLabels.username}</UserLabel>
           <UserData data-digix="Profile-UserName">{displayName}</UserData>
           {!username && (
             <SetUserInfoBtn
@@ -55,16 +63,16 @@ class ProfileUserInfo extends React.Component {
               onClick={() => this.showSetUsernameOverlay()}
             >
               <Icon kind="plus" />
-              Set Username
+              {tSetUsername.overlayButton}
             </SetUserInfoBtn>
           )}
         </UserItem>
         <UserItem>
-          <UserLabel>Status:</UserLabel>
+          <UserLabel>{tLabels.status}</UserLabel>
           <UserData data-digix="Profile-Status">{status}</UserData>
         </UserItem>
         <UserItem>
-          <UserLabel>Email:</UserLabel>
+          <UserLabel>{tLabels.email}</UserLabel>
           {email && <UserData data-digix="Profile-Email">{email}</UserData>}
           <SetUserInfoBtn
             xsmall
@@ -72,11 +80,11 @@ class ProfileUserInfo extends React.Component {
             onClick={() => this.showSetEmailOverlay()}
           >
             <Icon kind="plus" />
-            Set Email
+            {tSetEmail.overlayButton}
           </SetUserInfoBtn>
         </UserItem>
         <UserItem>
-          <UserLabel>Address:</UserLabel>
+          <UserLabel>{tLabels.address}</UserLabel>
           <UserData data-digix="Profile-Address">{address}</UserData>
         </UserItem>
       </UserInfo>
@@ -90,6 +98,7 @@ ProfileUserInfo.propTypes = {
   AddressDetails: object.isRequired,
   refetchUser: func.isRequired,
   showRightPanel: func.isRequired,
+  translations: object.isRequired,
   userData: shape({
     displayName: string,
     email: string,

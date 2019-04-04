@@ -11,14 +11,15 @@ import { Heading, ProfileWrapper } from '@digix/gov-ui/pages/user/profile/style'
 class Profile extends React.Component {
   render() {
     const { history, Translations } = this.props;
+    const t = Translations.data.profile;
 
     return (
       <ProfileWrapper>
-        <Heading>Profile</Heading>
-        <ProfileUserInfo translations={Translations} />
+        <Heading>{t.title}</Heading>
+        <ProfileUserInfo translations={t.ProfileInfo} />
         <UserAddressStats translations={Translations} />
-        <ProfileActivitySummary translations={Translations} />
-        <ModeratorRequirements translations={Translations} history={history} />
+        <ProfileActivitySummary translations={t.Kyc} tSetEmail={t.ProfileInfo.SetEmail} />
+        <ModeratorRequirements history={history} translations={t.ModeratorRequirements} />
       </ProfileWrapper>
     );
   }

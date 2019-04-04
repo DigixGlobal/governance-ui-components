@@ -6,14 +6,11 @@ import { CallToAction } from '@digix/gov-ui/components/common/blocks/overlay/kyc
 
 class KycOverlayIntro extends React.Component {
   render() {
+    const t = this.props.translations.OpenKycForm;
+
     return (
       <div>
-        <div>
-          The objective of this process is to prevent Digix from being used intentionally or
-          unintentionally, by criminal elements for money laundering activities. Related procedures
-          also enable us to better understand our community and their financial dealings. It helps
-          us manage our risks prudently.
-        </div>
+        <div>{t.instructions}</div>
         <CallToAction>
           <Button
             fluid
@@ -22,7 +19,7 @@ class KycOverlayIntro extends React.Component {
             data-digix="KycOverlay-ProceedToKyc"
             onClick={() => this.props.onNextStep()}
           >
-            Proceed to KYC
+            {t.submit}
           </Button>
         </CallToAction>
       </div>
@@ -30,9 +27,10 @@ class KycOverlayIntro extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 KycOverlayIntro.propTypes = {
   onNextStep: func.isRequired,
+  translations: object.isRequired,
 };
 
 export default KycOverlayIntro;

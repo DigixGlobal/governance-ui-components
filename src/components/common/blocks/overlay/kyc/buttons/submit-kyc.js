@@ -17,7 +17,7 @@ class SubmitKycButton extends React.Component {
   };
 
   render() {
-    const { disable, hasPendingSubmission } = this.props;
+    const { disable, hasPendingSubmission, translations } = this.props;
     const disableButton = disable || hasPendingSubmission;
 
     return (
@@ -27,12 +27,12 @@ class SubmitKycButton extends React.Component {
         data-digix="KycOverlay-Submit"
         onClick={this.submit}
       >
-        Submit KYC
+        {translations.submit}
       </Button>
     );
   }
 }
-const { bool, func } = PropTypes;
+const { bool, func, object } = PropTypes;
 
 SubmitKycButton.propTypes = {
   collectFormData: func.isRequired,
@@ -40,6 +40,7 @@ SubmitKycButton.propTypes = {
   hasPendingSubmission: bool.isRequired,
   setHasPendingSubmission: func.isRequired,
   submitKyc: func,
+  translations: object.isRequired,
 };
 
 SubmitKycButton.defaultProps = {

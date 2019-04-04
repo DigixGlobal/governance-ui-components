@@ -20,6 +20,7 @@ import {
 import {
   getProposalLikesByUser,
   getProposalLikesStats,
+  getTranslations,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
@@ -39,7 +40,13 @@ class LandingPage extends React.PureComponent {
   }
 
   componentWillMount = () => {
-    const { AddressDetails, getDaoDetailsAction, getProposalsAction, ChallengeProof } = this.props;
+    const {
+      AddressDetails,
+      getDaoDetailsAction,
+      getProposalsAction,
+      getTranslationsAction,
+      ChallengeProof,
+    } = this.props;
 
     const storedHash = localStorage.getItem('GOVERNANCE_UI');
     const hash = this.hashTos();
@@ -59,6 +66,8 @@ class LandingPage extends React.PureComponent {
     if (AddressDetails.data.address && (ChallengeProof.data && ChallengeProof.data.client)) {
       this.getLikeStatus();
     }
+
+    getTranslationsAction('en');
   };
 
   componentDidMount = () => {
@@ -157,8 +166,11 @@ class LandingPage extends React.PureComponent {
       AddressDetails,
       UserLikedProposals,
       ProposalLikes,
+      Translations,
     } = this.props;
     const hasProposals = Proposals.data && Proposals.data.length > 0;
+    if (!Translations.data) return null;
+
     let orderedProposals = [];
     if (hasProposals) {
       orderedProposals = Proposals.data.sort((a, b) =>
@@ -193,13 +205,14 @@ class LandingPage extends React.PureComponent {
 
     return (
       <Fragment>
-        <Timeline stats={DaoDetails} />
-        {isWalletLoaded && <UserAddressStats />}
+        <Timeline stats={DaoDetails} translations={Translations} />
+        {isWalletLoaded && <UserAddressStats translations={Translations} />}
         <ProposalFilter
           onStageChange={this.getProposals}
           onOrderChange={this.onOrderChange}
           AddressDetails={AddressDetails}
           history={history}
+          translations={Translations}
         />
         {!hasProposals && <p>There are no projects to show.</p>}
         {hasProposals &&
@@ -212,6 +225,7 @@ class LandingPage extends React.PureComponent {
               proposal={proposal}
               displayName={getProposer(proposal.proposalId, proposal.proposer)}
               userDetails={AddressDetails}
+              translations={Translations}
             />
           ))}
         <Modal
@@ -269,6 +283,8 @@ LandingPage.propTypes = {
   getProposalLikesByUserAction: func.isRequired,
   getProposalLikesStatsAction: func.isRequired,
   showCountdownPage: func.isRequired,
+  getTranslationsAction: func.isRequired,
+  Translations: object.isRequired,
 };
 
 LandingPage.defaultProps = {
@@ -281,7 +297,7 @@ LandingPage.defaultProps = {
 export default connect(
   ({
     infoServer: { DaoDetails, Proposals, AddressDetails },
-    daoServer: { ChallengeProof, UserLikedProposals, ProposalLikes },
+    daoServer: { ChallengeProof, UserLikedProposals, ProposalLikes, Translations },
     govUI: { HasCountdown, ShowWallet },
   }) => ({
     DaoDetails,
@@ -289,6 +305,7 @@ export default connect(
     AddressDetails,
     ChallengeProof,
     UserLikedProposals,
+    Translations,
     ProposalLikes,
     HasCountdown,
     ShowWallet,
@@ -299,6 +316,7 @@ export default connect(
     getProposalsAction: getProposals,
     getProposalLikesByUserAction: getProposalLikesByUser,
     getProposalLikesStatsAction: getProposalLikesStats,
+    getTranslationsAction: getTranslations,
     showCountdownPage,
   }
 )(LandingPage);

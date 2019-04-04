@@ -74,6 +74,7 @@ class Proposal extends React.PureComponent {
       userData,
       userDetails,
       userProposalLike,
+      translations,
     } = this.props;
 
     const likeStatus =
@@ -89,6 +90,12 @@ class Proposal extends React.PureComponent {
     const canCreate = userDetails && userDetails.data.isParticipant;
     const canLike = userDetails && userDetails.data.address;
     const isForumAdmin = userData && userData.isForumAdmin;
+
+    const {
+      data: {
+        dashboard: { ProposalCard: cardTranslation },
+      },
+    } = translations;
 
     return (
       <ProposaDetaillWrapper>
@@ -106,12 +113,13 @@ class Proposal extends React.PureComponent {
               href={`/proposals/${details.proposalId}`}
               to={`/proposals/${details.proposalId}`}
             >
-              View Project
+              {cardTranslation.view}
             </ProposalLink>
           </Description>
           <ProposalFooter>
             <PostedBy>
-              BY <PostedByLink style={{ pointerEvents: 'none' }}>{displayName}</PostedByLink>
+              {cardTranslation.by}{' '}
+              <PostedByLink style={{ pointerEvents: 'none' }}>{displayName}</PostedByLink>
             </PostedBy>
             {canLike && (
               <LikeButton
@@ -120,6 +128,7 @@ class Proposal extends React.PureComponent {
                 hasVoted={likeStatus.liked}
                 likes={!likeStatus.likes ? 0 : likeStatus.likes}
                 onClick={() => this.toggleLike()}
+                translations={cardTranslation}
               />
             )}
           </ProposalFooter>
@@ -128,7 +137,6 @@ class Proposal extends React.PureComponent {
     );
   }
 }
-
 const { bool, func, object, number, string } = PropTypes;
 
 Proposal.propTypes = {
@@ -144,6 +152,7 @@ Proposal.propTypes = {
   userData: object,
   userDetails: object.isRequired,
   userProposalLike: object.isRequired,
+  translations: object.isRequired,
 };
 
 const mapStateToProps = state => ({

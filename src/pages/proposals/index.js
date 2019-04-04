@@ -447,12 +447,19 @@ class Proposal extends React.Component {
       daoInfo,
       userProposalLike,
       userData,
+      Translations,
     } = this.props;
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
     const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
+
+    const {
+      data: {
+        dashboard: { ProposalCard: cardTranslation },
+      },
+    } = Translations;
 
     return (
       <ProposalsWrapper>
@@ -478,11 +485,13 @@ class Proposal extends React.Component {
                   addressDetails={addressDetails}
                   match={this.props.match}
                   history={history}
+                  translations={Translations}
                 />
                 <ModeratorButtons
                   proposal={proposalDetails}
                   addressDetails={addressDetails}
                   history={history}
+                  translations={Translations}
                 />
               </CallToAction>
             )}
@@ -498,6 +507,7 @@ class Proposal extends React.Component {
               <Like
                 hasVoted={liked}
                 likes={likes}
+                translations={cardTranslation}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
             </InfoItem>
@@ -522,6 +532,7 @@ class Proposal extends React.Component {
       proposalDetails,
       userProposalLike,
       userData,
+      Translations,
     } = this.props;
 
     const proposal = proposalDetails.data;
@@ -538,6 +549,12 @@ class Proposal extends React.Component {
     const likes = proposalLikes ? proposalLikes.likes : 0;
     const displayName = proposalLikes ? proposalLikes.user.displayName : '';
 
+    const {
+      data: {
+        dashboard: { ProposalCard: cardTranslation },
+      },
+    } = Translations;
+
     return (
       <ProposalsWrapper>
         <ProjectSummary>
@@ -547,6 +564,7 @@ class Proposal extends React.Component {
             handleNextVersionClick={this.handleNextVersionClick}
             match={match}
             versions={versions}
+            translations={Translations}
           />
           {this.renderPrlAlert(proposal.prl)}
           {this.renderClaimApprovalAlert()}
@@ -567,10 +585,12 @@ class Proposal extends React.Component {
                   addressDetails={addressDetails}
                   match={this.props.match}
                   history={history}
+                  translations={Translations}
                 />
                 <ModeratorButtons
                   proposal={proposalDetails}
                   addressDetails={addressDetails}
+                  translations={Translations}
                   history={history}
                 />
               </CallToAction>
@@ -595,33 +615,41 @@ class Proposal extends React.Component {
               currentVersion={currentVersion}
               match={match}
               proposalDetails={proposal}
+              translations={Translations}
             />
             <InfoItem data-digix="Proposal-Like">
               <Like
                 hasVoted={liked}
                 likes={likes}
+                translations={cardTranslation}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
 
-        <VotingAccordion votingResults={this.getPastVotingResults()} />
+        <VotingAccordion votingResults={this.getPastVotingResults()} translations={Translations} />
 
         <VotingResult
           proposal={proposalDetails.data}
           draftVoting={proposalDetails.data.draftVoting}
           daoInfo={daoInfo}
+          translations={Translations}
         />
 
-        <ProjectDetails project={dijixObject} />
+        <ProjectDetails project={dijixObject} translations={Translations} />
         <Milestones
           milestones={dijixObject.milestones || []}
           milestoneFundings={proposalVersion.milestoneFundings || []}
           changedFundings={changedFundings ? changedFundings.milestones : undefined}
           fundingChanged={proposal.isFundingChanged}
+          translations={Translations}
         />
-        <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
+        <CommentThread
+          proposalId={this.PROPOSAL_ID}
+          uid={addressDetails.data.address}
+          translations={Translations}
+        />
       </ProposalsWrapper>
     );
   };
@@ -657,6 +685,7 @@ Proposal.propTypes = {
   location: object.isRequired,
   history: object.isRequired,
   match: object.isRequired,
+  Translations: object.isRequired,
 };
 
 Proposal.defaultProps = {
@@ -674,7 +703,7 @@ export default withFetchUser(
         DaoConfig,
         DaoDetails: { data },
       },
-      daoServer: { ChallengeProof, UserProposalLike },
+      daoServer: { ChallengeProof, UserProposalLike, Translations },
     }) => ({
       proposalDetails: ProposalDetails,
       addressDetails: AddressDetails,
@@ -682,6 +711,7 @@ export default withFetchUser(
       daoInfo: data,
       daoConfig: DaoConfig,
       userProposalLike: UserProposalLike,
+      Translations,
     }),
     {
       getUserProposalLikeStatusAction: getUserProposalLikeStatus,

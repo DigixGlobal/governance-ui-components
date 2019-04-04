@@ -51,7 +51,6 @@ class ParentThread extends React.Component {
         const error = CommentsApi.ERROR_MESSAGES;
         if (message === 'unauthorized_action') {
           setCommentingPrivileges(false);
-          console.log(error.bannedUser);
           setError(error.bannedUser);
         } else {
           setError(error.createReply);

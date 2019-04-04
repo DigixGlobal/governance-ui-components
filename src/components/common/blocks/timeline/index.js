@@ -75,13 +75,13 @@ class Timeline extends React.Component {
     if (daoInfo) {
       lockedDgd = daoInfo.totalLockedDgds;
     } else if (stats.data) {
-      lockedDgd = stats.data.totalLockedDgds
+      lockedDgd = stats.data.totalLockedDgds;
     }
 
     return truncateNumber(lockedDgd);
   }
 
-  getProgress(startTime, endTime) {
+  getProgress = (startTime, endTime) => {
     const now = Date.now();
     if (now >= endTime) {
       return 100;
@@ -90,10 +90,12 @@ class Timeline extends React.Component {
     const duration = endTime - startTime;
     const timeEllapsed = now - startTime;
     return 100 * (timeEllapsed / duration);
-  }
+  };
 
   render() {
-    const { stats } = this.props;
+    const { stats, translations } = this.props;
+    if (!translations.data) return null;
+    const { dashboard } = translations.data;
     if (stats.fetching || stats.fetching === null) {
       return null;
     }
@@ -117,14 +119,18 @@ class Timeline extends React.Component {
         <Quarter>Q{currentQuarter}</Quarter>
         <TimelineBar>
           <TimelineLabel>
-            <LockingPhase>LOCKING PHASE</LockingPhase>
+            <LockingPhase>{dashboard.Timeline.lockingPhase}</LockingPhase>
             <MainPhase>
-              <div>MAIN PHASE</div>
+              <div>{dashboard.Timeline.mainPhase}</div>
               <MainPhaseValue>
-                <span data-digix="Dashboard-Timeline-DaysEllpased">DAY {daysEllapsed}</span>
+                <span data-digix="Dashboard-Timeline-DaysEllpased">
+                  {dashboard.Timeline.day} {daysEllapsed}
+                </span>
                 <span>&nbsp;/ {quarterDurationInDays}</span>
                 <MainPhaseInfoDivider>|</MainPhaseInfoDivider>
-                <span data-digix="Dashboard-Timeline-TotalStake">{lockedDgd} STAKE</span>
+                <span data-digix="Dashboard-Timeline-TotalStake">
+                  {lockedDgd} {dashboard.Timeline.stake}
+                </span>
               </MainPhaseValue>
             </MainPhase>
           </TimelineLabel>
@@ -150,6 +156,7 @@ Timeline.propTypes = {
   getDaoConfig: func.isRequired,
   daoInfo: object,
   stats: object.isRequired,
+  translations: object.isRequired,
   subscribeToDao: func,
 };
 

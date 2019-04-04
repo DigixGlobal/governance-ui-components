@@ -321,6 +321,9 @@ class ProposalForms extends React.Component {
       successMessage,
       transactionTitle,
       web3Redux,
+      translations: {
+        snackbar: { snackbars },
+      },
     } = this.props;
 
     const { proposalId } = this.state;
@@ -338,6 +341,7 @@ class ProposalForms extends React.Component {
       .eth.contract(abi)
       .at(address);
 
+    // TODO: add translation
     let caption = `Requires ${preProposalCollateral} ETH to Submit Project`;
     if (contractMethod === 'modifyProposal') {
       caption = transactionTitle;
@@ -345,7 +349,7 @@ class ProposalForms extends React.Component {
 
     const ui = {
       caption,
-      header: 'Project',
+      header: snackbars.createProject.txUiHeader,
       type: 'txVisualization',
     };
 
@@ -429,25 +433,33 @@ class ProposalForms extends React.Component {
 
   _renderTabPanel() {
     const { currentStep } = this.state;
-
+    const {
+      translations: { project },
+    } = this.props;
     return (
       <TabPanel>
-        <MenuItem active={currentStep === 0}>Overview</MenuItem>
-        <MenuItem active={currentStep === 1}>Project Detail</MenuItem>
-        <MenuItem active={currentStep === 2}>Multimedia</MenuItem>
-        <MenuItem active={currentStep === 3}>Milestone</MenuItem>
+        <MenuItem active={currentStep === 0}>{project.overview}</MenuItem>
+        <MenuItem active={currentStep === 1}>{project.projectDetail}</MenuItem>
+        <MenuItem active={currentStep === 2}>{project.multimedia}</MenuItem>
+        <MenuItem active={currentStep === 3}>{project.milestone}</MenuItem>
       </TabPanel>
     );
   }
 
   _renderNavButtons() {
     const { canMoveNext, canMovePrevious, validForm } = this.state;
-    const { dataDigixPrefix, submitButtonLabel } = this.props;
+    const {
+      dataDigixPrefix,
+      submitButtonLabel,
+      translations: {
+        common: { buttons },
+      },
+    } = this.props;
 
     return (
       <CallToAction>
         <Button tertiary onClick={this.showPreview} data-digix={`${dataDigixPrefix}-Preview`}>
-          Preview
+          {buttons.preview}
         </Button>
 
         {canMovePrevious && (
@@ -456,7 +468,7 @@ class ProposalForms extends React.Component {
             onClick={this.onPreviousButtonClick}
             data-digix={`${dataDigixPrefix}-Previous`}
           >
-            Previous
+            {buttons.previous}
           </Button>
         )}
 
@@ -467,7 +479,7 @@ class ProposalForms extends React.Component {
             onClick={this.onNextButtonClick}
             data-digix={`${dataDigixPrefix}-Next`}
           >
-            Next
+            {buttons.next}
           </Button>
         )}
 
@@ -497,16 +509,20 @@ class ProposalForms extends React.Component {
         exceedsLimit={exceedsLimit}
         form={form}
         onChange={this.onFormInput}
+        translations={this.props.translations}
       />
     );
   }
 
   renderForm() {
+    const {
+      translations: { project },
+    } = this.props;
     return (
       <CreateWrapper>
         {this._renderTabPanel()}
         <Header>
-          <Heading>Basic Project Information</Heading>
+          <Heading>{project.basicProjectInformation}</Heading>
           {this._renderNavButtons()}
         </Header>
         {this._renderStep()}
@@ -515,15 +531,29 @@ class ProposalForms extends React.Component {
   }
 
   renderPreview() {
-    const { addresses } = this.props;
+    const { addresses, translations } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const proposer = sourceAddress.address || '';
 
-    return <Preview form={this.state.form} proposer={proposer} onContinueEditing={this.showForm} />;
+    return (
+      <Preview
+        translations={translations}
+        form={this.state.form}
+        proposer={proposer}
+        onContinueEditing={this.showForm}
+      />
+    );
   }
 
   renderConfirmPage() {
-    return <Confirm form={this.state.form} onBack={this.showForm} onSubmit={this.submit} />;
+    return (
+      <Confirm
+        translations={this.props.translations}
+        form={this.state.form}
+        onBack={this.showForm}
+        onSubmit={this.submit}
+      />
+    );
   }
 
   render() {
@@ -561,6 +591,7 @@ ProposalForms.propTypes = {
   successMessage: string.isRequired,
   transactionTitle: string.isRequired,
   web3Redux: object.isRequired,
+  translations: object.isRequired,
 };
 
 ProposalForms.defaultProps = {

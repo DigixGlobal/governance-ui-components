@@ -1,6 +1,6 @@
 import multihash from '@digix/multi-hash';
 import { fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
-import { KycStatus, ProposalErrors, UserStatus } from '@digix/gov-ui/constants';
+import { KycStatus, UserStatus } from '@digix/gov-ui/constants';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
 export function encodeHash(hash) {
@@ -83,16 +83,20 @@ export const inLockingPhase = DaoDetails => {
 };
 
 // checks general conditions that should be met when doing any proposal action
-export const getUnmetProposalRequirements = (apolloClient, DaoDetails) => {
+export const getUnmetProposalRequirements = (apolloClient, DaoDetails, translations) => {
   const errors = [];
 
+  const {
+    common: { proposalErrors },
+  } = translations;
+
   return isKycApproved(apolloClient).then(kycApproved => {
-    if (!kycApproved) {
-      errors.push(ProposalErrors.invalidKyc);
-    }
+    // if (!kycApproved) {
+    //   errors.push(proposalErrors.invalidKyc);
+    // }
 
     if (inLockingPhase(DaoDetails)) {
-      errors.push(ProposalErrors.inLockingPhase);
+      errors.push(proposalErrors.inLockingPhase);
     }
 
     return errors;
@@ -100,6 +104,7 @@ export const getUnmetProposalRequirements = (apolloClient, DaoDetails) => {
 };
 
 export const injectTranslation = (translation, toInject) => {
+  if (!translation || !toInject) return;
   const keys = Object.keys(toInject);
   let injectedTranslation = translation;
 

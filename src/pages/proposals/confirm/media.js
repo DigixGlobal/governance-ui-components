@@ -49,7 +49,7 @@ export default class MediaAssets extends React.PureComponent {
               {/* eslint-disable */}
               <img
                 alt=""
-                onClick={this.showHideImage}
+                onClick={this.showHideImage(img.src)}
                 src={
                   img.thumbnail
                     ? `${dijix.config.httpEndpoint}/${img.thumbnail}?q=${Date.now()}`
@@ -67,22 +67,25 @@ export default class MediaAssets extends React.PureComponent {
   };
 
   render() {
-    const { form } = this.props;
+    const {
+      form,
+      translations: { project, sidebar },
+    } = this.props;
     const { selectedImage } = this.state;
     if (!form) return null;
     return (
       <Section>
-        <Title>Multimedia</Title>
+        <Title>{project.multimedia}</Title>
         <Content>
           {form.proofs && this.renderImages(form.proofs)}
           {form.images &&
             this.renderImages(this.state.files, form.proofs ? form.proofs.length + 1 : 0)}
         </Content>
-        <Modal open={this.state.open} onClose={this.showHideImage}>
+        <Modal open={this.state.open} onClose={this.showHideImage()}>
           <div>
             <img style={{ width: '100%' }} alt="" src={selectedImage} />
             <Button kind="round" small onClick={this.showHideImage()}>
-              Close
+              {sidebar.close}
             </Button>
           </div>
         </Modal>
@@ -93,4 +96,5 @@ export default class MediaAssets extends React.PureComponent {
 
 MediaAssets.propTypes = {
   form: PropTypes.object.isRequired,
+  translations: PropTypes.object.isRequired,
 };

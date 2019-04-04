@@ -35,9 +35,9 @@ class ParticipantButtons extends React.Component {
   }
 
   checkUnmetRequirements(proposalAction, customErrors) {
-    const { client, DaoDetails } = this.props;
+    const { client, DaoDetails, translations } = this.props;
 
-    getUnmetProposalRequirements(client, DaoDetails).then(errors => {
+    getUnmetProposalRequirements(client, DaoDetails, translations).then(errors => {
       let totalErrors = errors;
       if (customErrors) {
         totalErrors = errors.concat(customErrors);
@@ -161,6 +161,7 @@ ParticipantButtons.propTypes = {
   match: object.isRequired,
   proposal: object.isRequired,
   showRightPanel: func.isRequired,
+  translations: object.isRequired,
 };
 
 const mapStateToProps = ({ infoServer }) => ({

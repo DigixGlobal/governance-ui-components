@@ -46,6 +46,7 @@ class UserAddressStats extends React.Component {
               <span className="equiv">
                 <span>( </span>
                 <span data-digix="Dashboard-Mod-QtrPts">{moderatorQuarterPoint}</span>
+                {/* TODO: Add Translation */}
                 <span>&nbsp; Moderator Qtr Pts )</span>
               </span>
             )}

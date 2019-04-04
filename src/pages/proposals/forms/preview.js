@@ -23,7 +23,8 @@ const getTotalFunds = source =>
 
 class Preview extends React.Component {
   render() {
-    const { form, onContinueEditing } = this.props;
+    const { form, onContinueEditing, translations } = this.props;
+    const { common, project } = translations;
     if (!form) {
       return null;
     }
@@ -47,7 +48,7 @@ class Preview extends React.Component {
           <Header>
             <div>
               <Button kind="tag" showIcon>
-                IDEA
+                {common.projectStatus.idea}
               </Button>
               <Title primary data-digix="Proposal-Title">
                 {form.title}
@@ -56,14 +57,14 @@ class Preview extends React.Component {
           </Header>
           <FundingInfo>
             <InfoItem column>
-              <ItemTitle>Submitted By</ItemTitle>
+              <ItemTitle>{project.submittedBy}</ItemTitle>
               <Data>
                 <span>{renderDisplayName('Sidebar-DisplayName')}</span>
               </Data>
             </InfoItem>
 
             <InfoItem outlined>
-              <ItemTitle>Milestones</ItemTitle>
+              <ItemTitle>{project.milestones}</ItemTitle>
               <Data>
                 <span data-digix="milestone-label">
                   {form.milestones ? form.milestones.length : 0}
@@ -72,29 +73,30 @@ class Preview extends React.Component {
             </InfoItem>
 
             <InfoItem outlined>
-              <ItemTitle>Funding</ItemTitle>
+              <ItemTitle>{project.funding}Funding</ItemTitle>
               <Data>
                 <div className="milestones">
                   <span data-digix="funding-amount-label">{funding}</span>
-                  {` ETH `} <span className="label">Milestones</span>
+                  {` ETH `} <span className="label">{project.milestones}</span>
                 </div>
                 <div className="reward">
                   <span data-digix="reward-amount-label">{reward} </span>
                   ETH{` `}
-                  <span className="label">Reward</span>
+                  <span className="label">{project.reward}</span>
                 </div>
               </Data>
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
 
-        <ProjectDetails project={form} preview />
+        <ProjectDetails project={form} preview translations={translations} />
 
         <Milestones
           preview
           milestones={form.milestones || []}
           fundingChanged={false}
           milestoneFundings={milestoneFundings}
+          translations={translations}
         />
       </ProposalsWrapper>
     );
@@ -106,6 +108,7 @@ const { object, func } = PropTypes;
 Preview.propTypes = {
   form: object.isRequired,
   onContinueEditing: func.isRequired,
+  translations: object.isRequired,
 };
 
 export default Preview;

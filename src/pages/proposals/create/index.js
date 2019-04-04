@@ -1,19 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ProposalForms from '@digix/gov-ui/pages/proposals/forms/index';
+import { connect } from 'react-redux';
 
 class CreateProposal extends React.Component {
   render() {
-    const { history } = this.props;
+    const {
+      history,
+      Translations: {
+        data,
+        data: {
+          common: { buttons },
+          snackbar: { snackbars },
+        },
+      },
+    } = this.props;
 
     return (
       <ProposalForms
         contractMethod="submitPreproposal"
         dataDigixPrefix="Create-Proposal"
         history={history}
-        submitButtonLabel="Create Now"
-        successMessage="Your Create Project Transaction is pending confirmation. See More"
-        transactionTitle="Submit Project"
+        submitButtonLabel={buttons.createNow}
+        successMessage={snackbars.createProject.message}
+        transactionTitle={snackbars.createProject.title}
+        translations={data}
       />
     );
   }
@@ -22,6 +33,11 @@ class CreateProposal extends React.Component {
 const { object } = PropTypes;
 CreateProposal.propTypes = {
   history: object.isRequired,
+  Translations: object.isRequired,
 };
 
-export default CreateProposal;
+const mapStateToProps = state => ({
+  Translations: state.daoServer.Translations,
+});
+
+export default connect(mapStateToProps)(CreateProposal);

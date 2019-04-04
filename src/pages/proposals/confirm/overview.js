@@ -7,16 +7,19 @@ import { Section, Title, Content, Heading, DataContent } from './style';
 
 export default class Overview extends React.Component {
   render() {
-    const { form } = this.props;
+    const {
+      form,
+      translations: { project },
+    } = this.props;
     if (!form) return null;
     return (
       <Section>
-        <Title>Overview</Title>
+        <Title>{project.overview}</Title>
         <Content>
-          <Heading>Project Title</Heading>
+          <Heading>{project.title}</Heading>
           <DataContent>{form.title}</DataContent>
           <HorizontalBar />
-          <Heading>Short Description</Heading>
+          <Heading>{project.shortDescription}</Heading>
           <DataContent>{form.description}</DataContent>
         </Content>
       </Section>
@@ -26,4 +29,5 @@ export default class Overview extends React.Component {
 
 Overview.propTypes = {
   form: PropTypes.object.isRequired,
+  translations: PropTypes.object.isRequired,
 };

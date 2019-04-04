@@ -1,9 +1,11 @@
 /* eslint-disable react/display-name, react/prop-types */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 import { kycSubscription } from '@digix/gov-ui/api/graphql-queries/kyc';
 import { Query, Mutation } from 'react-apollo';
+import Markdown from 'react-markdown';
+import { injectTranslation } from '@digix/gov-ui/utils/helpers';
 
 export const fetchDisplayName = gql`
   query fetchUser {
@@ -121,18 +123,10 @@ export const renderDisplayName = (dataDigixAttribute, welcome) => (
         return null;
       }
 
-      if (welcome) {
-        return (
-          <Fragment>
-            {welcome.replace('{{username}}!', '')}
-            <span data-digix={dataDigixAttribute}>{data.currentUser.displayName}</span>
-            {'!'}
-          </Fragment>
-        );
-      }
-
-      if (!welcome)
-        return <span data-digix={dataDigixAttribute}>{data.currentUser.displayName}</span>;
+      const injected = injectTranslation(welcome, {
+        username: data.currentUser.displayName,
+      });
+      return <Markdown data-digix={dataDigixAttribute} source={injected} escapeHtml={false} />;
     }}
   </Query>
 );

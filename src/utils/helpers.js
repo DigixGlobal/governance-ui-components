@@ -91,9 +91,9 @@ export const getUnmetProposalRequirements = (apolloClient, DaoDetails, translati
   } = translations;
 
   return isKycApproved(apolloClient).then(kycApproved => {
-    // if (!kycApproved) {
-    //   errors.push(proposalErrors.invalidKyc);
-    // }
+    if (!kycApproved) {
+      errors.push(proposalErrors.invalidKyc);
+    }
 
     if (inLockingPhase(DaoDetails)) {
       errors.push(proposalErrors.inLockingPhase);

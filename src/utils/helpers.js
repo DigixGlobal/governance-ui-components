@@ -98,3 +98,14 @@ export const getUnmetProposalRequirements = (apolloClient, DaoDetails) => {
     return errors;
   });
 };
+
+export const injectTranslation = (translation, toInject) => {
+  const keys = Object.keys(toInject);
+  let injectedTranslation = translation;
+
+  keys.forEach(key => {
+    injectedTranslation = injectedTranslation.replace(`{{${key}}}`, toInject[key]);
+  });
+
+  return injectedTranslation;
+};

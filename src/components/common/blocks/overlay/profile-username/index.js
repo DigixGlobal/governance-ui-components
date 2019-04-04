@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -7,13 +8,13 @@ import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import {
   CallToAction,
+  NotificationMessage,
   UsernameInput,
 } from '@digix/gov-ui/components/common/blocks/overlay/profile-username/style';
 import {
   IntroContainer,
   OverlayHeader as Header,
   Notifications,
-  Message,
   Label,
   Hint,
 } from '@digix/gov-ui/components/common/common-styles';
@@ -29,10 +30,7 @@ class UsernameOverlay extends React.Component {
     };
 
     this.USERNAME_REGEX = /^(?!user)[a-z0-9_]{2,20}$/;
-    this.ERROR_MESSAGES = {
-      invalid: `Username must be between 2-20 characters, can only be composed of alphanumeric and underscore characters, and must not begin with the word "user".`,
-      connectionError: `Unable to update username. Please try again.`,
-    };
+    this.ERROR_MESSAGES = { ...props.translations.Errors };
   }
 
   onUsernameUpdate = response => {
@@ -44,7 +42,7 @@ class UsernameOverlay extends React.Component {
 
     this.props.showRightPanel({ show: false });
     this.props.showHideAlert({
-      message: 'Username updated',
+      message: this.props.translations.txnSuccess,
     });
   };
 
@@ -81,13 +79,15 @@ class UsernameOverlay extends React.Component {
   };
 
   renderIntro() {
+    const t = this.props.translations;
+
     return (
       <IntroContainer>
-        <Header uppercase>Assign Username</Header>
+        <Header uppercase>{t.title}</Header>
         <Notifications info>
-          <Message>
-            You can only assign a username to yourself <span>ONCE</span>.
-          </Message>
+          <NotificationMessage>
+            <ReactMarkdown source={t.warning} />
+          </NotificationMessage>
         </Notifications>
         <Button
           secondary
@@ -96,29 +96,31 @@ class UsernameOverlay extends React.Component {
           data-digix="UsernameOverlay-Proceed"
           onClick={() => this.showForm()}
         >
-          Proceed
+          {t.proceed}
         </Button>
       </IntroContainer>
     );
   }
 
   renderForm() {
+    const t = this.props.translations;
     const { username, error } = this.state;
     const invalidInput = !!error && error !== this.ERROR_MESSAGES.connectionError;
     const disableButton = !username || username === '' || invalidInput;
 
     return (
       <IntroContainer>
-        <Header uppercase>Assign Username</Header>
-        <Label>Please enter your desired user name</Label>
+        <Header uppercase>{t.title}</Header>
+        <Label>{t.instructions}</Label>
         <UsernameInput type="text" data-digix="SetUsername-TexBox" onChange={this.handleInput} />
         {this.renderHint()}
         <CallToAction>
           <UpdateUsernameButton
             disable={disableButton}
-            username={username}
             onUsernameUpdate={this.onUsernameUpdate}
             onUsernameUpdateError={this.onUsernameUpdateError}
+            translations={t}
+            username={username}
           />
         </CallToAction>
       </IntroContainer>
@@ -135,10 +137,11 @@ class UsernameOverlay extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 UsernameOverlay.propTypes = {
   showHideAlert: func.isRequired,
   showRightPanel: func.isRequired,
+  translations: object.isRequired,
 };
 
 const mapStateToProps = () => ({});

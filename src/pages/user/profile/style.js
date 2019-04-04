@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { H1, Card, CardItem } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
@@ -76,6 +76,12 @@ export const Item = styled.div`
 export const Label = styled.div`
   text-align: left;
   font-family: 'Futura PT Heavy', sans-serif;
+
+  ${props =>
+    props.uppercase &&
+    css`
+      text-transform: uppercase;
+    `};
 
   ${media.mobile`
     text-align: center;

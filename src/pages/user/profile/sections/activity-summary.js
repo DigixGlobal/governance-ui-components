@@ -68,9 +68,11 @@ class ProfileActivitySummary extends React.Component {
   }
 
   showSetEmailOverlay() {
+    const { tSetEmail } = this.props;
     const { email } = this.props.userData;
+
     this.props.showRightPanel({
-      component: <EmailOverlay currentEmail={email} />,
+      component: <EmailOverlay currentEmail={email} translations={tSetEmail} />,
       show: true,
     });
   }
@@ -169,12 +171,13 @@ class ProfileActivitySummary extends React.Component {
   }
 }
 
-const { func, shape, string } = PropTypes;
+const { func, shape, string, object } = PropTypes;
 
 ProfileActivitySummary.propTypes = {
   refetchUser: func.isRequired,
   showRightPanel: func.isRequired,
   subscribeToKyc: func.isRequired,
+  tSetEmail: object.isRequired,
   userData: shape({
     displayName: string,
     email: string,

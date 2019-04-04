@@ -52,7 +52,7 @@ class UserAddressStats extends React.Component {
           </Data>
         </Item>
         <Item>
-          <Label>{dashboard.UserStats.repuationPoints}</Label>
+          <Label>{dashboard.UserStats.reputationPoints}</Label>
           <Data data-digix="Dashboard-Stats-ReputationPoints">{reputationPoint || 0}</Data>
         </Item>
         <Item>

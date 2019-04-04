@@ -6,7 +6,7 @@ import { withChangeUsername } from '@digix/gov-ui/api/graphql-queries/users';
 
 class UpdateUsernameButton extends React.Component {
   render() {
-    const { changeUsername, disable, username } = this.props;
+    const { changeUsername, disable, translations, username } = this.props;
     const disableButton = disable || !username;
 
     return (
@@ -18,17 +18,18 @@ class UpdateUsernameButton extends React.Component {
         data-digix="UsernameOverlay-SetUsername"
         onClick={() => changeUsername(username)}
       >
-        Assign Username
+        {translations.submit}
       </Button>
     );
   }
 }
 
-const { bool, func, string } = PropTypes;
+const { bool, func, object, string } = PropTypes;
 
 UpdateUsernameButton.propTypes = {
   changeUsername: func,
   disable: bool.isRequired,
+  translations: object.isRequired,
   username: string,
 };
 

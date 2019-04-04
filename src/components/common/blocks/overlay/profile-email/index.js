@@ -24,12 +24,7 @@ class EmailOverlay extends React.Component {
 
     // eslint-disable-next-line
     this.EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    this.ERROR_MESSAGES = {
-      invalid: `Please enter a valid email address.`,
-      unchanged: `Please enter an email address that is different from your current email.`,
-      connectionError: `Unable to update email. Please try again.`,
-    };
+    this.ERROR_MESSAGES = { ...props.translations.Errors };
   }
 
   onEmailUpdate = response => {
@@ -41,7 +36,7 @@ class EmailOverlay extends React.Component {
 
     this.props.showRightPanel({ show: false });
     this.props.showHideAlert({
-      message: 'Email updated',
+      message: this.props.translations.txnSuccess,
     });
   };
 
@@ -75,14 +70,15 @@ class EmailOverlay extends React.Component {
   };
 
   render() {
+    const t = this.props.translations;
     const { email, error } = this.state;
     const invalidInput = !!error && error !== this.ERROR_MESSAGES.connectionError;
     const disableButton = !email || email === '' || invalidInput;
 
     return (
       <IntroContainer>
-        <Header uppercase>Set Email</Header>
-        <Label>Please enter the email you want to link to your address</Label>
+        <Header uppercase>{t.title}</Header>
+        <Label>{t.instructions}</Label>
         <Input type="text" data-digix="SetEmail-Textbox" onChange={this.handleInput} />
         {this.renderHint()}
         <CallToAction>
@@ -91,6 +87,7 @@ class EmailOverlay extends React.Component {
             email={email}
             onEmailUpdate={this.onEmailUpdate}
             onEmailUpdateError={this.onEmailUpdateError}
+            translations={t}
           />
         </CallToAction>
       </IntroContainer>
@@ -98,12 +95,13 @@ class EmailOverlay extends React.Component {
   }
 }
 
-const { func, string } = PropTypes;
+const { func, object, string } = PropTypes;
 
 EmailOverlay.propTypes = {
   currentEmail: string,
   showHideAlert: func.isRequired,
   showRightPanel: func.isRequired,
+  translations: object.isRequired,
 };
 
 EmailOverlay.defaultProps = {

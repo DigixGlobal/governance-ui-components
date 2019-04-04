@@ -39,6 +39,17 @@ class ProfileActivitySummary extends React.Component {
     return this.DEFAULT_KYC_STATUS;
   }
 
+  resubmitKyc() {
+    const { kyc } = this.props.userData;
+    const hasRejectedKyc = kyc.status === KycStatus.rejected;
+
+    if (hasRejectedKyc) {
+      this.showKycOverlay();
+    } else {
+      this.showErrorOverlay();
+    }
+  }
+
   showErrorOverlay() {
     this.props.showRightPanel({
       component: <ErrorMessageOverlay errors={[KycErrors.resubmit]} location="Profile" />,
@@ -106,7 +117,7 @@ class ProfileActivitySummary extends React.Component {
               primary
               disabled={hasPendingKyc}
               data-digix="Profile-KycStatus-Submit"
-              onClick={() => this.showErrorOverlay()}
+              onClick={() => this.resubmitKyc()}
             >
               Re-submit KYC
             </Button>

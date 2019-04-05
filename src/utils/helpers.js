@@ -1,7 +1,11 @@
+import React from 'react';
+import Markdown from 'react-markdown';
 import multihash from '@digix/multi-hash';
+
 import { fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 import { KycStatus, UserStatus } from '@digix/gov-ui/constants';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { renderToString } from 'react-dom/server';
 
 export function encodeHash(hash) {
   // eslint-disable-line import/prefer-default-export
@@ -109,21 +113,26 @@ export const injectTranslation = (translation, toInject, setDataDigix, dataDigix
   }
 
   const keys = Object.keys(toInject);
-  let injectedTranslation = translation;
+  let injected = translation;
 
   if (setDataDigix) {
     const prefix = dataDigixPrefix || 'Digix';
+    injected = <Markdown source={injected} escapeHtml={false} />;
+    injected = renderToString(injected);
+
     keys.forEach(key => {
-      injectedTranslation = injectedTranslation.replace(
+      injected = injected.replace(
         `{{${key}}}`,
         `<span data-digix="${prefix}-${key}">${toInject[key]}</span>`
       );
     });
-  } else {
-    keys.forEach(key => {
-      injectedTranslation = injectedTranslation.replace(`{{${key}}}`, toInject[key]);
-    });
+
+    return <Markdown source={injected} escapeHtml={false} />;
   }
 
-  return injectedTranslation;
+  keys.forEach(key => {
+    injected = injected.replace(`{{${key}}}`, toInject[key]);
+  });
+
+  return <Markdown source={injected} escapeHtml={false} />;
 };

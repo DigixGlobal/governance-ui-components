@@ -15,7 +15,7 @@
       "Hints": {
         "fillMax": "You will no longer continue to be a participant.",
         "normal": "This will leave you with **{{stake}} STAKE**.",
-        "overfilled": "You can only unlock up to {{maxAmount}} DGD."
+        "overfilled": "You can only unlock up to **{{maxAmount}} DGD.**"
       },
       "submit": "Unlock DGD",
       "txnSuccess": "Your Unlock DGD Transaction is pending confirmation. See More"

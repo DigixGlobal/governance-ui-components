@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Input } from '@digix/gov-ui/components/common/elements/index';
+import { Notifications } from '@digix/gov-ui/components/common/common-styles';
 
 export const UnlockDGDContainer = styled.div`
   display: flex;
@@ -43,4 +44,8 @@ export const Currency = styled.div``;
 
 export const CallToAction = styled.div`
   margin-top: 2rem;
+`;
+
+export const Notification = styled(Notifications)`
+  flex-direction: row;
 `;

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Accordion, Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import {
-  WalletWrapper,
+  NavItem,
   AddressButton,
   Dropdown,
   DropdownMenu,
@@ -43,54 +43,60 @@ class WalletButton extends React.Component {
 
     const { defaultAddress, canLockDgd } = this.props;
     return (
-      <WalletWrapper>
-        {!defaultAddress && (
-          <Button primary small data-digix="Header-LoadWallet" onClick={() => this.onWalletClick()}>
-            Load Wallet
-          </Button>
-        )}
-        {canLockDgd && canLockDgd.show && (
-          <Button
-            primary
-            xsmall
-            data-digix="Header-LockDgd"
-            onClick={() => this.showLockDgdOverlay()}
-          >
-            Lock DGD
-          </Button>
-        )}
-        {defaultAddress && (
-          <Fragment>
-            <Dropdown>
-              <AddressButton
-                kind="capsule"
-                xsmall
-                data-digix="Header-Address"
-                onClick={() => this.showDropdownMenu()}
-              >
-                <span>{defaultAddress.address}</span>
-                <Icon kind="arrow" />
-              </AddressButton>
+      <Fragment>
+        <NavItem cta>
+          {!defaultAddress && (
+            <Button
+              primary
+              small
+              data-digix="Header-LoadWallet"
+              onClick={() => this.onWalletClick()}
+            >
+              Load Wallet
+            </Button>
+          )}
+          {canLockDgd && canLockDgd.show && (
+            <Button
+              primary
+              xsmall
+              data-digix="Header-LockDgd"
+              onClick={() => this.showLockDgdOverlay()}
+            >
+              Lock DGD
+            </Button>
+          )}
+        </NavItem>
 
-              {this.state.open && (
-                <DropdownMenu>
-                  <MenuItem>
-                    <Button
-                      kind="text"
-                      primary
-                      small
-                      data-digix="Header-LoadWallet"
-                      onClick={() => window.location.reload()}
-                    >
-                      Logout
-                    </Button>
-                  </MenuItem>
-                </DropdownMenu>
-              )}
-            </Dropdown>
-          </Fragment>
+        {defaultAddress && (
+          <NavItem wallet>
+            <AddressButton
+              kind="link"
+              xsmall
+              data-digix="Header-Address"
+              onClick={() => this.showDropdownMenu()}
+            >
+              <span>{defaultAddress.address}</span>
+              <Icon kind="arrow" />
+            </AddressButton>
+
+            {this.state.open && (
+              <DropdownMenu>
+                <MenuItem>
+                  <Button
+                    kind="text"
+                    primary
+                    small
+                    data-digix="Header-LoadWallet"
+                    onClick={() => window.location.reload()}
+                  >
+                    Logout
+                  </Button>
+                </MenuItem>
+              </DropdownMenu>
+            )}
+          </NavItem>
         )}
-      </WalletWrapper>
+      </Fragment>
     );
   }
 }

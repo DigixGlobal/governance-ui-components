@@ -72,7 +72,7 @@ class ModeratorRequirements extends React.Component {
             <ReqLabel>{t.reputationPoints}</ReqLabel>
           </ModeratorReqs>
           <Plus>
-            <Icon kind="plus" />
+            <span>+</span>
           </Plus>
           <ModeratorReqs>
             <Data data-digix="Profile-ModerationRequirements-Stake">{stake}</Data>

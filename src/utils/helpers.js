@@ -103,14 +103,27 @@ export const getUnmetProposalRequirements = (apolloClient, DaoDetails, translati
   });
 };
 
-export const injectTranslation = (translation, toInject) => {
-  if (!translation || !toInject) return;
+export const injectTranslation = (translation, toInject, setDataDigix, dataDigixPrefix) => {
+  if (!translation || !toInject) {
+    return null;
+  }
+
   const keys = Object.keys(toInject);
   let injectedTranslation = translation;
 
-  keys.forEach(key => {
-    injectedTranslation = injectedTranslation.replace(`{{${key}}}`, toInject[key]);
-  });
+  if (setDataDigix) {
+    const prefix = dataDigixPrefix || 'Digix';
+    keys.forEach(key => {
+      injectedTranslation = injectedTranslation.replace(
+        `{{${key}}}`,
+        `<span data-digix="${prefix}-${key}">${toInject[key]}</span>`
+      );
+    });
+  } else {
+    keys.forEach(key => {
+      injectedTranslation = injectedTranslation.replace(`{{${key}}}`, toInject[key]);
+    });
+  }
 
   return injectedTranslation;
 };

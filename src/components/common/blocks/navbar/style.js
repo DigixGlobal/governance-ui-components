@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
+import { media } from '@digix/gov-ui/components/common/breakpoints';
 
 export const Digix = styled(Icon)`
   svg {
@@ -7,96 +8,193 @@ export const Digix = styled(Icon)`
   }
 `;
 
-export const HeaderWrapper = styled.section`
+export const Header = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 68px;
-  background-color: ${props => props.theme.backgroundHeader.default.toString()};
-  color: ${props => props.theme.textDefault.toString()};
-  border-bottom: 1px solid ${props => props.theme.headerBorderColor.toString()};
-  padding: 0;
   position: fixed;
+
   width: 100%;
   z-index: 99;
 
+  background-color: ${props => props.theme.background.white.toString()};
+  color: ${props => props.theme.textColor.default.base.toString()};
+  border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  padding: 0;
+
   & > div {
-    border-left: 1px solid ${props => props.theme.headerBorderColor.toString()};
-    flex: 1 0 0;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    height: 100%;
-    padding: 0 2em;
+    flex: 0 1 auto;
+
+    &:first-child {
+      flex: 0 1 110px;
+    }
 
     &:nth-child(2) {
-      justify-content: flex-end;
-      flex: 0 0 auto;
     }
+
     &:nth-child(3) {
-      flex: 0 0 180px;
-      justify-content: center;
+      flex: 1;
+      justify-content: flex-end;
     }
   }
 `;
 
-export const WalletWrapper = styled.div`
-  flex: 1 0 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+// START::: Styles for Internationalization
 
-  border-left: 0 !important;
+export const Selector = styled.div`
+  background-color: #fff;
+  border: 1px solid ${props => props.theme.background.default.lightest.toString()};
+  border-top: 0;
+  display: inline-block;
+  text-align: right;
+  position: absolute;
+  top: 67px;
+  left: -1px;
+  display: none;
+  opacity: 0;
+  transition: opacity 500ms ease;
+  width: 128px;
+
+  a {
+    color: #333;
+  }
 `;
+
+export const NavItem = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 0 1 auto;
+  height: 68px;
+  padding: 0 2rem;
+  border-left: 1px solid ${props => props.theme.borderColor.lightest.toString()};
+
+  a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: ${props => props.theme.textColor.primary.base.toString()};
+  }
+
+  ${props =>
+    props.dropdown &&
+    css`
+      position: relative;
+
+      &:hover > ${Selector} {
+        display: block;
+        opacity: 1;
+      }
+    `};
+
+  ${props =>
+    props.wallet &&
+    css`
+      position: relative;
+
+      &:hover {
+      }
+
+      ${media.mobile`
+          display: none !important;
+        `};
+    `};
+
+  ${media.mobile`
+    padding: 0 0.75rem;
+    `};
+`;
+
+export const TransButton = styled(Button)`
+  margin: 0;
+  padding: 0;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-family: 'Futura PT Book', sans-serif;
+
+  &:focus + ${Selector} {
+    display: block;
+    opacity: 1;
+  }
+
+  & > div {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-left: 1rem;
+
+    svg {
+      fill: ${props => props.theme.icon.primary.base.toString()};
+    }
+  }
+`;
+
+export const Item = styled.div`
+  cursor: pointer;
+  padding: 2rem;
+  text-align: left;
+
+  &:hover {
+    background-color: darken(#c00, 50%);
+  }
+`;
+
+// START::: Styles for Wallet
 
 export const Dropdown = styled.div`
   position: relative;
 `;
 
 export const DropdownMenu = styled.div`
-  border-radius: 3px;
-  left: 2rem;
+  left: 0;
   position: absolute;
-  top: 90%;
+  top: 100%;
   right: 0;
-  width: 230px;
+  width: 221px;
   background: #fff;
   border: 1px solid ${props => props.theme.background.default.lighter.toString()};
+  border-top: 0;
   padding: 1.25rem 2rem;
+
+  ${media.mobile`
+    width: 150px;
+  `};
 `;
 
-export const MenuItem = styled.a``;
-
 export const AddressButton = styled(Button)`
-  background: ${props => props.theme.background.default.lightest.toString()};
-  border: 1px solid ${props => props.theme.background.default.lighter.toString()};
-  box-shadow: none;
-  color: ${props => props.theme.textColor.default.base.toString()};
+  background: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
   font-family: 'Futura PT Medium', sans-serif;
-  font-size: 1.4rem;
-  padding: 0.75rem 1.5rem;
-  width: 250px;
-  white-space: nowrap;
-  text-transform: lowercase;
 
-  &:hover {
-    color: ${props => props.theme.textColor.default.light.toString()};
+  &:focus + ${Selector} {
+    display: block;
+    opacity: 1;
   }
 
   span {
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 148px;
   }
 
-  div {
-    flex: 0 0 auto;
-    margin-right: 0;
+  & > div {
+    width: 1.25rem;
+    height: 1.25rem;
     margin-left: 1rem;
-    width: 1.5rem;
-    height: 1.5rem;
+
+    svg {
+      fill: ${props => props.theme.icon.primary.base.toString()};
+    }
   }
 `;
+
+export const MenuItem = styled.a``;
 
 export const UtilityWrapper = styled.div`
   display: flex;
@@ -167,3 +265,5 @@ export const TxHash = styled.span`
 export const TxStatus = styled.span`
   // width: 2rem;
 `;
+
+// Translator

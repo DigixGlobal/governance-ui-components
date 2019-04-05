@@ -9,6 +9,8 @@ import { renderDisplayName, fetchUserQuery } from '@digix/gov-ui/api/graphql-que
 
 import { push as Menu } from 'react-burger-menu';
 
+import Markdown from 'react-markdown';
+
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
 import lightTheme from '@digix/gov-ui/theme/light';
 
@@ -184,7 +186,10 @@ class CollapsibleMenu extends React.Component {
         <MenuContainer>
           {ChallengeProof.data && (
             <ProfileContainer>
-              <Welcome>{renderDisplayName('Sidebar-DisplayName', sidebar.welcome)} &nbsp;</Welcome>
+              <Welcome>
+                {renderDisplayName('Sidebar-DisplayName', sidebar.welcome)}
+                &nbsp;
+              </Welcome>
               <UserType data-digix="Sidebar-UserStatus">{userType}</UserType>
             </ProfileContainer>
           )}

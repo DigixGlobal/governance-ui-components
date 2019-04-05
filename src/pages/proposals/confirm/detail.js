@@ -5,13 +5,16 @@ import { Section, Title, Content, Heading, DataContent } from './style';
 
 export default class ProjectDetail extends React.Component {
   render() {
-    const { form } = this.props;
+    const {
+      form,
+      translations: { project },
+    } = this.props;
     if (!form) return null;
     return (
       <Section>
-        <Title>Project Detail</Title>
+        <Title>{project.projectDetail}</Title>
         <Content>
-          <Heading>Project Information</Heading>
+          <Heading>{project.projectInformation}</Heading>
           <DataContent>
             <ReactMarkdown source={form.details} escapeHtml={false} />
           </DataContent>
@@ -23,4 +26,5 @@ export default class ProjectDetail extends React.Component {
 
 ProjectDetail.propTypes = {
   form: PropTypes.object.isRequired,
+  translations: PropTypes.object.isRequired,
 };

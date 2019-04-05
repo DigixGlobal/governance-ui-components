@@ -10,7 +10,12 @@ export default class Milestones extends React.Component {
   }
 
   renderMilestone(milestoneFunding, index) {
-    const { changedFundings, fundingChanged, milestones } = this.props;
+    const {
+      changedFundings,
+      fundingChanged,
+      milestones,
+      translations: { project },
+    } = this.props;
     const milestone = milestones[index];
     if (!milestone) {
       return null;
@@ -32,7 +37,7 @@ export default class Milestones extends React.Component {
     return (
       <div
         key={`ms-${order}`}
-        label={`Milestone ${order}: ${milestone.title || ''}`}
+        label={`${project.milestone} ${order}: ${milestone.title || ''}`}
         funding={funding}
         milestoneFund={milestoneFund}
       >
@@ -42,7 +47,10 @@ export default class Milestones extends React.Component {
   }
 
   render() {
-    const { milestoneFundings } = this.props;
+    const {
+      milestoneFundings,
+      translations: { project },
+    } = this.props;
     let milestoneElements = milestoneFundings.map((milestoneFunding, i) =>
       this.renderMilestone(milestoneFunding, i)
     );
@@ -50,7 +58,7 @@ export default class Milestones extends React.Component {
 
     return (
       <Content>
-        <SubTitle>Milestones</SubTitle>
+        <SubTitle>{project.milestones}</SubTitle>
         <Accordion allowMultipleOpen>{milestoneElements}</Accordion>
       </Content>
     );
@@ -62,6 +70,7 @@ Milestones.propTypes = {
   fundingChanged: PropTypes.bool.isRequired,
   milestoneFundings: PropTypes.array.isRequired,
   milestones: PropTypes.array.isRequired,
+  translations: PropTypes.object.isRequired,
 };
 
 Milestones.defaultProps = {

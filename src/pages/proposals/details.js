@@ -64,13 +64,18 @@ export default class ProjectDetails extends React.Component {
   };
 
   render() {
-    const { project, preview } = this.props;
+    const {
+      project,
+      preview,
+      translations: { project: trans },
+    } = this.props;
     const { selectedImage } = this.state;
     const hasImages = project.images && project.images.length > 0;
     return (
       <DetailsContainer>
         <Content>
-          <SubTitle>Short Description</SubTitle>
+          <SubTitle>{trans.shortDescription}</SubTitle>
+          {/* TODO: Add Translation */}
           <div data-digix="Details-Short-Desc">
             {project.description
               ? project.description
@@ -80,7 +85,7 @@ export default class ProjectDetails extends React.Component {
         </Content>
 
         <Content data-digix="Details-Desc">
-          <SubTitle>Project Details</SubTitle>
+          <SubTitle>{trans.details}</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
           {preview && this.renderImages(project.proofs, preview)}
           {hasImages && this.renderImages(this.state.files, false)}
@@ -102,6 +107,7 @@ export default class ProjectDetails extends React.Component {
 ProjectDetails.propTypes = {
   project: PropTypes.object.isRequired,
   preview: PropTypes.bool,
+  translations: PropTypes.object.isRequired,
 };
 
 ProjectDetails.defaultProps = {

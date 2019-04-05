@@ -54,9 +54,9 @@ class ProposalCardFilter extends React.Component {
   }
 
   getUnmetCreateRequirements = () => {
-    const { DaoDetails, client } = this.props;
+    const { DaoDetails, client, translations } = this.props;
     const dataCalls = [
-      getUnmetProposalRequirements(client, DaoDetails),
+      getUnmetProposalRequirements(client, DaoDetails, translations.data),
       this.props.getDaoConfig(),
       this.getEthBalance(),
     ];

@@ -12,23 +12,31 @@ import { PreviewWrapper, CTA, LeftCol, RightCol } from './style';
 
 export default class ProjectConfirmation extends React.Component {
   render() {
-    const { form, onBack, onSubmit } = this.props;
+    const {
+      form,
+      onBack,
+      onSubmit,
+      translations,
+      translations: {
+        common: { buttons },
+      },
+    } = this.props;
     return (
       <PreviewWrapper>
-        <Overview form={form} />
-        <ProjectDetail form={form} />
-        <MediaAssets form={form} />
-        <Milestones form={form} />
+        <Overview form={form} translations={translations} />
+        <ProjectDetail form={form} translations={translations} />
+        <MediaAssets form={form} translations={translations} />
+        <Milestones form={form} translations={translations} />
 
         <CTA>
           <LeftCol>
             <Button primary onClick={onBack}>
-              Back
+              {buttons.back}
             </Button>
           </LeftCol>
           <RightCol>
             <Button primary onClick={onSubmit}>
-              Submit
+              {buttons.submit}
             </Button>
           </RightCol>
         </CTA>
@@ -42,4 +50,5 @@ ProjectConfirmation.propTypes = {
   form: object.isRequired,
   onBack: func.isRequired,
   onSubmit: func.isRequired,
+  translations: object.isRequired,
 };

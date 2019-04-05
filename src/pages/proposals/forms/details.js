@@ -15,14 +15,18 @@ import {
 
 class Details extends React.Component {
   render() {
-    const { form, onChange } = this.props;
+    const {
+      form,
+      onChange,
+      translations: { project },
+    } = this.props;
     const { invalidDetails } = this.props.errors;
 
     return (
       <Fieldset>
         <FormItem>
           <Label error={invalidDetails} req>
-            Project Information
+            {project.projectInformation}
             <span>&nbsp;*</span>
           </Label>
           <EditorContainer error={invalidDetails}>
@@ -32,6 +36,7 @@ class Details extends React.Component {
               onChange={value => onChange('details', value)}
             />
           </EditorContainer>
+          {/* TODO: add translation */}
           {invalidDetails && <ErrorMessage>This field is required.</ErrorMessage>}
         </FormItem>
       </Fieldset>
@@ -45,6 +50,7 @@ Details.propTypes = {
   errors: object.isRequired,
   form: object.isRequired,
   onChange: func.isRequired,
+  translations: object.isRequired,
 };
 
 export default Details;

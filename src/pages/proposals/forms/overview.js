@@ -5,7 +5,12 @@ import { ErrorMessage, Fieldset, FormItem, Label } from '@digix/gov-ui/pages/pro
 
 class OverView extends React.Component {
   render() {
-    const { errors, form, onChange } = this.props;
+    const {
+      errors,
+      form,
+      onChange,
+      translations: { project },
+    } = this.props;
     const { description, title } = form;
     const { invalidDescription, invalidTitle } = errors;
 
@@ -13,7 +18,7 @@ class OverView extends React.Component {
       <Fieldset>
         <FormItem>
           <Label error={invalidTitle} req>
-            Project Title
+            {project.projectTitle}
             <span>&nbsp;*</span>
           </Label>
           <Input
@@ -21,13 +26,14 @@ class OverView extends React.Component {
             error={invalidTitle}
             value={title || ''}
             onChange={onChange}
-            placeholder="i.e. Implementation of Silver tokens"
+            placeholder={project.projectTitlePlaceHolder}
           />
+          {/* TODO: Add Translation */}
           {invalidTitle && <ErrorMessage>This field is required.</ErrorMessage>}
         </FormItem>
         <FormItem>
           <Label error={invalidDescription} req>
-            Short Description
+            {project.shortDescription}
             <span>&nbsp;*</span>
           </Label>
           <TextArea
@@ -35,8 +41,9 @@ class OverView extends React.Component {
             value={description || ''}
             id="description"
             onChange={onChange}
-            placeholder="Short description of your project"
+            placeholder={project.shortDescriptionPlaceHolder}
           />
+          {/* TODO: Add translation */}
           {invalidDescription && <ErrorMessage>This field is required.</ErrorMessage>}
         </FormItem>
       </Fieldset>
@@ -50,5 +57,6 @@ OverView.propTypes = {
   errors: object.isRequired,
   form: object.isRequired,
   onChange: func.isRequired,
+  translations: object.isRequired,
 };
 export default OverView;

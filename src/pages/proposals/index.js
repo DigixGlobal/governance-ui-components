@@ -553,6 +553,7 @@ class Proposal extends React.Component {
       data: {
         dashboard: { ProposalCard: cardTranslation },
       },
+      data: translations,
     } = Translations;
 
     return (
@@ -564,7 +565,7 @@ class Proposal extends React.Component {
             handleNextVersionClick={this.handleNextVersionClick}
             match={match}
             versions={versions}
-            translations={Translations}
+            translations={translations}
           />
           {this.renderPrlAlert(proposal.prl)}
           {this.renderClaimApprovalAlert()}
@@ -585,12 +586,12 @@ class Proposal extends React.Component {
                   addressDetails={addressDetails}
                   match={this.props.match}
                   history={history}
-                  translations={Translations}
+                  translations={translations}
                 />
                 <ModeratorButtons
                   proposal={proposalDetails}
                   addressDetails={addressDetails}
-                  translations={Translations}
+                  translations={translations}
                   history={history}
                 />
               </CallToAction>
@@ -615,7 +616,7 @@ class Proposal extends React.Component {
               currentVersion={currentVersion}
               match={match}
               proposalDetails={proposal}
-              translations={Translations}
+              translations={translations}
             />
             <InfoItem data-digix="Proposal-Like">
               <Like
@@ -628,27 +629,27 @@ class Proposal extends React.Component {
           </FundingInfo>
         </ProjectSummary>
 
-        <VotingAccordion votingResults={this.getPastVotingResults()} translations={Translations} />
+        <VotingAccordion votingResults={this.getPastVotingResults()} translations={translations} />
 
         <VotingResult
           proposal={proposalDetails.data}
           draftVoting={proposalDetails.data.draftVoting}
           daoInfo={daoInfo}
-          translations={Translations}
+          translations={translations}
         />
 
-        <ProjectDetails project={dijixObject} translations={Translations} />
+        <ProjectDetails project={dijixObject} translations={translations} />
         <Milestones
           milestones={dijixObject.milestones || []}
           milestoneFundings={proposalVersion.milestoneFundings || []}
           changedFundings={changedFundings ? changedFundings.milestones : undefined}
           fundingChanged={proposal.isFundingChanged}
-          translations={Translations}
+          translations={translations}
         />
         <CommentThread
           proposalId={this.PROPOSAL_ID}
           uid={addressDetails.data.address}
-          translations={Translations}
+          translations={translations}
         />
       </ProposalsWrapper>
     );

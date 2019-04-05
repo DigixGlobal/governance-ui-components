@@ -1,0 +1,33 @@
+{
+  "dashboard": {
+    "noProjects": "There are no projects to show.",
+    "terms": "Terms and Conditions",
+    "addreedTerms": "I have read and agreed",
+    "UserStats": {
+      "quarterPoints": "Quarter Points",
+      "reputationPoints": "Reputation Points",
+      "stake": "My Stake",
+      "dgdLocked": "DGD Locked",
+
+      "moderatorPoints": "Moderator Qtr Pts"
+    }
+  },
+  "ProposalCard": {
+    "like": "Like",
+    "likes": "Likes"
+  },
+  "common": {
+    "errors": {
+      "fieldIsRequired": "This field is required."
+    },
+    "buttons": {
+      "remove": "Remove",
+      "continueEditing": "Continue Editing"
+    }
+  },
+  "project": {
+    "fundsRequiredForMilestone": "Funds Required for This Milestone",
+    "noShortDescription": "No short description content has been created yet.",
+    "collateral": "Requires {{preProposalCollateral}} ETH to Submit Project"
+  }
+}

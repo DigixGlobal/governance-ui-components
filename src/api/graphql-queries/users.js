@@ -123,10 +123,14 @@ export const renderDisplayName = (dataDigixAttribute, welcome) => (
         return null;
       }
 
-      const injected = injectTranslation(welcome, {
-        username: data.currentUser.displayName,
-      });
-      return <Markdown data-digix={dataDigixAttribute} source={injected} escapeHtml={false} />;
+      if (welcome) {
+        const injected = injectTranslation(welcome, {
+          username: data.currentUser.displayName,
+        });
+        return <Markdown data-digix={dataDigixAttribute} source={injected} escapeHtml={false} />;
+      }
+
+      return <span data-digix={dataDigixAttribute}>{data.currentUser.displayName}</span>;
     }}
   </Query>
 );

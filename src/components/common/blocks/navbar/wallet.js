@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
 
-import { Accordion, Button, Icon } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import {
   NavItem,
   AddressButton,
-  Dropdown,
   DropdownMenu,
   MenuItem,
 } from '@digix/gov-ui/components/common/blocks/navbar/style';
@@ -42,6 +41,8 @@ class WalletButton extends React.Component {
     }
 
     const { defaultAddress, canLockDgd } = this.props;
+    const tHeader = this.props.translations.header;
+
     return (
       <Fragment>
         <NavItem cta>
@@ -52,7 +53,7 @@ class WalletButton extends React.Component {
               data-digix="Header-LoadWallet"
               onClick={() => this.onWalletClick()}
             >
-              Load Wallet
+              {tHeader.loadWallet || 'Load Wallet'}
             </Button>
           )}
           {canLockDgd && canLockDgd.show && (
@@ -62,7 +63,7 @@ class WalletButton extends React.Component {
               data-digix="Header-LockDgd"
               onClick={() => this.showLockDgdOverlay()}
             >
-              Lock DGD
+              {tHeader.lockDgd || 'Lock DGD'}
             </Button>
           )}
         </NavItem>
@@ -89,7 +90,7 @@ class WalletButton extends React.Component {
                     data-digix="Header-LoadWallet"
                     onClick={() => window.location.reload()}
                   >
-                    Logout
+                    {tHeader.logout || 'Logout'}
                   </Button>
                 </MenuItem>
               </DropdownMenu>
@@ -108,11 +109,15 @@ WalletButton.propTypes = {
   defaultAddress: oneOfType([string, object]),
   canLockDgd: object,
   HasCountdown: bool.isRequired,
+  translations: object,
 };
 
 WalletButton.defaultProps = {
   defaultAddress: undefined,
   canLockDgd: undefined,
+  translations: {
+    header: {},
+  },
 };
 
 const mapStateToProps = state => ({
@@ -120,6 +125,7 @@ const mapStateToProps = state => ({
   addressDetails: state.infoServer.AddressDetails,
   canLockDgd: state.govUI.CanLockDgd,
   HasCountdown: state.govUI.HasCountdown,
+  translations: state.daoServer.Translations.data,
 });
 
 export default connect(

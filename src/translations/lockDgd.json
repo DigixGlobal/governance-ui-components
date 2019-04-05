@@ -3,7 +3,7 @@
   "warning": {
     "currentPhaseLocking": "You are now locking DGD in the **Locking Phase**.",
     "currentPhaseMain": "You are now locking DGD in the **Main Phase**.",
-    "unlock": "Please note that once you locked, you can only unlock your DGDs in a **Locking Phase**."
+    "unlock": "Please note that once you lock, you can only unlock your DGDs during the **Locking Phase**."
   },
   "instructions": "Please enter the amount of DGD you wish to lock in:",
   "stake": "This will give you **{{stake}} STAKE** in DigixDAO.",

@@ -73,7 +73,7 @@ class Preview extends React.Component {
             </InfoItem>
 
             <InfoItem outlined>
-              <ItemTitle>{project.funding}Funding</ItemTitle>
+              <ItemTitle>{project.funding}</ItemTitle>
               <Data>
                 <div className="milestones">
                   <span data-digix="funding-amount-label">{funding}</span>

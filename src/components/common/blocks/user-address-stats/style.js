@@ -13,6 +13,7 @@ export const UserStats = styled(Card)`
     `};
 
   ${media.mobile`
+    padding: 3rem 5rem;
       flex-direction: column;
   `};
 `;
@@ -30,7 +31,7 @@ export const Item = styled.div`
   ${media.mobile`
     border-right: none;
     margin-bottom: 2rem;
-    padding-left: 0;
+    padding: 0;
     
     &:last-child {
       margin-bottom: 0;
@@ -41,10 +42,6 @@ export const Item = styled.div`
 export const Label = styled.div`
   text-align: left;
   font-family: 'Futura PT Heavy', sans-serif;
-
-  ${media.mobile`
-    text-align: center;
-  `};
 `;
 
 export const Data = styled.div`
@@ -63,12 +60,23 @@ export const Data = styled.div`
       color: ${props => props.theme.textColor.default.base.toString()};
       margin-left: 1rem;
       margin-bottom: 0.75rem;
+
+      ${media.tablet`
+        margin-left: 0;
+      `};
+      ${media.mobile`
+        margin-left: 1rem;
+      `};
     }
   }
 
-  ${media.mobile`
+  ${media.tablet`
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       margin-top: 0;
+  `};
+
+  ${media.mobile`
+  flex-direction: row;
   `};
 `;

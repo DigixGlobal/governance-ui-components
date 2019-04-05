@@ -51,7 +51,7 @@ export const MainPhaseValue = styled.div`
 
 export const Quarter = styled.div`
   color: ${props => props.theme.textPrimary.default.toString()};
-  font-family: 'Futura PT Heavy', sans-serif;
+  font-family: 'Futura PT Medium', sans-serif;
   font-size: 6em;
   line-height: 0.7em;
   margin-right: 20px;

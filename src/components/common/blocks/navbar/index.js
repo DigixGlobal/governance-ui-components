@@ -2,18 +2,20 @@ import React from 'react';
 
 import Search from '@digix/gov-ui/components/common/blocks/navbar/search';
 import WalletButton from '@digix/gov-ui/components/common/blocks/navbar/wallet';
-import { HeaderWrapper, Digix } from '@digix/gov-ui/components/common/blocks/navbar/style';
-import Utility from '@digix/gov-ui/components/common/blocks/navbar/utility';
+import { Header, Digix, NavItem } from '@digix/gov-ui/components/common/blocks/navbar/style';
+import Translator from '@digix/gov-ui/components/common/blocks/navbar/translator';
 
 class NavBar extends React.Component {
   render() {
     return (
-      <HeaderWrapper>
+      <Header>
         <Search />
+        <Translator />
         <WalletButton />
-        <Digix kind="logo" />
-        <Utility />
-      </HeaderWrapper>
+        <NavItem>
+          <Digix kind="logo" />
+        </NavItem>
+      </Header>
     );
   }
 }

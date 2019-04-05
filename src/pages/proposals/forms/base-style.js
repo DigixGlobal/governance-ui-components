@@ -122,3 +122,8 @@ export const EditorContainer = styled.div`
 `;
 
 export const PreviewWrapper = styled.div``;
+
+export const Centered = styled.div`
+  display: flex;
+  justify-content: center;
+`;

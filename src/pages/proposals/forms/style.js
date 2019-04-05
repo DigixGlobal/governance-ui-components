@@ -163,3 +163,42 @@ export const ErrorMessage = styled.span`
   display: inline-block;
   font-size: 1.4rem;
 `;
+
+export const AddMoreButton = styled(Button)`
+  display: flex;
+  flex-direction: column;
+  color: ${props => props.theme.textColor.default.light.toString()};
+  transition: ${props => props.theme.transition};
+
+  & > div {
+    margin-bottom: 1rem;
+    margin-right: 0;
+    border: 1px solid ${props => props.theme.icon.default.light.toString()};
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    transition: ${props => props.theme.transition};
+
+    svg {
+      fill: ${props => props.theme.icon.default.light.toString()};
+      width: 50%;
+    }
+  }
+
+  &:hover {
+    color: ${props => props.theme.textColor.primary.base.toString()};
+
+    & > div {
+      background: ${props => props.theme.textColor.primary.fade.toString()};
+      border: 1px solid ${props => props.theme.icon.primary.base.toString()};
+
+      svg {
+        fill: ${props => props.theme.icon.primary.light.toString()};
+      }
+    }
+  }
+`;
+
+export const Note = styled.div`
+  margin-bottom: 2rem;
+`;

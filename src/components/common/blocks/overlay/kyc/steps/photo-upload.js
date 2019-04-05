@@ -30,13 +30,17 @@ class KycOverlayPhotoUpload extends KycFormStep {
   constructor(props) {
     super(props);
 
+    const t = props.translations.KycForm.Fields.Photo;
+    const tMethods = t.methods;
+    this.translations = t;
+
     this.PHOTO_PROOF_METHODS = [
       {
-        text: 'Photo Upload',
+        text: tMethods.upload,
         value: 'upload',
       },
       {
-        text: 'Webcam Capture',
+        text: tMethods.webcam,
         value: 'webcam',
       },
     ];
@@ -125,9 +129,10 @@ class KycOverlayPhotoUpload extends KycFormStep {
     });
   };
 
-  countdownRenderer = ({ seconds }) => (
-    <WebcamCountdown>{`Taking photo in ${seconds}...`}</WebcamCountdown>
-  );
+  countdownRenderer = ({ seconds }) => {
+    const t = this.translations.webcam;
+    return <WebcamCountdown>{`${t.countdown} ${seconds}...`}</WebcamCountdown>;
+  };
 
   renderCountdown = () => {
     setTimeout(() => {}, 1000); // delay timer to allow webcam to show
@@ -142,18 +147,16 @@ class KycOverlayPhotoUpload extends KycFormStep {
   };
 
   renderAllowWebcam() {
+    const t = this.translations;
+    const tWebcam = t.webcam;
+    const tInstructions = tWebcam.instructions;
+
     return (
       <PhotoVerification webcam>
         <MediaContainer>
           <GetStarted>
-            <p>
-              Please allow activation of your webcam. Once you allow access, you may need to refresh
-              in order to proceed.
-              <br />
-              You will also be asked to write down a verification code on a piece of paper. Please
-              have a paper and pen handy.
-            </p>
-            <Label>WEBCAM PREVIEW</Label>
+            <p>{tInstructions.allowActivation}</p>
+            <Label uppercase>{tWebcam.preview}</Label>
             <CamPreview>
               <WebCam
                 audio={false}
@@ -165,10 +168,9 @@ class KycOverlayPhotoUpload extends KycFormStep {
               />
             </CamPreview>
             <p>
-              Only continue when you can see the preview above.
+              {tInstructions.continueOnPreview}
               <br />
-              If you do not have a webcam or are unable to see the preview after granting
-              permission, you will have the option of uploading an image instead.
+              {tInstructions.uploadAlternative}
             </p>
             <Button
               secondary
@@ -176,7 +178,7 @@ class KycOverlayPhotoUpload extends KycFormStep {
               data-digix="KycForm-Webcam-GetStarted"
               onClick={this.toggleWebcamDisplay}
             >
-              Get Started
+              {tWebcam.getStarted}
             </Button>
           </GetStarted>
         </MediaContainer>
@@ -188,15 +190,16 @@ class KycOverlayPhotoUpload extends KycFormStep {
     const { identificationPoseDataUrl, identificationPoseVerificationCode } = this.state.formValues;
     const { ticking, showWebcam } = this.state;
 
+    const t = this.translations;
+    const tWebcam = t.webcam;
+    const tInstructions = tWebcam.instructions;
+
     return (
       <PhotoVerification>
         <MediaContainer>
           <GetStarted>
             <IdentificationCode>{identificationPoseVerificationCode}</IdentificationCode>
-            <p>
-              Write the above code on a piece of paper and show it to the webcam along with your
-              face and your identification document.
-            </p>
+            <p>{tInstructions.includeVerificationCode}</p>
             <PhotoViewer>
               <SelfieGuide>
                 <GuideItem>
@@ -247,7 +250,7 @@ class KycOverlayPhotoUpload extends KycFormStep {
                 data-digix="KycForm-Webcam-TakePhoto"
                 onClick={() => this.toggleTicking()}
               >
-                Take a Photo (5 seconds countdown)
+                {tWebcam.takePhoto}
               </Button>
             )}
           </GetStarted>
@@ -270,15 +273,15 @@ class KycOverlayPhotoUpload extends KycFormStep {
   renderPhotoUpload() {
     const { identificationPoseDataUrl, identificationPoseVerificationCode } = this.state.formValues;
 
+    const t = this.translations;
+    const tUpload = t.upload;
+
     return (
       <PhotoVerification>
         <MediaContainer>
           <GetStarted>
             <IdentificationCode>{identificationPoseVerificationCode}</IdentificationCode>
-            <p>
-              Write the above code on a piece of paper and show it to the webcam along with your
-              face and your identification document.
-            </p>
+            <p>{tUpload.instructions}</p>
             <PhotoViewer>
               <SelfieGuide>
                 <GuideItem>
@@ -302,7 +305,7 @@ class KycOverlayPhotoUpload extends KycFormStep {
               </Photo>
             </PhotoViewer>
             <FieldGroup>
-              {this.renderField('identificationPoseDataUrl', { caption: 'Upload Photo' })}
+              {this.renderField('identificationPoseDataUrl', { caption: tUpload.submit })}
             </FieldGroup>
           </GetStarted>
         </MediaContainer>
@@ -312,11 +315,13 @@ class KycOverlayPhotoUpload extends KycFormStep {
 
   render() {
     const { proofMethod } = this.state;
+    const t = this.translations;
+
     return (
       <FormSection>
         <FieldGroup>
           <FieldItem>
-            <Label>Photo Proof Method</Label>
+            <Label>{t.proofMethod}</Label>
             <Select
               fluid
               id="photo-upload"
@@ -339,6 +344,7 @@ KycOverlayPhotoUpload.propTypes = {
   formOptions: object.isRequired,
   idVerificationCode: string.isRequired,
   setValidForm: func.isRequired,
+  translations: object.isRequired,
 };
 
 export default KycOverlayPhotoUpload;

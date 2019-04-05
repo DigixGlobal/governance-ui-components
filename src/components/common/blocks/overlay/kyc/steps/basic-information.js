@@ -13,6 +13,9 @@ class KycOverlayBasicInformation extends KycFormStep {
   constructor(props) {
     super(props);
 
+    const t = props.translations.KycForm.Fields.BasicInformation;
+    this.translations = t;
+
     const { formValues } = props;
     this.state = {
       formValues: {
@@ -40,7 +43,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.firstName ? false : undefined,
-        label: 'First Name',
+        label: t.firstName,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.input,
       },
@@ -50,7 +53,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.lastName ? false : undefined,
-        label: 'Last Name',
+        label: t.lastName,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.input,
       },
@@ -60,7 +63,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.date.format,
         errorMessage: null,
         hasError: stateValues.birthdate ? false : undefined,
-        label: 'Date of Birth',
+        label: t.birthdate,
         pattern: this.REGEX.date,
         type: this.FIELD_TYPES.input,
       },
@@ -70,7 +73,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.gender ? false : undefined,
-        label: 'Gender',
+        label: t.gender,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
       },
@@ -80,7 +83,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.birthCountry ? false : undefined,
-        label: 'Country of Birth',
+        label: t.birthCountry,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
       },
@@ -90,7 +93,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.nationality ? false : undefined,
-        label: 'Nationality',
+        label: t.nationality,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
       },
@@ -100,7 +103,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: 'Invalid phone number.',
         errorMessage: null,
         hasError: stateValues.phoneNumber ? false : undefined,
-        label: 'Phone Number (Including Country Code)',
+        label: t.phoneNumber,
         pattern: this.REGEX.phoneNumber,
         type: this.FIELD_TYPES.input,
       },
@@ -110,7 +113,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.employmentStatus ? false : undefined,
-        label: 'Employment Status',
+        label: t.employmentStatus,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
       },
@@ -120,7 +123,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.employmentIndustry ? false : undefined,
-        label: 'Industry',
+        label: t.employmentIndustry,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
       },
@@ -130,7 +133,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.incomeRange ? false : undefined,
-        label: 'Income Range Per Annum (USD)',
+        label: t.incomeRange,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
       },
@@ -140,7 +143,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.identificationProofType ? false : undefined,
-        label: 'National I.D (Must Match Provided Nationality)',
+        label: t.identificationProofType,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
       },
@@ -150,7 +153,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.identificationProofDataUrl ? false : undefined,
-        label: this.LABELS.imageFile,
+        label: t.identificationProofDataUrl,
         pattern: null,
         type: this.FIELD_TYPES.fileInput,
       },
@@ -160,7 +163,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.date.format,
         errorMessage: null,
         hasError: stateValues.identificationProofExpirationDate ? false : undefined,
-        label: 'I.D Expiration Date',
+        label: t.identificationProofExpirationDate,
         pattern: this.REGEX.date,
         type: this.FIELD_TYPES.input,
       },
@@ -170,7 +173,7 @@ class KycOverlayBasicInformation extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.identificationProofNumber ? false : undefined,
-        label: 'I.D Number',
+        label: t.identificationProofNumber,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.input,
       },
@@ -179,6 +182,7 @@ class KycOverlayBasicInformation extends KycFormStep {
 
   render() {
     const { identificationProofDataUrl } = this.state.formValues;
+    const t = this.translations;
 
     return (
       <FormSection>
@@ -213,7 +217,9 @@ class KycOverlayBasicInformation extends KycFormStep {
           <FieldItem>
             <FieldGroup column>
               {this.renderField('identificationProofType')}
-              {this.renderField('identificationProofDataUrl', { caption: 'Upload National I.D' })}
+              {this.renderField('identificationProofDataUrl', {
+                caption: t.identificationProofDataUrl,
+              })}
             </FieldGroup>
 
             <FieldGroup>
@@ -244,6 +250,7 @@ KycOverlayBasicInformation.propTypes = {
   formOptions: object.isRequired,
   formValues: object.isRequired,
   setValidForm: func.isRequired,
+  translations: object.isRequired,
 };
 
 export default KycOverlayBasicInformation;

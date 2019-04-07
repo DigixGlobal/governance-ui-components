@@ -10,10 +10,15 @@ import { VotingStages } from '@digix/gov-ui/constants';
 
 class RevealVoteButton extends React.PureComponent {
   showOverlay = () => {
-    const { history, proposalId, showRightPanelAction, proposal } = this.props;
+    const { history, proposalId, showRightPanelAction, proposal, translations } = this.props;
     showRightPanelAction({
       component: (
-        <RevealVoteOverlay history={history} proposalId={proposalId} proposal={proposal} />
+        <RevealVoteOverlay
+          history={history}
+          proposalId={proposalId}
+          proposal={proposal}
+          translations={translations}
+        />
       ),
       show: true,
     });
@@ -25,6 +30,7 @@ class RevealVoteButton extends React.PureComponent {
       proposal,
       proposal: { currentVotingRound, isSpecial, isActive },
       votes,
+      translations: { buttons },
     } = this.props;
 
     const vote = votes[proposal.proposalId];
@@ -51,7 +57,7 @@ class RevealVoteButton extends React.PureComponent {
     if (!withinDeadline) return null;
     return (
       <Button kind="round" large onClick={this.showOverlay} data-digix="Proposal-Reveal-Vote">
-        Reveal Vote
+        {buttons.revealVote}
       </Button>
     );
   }
@@ -66,6 +72,7 @@ RevealVoteButton.propTypes = {
   history: object.isRequired,
   votes: object,
   showRightPanelAction: func.isRequired,
+  translations: object.isRequired,
 };
 
 RevealVoteButton.defaultProps = {

@@ -10,7 +10,14 @@ class ModeratorButtons extends React.Component {
       addressDetails,
       proposal: { data },
       history,
+      translations: {
+        common: { buttons },
+        project,
+        snackbar: { snackbars },
+      },
     } = this.props;
+
+    const buttonTranslations = { buttons, project, snackbars };
     return (
       <Fragment>
         <EndorseButton
@@ -19,12 +26,14 @@ class ModeratorButtons extends React.Component {
           endorser={data.endorser}
           proposalId={data.proposalId}
           history={history}
+          translations={buttonTranslations}
         />
         <ApproveButton
           history={history}
           isModerator={addressDetails.data.isModerator}
           proposal={data}
           proposalId={data.proposalId}
+          translations={buttonTranslations}
         />
       </Fragment>
     );
@@ -36,5 +45,6 @@ ModeratorButtons.propTypes = {
   proposal: object.isRequired,
   addressDetails: object.isRequired,
   history: object.isRequired,
+  translations: object.isRequired,
 };
 export default ModeratorButtons;

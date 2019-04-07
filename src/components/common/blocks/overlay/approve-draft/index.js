@@ -51,9 +51,13 @@ class ApproveProposalOverlay extends React.Component {
   };
 
   onTransactionSuccess = txHash => {
-    const { history, showHideAlertAction } = this.props;
+    const {
+      history,
+      showHideAlertAction,
+      translations: { snackbars },
+    } = this.props;
     showHideAlertAction({
-      message: 'Your Moderator Vote transaction is pending confirmation. See More',
+      message: snackbars.approveProject.message,
       txHash,
     });
 
@@ -74,7 +78,12 @@ class ApproveProposalOverlay extends React.Component {
   }
 
   handleSubmit = () => {
-    const { web3Redux, addresses, proposalId } = this.props;
+    const {
+      web3Redux,
+      addresses,
+      proposalId,
+      translations: { snackbars },
+    } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
@@ -84,8 +93,8 @@ class ApproveProposalOverlay extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Approve Project',
-      header: 'Project',
+      caption: snackbars.approveProject.title,
+      header: snackbars.abortProject.txUiHeader,
       type: 'txVisualization',
     };
 
@@ -114,6 +123,12 @@ class ApproveProposalOverlay extends React.Component {
 
   render() {
     const { hasVoted, vote } = this.state;
+    const {
+      translations: {
+        project: { overlays },
+        buttons,
+      },
+    } = this.props;
     const votedYes = hasVoted && vote;
     const votedNo = hasVoted && !vote;
 
@@ -132,18 +147,15 @@ class ApproveProposalOverlay extends React.Component {
 
     return (
       <IntroContainer>
-        <Header uppercase>Approving Draft</Header>
-        <p>
-          Approval from moderators is needed in order to move a draft to the proposal stage. Please
-          make your vote here if you’re in approval for the draft.
-        </p>
+        <Header uppercase>{overlays.moderatorVoteHeader}</Header>
+        <p>{overlays.modertorVoteDescription}</p>
         <ResponseButton voteValue style={{ marginBottom: '0' }}>
-          Yes
+          {buttons.yes}
         </ResponseButton>
-        <ResponseButton voteValue={false}>No</ResponseButton>
+        <ResponseButton voteValue={false}>{buttons.no}</ResponseButton>
         {hasVoted && (
           <Button secondary large fluid onClick={this.handleSubmit}>
-            Confirm My Vote
+            {buttons.confimVote}
           </Button>
         )}
       </IntroContainer>
@@ -163,6 +175,7 @@ ApproveProposalOverlay.propTypes = {
   showRightPanelAction: func.isRequired,
   showTxSigningModal: func.isRequired,
   web3Redux: object.isRequired,
+  translations: object.isRequired,
 };
 
 const mapStateToProps = state => ({

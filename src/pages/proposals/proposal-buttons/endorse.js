@@ -34,7 +34,13 @@ class EndorseProjectButton extends React.PureComponent {
     });
 
   handleSubmit = () => {
-    const { web3Redux, ChallengeProof, addresses, proposalId } = this.props;
+    const {
+      web3Redux,
+      ChallengeProof,
+      addresses,
+      proposalId,
+      translations: { snackbars },
+    } = this.props;
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -43,8 +49,8 @@ class EndorseProjectButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Endorse Project',
-      header: 'Project',
+      caption: snackbars.endorse.title,
+      header: snackbars.endorse.txUiHeader,
       type: 'txVisualization',
     };
     const web3Params = {
@@ -69,7 +75,7 @@ class EndorseProjectButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Your Endorse Project Transaction is pending confirmation. See More',
+        message: snackbars.endorse.message,
         txHash,
       });
 
@@ -92,13 +98,13 @@ class EndorseProjectButton extends React.PureComponent {
     return executeContractFunction(payload);
   };
   render() {
-    const { stage, isModerator, endorser } = this.props;
+    const { stage, isModerator, endorser, translations } = this.props;
     if (stage !== ProposalStages.idea || !isModerator || (endorser && endorser !== EMPTY_HASH))
       return null;
 
     return (
       <Button kind="round" large onClick={this.handleSubmit}>
-        Endorse
+        {translations.buttons.endorse}
       </Button>
     );
   }
@@ -118,6 +124,7 @@ EndorseProjectButton.propTypes = {
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
+  translations: object.isRequired,
 };
 
 EndorseProjectButton.defaultProps = {

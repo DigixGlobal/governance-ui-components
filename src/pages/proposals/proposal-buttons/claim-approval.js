@@ -8,7 +8,7 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-
+import { injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import {
   DEFAULT_GAS,
@@ -70,7 +70,13 @@ class ClaimApprovalButton extends React.PureComponent {
   };
 
   handleSubmit = useMaxClaim => () => {
-    const { web3Redux, ChallengeProof, addresses, proposalId } = this.props;
+    const {
+      web3Redux,
+      ChallengeProof,
+      addresses,
+      proposalId,
+      translations: { snackbars },
+    } = this.props;
     const { totalTransactions } = this.state;
     const { abi, address } = getContract(DaoVotingClaims, network);
     const contract = web3Redux
@@ -79,8 +85,8 @@ class ClaimApprovalButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Claim Approval',
-      header: 'Project',
+      caption: snackbars.claimApproval.title,
+      header: snackbars.claimApproval.txUiHeader,
       type: 'txVisualization',
     };
     const web3Params = {
@@ -107,12 +113,13 @@ class ClaimApprovalButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       const { draftVoting } = this.props;
+      const injectedMessage = injectTranslation(snackbars.claimApproval.multiClaimMessage, {
+        currentClaimStep: draftVoting.currentClaimStep,
+        totalTransactions,
+      });
+
       this.props.showHideAlert({
-        message: useMaxClaim
-          ? `Your Claim Approval Transaction ${
-              draftVoting.currentClaimStep
-            } of ${totalTransactions} is pending confirmation. See More`
-          : 'Your Claim Approval Transaction is pending confirmation. See More',
+        message: useMaxClaim ? injectedMessage : snackbars.claimApproval.message,
         txHash,
       });
       this.props.showRightPanel({
@@ -158,6 +165,7 @@ class ClaimApprovalButton extends React.PureComponent {
       votingStage,
       daoConfig,
       daoDetails: { data: daoDetails },
+      translations: { buttons },
     } = this.props;
     const { isMultiStep, totalTransactions, claimingStep } = this.state;
     const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;
@@ -187,7 +195,8 @@ class ClaimApprovalButton extends React.PureComponent {
     const hasPendingClaim =
       this.hasPendingClaim() || (claimingStep && claimingStep === draftVoting.currentClaimStep);
 
-    const claimCaption = hasPendingClaim ? `Claiming ` : `Claim Approval `;
+    // TODO: Add Translation
+    const claimCaption = hasPendingClaim ? `Claiming ` : buttons.claimModeratorApproavl;
 
     return (
       <Button
@@ -207,7 +216,7 @@ class ClaimApprovalButton extends React.PureComponent {
       >
         {canClaim && tentativePassed
           ? `${claimCaption} ${draftVoting.currentClaimStep}/${totalTransactions}`
-          : 'Claim Failed Project'}
+          : buttons.claimFailedProject}
       </Button>
     );
   }
@@ -235,6 +244,7 @@ ClaimApprovalButton.propTypes = {
   transactions: object,
   votingStage: string,
   isProposer: bool.isRequired,
+  translations: object.isRequired,
 };
 
 ClaimApprovalButton.defaultProps = {

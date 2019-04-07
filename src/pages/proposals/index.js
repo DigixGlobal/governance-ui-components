@@ -19,7 +19,7 @@ import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { Message, Notifications } from '@digix/gov-ui/components/common/common-styles';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { truncateNumber, injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { withFetchProposal } from '@digix/gov-ui/api/graphql-queries/proposal';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
@@ -217,7 +217,13 @@ class Proposal extends React.Component {
   }
 
   getPastVotingResults = () => {
-    const { daoInfo, proposalDetails } = this.props;
+    const {
+      daoInfo,
+      proposalDetails,
+      // Translations: {
+      //   project: { votingResult },
+      // },
+    } = this.props;
     const pastVotes = [];
     if (proposalDetails.data.isSpecial === true) {
       pastVotes.push({
@@ -324,6 +330,7 @@ class Proposal extends React.Component {
     prl ? (
       <Notifications warning withIcon>
         <WarningIcon kind="warning" />
+        {/* TODO: Add Translatio */}
         <Message note>
           This project can no longer claim funding due to Policy, Regulatory or Legal reasons, even
           if voting passes. Please contact us if you have any queries.
@@ -341,6 +348,11 @@ class Proposal extends React.Component {
         data: { address: currentUser },
       },
       daoConfig,
+      Translations: {
+        data: {
+          project: { alerts },
+        },
+      },
     } = this.props;
 
     if (data.claimed) return null;
@@ -364,21 +376,21 @@ class Proposal extends React.Component {
       !pastDeadline &&
       currentTime > votingStruct.deadline * 1000;
 
+    const injectedDeadline = injectTranslation(alerts.claimVotingresult, {
+      dateTime: moment(deadline).format('MM/DD/YYYY hh:mm A'),
+    });
     if (canClaim && currentUser === proposer)
       return (
         <Notifications warning withIcon>
           <WarningIcon kind="warning" />
-          <Message note>
-            The voting result shows that your project passes the voting. Please click the button to
-            send transaction(s) to claim this result on the blockchain. You need to do this action
-            before {moment(deadline).format('MM/DD/YYYY hh:mm A')}, or your project will auto fail.
-          </Message>
+          <Message note>{injectedDeadline}</Message>
         </Notifications>
       );
     if (tentativePassed && pastDeadline && currentUser !== proposer)
       return (
         <Notifications warning withIcon>
           <WarningIcon kind="warning" small />
+          {/* TODO: Add Translation */}
           <Message note>
             The voting result was not claimed before the claiming deadline. This project will be
             auto failed.
@@ -395,6 +407,11 @@ class Proposal extends React.Component {
       },
       addressDetails: {
         data: { address: currentUser },
+      },
+      Translations: {
+        data: {
+          project: { alerts },
+        },
       },
     } = this.props;
 
@@ -424,15 +441,18 @@ class Proposal extends React.Component {
       ((!tentativePassed && isVotingDeadlineOver) || pastDeadline) &&
       currentUser === proposer
     )
+      // TODO: Add translation commit voting
+      // <Message note>
+      //   Your project fails the voting, either by voting results or its already past the deadline for
+      //   claiming voting results.
+      // </Message>;
       return (
         <Notifications warning withIcon>
           <WarningIcon kind="warning" />
           <Message note>
-            Your project fails the voting, either by voting results or its already past the deadline
-            for claiming voting results.
             {data.currentVotingRound <= 0
-              ? ' Please click the button below to claim your failed project and get back your collateral.'
-              : ''}
+              ? alerts.failedModeratorVoting
+              : 'Your project fails the voting, either by voting results or its already past the deadline for claiming voting results.'}
           </Message>
         </Notifications>
       );
@@ -458,6 +478,7 @@ class Proposal extends React.Component {
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
+        project,
       },
     } = Translations;
 
@@ -470,6 +491,7 @@ class Proposal extends React.Component {
           <Header>
             <div>
               <Button kind="tag" filled>
+                {/* TODO: Add Translation */}
                 Special
               </Button>
               <Button kind="tag" showIcon>
@@ -498,7 +520,7 @@ class Proposal extends React.Component {
           </Header>
           <FundingInfo>
             <InfoItem>
-              <ItemTitle>Submitted By</ItemTitle>
+              <ItemTitle>{project.submittedBy}</ItemTitle>
               <Data>
                 <span>{displayName}</span>
               </Data>
@@ -552,6 +574,7 @@ class Proposal extends React.Component {
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
+        project,
       },
       data: translations,
     } = Translations;
@@ -600,14 +623,14 @@ class Proposal extends React.Component {
 
           <FundingInfo>
             <InfoItem column>
-              <ItemTitle>Submitted By</ItemTitle>
+              <ItemTitle>{project.project}</ItemTitle>
               <Data>
                 <span>{displayName}</span>
               </Data>
             </InfoItem>
 
             <InfoItem outlined>
-              <ItemTitle>Milestones</ItemTitle>
+              <ItemTitle>{project.milestones}</ItemTitle>
               <Data>
                 <span data-digix="milestone-label">{dijixObject.milestones.length || 0}</span>
               </Data>
@@ -658,7 +681,7 @@ class Proposal extends React.Component {
   render() {
     const { proposalDetails } = this.props;
     if (proposalDetails.fetching === null || proposalDetails.fetching || !proposalDetails.data)
-      return <div>Fetching Project Details</div>;
+      return <div>Fetching Project Details</div>; // TODO: Add Translation
 
     if (proposalDetails.data.isSpecial) {
       return this.renderSpecialProposal();

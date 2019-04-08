@@ -260,8 +260,10 @@ class ChangeFundingOverlay extends React.Component {
 
     return (
       <IntroContainer>
+        {/* TODO: Add Translation */}
         <Header uppercase>Edit Funding</Header>
         <FieldItem>
+          {/* TODO: Add Translation */}
           <Label>Reward Expected</Label>
           <TextField
             type="number"
@@ -280,6 +282,7 @@ class ChangeFundingOverlay extends React.Component {
         )}
         {hasNegative && (
           <FieldItem>
+            {/* TODO: Add Translation */}
             <ErrorCaption>Negative value is not allowed</ErrorCaption>
           </FieldItem>
         )}

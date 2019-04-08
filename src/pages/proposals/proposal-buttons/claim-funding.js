@@ -78,6 +78,7 @@ class ClaimFundingButton extends React.PureComponent {
     };
 
     const onTransactionSuccess = txHash => {
+      // TODO: Add Translation
       this.props.showHideAlert({
         message: 'Your Claim Funding Transaction is pending confirmation. See More',
         txHash,

@@ -56,8 +56,7 @@ class CommentThread extends React.Component {
     const { sortBy } = this.state;
     const { ChallengeProof, proposalId, uid } = this.props;
 
-    this.props.getAddressDetails(uid)
-    .then(() => {
+    this.props.getAddressDetails(uid).then(() => {
       const { address, quarterPoint, reputationPoint } = this.props.addressDetails;
       const userPoints = {};
       userPoints[address] = {
@@ -272,14 +271,26 @@ class CommentThread extends React.Component {
 
   render() {
     const { currentUser, sortBy, threads } = this.state;
+    const {
+      Translations: {
+        data: {
+          project,
+          common: { buttons },
+        },
+      },
+    } = this.props;
     const { canComment } = currentUser;
     const hasComments = threads !== null && threads.edges.length > 0;
 
     return (
       <div>
-        <Title>Discussions</Title>
-        <CommentTextEditor addComment={this.addThread} canComment={canComment} />
-        {!hasComments && <p>There are no comments to show.</p>}
+        <Title>{project.discussions}</Title>
+        <CommentTextEditor
+          addComment={this.addThread}
+          canComment={canComment}
+          translations={{ project, buttons }}
+        />
+        {!hasComments && <p>{project.noComments}</p>}
         {hasComments && (
           <section>
             <CommentFilter>
@@ -293,8 +304,13 @@ class CommentThread extends React.Component {
             </CommentFilter>
             <CommentList>{this.renderThreads(threads)}</CommentList>
             {threads.hasNextPage && (
-              <Button data-digix="Comment-Load-Thread" kind="text" xsmall onClick={() => this.loadMore(threads.endCursor)}>
-                Load more comments...
+              <Button
+                data-digix="Comment-Load-Thread"
+                kind="text"
+                xsmall
+                onClick={() => this.loadMore(threads.endCursor)}
+              >
+                {project.loadMoreComments || 'Load more comments...'}
               </Button>
             )}
           </section>
@@ -316,6 +332,7 @@ CommentThread.propTypes = {
   rootCommentId: object,
   showHideAlert: func.isRequired,
   uid: string,
+  Translations: object.isRequired,
 };
 
 CommentThread.defaultProps = {
@@ -333,6 +350,7 @@ const mapStateToProps = ({ daoServer, infoServer }) => ({
   addressDetails: infoServer.AddressDetails.data,
   ChallengeProof: daoServer.ChallengeProof,
   rootCommentId: daoServer.ProposalDaoDetails,
+  Translations: daoServer.Translations,
 });
 
 export default withApollo(

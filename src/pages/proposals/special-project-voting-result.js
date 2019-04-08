@@ -84,7 +84,7 @@ class SpecialProjectVotingResult extends React.Component {
   };
 
   render() {
-    const { proposal } = this.props;
+    const { proposal, translations } = this.props;
 
     const stats = this.getProposalVotingPhaseStats(proposal);
 
@@ -97,7 +97,7 @@ class SpecialProjectVotingResult extends React.Component {
       <div>
         <AccordionItem voting>
           <Header>
-            <VotingResultHeader votingRound={0} />
+            <VotingResultHeader votingRound={0} translations={translations} />
           </Header>
           <Content>
             <VotingResultWrapper>
@@ -178,6 +178,7 @@ const { object } = PropTypes;
 SpecialProjectVotingResult.propTypes = {
   proposal: object,
   daoInfo: object.isRequired,
+  translations: object.isRequired,
 };
 
 SpecialProjectVotingResult.defaultProps = {

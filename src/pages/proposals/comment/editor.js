@@ -46,14 +46,18 @@ export default class CommentTextEditor extends React.Component {
 
   render() {
     const { content } = this.state;
-    const { canComment } = this.props;
+    const {
+      canComment,
+      translations: { project, buttons },
+    } = this.props;
     const isContentEmpty = content === '';
 
+    // TODO: Add Translation
     return (
       <EditorContainer>
         <CommentEditor>
           <Author>
-            <span>Comment as&nbsp;</span>
+            <span>{project.commentAs}&nbsp;</span>
             {renderDisplayName('CommentEditor-DisplayName')}
           </Author>
           <CommentEditorContainer>
@@ -68,7 +72,7 @@ export default class CommentTextEditor extends React.Component {
             <CommentTextArea
               disabled={!canComment}
               onChange={this.onChange}
-              placeholder="Write your comment here."
+              placeholder={project.commentPlaceHolder}
               value={content}
               data-digix="Thread-Field"
             />
@@ -79,7 +83,7 @@ export default class CommentTextEditor extends React.Component {
             onClick={() => this.createComment()}
             data-digix="Thread-Button"
           >
-            Post Comment
+            {buttons.postComment}
           </PostCommentButton>
         </CommentEditor>
       </EditorContainer>
@@ -87,12 +91,13 @@ export default class CommentTextEditor extends React.Component {
   }
 }
 
-const { bool, func } = PropTypes;
+const { bool, func, object } = PropTypes;
 
 CommentTextEditor.propTypes = {
   addComment: func.isRequired,
   callback: func, // to call after a comment is submitted
   canComment: bool,
+  translations: object.isRequired,
 };
 
 CommentTextEditor.defaultProps = {

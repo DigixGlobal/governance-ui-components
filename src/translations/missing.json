@@ -59,12 +59,10 @@
       "milestoneFundExceeds": "Sum of Reward Expected and Milestone Fundings must not exceed {{limit}} ETH",
       "milestoneFundNegative": "Negative value is not allowed"
     },
-    "Hints": {
-      "overfilled": "Cannot lock more than your balance ({{balance}} DGD).",
-      "maxStake": "You can only stake up to {{maxAllowance}} DGDs",
-      "stake": "This will give you {{stake}} STAKE in DigixDAO"
-    }
+    "loadMoreComments": "Load more comments...",
+    "configurationDetails": "Configuration Details"
   },
+
   "profile": {
     "Kyc": {
       "Statuses": {
@@ -90,9 +88,17 @@
   "lockDgd": {
     "warning": {
       "unlock": "Please note that once you lock, you can only unlock your DGDs during the **Locking Phase**."
+    },
+    "Hints": {
+      "overfilled": "Cannot lock more than your balance ({{balance}} DGD).",
+      "maxStake": "You can only stake up to {{maxAllowance}} DGDs"
     }
   },
   "transactionHistory": {
     "pendingConfirmation": "{{actual}}/{{total}} Confirmation(s)"
+  },
+  "spinner": {
+    "pleaseWait": "Please wait.",
+    "hold": "Hold tight while your project is being uploaded to IPFS."
   }
 }

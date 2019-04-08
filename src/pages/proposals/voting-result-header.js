@@ -6,11 +6,7 @@ import { AccordionHeading } from './style';
 const VotingResultHeader = ({ votingRound, translations }) => {
   switch (votingRound) {
     case -1:
-      return (
-        <AccordionHeading uppercase>
-          {translations.moderatorApproval}Moderator Approval
-        </AccordionHeading>
-      );
+      return <AccordionHeading uppercase>{translations.moderatorApproval}</AccordionHeading>;
     case 0:
       return <AccordionHeading uppercase>{translations.proposalVote}</AccordionHeading>;
     case 1:

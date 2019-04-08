@@ -28,6 +28,7 @@ class VotingAccordion extends React.PureComponent {
 
   renderAccordionItem = (item, i) => {
     const { selectedIndex, accordionItems } = this.state;
+    const { translations } = this.props;
     const acc = accordionItems.find(a => a.id === selectedIndex);
     const deadline = item.voting.votingDeadline
       ? item.voting.votingDeadline
@@ -52,7 +53,7 @@ class VotingAccordion extends React.PureComponent {
         </Header>
         {show && (
           <Content>
-            <VotingResult voting={item.voting} daoInfo={item.daoInfo} />
+            <VotingResult voting={item.voting} daoInfo={item.daoInfo} translations={translations} />
           </Content>
         )}
       </AccordionItem>
@@ -66,10 +67,11 @@ class VotingAccordion extends React.PureComponent {
   }
 }
 
-const { array } = PropTypes;
+const { array, object } = PropTypes;
 
 VotingAccordion.propTypes = {
   votingResults: array.isRequired,
+  translations: object.isRequired,
 };
 
 export default VotingAccordion;

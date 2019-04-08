@@ -19,15 +19,8 @@ import {
   VotingProgressBar,
 } from '@digix/gov-ui/pages/proposals/style';
 
-// eslint-disable-next-line
-const countdownRenderer = ({
-  date,
-  days,
-  hours,
-  minutes,
-  seconds,
-  completed,
-}) => {
+// eslint-disable-next-line react/prop-types
+const countdownRenderer = ({ date, days, hours, minutes, seconds, completed }) => {
   const pastDate = moment().add(date, 'milliseconds');
 
   if (completed) {
@@ -77,7 +70,13 @@ class VotingResult extends React.Component {
   };
 
   render() {
-    const { voting } = this.props;
+    const {
+      voting,
+      translations: {
+        project: { votingResult },
+        common: { buttons },
+      },
+    } = this.props;
 
     const stats = this.getVotingStats(voting);
 
@@ -91,12 +90,16 @@ class VotingResult extends React.Component {
           <ProgressCol past>
             <Label>
               <QuorumLabel past flexWidth={stats.minimumQuorum}>
-                Quorum
+                {votingResult.quorum}
               </QuorumLabel>
               <MinimumLabel past flexWidth={100 - stats.minimumQuorum}>
-                <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
+                <span>
+                  {votingResult.miniumQuorumRequired}: {stats.minimumQuorum}%
+                </span>
                 <QuorumInfoCol>
-                  <span>{stats.votes} Votes</span>
+                  <span>
+                    {stats.votes} {votingResult.votes}
+                  </span>
 
                   <Countdown
                     date={stats.votingDeadline - Date.now()}
@@ -116,13 +119,19 @@ class VotingResult extends React.Component {
           <ProgressCol past>
             <Label>
               <ApprovalLabel past flexWidth={stats.minimumApproval}>
-                Current Approval Rate
+                {votingResult.currentApprovalRate}
               </ApprovalLabel>
               <MinimumLabel past flexWidth={100 - stats.minimumApproval}>
-                <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
+                <span>
+                  {votingResult.minimumApproval}: {stats.minimumApproval}%
+                </span>
                 <QuorumInfoCol>
-                  <span>YES:&nbsp;{yesVotes} DGD</span>
-                  <span>NO:&nbsp;{noVotes} DGD</span>
+                  <span>
+                    {buttons.yes}:&nbsp;{yesVotes} DGD
+                  </span>
+                  <span>
+                    {buttons.no}:&nbsp;{noVotes} DGD
+                  </span>
                 </QuorumInfoCol>
               </MinimumLabel>
             </Label>
@@ -142,6 +151,7 @@ const { object } = PropTypes;
 VotingResult.propTypes = {
   voting: object,
   daoInfo: object.isRequired,
+  translations: object.isRequired,
 };
 
 VotingResult.defaultProps = {

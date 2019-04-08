@@ -127,7 +127,7 @@ class VotingResult extends React.Component {
   };
 
   render() {
-    const { proposal } = this.props;
+    const { proposal, translations } = this.props;
     const isOnModeratorVoting = proposal.votingStage === VotingStages.draft;
     const isOnProposalVoting =
       proposal.votingStage === VotingStages.commit || proposal.votingStage === VotingStages.reveal;
@@ -149,7 +149,10 @@ class VotingResult extends React.Component {
       <div>
         <AccordionItem voting>
           <Header>
-            <VotingResultHeader votingRound={proposal.currentVotingRound} />
+            <VotingResultHeader
+              votingRound={proposal.currentVotingRound}
+              translations={translations}
+            />
           </Header>
           <Content>
             <VotingResultWrapper>
@@ -232,6 +235,7 @@ const { object } = PropTypes;
 VotingResult.propTypes = {
   proposal: object,
   daoInfo: object.isRequired,
+  translations: object.isRequired,
 };
 
 VotingResult.defaultProps = {

@@ -220,14 +220,17 @@ class Proposal extends React.Component {
     const {
       daoInfo,
       proposalDetails,
-      // Translations: {
-      //   project: { votingResult },
-      // },
+      Translations: {
+        data: {
+          project: { votingResult },
+        },
+      },
     } = this.props;
+
     const pastVotes = [];
     if (proposalDetails.data.isSpecial === true) {
       pastVotes.push({
-        title: 'Proposal Vote Results',
+        title: votingResult.proposalVoteResults,
         voting: proposalDetails.data.votingRounds[0],
         daoInfo,
       });
@@ -235,7 +238,7 @@ class Proposal extends React.Component {
 
     if (proposalDetails.data.currentVotingRound === -1) {
       pastVotes.push({
-        title: 'Moderator Approval Results',
+        title: votingResult.moderatorApprovalResults,
         voting: proposalDetails.data.draftVoting,
         daoInfo,
       });
@@ -243,51 +246,57 @@ class Proposal extends React.Component {
 
     if (proposalDetails.data.currentVotingRound === 0) {
       pastVotes.push({
-        title: 'Moderator Approval Results',
+        title: votingResult.moderatorApprovalResults,
         voting: proposalDetails.data.draftVoting,
         daoInfo,
       });
       pastVotes.push({
-        title: 'Proposal Vote Results',
+        title: votingResult.proposalVoteResults,
         voting: proposalDetails.data.votingRounds[0],
         daoInfo,
       });
     }
     if (proposalDetails.data.currentVotingRound === 1) {
       pastVotes.push({
-        title: 'Moderator Approval Results',
+        title: votingResult.moderatorApprovalResults,
         voting: proposalDetails.data.draftVoting,
         daoInfo,
       });
       pastVotes.push({
-        title: 'Proposal Vote Results',
+        title: votingResult.proposalVoteResults,
         voting: proposalDetails.data.votingRounds[0],
         daoInfo,
       });
       pastVotes.push({
-        title: 'Review Vote 1 Results',
+        title: injectTranslation(votingResult.reviewVoteResults, {
+          votingRound: '1',
+        }),
         voting: proposalDetails.data.votingRounds[1],
         daoInfo,
       });
     }
     if (proposalDetails.data.currentVotingRound === 2) {
       pastVotes.push({
-        title: 'Moderator Approval Results',
+        title: votingResult.moderatorApprovalResults,
         voting: proposalDetails.data.draftVoting,
         daoInfo,
       });
       pastVotes.push({
-        title: 'Proposal Vote Results',
+        title: votingResult.proposalVoteResults,
         voting: proposalDetails.data.votingRounds[0],
         daoInfo,
       });
       pastVotes.push({
-        title: 'Review Vote 1 Results',
+        title: injectTranslation(votingResult.reviewVoteResults, {
+          votingRound: '1',
+        }),
         voting: proposalDetails.data.votingRounds[1],
         daoInfo,
       });
       pastVotes.push({
-        title: 'Review Vote 2 Results',
+        title: injectTranslation(votingResult.reviewVoteResults, {
+          votingRound: '2',
+        }),
         voting: proposalDetails.data.votingRounds[2],
         daoInfo,
       });
@@ -480,6 +489,7 @@ class Proposal extends React.Component {
         dashboard: { ProposalCard: cardTranslation },
         project,
       },
+      data: translations,
     } = Translations;
 
     return (
@@ -507,13 +517,13 @@ class Proposal extends React.Component {
                   addressDetails={addressDetails}
                   match={this.props.match}
                   history={history}
-                  translations={Translations}
+                  translations={translations}
                 />
                 <ModeratorButtons
                   proposal={proposalDetails}
                   addressDetails={addressDetails}
                   history={history}
-                  translations={Translations}
+                  translations={translations}
                 />
               </CallToAction>
             )}
@@ -535,11 +545,22 @@ class Proposal extends React.Component {
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
-        <VotingAccordion votingResults={this.getPastVotingResults()} />
-        <SpecialProjectVotingResult proposal={proposalDetails.data} daoInfo={daoInfo} />
-        <SpecialProjectDetails uintConfigs={proposalDetails.data.uintConfigs} />
+        <VotingAccordion votingResults={this.getPastVotingResults()} translations={translations} />
+        <SpecialProjectVotingResult
+          proposal={proposalDetails.data}
+          daoInfo={daoInfo}
+          translations={translations}
+        />
+        <SpecialProjectDetails
+          uintConfigs={proposalDetails.data.uintConfigs}
+          translations={translations}
+        />
 
-        <CommentThread proposalId={this.PROPOSAL_ID} uid={addressDetails.data.address} />
+        <CommentThread
+          proposalId={this.PROPOSAL_ID}
+          uid={addressDetails.data.address}
+          translations={translations}
+        />
       </ProposalsWrapper>
     );
   };

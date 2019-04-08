@@ -19,6 +19,7 @@ class ClaimApprovalOverlay extends React.Component {
       onClaim,
       translations: {
         project: { overlays },
+        project,
         buttons,
       },
     } = this.props;
@@ -30,8 +31,9 @@ class ClaimApprovalOverlay extends React.Component {
 
         <Notifications info centered style={{ display: 'block' }}>
           {overlays.claimApprovalDescription}
-          {/* TODO: Add Translation */}
-          <span className="highlight">{total} Transactions</span>
+          <span className="highlight">
+            {total} {project.transactions}
+          </span>
           <ProgressBar color="secondary" variant="determinate" value={progresss} />
         </Notifications>
 

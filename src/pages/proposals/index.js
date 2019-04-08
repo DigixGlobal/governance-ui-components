@@ -399,11 +399,7 @@ class Proposal extends React.Component {
       return (
         <Notifications warning withIcon>
           <WarningIcon kind="warning" small />
-          {/* TODO: Add Translation */}
-          <Message note>
-            The voting result was not claimed before the claiming deadline. This project will be
-            auto failed.
-          </Message>
+          <Message note>{alerts.unclaimed}</Message>
         </Notifications>
       );
   };

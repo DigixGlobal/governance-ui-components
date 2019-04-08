@@ -236,8 +236,7 @@ class ChangeFundingOverlay extends React.Component {
         <div key={`ms-${i + 1}`}>
           <Label>{`${project.milestone} ${i + 1}`}</Label>
           <EditFunding>
-            {/* TODO: Add Translation */}
-            <Label>Funds required for This Milestone</Label>
+            <Label>{project.fundsRequiredForMilestone}</Label>
             <TextField
               type="number"
               disabled={previousMilestone}

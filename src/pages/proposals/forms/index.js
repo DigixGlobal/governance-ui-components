@@ -10,7 +10,7 @@ import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualiza
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { dijix } from '@digix/gov-ui/utils/dijix';
-import { encodeHash } from '@digix/gov-ui/utils/helpers';
+import { encodeHash, injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
@@ -323,6 +323,7 @@ class ProposalForms extends React.Component {
       web3Redux,
       translations: {
         snackbar: { snackbars },
+        project,
       },
     } = this.props;
 
@@ -341,8 +342,10 @@ class ProposalForms extends React.Component {
       .eth.contract(abi)
       .at(address);
 
-    // TODO: add translation
-    let caption = `Requires ${preProposalCollateral} ETH to Submit Project`;
+    let caption = injectTranslation(project.collateral, {
+      preProposalCollateral,
+    });
+
     if (contractMethod === 'modifyProposal') {
       caption = transactionTitle;
     }
@@ -567,7 +570,7 @@ class ProposalForms extends React.Component {
       case this.RENDER_STEP.confirm:
         return this.renderConfirmPage();
       case this.RENDER_STEP.loader:
-        return <Spinner />;
+        return <Spinner translations={this.props.translations} />;
       default:
         return this.renderForm();
     }

@@ -95,8 +95,7 @@ class Milestones extends React.Component {
         <CreateMilestone key={index}>
           <FormItem>
             <Label req>
-              {/* TODO: Add Translation */}
-              Milestone - #{index + 1} Funds Required for This Milestone
+              {project.milestone} - #{index + 1} {project.fundsRequiredForMilestone}}
               <span>&nbsp;*</span>
             </Label>
             <Input
@@ -132,7 +131,7 @@ class Milestones extends React.Component {
       form,
       daoConfig,
       exceedsLimit,
-      translations: { project },
+      translations: { project, common },
     } = this.props;
     const { invalidReward } = this.props.errors;
     const { milestoneCount } = this.state;
@@ -173,8 +172,7 @@ class Milestones extends React.Component {
             onChange={onChange}
             placeholder={project.rewardExpectedPlaceholder}
           />
-          {/* TODO: add translation */}
-          {invalidReward && <ErrorMessage>This field is required.</ErrorMessage>}
+          {invalidReward && <ErrorMessage>{common.errors.fieldIsRequired}</ErrorMessage>}
         </FormItem>
         <FormItem>
           <Label>{project.numberOfMilestones}</Label>

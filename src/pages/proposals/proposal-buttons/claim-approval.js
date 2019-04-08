@@ -195,8 +195,7 @@ class ClaimApprovalButton extends React.PureComponent {
     const hasPendingClaim =
       this.hasPendingClaim() || (claimingStep && claimingStep === draftVoting.currentClaimStep);
 
-    // TODO: Add Translation
-    const claimCaption = hasPendingClaim ? `Claiming ` : buttons.claimModeratorApproavl;
+    const claimCaption = hasPendingClaim ? `${buttons.claiming} ` : buttons.claimModeratorApproavl;
 
     return (
       <Button

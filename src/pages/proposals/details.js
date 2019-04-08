@@ -75,11 +75,8 @@ export default class ProjectDetails extends React.Component {
       <DetailsContainer>
         <Content>
           <SubTitle>{trans.shortDescription}</SubTitle>
-          {/* TODO: Add Translation */}
           <div data-digix="Details-Short-Desc">
-            {project.description
-              ? project.description
-              : 'No short description content has been created yet.'}
+            {project.description ? project.description : project.noShortDescription}
           </div>
           <HR />
         </Content>

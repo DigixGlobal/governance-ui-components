@@ -46,6 +46,7 @@ class LandingPage extends React.PureComponent {
       getProposalsAction,
       getTranslationsAction,
       ChallengeProof,
+      Language,
     } = this.props;
 
     const storedHash = localStorage.getItem('GOVERNANCE_UI');
@@ -67,7 +68,7 @@ class LandingPage extends React.PureComponent {
       this.getLikeStatus();
     }
 
-    getTranslationsAction('en');
+    getTranslationsAction(Language);
   };
 
   componentDidMount = () => {
@@ -265,7 +266,7 @@ class LandingPage extends React.PureComponent {
   }
 }
 
-const { bool, object, func } = PropTypes;
+const { bool, object, func, string } = PropTypes;
 
 LandingPage.propTypes = {
   DaoDetails: object.isRequired,
@@ -285,6 +286,7 @@ LandingPage.propTypes = {
   showCountdownPage: func.isRequired,
   getTranslationsAction: func.isRequired,
   Translations: object.isRequired,
+  Language: string,
 };
 
 LandingPage.defaultProps = {
@@ -292,13 +294,14 @@ LandingPage.defaultProps = {
   UserLikedProposals: undefined,
   ProposalLikes: undefined,
   ShowWallet: undefined,
+  Language: 'en',
 };
 
 export default connect(
   ({
     infoServer: { DaoDetails, Proposals, AddressDetails },
     daoServer: { ChallengeProof, UserLikedProposals, ProposalLikes, Translations },
-    govUI: { HasCountdown, ShowWallet },
+    govUI: { HasCountdown, ShowWallet, Language },
   }) => ({
     DaoDetails,
     Proposals,
@@ -309,6 +312,7 @@ export default connect(
     ProposalLikes,
     HasCountdown,
     ShowWallet,
+    Language,
   }),
   {
     getAddressDetailsAction: getAddressDetails,

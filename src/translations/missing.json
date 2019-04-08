@@ -63,5 +63,12 @@
   },
   "transactionHistory": {
     "pendingConfirmation": "{{actual}}/{{total}} Confirmation(s)"
+  },
+  "approveInteraction": {
+    "transaction": {
+      "title": "Approve Interaction",
+      "action": "DGD Approval",
+      "txnSuccess": "Your DGD Approval Transaction is pending confirmation. See More"
+    }
   }
 }

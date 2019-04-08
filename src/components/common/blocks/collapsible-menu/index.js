@@ -9,8 +9,6 @@ import { renderDisplayName, fetchUserQuery } from '@digix/gov-ui/api/graphql-que
 
 import { push as Menu } from 'react-burger-menu';
 
-import Markdown from 'react-markdown';
-
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
 import lightTheme from '@digix/gov-ui/theme/light';
 

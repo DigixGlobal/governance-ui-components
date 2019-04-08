@@ -62,3 +62,7 @@ export const Notes = styled.div`
     }
   }
 `;
+
+export const NotesTitle = styled.p`
+  text-transform: uppercase;
+`;

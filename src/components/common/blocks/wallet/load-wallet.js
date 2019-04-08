@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 import {
@@ -16,7 +17,7 @@ import Ledger from './ledger';
 import Trezor from './trezor';
 import ImToken from './imtoken';
 
-export default class LoadWallet extends React.Component {
+class LoadWallet extends React.Component {
   handleCloseButtonClick = () => {
     const { onChangeStage } = this.props;
     if (onChangeStage) {
@@ -30,13 +31,14 @@ export default class LoadWallet extends React.Component {
 
   render() {
     const { createKeystore } = this.props;
+    const t = this.props.translations.loadWallet.selectWalletType;
 
     return (
       <IntroContainer>
         <CloseButton>
           <Icon kind="close" onClick={this.handleCloseButtonClick} />
         </CloseButton>
-        <Header uppercase>load wallet </Header>
+        <Header uppercase>{t.title} </Header>
         <ActionContainer>
           <Metamask createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
           <Ledger createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
@@ -49,7 +51,26 @@ export default class LoadWallet extends React.Component {
   }
 }
 
+const { func, object } = PropTypes;
+
 LoadWallet.propTypes = {
-  onChangeStage: PropTypes.func.isRequired,
-  createKeystore: PropTypes.func.isRequired,
+  onChangeStage: func.isRequired,
+  createKeystore: func.isRequired,
+  translations: object,
 };
+
+LoadWallet.defaultProps = {
+  translations: {
+    loadWallet: {
+      selectWalletType: {
+        title: 'Load Wallet',
+      },
+    },
+  },
+};
+
+const mapStateToProps = state => ({
+  translations: state.daoServer.Translations.data,
+});
+
+export default connect(mapStateToProps)(LoadWallet);

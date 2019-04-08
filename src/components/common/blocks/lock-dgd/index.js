@@ -1,4 +1,5 @@
 import React from 'react';
+import Markdown from 'react-markdown';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
@@ -35,6 +36,7 @@ import {
   LockDGD,
   Label,
   FormNote,
+  WarningTitle,
 } from '@digix/gov-ui/components/common/blocks/lock-dgd/style';
 import {
   TransparentOverlay,
@@ -168,6 +170,7 @@ class LockDgd extends React.Component {
   };
 
   handleButtonClick = () => {
+    const t = this.props.translations.lockDgd;
     const { dgd } = this.state;
     const addedStake = this.getStake(dgd);
     const addedDgd = Number(dgd);
@@ -199,7 +202,7 @@ class LockDgd extends React.Component {
       if (challengeProof.data) {
         sendTransactionToDaoServerAction({
           txHash,
-          title: 'Lock DGD',
+          title: t.title,
           token: challengeProof.data['access-token'],
           client: challengeProof.data.client,
           uid: challengeProof.data.uid,
@@ -208,15 +211,11 @@ class LockDgd extends React.Component {
     };
 
     const onTransactionSuccess = txHash => {
-      const { onSuccess } = this.props.lockDgdOverlay;
-      this.props.showHideAlert({
-        message:
-          challengeProof.data && challengeProof.data.uid
-            ? 'Your Lock LDGD transaction is pending confirmation. See more'
-            : 'Your DGD Approval/Lock DGD transaction is pending confirmation. Please wait a while for it to be processed on the blockchain.',
-        txHash,
-      });
+      const hasChallenge = challengeProof.data && challengeProof.data.uid;
+      const message = hasChallenge ? t.txnSuccess : t.dgdApprovalSuccess;
+      this.props.showHideAlert({ message, txHash });
 
+      const { onSuccess } = this.props.lockDgdOverlay;
       if (onSuccess) {
         onSuccess({ addedStake, addedDgd });
       }
@@ -248,14 +247,18 @@ class LockDgd extends React.Component {
   renderLockDgd = () => {
     const { dgd, disableLockDgdButton, openError, error } = this.state;
     const { daoDetails } = this.props;
-    const phase = inLockingPhase(daoDetails) ? 'Locking' : 'Main';
-
     const stake = truncateNumber(this.getStake(dgd));
+
+    const t = this.props.translations.lockDgd;
+    const tWarning = t.warning;
+    const phase = inLockingPhase(daoDetails)
+      ? tWarning.currentPhaseLocking
+      : tWarning.currentPhaseMain;
 
     return (
       <DrawerContainer>
         <CloseButton onClick={this.handleCloseLockDgd}>
-          <Header>LOCK DGD</Header>
+          <Header uppercase>{t.title}</Header>
           <Icon kind="close" />
         </CloseButton>
         {openError && (
@@ -264,16 +267,13 @@ class LockDgd extends React.Component {
           </Notifications>
         )}
         <Notifications info>
-          <Message note>
-            You are now locking DGD in the <span>{phase} Phase</span>.
-          </Message>
+          <WarningTitle>
+            <Markdown source={phase} escapeHtml={false} />
+          </WarningTitle>
           <br />
-          <p>
-            Please note that once you locked, you can only unlock your DGDs in a{' '}
-            <span>Locking Phase</span>.
-          </p>
+          <Markdown source={tWarning.unlock} />
         </Notifications>
-        <Label>Please enter the amount of DGD you wish to lock in:</Label>
+        <Label>{t.instructions}</Label>
         <LockDGD>
           <TextField
             type="number"
@@ -297,7 +297,7 @@ class LockDgd extends React.Component {
           data-digix="LockDgdOverlay-LockDgd"
           style={{ marginTop: '4rem' }}
         >
-          Lock DGD
+          {t.submit}
         </Button>
       </DrawerContainer>
     );
@@ -339,12 +339,16 @@ LockDgd.propTypes = {
   defaultAddress: object,
   addresses: array,
   showHideAlert: func.isRequired,
+  translations: object,
 };
 
 LockDgd.defaultProps = {
   defaultAddress: undefined,
   addresses: undefined,
   addressMaxAllowance: undefined,
+  translations: {
+    lockDgd: {},
+  },
 };
 const mapStateToProps = state => ({
   daoDetails: state.infoServer.DaoDetails.data,
@@ -355,6 +359,7 @@ const mapStateToProps = state => ({
   challengeProof: state.daoServer.ChallengeProof,
   lockDgdOverlay: state.govUI.lockDgdOverlay,
   addressMaxAllowance: state.govUI.addressMaxAllowance,
+  translations: state.daoServer.Translations.data,
 });
 
 export default web3Connect(

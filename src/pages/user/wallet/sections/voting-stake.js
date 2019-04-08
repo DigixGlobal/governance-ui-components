@@ -41,8 +41,10 @@ class VotingStake extends React.Component {
 
   showUnlockDgdOverlay() {
     const { lockedDgd } = this.props.AddressDetails;
+    const tUnlock = this.props.translations.UnlockDgd;
+
     this.props.showRightPanel({
-      component: <UnlockDgdOverlay maxAmount={Number(lockedDgd)} />,
+      component: <UnlockDgdOverlay maxAmount={Number(lockedDgd)} translations={tUnlock} />,
       show: true,
     });
   }
@@ -57,19 +59,19 @@ class VotingStake extends React.Component {
     const isGlobalRewardsSet = DaoDetails ? DaoDetails.isGlobalRewardsSet : false;
     const canUnlockDgd = inLockingPhase(DaoDetails) && stake > 0 && isGlobalRewardsSet;
 
+    const t = this.props.translations;
+    const tUnlock = t.UnlockDgd;
+
     return (
       <QtrParticipation>
-        <Title>Your Locked DGD</Title>
+        <Title>{t.title}</Title>
         <Detail>
-          <Label>Your Current Lock-up</Label>
+          <Label>{t.currentLockup}</Label>
           <Data>
             <span data-digix="Wallet-Locked-DGD">{dgd}</span>
             <span>&nbsp;DGD</span>
           </Data>
-          <Desc>
-            You can lock more DGD to increase your voting power or unlock after a quarter to move
-            your DGD back into your wallet.
-          </Desc>
+          <Desc>{t.instructions}</Desc>
           <Actions>
             <Button
               primary
@@ -77,7 +79,7 @@ class VotingStake extends React.Component {
               disabled={!canLockDgd}
               onClick={() => this.showLockDgdOverlay()}
             >
-              Lock DGD
+              {t.lockDgd}
             </Button>
             <Button
               primary
@@ -85,7 +87,7 @@ class VotingStake extends React.Component {
               data-digix="Wallet-UnlockDgd"
               onClick={() => this.showUnlockDgdOverlay()}
             >
-              Unlock DGD
+              {tUnlock.overlayButton}
             </Button>
           </Actions>
         </Detail>
@@ -104,6 +106,7 @@ VotingStake.propTypes = {
   showHideLockDgdOverlay: func.isRequired,
   showRightPanel: func.isRequired,
   subscribeToAddress: func.isRequired,
+  translations: object.isRequired,
 };
 
 VotingStake.defaultProps = {

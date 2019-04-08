@@ -92,11 +92,12 @@ class ProfileActivitySummary extends React.Component {
     const t = this.props.translations;
     const tOpenKycForm = t.OpenKycForm;
     const tResubmit = t.Errors.resubmit;
+    const tKycStatus = t.Statuses[currentKycStatus.toLowerCase()] || currentKycStatus;
 
     return (
       <ActivityItem column>
         <Label>{t.Status}</Label>
-        <Data data-digix="Profile-KycStatus">{currentKycStatus}</Data>
+        <Data data-digix="Profile-KycStatus">{tKycStatus}</Data>
         <Label>&nbsp;</Label>
         <Actions>
           {setEmailForKyc && (

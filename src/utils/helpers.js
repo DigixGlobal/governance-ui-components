@@ -55,24 +55,24 @@ export const formatPercentage = num => {
   return formatted;
 };
 
-export const getUserStatus = addressDetails => {
+export const getUserStatus = (addressDetails, translation) => {
   if (!addressDetails) {
     return null;
   }
 
   if (addressDetails.isModerator) {
-    return UserStatus.moderator;
+    return (translation && translation.moderator) || UserStatus.moderator;
   }
 
   if (addressDetails.isParticipant) {
-    return UserStatus.participant;
+    return (translation && translation.participant) || UserStatus.participant;
   }
 
   if (addressDetails.lastParticipatedQuarter > 0) {
-    return UserStatus.pastParticipant;
+    return (translation && translation.pastParticipant) || UserStatus.pastParticipant;
   }
 
-  return UserStatus.guest;
+  return (translation && translation.guest) || UserStatus.guest;
 };
 
 export const isKycApproved = apolloClient =>

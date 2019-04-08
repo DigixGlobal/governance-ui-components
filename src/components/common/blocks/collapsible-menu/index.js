@@ -162,7 +162,8 @@ class CollapsibleMenu extends React.Component {
     }
 
     const { addressDetails, ChallengeProof, showLeftMenu, Translations } = this.props;
-    const userType = getUserStatus(addressDetails.data);
+    const userStatuses = Translations.data ? Translations.data.common.userStatus : undefined;
+    const userType = getUserStatus(addressDetails.data, userStatuses);
     if (!Translations.data) return null;
 
     const {

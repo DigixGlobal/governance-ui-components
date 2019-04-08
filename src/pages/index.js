@@ -204,6 +204,10 @@ class LandingPage extends React.PureComponent {
 
     const isWalletLoaded = Boolean(AddressDetails.data.address);
 
+    const {
+      data: { dashboard },
+    } = Translations;
+
     return (
       <Fragment>
         <Timeline stats={DaoDetails} translations={Translations} />
@@ -215,7 +219,7 @@ class LandingPage extends React.PureComponent {
           history={history}
           translations={Translations}
         />
-        {!hasProposals && <p>There are no projects to show.</p>}
+        {!hasProposals && <p>{dashboard.noProjects}</p>}
         {hasProposals &&
           orderedProposals.map(proposal => (
             <ProposalCard

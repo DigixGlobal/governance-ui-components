@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import ScreenLoader from '@digix/gov-ui/components/common/blocks/loader/screen';
 import {
@@ -10,13 +11,18 @@ import {
 
 class Spinner extends React.Component {
   render() {
+    const {
+      translations: {
+        project: { spinner },
+      },
+    } = this.props;
     return (
       <Preloaders>
         <SpinnerWrapper>
           <Content>
             <Loader />
-            <h1>Please wait.</h1>
-            <p>Hold tight while your project is being uploaded to IPFS.</p>
+            <h1>{spinner.pleaseWait}</h1>
+            <p>{spinner.hold}</p>
           </Content>
         </SpinnerWrapper>
         <ScreenLoader />
@@ -24,5 +30,9 @@ class Spinner extends React.Component {
     );
   }
 }
+
+Spinner.propTypes = {
+  translations: PropTypes.object.isRequired,
+};
 
 export default Spinner;

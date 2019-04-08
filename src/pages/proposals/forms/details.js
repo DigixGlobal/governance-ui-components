@@ -18,7 +18,7 @@ class Details extends React.Component {
     const {
       form,
       onChange,
-      translations: { project },
+      translations: { project, common },
     } = this.props;
     const { invalidDetails } = this.props.errors;
 
@@ -36,8 +36,7 @@ class Details extends React.Component {
               onChange={value => onChange('details', value)}
             />
           </EditorContainer>
-          {/* TODO: add translation */}
-          {invalidDetails && <ErrorMessage>This field is required.</ErrorMessage>}
+          {invalidDetails && <ErrorMessage>{common.errors.fieldIsRequired}</ErrorMessage>}
         </FormItem>
       </Fieldset>
     );

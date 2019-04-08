@@ -9,7 +9,7 @@ class OverView extends React.Component {
       errors,
       form,
       onChange,
-      translations: { project },
+      translations: { project, common },
     } = this.props;
     const { description, title } = form;
     const { invalidDescription, invalidTitle } = errors;
@@ -28,8 +28,7 @@ class OverView extends React.Component {
             onChange={onChange}
             placeholder={project.projectTitlePlaceHolder}
           />
-          {/* TODO: Add Translation */}
-          {invalidTitle && <ErrorMessage>This field is required.</ErrorMessage>}
+          {invalidTitle && <ErrorMessage>{common.errors.fieldIsRequired}</ErrorMessage>}
         </FormItem>
         <FormItem>
           <Label error={invalidDescription} req>
@@ -43,8 +42,7 @@ class OverView extends React.Component {
             onChange={onChange}
             placeholder={project.shortDescriptionPlaceHolder}
           />
-          {/* TODO: Add translation */}
-          {invalidDescription && <ErrorMessage>This field is required.</ErrorMessage>}
+          {invalidDescription && <ErrorMessage>{common.errors.fieldIsRequired}</ErrorMessage>}
         </FormItem>
       </Fieldset>
     );

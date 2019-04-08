@@ -211,7 +211,7 @@ class ClaimResultsButton extends React.PureComponent {
     const hasPendingClaim =
       this.hasPendingClaim() ||
       (claimingStep && claimingStep === proposal.votingRounds[currentVotingRound].currentClaimStep);
-    const claimCaption = hasPendingClaim ? `Claiming ` : buttons.claimResult; // TODO: Add Translation
+    const claimCaption = hasPendingClaim ? `${buttons.claiming} ` : buttons.claimResult;
 
     return (
       <Button

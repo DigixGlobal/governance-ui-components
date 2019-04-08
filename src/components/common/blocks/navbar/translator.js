@@ -46,7 +46,9 @@ class Translator extends React.Component {
         </TransButton>
         <Selector>
           {options.map(l => (
-            <Item onClick={this.handleLanguageChange(l.code)}>{l.name}</Item>
+            <Item key={l.code} onClick={this.handleLanguageChange(l.code)}>
+              {l.name}
+            </Item>
           ))}
         </Selector>
       </NavItem>

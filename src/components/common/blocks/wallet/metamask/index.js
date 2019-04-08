@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
 import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
 import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
@@ -34,6 +36,8 @@ class Metamask extends React.Component {
           header="Load MetaMask Wallet"
           hideSelector
           allowedKeystoreTypes={['metamask']}
+          translations={this.props.translations}
+          commonTranslations={this.props.commonTranslations}
           trigger={
             <Button kind="round" secondary fluid large showIcon>
               <Icon kind="metamask" />
@@ -46,14 +50,22 @@ class Metamask extends React.Component {
   }
 }
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 
 Metamask.propTypes = {
+  commonTranslations: object.isRequired,
   createKeystore: func,
   onSuccess: func.isRequired,
+  translations: object.isRequired,
 };
 
 Metamask.defaultProps = {
   createKeystore: undefined,
 };
-export default Metamask;
+
+const mapStateToProps = state => ({
+  translations: state.daoServer.Translations.data.loadWallet.Metamask,
+  commonTranslations: state.daoServer.Translations.data.loadWallet.common,
+});
+
+export default connect(mapStateToProps)(Metamask);

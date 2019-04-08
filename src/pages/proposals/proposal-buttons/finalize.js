@@ -74,7 +74,7 @@ class FinalizeProjectButton extends React.PureComponent {
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Finalize Project',
+          title: translations.snackbars.finalize.title,
           token: challengeProof.data['access-token'],
           client: challengeProof.data.client,
           uid: challengeProof.data.uid,

@@ -59,7 +59,7 @@ class CompleteMilestoneButton extends React.PureComponent {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Finish Milestone',
+          title: snackbars.milestoneCompleted.title,
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
           uid: ChallengeProof.data.uid,

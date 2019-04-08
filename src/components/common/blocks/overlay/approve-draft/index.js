@@ -35,12 +35,16 @@ class ApproveProposalOverlay extends React.Component {
   }
 
   onTransactionAttempt = txHash => {
-    const { ChallengeProof, showRightPanelAction } = this.props;
+    const {
+      ChallengeProof,
+      showRightPanelAction,
+      translations: { snackbars },
+    } = this.props;
 
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Approve Project',
+        title: snackbars.approveProject.title,
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,

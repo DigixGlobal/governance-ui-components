@@ -65,7 +65,7 @@ class EndorseProjectButton extends React.PureComponent {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Endorse Project',
+          title: snackbars.endorse.title,
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
           uid: ChallengeProof.data.uid,

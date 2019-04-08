@@ -60,9 +60,17 @@ class ClaimResultsButton extends React.PureComponent {
     });
 
   showOverlay = txns => {
-    const { history } = this.props;
+    const { history, translations } = this.props;
+    console.log({ trans: translations });
     this.props.showRightPanel({
-      component: <MultiStepClaim history={history} {...txns} onCompleted={this.onPanelClose} />,
+      component: (
+        <MultiStepClaim
+          history={history}
+          {...txns}
+          onCompleted={this.onPanelClose}
+          translations={translations}
+        />
+      ),
       show: true,
     });
   };
@@ -102,7 +110,7 @@ class ClaimResultsButton extends React.PureComponent {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Claim Voting Result',
+          title: snackbars.claimResult.title,
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
           type: 1,

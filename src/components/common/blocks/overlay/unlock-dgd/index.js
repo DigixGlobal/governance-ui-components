@@ -16,12 +16,11 @@ import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-import { truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { injectTranslation, truncateNumber } from '@digix/gov-ui/utils/helpers';
 
 import {
   IntroContainer,
   OverlayHeader as Header,
-  Notifications,
   Label,
   Hint,
 } from '@digix/gov-ui/components/common/common-styles';
@@ -32,6 +31,7 @@ import {
   MaxAmount,
   Currency,
   CallToAction,
+  Notification,
 } from '@digix/gov-ui/components/common/blocks/overlay/unlock-dgd/style';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
@@ -72,6 +72,7 @@ class UnlockDgdOverlay extends React.Component {
   };
 
   unlockDgd = unlockAmount => {
+    const t = this.props.translations;
     const { addresses, ChallengeProof, web3Redux } = this.props;
     const { abi, address } = getContract(DaoStakeLocking, network);
 
@@ -82,7 +83,7 @@ class UnlockDgdOverlay extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Unlock DGD',
+      caption: t.title,
       header: 'User',
       type: 'txVisualization',
     };
@@ -97,7 +98,7 @@ class UnlockDgdOverlay extends React.Component {
       if (ChallengeProof) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Unlock DGD',
+          title: t.title,
           token: ChallengeProof['access-token'],
           client: ChallengeProof.client,
           uid: ChallengeProof.uid,
@@ -107,7 +108,7 @@ class UnlockDgdOverlay extends React.Component {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Your Unlock DGD Transaction is pending confirmation. See More',
+        message: t.txnSuccess,
         txHash,
       });
 
@@ -134,65 +135,57 @@ class UnlockDgdOverlay extends React.Component {
   renderHint() {
     const { DaoConfig } = this.props;
     const { unlockAmount } = this.state;
+    const tHint = this.props.translations.Hints;
 
     if (unlockAmount <= 0) {
       return null;
     }
 
     if (unlockAmount > this.MAX_AMOUNT) {
-      return (
-        <Hint error>
-          <span>You can only unlock up to&nbsp;</span>
-          <b data-digix="UnlockDgd-Error-MaxAmount">{this.MAX_AMOUNT}</b>
-          <b>&nbsp;DGD.</b>
-        </Hint>
+      const overfilledHint = injectTranslation(
+        tHint.overfilled,
+        { maxAmount: this.MAX_AMOUNT },
+        true,
+        'UnlockDgd-Error'
       );
+
+      return <Hint error>{overfilledHint}</Hint>;
     }
 
     const minimumRequiredDgd = Number(DaoConfig.CONFIG_MINIMUM_LOCKED_DGD);
     const remainingDgd = this.MAX_AMOUNT - unlockAmount;
     const continueAsParticipant = remainingDgd >= minimumRequiredDgd;
-
-    if (continueAsParticipant) {
-      return (
-        <Hint>
-          <span>This will leave you with&nbsp;</span>
-          <b>
-            <span data-digix="UnlockDgd-RemainingDgd">{truncateNumber(remainingDgd)}</span>
-            <span>&nbsp;STAKE</span>
-          </b>
-          <span>&nbsp;in DigixDAO.</span>
-        </Hint>
-      );
-    }
+    const remainingDgdHint = injectTranslation(
+      tHint.normal,
+      { stake: truncateNumber(remainingDgd) },
+      true,
+      'UnlockDgd-RemainingDgd'
+    );
 
     return (
-      <Hint error>
-        <span>This will leave you with&nbsp;</span>
-        <b>
-          <span data-digix="UnlockDgd-RemainingDgd">{truncateNumber(remainingDgd)}</span>
-          <span>&nbsp;STAKE.&nbsp;</span>
-        </b>
-        <span>You will no longer continue to be a participant.</span>
+      <Hint error={!continueAsParticipant}>
+        {remainingDgdHint}
+        {!continueAsParticipant && <span>{tHint.fillMax}</span>}
       </Hint>
     );
   }
 
   render() {
+    const t = this.props.translations;
     const { unlockAmount } = this.state;
     const disableUnlockDgdButton =
       !unlockAmount || unlockAmount <= 0 || unlockAmount > this.MAX_AMOUNT;
 
     return (
       <IntroContainer>
-        <Header uppercase>Unlock DGD</Header>
-        <Notifications info>
-          <span>Amount of DGD locked in:&nbsp;</span>
+        <Header uppercase>{t.title}</Header>
+        <Notification info>
+          <span>{t.warning}&nbsp;</span>
           <span data-digix="UnlockDgd-MaxAmount">{this.MAX_AMOUNT}</span>
           <span>&nbsp;DGD</span>
-        </Notifications>
+        </Notification>
 
-        <Label>Please enter the amount of DGD you wish to unlock:</Label>
+        <Label>{t.instructions}</Label>
         <UnlockDGDContainer>
           <TextBox
             type="number"
@@ -202,7 +195,7 @@ class UnlockDgdOverlay extends React.Component {
             value={unlockAmount}
           />
           <MaxAmount to="#" data-digix="UnlockDgd-FillAmount" onClick={e => this.fillMaximum(e)}>
-            Fill Max
+            {t.fillMax}
           </MaxAmount>
           <Currency>DGD</Currency>
         </UnlockDGDContainer>
@@ -215,7 +208,7 @@ class UnlockDgdOverlay extends React.Component {
             disabled={disableUnlockDgdButton}
             onClick={() => this.unlockDgd(unlockAmount)}
           >
-            Unlock DGD
+            {t.submit}
           </Button>
         </CallToAction>
       </IntroContainer>
@@ -235,6 +228,7 @@ UnlockDgdOverlay.propTypes = {
   sendTransactionToDaoServer: func.isRequired,
   showHideAlert: func.isRequired,
   showTxSigningModal: func.isRequired,
+  translations: object.isRequired,
   web3Redux: object.isRequired,
 };
 

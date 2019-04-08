@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { Input, Select, TextArea } from '@digix/gov-ui/components/common/elements/index';
 import { Notifications } from '@digix/gov-ui/components/common/common-styles';
+import { injectTranslation } from '@digix/gov-ui/utils/helpers';
+
 import {
   CreateMilestone,
   ErrorMessage,
@@ -80,7 +82,10 @@ class Milestones extends React.Component {
 
   renderMilestoneForm = () => {
     const { milestoneCount, milestones } = this.state;
-    const { form } = this.props;
+    const {
+      form,
+      translations: { project },
+    } = this.props;
     const count = milestoneCount;
     const createdMilestones = form.milestones || milestones;
     const fields = [];
@@ -90,7 +95,7 @@ class Milestones extends React.Component {
         <CreateMilestone key={index}>
           <FormItem>
             <Label req>
-              Milestone - #{index + 1} Funds Required for This Milestone
+              {project.milestone} - #{index + 1} {project.fundsRequiredForMilestone}}
               <span>&nbsp;*</span>
             </Label>
             <Input
@@ -98,20 +103,20 @@ class Milestones extends React.Component {
               type="number"
               value={createdMilestones[index] ? createdMilestones[index].fund : ''}
               onChange={e => this.handleChange(e, index, 'fund')}
-              placeholder="Insert amount of fund expected in ETH for completion of milestone"
+              placeholder={project.milestonePlaceholder}
             />
           </FormItem>
 
           <FormItem>
             <Label req>
-              Description of Milestone
+              {project.milestoneDescription}
               <span>&nbsp;*</span>
             </Label>
             <TextArea
               name={index}
               value={createdMilestones[index] ? createdMilestones[index].description : ''}
               onChange={e => this.handleChange(e, index, 'description')}
-              placeholder="Explain what will be in this milestone"
+              placeholder={project.milestoneDescriptionPlaceholder}
             />
           </FormItem>
         </CreateMilestone>
@@ -121,7 +126,13 @@ class Milestones extends React.Component {
   };
 
   render() {
-    const { onChange, form, daoConfig, exceedsLimit } = this.props;
+    const {
+      onChange,
+      form,
+      daoConfig,
+      exceedsLimit,
+      translations: { project, common },
+    } = this.props;
     const { invalidReward } = this.props.errors;
     const { milestoneCount } = this.state;
     const noOfMilestones = milestoneCount;
@@ -131,6 +142,9 @@ class Milestones extends React.Component {
     const maxMilestoneCount = Number(config.CONFIG_MAX_MILESTONES_FOR_NON_DIGIX);
     const milestonesAllowed = [];
 
+    const injected = injectTranslation(project.editFundingError, {
+      limit: maxFundingAllowed,
+    });
     for (let i = 1; i <= maxMilestoneCount; i += 1) {
       milestonesAllowed.push({
         text: i,
@@ -142,13 +156,12 @@ class Milestones extends React.Component {
       <Fieldset>
         {exceedsLimit && (
           <Notifications error data-digix="Milestones-Error">
-            Sum of Reward Expected and Milestone Fundings must not exceed&nbsp;
-            {maxFundingAllowed} ETH.
+            {injected}
           </Notifications>
         )}
         <FormItem>
           <Label error={invalidReward} req>
-            Reward Expected
+            {project.rewardExpected}
             <span>&nbsp;*</span>
           </Label>
           <Input
@@ -157,12 +170,12 @@ class Milestones extends React.Component {
             error={invalidReward}
             value={form.finalReward || ''}
             onChange={onChange}
-            placeholder="Insert the amount of reward expected in ETH for completion of project."
+            placeholder={project.rewardExpectedPlaceholder}
           />
-          {invalidReward && <ErrorMessage>This field is required.</ErrorMessage>}
+          {invalidReward && <ErrorMessage>{common.errors.fieldIsRequired}</ErrorMessage>}
         </FormItem>
         <FormItem>
-          <Label>Number of Milestone(s)</Label>
+          <Label>{project.numberOfMilestones}</Label>
           <Select
             id="noOfMilestones"
             value={noOfMilestones}
@@ -184,6 +197,7 @@ Milestones.propTypes = {
   exceedsLimit: bool,
   form: object.isRequired,
   onChange: func.isRequired,
+  translations: object.isRequired,
 };
 
 Milestones.defaultProps = {

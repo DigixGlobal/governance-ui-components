@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { H1, Card, CardItem } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
@@ -74,8 +74,13 @@ export const Item = styled.div`
 `;
 
 export const Label = styled.div`
-  text-align: left;
   font-family: 'Futura PT Heavy', sans-serif;
+
+  ${props =>
+    props.uppercase &&
+    css`
+      text-transform: uppercase;
+    `};
 
   ${media.mobile`
     text-align: center;
@@ -87,13 +92,13 @@ export const Data = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Heavy', sans-serif;
   font-size: 3.6rem;
   text-align: left;
 
   span {
     &.equiv {
-      font-family: 'Futura PT Book', sans-serif;
+      font-family: 'Futura PT s', sans-serif;
       font-size: 1.4rem;
       margin-left: 1rem;
       margin-bottom: 0.75rem;
@@ -102,7 +107,7 @@ export const Data = styled.div`
 
   ${media.mobile`
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       margin-top: 0;
   `};
 `;
@@ -128,44 +133,54 @@ export const ActivityItem = styled(Card)`
   }
 
   ${media.tablet`
-    align-items: center;
     flex-basis: auto;
     margin-right: 0;
   `}
 `;
 export const Moderation = styled(Card)`
-  color: ${props => props.theme.textPrimary.default.toString()};
+  color: ${props => props.theme.textColor.primary.base.toString()};
   flex-direction: column;
   font-family: 'Futura PT Medium', sans-serif;
 `;
 export const Criteria = styled.div`
   ${CardItem};
-  align-items: center;
   justify-content: flex-start;
   font-family: 'Futura PT Medium', sans-serif;
   margin: 3rem 0 0;
 
-  ${media.mobile`flex-direction: column;`}
+  ${media.mobile`
+    flex-direction: row;
+  `}
 `;
 export const ModeratorReqs = styled.div`
   ${CardItem};
   flex-grow: 0;
   align-items: flex-end;
+
+  ${media.mobile`
+  flex-direction: column;
+  align-items: flex-start;
+`}
 `;
 
 export const ReqLabel = styled.div`
-  margin-bottom: 1.1rem;
+  font-family: 'Futura PT Light', sans-serif;
+  font-size: 1.6rem;
+  margin-bottom: 0.75rem;
   margin-left: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.075rem;
+
+  ${media.mobile`
+  margin-left: 0;
+`}
 `;
 export const Plus = styled.div`
   display: flex;
   margin: 0 3rem;
-
-  svg {
-    fill: ${props => props.theme.icon.default.default.toString()};
-  }
+  font-family: 'Futura PT Heavy', sans-serif;
+  font-size: 3.6rem;
+  align-items: flex-end;
 `;
 
 export const Actions = styled.div`

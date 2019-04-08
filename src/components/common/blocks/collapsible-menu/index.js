@@ -24,34 +24,34 @@ import {
 } from '@digix/gov-ui/components/common/blocks/collapsible-menu/style.js';
 import { getUserStatus } from '@digix/gov-ui/utils/helpers';
 
-const DEFAULT_MENU = [
+const getDefaultMenu = translation => [
   {
     icon: 'home',
-    title: 'Home',
+    title: translation.home,
     url: '/',
     public: true,
   },
   {
     icon: 'wallet',
-    title: 'Wallet',
+    title: translation.wallet,
     url: '/wallet',
     public: false,
   },
   {
     icon: 'profile',
-    title: 'Profile',
+    title: translation.profile,
     url: '/profile',
     public: false,
   },
   {
     icon: 'history',
-    title: 'Transaction History',
+    title: translation.history,
     url: '/history',
     public: false,
   },
   {
     icon: 'product',
-    title: 'Help / DAO Tour',
+    title: translation.help,
     url: 'https://ipfs.infura.io/ipfs/QmXg8UNeoStwFc561QzRedkpXJRZAnwikobRydjw3CDem9',
     public: true,
   },
@@ -109,7 +109,7 @@ class CollapsibleMenu extends React.Component {
     if (item.icon === 'product') {
       return (
         <MenuItem key={item.title} selected={samePath}>
-          <a target="_blank" href={item.url}>
+          <a target="_blank" rel="noopener noreferrer" href={item.url}>
             <Icon kind={item.icon} theme={theme || lightTheme} selected={samePath} />
             <span>{item.title}</span>
           </a>
@@ -161,12 +161,18 @@ class CollapsibleMenu extends React.Component {
       return null;
     }
 
-    const { addressDetails, ChallengeProof, menuItems, showLeftMenu } = this.props;
-    const userType = getUserStatus(addressDetails.data);
-    const menu = menuItems || DEFAULT_MENU;
+    const { addressDetails, ChallengeProof, showLeftMenu, Translations } = this.props;
+    const userStatuses = Translations.data ? Translations.data.common.userStatus : undefined;
+    const userType = getUserStatus(addressDetails.data, userStatuses);
+    if (!Translations.data) return null;
+
+    const {
+      data: { sidebar },
+    } = Translations;
+
+    const menu = getDefaultMenu(sidebar);
     const menuItemElements = menu.map(item => this.renderMenuItem(item));
     const adminMenuItems = ADMIN_MENU.map(item => this.renderAdminMenuItem(item));
-
     return (
       <Menu
         noOverlay
@@ -180,8 +186,8 @@ class CollapsibleMenu extends React.Component {
           {ChallengeProof.data && (
             <ProfileContainer>
               <Welcome>
-                Welcome, &nbsp;
-                {renderDisplayName('Sidebar-DisplayName')}
+                {renderDisplayName('Sidebar-DisplayName', sidebar.welcome)}
+                &nbsp;
               </Welcome>
               <UserType data-digix="Sidebar-UserStatus">{userType}</UserType>
             </ProfileContainer>
@@ -196,9 +202,8 @@ class CollapsibleMenu extends React.Component {
   }
 }
 
-const { array, bool, object, func } = PropTypes;
+const { bool, object, func } = PropTypes;
 CollapsibleMenu.propTypes = {
-  menuItems: array,
   theme: object,
   addressDetails: object,
   showLeftMenu: object,
@@ -206,10 +211,10 @@ CollapsibleMenu.propTypes = {
   ChallengeProof: object,
   showHideLeftMenu: func.isRequired,
   HasCountdown: bool.isRequired,
+  Translations: object.isRequired,
 };
 
 CollapsibleMenu.defaultProps = {
-  menuItems: DEFAULT_MENU,
   showLeftMenu: undefined,
   theme: lightTheme,
   addressDetails: undefined,
@@ -219,6 +224,7 @@ CollapsibleMenu.defaultProps = {
 const mapStateToProps = state => ({
   addressDetails: state.infoServer.AddressDetails,
   ChallengeProof: state.daoServer.ChallengeProof,
+  Translations: state.daoServer.Translations,
   showLeftMenu: state.govUI.showLeftMenu,
   HasCountdown: state.govUI.HasCountdown,
 });

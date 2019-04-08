@@ -86,4 +86,15 @@ export const FieldItemKYC = styled(FieldItem)`
 
 export const FieldImg = styled.img`
   width: 100%;
+  cursor: pointer;
+`;
+
+export const CloseButton = styled(Button)`
+  position: absolute;
+  background: #fff;
+  border: 0;
+  top: 10px;
+  right: 5px;
+  margin: 0;
+  padding: 1rem 1.5rem;
 `;

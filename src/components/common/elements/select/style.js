@@ -39,7 +39,7 @@ const StyledSelect = styled.select`
   border: none;
   border-radius: 0;
   cursor: pointer;
-
+  text-transform: capitalize;
   ${props =>
     props.small &&
     css`

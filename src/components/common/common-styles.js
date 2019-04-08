@@ -343,6 +343,7 @@ export const Label = styled.label`
   font-family: 'Futura PT Book', sans-serif;
   font-size: ${props => props.theme.fontSize};
   margin-bottom: 0.75rem;
+  text-transform: ${props => (props.uppercase ? 'uppercase' : 'inherit')};
 
   span {
     ${props =>

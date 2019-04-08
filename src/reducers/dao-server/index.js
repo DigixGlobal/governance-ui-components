@@ -33,6 +33,9 @@ const defaultState = {
   PendingTransactions: {
     ...defaultProps,
   },
+  Translations: {
+    ...defaultProps,
+  },
 };
 
 export default function(state = defaultState, action) {
@@ -219,6 +222,24 @@ export default function(state = defaultState, action) {
                 },
               ]
                 .concat(state.ProposalLikes.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_TRANSLATIONS:
+      return {
+        ...state,
+        Translations: {
+          ...state.Translations,
+          ...action.payload,
+          history: !action.payload
+            ? state.Translations.history
+            : [
+                {
+                  ...action.payload,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.Translations.history)
                 .slice(0, 100),
         },
       };

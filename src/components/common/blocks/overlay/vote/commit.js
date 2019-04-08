@@ -50,12 +50,16 @@ class CommitVote extends React.Component {
   }
 
   onTransactionAttempt = txHash => {
-    const { ChallengeProof, showRightPanelAction } = this.props;
+    const {
+      ChallengeProof,
+      showRightPanelAction,
+      translations: { snackbars },
+    } = this.props;
 
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Vote on Project',
+        title: snackbars.commit.title,
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -66,9 +70,13 @@ class CommitVote extends React.Component {
   };
 
   onTransactionSuccess = txHash => {
-    const { history, showHideAlertAction } = this.props;
+    const {
+      history,
+      showHideAlertAction,
+      translations: { snackbars },
+    } = this.props;
     showHideAlertAction({
-      message: 'Your Vote Transaction is pending confirmation. See More',
+      message: snackbars.commit.message,
       txHash,
     });
 
@@ -105,6 +113,7 @@ class CommitVote extends React.Component {
       addresses,
       proposalId,
       proposal: { currentVotingRound = 0, isSpecial },
+      translations: { snackbars },
     } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -120,8 +129,8 @@ class CommitVote extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Commit Vote',
-      header: 'Project',
+      caption: snackbars.commit.title,
+      header: snackbars.commit.txUiHeader,
       type: 'txVisualization',
     };
 
@@ -150,7 +159,14 @@ class CommitVote extends React.Component {
 
   render() {
     const { hasVoted, vote, changeVote, hasDownloaded } = this.state;
-    const { proposal, revoting } = this.props;
+    const {
+      proposal,
+      revoting,
+      translations: {
+        project: { overlays },
+        buttons,
+      },
+    } = this.props;
     const { proposalVersions, isSpecial } = proposal;
 
     const { title } = !isSpecial
@@ -176,11 +192,12 @@ class CommitVote extends React.Component {
 
     return (
       <IntroContainer>
-        <Header uppercase>Vote on Proposal (Commit)</Header>
+        <Header uppercase>{overlays.commitVoteHeader}</Header>
         {revoting && !changeVote && (
           <Fragment>
             <Notifications info centered>
               <Message>
+                {/* TODO: Add Translation */}
                 You have already committed for this proposal. This action will overwrite the
                 previous commit.
               </Message>
@@ -192,6 +209,7 @@ class CommitVote extends React.Component {
               onClick={this.handleChangeVote}
               data-digix="Commit-Change-Vote"
             >
+              {/* TODO: Add Translation */}
               Change My Vote
             </Button>
           </Fragment>
@@ -199,30 +217,29 @@ class CommitVote extends React.Component {
         {showVoting && (
           <Fragment>
             <p>
+              {/* TODO: Add Translation */}
               In the DigixDAO, we employ the Commit and Reveal scheme to keep your votes as unbiased
               as possible. You will need to download a JSON file when deciding your choice in the
               vote. Your choice will then be verified in the Reveal phase when you upload the same
               JSON file.
             </p>
             <Note>
+              {/* TODO: Add Translation */}
               <strong>
                 Please keep the file in a safe place as you will not be able to download it again.
               </strong>
             </Note>
             <ResponseButton voteValue data-digix="Commit-Vote-Yes" style={{ marginBottom: '0' }}>
-              Yes
+              {buttons.yes}
             </ResponseButton>
             <ResponseButton voteValue={false} data-digix="Commit-Vote-No">
-              No
+              {buttons.no}
             </ResponseButton>
 
             {hasVoted && (
               <DownloadJson info centered column>
-                <Message uppercase>This Json file is only valid for this commit</Message>
-                <p>
-                  In the case you change your mind or make another commit, this file is no longer
-                  valid.
-                </p>
+                <Message uppercase>{overlays.DlJsonHeader}</Message>
+                <p>{overlays.DlJsonDescription}</p>
 
                 <DownloadButton
                   kind="link"
@@ -234,7 +251,7 @@ class CommitVote extends React.Component {
                   data-digix="Commit-Download-Json"
                 >
                   <Icon kind="file" />
-                  Download JSON File
+                  {overlays.DlJsonButton}
                 </DownloadButton>
               </DownloadJson>
             )}
@@ -247,7 +264,7 @@ class CommitVote extends React.Component {
                 onClick={this.handleSubmit}
                 data-digix="Commit-Confirm-Vote"
               >
-                Confirm Commit
+                {buttons.confirmCommit}
               </Button>
             )}
           </Fragment>
@@ -271,6 +288,7 @@ CommitVote.propTypes = {
   showTxSigningModal: func.isRequired,
   web3Redux: object.isRequired,
   revoting: bool,
+  translations: object.isRequired,
 };
 
 CommitVote.defaultProps = {

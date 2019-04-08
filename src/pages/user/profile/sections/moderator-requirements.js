@@ -52,6 +52,7 @@ class ModeratorRequirements extends React.Component {
   }
 
   render() {
+    const t = this.props.translations;
     const { isModerator } = this.props.AddressDetails;
     const { reputation, stake } = this.getModeratorRequirements();
 
@@ -64,18 +65,18 @@ class ModeratorRequirements extends React.Component {
 
     return (
       <Moderation data-digix="Profile-ModerationRequirements">
-        <Label>TO GAIN MODERATOR STATUS, YOU WILL NEED ANOTHER</Label>
+        <Label uppercase>{t.hint}</Label>
         <Criteria>
           <ModeratorReqs>
             <Data data-digix="Profile-ModerationRequirements-Reputation">{reputation}</Data>
-            <ReqLabel>Reputation Points</ReqLabel>
+            <ReqLabel>{t.reputationPoints}</ReqLabel>
           </ModeratorReqs>
           <Plus>
-            <Icon kind="plus" />
+            <span>+</span>
           </Plus>
           <ModeratorReqs>
             <Data data-digix="Profile-ModerationRequirements-Stake">{stake}</Data>
-            <ReqLabel>Stake</ReqLabel>
+            <ReqLabel>{t.stake}</ReqLabel>
           </ModeratorReqs>
         </Criteria>
         <Actions>
@@ -85,7 +86,7 @@ class ModeratorRequirements extends React.Component {
             data-digix="Profile-LockMoreDgd-Cta"
             onClick={() => this.showLockDgdOverlay()}
           >
-            Lock More DGD
+            {t.lockDgd}
           </Button>
         </Actions>
       </Moderation>
@@ -102,6 +103,7 @@ ModeratorRequirements.propTypes = {
   getDaoConfig: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
   subscribeToAddress: func.isRequired,
+  translations: object.isRequired,
 };
 
 ModeratorRequirements.defaultProps = {

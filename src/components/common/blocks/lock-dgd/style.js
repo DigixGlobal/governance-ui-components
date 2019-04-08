@@ -120,3 +120,7 @@ export const FormNote = styled.div`
   color: ${props => props.theme.textColor.default.base.toString()};
   font-size: 1.6rem;
 `;
+
+export const WarningTitle = styled.div`
+  color: ${props => props.theme.alertMessage.info.default.toString()};
+`;

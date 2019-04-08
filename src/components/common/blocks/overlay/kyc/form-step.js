@@ -13,6 +13,8 @@ import {
 class KycFormStep extends React.Component {
   constructor(props) {
     super(props);
+    const t = props.translations.KycForm;
+
     this.state = {
       formValues: {},
     };
@@ -30,23 +32,10 @@ class KycFormStep extends React.Component {
     };
 
     this.LABELS = {
-      imageFile: 'Image must be in JPEG or PNG format & filesize must be less than 10MB.',
+      imageFile: t.Labels.file,
     };
 
-    this.ERROR_MESSAGES = {
-      date: {
-        format: 'Please enter a valid date in the format yyyy-mm-dd.',
-        isAdult: 'Must be at least 18 years old.',
-        invalid: 'Date is invalid.',
-        fromFuture: 'Date must be set in the future.',
-      },
-      file: {
-        missing: 'Please upload a file.',
-        isImage: 'Image must be in JPEG or PNG format',
-        size: 'Filesize must be less than 10 MB.',
-      },
-      required: 'This field is required.',
-    };
+    this.ERROR_MESSAGES = { ...t.Errors };
 
     // NOTE: replace this with your own validation rules when extending the class
     // The following is just to show an example of what it should look like
@@ -349,6 +338,7 @@ KycFormStep.propTypes = {
   formOptions: object.isRequired,
   formValues: object.isRequired,
   setValidForm: func.isRequired,
+  translations: object.isRequired,
 };
 
 export default KycFormStep;

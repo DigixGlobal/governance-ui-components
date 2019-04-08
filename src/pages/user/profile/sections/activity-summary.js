@@ -31,12 +31,24 @@ class ProfileActivitySummary extends React.Component {
   }
 
   getKycStatus() {
+    // TODO: translate for other languages
     const { kyc } = this.props.userData;
     if (kyc && kyc.status) {
       return kyc.status.charAt(0) + kyc.status.slice(1).toLowerCase();
     }
 
     return this.DEFAULT_KYC_STATUS;
+  }
+
+  resubmitKyc() {
+    const { kyc } = this.props.userData;
+    const hasRejectedKyc = kyc.status === KycStatus.rejected;
+
+    if (hasRejectedKyc) {
+      this.showKycOverlay();
+    } else {
+      this.showErrorOverlay();
+    }
   }
 
   showErrorOverlay() {
@@ -47,19 +59,21 @@ class ProfileActivitySummary extends React.Component {
   }
 
   showKycOverlay() {
-    const { refetchUser } = this.props;
+    const { refetchUser, translations } = this.props;
 
     this.props.showRightPanel({
-      component: <KycOverlay refetchUser={refetchUser} />,
+      component: <KycOverlay refetchUser={refetchUser} translations={translations} />,
       large: true,
       show: true,
     });
   }
 
   showSetEmailOverlay() {
+    const { tSetEmail } = this.props;
     const { email } = this.props.userData;
+
     this.props.showRightPanel({
-      component: <EmailOverlay currentEmail={email} />,
+      component: <EmailOverlay currentEmail={email} translations={tSetEmail} />,
       show: true,
     });
   }
@@ -75,10 +89,15 @@ class ProfileActivitySummary extends React.Component {
     const showSubmitKycButton = canSubmitKyc || canResubmitKyc;
     const setEmailForKyc = !email && !kyc;
 
+    const t = this.props.translations;
+    const tOpenKycForm = t.OpenKycForm;
+    const tResubmit = t.Errors.resubmit;
+    const tKycStatus = t.Statuses[currentKycStatus.toLowerCase()] || currentKycStatus;
+
     return (
       <ActivityItem column>
-        <Label>KYC Status</Label>
-        <Data data-digix="Profile-KycStatus">{currentKycStatus}</Data>
+        <Label>{t.Status}</Label>
+        <Data data-digix="Profile-KycStatus">{tKycStatus}</Data>
         <Label>&nbsp;</Label>
         <Actions>
           {setEmailForKyc && (
@@ -87,7 +106,7 @@ class ProfileActivitySummary extends React.Component {
               data-digix="Profile-KycStatus-SetEmail"
               onClick={() => this.showSetEmailOverlay()}
             >
-              Set Email to submit KYC
+              {t.setEmail}
             </Button>
           )}
 
@@ -98,7 +117,7 @@ class ProfileActivitySummary extends React.Component {
               data-digix="Profile-KycStatus-Submit"
               onClick={() => this.showKycOverlay()}
             >
-              Submit KYC
+              {tOpenKycForm.overlayButton}
             </Button>
           )}
           {showSubmitKycButton && canResubmitKyc && (
@@ -106,9 +125,9 @@ class ProfileActivitySummary extends React.Component {
               primary
               disabled={hasPendingKyc}
               data-digix="Profile-KycStatus-Submit"
-              onClick={() => this.showErrorOverlay()}
+              onClick={() => this.resubmitKyc()}
             >
-              Re-submit KYC
+              {tResubmit.title}
             </Button>
           )}
         </Actions>
@@ -158,12 +177,14 @@ class ProfileActivitySummary extends React.Component {
   }
 }
 
-const { func, shape, string } = PropTypes;
+const { func, object, shape, string } = PropTypes;
 
 ProfileActivitySummary.propTypes = {
   refetchUser: func.isRequired,
   showRightPanel: func.isRequired,
   subscribeToKyc: func.isRequired,
+  translations: object.isRequired,
+  tSetEmail: object.isRequired,
   userData: shape({
     displayName: string,
     email: string,

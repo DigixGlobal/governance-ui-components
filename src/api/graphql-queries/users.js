@@ -4,6 +4,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { kycSubscription } from '@digix/gov-ui/api/graphql-queries/kyc';
 import { Query, Mutation } from 'react-apollo';
+import { injectTranslation } from '@digix/gov-ui/utils/helpers';
 
 export const fetchDisplayName = gql`
   query fetchUser {
@@ -114,14 +115,19 @@ export const UserMutations = {
   `,
 };
 
-export const renderDisplayName = dataDigixAttribute => (
+export const renderDisplayName = (dataDigixAttribute, welcome) => (
   <Query query={fetchDisplayName}>
     {({ loading, error, data }) => {
       if (loading || error || !data.currentUser) {
         return null;
       }
 
-      return <span data-digix={dataDigixAttribute}>{data.currentUser.displayName}</span>;
+      let { displayName } = data.currentUser;
+      if (welcome) {
+        displayName = injectTranslation(welcome, { username: displayName });
+      }
+
+      return <span data-digix={dataDigixAttribute}>{displayName}</span>;
     }}
   </Query>
 );

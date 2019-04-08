@@ -16,7 +16,7 @@ class UserAddressStats extends React.Component {
   }
 
   render() {
-    const { AddressDetails } = this.props;
+    const { AddressDetails, translations } = this.props;
     if (!AddressDetails.address) {
       return null;
     }
@@ -29,35 +29,40 @@ class UserAddressStats extends React.Component {
       isModerator,
       moderatorQuarterPoint,
     } = this.props.AddressDetails;
+
+    const {
+      data: { dashboard },
+    } = translations;
+
     const stake = truncateNumber(lockedDgdStake || 0);
     const dgd = truncateNumber(lockedDgd || 0);
     return (
       <UserStats>
         <Item>
-          <Label>Quarter Points</Label>
+          <Label>{dashboard.UserStats.quarterPoints}</Label>
           <Data data-digix="Dashboard-Stats-QuarterPoints">
             <span>{quarterPoint || 0}</span>
             {isModerator && (
               <span className="equiv">
                 <span>( </span>
                 <span data-digix="Dashboard-Mod-QtrPts">{moderatorQuarterPoint}</span>
-                <span>&nbsp; Moderator Qtr Pts )</span>
+                <span>&nbsp; {dashboard.UserStats.moderatorPoints} )</span>
               </span>
             )}
           </Data>
         </Item>
         <Item>
-          <Label>Reputation Points</Label>
+          <Label>{dashboard.UserStats.reputationPoints}</Label>
           <Data data-digix="Dashboard-Stats-ReputationPoints">{reputationPoint || 0}</Data>
         </Item>
         <Item>
-          <Label>My Stake</Label>
+          <Label>{dashboard.UserStats.stake}</Label>
           <Data data-digix="Dashboard-Stats-Stake">
             <span data-digix="Dashboard-DGD-Stake">{stake}</span>
             <span className="equiv">
               <span>( </span>
               <span data-digix="Dashboard-DGD-Stake">{dgd}</span>
-              <span>&nbsp;DGD LOCKED )</span>
+              <span>&nbsp;{dashboard.UserStats.dgdLocked} )</span>
             </span>
           </Data>
         </Item>
@@ -71,6 +76,7 @@ const { func, object } = PropTypes;
 UserAddressStats.propTypes = {
   AddressDetails: object.isRequired,
   subscribeToAddress: func.isRequired,
+  translations: object.isRequired,
 };
 
 export default withFetchAddress(UserAddressStats);

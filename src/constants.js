@@ -74,6 +74,7 @@ export const KycStatus = {
   pending: 'PENDING',
   rejected: 'REJECTED',
   expired: 'EXPIRED',
+  approving: 'APPROVING',
   approved: 'APPROVED',
 };
 

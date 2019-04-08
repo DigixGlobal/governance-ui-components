@@ -37,12 +37,16 @@ class RevealVote extends React.Component {
   }
 
   onTransactionAttempt = txHash => {
-    const { ChallengeProof, showRightPanelAction } = this.props;
+    const {
+      ChallengeProof,
+      showRightPanelAction,
+      translations: { snackbars },
+    } = this.props;
 
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Reveal Vote',
+        title: snackbars.reveal.title,
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -53,9 +57,13 @@ class RevealVote extends React.Component {
   };
 
   onTransactionSuccess = txHash => {
-    const { history, showHideAlertAction } = this.props;
+    const {
+      history,
+      showHideAlertAction,
+      translations: { snackbars },
+    } = this.props;
     showHideAlertAction({
-      message: 'Your Reveal Transaction is pending confirmation. See More',
+      message: snackbars.reveal.message,
       txHash,
     });
 
@@ -73,6 +81,7 @@ class RevealVote extends React.Component {
       web3Redux,
       addresses,
       proposal: { currentVotingRound, proposalId, isSpecial },
+      translations: { snackbars },
     } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -83,8 +92,8 @@ class RevealVote extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Reveal Vote',
-      header: 'Project',
+      caption: snackbars.reveal.title,
+      header: snackbars.reveal.txUiHeader,
       type: 'txVisualization',
     };
 
@@ -134,7 +143,7 @@ class RevealVote extends React.Component {
             this.setState({
               voteObject: undefined,
               uploaded: false,
-              error: 'Invalid File Content, Please make sure you uploaded the correct file.',
+              error: 'Invalid File Content, Please make sure you uploaded the correct file.', // TODO: Add Translations
             });
           }
         } else {
@@ -147,31 +156,29 @@ class RevealVote extends React.Component {
 
   render() {
     const { uploaded, voteObject, error } = this.state;
+    const {
+      translations: {
+        project: { overlays },
+        buttons,
+      },
+    } = this.props;
     return (
       <IntroContainer>
-        <Header uppercase>Vote on Project (Reveal)</Header>
-        <p>
-          The Reveal phase is to verify the choice you made in the Commit phsae. Please upload the
-          JSON file that you received in the Commit phase. Your choice will then be verified and
-          counted in as a vote.
-        </p>
-        <p>
-          Please note that if this step is not carried out, your vote will be voided and will not be
-          counted.
-        </p>
+        <Header uppercase>{overlays.revealVoteHeader}</Header>
+        {overlays.revealVoteDescription}
+
         {error && <ErrorCaption>{error}</ErrorCaption>}
         {uploaded && !error && (
           <Notifications column info centered>
             <Message uppercase>
-              Your vote is
+              {overlays.yourVoteIs}
               <br />
-              <span style={{ fontSize: '3.8rem' }}>{voteObject.vote ? 'YES' : 'NO'}</span>
+              <span style={{ fontSize: '3.8rem' }}>
+                {voteObject.vote ? buttons.yes : buttons.no}
+              </span>
             </Message>
             <br />
-            <p>
-              Your vote is only valid and counted as activity on the DigixDAO after your
-              confirmation.
-            </p>
+            <p>{overlays.yourVoteIsOnlyValid}</p>
           </Notifications>
         )}
         {!uploaded && (
@@ -184,12 +191,12 @@ class RevealVote extends React.Component {
             id="json-upload"
             onChange={this.handleUpload}
             type="file"
-            caption=" Upload JSON File"
+            caption={buttons.uploadJsonFile}
           />
         )}
         {uploaded && (
           <Button kind="round" secondary large fluid onClick={this.handleSubmit}>
-            Confirm My Vote
+            {buttons.confimVote}
           </Button>
         )}
       </IntroContainer>
@@ -209,6 +216,7 @@ RevealVote.propTypes = {
   showRightPanelAction: func.isRequired,
   showTxSigningModal: func.isRequired,
   web3Redux: object.isRequired,
+  translations: object.isRequired,
 };
 
 const mapStateToProps = state => ({

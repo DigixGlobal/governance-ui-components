@@ -29,6 +29,7 @@ import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/act
 
 const network = SpectrumConfig.defaultNetworks[0];
 
+// TODO: Add Translations
 class ChangeFundingOverlay extends React.Component {
   constructor(props) {
     super(props);
@@ -92,12 +93,16 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   onTransactionAttempt = txHash => {
-    const { ChallengeProof, showRightPanelAction } = this.props;
+    const {
+      ChallengeProof,
+      showRightPanelAction,
+      translations: { snackbars },
+    } = this.props;
 
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Change Funding',
+        title: snackbars.changeFunding.title,
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -108,9 +113,13 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   onTransactionSuccess = txHash => {
-    const { showHideAlertAction, history } = this.props;
+    const {
+      showHideAlertAction,
+      history,
+      translations: { snackbars },
+    } = this.props;
     showHideAlertAction({
-      message: 'Your Change Funding Transaction is pending confirmation. See More',
+      message: snackbars.changeFunding.message,
       txHash,
     });
     if (this.props.onCompleted) this.props.onCompleted();
@@ -165,7 +174,12 @@ class ChangeFundingOverlay extends React.Component {
   };
 
   handleSubmit = () => {
-    const { web3Redux, addresses, proposalDetails } = this.props;
+    const {
+      web3Redux,
+      addresses,
+      proposalDetails,
+      translations: { snackbars },
+    } = this.props;
     const { form } = this.state;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -177,8 +191,8 @@ class ChangeFundingOverlay extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Change Funding',
-      header: 'Project',
+      caption: snackbars.changeFunding.title,
+      header: snackbars.changeFunding.TxUiHeader,
       type: 'txVisualization',
     };
 
@@ -212,14 +226,17 @@ class ChangeFundingOverlay extends React.Component {
 
   renderMilestoneFields = milestoneFundings => {
     if (!milestoneFundings || milestoneFundings.length <= 0) return null;
-    const { proposalDetails } = this.props;
+    const {
+      proposalDetails,
+      translations: { project },
+    } = this.props;
     return milestoneFundings.map((milestone, i) => {
       const previousMilestone = i + 1 <= Number(proposalDetails.currentMilestone);
       return (
         <div key={`ms-${i + 1}`}>
-          <Label>Milestone {i + 1}</Label>
+          <Label>{`${project.milestone} ${i + 1}`}</Label>
           <EditFunding>
-            <Label>Funds required for This Milestone</Label>
+            <Label>{project.fundsRequiredForMilestone}</Label>
             <TextField
               type="number"
               disabled={previousMilestone}
@@ -236,13 +253,20 @@ class ChangeFundingOverlay extends React.Component {
 
   render() {
     const { form, exceedsLimit, fundChanged, hasNegative, hasEmpty } = this.state;
+    // const {
+    //   translations: {
+    //     buttons,
+    //   },
+    // } = this.props;
 
     const { daoConfig } = this.props;
 
     return (
       <IntroContainer>
+        {/* TODO: Add Translation */}
         <Header uppercase>Edit Funding</Header>
         <FieldItem>
+          {/* TODO: Add Translation */}
           <Label>Reward Expected</Label>
           <TextField
             type="number"
@@ -261,6 +285,7 @@ class ChangeFundingOverlay extends React.Component {
         )}
         {hasNegative && (
           <FieldItem>
+            {/* TODO: Add Translation */}
             <ErrorCaption>Negative value is not allowed</ErrorCaption>
           </FieldItem>
         )}
@@ -294,6 +319,7 @@ ChangeFundingOverlay.propTypes = {
   showTxSigningModal: func.isRequired,
   onCompleted: func.isRequired,
   web3Redux: object.isRequired,
+  translations: object.isRequired,
 };
 
 const mapStateToProps = state => ({

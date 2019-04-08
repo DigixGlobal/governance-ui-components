@@ -12,8 +12,8 @@ class Select extends React.Component {
             Please select option
           </option>
         )}
-        {items.map(item => (
-          <option key={item.value} value={item.value}>
+        {items.map((item, i) => (
+          <option key={`${item.value}-${i + 1}`} value={item.value}>
             {item.text}
           </option>
         ))}

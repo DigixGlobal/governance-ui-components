@@ -49,7 +49,7 @@ class FinalizeProjectButton extends React.PureComponent {
     });
 
   handleSubmit = () => {
-    const { web3Redux, challengeProof, addresses, proposalId } = this.props;
+    const { web3Redux, challengeProof, addresses, proposalId, translations } = this.props;
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -58,8 +58,8 @@ class FinalizeProjectButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Finalize Project',
-      header: 'Project',
+      caption: translations.snackbars.finalize.title,
+      header: translations.snackbars.finalize.txUiHeader,
       type: 'txVisualization',
     };
     const web3Params = {
@@ -74,7 +74,7 @@ class FinalizeProjectButton extends React.PureComponent {
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Finalize Project',
+          title: translations.snackbars.finalize.title,
           token: challengeProof.data['access-token'],
           client: challengeProof.data.client,
           uid: challengeProof.data.uid,
@@ -84,7 +84,7 @@ class FinalizeProjectButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Your Finalize Project Transaction is pending confirmation. See More',
+        message: translations.snackbars.finalize.message,
         txHash,
       });
 
@@ -112,7 +112,15 @@ class FinalizeProjectButton extends React.PureComponent {
   }
 
   render() {
-    const { stage, endorser, isProposer, timeCreated, finalVersionIpfsDoc, daoConfig } = this.props;
+    const {
+      stage,
+      endorser,
+      isProposer,
+      timeCreated,
+      finalVersionIpfsDoc,
+      daoConfig,
+      translations: { buttons },
+    } = this.props;
 
     const configDeadDuration = daoConfig.data.CONFIG_PROPOSAL_DEAD_DURATION;
 
@@ -137,7 +145,7 @@ class FinalizeProjectButton extends React.PureComponent {
         data-digix="ProposalAction-Finalize"
         onClick={() => this.finalizeProposal()}
       >
-        Finalize
+        {buttons.finalize}
       </Button>
     );
   }
@@ -162,6 +170,7 @@ FinalizeProjectButton.propTypes = {
   addresses: array.isRequired,
   history: object.isRequired,
   timeCreated: number.isRequired,
+  translations: object.isRequired,
 };
 
 FinalizeProjectButton.defaultProps = {

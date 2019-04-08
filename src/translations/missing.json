@@ -1,0 +1,165 @@
+{
+  "dashboard": {
+    "noProjects": "There are no projects to show.",
+    "terms": "Terms and Conditions",
+    "addreedTerms": "I have read and agreed",
+    "UserStats": {
+      "quarterPoints": "Quarter Points",
+      "reputationPoints": "Reputation Points",
+      "stake": "My Stake",
+      "dgdLocked": "DGD Locked",
+      "moderatorPoints": "Moderator Qtr Pts"
+    }
+  },
+  "snackbars": {
+    "claimFunding": {
+      "title": "Claim Funding",
+      "txUiHeader": "Project",
+      "message": "Your Claim Funding Transaction is pending confirmation. See More"
+    }
+  },
+  "ProposalCard": {
+    "like": "Like",
+    "likes": "Likes"
+  },
+  "common": {
+    "errors": {
+      "fieldIsRequired": "This field is required."
+    },
+    "buttons": {
+      "remove": "Remove",
+      "continueEditing": "Continue Editing",
+      "claiming": "Claiming",
+      "changeVote": "Change My Vote",
+      "editFunding": "Edit Funding",
+      "close": "Close",
+      "redeemBadge": "Redeem Badge"
+    }
+  },
+  "project": {
+    "fundsRequiredForMilestone": "Funds Required for This Milestone",
+    "noShortDescription": "No short description content has been created yet.",
+    "collateral": "Requires {{preProposalCollateral}} ETH to Submit Project",
+    "proposalVoteResults": "Proposal Vote Results",
+    "moderatorApprovalResults": "Moderator Approval Results",
+    "reviewVote1results": "Review Vote 1 Results",
+    "reviewVote2results": "Review Vote 2 Results",
+    "alerts": {
+      "prl": "This project can no longer claim funding due to Policy, Regulatory or Legal reasons, even if voting passes. Please contact us if you have any queries.",
+      "unclaimed": "The voting result was not claimed before the claiming deadline. This project will beauto failed.",
+      "failedVoting": "Your project fails the voting, either by voting results or its already past the deadline for claiming voting results."
+    },
+    "overlays": {
+      "hasVoted": "You have already committed for this proposal. This action will overwrite the previous commit.",
+      "commitVoteDescription": "In the DigixDAO, we employ the Commit and Reveal scheme to keep your votes as unbiased as possible. You will need to download a JSON file when deciding your in the vote. Your choice will then be verified in the Reveal phase when you upload the same JSON file.",
+      "commitVoteNote": "Please keep the file in a safe place as you will not be able to download it again.",
+      "invalidFile": "Invalid File Content, Please make sure you uploaded the correct file.",
+      "editFundingHeader": "Edit Funding",
+      "rewardExpected": "Reward Expected",
+      "milestoneFundExceeds": "Sum of Reward Expected and Milestone Fundings must not exceed {{limit}} ETH",
+      "milestoneFundNegative": "Negative value is not allowed"
+    },
+    "loadMoreComments": "Load more comments...",
+    "configurationDetails": "Configuration Details",
+    "transactions": "Transactions"
+  },
+
+  "profile": {
+    "Kyc": {
+      "Statuses": {
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "expired": "Expired",
+        "approving": "Approving",
+        "approved": "Approved"
+      },
+      "Submit": {
+        "error": "Unable to submit KYC.",
+        "success": "KYC submitted. Request is pending approval."
+      }
+    }
+  },
+  "wallet": {
+    "ParticipationReward": {
+      "ClaimReward": {
+        "txnCaption": "Claim DGX"
+      }
+    }
+  },
+  "lockDgd": {
+    "warning": {
+      "unlock": "Please note that once you lock, you can only unlock your DGDs during the **Locking Phase**."
+    },
+    "Hints": {
+      "overfilled": "Cannot lock more than your balance ({{balance}} DGD).",
+      "maxStake": "You can only stake up to {{maxAllowance}} DGDs"
+    }
+  },
+  "transactionHistory": {
+    "pendingConfirmation": "{{actual}}/{{total}} Confirmation(s)"
+  },
+  "spinner": {
+    "pleaseWait": "Please wait.",
+    "hold": "Hold tight while your project is being uploaded to IPFS.",
+
+  "approveInteraction": {
+    "transaction": {
+      "title": "Approve Interaction",
+      "action": "DGD Approval",
+      "txnSuccess": "Your DGD Approval Transaction is pending confirmation. See More"
+    }
+  },
+  "redeemBadge": {
+    "title": "Enabling Your DGD BADGE For Use",
+    "instructions": "In order to redeem a DGD Badge, we need your approval in order for our contracts to interact with your DGD Badge.",
+    "submit": "Approve The Interaction",
+    "txn": {
+      "title": "Badge Redemption Approval",
+      "txnSuccess": "Your Redeem Badge Transaction is pending confirmation. See More"
+    }
+  },
+  "snackbar": {
+    "enableRedeem": {
+      "title": "Badge Redemption Approval",
+      "message": "Your Redeem Badge Transaction is pending confirmation. See More"
+    },
+    "approveInteraction": {
+      "action": "Approve Interaction",
+      "title": "DGD Approval",
+      "message": "Your DGD Approval Transaction is pending confirmation. See More"
+    }
+  },
+  "loadWallet": {
+    "common": {
+      "createErrors": {
+        "requiredwalletType": "Please select a wallet type.",
+        "requiredName": "You must provide a name.",
+        "invalidNames": "You must provide a name for all addresses.",
+        "invalidPassword": "Passwords do not match."
+      }
+    },
+    "Json": {
+      "importInstructions": "Click or drag and drop here to load your file.",
+      "importError": "Keystore type not supported."
+    },
+    "Metamask": {
+      "ConnectionError": {
+        "noMetamask": "Cannot connect to MetaMask wallet. Make sure to login to your MetaMask wallet."
+      }
+    },
+    "Ledger": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "Getting address info..."
+        }
+      }
+    },
+    "Trezor": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "Getting address info..."
+        }
+      }
+    }
+  }
+}

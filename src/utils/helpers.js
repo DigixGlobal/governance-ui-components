@@ -1,7 +1,11 @@
+import React from 'react';
+import Markdown from 'react-markdown';
 import multihash from '@digix/multi-hash';
+
 import { fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
-import { KycStatus, ProposalErrors, UserStatus } from '@digix/gov-ui/constants';
+import { KycStatus, UserStatus } from '@digix/gov-ui/constants';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { renderToString } from 'react-dom/server';
 
 export function encodeHash(hash) {
   // eslint-disable-line import/prefer-default-export
@@ -51,24 +55,24 @@ export const formatPercentage = num => {
   return formatted;
 };
 
-export const getUserStatus = addressDetails => {
+export const getUserStatus = (addressDetails, translation) => {
   if (!addressDetails) {
     return null;
   }
 
   if (addressDetails.isModerator) {
-    return UserStatus.moderator;
+    return (translation && translation.moderator) || UserStatus.moderator;
   }
 
   if (addressDetails.isParticipant) {
-    return UserStatus.participant;
+    return (translation && translation.participant) || UserStatus.participant;
   }
 
   if (addressDetails.lastParticipatedQuarter > 0) {
-    return UserStatus.pastParticipant;
+    return (translation && translation.pastParticipant) || UserStatus.pastParticipant;
   }
 
-  return UserStatus.guest;
+  return (translation && translation.guest) || UserStatus.guest;
 };
 
 export const isKycApproved = apolloClient =>
@@ -83,18 +87,52 @@ export const inLockingPhase = DaoDetails => {
 };
 
 // checks general conditions that should be met when doing any proposal action
-export const getUnmetProposalRequirements = (apolloClient, DaoDetails) => {
+export const getUnmetProposalRequirements = (apolloClient, DaoDetails, translations) => {
   const errors = [];
+
+  const {
+    common: { proposalErrors },
+  } = translations;
 
   return isKycApproved(apolloClient).then(kycApproved => {
     if (!kycApproved) {
-      errors.push(ProposalErrors.invalidKyc);
+      errors.push(proposalErrors.invalidKyc);
     }
 
     if (inLockingPhase(DaoDetails)) {
-      errors.push(ProposalErrors.inLockingPhase);
+      errors.push(proposalErrors.inLockingPhase);
     }
 
     return errors;
   });
+};
+
+export const injectTranslation = (translation, toInject, setDataDigix, dataDigixPrefix) => {
+  if (!translation || !toInject) {
+    return null;
+  }
+
+  const keys = Object.keys(toInject);
+  let injected = translation;
+
+  if (setDataDigix) {
+    const prefix = dataDigixPrefix || 'Digix';
+    injected = <Markdown source={injected} escapeHtml={false} />;
+    injected = renderToString(injected);
+
+    keys.forEach(key => {
+      injected = injected.replace(
+        `{{${key}}}`,
+        `<span data-digix="${prefix}-${key}">${toInject[key]}</span>`
+      );
+    });
+
+    return <Markdown source={injected} escapeHtml={false} />;
+  }
+
+  keys.forEach(key => {
+    injected = injected.replace(`{{${key}}}`, toInject[key]);
+  });
+
+  return <Markdown source={injected} escapeHtml={false} />;
 };

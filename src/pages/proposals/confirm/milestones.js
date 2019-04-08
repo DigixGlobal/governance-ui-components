@@ -7,12 +7,15 @@ import { Section, Title, Content, Heading, DataContent } from './style';
 
 export default class Milestones extends React.Component {
   render() {
-    const { form } = this.props;
+    const {
+      form,
+      translations: { project, signTransaction },
+    } = this.props;
     return (
       <Section>
-        <Title>Milestone</Title>
+        <Title>{project.milestone}</Title>
         <Content>
-          <Heading>Reward Expected</Heading>
+          <Heading>{project.rewardExpected}</Heading>
           <DataContent>{form ? form.finalReward : 0} ETH</DataContent>
 
           {form &&
@@ -20,9 +23,11 @@ export default class Milestones extends React.Component {
             form.milestones.map((ms, i) => (
               <div key={`ms-${i + 1}`}>
                 <HorizontalBar />
-                <Heading>{`Milestone ${i + 1}`}</Heading>
+                <Heading>{`${project.milestone} ${i + 1}`}</Heading>
                 <DataContent>{ms.fund} ETH</DataContent>
-                <Heading>Milestone {i + 1}: Details</Heading>
+                <Heading>
+                  {project.milestone} {i + 1}: {signTransaction.common.details}
+                </Heading>
                 <DataContent>{ms.description}</DataContent>
               </div>
             ))}
@@ -34,4 +39,5 @@ export default class Milestones extends React.Component {
 
 Milestones.propTypes = {
   form: PropTypes.object.isRequired,
+  translations: PropTypes.object.isRequired,
 };

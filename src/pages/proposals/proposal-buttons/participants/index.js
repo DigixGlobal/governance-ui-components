@@ -35,9 +35,9 @@ class ParticipantButtons extends React.Component {
   }
 
   checkUnmetRequirements(proposalAction, customErrors) {
-    const { client, DaoDetails } = this.props;
+    const { client, DaoDetails, translations } = this.props;
 
-    getUnmetProposalRequirements(client, DaoDetails).then(errors => {
+    getUnmetProposalRequirements(client, DaoDetails, translations).then(errors => {
       let totalErrors = errors;
       if (customErrors) {
         totalErrors = errors.concat(customErrors);
@@ -62,6 +62,11 @@ class ParticipantButtons extends React.Component {
       proposal: { data },
       history,
       addressDetails,
+      translations: {
+        common: { buttons },
+        project,
+        snackbar: { snackbars },
+      },
     } = this.props;
 
     const checkProposalRequirements = this.checkUnmetRequirements.bind(this);
@@ -69,6 +74,7 @@ class ParticipantButtons extends React.Component {
     const showEditButton =
       isProposer && this.STAGES_THAT_CAN_EDIT.includes(data.stage) && !data.votingStage;
 
+    const buttonTranslations = { buttons, project, snackbars };
     return (
       <Fragment>
         <AbortButton
@@ -78,10 +84,11 @@ class ParticipantButtons extends React.Component {
           finalVersionIpfsDoc={data.finalVersionIpfsDoc}
           history={history}
           checkProposalRequirements={checkProposalRequirements}
+          translations={buttonTranslations}
         />
         {showEditButton && (
           <Button large onClick={() => checkProposalRequirements(editAction)}>
-            Edit
+            {buttons.edit}
           </Button>
         )}
         <EditFundingButton
@@ -90,6 +97,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           isProposer={isProposer}
           checkProposalRequirements={checkProposalRequirements}
+          translations={buttonTranslations}
         />
         <FinalizeButton
           endorser={data.endorser}
@@ -99,6 +107,7 @@ class ParticipantButtons extends React.Component {
           finalVersionIpfsDoc={data.finalVersionIpfsDoc}
           history={history}
           timeCreated={data.timeCreated}
+          translations={buttonTranslations}
           checkProposalRequirements={checkProposalRequirements}
         />
         <ClaimApprovalButton
@@ -109,6 +118,7 @@ class ParticipantButtons extends React.Component {
           proposalId={data.proposalId}
           checkProposalRequirements={checkProposalRequirements}
           match={this.props.match}
+          translations={buttonTranslations}
         />
         <VoteCommitButton
           isParticipant={addressDetails.data.isParticipant}
@@ -117,6 +127,7 @@ class ParticipantButtons extends React.Component {
           proposalId={data.proposalId}
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
+          translations={buttonTranslations}
         />
         <RevealButton
           isParticipant={addressDetails.data.isParticipant}
@@ -125,6 +136,7 @@ class ParticipantButtons extends React.Component {
           proposalId={data.proposalId}
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
+          translations={buttonTranslations}
         />
         <ClaimResultsButton
           checkProposalRequirements={checkProposalRequirements}
@@ -132,18 +144,21 @@ class ParticipantButtons extends React.Component {
           isProposer={isProposer}
           history={history}
           proposal={data}
+          translations={buttonTranslations}
         />
         <ClaimFundingButton
           checkProposalRequirements={checkProposalRequirements}
           isProposer={isProposer}
           history={history}
           proposal={data}
+          translations={buttonTranslations}
         />
         <MilestoneCompletedButton
           checkProposalRequirements={checkProposalRequirements}
           isProposer={isProposer}
           history={history}
           proposal={data}
+          translations={buttonTranslations}
         />
       </Fragment>
     );
@@ -161,6 +176,7 @@ ParticipantButtons.propTypes = {
   match: object.isRequired,
   proposal: object.isRequired,
   showRightPanel: func.isRequired,
+  translations: object.isRequired,
 };
 
 const mapStateToProps = ({ infoServer }) => ({

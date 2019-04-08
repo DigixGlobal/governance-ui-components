@@ -70,7 +70,10 @@ class ProposalFundings extends React.Component {
   }
 
   render() {
-    const { currentVersion } = this.props;
+    const {
+      currentVersion,
+      translations: { project },
+    } = this.props;
     const proposal = this.props.proposalDetails.data;
     const proposalVersion = proposal.proposalVersions[currentVersion];
     const { isFundingChanged } = proposal;
@@ -91,7 +94,7 @@ class ProposalFundings extends React.Component {
 
     return (
       <InfoItem outlined>
-        <ItemTitle>Funding</ItemTitle>
+        <ItemTitle>{project.funding}</ItemTitle>
         <Data>
           <div className="milestones">
             <span data-digix="funding-amount-label">{milestoneFunds}</span>
@@ -103,7 +106,7 @@ class ProposalFundings extends React.Component {
               </span>
             )}
             &nbsp;ETH
-            <span className="label">&nbsp;Milestones</span>
+            <span className="label">&nbsp;{project.milestones}</span>
           </div>
           <div className="reward">
             <span data-digix="reward-amount-label">{reward} </span>
@@ -115,7 +118,7 @@ class ProposalFundings extends React.Component {
               </span>
             )}
             &nbsp;ETH
-            <span className="label">&nbsp;Reward</span>
+            <span className="label">&nbsp;{project.reward}</span>
           </div>
         </Data>
       </InfoItem>
@@ -129,6 +132,7 @@ ProposalFundings.propTypes = {
   currentVersion: number.isRequired,
   match: object.isRequired,
   proposalDetails: object.isRequired,
+  translations: object.isRequired,
 };
 
 export default withFetchProposal(ProposalFundings);

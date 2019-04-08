@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { getTransactions } from '@digix/gov-ui/reducers/dao-server/actions';
 import { getBlockConfig } from '@digix/gov-ui/reducers/info-server/actions';
 import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
 import Icon from '@digix/gov-ui/components/common/elements/icons/';
 
 import {
-  ButtonLink,
   EmptyStateContainer,
   IconContainer,
   EmptyStateTitle,
@@ -23,9 +21,20 @@ import {
 } from './style';
 
 class History extends React.Component {
+  constructor(props) {
+    super(props);
+    this.TRANSACTION_STATUS = {
+      pending: 'pending',
+      seen: 'seen',
+      failed: 'failed',
+      confirmed: 'confirmed',
+    };
+
+    this.PENDING_STATUSES = [this.TRANSACTION_STATUS.seen, this.TRANSACTION_STATUS.pending];
+  }
+
   componentWillMount = () => {
     const { challengeProof } = this.props;
-    // if (!challengeProof.data || !challengeProof.data.client) history.push('/');
 
     if (challengeProof.data && challengeProof.data['access-token']) {
       this.props.getTransactions({
@@ -37,79 +46,70 @@ class History extends React.Component {
       this.props.getBlockConfig();
     }
   };
+
+  renderEmpty() {
+    const t = this.props.translations.Empty;
+
+    return (
+      <EmptyStateContainer>
+        <IconContainer>
+          <Icon kind="history" width="80px" height="80px" />
+        </IconContainer>
+
+        <EmptyStateTitle>{t.title}</EmptyStateTitle>
+        <p>{t.description}</p>
+      </EmptyStateContainer>
+    );
+  }
+
+  renderItem = transaction => {
+    const { blockConfig } = this.props;
+    const { blockNumber } = transaction;
+    const { CURRENT_BLOCK_NUMBER, BLOCK_CONFIRMATIONS } = blockConfig.data;
+    const confirmation = CURRENT_BLOCK_NUMBER + BLOCK_CONFIRMATIONS - blockNumber + 1;
+
+    const showConfirmations = transaction.status === this.TRANSACTION_STATUS.seen;
+    const showPendingIcons = this.PENDING_STATUSES.includes(transaction.status);
+
+    return (
+      <HistoryCard key={transaction.id}>
+        <TxDetails href={`${ETHERSCAN_URL}${transaction.txhash}`} target="_blank">
+          <TxTitle>{transaction.title}</TxTitle>
+          <TxStatus>
+            {showConfirmations && `${confirmation}/${BLOCK_CONFIRMATIONS} Confirmation(s)`}
+          </TxStatus>
+          <TxIcon
+            pending={showPendingIcons}
+            failed={transaction.status === this.TRANSACTION_STATUS.failed}
+            success={transaction.status === this.TRANSACTION_STATUS.confirmed}
+          >
+            {showPendingIcons && <Icon kind="option" />}
+            {transaction.status === this.TRANSACTION_STATUS.failed && <Icon kind="xmark" />}
+            {transaction.status === this.TRANSACTION_STATUS.confirmed && <Icon kind="check" />}
+          </TxIcon>
+        </TxDetails>
+      </HistoryCard>
+    );
+  };
+
   render() {
-    const { transactions, blockConfig, challengeProof } = this.props;
+    const t = this.props.translations;
+    const { challengeProof, transactions } = this.props;
+
     const notAuthorized = !challengeProof.data || !challengeProof.data.client;
     const history = transactions.data ? Array.from(transactions.data) : [];
+    const items = history.map(transaction => this.renderItem(transaction));
+    const emptyHistory = items.length === 0;
+
     return (
       <div>
         <HistoryHeading>
-          <Title>Transactions</Title>
+          <Title>{t.title}</Title>
           <div />
         </HistoryHeading>
 
-        {!history ||
-          (history.length === 0 && (
-            <EmptyStateContainer>
-              <IconContainer>
-                <Icon kind="history" width="80px" height="80px" />
-              </IconContainer>
-
-              <EmptyStateTitle>Transaction Empty</EmptyStateTitle>
-              {!notAuthorized && history.length === 0 && (
-                <p>
-                  Looks like there are no transactions at the moment. Please lock your DGD to
-                  continue.
-                </p>
-              )}
-              {notAuthorized && (
-                <div>
-                  <p>
-                    You will need to load your wallet to view your transactions, which will allow
-                    you to view and participate on all governance proposals. Load your wallet to
-                    continue.
-                  </p>
-                  <Link to="/">
-                    <ButtonLink kind="link">Go back to Dashboard</ButtonLink>
-                  </Link>
-                </div>
-              )}
-            </EmptyStateContainer>
-          ))}
-
-        {history && history.length > 0 && (
-          <HistoryListView>
-            {history.map(transaction => {
-              const { blockNumber } = transaction;
-              const { CURRENT_BLOCK_NUMBER, BLOCK_CONFIRMATIONS } = blockConfig.data;
-              const confirmation = CURRENT_BLOCK_NUMBER + BLOCK_CONFIRMATIONS - blockNumber + 1;
-              const showConfirmations = transaction.status === 'seen';
-              const showPendingIcons =
-                transaction.status === 'seen' || transaction.status === 'pending';
-              return (
-                <HistoryCard key={transaction.id}>
-                  <TxDetails href={`${ETHERSCAN_URL}${transaction.txhash}`} target="_blank">
-                    <TxTitle>{transaction.title}</TxTitle>
-                    <TxStatus>
-                      {showConfirmations
-                        ? `${confirmation}/${BLOCK_CONFIRMATIONS} Confirmation(s)`
-                        : null}
-                    </TxStatus>
-                    <TxIcon
-                      pending={showPendingIcons}
-                      failed={transaction.status === 'failed'}
-                      success={transaction.status === 'confirmed'}
-                    >
-                      {showPendingIcons && <Icon kind="option" />}
-                      {transaction.status === 'failed' && <Icon kind="xmark" />}
-                      {transaction.status === 'confirmed' && <Icon kind="check" />}
-                    </TxIcon>
-                  </TxDetails>
-                </HistoryCard>
-              );
-            })}
-          </HistoryListView>
-        )}
+        {emptyHistory && this.renderEmpty(notAuthorized)}
+        {!emptyHistory && <HistoryListView>{items}</HistoryListView>}
       </div>
     );
   }
@@ -117,19 +117,25 @@ class History extends React.Component {
 
 const { func, object } = PropTypes;
 History.propTypes = {
-  transactions: object.isRequired,
-  challengeProof: object.isRequired,
-  getTransactions: func.isRequired,
-  getBlockConfig: func.isRequired,
   blockConfig: object.isRequired,
-  // history: object.isRequired,
+  challengeProof: object.isRequired,
+  getBlockConfig: func.isRequired,
+  getTransactions: func.isRequired,
+  transactions: object.isRequired,
+  translations: object.isRequired,
 };
 
+const mapStateToProps = ({ daoServer, infoServer }) => ({
+  blockConfig: infoServer.BlockConfig,
+  challengeProof: daoServer.ChallengeProof,
+  transactions: daoServer.Transactions,
+  translations: daoServer.Translations.data.transactionHistory,
+});
+
 export default connect(
-  ({ daoServer: { Transactions, ChallengeProof }, infoServer: { BlockConfig } }) => ({
-    transactions: Transactions,
-    challengeProof: ChallengeProof,
-    blockConfig: BlockConfig,
-  }),
-  { getTransactions, getBlockConfig }
+  mapStateToProps,
+  {
+    getBlockConfig,
+    getTransactions,
+  }
 )(History);

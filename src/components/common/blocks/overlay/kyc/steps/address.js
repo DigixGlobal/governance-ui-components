@@ -13,6 +13,9 @@ class KycOverlayAddress extends KycFormStep {
   constructor(props) {
     super(props);
 
+    const t = props.translations.KycForm.Fields.Residence;
+    this.translations = t;
+
     const { formValues } = props;
     this.state = {
       formValues: {
@@ -34,7 +37,7 @@ class KycOverlayAddress extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.country ? false : undefined,
-        label: 'Country of Residence',
+        label: t.country,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
       },
@@ -44,7 +47,7 @@ class KycOverlayAddress extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.address ? false : undefined,
-        label: 'Address',
+        label: t.address,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.input,
       },
@@ -54,7 +57,7 @@ class KycOverlayAddress extends KycFormStep {
         defaultErrorMessage: null,
         errorMessage: null,
         hasError: false,
-        label: 'Address Line 2 (Optional)',
+        label: t.addressDetails,
         pattern: null,
         type: this.FIELD_TYPES.input,
       },
@@ -64,7 +67,7 @@ class KycOverlayAddress extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.city ? false : undefined,
-        label: 'City',
+        label: t.city,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.input,
       },
@@ -74,7 +77,7 @@ class KycOverlayAddress extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.state ? false : undefined,
-        label: 'State',
+        label: t.state,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.input,
       },
@@ -84,7 +87,7 @@ class KycOverlayAddress extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.postalCode ? false : undefined,
-        label: 'Zip Code',
+        label: t.postalCode,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.input,
       },
@@ -94,7 +97,7 @@ class KycOverlayAddress extends KycFormStep {
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.residenceProofType ? false : undefined,
-        label: 'Residence Proof',
+        label: t.residenceProofType,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.select,
       },
@@ -113,6 +116,7 @@ class KycOverlayAddress extends KycFormStep {
 
   render() {
     const { residenceProofDataUrl } = this.state.formValues;
+    const t = this.translations;
 
     return (
       <FormSection>
@@ -131,7 +135,7 @@ class KycOverlayAddress extends KycFormStep {
             <FieldGroup column>
               {this.renderField('residenceProofType')}
               {this.renderField('residenceProofDataUrl', {
-                caption: 'Residence Proof',
+                caption: t.residenceProofType,
               })}
             </FieldGroup>
           </FieldItem>
@@ -158,6 +162,7 @@ KycOverlayAddress.propTypes = {
   formOptions: object.isRequired,
   formValues: object.isRequired,
   setValidForm: func.isRequired,
+  translations: object.isRequired,
 };
 
 export default KycOverlayAddress;

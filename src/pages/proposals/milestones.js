@@ -9,8 +9,17 @@ export default class Milestones extends React.Component {
     this.NO_MILESTONE_DESCRIPTION = 'No milestone description has been created yet.';
   }
 
-  renderMilestone(milestone, index) {
-    const { changedFundings, fundingChanged, milestoneFundings } = this.props;
+  renderMilestone(milestoneFunding, index) {
+    const {
+      changedFundings,
+      fundingChanged,
+      milestones,
+      translations: { project },
+    } = this.props;
+    const milestone = milestones[index];
+    if (!milestone) {
+      return null;
+    }
 
     let funding;
     let milestoneFund;
@@ -22,13 +31,13 @@ export default class Milestones extends React.Component {
       funding = Number(original);
       milestoneFund = Number(updated) - funding;
     } else {
-      funding = Number(milestoneFundings[index]);
+      funding = Number(milestoneFunding);
     }
 
     return (
       <div
         key={`ms-${order}`}
-        label={`Milestone ${order}: ${milestone.title || ''}`}
+        label={`${project.milestone} ${order}: ${milestone.title || ''}`}
         funding={funding}
         milestoneFund={milestoneFund}
       >
@@ -38,12 +47,18 @@ export default class Milestones extends React.Component {
   }
 
   render() {
-    const { milestones } = this.props;
-    const milestoneElements = milestones.map((milestone, i) => this.renderMilestone(milestone, i));
+    const {
+      milestoneFundings,
+      translations: { project },
+    } = this.props;
+    let milestoneElements = milestoneFundings.map((milestoneFunding, i) =>
+      this.renderMilestone(milestoneFunding, i)
+    );
+    milestoneElements = milestoneElements.filter(milestone => milestone !== null);
 
     return (
       <Content>
-        <SubTitle>Milestones</SubTitle>
+        <SubTitle>{project.milestones}</SubTitle>
         <Accordion allowMultipleOpen>{milestoneElements}</Accordion>
       </Content>
     );
@@ -55,6 +70,7 @@ Milestones.propTypes = {
   fundingChanged: PropTypes.bool.isRequired,
   milestoneFundings: PropTypes.array.isRequired,
   milestones: PropTypes.array.isRequired,
+  translations: PropTypes.object.isRequired,
 };
 
 Milestones.defaultProps = {

@@ -96,7 +96,7 @@ class CommentReply extends React.Component {
 
   render() {
     const { currentUser, renderThreadReplies, setError, userPoints } = this.props;
-    const { comment, showEditor } = this.state;
+    const { comment, showEditor, translations } = this.state;
 
     if (!comment) {
       return null;
@@ -116,9 +116,14 @@ class CommentReply extends React.Component {
               hideEditor={this.hideEditor}
               toggleEditor={this.toggleEditor}
               userPoints={userPoints}
+              translations={translations}
             />
             {showEditor && (
-              <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} />
+              <CommentTextEditor
+                addComment={this.addReply}
+                callback={this.hideEditor}
+                translations={translations}
+              />
             )}
             {replies && renderThreadReplies(replies)}
           </CommentReplyPost>
@@ -126,7 +131,13 @@ class CommentReply extends React.Component {
         {hasChildren && (
           <CommentReplyPost>
             <CommentReplyPost>
-              <Button kind="text" tertiary xsmall onClick={() => this.loadMore(replies.endCursor)}>
+              <Button
+                data-digix="Comment-Load-More"
+                kind="text"
+                tertiary
+                xsmall
+                onClick={() => this.loadMore(replies.endCursor)}
+              >
                 Load more comments...
               </Button>
             </CommentReplyPost>
@@ -157,6 +168,7 @@ CommentReply.defaultProps = {
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
+  translations: state.daoServer.Translations,
 });
 
 export default withApollo(

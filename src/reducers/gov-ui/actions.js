@@ -16,6 +16,8 @@ export const actions = {
   SET_AUTHENTICATION_STATUS: `${REDUX_PREFIX}SET_AUTHENTICATION_STATUS`,
   SHOW_LEFT_MENU: `${REDUX_PREFIX}SHOW_LEFT_MENU`,
   GET_TOKEN_USD_VALUE: `${REDUX_PREFIX}GET_TOKEN_USD_VALUE`,
+
+  SET_TRANSLATION_LANGUAGE: `${REDUX_PREFIX}SET_TRANSLATION_LANGUAGE`,
 };
 
 function fetchData(url, type) {
@@ -133,4 +135,10 @@ export function setAuthentationStatus(payload) {
 
 export function getTokenUsdValue() {
   return fetchData(CMC_ENDPOINT, actions.GET_TOKEN_USD_VALUE);
+}
+
+export function setLanguageTranslation(payload = 'en') {
+  return dispatch => {
+    dispatch({ type: actions.SET_TRANSLATION_LANGUAGE, payload });
+  };
 }

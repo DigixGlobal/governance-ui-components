@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
 
-import { Accordion, Button, Icon } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import {
-  WalletWrapper,
+  NavItem,
   AddressButton,
-  Dropdown,
   DropdownMenu,
   MenuItem,
 } from '@digix/gov-ui/components/common/blocks/navbar/style';
@@ -42,55 +41,63 @@ class WalletButton extends React.Component {
     }
 
     const { defaultAddress, canLockDgd } = this.props;
-    return (
-      <WalletWrapper>
-        {!defaultAddress && (
-          <Button primary small data-digix="Header-LoadWallet" onClick={() => this.onWalletClick()}>
-            Load Wallet
-          </Button>
-        )}
-        {canLockDgd && canLockDgd.show && (
-          <Button
-            primary
-            xsmall
-            data-digix="Header-LockDgd"
-            onClick={() => this.showLockDgdOverlay()}
-          >
-            Lock DGD
-          </Button>
-        )}
-        {defaultAddress && (
-          <Fragment>
-            <Dropdown>
-              <AddressButton
-                kind="capsule"
-                xsmall
-                data-digix="Header-Address"
-                onClick={() => this.showDropdownMenu()}
-              >
-                <span>{defaultAddress.address}</span>
-                <Icon kind="arrow" />
-              </AddressButton>
+    const tHeader = this.props.translations.header;
 
-              {this.state.open && (
-                <DropdownMenu>
-                  <MenuItem>
-                    <Button
-                      kind="text"
-                      primary
-                      small
-                      data-digix="Header-LoadWallet"
-                      onClick={() => window.location.reload()}
-                    >
-                      Logout
-                    </Button>
-                  </MenuItem>
-                </DropdownMenu>
-              )}
-            </Dropdown>
-          </Fragment>
+    return (
+      <Fragment>
+        <NavItem cta>
+          {!defaultAddress && (
+            <Button
+              primary
+              small
+              data-digix="Header-LoadWallet"
+              onClick={() => this.onWalletClick()}
+            >
+              {tHeader.loadWallet || 'Load Wallet'}
+            </Button>
+          )}
+          {canLockDgd && canLockDgd.show && (
+            <Button
+              primary
+              xsmall
+              data-digix="Header-LockDgd"
+              onClick={() => this.showLockDgdOverlay()}
+            >
+              {tHeader.lockDgd || 'Lock DGD'}
+            </Button>
+          )}
+        </NavItem>
+
+        {defaultAddress && (
+          <NavItem wallet>
+            <AddressButton
+              kind="link"
+              xsmall
+              data-digix="Header-Address"
+              onClick={() => this.showDropdownMenu()}
+            >
+              <span>{defaultAddress.address}</span>
+              <Icon kind="arrow" />
+            </AddressButton>
+
+            {this.state.open && (
+              <DropdownMenu>
+                <MenuItem>
+                  <Button
+                    kind="text"
+                    primary
+                    small
+                    data-digix="Header-LoadWallet"
+                    onClick={() => window.location.reload()}
+                  >
+                    {tHeader.logout || 'Logout'}
+                  </Button>
+                </MenuItem>
+              </DropdownMenu>
+            )}
+          </NavItem>
         )}
-      </WalletWrapper>
+      </Fragment>
     );
   }
 }
@@ -102,11 +109,15 @@ WalletButton.propTypes = {
   defaultAddress: oneOfType([string, object]),
   canLockDgd: object,
   HasCountdown: bool.isRequired,
+  translations: object,
 };
 
 WalletButton.defaultProps = {
   defaultAddress: undefined,
   canLockDgd: undefined,
+  translations: {
+    header: {},
+  },
 };
 
 const mapStateToProps = state => ({
@@ -114,6 +125,7 @@ const mapStateToProps = state => ({
   addressDetails: state.infoServer.AddressDetails,
   canLockDgd: state.govUI.CanLockDgd,
   HasCountdown: state.govUI.HasCountdown,
+  translations: state.daoServer.Translations.data,
 });
 
 export default connect(

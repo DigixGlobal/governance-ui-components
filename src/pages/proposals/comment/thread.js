@@ -51,7 +51,6 @@ class ParentThread extends React.Component {
         const error = CommentsApi.ERROR_MESSAGES;
         if (message === 'unauthorized_action') {
           setCommentingPrivileges(false);
-          console.log(error.bannedUser);
           setError(error.bannedUser);
         } else {
           setError(error.createReply);
@@ -123,7 +122,7 @@ class ParentThread extends React.Component {
         {replyElements}
         {hasSiblings && (
           <CommentReplyPost>
-            <Button kind="text" xsmall onClick={() => this.loadMore(replyList.endCursor)}>
+            <Button data-digix="Comment-Load-Replies" kind="text" xsmall onClick={() => this.loadMore(replyList.endCursor)}>
               Load more replies...
             </Button>
           </CommentReplyPost>

@@ -17,6 +17,8 @@ export const actions = {
   CLEAR_PROPOSAL_DETAILS: `${REDUX_PREFIX}CLEAR_PROPOSAL_DETAILS`,
 
   GET_PENDING_TRANSACTIONS: `${REDUX_PREFIX}GET_PENDING_TRANSACTIONS`,
+
+  GET_TRANSLATIONS: `${REDUX_PREFIX}GET_TRANSLATIONS`,
 };
 
 function fetchData(url, type, authToken, client, uid) {
@@ -88,19 +90,16 @@ function sendData(method, url, type, data, authToken, client, uid) {
           })
       )
       .then(({ json, res }) => {
-        if (json.result) {
-          return dispatch({
-            type,
-            payload: {
-              data: json.result,
-              fetching: false,
-              error: null,
-              updated: new Date(),
-            },
-          });
-        }
-
-        throw json.error;
+        if (json.error) throw json.error;
+        return dispatch({
+          type,
+          payload: {
+            data: json.result ? json.result : json,
+            fetching: false,
+            error: null,
+            updated: new Date(),
+          },
+        });
       })
       .catch(error => dispatch({ type, payload: { fetching: false, error } }));
   };
@@ -271,4 +270,8 @@ export function getProposalLikesStats(payload) {
     client,
     uid
   );
+}
+
+export function getTranslations(language) {
+  return sendData('GET', `${DAO_SERVER}/translations/${language}.json`, actions.GET_TRANSLATIONS);
 }

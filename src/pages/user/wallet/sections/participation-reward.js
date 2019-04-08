@@ -50,6 +50,7 @@ class ParticipationReward extends React.Component {
   };
 
   claimReward = () => {
+    const tClaim = this.props.translations.ClaimReward;
     const { addresses, ChallengeProof, web3Redux } = this.props;
     const { abi, address } = getContract(DaoRewardsManager, network);
 
@@ -60,7 +61,7 @@ class ParticipationReward extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Claim DGX',
+      caption: tClaim.txnCaption,
       header: 'User',
       type: 'txVisualization',
     };
@@ -75,7 +76,7 @@ class ParticipationReward extends React.Component {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Claim DGX',
+          title: tClaim.txnCaption,
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
           uid: ChallengeProof.data.uid,
@@ -85,7 +86,7 @@ class ParticipationReward extends React.Component {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'DGX Claimed',
+        message: tClaim.txnSuccess,
         txHash,
       });
     };
@@ -108,6 +109,7 @@ class ParticipationReward extends React.Component {
   };
 
   render() {
+    const t = this.props.translations;
     const { DaoDetails } = this.props;
     let { claimableDgx } = this.props.AddressDetails;
 
@@ -118,16 +120,14 @@ class ParticipationReward extends React.Component {
 
     return (
       <QtrParticipation>
-        <Title>DigixDAO Participation Reward</Title>
+        <Title>{t.title}</Title>
         <Detail>
-          <Label>Your Unclaimed Reward</Label>
+          <Label>{t.unclaimedReward}</Label>
           <Data>
             <span data-digix="Wallet-DGXReward">{claimableDgx}</span>
             <span>&nbsp;DGX</span>
           </Data>
-          <Desc>
-            You can claim rewards from actively participating in the DigixDAO during a quarter.
-          </Desc>
+          <Desc>{t.instructions}</Desc>
           <Actions>
             <Button
               primary
@@ -135,7 +135,7 @@ class ParticipationReward extends React.Component {
               data-digix="Wallet-ClaimReward"
               onClick={() => this.claimReward()}
             >
-              Claim Reward
+              {t.ClaimReward.txnButton}
             </Button>
           </Actions>
         </Detail>
@@ -155,6 +155,7 @@ ParticipationReward.propTypes = {
   showHideAlert: func.isRequired,
   showTxSigningModal: func.isRequired,
   subscribeToAddress: func.isRequired,
+  translations: object.isRequired,
   web3Redux: object.isRequired,
 };
 

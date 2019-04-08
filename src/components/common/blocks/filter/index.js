@@ -26,17 +26,24 @@ const network = SpectrumConfig.defaultNetworks[0];
 class ProposalCardFilter extends React.Component {
   constructor(props) {
     super(props);
-    this.FILTERS = [
-      {
-        text: 'Latest',
-        value: 'latest',
-      },
-      {
-        text: 'Oldest',
-        value: 'oldest',
-      },
-    ];
+    this.state = {
+      filters: [],
+    };
   }
+
+  componentDidMount = () => {
+    const { translations } = this.props;
+    if (translations.data) {
+      const {
+        data: {
+          dashboard: { sortOptions },
+        },
+      } = translations;
+      const options = Object.keys(sortOptions);
+      const filters = options.map(o => ({ text: o, value: 0 }));
+      this.setState({ filters });
+    }
+  };
 
   getEthBalance() {
     const { AddressDetails, web3Redux } = this.props;
@@ -47,9 +54,9 @@ class ProposalCardFilter extends React.Component {
   }
 
   getUnmetCreateRequirements = () => {
-    const { DaoDetails, client } = this.props;
+    const { DaoDetails, client, translations } = this.props;
     const dataCalls = [
-      getUnmetProposalRequirements(client, DaoDetails),
+      getUnmetProposalRequirements(client, DaoDetails, translations.data),
       this.props.getDaoConfig(),
       this.getEthBalance(),
     ];
@@ -89,23 +96,28 @@ class ProposalCardFilter extends React.Component {
   }
 
   render() {
-    const { AddressDetails } = this.props;
+    const { AddressDetails, translations } = this.props;
+    const { filters } = this.state;
     const canCreate = AddressDetails && AddressDetails.data.isParticipant;
+    const {
+      data: { dashboard },
+    } = translations;
+
     return (
       <FilterWrapper>
         <Heading>
-          <H1>Projects</H1>
+          <H1>{dashboard.title}</H1>
           {canCreate && (
             <Button primary large showIcon onClick={() => this.redirectToCreateProposal()}>
               <Icon kind="plus" />
-              Create
+              {dashboard.createButton}
             </Button>
           )}
         </Heading>
         <Filter>
-          <Category {...this.props} />
+          <Category {...this.props} translations={translations} />
           <Pulldown>
-            <Select small id="test" items={this.FILTERS} onChange={this.handleChange} />
+            <Select small id="test" items={filters} onChange={this.handleChange} />
           </Pulldown>
         </Filter>
       </FilterWrapper>
@@ -125,6 +137,7 @@ ProposalCardFilter.propTypes = {
   onOrderChange: func.isRequired,
   showRightPanel: func.isRequired,
   web3Redux: object.isRequired,
+  translations: object.isRequired,
 };
 
 const mapStateToProps = ({ infoServer }) => ({

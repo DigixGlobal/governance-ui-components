@@ -20,16 +20,20 @@ export default class ProjectDetails extends React.Component {
 
   componentDidMount = () => {
     const { images } = this.props.project;
-    if (images) fetchImages(images).then(files => this.setState({ files }));
+    try {
+      if (images) fetchImages(images).then(files => this.setState({ files }));
+    } catch (error) {
+      // do nothing
+    }
   };
 
   componentWillReceiveProps = nextProps => {
     const { images } = nextProps.project;
-    fetchImages(images).then(files => this.setState({ files }));
-  };
-
-  showHideImage = source => () => {
-    this.setState({ open: !this.state.open, selectedImage: source });
+    try {
+      fetchImages(images).then(files => this.setState({ files }));
+    } catch (error) {
+      // do nothing
+    }
   };
 
   showHideImage = source => () => {
@@ -60,23 +64,25 @@ export default class ProjectDetails extends React.Component {
   };
 
   render() {
-    const { project, preview } = this.props;
+    const {
+      project,
+      preview,
+      translations: { project: trans },
+    } = this.props;
     const { selectedImage } = this.state;
     const hasImages = project.images && project.images.length > 0;
     return (
       <DetailsContainer>
         <Content>
-          <SubTitle>Short Description</SubTitle>
+          <SubTitle>{trans.shortDescription}</SubTitle>
           <div data-digix="Details-Short-Desc">
-            {project.description
-              ? project.description
-              : 'No short description content has been created yet.'}
+            {project.description ? project.description : project.noShortDescription}
           </div>
           <HR />
         </Content>
 
         <Content data-digix="Details-Desc">
-          <SubTitle>Project Details</SubTitle>
+          <SubTitle>{trans.details}</SubTitle>
           <ReactMarkdown source={project.details} escapeHtml={false} />
           {preview && this.renderImages(project.proofs, preview)}
           {hasImages && this.renderImages(this.state.files, false)}
@@ -98,6 +104,7 @@ export default class ProjectDetails extends React.Component {
 ProjectDetails.propTypes = {
   project: PropTypes.object.isRequired,
   preview: PropTypes.bool,
+  translations: PropTypes.object.isRequired,
 };
 
 ProjectDetails.defaultProps = {

@@ -81,6 +81,7 @@ class RedeemBadgeButton extends React.PureComponent {
   };
 
   handleSubmit = () => {
+    const t = this.props.translations;
     const { web3Redux, challengeProof, addresses } = this.props;
 
     const { abi, address } = getContract(DaoStakeLocking, network);
@@ -90,7 +91,7 @@ class RedeemBadgeButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Redeem Badge',
+      caption: t.redeemBadge,
       header: 'Badge',
       type: 'txVisualization',
     };
@@ -106,7 +107,7 @@ class RedeemBadgeButton extends React.PureComponent {
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Redeem Badge',
+          title: t.redeemBadge,
           token: challengeProof.data['access-token'],
           client: challengeProof.data.client,
           uid: challengeProof.data.uid,
@@ -144,6 +145,7 @@ class RedeemBadgeButton extends React.PureComponent {
   render() {
     const { badgeBalance, redeemed, allowance } = this.state;
     const { addressDetails, daoInfo } = this.props;
+    const t = this.props.translations;
 
     const showOverlay = Number(allowance) < 1;
     const canRedeemBadge =
@@ -159,7 +161,7 @@ class RedeemBadgeButton extends React.PureComponent {
         onClick={showOverlay ? this.handleShowOverlay : this.handleSubmit}
         disabled={!canRedeemBadge}
       >
-        Redeem Badge
+        {t.redeemBadge}
       </Button>
     );
   }
@@ -179,6 +181,7 @@ RedeemBadgeButton.propTypes = {
   history: object.isRequired,
   getAddressDetails: func.isRequired,
   showRightPanel: func.isRequired,
+  translations: func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -186,6 +189,7 @@ const mapStateToProps = state => ({
   addressDetails: state.infoServer.AddressDetails.data,
   daoInfo: state.infoServer.DaoDetails.data,
   addresses: getAddresses(state),
+  translations: state.daoServer.Translations.data.profile.ModeratorRequirements,
 });
 
 export default web3Connect(

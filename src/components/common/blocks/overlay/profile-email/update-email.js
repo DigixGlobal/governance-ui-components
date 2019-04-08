@@ -6,7 +6,7 @@ import { withChangeEmail } from '@digix/gov-ui/api/graphql-queries/users';
 
 class UpdateEmailButton extends React.Component {
   render() {
-    const { changeEmail, disable, email } = this.props;
+    const { changeEmail, disable, email, translations } = this.props;
     const disableButton = disable || !email;
 
     return (
@@ -18,18 +18,19 @@ class UpdateEmailButton extends React.Component {
         data-digix="EmailOverlay-SetEmail"
         onClick={() => changeEmail(email)}
       >
-        Change Email
+        {translations.submit}
       </Button>
     );
   }
 }
 
-const { bool, func, string } = PropTypes;
+const { bool, func, object, string } = PropTypes;
 
 UpdateEmailButton.propTypes = {
   changeEmail: func,
   disable: bool.isRequired,
   email: string,
+  translations: object.isRequired,
 };
 
 UpdateEmailButton.defaultProps = {

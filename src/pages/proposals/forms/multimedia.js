@@ -167,11 +167,14 @@ class Multimedia extends React.Component {
   render() {
     const { thumbnails, files, selectedImage } = this.state;
     const { proofs, images: imageHash } = this.props.form;
+    const {
+      translations: { project, sidebar },
+    } = this.props;
     const images = thumbnails || proofs;
     return (
       <Fieldset>
         <FormItem>
-          <Label>Upload Project Images</Label>
+          <Label>{project.uploadImages}</Label>
           <MediaUploader>
             <div>
               <Button
@@ -184,11 +187,9 @@ class Multimedia extends React.Component {
                 id="image-upload"
                 onChange={this.handleUpload}
                 type="file"
-                caption="Select Images to Upload"
+                caption={project.uploadImageButton}
               >
-                <div>
-                  Image must be in JPEG or PNG format &amp; file size must be lesser than 10MB.
-                </div>
+                <div>{project.uploadImageButtonHelpText}</div>
               </Button>
             </div>
 
@@ -202,7 +203,7 @@ class Multimedia extends React.Component {
           <div>
             <img alt="" style={{ width: '100%' }} src={selectedImage} />
             <Button kind="round" onClick={this.showHideImage()}>
-              Close
+              {sidebar.close}
             </Button>
           </div>
         </Modal>
@@ -216,5 +217,6 @@ const { func, object } = PropTypes;
 Multimedia.propTypes = {
   onChange: func.isRequired,
   form: object.isRequired,
+  translations: object.isRequired,
 };
 export default Multimedia;

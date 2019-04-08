@@ -27,6 +27,7 @@ const network = SpectrumConfig.defaultNetworks[0];
 class KycOverlay extends React.Component {
   constructor(props) {
     super(props);
+    const tSteps = props.translations.KycForm.Steps;
 
     this.STAGES = [
       {
@@ -36,19 +37,19 @@ class KycOverlay extends React.Component {
         ref: undefined,
       },
       {
-        title: 'Basic Information',
+        title: tSteps.BasicInformation,
         component: KycOverlayBasicInformation,
         key: 'BasicInformation',
         ref: React.createRef(),
       },
       {
-        title: 'Residence Proof',
+        title: tSteps.Residence,
         component: KycOverlayAddress,
         key: 'Address',
         ref: React.createRef(),
       },
       {
-        title: 'Photo Proof',
+        title: tSteps.Photo,
         component: KycOverlayPhotoUpload,
         key: 'PhotoUpload',
         ref: React.createRef(),
@@ -56,7 +57,9 @@ class KycOverlay extends React.Component {
     ];
 
     this.MAX_STEPS = this.STAGES.length - 1;
-    this.SUBMIT_ERROR_MESSAGE = 'Unable to submit KYC.';
+
+    const t = props.translations.Submit;
+    this.SUBMIT_ERROR_MESSAGE = t.error;
 
     this.state = {
       currentStep: 0,
@@ -108,6 +111,8 @@ class KycOverlay extends React.Component {
 
   onSubmitKyc = response => {
     const { errors } = response.submitKyc;
+    const t = this.props.translations.Submit;
+
     if (errors.length) {
       this.setState({
         errorMessage: errors[0].message,
@@ -123,7 +128,7 @@ class KycOverlay extends React.Component {
     this.props.refetchUser();
     this.props.showRightPanel({ show: false });
     this.props.showHideAlert({
-      message: 'KYC submitted. Request is pending approval.',
+      message: t.success,
     });
   };
 
@@ -197,6 +202,9 @@ class KycOverlay extends React.Component {
       return null;
     }
 
+    const t = this.props.translations;
+    const tNav = t.KycForm.Navigation;
+
     return (
       <nav>
         <Wizard stages={this.STAGES} step={currentStep} />
@@ -205,7 +213,7 @@ class KycOverlay extends React.Component {
           <div>
             {showPreviousButton && (
               <Button secondary data-digix="KycOverlay-Previous" onClick={this.onPreviousStep}>
-                Previous
+                {tNav.previous}
               </Button>
             )}
             {showNextButton && (
@@ -215,7 +223,7 @@ class KycOverlay extends React.Component {
                 disabled={disableNextButton}
                 onClick={this.onNextStep}
               >
-                Next
+                {tNav.next}
               </Button>
             )}
             {showSubmitButton && (
@@ -226,6 +234,7 @@ class KycOverlay extends React.Component {
                 onSubmitKyc={this.onSubmitKyc}
                 onSubmitKycError={this.onSubmitKycError}
                 setHasPendingSubmission={this.setHasPendingSubmission}
+                translations={tNav}
               />
             )}
           </div>
@@ -238,12 +247,13 @@ class KycOverlay extends React.Component {
   render() {
     const { currentStep, formData, idVerificationCode } = this.state;
     const formValues = formData[currentStep];
-    const { formOptions } = this.props;
+    const { formOptions, translations } = this.props;
+    const tForm = translations.KycForm;
     const stage = this.STAGES[currentStep];
 
     return (
       <div>
-        <Header uppercase>KYC</Header>
+        <Header uppercase>{tForm.title}</Header>
         <IntroContainer>
           {this.renderNavigation()}
           {React.createElement(stage.component, {
@@ -254,6 +264,7 @@ class KycOverlay extends React.Component {
             onNextStep: this.onNextStep,
             ref: stage.ref,
             setValidForm: this.setValidForm,
+            translations,
           })}
         </IntroContainer>
       </div>
@@ -275,6 +286,7 @@ KycOverlay.propTypes = {
   refetchUser: func.isRequired,
   showHideAlert: func.isRequired,
   showRightPanel: func.isRequired,
+  translations: object.isRequired,
   web3Redux: object.isRequired,
 };
 

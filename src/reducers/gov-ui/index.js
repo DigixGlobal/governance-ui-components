@@ -22,6 +22,7 @@ const defaultState = {
   addressMaxAllowance: undefined,
   isAuthenticated: false,
   tokenUsdValues: undefined,
+  Language: 'en',
 };
 
 export default function(state = defaultState, action) {
@@ -112,6 +113,11 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         tokenUsdValues: action.payload,
+      };
+    case actions.SET_TRANSLATION_LANGUAGE:
+      return {
+        ...state,
+        Language: action.payload,
       };
 
     default:

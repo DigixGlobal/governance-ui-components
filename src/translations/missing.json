@@ -70,5 +70,25 @@
       "action": "DGD Approval",
       "txnSuccess": "Your DGD Approval Transaction is pending confirmation. See More"
     }
+  },
+  "redeemBadge": {
+    "title": "Enabling Your DGD BADGE For Use",
+    "instructions": "In order to redeem a DGD Badge, we need your approval in order for our contracts to interact with your DGD Badge.",
+    "submit": "Approve The Interaction",
+    "txn": {
+      "title": "Badge Redemption Approval",
+      "txnSuccess": "Your Redeem Badge Transaction is pending confirmation. See More"
+    }
+  },
+  "snackbar": {
+    "enableRedeem": {
+      "title": "Badge Redemption Approval",
+      "message": "Your Redeem Badge Transaction is pending confirmation. See More"
+    },
+    "approveInteraction": {
+      "action": "Approve Interaction",
+      "title": "DGD Approval",
+      "message": "Your DGD Approval Transaction is pending confirmation. See More"
+    }
   }
 }

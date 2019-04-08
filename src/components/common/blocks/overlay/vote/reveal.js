@@ -157,15 +157,7 @@ class RevealVote extends React.Component {
       <IntroContainer>
         <Header uppercase>{overlays.revealVoteHeader}</Header>
         {overlays.revealVoteDescription}
-        {/* <p>
-          The Reveal phase is to verify the choice you made in the Commit phsae. Please upload the
-          JSON file that you received in the Commit phase. Your choice will then be verified and
-          counted in as a vote.
-        </p>
-        <p>
-          Please note that if this step is not carried out, your vote will be voided and will not be
-          counted.
-        </p> */}
+
         {error && <ErrorCaption>{error}</ErrorCaption>}
         {uploaded && !error && (
           <Notifications column info centered>

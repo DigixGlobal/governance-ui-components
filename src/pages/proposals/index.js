@@ -644,7 +644,7 @@ class Proposal extends React.Component {
 
           <FundingInfo>
             <InfoItem column>
-              <ItemTitle>{project.project}</ItemTitle>
+              <ItemTitle>{project.submittedBy}</ItemTitle>
               <Data>
                 <span>{displayName}</span>
               </Data>

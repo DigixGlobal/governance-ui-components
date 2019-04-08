@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import {
   Author,
@@ -12,7 +13,7 @@ import {
 } from '@digix/gov-ui/pages/proposals/comment/style';
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 
-export default class CommentTextEditor extends React.Component {
+class CommentTextEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,7 +49,12 @@ export default class CommentTextEditor extends React.Component {
     const { content } = this.state;
     const {
       canComment,
-      translations: { project, buttons },
+      translations: {
+        data: {
+          project,
+          common: { buttons },
+        },
+      },
     } = this.props;
     const isContentEmpty = content === '';
 
@@ -104,3 +110,12 @@ CommentTextEditor.defaultProps = {
   callback: undefined,
   canComment: true,
 };
+
+const mapStateToProps = state => ({
+  translations: state.daoServer.Translations,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(CommentTextEditor);

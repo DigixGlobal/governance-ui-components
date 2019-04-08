@@ -145,6 +145,13 @@ class VotingResult extends React.Component {
     const yesVotes = truncateNumber(stats.yesVotes);
     const noVotes = truncateNumber(stats.noVotes);
 
+    const {
+      translations: {
+        project: { votingResult },
+        common: { buttons },
+      },
+    } = this.props;
+
     return (
       <div>
         <AccordionItem voting>
@@ -159,11 +166,15 @@ class VotingResult extends React.Component {
               <VotingResultContainer>
                 <ProgressCol>
                   <Label>
-                    <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
+                    <QuorumLabel flexWidth={stats.minimumQuorum}>{votingResult.quorum}</QuorumLabel>
                     <MinimumLabel flexWidth={100 - stats.minimumQuorum}>
-                      <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
+                      <span>
+                        {votingResult.miniumQuorumRequired}: {stats.minimumQuorum}%
+                      </span>
                       <QuorumInfoCol>
-                        <span>{stats.votes} Votes</span>
+                        <span>
+                          {stats.votes} {votingResult.votes}
+                        </span>
 
                         <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
                       </QuorumInfoCol>
@@ -180,13 +191,19 @@ class VotingResult extends React.Component {
                 <ProgressCol>
                   <Label>
                     <ApprovalLabel flexWidth={stats.minimumApproval}>
-                      Current Approval Rate
+                      {votingResult.currentApprovalRate}
                     </ApprovalLabel>
                     <MinimumLabel flexWidth={100 - stats.minimumApproval}>
-                      <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
+                      <span>
+                        {votingResult.minimumApproval}: {stats.minimumApproval}%
+                      </span>
                       <QuorumInfoCol>
-                        <span>YES:&nbsp;{yesVotes} DGD</span>
-                        <span>NO:&nbsp;{noVotes} DGD</span>
+                        <span>
+                          {buttons.yes}:&nbsp;{yesVotes} DGD
+                        </span>
+                        <span>
+                          {buttons.no}:&nbsp;{noVotes} DGD
+                        </span>
                       </QuorumInfoCol>
                     </MinimumLabel>
                   </Label>
@@ -201,7 +218,7 @@ class VotingResult extends React.Component {
                 <VotingResultContainer>
                   <ProgressCol>
                     <Label>
-                      <QuorumLabel>Time Left To End of Commit</QuorumLabel>
+                      <QuorumLabel>{votingResult.timeLeftToCommit}</QuorumLabel>
                       <MinimumLabel>
                         <span />
                         <QuorumInfoCol countdown>

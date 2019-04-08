@@ -62,9 +62,9 @@ class ClaimApprovalButton extends React.PureComponent {
     });
 
   showOverlay = txns => {
-    const { history } = this.props;
+    const { history, translations } = this.props;
     this.props.showRightPanel({
-      component: <MultiStepClaim history={history} {...txns} />,
+      component: <MultiStepClaim history={history} {...txns} translations={translations} />,
       show: true,
     });
   };

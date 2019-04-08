@@ -6,13 +6,29 @@ import { AccordionHeading } from './style';
 const VotingResultHeader = ({ votingRound, translations }) => {
   switch (votingRound) {
     case -1:
-      return <AccordionHeading uppercase>{translations.moderatorApproval}</AccordionHeading>;
+      return (
+        <AccordionHeading uppercase>
+          {translations.project.votingResult.moderatorApproval}
+        </AccordionHeading>
+      );
     case 0:
-      return <AccordionHeading uppercase>{translations.proposalVote}</AccordionHeading>;
+      return (
+        <AccordionHeading uppercase>
+          {translations.project.votingResult.proposalVote}
+        </AccordionHeading>
+      );
     case 1:
-      return <AccordionHeading uppercase>{translations.reviewVote}</AccordionHeading>;
+      return (
+        <AccordionHeading uppercase>
+          {translations.project.votingResult.reviewVote}
+        </AccordionHeading>
+      );
     case 2:
-      return <AccordionHeading uppercase>{`${translations.reviewVote} 2`}</AccordionHeading>;
+      return (
+        <AccordionHeading uppercase>{`${
+          translations.project.votingResult.reviewVote
+        } 2`}</AccordionHeading>
+      );
 
     default:
       return null;

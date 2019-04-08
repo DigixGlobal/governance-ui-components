@@ -60,7 +60,8 @@
       "milestoneFundNegative": "Negative value is not allowed"
     },
     "loadMoreComments": "Load more comments...",
-    "configurationDetails": "Configuration Details"
+    "configurationDetails": "Configuration Details",
+    "transactions": "Transactions"
   },
 
   "profile": {

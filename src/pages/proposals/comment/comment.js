@@ -125,7 +125,13 @@ class Comment extends React.Component {
       return null;
     }
 
-    const { currentUser, toggleEditor } = this.props;
+    const {
+      currentUser,
+      toggleEditor,
+      translations: {
+        data: { project },
+      },
+    } = this.props;
     const { comment } = this.state;
     const { body, liked, likes, user } = comment;
     const { canComment, isForumAdmin } = currentUser;
@@ -133,14 +139,14 @@ class Comment extends React.Component {
     const isDeleted = !body;
     const canReply = canComment || (isForumAdmin && !isDeleted);
     const isAuthor = user && currentUser.address === user.address;
-    const likeLabel = likes === 1 ? 'Like' : 'Likes';
+    const likeLabel = likes === 1 ? project.like : project.likes;
 
     return (
       <ButtonGroup first>
         {canReply && (
           <ActionCommentButton kind="text" small onClick={() => toggleEditor()}>
             <Icon kind="reply" />
-            <span>Reply</span>
+            <span>{project.reply}</span>
           </ActionCommentButton>
         )}
         <ActionCommentButton kind="text" small active={liked} onClick={() => this.toggleLike()}>
@@ -152,7 +158,7 @@ class Comment extends React.Component {
         {isAuthor && (
           <ActionCommentButton kind="text" small onClick={() => this.deleteComment()}>
             <Icon kind="trash" />
-            <span>Trash</span>
+            <span>{project.trash}</span>
           </ActionCommentButton>
         )}
       </ButtonGroup>
@@ -160,7 +166,7 @@ class Comment extends React.Component {
   }
 
   render() {
-    const { currentUser, userPoints } = this.props;
+    const { currentUser, userPoints, translations } = this.props;
     const { comment } = this.state;
     const { body, isBanned, user } = comment;
     const { isForumAdmin } = currentUser;
@@ -172,7 +178,12 @@ class Comment extends React.Component {
 
     return (
       <CommentListItem>
-        <CommentAuthor hide={isDeleted} user={user} userPoints={userPoints} />
+        <CommentAuthor
+          hide={isDeleted}
+          user={user}
+          userPoints={userPoints}
+          translations={translations}
+        />
         <CommentPost isHidden={isHidden} deleted={isDeleted}>
           <Content>{commentMessage}</Content>
           {showActionBar && (
@@ -198,6 +209,7 @@ Comment.propTypes = {
   setError: func.isRequired,
   toggleEditor: func.isRequired,
   userPoints: object.isRequired,
+  translations: object.isRequired,
 };
 
 Comment.defaultProps = {
@@ -206,6 +218,7 @@ Comment.defaultProps = {
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
+  translations: state.daoServer.Translations,
 });
 
 export default withApollo(

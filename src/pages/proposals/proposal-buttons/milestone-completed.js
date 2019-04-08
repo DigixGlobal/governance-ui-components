@@ -33,6 +33,7 @@ class CompleteMilestoneButton extends React.PureComponent {
       addresses,
       proposal,
       proposal: { proposalId },
+      translations: { snackbars },
     } = this.props;
 
     const { abi, address } = getContract(Dao, network);
@@ -42,8 +43,8 @@ class CompleteMilestoneButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Finish Milestone',
-      header: 'Proposal',
+      caption: snackbars.milestoneCompleted.title,
+      header: snackbars.milestoneCompleted.TxUiHeader,
       type: 'txVisualization',
     };
     const web3Params = {
@@ -68,7 +69,7 @@ class CompleteMilestoneButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Your Milestone Completed Transaction is pending confirmation. See More',
+        message: snackbars.milestoneCompleted.message,
         txHash,
       });
 
@@ -96,7 +97,11 @@ class CompleteMilestoneButton extends React.PureComponent {
   }
 
   render() {
-    const { isProposer, proposal } = this.props;
+    const {
+      isProposer,
+      proposal,
+      translations: { buttons },
+    } = this.props;
 
     if (
       !isProposer ||
@@ -117,7 +122,7 @@ class CompleteMilestoneButton extends React.PureComponent {
         data-digix="ProposalAction-CompleteMilestone"
         onClick={() => this.completeMilestone()}
       >
-        My Milestone is completed
+        {buttons.myMilestoneIsCompleted}
       </Button>
     );
   }
@@ -136,6 +141,7 @@ CompleteMilestoneButton.propTypes = {
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
+  translations: object.isRequired,
 };
 
 CompleteMilestoneButton.defaultProps = {

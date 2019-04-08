@@ -10,15 +10,25 @@ import { VotingStages } from '@digix/gov-ui/constants';
 
 class ApproveProjectButton extends React.PureComponent {
   showOverlay = () => {
-    const { history, proposalId, showRightPanelAction } = this.props;
+    const { history, proposalId, showRightPanelAction, translations } = this.props;
     showRightPanelAction({
-      component: <ApproveProposalOverlay history={history} proposalId={proposalId} />,
+      component: (
+        <ApproveProposalOverlay
+          history={history}
+          proposalId={proposalId}
+          translations={translations}
+        />
+      ),
       show: true,
     });
   };
 
   render() {
-    const { isModerator, proposal } = this.props;
+    const {
+      isModerator,
+      proposal,
+      translations: { buttons },
+    } = this.props;
     if (!isModerator || !proposal.draftVoting || proposal.votingStage !== VotingStages.draft) {
       return null;
     }
@@ -31,7 +41,7 @@ class ApproveProjectButton extends React.PureComponent {
 
     return (
       <Button large onClick={this.showOverlay}>
-        Moderator Vote
+        {buttons.moderatorVote}
       </Button>
     );
   }
@@ -45,6 +55,7 @@ ApproveProjectButton.propTypes = {
   proposalId: string.isRequired,
   history: object.isRequired,
   showRightPanelAction: func.isRequired,
+  translations: object.isRequired,
 };
 
 ApproveProjectButton.defaultProps = {

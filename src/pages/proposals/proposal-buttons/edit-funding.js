@@ -13,13 +13,14 @@ class EditFundingButton extends React.PureComponent {
   };
 
   showOverlay = () => {
-    const { history, proposal, showRightPanelAction } = this.props;
+    const { history, proposal, showRightPanelAction, translations } = this.props;
     showRightPanelAction({
       component: (
         <ChangeFundingOverlay
           history={history}
           proposalDetails={proposal}
           onCompleted={this.onPanelClose}
+          translations={translations}
         />
       ),
       show: true,
@@ -31,7 +32,11 @@ class EditFundingButton extends React.PureComponent {
   }
 
   render() {
-    const { isProposer, proposal } = this.props;
+    const {
+      isProposer,
+      proposal,
+      // translations: { buttons },
+    } = this.props;
     if (proposal.isSpecial) return null;
     const canEdit = proposal.stage === ProposalStages.ongoing && isProposer;
     const proposalDetails = proposal.proposalVersions[proposal.proposalVersions.length - 1];
@@ -47,6 +52,8 @@ class EditFundingButton extends React.PureComponent {
         data-digix="ProposalAction-EditFunding"
         onClick={() => this.editFunding()}
       >
+        {/* {buttons.editFunding} */}
+        {/* TODO: Add Translation */}
         Edit Funding
       </Button>
     );
@@ -61,6 +68,7 @@ EditFundingButton.propTypes = {
   proposal: object.isRequired,
   history: object.isRequired,
   showRightPanelAction: func.isRequired,
+  translations: object.isRequired,
 };
 
 EditFundingButton.defaultProps = {

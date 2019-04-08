@@ -34,7 +34,7 @@ class AbortProjectButton extends React.PureComponent {
     });
 
   handleSubmit = () => {
-    const { web3Redux, ChallengeProof, addresses, proposalId } = this.props;
+    const { web3Redux, ChallengeProof, addresses, proposalId, translations } = this.props;
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -43,8 +43,8 @@ class AbortProjectButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Abort Project',
-      header: 'Project',
+      caption: translations.snackbars.abortProject.title,
+      header: translations.snackbars.abortProject.txUiHeader,
       type: 'txVisualization',
     };
     const web3Params = {
@@ -69,7 +69,7 @@ class AbortProjectButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Your Abort Project Transaction is pending confirmation. See More',
+        message: translations.snackbars.abortProject.message,
         txHash,
       });
 
@@ -97,7 +97,7 @@ class AbortProjectButton extends React.PureComponent {
   }
 
   render() {
-    const { stage, isProposer, finalVersionIpfsDoc } = this.props;
+    const { stage, isProposer, finalVersionIpfsDoc, translations } = this.props;
     const stagesThatCanAbort = [ProposalStages.idea, ProposalStages.draft];
     if (
       !stagesThatCanAbort.includes(stage) ||
@@ -114,7 +114,7 @@ class AbortProjectButton extends React.PureComponent {
         data-digix="ProposalAction-Abort"
         onClick={() => this.abortProject()}
       >
-        Abort
+        {translations.buttons.abort}
       </Button>
     );
   }
@@ -135,6 +135,7 @@ AbortProjectButton.propTypes = {
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
+  translations: object.isRequired,
 };
 
 AbortProjectButton.defaultProps = {

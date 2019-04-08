@@ -12,16 +12,25 @@ import {
 
 class ClaimApprovalOverlay extends React.Component {
   render() {
-    const { total, current, onClaim } = this.props;
+    console.log(this.props.translations);
+    const {
+      total,
+      current,
+      onClaim,
+      translations: {
+        project: { overlays },
+        buttons,
+      },
+    } = this.props;
     const enableClaim = current > 0 && current <= total && onClaim;
     const progresss = (current / total) * 100;
     return (
       <IntroContainer>
-        <Header uppercase>Claim Approval</Header>
+        <Header uppercase>{overlays.claimApprovalHeader}</Header>
 
         <Notifications info centered style={{ display: 'block' }}>
-          Please note that there was a high volume of users who participated in this approval. As
-          such, we have to split this claim into
+          {overlays.claimApprovalDescription}
+          {/* TODO: Add Translation */}
           <span className="highlight">{total} Transactions</span>
           <ProgressBar color="secondary" variant="determinate" value={progresss} />
         </Notifications>
@@ -34,18 +43,19 @@ class ClaimApprovalOverlay extends React.Component {
           large
           onClick={onClaim}
         >
-          Confirming Claim [{current}/{total}]
+          {buttons.confirmingClaim} [{current}/{total}]
         </Button>
       </IntroContainer>
     );
   }
 }
 
-const { number, func } = PropTypes;
+const { number, func, object } = PropTypes;
 ClaimApprovalOverlay.propTypes = {
   total: number,
   current: number,
   onClaim: func.isRequired,
+  translations: object.isRequired,
 };
 
 ClaimApprovalOverlay.defaultProps = {

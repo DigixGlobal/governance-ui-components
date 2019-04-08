@@ -27,6 +27,7 @@ registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
 
+// TODO: Add Translations
 class ClaimFundingButton extends React.PureComponent {
   setError = error =>
     this.props.showHideAlert({
@@ -40,6 +41,9 @@ class ClaimFundingButton extends React.PureComponent {
       addresses,
       proposal,
       proposal: { proposalId },
+      // translations: {
+      //   snackbar: { snackbars },
+      // },
     } = this.props;
 
     const { abi, address } = getContract(DaoFundingManager, network);
@@ -74,6 +78,7 @@ class ClaimFundingButton extends React.PureComponent {
     };
 
     const onTransactionSuccess = txHash => {
+      // TODO: Add Translation
       this.props.showHideAlert({
         message: 'Your Claim Funding Transaction is pending confirmation. See More',
         txHash,
@@ -109,7 +114,11 @@ class ClaimFundingButton extends React.PureComponent {
   }
 
   render() {
-    const { isProposer, proposal } = this.props;
+    const {
+      isProposer,
+      proposal,
+      translations: { buttons },
+    } = this.props;
     if (
       !isProposer ||
       !proposal ||
@@ -124,7 +133,7 @@ class ClaimFundingButton extends React.PureComponent {
         data-digix="ProposalAction-ClaimFunding"
         onClick={() => this.claimFunding()}
       >
-        Claim Funding
+        {buttons.claimFunding}
       </Button>
     );
   }
@@ -143,6 +152,7 @@ ClaimFundingButton.propTypes = {
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
+  translations: object.isRequired,
 };
 
 ClaimFundingButton.defaultProps = {

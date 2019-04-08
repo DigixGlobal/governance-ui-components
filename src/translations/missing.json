@@ -8,8 +8,14 @@
       "reputationPoints": "Reputation Points",
       "stake": "My Stake",
       "dgdLocked": "DGD Locked",
-
       "moderatorPoints": "Moderator Qtr Pts"
+    }
+  },
+  "snackbars": {
+    "claimFunding": {
+      "title": "Claim Funding",
+      "txUiHeader": "Project",
+      "message": "Your Claim Funding Transaction is pending confirmation. See More"
     }
   },
   "ProposalCard": {
@@ -22,14 +28,42 @@
     },
     "buttons": {
       "remove": "Remove",
-      "continueEditing": "Continue Editing"
+      "continueEditing": "Continue Editing",
+      "claiming": "Claiming",
+      "changeVote": "Change My Vote",
+      "editFunding": "Edit Funding",
+      "close": "Close",
+      "redeemBadge": "Redeem Badge"
     }
   },
   "project": {
     "fundsRequiredForMilestone": "Funds Required for This Milestone",
     "noShortDescription": "No short description content has been created yet.",
-    "collateral": "Requires {{preProposalCollateral}} ETH to Submit Project"
+    "collateral": "Requires {{preProposalCollateral}} ETH to Submit Project",
+    "proposalVoteResults": "Proposal Vote Results",
+    "moderatorApprovalResults": "Moderator Approval Results",
+    "reviewVote1results": "Review Vote 1 Results",
+    "reviewVote2results": "Review Vote 2 Results",
+    "alerts": {
+      "prl": "This project can no longer claim funding due to Policy, Regulatory or Legal reasons, even if voting passes. Please contact us if you have any queries.",
+      "unclaimed": "The voting result was not claimed before the claiming deadline. This project will beauto failed.",
+      "failedVoting": "Your project fails the voting, either by voting results or its already past the deadline for claiming voting results."
+    },
+    "overlays": {
+      "hasVoted": "You have already committed for this proposal. This action will overwrite the previous commit.",
+      "commitVoteDescription": "In the DigixDAO, we employ the Commit and Reveal scheme to keep your votes as unbiased as possible. You will need to download a JSON file when deciding your in the vote. Your choice will then be verified in the Reveal phase when you upload the same JSON file.",
+      "commitVoteNote": "Please keep the file in a safe place as you will not be able to download it again.",
+      "invalidFile": "Invalid File Content, Please make sure you uploaded the correct file.",
+      "editFundingHeader": "Edit Funding",
+      "rewardExpected": "Reward Expected",
+      "milestoneFundExceeds": "Sum of Reward Expected and Milestone Fundings must not exceed {{limit}} ETH",
+      "milestoneFundNegative": "Negative value is not allowed"
+    },
+    "loadMoreComments": "Load more comments...",
+    "configurationDetails": "Configuration Details",
+    "transactions": "Transactions"
   },
+
   "profile": {
     "Kyc": {
       "Statuses": {
@@ -64,6 +98,10 @@
   "transactionHistory": {
     "pendingConfirmation": "{{actual}}/{{total}} Confirmation(s)"
   },
+  "spinner": {
+    "pleaseWait": "Please wait.",
+    "hold": "Hold tight while your project is being uploaded to IPFS.",
+
   "approveInteraction": {
     "transaction": {
       "title": "Approve Interaction",

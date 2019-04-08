@@ -22,6 +22,7 @@ import MultiStepClaim from '@digix/gov-ui/components/common/blocks/overlay/claim
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
+import { injectTranslation } from '@digix/gov-ui/utils/helpers';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 
@@ -73,6 +74,7 @@ class ClaimResultsButton extends React.PureComponent {
       addresses,
       proposal,
       proposal: { currentVotingRound = 0, proposalId },
+      translations: { snackbars },
     } = this.props;
 
     const { totalTransactions } = this.state;
@@ -84,8 +86,8 @@ class ClaimResultsButton extends React.PureComponent {
       .at(address);
 
     const ui = {
-      caption: 'Claim Voting Result',
-      header: 'Project',
+      caption: snackbars.claimResult.title,
+      header: snackbars.claimResult.TxUiHeader,
       type: 'txVisualization',
     };
     const web3Params = {
@@ -111,12 +113,12 @@ class ClaimResultsButton extends React.PureComponent {
     };
 
     const onTransactionSuccess = txHash => {
+      const injectedMessage = injectTranslation(snackbars.claimResult.multiClaimMessage, {
+        currentClaimStep: proposal.votingRounds[currentVotingRound].currentClaimStep,
+        totalTransactions,
+      });
       this.props.showHideAlert({
-        message: useMaxClaim
-          ? `Your Claim Voting Result Transaction ${
-              proposal.votingRounds[currentVotingRound].currentClaimStep
-            } of ${totalTransactions} is pending confirmation. See More`
-          : 'Your Claim Voting Result Transaction is pending confirmation. See More',
+        message: useMaxClaim ? injectedMessage : snackbars.claimResult.message,
         txHash,
       });
       this.props.showRightPanel({
@@ -168,6 +170,7 @@ class ClaimResultsButton extends React.PureComponent {
       proposal,
       proposal: { currentVotingRound = 0 },
       daoConfig,
+      translations: { buttons },
     } = this.props;
 
     const { isMultiStep, claimingStep, totalTransactions } = this.state;
@@ -200,7 +203,7 @@ class ClaimResultsButton extends React.PureComponent {
     const hasPendingClaim =
       this.hasPendingClaim() ||
       (claimingStep && claimingStep === proposal.votingRounds[currentVotingRound].currentClaimStep);
-    const claimCaption = hasPendingClaim ? `Claiming ` : `Claim Result `;
+    const claimCaption = hasPendingClaim ? `Claiming ` : buttons.claimResult; // TODO: Add Translation
 
     return (
       <Button
@@ -222,7 +225,7 @@ class ClaimResultsButton extends React.PureComponent {
           ? `${claimCaption} ${
               proposal.votingRounds[currentVotingRound].currentClaimStep
             }/${totalTransactions}`
-          : 'Claim Failed Project'}
+          : buttons.claimFailedProject}
       </Button>
     );
   }
@@ -248,6 +251,7 @@ ClaimResultsButton.propTypes = {
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
+  translations: object.isRequired,
 };
 
 ClaimResultsButton.defaultProps = {

@@ -128,5 +128,38 @@
       "title": "DGD Approval",
       "message": "Your DGD Approval Transaction is pending confirmation. See More"
     }
+  },
+  "loadWallet": {
+    "common": {
+      "createErrors": {
+        "requiredwalletType": "Please select a wallet type.",
+        "requiredName": "You must provide a name.",
+        "invalidNames": "You must provide a name for all addresses.",
+        "invalidPassword": "Passwords do not match."
+      }
+    },
+    "Json": {
+      "importInstructions": "Click or drag and drop here to load your file.",
+      "importError": "Keystore type not supported."
+    },
+    "Metamask": {
+      "ConnectionError": {
+        "noMetamask": "Cannot connect to MetaMask wallet. Make sure to login to your MetaMask wallet."
+      }
+    },
+    "Ledger": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "Getting address info..."
+        }
+      }
+    },
+    "Trezor": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "Getting address info..."
+        }
+      }
+    }
   }
 }

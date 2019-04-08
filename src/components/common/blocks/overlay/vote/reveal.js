@@ -37,12 +37,16 @@ class RevealVote extends React.Component {
   }
 
   onTransactionAttempt = txHash => {
-    const { ChallengeProof, showRightPanelAction } = this.props;
+    const {
+      ChallengeProof,
+      showRightPanelAction,
+      translations: { snackbars },
+    } = this.props;
 
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Reveal Vote',
+        title: snackbars.reveal.title,
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -53,9 +57,13 @@ class RevealVote extends React.Component {
   };
 
   onTransactionSuccess = txHash => {
-    const { history, showHideAlertAction } = this.props;
+    const {
+      history,
+      showHideAlertAction,
+      translations: { snackbars },
+    } = this.props;
     showHideAlertAction({
-      message: 'Your Reveal Transaction is pending confirmation. See More',
+      message: snackbars.reveal.message,
       txHash,
     });
 
@@ -73,6 +81,7 @@ class RevealVote extends React.Component {
       web3Redux,
       addresses,
       proposal: { currentVotingRound, proposalId, isSpecial },
+      translations: { snackbars },
     } = this.props;
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -83,8 +92,8 @@ class RevealVote extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Reveal Vote',
-      header: 'Project',
+      caption: snackbars.reveal.title,
+      header: snackbars.reveal.txUiHeader,
       type: 'txVisualization',
     };
 
@@ -182,7 +191,7 @@ class RevealVote extends React.Component {
             id="json-upload"
             onChange={this.handleUpload}
             type="file"
-            caption=" Upload JSON File"
+            caption={buttons.uploadJsonFile}
           />
         )}
         {uploaded && (

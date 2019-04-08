@@ -101,7 +101,7 @@ class ClaimApprovalButton extends React.PureComponent {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Claim Approval',
+          title: snackbars.claimApproval.title,
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
           type: 1,

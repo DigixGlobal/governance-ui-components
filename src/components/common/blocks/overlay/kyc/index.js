@@ -57,7 +57,9 @@ class KycOverlay extends React.Component {
     ];
 
     this.MAX_STEPS = this.STAGES.length - 1;
-    this.SUBMIT_ERROR_MESSAGE = 'Unable to submit KYC.';
+
+    const t = props.translations.Submit;
+    this.SUBMIT_ERROR_MESSAGE = t.error;
 
     this.state = {
       currentStep: 0,
@@ -109,6 +111,8 @@ class KycOverlay extends React.Component {
 
   onSubmitKyc = response => {
     const { errors } = response.submitKyc;
+    const t = this.props.translations.Submit;
+
     if (errors.length) {
       this.setState({
         errorMessage: errors[0].message,
@@ -124,7 +128,7 @@ class KycOverlay extends React.Component {
     this.props.refetchUser();
     this.props.showRightPanel({ show: false });
     this.props.showHideAlert({
-      message: 'KYC submitted. Request is pending approval.',
+      message: t.success,
     });
   };
 

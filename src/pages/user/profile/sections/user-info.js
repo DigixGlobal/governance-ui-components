@@ -43,9 +43,9 @@ class ProfileUserInfo extends React.Component {
 
   render() {
     const { displayName, email, username } = this.props.userData;
-    const { AddressDetails, translations } = this.props;
+    const { AddressDetails, translations, userStatuses } = this.props;
     const { address } = AddressDetails;
-    const status = getUserStatus(AddressDetails);
+    const status = getUserStatus(AddressDetails, userStatuses);
 
     const tLabels = translations.Labels;
     const tSetUsername = translations.SetUsername;
@@ -103,13 +103,17 @@ ProfileUserInfo.propTypes = {
     displayName: string,
     email: string,
   }),
+  userStatuses: object.isRequired,
 };
 
 ProfileUserInfo.defaultProps = {
   userData: undefined,
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ daoServer }) => ({
+  userStatuses: daoServer.Translations.data.common.userStatus,
+});
+
 const ProfileComponent = connect(
   mapStateToProps,
   {

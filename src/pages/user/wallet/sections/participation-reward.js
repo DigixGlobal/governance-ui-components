@@ -61,7 +61,7 @@ class ParticipationReward extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Claim DGX',
+      caption: tClaim.txnCaption,
       header: 'User',
       type: 'txVisualization',
     };
@@ -76,7 +76,7 @@ class ParticipationReward extends React.Component {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'Claim DGX',
+          title: tClaim.txnCaption,
           token: ChallengeProof.data['access-token'],
           client: ChallengeProof.data.client,
           uid: ChallengeProof.data.uid,

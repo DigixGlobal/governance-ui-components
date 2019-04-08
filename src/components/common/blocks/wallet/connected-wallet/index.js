@@ -40,6 +40,7 @@ import {
   Token,
   Amount,
   Notes,
+  NotesTitle,
 } from '@digix/gov-ui/components/common/blocks/wallet/connected-wallet/style';
 
 const network = SpectrumConfig.defaultNetworks[0];
@@ -204,21 +205,22 @@ class ConnectedWallet extends React.Component {
     return showApproval;
   };
 
-  renderApproval = () => (
-    <Fragment>
-      <CloseButtonWithHeader>
-        <Header uppercase>Enabling your DGD for use </Header>
-        <Icon kind="close" onClick={() => this.props.onClose()} />
-      </CloseButtonWithHeader>
-      <p>
-        In order to participate in DigixDAO, we need your approval in order for our contracts to
-        interact with your DGD.
-      </p>
-      <Button primary fluid large onClick={this.handleApprove}>
-        Approve the interaction
-      </Button>
-    </Fragment>
-  );
+  renderApproval() {
+    const t = this.props.approvalTranslations;
+
+    return (
+      <Fragment>
+        <CloseButtonWithHeader>
+          <Header uppercase>{t.title}</Header>
+          <Icon kind="close" onClick={() => this.props.onClose()} />
+        </CloseButtonWithHeader>
+        <p>{t.instructions}</p>
+        <Button primary fluid large onClick={this.handleApprove}>
+          {t.button}
+        </Button>
+      </Fragment>
+    );
+  }
 
   renderDefault = () => {
     const { defaultAddress, enableLockDgd, tokenUsdValues } = this.props;
@@ -234,15 +236,20 @@ class ConnectedWallet extends React.Component {
     if (ethInUsd > 0 && tokensInUsd && tokensInUsd.ETH)
       ethInUsd = Number(ethInUsd) * Number(tokensInUsd.ETH.USD);
 
+    const t = this.props.translations;
+    const tLockDgd = t.lockDgd;
+    const tNotes = t.notes;
+
     return (
       <Fragment>
         <CloseButtonWithHeader>
-          <Header uppercase>Connected Wallet </Header>
+          <Header uppercase>{t.title}</Header>
           <Icon kind="close" onClick={() => this.props.onClose()} />
         </CloseButtonWithHeader>
         <WalletDetails>
           <Address>
-            Your Address <span>{defaultAddress.address}</span>
+            {t.address}
+            <span>{defaultAddress.address}</span>
           </Address>
           <Token>
             <Icon kind="ethereum" width="48px" height="48px" />
@@ -274,11 +281,8 @@ class ConnectedWallet extends React.Component {
             </Amount>
           </Token>
           <HR style={{ marginBottom: '4rem' }} />
-          <Header uppercase>lock dgd</Header>
-          <p>
-            Locking your DGD in DigixDAO helps us know you are committed to the growth of the
-            community and of course gives you voting power on the projects you love to support
-          </p>
+          <Header uppercase>{tLockDgd.title}</Header>
+          <p>{tLockDgd.description}</p>
           <Button
             secondary
             fluid
@@ -286,21 +290,15 @@ class ConnectedWallet extends React.Component {
             disabled={!enableLockDgd.show}
             onClick={this.showLockDgdOverlay}
           >
-            lock DGD
+            {tLockDgd.button}
           </Button>
           <Notes>
-            <p>NOTE:</p>
+            <NotesTitle>{tNotes.title}</NotesTitle>
             <ul>
-              <li>DO NOT use a wallet for which you do not have access to the private key</li>
-              <li>
-                Please note that your wallet needs to hold ETH to pay for gas transaction costs.
-              </li>
-              <li>
-                Your locked DGD cannot be traded. You will not be able to see the balance of your
-                locked DGD in your wallet. Locked DGD are only visible on this interface as long as
-                your wallet is connected
-              </li>
-              <li>You can lock more (other) DGD anytime</li>
+              <li>{tNotes.note1}</li>
+              <li>{tNotes.note2}</li>
+              <li>{tNotes.note3}</li>
+              <li>{tNotes.note4}</li>
             </ul>
           </Notes>
         </WalletDetails>
@@ -310,7 +308,6 @@ class ConnectedWallet extends React.Component {
 
   render() {
     const showApproval = this.showRenderApproval();
-
     return (
       <InnerContainer data-digix="ConnectedWalletComponent">
         {showApproval ? this.renderApproval() : this.renderDefault()}
@@ -340,6 +337,8 @@ ConnectedWallet.propTypes = {
   challengeProof: object.isRequired,
   addresses: array.isRequired,
   enableLockDgd: object,
+  translations: object.isRequired,
+  approvalTranslations: object.isRequired,
 };
 
 ConnectedWallet.defaultProps = {
@@ -366,6 +365,8 @@ const mapStateToProps = state => ({
   DaoDetails: state.infoServer.DaoDetails,
   addresses: getAddresses(state),
   enableLockDgd: state.govUI.CanLockDgd,
+  translations: state.daoServer.Translations.data.loadWallet.connectedWallet,
+  approvalTranslations: state.daoServer.Translations.data.approveInteraction,
 });
 
 export default connect(

@@ -4,7 +4,7 @@ import Proposal from './proposal';
 import Milestones from './milestones';
 import Stats from './stats';
 
-import { ProposalWrapper, ProposalContainer } from './style';
+import { ProposalContainer, Item } from './style';
 
 export default class ProposalCard extends React.Component {
   render() {
@@ -18,8 +18,8 @@ export default class ProposalCard extends React.Component {
         : false;
     const votingStage = withinDeadline ? 'reveal' : proposal.votingStage;
     return (
-      <ProposalWrapper>
-        <ProposalContainer>
+      <ProposalContainer>
+        <Item>
           <Proposal
             displayName={displayName}
             details={proposal}
@@ -36,8 +36,8 @@ export default class ProposalCard extends React.Component {
             userDetails={userDetails}
             translations={translations}
           />
-        </ProposalContainer>
-      </ProposalWrapper>
+        </Item>
+      </ProposalContainer>
     );
   }
 }

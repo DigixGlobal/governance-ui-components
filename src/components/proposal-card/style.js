@@ -1,35 +1,42 @@
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
+import { media } from '@digix/gov-ui/components/common/breakpoints';
 
-export const ProposalWrapper = styled.div`
-  background-color: ${props => props.theme.backgroundDefault.default.toString()};
-  display: flex;
-  flex-direction: column;
+export const ProposalContainer = styled.div`
+  background-color: ${props => props.theme.background.white.toString()};
   box-shadow: ${props => props.theme.boxShadow};
   margin-bottom: 3em;
 `;
 
-export const ProposalContainer = styled.div`
-  color: ${props => props.theme.textDefault.default.toString()};
+export const Item = styled.div`
   display: flex;
-  flex-direction: row;
 
-  height: 36.6rem;
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+  height: 36.6rem;
 
-  transition: ${props => props.theme.transition};
+  & > div {
+    flex: 0 1 auto;
 
-  &:hover {
-    border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+    &:first-child {
+      flex: 1;
+    }
   }
+
+  ${media.mobile``};
 `;
 
-export const ProposaDetaillWrapper = styled.div`
-  flex: 4 1 0;
-  padding: 3.5rem 5rem 2.5rem 5rem;
+export const Details = styled.div`
+  padding: 2.5rem 5rem;
 `;
+
+export const StatsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+`;
+
+export const MilestonesWrapper = styled.div``;
 
 export const ProposalCard = styled.div`
   display: flex;
@@ -106,24 +113,6 @@ export const Description = styled.div`
   }
 `;
 
-export const ProposalLink = styled(Link)`
-  font-family: 'Futura PT Medium', sans-serif;
-
-  &:link,
-  &:visited {
-    text-decoration: underline;
-    color: ${props =>
-      props.disabled
-        ? props.theme.linkDefaultColor.light.toString()
-        : props.theme.textColor.primary.base.toString()};
-    pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
-  }
-
-  &:hover {
-    text-decoration: none;
-  }
-`;
-
 export const ProposalFooter = styled.div`
   border-top: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   padding-top: 1.5em;
@@ -154,13 +143,6 @@ export const Data = styled.div`
   text-align: center;
   text-transform: uppercase;
   font-size: 1.3rem;
-`;
-
-export const StatsWrapper = styled.div`
-  min-height: 100%;
-  flex: 1 0 0;
-  display: flex;
-  flex-direction: column;
 `;
 
 export const Stats = styled.div`
@@ -199,10 +181,6 @@ export const StatItem = styled.div`
     font-size: 2.6rem;
     display: block;
   }
-`;
-
-export const MilestonesWrapper = styled.div`
-  flex: 2 0 0;
 `;
 
 export const Milestones = styled.div`

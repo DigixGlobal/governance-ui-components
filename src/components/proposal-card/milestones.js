@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import {
-  MilestonesWrapper,
+  Details,
   Milestones,
   MilestoneStatus,
   Deadline,
   Label,
   Data,
   CallToAction,
-} from './style';
-import { Button } from '../common/elements/index';
+} from '@digix/gov-ui/components/proposal-card/style';
 
 const determineDeadline = proposal => {
   let deadline = Date.now();
@@ -84,7 +84,7 @@ export default class ProposalCardMilestone extends React.Component {
     } = translations;
 
     return (
-      <MilestonesWrapper>
+      <Details>
         <Milestones>
           <MilestoneStatus>
             <Label>{cardTranslation.milestones}</Label>
@@ -100,7 +100,7 @@ export default class ProposalCardMilestone extends React.Component {
             </Button>
           </CallToAction>
         </Milestones>
-      </MilestonesWrapper>
+      </Details>
     );
   }
 }

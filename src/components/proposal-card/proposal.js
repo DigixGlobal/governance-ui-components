@@ -6,12 +6,11 @@ import { connect } from 'react-redux';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 import {
-  ProposaDetaillWrapper,
+  Details,
   ProposalCard,
   TagsContainer,
   Title,
   Description,
-  ProposalLink,
   ProposalFooter,
   PostedBy,
   PostedByLink,
@@ -87,9 +86,9 @@ class Proposal extends React.PureComponent {
         ? details.proposalVersions[details.proposalVersions.length - 1]
         : undefined;
 
-    const canCreate = userDetails && userDetails.data.isParticipant;
+    // const canCreate = userDetails && userDetails.data.isParticipant;
     const canLike = userDetails && userDetails.data.address;
-    const isForumAdmin = userData && userData.isForumAdmin;
+    // const isForumAdmin = userData && userData.isForumAdmin;
 
     const {
       data: {
@@ -99,7 +98,7 @@ class Proposal extends React.PureComponent {
     } = translations;
 
     return (
-      <ProposaDetaillWrapper>
+      <Details>
         <ProposalCard>
           <TagsContainer>
             <Button kind="tag" showIcon>
@@ -109,13 +108,6 @@ class Proposal extends React.PureComponent {
           <Description>
             <Title>{proposalVersion ? proposalVersion.dijixObject.title : title}</Title>
             <p>{proposalVersion ? proposalVersion.dijixObject.description : ''}</p>
-            <ProposalLink
-              disabled={!canCreate && !isForumAdmin}
-              href={`/proposals/${details.proposalId}`}
-              to={`/proposals/${details.proposalId}`}
-            >
-              {cardTranslation.view}
-            </ProposalLink>
           </Description>
           <ProposalFooter>
             <PostedBy>
@@ -134,7 +126,7 @@ class Proposal extends React.PureComponent {
             )}
           </ProposalFooter>
         </ProposalCard>
-      </ProposaDetaillWrapper>
+      </Details>
     );
   }
 }

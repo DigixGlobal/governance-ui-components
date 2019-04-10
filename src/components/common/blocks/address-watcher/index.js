@@ -68,12 +68,14 @@ class AddressWatcher extends React.PureComponent {
     return getChallengeVanilla(address).then(({ json: { result } }) => {
       const message = result.challenge;
       const network = this.props.defaultNetworks[0];
-      const caption =
-        'This signing is to prove to our server that you are in control of the Ethereum account that was loaded. By signing this message, you are proving that you control the selected account for use on DigixDAO.';
+
+      const translations = this.props.translations.loadWallet;
+      const caption = translations.Json.proofOfControl.description;
+
       const signMessage = new Promise(resolve =>
         resolve(
           this.props.showMsgSigningModal({
-            txData: { message, caption },
+            txData: { message, caption, translations },
             network,
           })
         )
@@ -138,10 +140,14 @@ AddressWatcher.propTypes = {
   showMsgSigningModal: func.isRequired,
   proveChallenge: func.isRequired,
   setUserAddress: func.isRequired,
+  translations: object,
 };
 
 AddressWatcher.defaultProps = {
-  defaultAddress: undefined,
+  defaultAddress: {
+    address: undefined,
+  },
+  translations: undefined,
 };
 
 const mapStateToProps = state => ({
@@ -151,6 +157,7 @@ const mapStateToProps = state => ({
   challenge: state.daoServer.Challenge,
   challengeProof: state.daoServer.ChallengeProof,
   signChallenge: state.govUI.SignChallenge,
+  translations: state.daoServer.Translations.data,
 });
 
 export default withApollo(

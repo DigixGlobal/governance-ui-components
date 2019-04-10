@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import {
   NavItem,
-  AddressButton,
-  DropdownMenu,
-  MenuItem,
+  TransButton,
+  Selector,
+  Item,
 } from '@digix/gov-ui/components/common/blocks/navbar/style';
 
 import {
@@ -69,32 +69,29 @@ class WalletButton extends React.Component {
         </NavItem>
 
         {defaultAddress && (
-          <NavItem wallet>
-            <AddressButton
+          <NavItem dropdown wallet>
+            <TransButton
               kind="link"
-              xsmall
               data-digix="Header-Address"
               onClick={() => this.showDropdownMenu()}
             >
-              <span>{defaultAddress.address}</span>
+              <span className="wallet">{defaultAddress.address}</span>
               <Icon kind="arrow" />
-            </AddressButton>
+            </TransButton>
 
-            {this.state.open && (
-              <DropdownMenu>
-                <MenuItem>
-                  <Button
-                    kind="text"
-                    primary
-                    small
-                    data-digix="Header-LoadWallet"
-                    onClick={() => window.location.reload()}
-                  >
-                    {tHeader.logout || 'Logout'}
-                  </Button>
-                </MenuItem>
-              </DropdownMenu>
-            )}
+            <Selector>
+              <Item>
+                <Button
+                  kind="text"
+                  primary
+                  small
+                  data-digix="Header-LoadWallet"
+                  onClick={() => window.location.reload()}
+                >
+                  {tHeader.logout || 'Logout'}
+                </Button>
+              </Item>
+            </Selector>
           </NavItem>
         )}
       </Fragment>

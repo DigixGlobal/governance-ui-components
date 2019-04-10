@@ -27,7 +27,6 @@ registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
 
-// TODO: Add Translations
 class ClaimFundingButton extends React.PureComponent {
   setError = error =>
     this.props.showHideAlert({
@@ -41,9 +40,7 @@ class ClaimFundingButton extends React.PureComponent {
       addresses,
       proposal,
       proposal: { proposalId },
-      translations: {
-        snackbar: { snackbars },
-      },
+      translations: { snackbars },
     } = this.props;
 
     const { abi, address } = getContract(DaoFundingManager, network);

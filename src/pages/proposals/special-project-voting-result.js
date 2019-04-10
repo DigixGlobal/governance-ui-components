@@ -27,26 +27,6 @@ import {
 
 import VotingResultHeader from '@digix/gov-ui/pages/proposals/voting-result-header';
 
-// eslint-disable-next-line
-const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
-  if (completed) {
-    return <span>Voting is over!</span>;
-  }
-
-  return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
-};
-
-// eslint-disable-next-line
-const commitCountdownRenderer = props => {
-  // eslint-disable-next-line
-  const { date, total, completed, baseLine } = props;
-  const duration = date - baseLine;
-  if (completed) {
-    return <ProgressBar variant="determinate" value={100} />;
-  }
-  return <ProgressBar variant="determinate" value={((duration - total) / duration) * 100} />;
-};
-
 class SpecialProjectVotingResult extends React.Component {
   getProposalVotingPhaseStats = proposal => {
     const { daoInfo } = this.props;
@@ -83,6 +63,27 @@ class SpecialProjectVotingResult extends React.Component {
     };
   };
 
+  // eslint-disable-next-line
+countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
+    const { translations } = this.props;
+    if (completed) {
+      return <span>{translations.project.votingResult.votingIsOver}</span>;
+    }
+
+    return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
+  };
+
+  // eslint-disable-next-line
+commitCountdownRenderer = props => {
+    // eslint-disable-next-line
+  const { date, total, completed, baseLine } = props;
+    const duration = date - baseLine;
+    if (completed) {
+      return <ProgressBar variant="determinate" value={100} />;
+    }
+    return <ProgressBar variant="determinate" value={((duration - total) / duration) * 100} />;
+  };
+
   render() {
     const { proposal, translations } = this.props;
 
@@ -110,7 +111,10 @@ class SpecialProjectVotingResult extends React.Component {
                       <QuorumInfoCol>
                         <span>{stats.votes} Votes</span>
 
-                        <Countdown date={stats.approvalDeadline} renderer={countdownRenderer} />
+                        <Countdown
+                          date={stats.approvalDeadline}
+                          renderer={this.countdownRenderer}
+                        />
                       </QuorumInfoCol>
                     </MinimumLabel>
                   </Label>
@@ -151,7 +155,7 @@ class SpecialProjectVotingResult extends React.Component {
                       <QuorumInfoCol countdown>
                         <Countdown
                           date={new Date(stats.commitDeadline)}
-                          renderer={countdownRenderer}
+                          renderer={this.countdownRenderer}
                         />
                       </QuorumInfoCol>
                     </MinimumLabel>
@@ -160,7 +164,7 @@ class SpecialProjectVotingResult extends React.Component {
                   <Countdown
                     date={stats.commitDeadline}
                     baseLine={Date.now()}
-                    renderer={props => commitCountdownRenderer(props)}
+                    renderer={props => this.commitCountdownRenderer(props)}
                   />
                 </ProgressCol>
               </VotingResultContainer>

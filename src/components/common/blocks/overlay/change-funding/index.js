@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { Button, TextField } from '@digix/gov-ui/components/common/elements/index';
+
+import { injectTranslation } from '@digix/gov-ui/utils/helpers';
+
 import {
   IntroContainer,
   OverlayHeader as Header,
@@ -29,7 +32,6 @@ import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/act
 
 const network = SpectrumConfig.defaultNetworks[0];
 
-// TODO: Add Translations
 class ChangeFundingOverlay extends React.Component {
   constructor(props) {
     super(props);
@@ -253,21 +255,20 @@ class ChangeFundingOverlay extends React.Component {
 
   render() {
     const { form, exceedsLimit, fundChanged, hasNegative, hasEmpty } = this.state;
-    // const {
-    //   translations: {
-    //     buttons,
-    //   },
-    // } = this.props;
+    const {
+      translations: { buttons, project },
+    } = this.props;
 
     const { daoConfig } = this.props;
+    const injectedMessage = injectTranslation(project.overlays.milestoneFundExceeds, {
+      limit: daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX,
+    });
 
     return (
       <IntroContainer>
-        {/* TODO: Add Translation */}
-        <Header uppercase>Edit Funding</Header>
+        <Header uppercase>{project.overlays.editFundingHeader}</Header>
         <FieldItem>
-          {/* TODO: Add Translation */}
-          <Label>Reward Expected</Label>
+          <Label>{project.overlays.rewardExpected}</Label>
           <TextField
             type="number"
             data-digix="Edit-funding-reward-expected"
@@ -278,15 +279,12 @@ class ChangeFundingOverlay extends React.Component {
         {this.renderMilestoneFields(form.milestoneFundings)}
         {exceedsLimit && (
           <FieldItem>
-            <ErrorCaption>{`Sum of Reward Expected and Milestone Fundings must not exceed ${
-              daoConfig.data.CONFIG_MAX_FUNDING_FOR_NON_DIGIX
-            } ETH`}</ErrorCaption>
+            <ErrorCaption>{injectedMessage}</ErrorCaption>
           </FieldItem>
         )}
         {hasNegative && (
           <FieldItem>
-            {/* TODO: Add Translation */}
-            <ErrorCaption>Negative value is not allowed</ErrorCaption>
+            <ErrorCaption>{project.overlays.milestoneFundNegative}</ErrorCaption>
           </FieldItem>
         )}
         <Button
@@ -298,7 +296,7 @@ class ChangeFundingOverlay extends React.Component {
           data-digix="Edit-Funding"
           onClick={this.handleSubmit}
         >
-          Edit Funding
+          {buttons.editFunding}
         </Button>
       </IntroContainer>
     );

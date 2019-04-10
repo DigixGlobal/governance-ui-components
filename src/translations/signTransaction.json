@@ -16,7 +16,8 @@
   },
   "Ledger": {
     "ready": "Ready to Sign Transaction",
-    "firmware": "Firmware {{version}} - replay protection enabled!"
+    "firmware": "Firmware {{version}} - replay protection enabled!",
+    "firmwareDisabled": "Firmware {{version}} - replay protection disabled!"
   },
   "Trezor": {
     "ready": "Ready to Sign Transaction",

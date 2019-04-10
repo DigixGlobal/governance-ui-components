@@ -87,13 +87,24 @@ class CollapsibleMenu extends React.Component {
 
   toggleShrink = shrink => {
     const wrapper = document.querySelector('#page-wrap');
+    const nBar = document.querySelector('#nav-wrap');
     if (shrink && wrapper) {
       wrapper.style.marginRight = '210px';
       wrapper.style.width = 'auto';
-      wrapper.style.transition = 'all 200ms';
+      wrapper.style.transition = 'all 250ms';
     } else if (wrapper) {
       wrapper.style.width = '100%';
-      wrapper.style.transition = 'all 200ms';
+      wrapper.style.transition = 'all 250ms';
+    }
+
+    if (shrink && nBar) {
+      nBar.style.marginLeft = '100px';
+      nBar.style.width = 'calc(100% - 100px)';
+      nBar.style.transition = 'all 250ms';
+    } else if (nBar) {
+      nBar.style.marginLeft = '0';
+      nBar.style.width = '100%';
+      nBar.style.transition = 'all 250ms';
     }
   };
 

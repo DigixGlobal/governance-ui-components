@@ -30,7 +30,7 @@ class KycOverlayPhotoUpload extends KycFormStep {
   constructor(props) {
     super(props);
 
-    const t = props.translations.KycForm.Fields.Photo;
+    const t = props.translations.kyc.KycForm.Fields.Photo;
     const tMethods = t.methods;
     this.translations = t;
 

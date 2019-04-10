@@ -6,7 +6,7 @@ import { CallToAction } from '@digix/gov-ui/components/common/blocks/overlay/kyc
 
 class KycOverlayIntro extends React.Component {
   render() {
-    const t = this.props.translations.OpenKycForm;
+    const t = this.props.translations.kyc.OpenKycForm;
 
     return (
       <div>

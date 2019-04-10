@@ -13,7 +13,7 @@ class KycOverlayBasicInformation extends KycFormStep {
   constructor(props) {
     super(props);
 
-    const t = props.translations.KycForm.Fields.BasicInformation;
+    const t = props.translations.kyc.KycForm.Fields.BasicInformation;
     this.translations = t;
 
     const { formValues } = props;

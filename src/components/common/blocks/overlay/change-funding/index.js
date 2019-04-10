@@ -117,15 +117,17 @@ class ChangeFundingOverlay extends React.Component {
   onTransactionSuccess = txHash => {
     const {
       showHideAlertAction,
-      history,
       translations: { snackbars },
     } = this.props;
+
     showHideAlertAction({
       message: snackbars.changeFunding.message,
       txHash,
     });
-    if (this.props.onCompleted) this.props.onCompleted();
-    history.push('/');
+
+    if (this.props.onCompleted) {
+      this.props.onCompleted();
+    }
   };
 
   setError = error => {
@@ -221,6 +223,7 @@ class ChangeFundingOverlay extends React.Component {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
 
     return executeContractFunction(payload);
@@ -309,7 +312,6 @@ ChangeFundingOverlay.propTypes = {
   addresses: array.isRequired,
   daoConfig: object.isRequired,
   ChallengeProof: object.isRequired,
-  history: object.isRequired,
   proposalDetails: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlertAction: func.isRequired,
@@ -318,12 +320,14 @@ ChangeFundingOverlay.propTypes = {
   onCompleted: func.isRequired,
   web3Redux: object.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   daoConfig: state.infoServer.DaoConfig,
   addresses: getAddresses(state),
+  txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 
 export default web3Connect(

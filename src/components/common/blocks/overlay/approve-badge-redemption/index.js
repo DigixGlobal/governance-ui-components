@@ -92,6 +92,7 @@ class BadgeRedemptionApproval extends React.Component {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
 
     return executeContractFunction(payload);
@@ -130,12 +131,14 @@ BadgeRedemptionApproval.propTypes = {
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
   showTxSigningModal: func.isRequired,
+  txnTranslations: object.isRequired,
   web3Redux: object.isRequired,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 
 export default web3Connect(

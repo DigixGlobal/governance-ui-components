@@ -17,7 +17,9 @@ class ModeratorButtons extends React.Component {
       },
     } = this.props;
 
+    const txnTranslations = this.props.translations.signTransaction;
     const buttonTranslations = { buttons, project, snackbars };
+
     return (
       <Fragment>
         <EndorseButton
@@ -27,6 +29,7 @@ class ModeratorButtons extends React.Component {
           proposalId={data.proposalId}
           history={history}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <ApproveButton
           history={history}
@@ -34,6 +37,7 @@ class ModeratorButtons extends React.Component {
           proposal={data}
           proposalId={data.proposalId}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
       </Fragment>
     );

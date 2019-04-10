@@ -60,7 +60,7 @@ ErrorMessageOverlay.propTypes = {
 };
 
 ErrorMessageOverlay.defaultProps = {
-  location: 'Project',
+  location: 'Return',
 };
 
 const mapStateToProps = () => ({});

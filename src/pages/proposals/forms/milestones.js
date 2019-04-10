@@ -95,7 +95,7 @@ class Milestones extends React.Component {
         <CreateMilestone key={index}>
           <FormItem>
             <Label req>
-              {project.milestone} - #{index + 1} {project.fundsRequiredForMilestone}}
+              {project.milestone} - #{index + 1} {project.fundsRequiredForMilestone}
               <span>&nbsp;*</span>
             </Label>
             <Input

@@ -124,7 +124,11 @@ class RevealVote extends React.Component {
 
   handleUpload = e => {
     let error;
-
+    const {
+      translations: {
+        project: { overlays },
+      },
+    } = this.props;
     if (e.target.files.length > 0) {
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -143,7 +147,7 @@ class RevealVote extends React.Component {
             this.setState({
               voteObject: undefined,
               uploaded: false,
-              error: 'Invalid File Content, Please make sure you uploaded the correct file.', // TODO: Add Translations
+              error: overlays.invalidFile,
             });
           }
         } else {

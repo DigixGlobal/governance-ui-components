@@ -61,7 +61,6 @@ class ClaimResultsButton extends React.PureComponent {
 
   showOverlay = txns => {
     const { history, translations } = this.props;
-    console.log({ trans: translations });
     this.props.showRightPanel({
       component: (
         <MultiStepClaim

@@ -42,7 +42,7 @@ class Preview extends React.Component {
     return (
       <ProposalsWrapper>
         <Button primary onClick={onContinueEditing} data-digix="Preview-Continue">
-          {common.buttons.continueEditing}
+          Continue Editing
         </Button>
         <ProjectSummary>
           <Header>

@@ -40,22 +40,7 @@ class ProposalCardFilter extends React.Component {
         },
       } = translations;
       const options = Object.keys(sortOptions);
-      const filters = options.map(o => ({ text: sortOptions[o], value: o }));
-      this.setState({ filters });
-    }
-  };
-
-  componentWillReceiveProps = nextProps => {
-    const { translations } = nextProps;
-    if (translations.data) {
-      const {
-        data: {
-          dashboard: { sortOptions },
-        },
-      } = translations;
-      const options = Object.keys(sortOptions);
-
-      const filters = options.map(o => ({ text: sortOptions[o], value: o }));
+      const filters = options.map(o => ({ text: o, value: 0 }));
       this.setState({ filters });
     }
   };
@@ -104,19 +89,8 @@ class ProposalCardFilter extends React.Component {
   }
 
   showErrorOverlay(errors) {
-    const {
-      data: {
-        common: { proposalErrors },
-      },
-    } = this.props.translations;
     this.props.showRightPanel({
-      component: (
-        <ErrorMessageOverlay
-          errors={errors}
-          location={proposalErrors.returnToDashboard}
-          translations={this.props.translations.data}
-        />
-      ),
+      component: <ErrorMessageOverlay errors={errors} location="Dashboard" />,
       show: true,
     });
   }
@@ -143,13 +117,7 @@ class ProposalCardFilter extends React.Component {
         <Filter>
           <Category {...this.props} translations={translations} />
           <Pulldown>
-            <Select
-              small
-              id="sortBy"
-              data-digix="SORT-BY"
-              items={filters}
-              onChange={this.handleChange}
-            />
+            <Select small id="test" items={filters} onChange={this.handleChange} />
           </Pulldown>
         </Filter>
       </FilterWrapper>

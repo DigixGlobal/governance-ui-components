@@ -45,7 +45,7 @@ class ErrorMessageOverlay extends React.Component {
           data-digix="ProjectError-Return"
           onClick={() => this.closeOverlay()}
         >
-          {location}
+          Return to {location}
         </Button>
       </IntroContainer>
     );

@@ -100,8 +100,8 @@
   },
   "spinner": {
     "pleaseWait": "Please wait.",
-    "hold": "Hold tight while your project is being uploaded to IPFS.",
-
+    "hold": "Hold tight while your project is being uploaded to IPFS."
+  },
   "approveInteraction": {
     "transaction": {
       "title": "Approve Interaction",
@@ -140,7 +140,11 @@
     },
     "Json": {
       "importInstructions": "Click or drag and drop here to load your file.",
-      "importError": "Keystore type not supported."
+      "importError": "Keystore type not supported.",
+      "proofOfControl": {
+        "signing": "Signing message...",
+        "sign": "Sign Message"
+      }
     },
     "Metamask": {
       "ConnectionError": {
@@ -150,7 +154,10 @@
     "Ledger": {
       "chooseAddress": {
         "selectPath": {
-          "loading": "Getting address info..."
+          "loading": "Getting address info...",
+          "proofOfControl": {
+            "firmwareDisabled": "Firmware {{version}} - replay protection disabled!"
+          }
         }
       }
     },
@@ -160,6 +167,11 @@
           "loading": "Getting address info..."
         }
       }
+    }
+  },
+  "signTransaction": {
+    "Ledger": {
+      "firmwareDisabled": "Firmware {{version}} - replay protection disabled!"
     }
   }
 }

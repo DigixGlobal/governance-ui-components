@@ -89,13 +89,20 @@ export default class ProjectDetails extends React.Component {
           {hasImages && this.renderImages(this.state.files, false)}
           <HR />
         </Content>
-        <Modal open={this.state.open} showCloseIcon={false} onClose={this.showHideImage()} center>
-          <div>
-            <img alt="" style={{ width: '100%' }} src={selectedImage} />
-            <CloseButton onClick={this.showHideImage()} style={{ boxShadow: 'none' }}>
-              <Icon kind="close" style={{ marginRight: 0 }} />
-            </CloseButton>
-          </div>
+
+        <Modal
+          open={this.state.open}
+          showCloseIcon={false}
+          onClose={this.showHideImage()}
+          center
+          styles={{
+            modal: { maxWidth: '60%', width: '100%' },
+          }}
+        >
+          <img alt="" style={{ width: '100%' }} src={selectedImage} />
+          <CloseButton onClick={this.showHideImage()} style={{ boxShadow: 'none' }}>
+            <Icon kind="close" style={{ marginRight: 0 }} />
+          </CloseButton>
         </Modal>
       </DetailsContainer>
     );

@@ -104,5 +104,5 @@
 }
 
 .bm-menu-wrap {
-  z-index: 998;
+  z-index: 999 !important;
 }

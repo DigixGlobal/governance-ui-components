@@ -94,6 +94,7 @@ class Proposal extends React.PureComponent {
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
+        project: { status },
       },
     } = translations;
 
@@ -102,7 +103,7 @@ class Proposal extends React.PureComponent {
         <ProposalCard>
           <TagsContainer>
             <Button kind="tag" showIcon>
-              {details.stage}
+              {status[details.stage.toLowerCase()]}
             </Button>
           </TagsContainer>
           <Description>

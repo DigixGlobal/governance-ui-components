@@ -35,7 +35,7 @@ class EditFundingButton extends React.PureComponent {
     const {
       isProposer,
       proposal,
-      // translations: { buttons },
+      translations: { buttons },
     } = this.props;
     if (proposal.isSpecial) return null;
     const canEdit = proposal.stage === ProposalStages.ongoing && isProposer;
@@ -52,9 +52,7 @@ class EditFundingButton extends React.PureComponent {
         data-digix="ProposalAction-EditFunding"
         onClick={() => this.editFunding()}
       >
-        {/* {buttons.editFunding} */}
-        {/* TODO: Add Translation */}
-        Edit Funding
+        {buttons.editFunding}
       </Button>
     );
   }

@@ -446,18 +446,11 @@ class Proposal extends React.Component {
       ((!tentativePassed && isVotingDeadlineOver) || pastDeadline) &&
       currentUser === proposer
     )
-      // TODO: Add translation commit voting
-      // <Message note>
-      //   Your project fails the voting, either by voting results or its already past the deadline for
-      //   claiming voting results.
-      // </Message>;
       return (
         <Notifications warning withIcon>
           <WarningIcon kind="warning" />
           <Message note>
-            {data.currentVotingRound <= 0
-              ? alerts.failedModeratorVoting
-              : 'Your project fails the voting, either by voting results or its already past the deadline for claiming voting results.'}
+            {data.currentVotingRound <= 0 ? alerts.failedModeratorVoting : alerts.failedVoting}
           </Message>
         </Notifications>
       );
@@ -698,7 +691,7 @@ class Proposal extends React.Component {
   render() {
     const { proposalDetails } = this.props;
     if (proposalDetails.fetching === null || proposalDetails.fetching || !proposalDetails.data)
-      return <div>Fetching Project Details</div>; // TODO: Add Translation
+      return <div>Fetching Project Details</div>;
 
     if (proposalDetails.data.isSpecial) {
       return this.renderSpecialProposal();

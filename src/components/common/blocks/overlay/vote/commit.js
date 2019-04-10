@@ -196,11 +196,7 @@ class CommitVote extends React.Component {
         {revoting && !changeVote && (
           <Fragment>
             <Notifications info centered>
-              <Message>
-                {/* TODO: Add Translation */}
-                You have already committed for this proposal. This action will overwrite the
-                previous commit.
-              </Message>
+              <Message>{overlays.hasVoted}</Message>
             </Notifications>
             <Button
               secondary
@@ -209,25 +205,15 @@ class CommitVote extends React.Component {
               onClick={this.handleChangeVote}
               data-digix="Commit-Change-Vote"
             >
-              {/* TODO: Add Translation */}
-              Change My Vote
+              {buttons.changeMyVote}
             </Button>
           </Fragment>
         )}
         {showVoting && (
           <Fragment>
-            <p>
-              {/* TODO: Add Translation */}
-              In the DigixDAO, we employ the Commit and Reveal scheme to keep your votes as unbiased
-              as possible. You will need to download a JSON file when deciding your choice in the
-              vote. Your choice will then be verified in the Reveal phase when you upload the same
-              JSON file.
-            </p>
+            <p>{overlays.commitVoteDescription}</p>
             <Note>
-              {/* TODO: Add Translation */}
-              <strong>
-                Please keep the file in a safe place as you will not be able to download it again.
-              </strong>
+              <strong>{overlays.commitVoteNote}</strong>
             </Note>
             <ResponseButton voteValue data-digix="Commit-Vote-Yes" style={{ marginBottom: '0' }}>
               {buttons.yes}

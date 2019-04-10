@@ -46,7 +46,7 @@ export default class ProjectDetails extends React.Component {
       if (!img.src) return null;
 
       const source =
-        !preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.thumbnail}` : img.src;
+        !preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.src}` : img.src;
 
       /* eslint-disable */
       return (
@@ -70,6 +70,7 @@ export default class ProjectDetails extends React.Component {
       translations: { project: trans },
     } = this.props;
     const { selectedImage } = this.state;
+
     const hasImages = project.images && project.images.length > 0;
     return (
       <DetailsContainer>

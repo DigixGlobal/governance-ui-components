@@ -117,7 +117,7 @@ class RedeemBadgeButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Badge Redeemed',
+        message: t.redeemBadge,
         txHash,
       });
       this.setState({ redeemed: true }, () => {

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import PropTypes, { array } from 'prop-types';
-import { inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { inLockingPhase, truncateNumber, injectTranslation } from '@digix/gov-ui/utils/helpers';
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
@@ -83,18 +83,29 @@ class LockDgd extends React.Component {
   onDgdInputChange = e => {
     const { value } = e.target;
     const { dgdBalance } = this.state;
-    const { addressMaxAllowance } = this.props;
+    const {
+      addressMaxAllowance,
+      translations: { wallet },
+    } = this.props;
     let disableLockDgdButton = true;
     let error;
+
+    const exceedsDgdBalance = injectTranslation(wallet.lockDgd.Hints.overfilled, {
+      balance: dgdBalance,
+    });
+
+    const maxStake = injectTranslation(wallet.lockDgd.Hints.maxStake, {
+      maxAllowance: addressMaxAllowance,
+    });
 
     if (!value || Number(value) <= 0) {
       disableLockDgdButton = true;
     } else if (Number(value) > dgdBalance) {
       disableLockDgdButton = true;
-      error = `Cannot lock more than your balance (${dgdBalance} DGD)`;
+      error = exceedsDgdBalance;
     } else if (Number(`${value}e9`) > Number(addressMaxAllowance)) {
       disableLockDgdButton = true;
-      error = `You can only stake up to ${addressMaxAllowance} DGDs`;
+      error = maxStake;
     } else {
       disableLockDgdButton = false;
     }
@@ -246,14 +257,17 @@ class LockDgd extends React.Component {
 
   renderLockDgd = () => {
     const { dgd, disableLockDgdButton, openError, error } = this.state;
-    const { daoDetails } = this.props;
+    const { daoDetails, translations } = this.props;
     const stake = truncateNumber(this.getStake(dgd));
-
     const t = this.props.translations.lockDgd;
     const tWarning = t.warning;
     const phase = inLockingPhase(daoDetails)
       ? tWarning.currentPhaseLocking
       : tWarning.currentPhaseMain;
+
+    const stakeMessage = injectTranslation(translations.lockDgd.stake, {
+      stake,
+    });
 
     return (
       <DrawerContainer>
@@ -283,11 +297,7 @@ class LockDgd extends React.Component {
           />
           <span>DGD</span>
         </LockDGD>
-        {dgd > 0 && (
-          <FormNote>
-            This will give you <strong>{stake} STAKE</strong> in DigixDAO
-          </FormNote>
-        )}
+        {dgd > 0 && <FormNote>{stakeMessage}</FormNote>}
         <Button
           secondary
           large

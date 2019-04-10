@@ -53,7 +53,12 @@ class ProfileActivitySummary extends React.Component {
 
   showErrorOverlay() {
     this.props.showRightPanel({
-      component: <ErrorMessageOverlay errors={[KycErrors.resubmit]} location="Profile" />,
+      component: (
+        <ErrorMessageOverlay
+          errors={[KycErrors.resubmit]}
+          location={this.props.translations.proposalErrors.returnToProfile}
+        />
+      ),
       show: true,
     });
   }
@@ -89,7 +94,7 @@ class ProfileActivitySummary extends React.Component {
     const showSubmitKycButton = canSubmitKyc || canResubmitKyc;
     const setEmailForKyc = !email && !kyc;
 
-    const t = this.props.translations;
+    const t = this.props.translations.kyc;
     const tOpenKycForm = t.OpenKycForm;
     const tResubmit = t.Errors.resubmit;
     const tKycStatus = t.Statuses[currentKycStatus.toLowerCase()] || currentKycStatus;

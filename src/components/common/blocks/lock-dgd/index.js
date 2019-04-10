@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import PropTypes, { array } from 'prop-types';
-import { inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
+import { injectTranslation, inLockingPhase, truncateNumber } from '@digix/gov-ui/utils/helpers';
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
@@ -84,6 +84,8 @@ class LockDgd extends React.Component {
     const { value } = e.target;
     const { dgdBalance } = this.state;
     const { addressMaxAllowance } = this.props;
+
+    const t = this.props.translations.wallet.lockDgd.Hints;
     let disableLockDgdButton = true;
     let error;
 
@@ -91,10 +93,10 @@ class LockDgd extends React.Component {
       disableLockDgdButton = true;
     } else if (Number(value) > dgdBalance) {
       disableLockDgdButton = true;
-      error = `Cannot lock more than your balance (${dgdBalance} DGD)`;
+      error = injectTranslation(t.overfilled, { balance: dgdBalance });
     } else if (Number(`${value}e9`) > Number(addressMaxAllowance)) {
       disableLockDgdButton = true;
-      error = `You can only stake up to ${addressMaxAllowance} DGDs`;
+      error = injectTranslation(t.maxStake, { maxAllowance: addressMaxAllowance });
     } else {
       disableLockDgdButton = false;
     }
@@ -283,11 +285,7 @@ class LockDgd extends React.Component {
           />
           <span>DGD</span>
         </LockDGD>
-        {dgd > 0 && (
-          <FormNote>
-            This will give you <strong>{stake} STAKE</strong> in DigixDAO
-          </FormNote>
-        )}
+        {dgd > 0 && <FormNote>{injectTranslation(t.stake, { stake })}</FormNote>}
         <Button
           secondary
           large
@@ -348,6 +346,7 @@ LockDgd.defaultProps = {
   addressMaxAllowance: undefined,
   translations: {
     lockDgd: {},
+    wallet: {},
   },
 };
 const mapStateToProps = state => ({

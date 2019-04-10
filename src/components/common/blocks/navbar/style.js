@@ -55,7 +55,7 @@ export const Selector = styled.div`
   display: none;
   opacity: 0;
   transition: opacity 500ms ease;
-  width: 128px;
+  width: calc(100% + 2px);
 
   a {
     color: #333;
@@ -119,6 +119,12 @@ export const TransButton = styled(Button)`
     opacity: 1;
   }
 
+  span.wallet {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 148px;
+  }
+
   & > div {
     width: 1.25rem;
     height: 1.25rem;
@@ -132,7 +138,7 @@ export const TransButton = styled(Button)`
 
 export const Item = styled.div`
   cursor: pointer;
-  padding: 2rem;
+  padding: 1rem 2rem;
   text-align: left;
 
   &:hover {
@@ -160,38 +166,6 @@ export const DropdownMenu = styled.div`
   ${media.mobile`
     width: 150px;
   `};
-`;
-
-export const AddressButton = styled(Button)`
-  background: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  font-family: 'Futura PT Medium', sans-serif;
-
-  &:focus + ${Selector} {
-    display: block;
-    opacity: 1;
-  }
-
-  span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 148px;
-  }
-
-  & > div {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-left: 1rem;
-
-    svg {
-      fill: ${props => props.theme.icon.primary.base.toString()};
-    }
-  }
 `;
 
 export const MenuItem = styled.a``;

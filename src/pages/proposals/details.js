@@ -46,7 +46,7 @@ export default class ProjectDetails extends React.Component {
       if (!img.src) return null;
 
       const source =
-        !preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.thumbnail}` : img.src;
+        !preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.src}` : img.src;
 
       /* eslint-disable */
       return (
@@ -70,6 +70,7 @@ export default class ProjectDetails extends React.Component {
       translations: { project: trans },
     } = this.props;
     const { selectedImage } = this.state;
+
     const hasImages = project.images && project.images.length > 0;
     return (
       <DetailsContainer>
@@ -88,13 +89,20 @@ export default class ProjectDetails extends React.Component {
           {hasImages && this.renderImages(this.state.files, false)}
           <HR />
         </Content>
-        <Modal open={this.state.open} showCloseIcon={false} onClose={this.showHideImage()} center>
-          <div>
-            <img alt="" style={{ width: '100%' }} src={selectedImage} />
-            <CloseButton onClick={this.showHideImage()} style={{ boxShadow: 'none' }}>
-              <Icon kind="close" style={{ marginRight: 0 }} />
-            </CloseButton>
-          </div>
+
+        <Modal
+          open={this.state.open}
+          showCloseIcon={false}
+          onClose={this.showHideImage()}
+          center
+          styles={{
+            modal: { maxWidth: '60%', width: '100%' },
+          }}
+        >
+          <img alt="" style={{ width: '100%' }} src={selectedImage} />
+          <CloseButton onClick={this.showHideImage()} style={{ boxShadow: 'none' }}>
+            <Icon kind="close" style={{ marginRight: 0 }} />
+          </CloseButton>
         </Modal>
       </DetailsContainer>
     );

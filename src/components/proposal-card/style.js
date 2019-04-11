@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
@@ -23,65 +24,106 @@ export const Item = styled.div`
     }
   }
 
-  ${media.mobile``};
+  ${media.mobile`
+        flex-direction: column;
+  `};
 `;
 
 export const Details = styled.div`
-  padding: 2.5rem 5rem;
-`;
+  padding: ${props => (props.noPadding ? 0 : '2.5rem 5rem')};
 
-export const StatsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+
+  ${media.mobile`
+    padding: ${props => (props.noPadding ? 0 : '2rem')};
+  `}
+
+  ${props =>
+    props.first &&
+    css`
+      display: flex;
+      justify-content: space-between;
+    `};
+
+  ${props =>
+    props.second &&
+    css`
+      & > div {
+        border: 1px solid ${props.theme.cardBorderColor.lighter.toString()};
+        border-top: none;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      ${media.mobile`
+       display: none;
+       `}
+    `};
+
+  ${props =>
+    props.third &&
+    css`
+      ${media.tablet`
+       display: none;
+       `}
+    `};
 `;
 
-export const MilestonesWrapper = styled.div``;
-
-export const ProposalCard = styled.div`
+export const Info = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: space-between;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3rem;
+  text-transform: uppercase;
 
-  height: 100%;
-  > div {
-    width: 100%;
+  ${props =>
+    props.stage &&
+    (props.stage.toLowerCase() === 'idea' ||
+      (props.votingStage && props.votingStage.toLowerCase() === 'commit')) &&
+    css`
+      color: ${props.theme.textDefault.light.toString()};
+    `};
+
+  span {
+    font-family: 'Futura PT Heavy', sans-serif;
+    font-size: 2.6rem;
+    display: block;
+    margin-top: 1rem;
+  }
+
+  ul {
+    width: 60%;
+    margin: 0 auto;
+  }
+  li {
+    display: inline-block;
+    list-style: none;
+    background: ${props => props.theme.backgroundPrimary.default.toString()};
+    height: 10px;
+    width: 20%;
+    margin-right: 5px;
+    &:last-child {
+      margin-right: 5px;
+    }
   }
 `;
 
-export const TagsContainer = styled.div``;
+export const Tags = styled.div``;
 
-export const Title = styled(H2)`
-  color: ${props => props.theme.textColor.primary.base.toString()};
-  margin-top: 0;
+export const AboutProposal = styled.div`
+  &:last-child {
+    display: flex;
+    justify-content: space-between;
 
-  overflow: hidden;
-  position: relative;
-  line-height: 1.2em;
-  max-height: calc(1.2em * 2);
-  margin-right: 0em;
-  padding-right: 1em;
-
-  &:before {
-    content: '...';
-    position: absolute;
-    right: 2rem;
-    bottom: 0;
-  }
-  &:after {
-    content: '';
-    position: absolute;
-    right: 2rem;
-    width: 1em;
-    height: 1em;
-    margin-top: 0.2em;
-    background: #fff;
+    border-top: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
+    padding-top: 1.5em;
   }
 `;
-
-export const Description = styled.div`
-  flex: 3 0 0;
-
+export const Desc = styled.div`
   p {
     margin-bottom: 2em;
     color: ${props => props.theme.textColor.default.base.toString()};
@@ -113,24 +155,69 @@ export const Description = styled.div`
   }
 `;
 
-export const ProposalFooter = styled.div`
-  border-top: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-  padding-top: 1.5em;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-export const PostedBy = styled.div``;
+export const Title = styled(H2)`
+  color: ${props => props.theme.textColor.primary.base.toString()};
+  margin-top: 0;
 
-export const PostedByLink = styled.a`
-  color: ${props => props.theme.textSecondary.default.toString()};
+  overflow: hidden;
+  position: relative;
+  line-height: 1.2em;
+  max-height: calc(1.2em * 2);
+  margin-right: 0em;
+  padding-right: 1em;
+
+  &:before {
+    content: '...';
+    position: absolute;
+    right: 2rem;
+    bottom: 0;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    right: 2rem;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: #fff;
+  }
+`;
+
+export const Author = styled.div``;
+
+export const AuthorName = styled.a`
+  color: ${props => props.theme.link.secondary.base.toString()};
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 600;
-  a:link,
-  &:visited {
-    color: ${props => props.theme.linkPrimaryColor.default.toString()};
+`;
+
+export const ViewLink = styled(Link)`
+  color: ${props => props.theme.link.secondary.base.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  display: none;
+  text-decoration: underline;
+  text-transform: uppercase;
+
+  &:hover {
+    text-decoration: none;
   }
+
+  &:link,
+  &:visited {
+    text-decoration: underline;
+  }
+
+  ${props =>
+    props.disabled &&
+    css`
+      color: ${props.theme.link.disabled.light.toString()};
+      pointer-events: none;
+    `}
+
+  ${media.tablet`
+    display: inline-block;
+  `};
 `;
 
 export const Label = styled.div`
@@ -144,90 +231,6 @@ export const Data = styled.div`
   text-transform: uppercase;
   font-size: 1.3rem;
 `;
-
-export const Stats = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: space-between;
-
-  border-left: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-  border-right: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-  height: 100%;
-  text-transform: uppercase;
-
-  > div:not(:last-child) {
-    border-bottom: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-  }
-`;
-
-export const StatItem = styled.div`
-  font-size: 1.4rem;
-  flex: 1;
-  ${props =>
-    props.stage &&
-    (props.stage.toLowerCase() === 'idea' ||
-      (props.votingStage && props.votingStage.toLowerCase() === 'commit')) &&
-    css`
-      color: ${props.theme.textDefault.light.toString()};
-    `};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  > span {
-    font-family: 'Futura PT Heavy';
-    font-size: 2.6rem;
-    display: block;
-  }
-`;
-
-export const Milestones = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  & > div {
-    padding: 2.5em 0;
-    text-align: center;
-    flex: 1;
-  }
-`;
-
-export const MilestoneStatus = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  ul {
-    width: 60%;
-    margin: 0 auto;
-  }
-  li {
-    display: inline-block;
-    list-style: none;
-    background: ${props => props.theme.backgroundPrimary.default.toString()};
-    height: 10px;
-    width: 20%;
-    margin-right: 5px;
-    &:last-child {
-      margin-right: 5px;
-    }
-  }
-`;
-export const Deadline = styled.div``;
-export const CallToAction = styled.div``;
-
-// export const ProgressContainer = styled.div`
-//   background-color: #b8c5d0;
-//   height: 0.8rem;
-// `;
-
-// export const Progress = styled.div`
-//   width: 70%;
-//   height: 0.8rem;
-//   background-color: #243961;
-// `;
 
 export const LikeButton = styled(Button)`
   margin: 0;

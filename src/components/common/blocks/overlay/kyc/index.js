@@ -27,7 +27,7 @@ const network = SpectrumConfig.defaultNetworks[0];
 class KycOverlay extends React.Component {
   constructor(props) {
     super(props);
-    const tSteps = props.translations.kyc.KycForm.Steps;
+    const tSteps = props.translations.KycForm.Steps;
 
     this.STAGES = [
       {
@@ -57,7 +57,7 @@ class KycOverlay extends React.Component {
     ];
 
     this.MAX_STEPS = this.STAGES.length - 1;
-    const t = props.translations.kyc.Submit;
+    const t = props.translations.Submit;
     this.SUBMIT_ERROR_MESSAGE = t.error;
 
     this.state = {
@@ -110,7 +110,7 @@ class KycOverlay extends React.Component {
 
   onSubmitKyc = response => {
     const { errors } = response.submitKyc;
-    const t = this.props.translations.kyc.Submit;
+    const t = this.props.translations.Submit;
 
     if (errors.length) {
       this.setState({
@@ -201,7 +201,7 @@ class KycOverlay extends React.Component {
       return null;
     }
 
-    const t = this.props.translations.kyc;
+    const t = this.props.translations;
     const tNav = t.KycForm.Navigation;
 
     return (
@@ -247,7 +247,7 @@ class KycOverlay extends React.Component {
     const { currentStep, formData, idVerificationCode } = this.state;
     const formValues = formData[currentStep];
     const { formOptions, translations } = this.props;
-    const tForm = translations.kyc.KycForm;
+    const tForm = translations.KycForm;
     const stage = this.STAGES[currentStep];
 
     return (

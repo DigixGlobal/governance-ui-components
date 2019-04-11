@@ -60,7 +60,6 @@ class ProfileActivitySummary extends React.Component {
 
   showKycOverlay() {
     const { refetchUser, translations } = this.props;
-
     this.props.showRightPanel({
       component: <KycOverlay refetchUser={refetchUser} translations={translations} />,
       large: true,

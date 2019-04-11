@@ -13,7 +13,7 @@ class KycOverlayAddress extends KycFormStep {
   constructor(props) {
     super(props);
 
-    const t = props.translations.kyc.KycForm.Fields.Residence;
+    const t = props.translations.KycForm.Fields.Residence;
     this.translations = t;
 
     const { formValues } = props;

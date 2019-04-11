@@ -13,7 +13,7 @@ import {
 class KycFormStep extends React.Component {
   constructor(props) {
     super(props);
-    const t = props.translations.kyc.KycForm;
+    const t = props.translations.KycForm;
 
     this.state = {
       formValues: {},

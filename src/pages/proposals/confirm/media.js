@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { dijix } from '@digix/gov-ui/utils/dijix';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 
 import { HorizontalBar } from '@digix/gov-ui/components/common/elements/index';
 
@@ -47,15 +48,19 @@ export default class MediaAssets extends React.PureComponent {
           <RightCol>
             <ImageHolder>
               {/* eslint-disable */}
-              <img
-                alt=""
-                onClick={this.showHideImage(img.src)}
-                src={
-                  img.thumbnail
-                    ? `${dijix.config.httpEndpoint}/${img.thumbnail}?q=${Date.now()}`
-                    : img.src
-                }
-              />
+              {
+                img.type === 'pdf' ?
+                <div><PDFViewer file={img.base64 ? img.base64 : `${dijix.config.httpEndpoint}/${img.src}`} /></div> :
+                <img
+                  alt=""
+                  onClick={this.showHideImage(img.src)}
+                  src={
+                    img.thumbnail
+                      ? `${dijix.config.httpEndpoint}/${img.thumbnail}?q=${Date.now()}`
+                      : img.src
+                  }
+                />
+              }
               {/* eslint-enable */}
             </ImageHolder>
           </RightCol>

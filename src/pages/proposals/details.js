@@ -5,7 +5,7 @@ import Modal from 'react-responsive-modal';
 
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 import { HR } from '@digix/gov-ui/components/common/common-styles';
-
+import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 import { dijix } from '@digix/gov-ui/utils/dijix';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
@@ -45,9 +45,12 @@ export default class ProjectDetails extends React.Component {
     const images = proofs.map((img, i) => {
       if (!img.src) return null;
 
-      const source =
-        !preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.src}` : img.src;
+      let source = !preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.src}` : img.src;
 
+      if (img.type === 'pdf') {
+        source = !preview ? `${dijix.config.httpEndpoint}/${img.src}` : img.base64;
+        return <PDFViewer key={`img-${i + 1}`} file={source} />;
+      }
       /* eslint-disable */
       return (
         <img

@@ -197,9 +197,9 @@ const LightTheme = {
 
   buttonInverted: {
     textColor: primaryColor,
-    background: primaryColor,
+    background: white,
     border: primaryColor,
-    iconColor: white,
+    iconColor: primaryColor,
   },
 
   buttonDisabled: {

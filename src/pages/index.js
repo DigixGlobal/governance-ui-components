@@ -26,8 +26,9 @@ import {
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 import { showCountdownPage } from '@digix/gov-ui/reducers/gov-ui/actions';
 import ToS from '@digix/gov-ui/tos.md';
+import ConfirmParticipation from '@digix/gov-ui/pages/continue-participation';
 
-import { TosWrapper, Title, TosOverlay } from '@digix/gov-ui/pages/style';
+import { Content, Title, TosOverlay } from '@digix/gov-ui/pages/style';
 
 class LandingPage extends React.PureComponent {
   constructor(props) {
@@ -35,6 +36,7 @@ class LandingPage extends React.PureComponent {
     this.state = {
       order: 'latest',
       showTos: true,
+      showParticipateModal: false,
       disableButton: true,
     };
   }
@@ -147,7 +149,10 @@ class LandingPage extends React.PureComponent {
   };
 
   handleModalClose = () => {
-    this.setState({ showTos: false });
+    this.setState({
+      showParticipateModal: false,
+      showTos: false,
+    });
   };
 
   handleScroll = () => {
@@ -158,7 +163,7 @@ class LandingPage extends React.PureComponent {
   };
 
   renderLandingPage() {
-    const { order, showTos, disableButton } = this.state;
+    const { order, showTos, disableButton, showParticipateModal } = this.state;
     this.fixScrollbar(this.props.ShowWallet);
     const {
       history,
@@ -240,7 +245,7 @@ class LandingPage extends React.PureComponent {
           closeOnEsc={false}
           closeOnOverlayClick={false}
         >
-          <TosWrapper>
+          <Content>
             <Title>Terms and Conditions</Title>
             <TosOverlay id="overlayDiv" onScroll={this.handleScroll}>
               <ToS />
@@ -254,7 +259,10 @@ class LandingPage extends React.PureComponent {
             >
               I have read and agreed
             </Button>
-          </TosWrapper>
+          </Content>
+        </Modal>
+        <Modal open={showParticipateModal} onClose={this.handleModalClose}>
+          <ConfirmParticipation />
         </Modal>
       </Fragment>
     );

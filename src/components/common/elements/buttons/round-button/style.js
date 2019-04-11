@@ -170,7 +170,7 @@ export const RoundBtn = styled(Button)`
       color: ${props.theme.buttonInverted.textColor.base.toString()};
 
       &:hover {
-        background: transparent;
+        background: ${props.theme.buttonPrimary.background.base.toString()};
         color: ${props.theme.buttonPrimary.textColor.base.toString()};
       }
     `};

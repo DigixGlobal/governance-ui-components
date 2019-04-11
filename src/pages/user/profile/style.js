@@ -98,7 +98,7 @@ export const Data = styled.div`
 
   span {
     &.equiv {
-      font-family: 'Futura PT s', sans-serif;
+      font-family: 'Futura PT Book', sans-serif;
       font-size: 1.4rem;
       margin-left: 1rem;
       margin-bottom: 0.75rem;

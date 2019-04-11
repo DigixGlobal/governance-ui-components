@@ -1,16 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  MilestonesWrapper,
-  Milestones,
-  MilestoneStatus,
-  Deadline,
-  Label,
-  Data,
-  CallToAction,
-} from './style';
-import { Button } from '../common/elements/index';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
+
+import { Details, Info, Label, Data } from '@digix/gov-ui/components/proposal-card/style';
 
 const determineDeadline = proposal => {
   let deadline = Date.now();
@@ -84,23 +77,21 @@ export default class ProposalCardMilestone extends React.Component {
     } = translations;
 
     return (
-      <MilestonesWrapper>
-        <Milestones>
-          <MilestoneStatus>
-            <Label>{cardTranslation.milestones}</Label>
-            <ul>{mileStones && mileStones.map(milestone => <li key={milestone} />)}</ul>
-          </MilestoneStatus>
-          <Deadline>
-            <Label>{cardTranslation.votingDeadline}</Label>
-            <Data>{determineDeadline(details) || 'N/A'} </Data>
-          </Deadline>
-          <CallToAction>
-            <Button primary disabled={disabledParticipate} onClick={this.redirectToProposalPage}>
-              {buttons.participate}
-            </Button>
-          </CallToAction>
-        </Milestones>
-      </MilestonesWrapper>
+      <Details noPadding third>
+        <Info>
+          <Label>{cardTranslation.milestones}</Label>
+          <ul>{mileStones && mileStones.map(milestone => <li key={milestone} />)}</ul>
+        </Info>
+        <Info>
+          <Label>{cardTranslation.votingDeadline}</Label>
+          <Data>{determineDeadline(details) || 'N/A'} </Data>
+        </Info>
+        <Info>
+          <Button primary disabled={disabledParticipate} onClick={this.redirectToProposalPage}>
+            {buttons.participate}
+          </Button>
+        </Info>
+      </Details>
     );
   }
 }

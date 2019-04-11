@@ -52,8 +52,7 @@
       },
       "proofOfControl": {
         "description": "Ready to Sign Message",
-        "firmware": "Firmware {{version}} - replay protection enabled!",
-        "firmwareDisabled": "Firmware {{version}} - replay protection disabled!"
+        "firmware": "Firmware {{version}} - replay protection enabled!"
       }
     }
   },
@@ -87,9 +86,7 @@
     "signInstructions": "Enter your password to sign message",
     "error": "Key derivation failed - possibly wrong passphrase",
     "proofOfControl": {
-      "description": "This signing is to prove to our server that you are in control of the Ethereum account that was loaded. By signing this message, you are proving that you control the selected account for use on DigixDAO.",
-      "signing": "Signing message...",
-      "sign": "Sign Message"
+      "description": "This signing is to prove to our server that you are in control of the Ethereum account that was loaded. By signing this message, you are proving that you control the selected account for use on DigixDAO."
     }
   },
   "connectedWallet": {

@@ -182,7 +182,11 @@ export const RoundBtn = styled(Button)`
       border: 2px solid ${props.theme.buttonDisabled.border.lighter.toString()};
       box-shadow: none;
       color: ${props.theme.buttonDisabled.textColor.light.toString()};
-      cursor: default;
+      pointer-events: none;
+
+      svg {
+        fill: ${props.theme.buttonDefault.iconColor.lighter.toString()};
+      }
 
       &:hover {
         background: ${props.theme.buttonDisabled.background.toString()};

@@ -16,7 +16,7 @@ export const TabPanel = styled.div`
 `;
 export const MenuItem = styled.div`
   flex: 1;
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Medium', sans-serif;
   border-bottom: 1px solid #ccc;
   display: flex;
   justify-content: center;
@@ -64,16 +64,16 @@ export const Label = styled(FormLabel)`
 export const MediaUploader = styled(Card)`
   align-items: flex-start;
 
-  ${media.mobile`
+  ${media.tablet`
     flex-direction: column;
   `}
 
   > div {
     &:first-child {
       margin-right: 2rem;
-      flex: 0 0 auto;
+      flex: 0 1 auto;
 
-      ${media.mobile`
+      ${media.tablet`
         width: 100%;
       `}
     }
@@ -81,7 +81,7 @@ export const MediaUploader = styled(Card)`
       flex: 1 0 0;
       margin-top: 5px;
 
-      ${media.tablet`git
+      ${media.tablet`
         margin-top: 2rem;
         width: 100%;
       `}
@@ -106,28 +106,62 @@ export const ImageHolder = styled.div`
 
 export const ImageItem = styled.div`
   position: relative;
-  padding: 1rem;
+  margin: 0;
+  padding: 0;
   border-bottom: 1px solid #fff;
 
   &:last-child {
     border-bottom: none;
   }
+
+  canvas {
+    width: 100%;
+  }
 `;
 
-export const CloseButton = styled(Button)`
+const ButtonStyles = css`
   position: absolute;
-  right: 1rem;
   background: ${props => props.theme.background.white.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
+  box-shadow: none;
   font-size: 1.2rem;
   margin: 0.5rem;
   padding: 1rem;
+  top: 1rem;
 
   div {
-    svg {
-      fill: ${props => props.theme.icon.default.base.toString()};
-    }
+    margin-right: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  &:hover {
+    background: ${props => props.theme.background.white.toString()};
+    border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  }
+`;
+
+export const Delete = styled(Button)`
+  ${ButtonStyles};
+  right: 1rem;
+`;
+
+export const Next = styled(Button)`
+  ${ButtonStyles};
+  right: 5.5rem;
+
+  div {
+    transform: rotate(275deg);
+  }
+`;
+
+export const Previous = styled(Button)`
+  ${ButtonStyles};
+  right: 10rem;
+
+  div {
+    transform: rotate(90deg);
   }
 `;
 

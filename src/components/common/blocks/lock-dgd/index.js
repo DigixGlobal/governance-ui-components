@@ -257,7 +257,7 @@ class LockDgd extends React.Component {
 
   renderLockDgd = () => {
     const { dgd, disableLockDgdButton, openError, error } = this.state;
-    const { daoDetails, translations } = this.props;
+    const { daoDetails } = this.props;
     const stake = truncateNumber(this.getStake(dgd));
     const t = this.props.translations.lockDgd;
     const tWarning = t.warning;
@@ -265,7 +265,7 @@ class LockDgd extends React.Component {
       ? tWarning.currentPhaseLocking
       : tWarning.currentPhaseMain;
 
-    const stakeMessage = injectTranslation(translations.lockDgd.stake, {
+    const stakeMessage = injectTranslation(t.stake, {
       stake,
     });
 

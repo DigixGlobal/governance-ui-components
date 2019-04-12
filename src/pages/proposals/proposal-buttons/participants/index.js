@@ -28,8 +28,13 @@ class ParticipantButtons extends React.Component {
   }
 
   showErrorOverlay(errors) {
+    const {
+      translations: {
+        common: { proposalErrors },
+      },
+    } = this.props;
     this.props.showRightPanel({
-      component: <ErrorMessageOverlay errors={errors} />,
+      component: <ErrorMessageOverlay errors={errors} location={proposalErrors.returnToProject} />,
       show: true,
     });
   }

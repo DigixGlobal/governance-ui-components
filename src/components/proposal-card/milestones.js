@@ -40,24 +40,6 @@ const determineDeadline = proposal => {
   return deadline;
 };
 
-const disableParticipateWhen = (proposal, user) => {
-  switch (proposal.stage.toLowerCase()) {
-    case 'idea':
-      return true;
-    case 'draft':
-      return !user.data.isModerator;
-    case 'proposal':
-      return !user.data.isParticipant;
-    case 'ongoing':
-      return true;
-    case 'review':
-      return !user.data.isParticipant;
-    case 'archived':
-      return true;
-    default:
-      return true;
-  }
-};
 export default class ProposalCardMilestone extends React.Component {
   redirectToProposalPage = () => {
     const { details, history } = this.props;
@@ -68,7 +50,6 @@ export default class ProposalCardMilestone extends React.Component {
     const { details, userDetails, translations } = this.props;
     const { currentMilestone } = details;
     const mileStones = currentMilestone ? Object.keys(currentMilestone) : [];
-    const disabledParticipate = disableParticipateWhen(details, userDetails);
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
@@ -87,7 +68,11 @@ export default class ProposalCardMilestone extends React.Component {
           <Data>{determineDeadline(details) || 'N/A'} </Data>
         </Info>
         <Info>
-          <Button primary disabled={disabledParticipate} onClick={this.redirectToProposalPage}>
+          <Button
+            primary
+            disabled={!userDetails.data.address}
+            onClick={this.redirectToProposalPage}
+          >
             {buttons.participate}
           </Button>
         </Info>

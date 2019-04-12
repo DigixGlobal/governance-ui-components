@@ -265,6 +265,13 @@ const LightTheme = {
     disabled: tertiaryColor,
   },
 
+  link: {
+    primary: primaryColor,
+    secondary: secondaryColor,
+    disabled: tertiaryColor,
+    invert: white,
+  },
+
   textColor: {
     black,
     default: tertiaryColor,

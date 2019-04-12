@@ -10,11 +10,7 @@ import UnlockDgdOverlay from '@digix/gov-ui/components/common/blocks/overlay/unl
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { Content, Title, Intro } from '@digix/gov-ui/pages/style';
-import {
-  CONFIRM_PARTICIPATION_CACHE,
-  DEFAULT_GAS,
-  DEFAULT_GAS_PRICE,
-} from '@digix/gov-ui/constants';
+import { CONFIRM_PARTICIPATION_CACHE, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getHash } from '@digix/gov-ui/utils/helpers';
@@ -51,7 +47,7 @@ class ConfirmParticipation extends React.Component {
     this.props.closeModal();
 
     const t = this.props.tSnackbar;
-    const { addresses, ChallengeProof, web3Redux } = this.props;
+    const { addresses, ChallengeProof, gasLimitConfig, web3Redux } = this.props;
     const { abi, address } = getContract(DaoStakeLocking, network);
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -68,7 +64,7 @@ class ConfirmParticipation extends React.Component {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.CONFIRM_CONTINUE_PARTICIPATION || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -186,6 +182,7 @@ ConfirmParticipation.propTypes = {
   ChallengeProof: object.isRequired,
   closeModal: func.isRequired,
   DaoInfo: object.isRequired,
+  gasLimitConfig: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlert: func.isRequired,
   showHideLockDgdOverlay: func.isRequired,
@@ -203,6 +200,7 @@ const mapStateToProps = state => ({
   AddressDetails: state.infoServer.AddressDetails.data,
   ChallengeProof: state.daoServer.ChallengeProof.data,
   DaoInfo: state.infoServer.DaoDetails.data,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
   translations: state.daoServer.Translations.data.confirmParticipation,
   tSnackbar: state.daoServer.Translations.data.snackbar.snackbars.continueParticipation,
   tUnlock: state.daoServer.Translations.data.wallet.LockedDgd.UnlockDgd,

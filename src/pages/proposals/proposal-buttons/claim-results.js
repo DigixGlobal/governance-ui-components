@@ -16,7 +16,7 @@ import { withSearchTransactions } from '@digix/gov-ui/api/graphql-queries/transa
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE, MAX_PEOPLE_PER_CLAIM } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE, MAX_PEOPLE_PER_CLAIM } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import MultiStepClaim from '@digix/gov-ui/components/common/blocks/overlay/claim-approval';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
@@ -76,11 +76,12 @@ class ClaimResultsButton extends React.PureComponent {
 
   handleSubmit = useMaxClaim => () => {
     const {
+      gasLimitConfig,
       web3Redux,
       ChallengeProof,
       addresses,
       proposal,
-      proposal: { currentVotingRound = 0, proposalId },
+      proposal: { currentVotingRound = 0, isSpecial, proposalId },
       translations: { snackbars },
     } = this.props;
 
@@ -97,9 +98,11 @@ class ClaimResultsButton extends React.PureComponent {
       header: snackbars.claimResult.TxUiHeader,
       type: 'txVisualization',
     };
+
+    const gasLimit = isSpecial ? gasLimitConfig.CLAIM_SPECIAL_VOTING : gasLimitConfig.CLAIM_VOTING;
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimit || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -250,6 +253,7 @@ ClaimResultsButton.propTypes = {
   checkProposalRequirements: func.isRequired,
   daoConfig: object.isRequired,
   daoDetails: object.isRequired,
+  gasLimitConfig: object.isRequired,
   pendingTransactions: object,
   showHideAlert: func.isRequired,
   getDaoConfig: func.isRequired,
@@ -275,6 +279,7 @@ const mapStateToProps = state => ({
   addresses: getAddresses(state),
   daoConfig: state.infoServer.DaoConfig,
   daoDetails: state.infoServer.DaoDetails,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(

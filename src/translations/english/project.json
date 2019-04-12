@@ -94,7 +94,7 @@
     "reviewVoteResults": "Review Vote {{votingRound}} Results",
     "reviewVote": "Review Vote",
     "proposalVote": "Project Vote",
-    "timeLeftToCommit": "Time Left to End of Comit"
+    "timeLeftToCommit": "Time Left to End of Commit"
   },
   "alerts": {
     "failedModeratorVoting": "Your project fails the voting, either by voting results or its already past the deadline for claiming voting results. Please click the button below to claim your failed project and get back your collateral.",

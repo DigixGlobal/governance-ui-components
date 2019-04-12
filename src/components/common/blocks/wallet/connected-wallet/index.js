@@ -10,7 +10,7 @@ import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 
 import {
   showHideLockDgdOverlay,
@@ -20,7 +20,7 @@ import {
   showHideWalletOverlay,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
-import { getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { getDaoDetails, getTxConfig } from '@digix/gov-ui/reducers/info-server/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
@@ -58,7 +58,9 @@ class ConnectedWallet extends React.Component {
 
   componentDidMount() {
     const { defaultAddress, AddressDetails } = this.props;
+    this.props.getTxConfig();
     this._isMounted = true;
+
     if (defaultAddress.address && AddressDetails.data) {
       const address = AddressDetails.data;
       const hasParticipated = address.isParticipant || address.lastParticipatedQuarter > 0;
@@ -131,7 +133,7 @@ class ConnectedWallet extends React.Component {
   };
 
   handleApprove = () => {
-    const { web3Redux, challengeProof, addresses } = this.props;
+    const { web3Redux, challengeProof, addresses, gasLimitConfig } = this.props;
 
     const { abi, address } = getDGDBalanceContract(network);
     const contract = web3Redux
@@ -144,9 +146,10 @@ class ConnectedWallet extends React.Component {
       header: 'DGD Approval',
       type: 'txVisualization',
     };
+
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -342,12 +345,15 @@ ConnectedWallet.propTypes = {
   translations: object.isRequired,
   approvalTranslations: object.isRequired,
   txnTranslations: object.isRequired,
+  gasLimitConfig: object,
+  getTxConfig: func.isRequired,
 };
 
 ConnectedWallet.defaultProps = {
   AddressDetails: undefined,
   addressMaxAllowance: undefined,
   tokenUsdValues: undefined,
+  gasLimitConfig: undefined,
   DaoDetails: {
     data: {
       isGlobalRewardsSet: false,
@@ -371,6 +377,7 @@ const mapStateToProps = state => ({
   translations: state.daoServer.Translations.data.loadWallet.connectedWallet,
   approvalTranslations: state.daoServer.Translations.data.approveInteraction,
   txnTranslations: state.daoServer.Translations.data.signTransaction,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default connect(
@@ -381,6 +388,7 @@ export default connect(
     showHideLockDgdOverlayAction: showHideLockDgdOverlay,
     canLockDgd,
     getDaoDetails,
+    getTxConfig,
     fetchMaxAllowance,
     showTxSigningModal,
     sendTransactionToDaoServer,

@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 import { toBigNumber, parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 
-import { StatsWrapper, Stats, StatItem } from '@digix/gov-ui/components/proposal-card/style';
 import { VotingStages } from '@digix/gov-ui/constants';
 import { formatPercentage, truncateNumber } from '@digix/gov-ui/utils/helpers';
+
+import { Details, Info } from '@digix/gov-ui/components/proposal-card/style';
 
 export default class ProposalCardStats extends React.Component {
   getVotingRoundDetails = proposal => {
@@ -65,22 +66,20 @@ export default class ProposalCardStats extends React.Component {
     } = translations;
 
     return (
-      <StatsWrapper>
-        <Stats>
-          <StatItem>
-            {cardTranslation.funding}
-            <span>{funding} ETH</span>
-          </StatItem>
-          <StatItem stage={details.stage} votingStage={votingStage}>
-            {cardTranslation.approval}
-            <span>{approvalRating}%</span>
-          </StatItem>
-          <StatItem stage={details.stage} votingStage={votingStage}>
-            {cardTranslation.participants}
-            <span>{participantCount}</span>
-          </StatItem>
-        </Stats>
-      </StatsWrapper>
+      <Details second noPadding>
+        <Info>
+          {cardTranslation.funding}
+          <span>{funding} ETH</span>
+        </Info>
+        <Info stage={details.stage} votingStage={votingStage}>
+          {cardTranslation.approval}
+          <span>{approvalRating}%</span>
+        </Info>
+        <Info stage={details.stage} votingStage={votingStage}>
+          {cardTranslation.participants}
+          <span>{participantCount}</span>
+        </Info>
+      </Details>
     );
   }
 }

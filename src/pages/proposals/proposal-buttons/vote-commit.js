@@ -10,7 +10,15 @@ import { VotingStages } from '@digix/gov-ui/constants';
 
 class CommitVoteButton extends React.PureComponent {
   showOverlay = hasVoted => {
-    const { history, proposalId, showRightPanelAction, proposal, translations } = this.props;
+    const {
+      history,
+      proposalId,
+      showRightPanelAction,
+      proposal,
+      translations,
+      txnTranslations,
+    } = this.props;
+
     showRightPanelAction({
       component: (
         <CommitVoteOverlay
@@ -19,6 +27,7 @@ class CommitVoteButton extends React.PureComponent {
           proposalId={proposalId}
           proposal={proposal}
           translations={translations}
+          txnTranslations={txnTranslations}
         />
       ),
       show: true,
@@ -66,6 +75,7 @@ CommitVoteButton.propTypes = {
   showRightPanelAction: func.isRequired,
   votes: object,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 CommitVoteButton.defaultProps = {

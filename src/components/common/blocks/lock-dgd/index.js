@@ -250,6 +250,7 @@ class LockDgd extends React.Component {
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
       logTxn: LogLockDgd.txn,
+      translations: this.props.translations.signTransaction,
     };
 
     return executeContractFunction(payload);

@@ -410,6 +410,7 @@ class ProposalForms extends React.Component {
         web3Params,
         ui,
         showTxSigningModal: this.props.showTxSigningModal,
+        translations: this.props.translations.signTransaction,
       };
 
       return executeContractFunction(payload);

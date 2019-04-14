@@ -4,20 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-
-import {
-  ProposaDetaillWrapper,
-  ProposalCard,
-  TagsContainer,
-  Title,
-  Description,
-  ProposalLink,
-  ProposalFooter,
-  PostedBy,
-  PostedByLink,
-} from '@digix/gov-ui/components/proposal-card/style';
-
 import LikeButton from '@digix/gov-ui/components/common/elements/like';
+
 import { initializePayload } from '@digix/gov-ui/api';
 import {
   likeProposal,
@@ -25,6 +13,17 @@ import {
   getUserProposalLikeStatus,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
+
+import {
+  Details,
+  AboutProposal,
+  Tags,
+  Title,
+  Desc,
+  Author,
+  AuthorName,
+  ViewLink,
+} from '@digix/gov-ui/components/proposal-card/style';
 
 class Proposal extends React.PureComponent {
   toggleLike = () => {
@@ -99,42 +98,42 @@ class Proposal extends React.PureComponent {
     } = translations;
 
     return (
-      <ProposaDetaillWrapper>
-        <ProposalCard>
-          <TagsContainer>
+      <Details first>
+        <AboutProposal>
+          <Tags>
             <Button kind="tag" showIcon>
               {status[details.stage.toLowerCase()]}
             </Button>
-          </TagsContainer>
-          <Description>
+          </Tags>
+          <Desc>
             <Title>{proposalVersion ? proposalVersion.dijixObject.title : title}</Title>
             <p>{proposalVersion ? proposalVersion.dijixObject.description : ''}</p>
-            <ProposalLink
+            <ViewLink
               disabled={!canCreate && !isForumAdmin}
               href={`/proposals/${details.proposalId}`}
               to={`/proposals/${details.proposalId}`}
             >
               {cardTranslation.view}
-            </ProposalLink>
-          </Description>
-          <ProposalFooter>
-            <PostedBy>
-              {cardTranslation.by}{' '}
-              <PostedByLink style={{ pointerEvents: 'none' }}>{displayName}</PostedByLink>
-            </PostedBy>
-            {canLike && (
-              <LikeButton
-                kind="text"
-                xsmall
-                hasVoted={likeStatus.liked}
-                likes={!likeStatus.likes ? 0 : likeStatus.likes}
-                onClick={() => this.toggleLike()}
-                translations={cardTranslation}
-              />
-            )}
-          </ProposalFooter>
-        </ProposalCard>
-      </ProposaDetaillWrapper>
+            </ViewLink>
+          </Desc>
+        </AboutProposal>
+        <AboutProposal>
+          <Author>
+            {cardTranslation.by}{' '}
+            <AuthorName style={{ pointerEvents: 'none' }}>{displayName}</AuthorName>
+          </Author>
+          {canLike && (
+            <LikeButton
+              kind="text"
+              xsmall
+              hasVoted={likeStatus.liked}
+              likes={!likeStatus.likes ? 0 : likeStatus.likes}
+              onClick={() => this.toggleLike()}
+              translations={cardTranslation}
+            />
+          )}
+        </AboutProposal>
+      </Details>
     );
   }
 }

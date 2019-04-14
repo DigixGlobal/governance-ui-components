@@ -125,6 +125,7 @@ class UnlockDgdOverlay extends React.Component {
       onSuccess: txHash => onTransactionSuccess(txHash),
       params: [unlockAmount * 1e9],
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
       ui,
       web3Params,
     };
@@ -229,6 +230,7 @@ UnlockDgdOverlay.propTypes = {
   showHideAlert: func.isRequired,
   showTxSigningModal: func.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
   web3Redux: object.isRequired,
 };
 

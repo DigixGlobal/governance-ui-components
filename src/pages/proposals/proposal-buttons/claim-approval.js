@@ -140,7 +140,9 @@ class ClaimApprovalButton extends React.PureComponent {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
+
     return executeContractFunction(payload);
   };
 
@@ -244,6 +246,7 @@ ClaimApprovalButton.propTypes = {
   votingStage: string,
   isProposer: bool.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 ClaimApprovalButton.defaultProps = {

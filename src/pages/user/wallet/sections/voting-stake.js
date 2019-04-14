@@ -40,11 +40,18 @@ class VotingStake extends React.Component {
   }
 
   showUnlockDgdOverlay() {
+    const { txnTranslations } = this.props;
     const { lockedDgd } = this.props.AddressDetails;
     const tUnlock = this.props.translations.UnlockDgd;
 
     this.props.showRightPanel({
-      component: <UnlockDgdOverlay maxAmount={Number(lockedDgd)} translations={tUnlock} />,
+      component: (
+        <UnlockDgdOverlay
+          maxAmount={Number(lockedDgd)}
+          translations={tUnlock}
+          txnTranslations={txnTranslations}
+        />
+      ),
       show: true,
     });
   }
@@ -107,6 +114,7 @@ VotingStake.propTypes = {
   showRightPanel: func.isRequired,
   subscribeToAddress: func.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 VotingStake.defaultProps = {

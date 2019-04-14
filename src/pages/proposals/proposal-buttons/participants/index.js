@@ -28,8 +28,10 @@ class ParticipantButtons extends React.Component {
   }
 
   showErrorOverlay(errors) {
+    const location = this.props.translations.common.proposalErrors.returnToProject;
+
     this.props.showRightPanel({
-      component: <ErrorMessageOverlay errors={errors} />,
+      component: <ErrorMessageOverlay errors={errors} location={location} />,
       show: true,
     });
   }
@@ -69,6 +71,7 @@ class ParticipantButtons extends React.Component {
       },
     } = this.props;
 
+    const txnTranslations = this.props.translations.signTransaction;
     const checkProposalRequirements = this.checkUnmetRequirements.bind(this);
     const editAction = this.editProject.bind(this);
     const showEditButton =
@@ -85,6 +88,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           checkProposalRequirements={checkProposalRequirements}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         {showEditButton && (
           <Button large onClick={() => checkProposalRequirements(editAction)}>
@@ -98,6 +102,7 @@ class ParticipantButtons extends React.Component {
           isProposer={isProposer}
           checkProposalRequirements={checkProposalRequirements}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <FinalizeButton
           endorser={data.endorser}
@@ -108,6 +113,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           timeCreated={data.timeCreated}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
           checkProposalRequirements={checkProposalRequirements}
         />
         <ClaimApprovalButton
@@ -119,6 +125,7 @@ class ParticipantButtons extends React.Component {
           checkProposalRequirements={checkProposalRequirements}
           match={this.props.match}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <VoteCommitButton
           isParticipant={addressDetails.data.isParticipant}
@@ -128,6 +135,7 @@ class ParticipantButtons extends React.Component {
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <RevealButton
           isParticipant={addressDetails.data.isParticipant}
@@ -137,6 +145,7 @@ class ParticipantButtons extends React.Component {
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <ClaimResultsButton
           checkProposalRequirements={checkProposalRequirements}
@@ -145,6 +154,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           proposal={data}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <ClaimFundingButton
           checkProposalRequirements={checkProposalRequirements}
@@ -152,6 +162,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           proposal={data}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <MilestoneCompletedButton
           checkProposalRequirements={checkProposalRequirements}
@@ -159,6 +170,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           proposal={data}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
       </Fragment>
     );

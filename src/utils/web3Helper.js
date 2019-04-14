@@ -14,6 +14,7 @@ export const executeContractFunction = payload => {
     ui,
     showTxSigningModal,
     logTxn,
+    translations,
   } = payload;
   const {
     keystore: {
@@ -36,6 +37,7 @@ export const executeContractFunction = payload => {
       ),
       ui,
       logTxn,
+      translations,
     })
       .then(txHash => {
         if (logTxn) {
@@ -69,6 +71,7 @@ export const executeContractFunction = payload => {
         from: address.address,
         ui,
         logTxn,
+        translations,
         ...web3Params,
       })
       .then(txHash => {
@@ -102,6 +105,7 @@ export const executeContractFunction = payload => {
       from: address.address,
       ui,
       logTxn,
+      translations,
       ...web3Params,
     })
     .then(txHash => {

@@ -103,7 +103,9 @@ class FinalizeProjectButton extends React.PureComponent {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
+
     return executeContractFunction(payload);
   };
 
@@ -171,6 +173,7 @@ FinalizeProjectButton.propTypes = {
   history: object.isRequired,
   timeCreated: number.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 FinalizeProjectButton.defaultProps = {

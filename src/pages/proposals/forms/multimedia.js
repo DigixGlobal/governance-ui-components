@@ -15,7 +15,7 @@ import {
   MediaUploader,
   ImageItem,
   ImageHolder,
-  CloseButton,
+  Delete,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
@@ -165,24 +165,24 @@ class Multimedia extends React.Component {
 
       if (img.type === 'pdf')
         return (
-          <ImageItem key={`img-${i + 1}`}>
-            <CloseButton
+          <ImageItem removeOption key={`img-${i + 1}`}>
+            <Delete
               kind="text"
               onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
             >
-              <Icon kind="trash" /> Remove
-            </CloseButton>
+              <Icon kind="trash" />
+            </Delete>
             <PDFViewer file={source} />
           </ImageItem>
         );
       return (
-        <ImageItem key={`img-${i + 1}`}>
-          <CloseButton
+        <ImageItem removeOption key={`img-${i + 1}`}>
+          <Delete
             kind="text"
             onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
           >
-            <Icon kind="trash" /> Remove
-          </CloseButton>
+            <Icon kind="trash" />
+          </Delete>
           {/* eslint-disable*/}
           <img alt="" onClick={this.showHideImage(source)} src={source} />
           {/* eslint-enable */}

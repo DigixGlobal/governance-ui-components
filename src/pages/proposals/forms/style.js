@@ -16,7 +16,7 @@ export const TabPanel = styled.div`
 `;
 export const MenuItem = styled.div`
   flex: 1;
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Medium', sans-serif;
   border-bottom: 1px solid #ccc;
   display: flex;
   justify-content: center;
@@ -64,24 +64,24 @@ export const Label = styled(FormLabel)`
 export const MediaUploader = styled(Card)`
   align-items: flex-start;
 
-  ${media.mobile`
+  ${media.tablet`
     flex-direction: column;
   `}
 
   > div {
     &:first-child {
       margin-right: 2rem;
-      flex: 0 0 auto;
+      flex: 1 0 auto;
 
-      ${media.mobile`
+      ${media.tablet`
         width: 100%;
       `}
     }
     &:last-child {
-      flex: 1 0 0;
+      // flex: 1 0 0;
       margin-top: 5px;
 
-      ${media.tablet`git
+      ${media.tablet`
         margin-top: 2rem;
         width: 100%;
       `}
@@ -96,8 +96,10 @@ export const ImageHolder = styled.div`
   width: 100%;
   min-height: 200px;
   padding: 0;
+  display: flex;
+  flex-flow: row wrap;
 
-  & > div > img {
+  img {
     height: auto;
     width: 100%;
     margin: 0;
@@ -105,29 +107,89 @@ export const ImageHolder = styled.div`
 `;
 
 export const ImageItem = styled.div`
+  flex: 0 1 calc(50% - 0.5rem);
+  margin-right: 1rem;
+  margin-bottom: 1rem;
   position: relative;
-  padding: 1rem;
-  border-bottom: 1px solid #fff;
+  padding: 0;
+
+  &:nth-child(even) {
+    margin-right: 0;
+  }
 
   &:last-child {
     border-bottom: none;
   }
+
+  canvas {
+    width: 100%;
+  }
+
+  ${props =>
+    props.removeOption &&
+    css`
+      button {
+        &:first-child {
+          right: 1rem;
+        }
+        &:nth-of-type(2) {
+          right: 10rem;
+        }
+
+        &:nth-of-type(3) {
+          right: 5.5rem;
+        }
+      }
+    `}
+
+  ${media.mobile`
+    flex: 0 1 auto;
+  `}
 `;
 
-export const CloseButton = styled(Button)`
+const ButtonStyles = css`
   position: absolute;
-  right: 1rem;
   background: ${props => props.theme.background.white.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
+  box-shadow: none;
   font-size: 1.2rem;
   margin: 0.5rem;
   padding: 1rem;
+  top: 1rem;
 
   div {
-    svg {
-      fill: ${props => props.theme.icon.default.base.toString()};
-    }
+    margin-right: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  &:hover {
+    background: ${props => props.theme.background.white.toString()};
+    border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  }
+`;
+
+export const Delete = styled(Button)`
+  ${ButtonStyles};
+  right: 1rem;
+`;
+
+export const Next = styled(Button)`
+  ${ButtonStyles};
+  right: 1rem;
+
+  div {
+    transform: rotate(275deg);
+  }
+`;
+
+export const Previous = styled(Button)`
+  ${ButtonStyles};
+  right: 5.5rem;
+
+  div {
+    transform: rotate(90deg);
   }
 `;
 

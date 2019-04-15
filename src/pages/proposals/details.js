@@ -10,7 +10,7 @@ import { dijix } from '@digix/gov-ui/utils/dijix';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
 
-import { DetailsContainer, Content, SubTitle, ImageHolder, CloseButton } from './style';
+import { DetailsContainer, Content, SubTitle, ImageHolder, ImageItem, CloseButton } from './style';
 
 export default class ProjectDetails extends React.Component {
   constructor(props) {
@@ -49,21 +49,27 @@ export default class ProjectDetails extends React.Component {
 
       if (img.type === 'pdf') {
         source = !preview ? `${dijix.config.httpEndpoint}/${img.src}` : img.base64;
-        return <PDFViewer key={`img-${i + 1}`} file={source} />;
+        return (
+          <ImageItem key={`img-${i + 1}`}>
+            <PDFViewer file={source} />
+          </ImageItem>
+        );
       }
       /* eslint-disable */
       return (
+        <ImageItem 
+          key={`img-${i + 1}`}>
         <img
-          key={`img-${i + 1}`}
           alt=""
           onClick={this.showHideImage(source)}
           src={source}
           style={{ cursor: 'pointer' }}
         />
+        </ImageItem>
       );
       /* eslint-enable */
     });
-    return <ImageHolder>{images}</ImageHolder>;
+    return <ImageHolder preview>{images}</ImageHolder>;
   };
 
   render() {

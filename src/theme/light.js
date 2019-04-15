@@ -154,7 +154,7 @@ const LightTheme = {
     invert: {
       textColor: primaryColor,
       background: primaryColor,
-      iconColor: primaryColor,
+      iconColor: tertiaryColor,
     },
   },
 
@@ -204,7 +204,7 @@ const LightTheme = {
 
   buttonDisabled: {
     textColor: tertiaryColor,
-    background: transparent,
+    background: white.base,
     border: tertiaryColor,
     iconColor: tertiaryColor,
     color: tertiaryColor,

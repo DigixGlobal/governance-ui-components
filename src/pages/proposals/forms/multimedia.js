@@ -28,6 +28,7 @@ class Multimedia extends React.Component {
       files: undefined,
       thumbnails: undefined,
       selectedImage: undefined,
+      uploadError: undefined,
     };
   }
 
@@ -73,6 +74,7 @@ class Multimedia extends React.Component {
     const {
       onChange,
       form: { proofs },
+      translations: { project },
     } = this.props;
     const { files: existingImages } = this.state;
     const { accept } = e.target;
@@ -94,12 +96,18 @@ class Multimedia extends React.Component {
       const files = existingImages ? [...existingImages] : [];
 
       Array.from(e.target.files).map(file => {
+        const fileSize = file.size / 1024 / 1024;
+        if (fileSize > 10) {
+          this.setState({ uploadError: project.uploadImageButtonHelpText });
+          return undefined;
+        }
         const reader = new FileReader();
         reader.onloadend = () => {
           const { result } = reader;
 
           if (supported.findIndex(item => item === file.type) === -1) {
             error = `Unsupported ${file.type} file type`;
+            this.setState({ uploadError: error });
             return error;
           }
 
@@ -153,6 +161,11 @@ class Multimedia extends React.Component {
   }
 
   renderImages = (proofs, existing) => {
+    const {
+      translations: {
+        common: { buttons },
+      },
+    } = this.props;
     if (!proofs || proofs.length === 0) return null;
     const images = proofs.map((img, i) => {
       let source;
@@ -182,9 +195,10 @@ class Multimedia extends React.Component {
             onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
           >
             <Icon kind="trash" />
+            {buttons.remove}
           </Delete>
           {/* eslint-disable*/}
-          <img alt="" onClick={this.showHideImage(source)} src={source} />
+          <img alt="" onClick={this.showHideImage(source)} src={{source, type: img.type}} />
           {/* eslint-enable */}
         </ImageItem>
       );
@@ -193,7 +207,7 @@ class Multimedia extends React.Component {
   };
 
   render() {
-    const { files, selectedImage } = this.state;
+    const { files, selectedImage, uploadError } = this.state;
     const { proofs, images: imageHash } = this.props.form;
     const {
       translations: { project, sidebar },
@@ -224,6 +238,7 @@ class Multimedia extends React.Component {
             <ImageHolder>
               {images && this.renderDocuments(images)}
               {imageHash && this.renderDocuments(files, true)}
+              {uploadError && <ErrorMessage>{uploadError}</ErrorMessage>}
             </ImageHolder>
           </MediaUploader>
         </FormItem>

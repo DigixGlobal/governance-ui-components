@@ -65,6 +65,11 @@
       "title": "Claim Funding",
       "txUiHeader": "Project",
       "message": "Your Claim Funding Transaction is pending confirmation. See More"
+    },
+    "addDocs": {
+      "title": "Add Updates",
+      "txUiHeader": "Project",
+      "message": "Your Add Updates Transaction is pending confirmation. See More"
     }
   }
 }

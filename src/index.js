@@ -20,6 +20,7 @@ import LandingPage from '@digix/gov-ui/pages';
 import Proposals from '@digix/gov-ui/pages/proposals';
 import CreateProposals from '@digix/gov-ui/pages/proposals/create';
 import EditProposal from '@digix/gov-ui/pages/proposals/edit';
+import AddDocuments from '@digix/gov-ui/pages/proposals/add-documents';
 import TransactionHistory from '@digix/gov-ui/pages/user/history';
 import Profile from '@digix/gov-ui/pages/user/profile';
 import Help from '@digix/gov-ui/pages/help';
@@ -67,6 +68,11 @@ export class Governance extends React.Component {
             <AuthenticatedRoute
               path="/proposals/edit/:id"
               component={withHeaderAndPanel(EditProposal)}
+              isAuthenticated={isAuthenticated}
+            />
+            <AuthenticatedRoute
+              path="/proposals/add-documents/:id"
+              component={withHeaderAndPanel(AddDocuments)}
               isAuthenticated={isAuthenticated}
             />
             <AuthenticatedRoute

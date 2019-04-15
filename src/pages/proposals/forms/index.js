@@ -27,8 +27,6 @@ import Multimedia from '@digix/gov-ui/pages/proposals/forms/multimedia';
 import Overview from '@digix/gov-ui/pages/proposals/forms/overview';
 import Preview from '@digix/gov-ui/pages/proposals/forms/preview';
 
-// TODO: UPLOAD DOCS - Uncomment the next line to Preview
-// import Documents from '@digix/gov-ui/pages/proposals/forms/documents';
 import Spinner from '@digix/gov-ui/components/common/blocks/loader/spinner';
 
 import {
@@ -532,8 +530,7 @@ class ProposalForms extends React.Component {
           <Heading>{project.basicProjectInformation}</Heading>
           {this._renderNavButtons()}
         </Header>
-        {/* TODO: UPLOAD DOCS - Uncomment the next line to Preview */}
-        {/* <Documents /> */}
+
         {this._renderStep()}
       </CreateWrapper>
     );

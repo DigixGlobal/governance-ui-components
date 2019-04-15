@@ -274,7 +274,7 @@ class Documents extends React.Component {
 
     return (
       <ImageItem>
-        <CloseButton kind="text" onClick={this.handleRemove(index)}>
+        <CloseButton kind="text" data-digix="REMOVE-BUTTON" onClick={this.handleRemove(index)}>
           <Icon kind="trash" /> {buttons.remove}
         </CloseButton>
         {!document.type && null}
@@ -283,12 +283,14 @@ class Documents extends React.Component {
           // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
           <img
             src={document.base64}
+            data-digix={`document-${index}`}
             onClick={this.showHideImage({ source: document.base64, type: document.type })}
           />
         )}
         {document.type && document.type === 'pdf' && (
           <PDFViewer
             file={document.base64}
+            data-digix={`document-${index}`}
             onClick={this.showHideImage({ source: document.base64, type: document.type })}
           />
         )}
@@ -316,6 +318,7 @@ class Documents extends React.Component {
               large
               id={`image-upload-${index}`}
               type="file"
+              data-digix="UPLOAD-ADDITIONAL-DOCUMENT"
               caption={project.uploadDocument}
               onChange={this.handleUpload(index)}
             >
@@ -346,7 +349,12 @@ class Documents extends React.Component {
     if (uploading) return <Spinner translations={this.props.translations} />;
     return (
       <Fragment>
-        <Button kind="text" underline onClick={this.handleBackToProject}>
+        <Button
+          kind="text"
+          data-digix="BACK-TO-PROJECT"
+          underline
+          onClick={this.handleBackToProject}
+        >
           {proposalErrors.returnToProject}
         </Button>
         <p>&nbsp;</p>
@@ -354,7 +362,12 @@ class Documents extends React.Component {
         <Header>
           <Heading>{buttons.addUpdates || 'Add Updates'}</Heading>
           <CallToAction>
-            <Button primary disabled={!hasDocs} onClick={this.handleSubmit}>
+            <Button
+              primary
+              disabled={!hasDocs}
+              data-digix="CONFIRM-ADD-MORE-DOCS"
+              onClick={this.handleSubmit}
+            >
               {buttons.add || 'Add'}
             </Button>
           </CallToAction>
@@ -364,7 +377,7 @@ class Documents extends React.Component {
           {this.renderUploadForm()}
           <FormItem>
             <Centered>
-              <AddMoreButton kind="text" onClick={this.handleAddMore}>
+              <AddMoreButton kind="text" data-digix="ADD-MORE-DOCS" onClick={this.handleAddMore}>
                 <Icon kind="plus" />
                 {buttons.addMmore || 'Add More'}
               </AddMoreButton>
@@ -380,7 +393,7 @@ class Documents extends React.Component {
                 ) : (
                   <PDFViewer file={selectedImage.source} />
                 )}
-                <Button kind="round" onClick={this.showHideImage()}>
+                <Button kind="round" data-digix="CLOSE-IMAGE-MODAL" onClick={this.showHideImage()}>
                   {sidebar.close}
                 </Button>
               </Fragment>

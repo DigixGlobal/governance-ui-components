@@ -198,7 +198,7 @@ class Multimedia extends React.Component {
             <Icon kind="trash" /> {buttons.remove}
           </CloseButton>
           {/* eslint-disable*/}
-          <img alt="" onClick={this.showHideImage(source)} src={{source, type: img.type}} />
+          <img alt="" onClick={this.showHideImage(source)} src={source} />
           {/* eslint-enable */}
         </ImageItem>
       );

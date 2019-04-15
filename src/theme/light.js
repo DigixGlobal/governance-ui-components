@@ -154,7 +154,7 @@ const LightTheme = {
     invert: {
       textColor: primaryColor,
       background: primaryColor,
-      iconColor: primaryColor,
+      iconColor: tertiaryColor,
     },
   },
 
@@ -179,6 +179,7 @@ const LightTheme = {
     invert: {
       textColor: white,
       background: primaryColor,
+      border: primaryColor,
     },
   },
 
@@ -195,16 +196,17 @@ const LightTheme = {
     },
   },
 
-  buttonInverted: {
-    textColor: primaryColor,
-    background: white,
-    border: primaryColor,
-    iconColor: primaryColor,
-  },
+  // TODO: To be deleted once regression testing is done
+  // buttonInverted: {
+  //   textColor: primaryColor,
+  //   background: white,
+  //   border: primaryColor,
+  //   iconColor: primaryColor,
+  // },
 
   buttonDisabled: {
     textColor: tertiaryColor,
-    background: transparent,
+    background: white.base,
     border: tertiaryColor,
     iconColor: tertiaryColor,
     color: tertiaryColor,

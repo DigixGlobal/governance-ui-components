@@ -2,7 +2,8 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import PDF from 'react-pdf-js';
 
-import { CloseButton } from '@digix/gov-ui/pages/proposals/forms/style';
+import { Icon } from '@digix/gov-ui/components/common/elements/index';
+import { Next, Previous } from '@digix/gov-ui/pages/proposals/forms/style';
 
 export default class PdfViewer extends React.PureComponent {
   static propTypes = {
@@ -37,19 +38,19 @@ export default class PdfViewer extends React.PureComponent {
 
     return (
       <Fragment>
-        <CloseButton disabled={page === 1} kind="text" onClick={this.handlePrevious}>
-          Previous
-        </CloseButton>
-        <CloseButton disabled={page === pages} kind="text" onClick={this.handleNext}>
-          Next
-        </CloseButton>
+        <Previous disabled={page === 1} onClick={this.handlePrevious}>
+          <Icon kind="arrow" />
+        </Previous>
+        <Next disabled={page === pages} onClick={this.handleNext}>
+          <Icon kind="arrow" />
+        </Next>
       </Fragment>
     );
   };
 
   render() {
     return (
-      <div>
+      <Fragment>
         <PDF
           file={this.props.file}
           onDocumentComplete={this.onDocumentComplete}
@@ -58,7 +59,7 @@ export default class PdfViewer extends React.PureComponent {
           fillWidth={1024}
         />
         {this.renderPagination()}
-      </div>
+      </Fragment>
     );
   }
 }

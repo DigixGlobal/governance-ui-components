@@ -17,6 +17,7 @@ import {
   ImageHolder,
   CloseButton,
   ErrorMessage,
+  Delete,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
@@ -179,8 +180,8 @@ class Multimedia extends React.Component {
 
       if (img.type === 'pdf')
         return (
-          <ImageItem key={`img-${i + 1}`}>
-            <CloseButton
+          <ImageItem removeOption key={`img-${i + 1}`}>
+            <Delete
               kind="text"
               onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
             >
@@ -190,8 +191,8 @@ class Multimedia extends React.Component {
           </ImageItem>
         );
       return (
-        <ImageItem key={`img-${i + 1}`}>
-          <CloseButton
+        <ImageItem removeOption key={`img-${i + 1}`}>
+          <Delete
             kind="text"
             onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
           >

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 
-import { ProposalStages, EMPTH_HASH_LONG } from '@digix/gov-ui/constants';
+import { ProposalStages, EMPTY_HASH_LONG } from '@digix/gov-ui/constants';
 
 class AddDocumentsButton extends React.PureComponent {
   redirectToAddDocuments = () => {
@@ -29,7 +29,7 @@ class AddDocumentsButton extends React.PureComponent {
     if (
       stage !== ProposalStages.archived &&
       isProposer &&
-      proposal.finalVersionIpfsDoc !== EMPTH_HASH_LONG
+      proposal.finalVersionIpfsDoc !== EMPTY_HASH_LONG
     ) {
       return (
         <div>

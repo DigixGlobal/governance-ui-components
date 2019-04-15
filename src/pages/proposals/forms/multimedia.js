@@ -15,7 +15,6 @@ import {
   MediaUploader,
   ImageItem,
   ImageHolder,
-  CloseButton,
   ErrorMessage,
   Delete,
 } from '@digix/gov-ui/pages/proposals/forms/style';
@@ -186,7 +185,7 @@ class Multimedia extends React.Component {
               onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
             >
               <Icon kind="trash" /> {buttons.remove}
-            </CloseButton>
+            </Delete>
             <PDFViewer file={source} />
           </ImageItem>
         );
@@ -197,7 +196,7 @@ class Multimedia extends React.Component {
             onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
           >
             <Icon kind="trash" /> {buttons.remove}
-          </CloseButton>
+          </Delete>
           {/* eslint-disable*/}
           <img alt="" onClick={this.showHideImage(source)} src={source} />
           {/* eslint-enable */}

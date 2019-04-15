@@ -39,7 +39,7 @@ import {
   MediaUploader,
   ImageItem,
   ImageHolder,
-  CloseButton,
+  Delete,
   AddMoreButton,
   Note,
   ErrorMessage,
@@ -274,9 +274,9 @@ class Documents extends React.Component {
 
     return (
       <ImageItem>
-        <CloseButton kind="text" data-digix="REMOVE-BUTTON" onClick={this.handleRemove(index)}>
+        <Delete kind="text" data-digix="REMOVE-BUTTON" onClick={this.handleRemove(index)}>
           <Icon kind="trash" /> {buttons.remove}
-        </CloseButton>
+        </Delete>
         {!document.type && null}
         {document.type && document.type === 'image' && (
           // eslint-disable-next-line jsx-a11y/click-events-have-key-events

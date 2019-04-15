@@ -31,10 +31,9 @@ class ProfileActivitySummary extends React.Component {
   }
 
   getKycStatus() {
-    // TODO: translate for other languages
     const { kyc } = this.props.userData;
     if (kyc && kyc.status) {
-      return kyc.status.charAt(0) + kyc.status.slice(1).toLowerCase();
+      return kyc.status;
     }
 
     return this.DEFAULT_KYC_STATUS;
@@ -67,7 +66,7 @@ class ProfileActivitySummary extends React.Component {
     const { refetchUser, translations } = this.props;
 
     this.props.showRightPanel({
-      component: <KycOverlay refetchUser={refetchUser} translations={translations} />,
+      component: <KycOverlay refetchUser={refetchUser} translations={translations.kyc} />,
       large: true,
       show: true,
     });

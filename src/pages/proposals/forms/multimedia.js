@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Modal from 'react-responsive-modal';
 
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
+import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 
 import { dijixImageConfig, dijixPdfConfig, dijix } from '@digix/gov-ui/utils/dijix';
 
@@ -32,7 +33,10 @@ class Multimedia extends React.Component {
 
   componentDidMount = () => {
     const { images } = this.props.form;
-    if (images) fetchImages(images).then(files => this.setState({ files }));
+    if (images)
+      fetchImages(images).then(files => {
+        this.setState({ files });
+      });
   };
 
   showHideImage = source => () => {
@@ -66,7 +70,11 @@ class Multimedia extends React.Component {
   };
 
   handleUpload = e => {
-    const { onChange } = this.props;
+    const {
+      onChange,
+      form: { proofs },
+    } = this.props;
+    const { files: existingImages } = this.state;
     const { accept } = e.target;
     const supported = [];
     let error;
@@ -82,7 +90,9 @@ class Multimedia extends React.Component {
     if (e.target.files.length > 0) {
       const proofsArray = [];
       const thumbs = [];
-      const files = [];
+
+      const files = existingImages ? [...existingImages] : [];
+
       Array.from(e.target.files).map(file => {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -97,6 +107,7 @@ class Multimedia extends React.Component {
             thumbs.push({
               fileType: file.type,
               src: result,
+              base64: result,
               name: file.name,
               index: thumbs.length > 0 ? thumbs.length - 1 : 0,
             });
@@ -104,6 +115,7 @@ class Multimedia extends React.Component {
             proofsArray.push({
               type: 'image',
               src: result.toString(),
+              base64: result,
               index: proofsArray.length > 0 ? proofsArray.length - 1 : 0,
               embed: 'imageKey',
               ...dijixImageConfig,
@@ -115,6 +127,8 @@ class Multimedia extends React.Component {
             proofsArray.push({
               type: 'pdf',
               src: file,
+              base64: result,
+              name: file.name,
               index: proofsArray.length > 0 ? proofsArray.length - 1 : 0,
               embed: 'pdfKey',
               ...dijixPdfConfig,
@@ -122,11 +136,12 @@ class Multimedia extends React.Component {
           }
 
           if (onChange) {
-            onChange('proofs', proofsArray);
+            onChange('proofs', proofs ? proofs.concat(proofsArray) : proofsArray);
           }
         };
         reader.readAsDataURL(file);
-        return this.setState({ thumbnails: thumbs });
+
+        return this.setState({ thumbnails: thumbs, files });
       });
     }
   };
@@ -140,13 +155,26 @@ class Multimedia extends React.Component {
   renderImages = (proofs, existing) => {
     if (!proofs || proofs.length === 0) return null;
     const images = proofs.map((img, i) => {
-      let source = img.thumbnail;
+      let source;
 
-      if (!source && img.src) {
-        source = img.src;
-      } else if (source) {
+      if (!source && !img.base64 && img.src) {
         source = `${dijix.config.httpEndpoint}/${img.src}`;
+      } else if (!source && img.base64) {
+        source = img.base64;
       }
+
+      if (img.type === 'pdf')
+        return (
+          <ImageItem key={`img-${i + 1}`}>
+            <CloseButton
+              kind="text"
+              onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
+            >
+              <Icon kind="trash" /> Remove
+            </CloseButton>
+            <PDFViewer file={source} />
+          </ImageItem>
+        );
       return (
         <ImageItem key={`img-${i + 1}`}>
           <CloseButton
@@ -165,12 +193,12 @@ class Multimedia extends React.Component {
   };
 
   render() {
-    const { thumbnails, files, selectedImage } = this.state;
+    const { files, selectedImage } = this.state;
     const { proofs, images: imageHash } = this.props.form;
     const {
       translations: { project, sidebar },
     } = this.props;
-    const images = thumbnails || proofs;
+    const images = proofs;
     return (
       <Fieldset>
         <FormItem>
@@ -179,7 +207,7 @@ class Multimedia extends React.Component {
             <div>
               <Button
                 kind="upload"
-                accept="image/*"
+                accept="image/*,.pdf"
                 primary
                 fluid
                 large

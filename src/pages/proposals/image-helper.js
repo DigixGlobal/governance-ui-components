@@ -10,10 +10,19 @@ export const fetchImages = proofs => {
     })
   ).then(images => {
     if (!images[0]) return undefined;
-    const files = images.map(image => ({
-      thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
-      src: image ? image.data.src : undefined,
-    }));
+    const files = images.map(image => {
+      if (image.type === 'pdf') {
+        return {
+          src: image.data.src,
+          type: image.type,
+        };
+      }
+      return {
+        thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
+        src: image ? image.data.src : undefined,
+        type: image.type,
+      };
+    });
     return files;
   });
 };

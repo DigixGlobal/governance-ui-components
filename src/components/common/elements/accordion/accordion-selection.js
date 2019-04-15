@@ -1,4 +1,5 @@
 import React from 'react';
+import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
 import Icons from '@digix/gov-ui/components/common/elements/icons/Icons';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
@@ -53,7 +54,11 @@ export default class AccordionSelection extends React.Component {
             </ChevronContainer>
           </Funding>
         </Header>
-        {isOpen && <Content>{children}</Content>}
+        {isOpen && (
+          <Content>
+            <Markdown source={children} escapeHtml={false} />
+          </Content>
+        )}
       </AccordionItem>
     );
   }

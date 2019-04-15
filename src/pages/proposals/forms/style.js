@@ -209,6 +209,16 @@ export const EditorContainer = styled.div`
     height: 20rem;
   }
 
+  & .ql-toolbar.ql-snow {
+    border-top-left-radius: ${props => props.theme.borderRadius};
+    border-top-right-radius: ${props => props.theme.borderRadius};
+  }
+
+  & .ql-container.ql-snow {
+    border-bottom-left-radius: ${props => props.theme.borderRadius};
+    border-bottom-right-radius: ${props => props.theme.borderRadius};
+  }
+
   ${props =>
     props.error &&
     css`

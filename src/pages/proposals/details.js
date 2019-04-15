@@ -81,12 +81,14 @@ export default class ProjectDetails extends React.Component {
     const { selectedImage } = this.state;
 
     const hasImages = project.images && project.images.length > 0;
+    const description = project.description || project.noShortDescription;
+
     return (
       <DetailsContainer>
         <Content>
           <SubTitle>{trans.shortDescription}</SubTitle>
           <div data-digix="Details-Short-Desc">
-            {project.description ? project.description : project.noShortDescription}
+            <ReactMarkdown source={description} escapeHtml={false} />
           </div>
           <HR />
         </Content>

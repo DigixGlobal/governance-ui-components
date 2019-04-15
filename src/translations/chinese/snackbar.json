@@ -65,6 +65,11 @@
       "title": "申请募资",
       "txUiHeader": "项目",
       "message": "您的申请募资请求确认中. 更多"
+    },
+    "addDocs": {
+      "title": "Add Updates",
+      "txUiHeader": "Project",
+      "message": "Your Add Updates Transaction is pending confirmation. See More"
     }
   }
 }

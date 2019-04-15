@@ -12,6 +12,8 @@
   "uploadImages": "Upload Project Images",
   "uploadImageButton": "Select Images to Upload",
   "uploadImageButtonHelpText": "Image must be in JPEG or PNG format & file size must be lesser than 10mb.",
+  "uploadDocument": "Upload Document",
+  "document": "Document",
   "rewardExpected": "Reward Expected",
   "rewardExpectedPlaceholder": "Insert the amount of reward expected in ETH for completion of project",
   "numberOfMilestones": "Number of Milestone(s)",

@@ -11,7 +11,7 @@ import Modal from 'react-responsive-modal';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
 
-import { Section, Title, Content, Heading, Media, LeftCol, RightCol, ImageHolder } from './style';
+import { Section, Title, Content, Heading, Media, ImageItem, ImageHolder } from './style';
 
 export default class MediaAssets extends React.PureComponent {
   constructor(props) {
@@ -40,17 +40,12 @@ export default class MediaAssets extends React.PureComponent {
   renderImages = (proofs, lastIndex) => {
     if (!proofs) return null;
     const images = proofs.map((img, i) => (
-      <div key={`img-${lastIndex ? lastIndex + i : i + 1}`}>
-        <Media>
-          <LeftCol>
-            <Heading>{`Image ${lastIndex ? lastIndex + i : i + 1}`}</Heading>
-          </LeftCol>
-          <RightCol>
-            <ImageHolder>
-              {/* eslint-disable */}
+      <ImageItem key={`img-${lastIndex ? lastIndex + i : i + 1}`}>
+        <Heading>{`Image ${lastIndex ? lastIndex + i : i + 1}`}</Heading>
+        {/* eslint-disable */}
               {
                 img.type === 'pdf' ?
-                <div><PDFViewer file={img.base64 ? img.base64 : `${dijix.config.httpEndpoint}/${img.src}`} /></div> :
+                <PDFViewer file={img.base64 ? img.base64 : `${dijix.config.httpEndpoint}/${img.src}`} /> :
                 <img
                   alt=""
                   onClick={this.showHideImage(img.src)}
@@ -62,11 +57,7 @@ export default class MediaAssets extends React.PureComponent {
                 />
               }
               {/* eslint-enable */}
-            </ImageHolder>
-          </RightCol>
-        </Media>
-        <HorizontalBar />
-      </div>
+      </ImageItem>
     ));
     return images;
   };
@@ -82,9 +73,12 @@ export default class MediaAssets extends React.PureComponent {
       <Section>
         <Title>{project.multimedia}</Title>
         <Content>
-          {form.proofs && this.renderImages(form.proofs)}
-          {form.images &&
-            this.renderImages(this.state.files, form.proofs ? form.proofs.length + 1 : 0)}
+          <ImageHolder>
+            {form.proofs && this.renderImages(form.proofs)}
+
+            {form.images &&
+              this.renderImages(this.state.files, form.proofs ? form.proofs.length + 1 : 0)}
+          </ImageHolder>
         </Content>
         <Modal open={this.state.open} onClose={this.showHideImage()}>
           <div>

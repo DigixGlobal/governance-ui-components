@@ -269,15 +269,41 @@ export const TrackActivity = styled.label`
 `;
 
 export const ImageHolder = styled.div`
-  border-radius: 3px;
+  border-radius: ${props => props.theme.borderRadius};
   min-width: 500px;
-  padding: 0rem;
-  overflow: auto;
-  & > img {
-    height: 30rem;
-    width: 33rem;
-    margin: 2rem 2rem 0 0;
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-flow: row wrap;
+
+  img {
+    height: auto;
+    width: 100%;
+    margin: 0 2rem 0 0;
   }
+`;
+
+export const ImageItem = styled.div`
+  flex: 0 1 calc(33% - 1rem);
+  margin-right: 1rem;
+  position: relative;
+  padding: 0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  canvas {
+    width: 100%;
+  }
+
+  ${media.tablet`
+      flex: 0 1 calc(50% - 1rem);
+  `}
+
+  ${media.mobile`
+    flex: 0 1 auto;
+  `}
 `;
 
 export const VotingResultWrapper = styled.div`

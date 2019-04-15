@@ -71,14 +71,14 @@ export const MediaUploader = styled(Card)`
   > div {
     &:first-child {
       margin-right: 2rem;
-      flex: 0 1 auto;
+      flex: 1 0 auto;
 
       ${media.tablet`
         width: 100%;
       `}
     }
     &:last-child {
-      flex: 1 0 0;
+      // flex: 1 0 0;
       margin-top: 5px;
 
       ${media.tablet`
@@ -96,8 +96,10 @@ export const ImageHolder = styled.div`
   width: 100%;
   min-height: 200px;
   padding: 0;
+  display: flex;
+  flex-flow: row wrap;
 
-  & > div > img {
+  img {
     height: auto;
     width: 100%;
     margin: 0;
@@ -105,10 +107,15 @@ export const ImageHolder = styled.div`
 `;
 
 export const ImageItem = styled.div`
+  flex: 0 1 calc(50% - 0.5rem);
+  margin-right: 1rem;
+  margin-bottom: 1rem;
   position: relative;
-  margin: 0;
   padding: 0;
-  border-bottom: 1px solid #fff;
+
+  &:nth-child(even) {
+    margin-right: 0;
+  }
 
   &:last-child {
     border-bottom: none;
@@ -117,6 +124,27 @@ export const ImageItem = styled.div`
   canvas {
     width: 100%;
   }
+
+  ${props =>
+    props.removeOption &&
+    css`
+      button {
+        &:first-child {
+          right: 1rem;
+        }
+        &:nth-of-type(2) {
+          right: 10rem;
+        }
+
+        &:nth-of-type(3) {
+          right: 5.5rem;
+        }
+      }
+    `}
+
+  ${media.mobile`
+    flex: 0 1 auto;
+  `}
 `;
 
 const ButtonStyles = css`
@@ -149,7 +177,7 @@ export const Delete = styled(Button)`
 
 export const Next = styled(Button)`
   ${ButtonStyles};
-  right: 5.5rem;
+  right: 1rem;
 
   div {
     transform: rotate(275deg);
@@ -158,7 +186,7 @@ export const Next = styled(Button)`
 
 export const Previous = styled(Button)`
   ${ButtonStyles};
-  right: 10rem;
+  right: 5.5rem;
 
   div {
     transform: rotate(90deg);

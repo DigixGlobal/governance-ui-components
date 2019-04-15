@@ -165,7 +165,7 @@ class Multimedia extends React.Component {
 
       if (img.type === 'pdf')
         return (
-          <ImageItem key={`img-${i + 1}`}>
+          <ImageItem removeOption key={`img-${i + 1}`}>
             <Delete
               kind="text"
               onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
@@ -176,7 +176,7 @@ class Multimedia extends React.Component {
           </ImageItem>
         );
       return (
-        <ImageItem key={`img-${i + 1}`}>
+        <ImageItem removeOption key={`img-${i + 1}`}>
           <Delete
             kind="text"
             onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}

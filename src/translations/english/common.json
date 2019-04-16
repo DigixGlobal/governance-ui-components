@@ -86,6 +86,9 @@
     "changeMyVote": "Change My Vote",
     "editFunding": "Edit Funding",
     "close": "Close",
-    "redeemBadge": "Redeem Badge"
+    "redeemBadge": "Redeem Badge",
+    "addUpdates": "Add Updates",
+    "add": "Add",
+    "addMore": "Add More"
   }
 }

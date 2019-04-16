@@ -86,6 +86,9 @@
     "changeMyVote": "改变我的投票",
     "editFunding": "编辑资金",
     "close": "关闭",
-    "redeemBadge": "换取徽章"
+    "redeemBadge": "换取徽章",
+    "addUpdates": "Add Updates",
+    "add": "Add",
+    "addMore": "Add More"
   }
 }

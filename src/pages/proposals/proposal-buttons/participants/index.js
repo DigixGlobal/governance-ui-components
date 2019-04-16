@@ -13,6 +13,7 @@ import ClaimResultsButton from '@digix/gov-ui/pages/proposals/proposal-buttons/c
 import MilestoneCompletedButton from '@digix/gov-ui/pages/proposals/proposal-buttons/milestone-completed';
 import ClaimFundingButton from '@digix/gov-ui/pages/proposals/proposal-buttons/claim-funding';
 import VoteCommitButton from '@digix/gov-ui/pages/proposals/proposal-buttons/vote-commit';
+import AddDocumentsButton from '@digix/gov-ui/pages/proposals/proposal-buttons/add-documents';
 import RevealButton from '@digix/gov-ui/pages/proposals/proposal-buttons/reveal-button';
 import EditFundingButton from '@digix/gov-ui/pages/proposals/proposal-buttons/edit-funding';
 import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
@@ -106,6 +107,16 @@ class ParticipantButtons extends React.Component {
           checkProposalRequirements={checkProposalRequirements}
           translations={buttonTranslations}
           txnTranslations={txnTranslations}
+        />
+        <AddDocumentsButton
+          stage={data.stage}
+          proposal={data}
+          history={history}
+          isProposer={isProposer}
+          checkProposalRequirements={checkProposalRequirements}
+          translations={this.props.translations}
+          match={this.props.match}
+          timeCreated={data.timeCreated}
         />
         <FinalizeButton
           endorser={data.endorser}

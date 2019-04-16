@@ -14,6 +14,7 @@ import ProposalFundings from '@digix/gov-ui/pages/proposals/fundings';
 import ProposalVersionNav from '@digix/gov-ui/pages/proposals/version-nav';
 import SpecialProjectDetails from '@digix/gov-ui/pages/proposals/special-project-details';
 import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
+import AdditionalDocs from '@digix/gov-ui/pages/proposals/additional-docs';
 import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
@@ -544,7 +545,7 @@ class Proposal extends React.Component {
           uintConfigs={proposalDetails.data.uintConfigs}
           translations={translations}
         />
-
+        <AdditionalDocs translations={translations} propsal={proposalDetails} />
         <CommentThread
           proposalId={this.PROPOSAL_ID}
           uid={addressDetails.data.address}
@@ -580,6 +581,7 @@ class Proposal extends React.Component {
     const liked = proposalLikes ? proposalLikes.liked : false;
     const likes = proposalLikes ? proposalLikes.likes : 0;
     const displayName = proposalLikes ? proposalLikes.user.displayName : '';
+    const hasMoreDocs = proposalVersion.moreDocs.length > 0;
 
     const {
       data: {
@@ -672,6 +674,7 @@ class Proposal extends React.Component {
         />
 
         <ProjectDetails project={dijixObject} translations={translations} />
+        {hasMoreDocs && <AdditionalDocs translations={translations} proposal={proposalDetails} />}
         <Milestones
           milestones={dijixObject.milestones || []}
           milestoneFundings={proposalVersion.milestoneFundings || []}

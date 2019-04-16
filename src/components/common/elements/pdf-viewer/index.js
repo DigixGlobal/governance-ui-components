@@ -13,7 +13,7 @@ export default class PdfViewer extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = { page: 0, pages: 0 };
+    this.state = { page: 1, pages: 0 };
   }
 
   onDocumentComplete = pages => {

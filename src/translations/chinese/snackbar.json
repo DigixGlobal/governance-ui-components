@@ -70,6 +70,11 @@
       "title": "Add Updates",
       "txUiHeader": "Project",
       "message": "Your Add Updates Transaction is pending confirmation. See More"
+    },
+    "continueParticipation": {
+      "title": "Continue Participation",
+      "txUiHeader": "User",
+      "message": "Your continuation of participation with current lock-up is pending confirmation. See More"
     }
   }
 }

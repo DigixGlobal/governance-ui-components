@@ -1,6 +1,7 @@
 import React from 'react';
 import Markdown from 'react-markdown';
 import multihash from '@digix/multi-hash';
+import util from 'ethereumjs-util';
 
 import { fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 import { KycStatus, UserStatus } from '@digix/gov-ui/constants';
@@ -136,3 +137,5 @@ export const injectTranslation = (translation, toInject, setDataDigix, dataDigix
 
   return <Markdown source={injected} escapeHtml={false} />;
 };
+
+export const getHash = toHash => util.sha256(toHash.toString()).toString('hex');

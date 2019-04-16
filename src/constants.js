@@ -114,3 +114,8 @@ export const KycErrors = {
     details: null,
   },
 };
+
+export const CONFIRM_PARTICIPATION_CACHE = {
+  key: 'DAO_PARTICIPATION',
+  value: 't7L6CuJ1pDqY0Cu5',
+};

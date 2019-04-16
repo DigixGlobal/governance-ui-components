@@ -103,6 +103,37 @@
       "note2": "您的钱包需要拥有少量ETH用以支付手续费.",
       "note3": "您不能交易已锁定的DGD，也不能查看已锁定DGD的余额.连接钱包之后，您只可以在此页面查看已锁定DGD的信息.",
       "note4": "您随时都可以锁定更多的DGD."
+    },
+    "common": {
+      "createErrors": {
+        "requiredwalletType": "请选择钱包类型.",
+        "requiredName": "请提供姓名",
+        "invalidNames": "您必须为钱包地址提供一个姓名.",
+        "invalidPassword": "密码与用户名不符."
+      }
+    },
+    "Json": {
+      "importInstructions": "点此加载文件.",
+      "importError": "不支持此Keystore类型."
+    },
+    "Metamask": {
+      "ConnectionError": {
+        "noMetamask": "无法连接到MetaMask钱包.确保您已登入MetaMask钱包."
+      }
+    },
+    "Ledger": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "获取地址中..."
+        }
+      }
+    },
+    "Trezor": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "获取地址中..."
+        }
+      }
     }
   }
 }

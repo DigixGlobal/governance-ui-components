@@ -11,7 +11,7 @@
   "projectInformation": "Project Information",
   "uploadImages": "Upload Project Images",
   "uploadImageButton": "Select Images to Upload",
-  "uploadImageButtonHelpText": "Image must be in JPEG or PNG format & file size must be lesser than 10mb.",
+  "uploadImageButtonHelpText": "Image must be in PDF, JPEG or PNG format & file size must be lesser than 10mb.",
   "uploadDocument": "Upload Document",
   "document": "Document",
   "updates": "Updates",

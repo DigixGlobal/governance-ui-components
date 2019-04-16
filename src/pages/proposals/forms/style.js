@@ -6,6 +6,7 @@ import {
   FieldsetStyle,
   Label as FormLabel,
   Card,
+  Notifications,
 } from '@digix/gov-ui/components/common/common-styles';
 
 export const CreateWrapper = styled.div``;
@@ -71,14 +72,14 @@ export const MediaUploader = styled(Card)`
   > div {
     &:first-child {
       margin-right: 2rem;
-      flex: 1 0 auto;
+      flex: 1 0 45%;
 
       ${media.tablet`
         width: 100%;
       `}
     }
     &:last-child {
-      // flex: 1 0 0;
+      flex: 0 1 auto;
       margin-top: 5px;
 
       ${media.tablet`
@@ -107,27 +108,37 @@ export const ImageHolder = styled.div`
 `;
 
 export const ImageItem = styled.div`
+  background: #fff;
+  border-bottom: 1px solid ${props => props.theme.card.border.lighter.toString()};
   flex: 0 1 calc(50% - 0.5rem);
   margin-right: 1rem;
   margin-bottom: 1rem;
   position: relative;
-  padding: 0;
+  padding: 1rem;
 
   &:nth-child(even) {
     margin-right: 0;
   }
 
   &:last-child {
-    border-bottom: none;
+    border-bottom: 0;
   }
 
   canvas {
     width: 100%;
   }
 
+  ${media.mobile`
+    flex: 0 1 auto;
+  `}
+
   ${props =>
-    props.removeOption &&
+    props.uploadForm &&
     css`
+      flex: 0 1 100%;
+      margin-right: 0;
+      margin-bottom: 0;
+
       button {
         &:first-child {
           right: 1rem;
@@ -141,10 +152,6 @@ export const ImageItem = styled.div`
         }
       }
     `}
-
-  ${media.mobile`
-    flex: 0 1 auto;
-  `}
 `;
 
 const ButtonStyles = css`
@@ -226,6 +233,14 @@ export const ErrorMessage = styled.span`
   font-size: 1.4rem;
 `;
 
+export const ErrorNotications = styled(Notifications)`
+  border: 0;
+  box-shadow: none;
+  color: ${props => props.theme.alertMessage.error.base.toString()};
+  font-size: 1.4rem;
+  padding: 1.5rem 2rem;
+`;
+
 export const AddMoreButton = styled(Button)`
   display: flex;
   flex-direction: column;
@@ -262,5 +277,6 @@ export const AddMoreButton = styled(Button)`
 `;
 
 export const Note = styled.div`
+  padding: 1.5rem 0;
   margin-bottom: 2rem;
 `;

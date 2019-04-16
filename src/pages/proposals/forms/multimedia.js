@@ -15,7 +15,8 @@ import {
   MediaUploader,
   ImageItem,
   ImageHolder,
-  ErrorMessage,
+  ErrorNotications,
+  Note,
   Delete,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
@@ -81,6 +82,8 @@ class Multimedia extends React.Component {
     const { accept } = e.target;
     const supported = [];
     let error;
+    this.setState({ uploadError: false });
+
     accept.split(',').forEach(item => {
       if (item === 'image/*') {
         supported.push('image/png');
@@ -162,11 +165,6 @@ class Multimedia extends React.Component {
   }
 
   renderImages = (proofs, existing) => {
-    const {
-      translations: {
-        common: { buttons },
-      },
-    } = this.props;
     if (!proofs || proofs.length === 0) return null;
     const images = proofs.map((img, i) => {
       let source;
@@ -179,23 +177,23 @@ class Multimedia extends React.Component {
 
       if (img.type === 'pdf')
         return (
-          <ImageItem removeOption key={`img-${i + 1}`}>
+          <ImageItem uploadForm key={`img-${i + 1}`}>
             <Delete
               kind="text"
               onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
             >
-              <Icon kind="trash" /> {buttons.remove}
+              <Icon kind="trash" />
             </Delete>
             <PDFViewer file={source} />
           </ImageItem>
         );
       return (
-        <ImageItem removeOption key={`img-${i + 1}`}>
+        <ImageItem uploadForm key={`img-${i + 1}`}>
           <Delete
             kind="text"
             onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
           >
-            <Icon kind="trash" /> {buttons.remove}
+            <Icon kind="trash" />
           </Delete>
           {/* eslint-disable*/}
           <img alt="" onClick={this.showHideImage(source)} src={source} />
@@ -230,15 +228,15 @@ class Multimedia extends React.Component {
                 onChange={this.handleUpload}
                 type="file"
                 caption={project.uploadImageButton}
-              >
-                <div>{project.uploadImageButtonHelpText}</div>
-              </Button>
+              />
+
+              {!uploadError && <Note>{project.uploadImageButtonHelpText}</Note>}
+              {uploadError && <ErrorNotications error>{uploadError}</ErrorNotications>}
             </div>
 
             <ImageHolder>
               {images && this.renderDocuments(images)}
               {imageHash && this.renderDocuments(files, true)}
-              {uploadError && <ErrorMessage>{uploadError}</ErrorMessage>}
             </ImageHolder>
           </MediaUploader>
         </FormItem>

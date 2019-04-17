@@ -82,6 +82,8 @@ class Documents extends React.Component {
     const { accept } = e.target;
     const supported = [];
     let error;
+    this.setState({ uploadError: false });
+
     accept.split(',').forEach(item => {
       if (item === 'image/*') {
         supported.push('image/png');

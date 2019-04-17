@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import Modal from 'react-responsive-modal';
 
-import Icon from '@digix/gov-ui/components/common/elements/icons';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { HR } from '@digix/gov-ui/components/common/common-styles';
 import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 import { dijix } from '@digix/gov-ui/utils/dijix';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
 
-import { DetailsContainer, Content, SubTitle, ImageHolder, ImageItem, CloseButton } from './style';
+import { DetailsContainer, Content, SubTitle, ImageHolder, ImageItem } from './style';
 
 export default class ProjectDetails extends React.Component {
   constructor(props) {
@@ -49,25 +49,16 @@ export default class ProjectDetails extends React.Component {
 
       if (img.type === 'pdf') {
         source = !preview ? `${dijix.config.httpEndpoint}/${img.src}` : img.base64;
-        return (
-          <ImageItem key={`img-${i + 1}`}>
-            <PDFViewer file={source} />
-          </ImageItem>
-        );
       }
-      /* eslint-disable */
       return (
-        <ImageItem 
-          key={`img-${i + 1}`}>
-        <img
-          alt=""
-          onClick={this.showHideImage(source)}
-          src={source}
-          style={{ cursor: 'pointer' }}
-        />
+        <ImageItem
+          key={`img-${i + 1}`}
+          onClick={this.showHideImage({ src: source, type: img.type })}
+        >
+          {img.type === 'pdf' && <PDFViewer file={source} />}
+          {img.type === 'image' && <img alt="" src={source} style={{ cursor: 'pointer' }} />}
         </ImageItem>
       );
-      /* eslint-enable */
     });
     return <ImageHolder preview>{images}</ImageHolder>;
   };
@@ -76,7 +67,7 @@ export default class ProjectDetails extends React.Component {
     const {
       project,
       preview,
-      translations: { project: trans },
+      translations: { project: trans, sidebar },
     } = this.props;
     const { selectedImage } = this.state;
 
@@ -108,10 +99,17 @@ export default class ProjectDetails extends React.Component {
             modal: { maxWidth: '60%', width: '100%' },
           }}
         >
-          <img alt="" style={{ width: '100%' }} src={selectedImage} />
-          <CloseButton onClick={this.showHideImage()} style={{ boxShadow: 'none' }}>
-            <Icon kind="close" style={{ marginRight: 0 }} />
-          </CloseButton>
+          <div>
+            {selectedImage && selectedImage.type === 'image' && (
+              <img alt="" style={{ width: '100%' }} src={selectedImage.src} />
+            )}
+            {selectedImage && selectedImage.type === 'pdf' && (
+              <PDFViewer file={selectedImage.src} />
+            )}
+            <Button kind="round" onClick={this.showHideImage()}>
+              {sidebar.close}
+            </Button>
+          </div>
         </Modal>
       </DetailsContainer>
     );

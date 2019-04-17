@@ -15,7 +15,7 @@ import {
   MediaUploader,
   ImageItem,
   ImageHolder,
-  ErrorNotications,
+  ErrorNotifications,
   Note,
   Delete,
 } from '@digix/gov-ui/pages/proposals/forms/style';
@@ -231,7 +231,7 @@ class Multimedia extends React.Component {
               />
 
               {!uploadError && <Note>{project.uploadImageButtonHelpText}</Note>}
-              {uploadError && <ErrorNotications error>{uploadError}</ErrorNotications>}
+              {uploadError && <ErrorNotifications error>{uploadError}</ErrorNotifications>}
             </div>
 
             <ImageHolder>

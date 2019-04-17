@@ -39,10 +39,10 @@ import {
   MediaUploader,
   ImageItem,
   ImageHolder,
+  ErrorNotifications,
   Delete,
   AddMoreButton,
   Note,
-  ErrorMessage,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
@@ -264,18 +264,12 @@ class Documents extends React.Component {
   };
 
   renderDocuments = (document, index) => {
-    const {
-      translations: {
-        common: { buttons },
-      },
-    } = this.props;
-
     if (!document) return null;
 
     return (
-      <ImageItem>
+      <ImageItem addUpdates>
         <Delete kind="text" data-digix="REMOVE-BUTTON" onClick={this.handleRemove(index)}>
-          <Icon kind="trash" /> {buttons.remove}
+          <Icon kind="trash" />
         </Delete>
         {!document.type && null}
         {document.type && document.type === 'image' && (
@@ -284,14 +278,20 @@ class Documents extends React.Component {
           <img
             src={document.base64}
             data-digix={`document-${index}`}
-            onClick={this.showHideImage({ source: document.base64, type: document.type })}
+            onClick={this.showHideImage({
+              source: document.base64,
+              type: document.type,
+            })}
           />
         )}
         {document.type && document.type === 'pdf' && (
           <PDFViewer
             file={document.base64}
             data-digix={`document-${index}`}
-            onClick={this.showHideImage({ source: document.base64, type: document.type })}
+            onClick={this.showHideImage({
+              source: document.base64,
+              type: document.type,
+            })}
           />
         )}
       </ImageItem>
@@ -321,15 +321,12 @@ class Documents extends React.Component {
               data-digix="UPLOAD-ADDITIONAL-DOCUMENT"
               caption={project.uploadDocument}
               onChange={this.handleUpload(index)}
-            >
-              <Note>{project.uploadImageButtonHelpText}</Note>
-            </Button>
+            />
+            {!uploadError && <Note>{project.uploadImageButtonHelpText}</Note>}
+            {uploadError && <ErrorNotifications error>{uploadError}</ErrorNotifications>}
           </div>
 
-          <ImageHolder>
-            {this.renderDocuments(documents[index], index)}
-            {uploadError && <ErrorMessage>{uploadError}</ErrorMessage>}
-          </ImageHolder>
+          <ImageHolder>{this.renderDocuments(documents[index], index)}</ImageHolder>
         </MediaUploader>
       </FormItem>
     ));

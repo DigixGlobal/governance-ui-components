@@ -95,7 +95,7 @@ export const ImageHolder = styled.div`
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   width: 100%;
-  min-height: 200px;
+  min-height: 150px;
   padding: 0;
   display: flex;
   flex-flow: row wrap;
@@ -129,7 +129,7 @@ export const ImageItem = styled.div`
   }
 
   ${media.mobile`
-    flex: 0 1 auto;
+    flex: 0 1 100%;
   `}
 
   ${props =>
@@ -152,6 +152,36 @@ export const ImageItem = styled.div`
         }
       }
     `}
+
+    ${props =>
+      props.addUpdates &&
+      css`
+        flex: 0 1 100%;
+        margin-right: 0;
+        margin-bottom: 0;
+
+        button {
+          &:first-child {
+            right: -5.5rem;
+            top: -6rem;
+
+            ${media.tablet`
+              top: -18rem; 
+            `}
+
+            ${media.mobile`
+              top: -20rem; 
+            `}
+          }
+          &:nth-of-type(2) {
+            right: 5.5rem;
+          }
+
+          &:nth-of-type(3) {
+            right: 1rem;
+          }
+        }
+      `}
 `;
 
 const ButtonStyles = css`
@@ -233,12 +263,13 @@ export const ErrorMessage = styled.span`
   font-size: 1.4rem;
 `;
 
-export const ErrorNotications = styled(Notifications)`
+export const ErrorNotifications = styled(Notifications)`
   border: 0;
   box-shadow: none;
   color: ${props => props.theme.alertMessage.error.base.toString()};
   font-size: 1.4rem;
   padding: 1.5rem 2rem;
+  margin-bottom: 0;
 `;
 
 export const AddMoreButton = styled(Button)`
@@ -278,5 +309,5 @@ export const AddMoreButton = styled(Button)`
 
 export const Note = styled.div`
   padding: 1.5rem 0;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 `;

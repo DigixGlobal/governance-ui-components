@@ -270,7 +270,6 @@ export const TrackActivity = styled.label`
 
 export const ImageHolder = styled.div`
   border-radius: ${props => props.theme.borderRadius};
-  min-width: 500px;
   width: 100%;
   padding: 0;
   display: flex;
@@ -284,7 +283,7 @@ export const ImageHolder = styled.div`
 `;
 
 export const ImageItem = styled.div`
-  flex: 0 1 calc(33% - 1rem);
+  flex: 0 1 calc(25% - 1rem);
   margin-right: 1rem;
   position: relative;
   padding: 0;

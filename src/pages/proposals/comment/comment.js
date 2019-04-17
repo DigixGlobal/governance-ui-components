@@ -194,6 +194,7 @@ class Comment extends React.Component {
     const isHidden = isForumAdmin && isBanned;
     const showActionBar = !isDeleted && (isForumAdmin || !isHidden);
     const commentMessage = isDeleted ? this.DELETE_MESSAGE : body;
+    const { canComment } = currentUser || { canComment: false };
 
     return (
       <CommentListItem>
@@ -207,7 +208,7 @@ class Comment extends React.Component {
           <Content>
             <Markdown source={commentMessage} escapeHtml={false} />
           </Content>
-          {showActionBar && (
+          {showActionBar && canComment && (
             <ActionBar>
               {this.renderActionBar()}
               {this.renderForumAdminActionBar()}

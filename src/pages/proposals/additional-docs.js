@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
-import { Content, SubTitle } from '@digix/gov-ui/pages/proposals/style';
 import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 import { dijix } from '@digix/gov-ui/utils/dijix';
+import { Content, SubTitle, ImageHolder, ImageItem } from '@digix/gov-ui/pages/proposals/style';
 
 export default class AdditionalDocs extends React.PureComponent {
   constructor(props) {
@@ -57,16 +57,27 @@ export default class AdditionalDocs extends React.PureComponent {
     return (
       <Content>
         <SubTitle>{project.updates || 'Updates'}</SubTitle>
-        {files.map(data =>
-          data.file.map((f, i) => {
-            const source = `${dijix.config.httpEndpoint}/${f.src}`;
-            if (f.type === 'image') {
-              return <img src={source} alt="" key={`img-${i + 1}`} />;
-            } else if (f.type === 'pdf') return <PDFViewer file={source} key={`pdf-${i + 1}`} />;
+        <ImageHolder>
+          {files.map(data =>
+            data.file.map((f, i) => {
+              const source = `${dijix.config.httpEndpoint}/${f.src}`;
+              if (f.type === 'image') {
+                return (
+                  <ImageItem key={`img-${i + 1}`}>
+                    <img src={source} alt="" />
+                  </ImageItem>
+                );
+              } else if (f.type === 'pdf')
+                return (
+                  <ImageItem key={`pdf-${i + 1}`}>
+                    <PDFViewer file={source} />
+                  </ImageItem>
+                );
 
-            return null;
-          })
-        )}
+              return null;
+            })
+          )}
+        </ImageHolder>
       </Content>
     );
   }

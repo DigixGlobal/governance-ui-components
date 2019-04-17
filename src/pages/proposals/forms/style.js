@@ -161,6 +161,8 @@ export const ImageItem = styled.div`
         margin-bottom: 0;
 
         button {
+          border-radius: 50%;
+
           &:first-child {
             right: -5.5rem;
             top: -6rem;

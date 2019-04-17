@@ -4,7 +4,8 @@
     "main": "Main Phase"
   },
   "errors": {
-    "fieldIsRequired": "This field is required."
+    "fieldIsRequired": "This field is required.",
+    "invalidLink": "Invalid link. Hyperlinks may only begin with **http://** or **https://** or **mailto:**"
   },
   "projectStatus": {
     "all": "All",

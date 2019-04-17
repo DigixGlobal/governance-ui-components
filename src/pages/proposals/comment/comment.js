@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Markdown from 'react-markdown';
 import { connect } from 'react-redux';
 
 import CommentAuthor from '@digix/gov-ui/pages/proposals/comment/author';
@@ -185,7 +186,9 @@ class Comment extends React.Component {
           translations={translations}
         />
         <CommentPost isHidden={isHidden} deleted={isDeleted}>
-          <Content>{commentMessage}</Content>
+          <Content>
+            <Markdown source={commentMessage} escapeHtml={false} />
+          </Content>
           {showActionBar && (
             <ActionBar>
               {this.renderActionBar()}

@@ -139,3 +139,28 @@ export const injectTranslation = (translation, toInject, setDataDigix, dataDigix
 };
 
 export const getHash = toHash => util.sha256(toHash.toString()).toString('hex');
+
+export const hasInvalidLink = text => {
+  const EMPTY_HTML = /^((<p>)((<br>)*|(\s*)|)*(<\/p>))*$/;
+  if (!text || text === '' || EMPTY_HTML.test(text)) {
+    return false;
+  }
+
+  const links = text.split('a href="');
+  if (links.length < 2) {
+    return false;
+  }
+
+  for (let i = 1; i < links.length; i += 1) {
+    const link = links[i];
+    const isHttp = link.startsWith('http://');
+    const isHttps = link.startsWith('https://');
+    const isEmail = link.startsWith('mailto:');
+
+    if (!isHttp && !isHttps && !isEmail) {
+      return true;
+    }
+  }
+
+  return false;
+};

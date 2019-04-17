@@ -182,7 +182,7 @@ RedeemBadgeButton.propTypes = {
   history: object.isRequired,
   getAddressDetails: func.isRequired,
   showRightPanel: func.isRequired,
-  translations: func.isRequired,
+  translations: object.isRequired,
   txnTranslations: object.isRequired,
 };
 

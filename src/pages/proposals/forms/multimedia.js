@@ -177,7 +177,11 @@ class Multimedia extends React.Component {
 
       if (img.type === 'pdf')
         return (
-          <ImageItem uploadForm key={`img-${i + 1}`}>
+          <ImageItem
+            uploadForm
+            key={`img-${i + 1}`}
+            onClick={this.showHideImage({ src: source, type: img.type })}
+          >
             <Delete
               kind="text"
               onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
@@ -196,7 +200,7 @@ class Multimedia extends React.Component {
             <Icon kind="trash" />
           </Delete>
           {/* eslint-disable*/}
-          <img alt="" onClick={this.showHideImage(source)} src={source} />
+          <img alt="" onClick={this.showHideImage({ src: source, type: img.type })} src={source} />
           {/* eslint-enable */}
         </ImageItem>
       );
@@ -240,9 +244,18 @@ class Multimedia extends React.Component {
             </ImageHolder>
           </MediaUploader>
         </FormItem>
-        <Modal open={this.state.open} onClose={this.showHideImage()}>
+        <Modal
+          open={this.state.open}
+          onClose={this.showHideImage()}
+          showCloseIcon={selectedImage && selectedImage.type !== 'pdf'}
+        >
           <div>
-            <img alt="" style={{ width: '100%' }} src={selectedImage} />
+            {selectedImage && selectedImage.type === 'image' && (
+              <img alt="" style={{ width: '100%' }} src={selectedImage.src} />
+            )}
+            {selectedImage && selectedImage.type === 'pdf' && (
+              <PDFViewer file={selectedImage.src} />
+            )}
             <Button kind="round" onClick={this.showHideImage()}>
               {sidebar.close}
             </Button>

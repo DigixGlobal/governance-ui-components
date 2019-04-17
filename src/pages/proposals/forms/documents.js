@@ -177,7 +177,6 @@ class Documents extends React.Component {
   }
 
   showHideImage = source => () => {
-    console.log({ source });
     this.setState({ open: !this.state.open, selectedImage: source });
   };
 
@@ -269,7 +268,14 @@ class Documents extends React.Component {
     if (!document) return null;
 
     return (
-      <ImageItem addUpdates>
+      <ImageItem
+        addUpdates
+        style={{ cursor: 'pointer' }}
+        onClick={this.showHideImage({
+          source: document.base64,
+          type: document.type,
+        })}
+      >
         <Delete kind="text" data-digix="REMOVE-BUTTON" onClick={this.handleRemove(index)}>
           <Icon kind="trash" />
         </Delete>
@@ -277,24 +283,10 @@ class Documents extends React.Component {
         {document.type && document.type === 'image' && (
           // eslint-disable-next-line jsx-a11y/click-events-have-key-events
           // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-          <img
-            src={document.base64}
-            data-digix={`document-${index}`}
-            onClick={this.showHideImage({
-              source: document.base64,
-              type: document.type,
-            })}
-          />
+          <img src={document.base64} data-digix={`document-${index}`} />
         )}
         {document.type && document.type === 'pdf' && (
-          <PDFViewer
-            file={document.base64}
-            data-digix={`document-${index}`}
-            onClick={this.showHideImage({
-              source: document.base64,
-              type: document.type,
-            })}
-          />
+          <PDFViewer file={document.base64} data-digix={`document-${index}`} />
         )}
       </ImageItem>
     );

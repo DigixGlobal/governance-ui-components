@@ -118,6 +118,15 @@ export const CallToAction = styled.div`
   }
 `;
 
+export const ModalCta = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
+`;
+
 export const FundingInfo = styled.div`
   color: ${props => props.theme.textDefault.light.toString()};
   display: flex;
@@ -303,6 +312,14 @@ export const ImageItem = styled.div`
   ${media.mobile`
     flex: 0 1 auto;
   `}
+
+  ${props =>
+    props.preview &&
+    css`
+      margin-right: 0;
+      border-bottom: 0;
+      margin-bottom: 1rem;
+    `}
 `;
 
 export const VotingResultWrapper = styled.div`

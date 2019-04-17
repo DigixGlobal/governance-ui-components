@@ -7,7 +7,13 @@ import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
 import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 import { dijix } from '@digix/gov-ui/utils/dijix';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { Content, SubTitle, ImageHolder, ImageItem } from '@digix/gov-ui/pages/proposals/style';
+import {
+  Content,
+  SubTitle,
+  ImageHolder,
+  ImageItem,
+  ModalCta,
+} from '@digix/gov-ui/pages/proposals/style';
 
 export default class AdditionalDocs extends React.PureComponent {
   constructor(props) {
@@ -97,19 +103,25 @@ export default class AdditionalDocs extends React.PureComponent {
         <Modal
           open={this.state.open}
           onClose={this.showHideImage()}
-          showCloseIcon={selectedImage && selectedImage.type !== 'pdf'}
+          center
+          styles={{
+            modal: { maxWidth: '45%', width: '100%' },
+          }}
+          showCloseIcon={false}
         >
-          <div>
+          <ImageItem preview>
             {selectedImage && selectedImage.type === 'image' && (
               <img alt="" style={{ width: '100%' }} src={selectedImage.src} />
             )}
             {selectedImage && selectedImage.type === 'pdf' && (
               <PDFViewer file={selectedImage.src} />
             )}
-            <Button kind="round" onClick={this.showHideImage()}>
+          </ImageItem>
+          <ModalCta>
+            <Button primary invert onClick={this.showHideImage()}>
               {sidebar.close}
             </Button>
-          </div>
+          </ModalCta>
         </Modal>
       </Content>
     );

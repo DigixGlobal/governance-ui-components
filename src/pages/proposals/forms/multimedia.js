@@ -18,6 +18,7 @@ import {
   ErrorNotifications,
   Note,
   Delete,
+  ModalCta,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
@@ -200,7 +201,11 @@ class Multimedia extends React.Component {
             <Icon kind="trash" />
           </Delete>
           {/* eslint-disable*/}
-          <img alt="" onClick={this.showHideImage({ src: source, type: img.type })} src={source} />
+          <img
+            alt=""
+            onClick={this.showHideImage({ src: source, type: img.type })}
+            src={source}
+          />
           {/* eslint-enable */}
         </ImageItem>
       );
@@ -247,19 +252,24 @@ class Multimedia extends React.Component {
         <Modal
           open={this.state.open}
           onClose={this.showHideImage()}
-          showCloseIcon={selectedImage && selectedImage.type !== 'pdf'}
+          showCloseIcon={false}
+          styles={{
+            modal: { maxWidth: '45%', width: '100%' },
+          }}
         >
-          <div>
+          <ImageItem preview>
             {selectedImage && selectedImage.type === 'image' && (
               <img alt="" style={{ width: '100%' }} src={selectedImage.src} />
             )}
             {selectedImage && selectedImage.type === 'pdf' && (
               <PDFViewer file={selectedImage.src} />
             )}
-            <Button kind="round" onClick={this.showHideImage()}>
+          </ImageItem>
+          <ModalCta>
+            <Button primary invert onClick={this.showHideImage()}>
               {sidebar.close}
             </Button>
-          </div>
+          </ModalCta>
         </Modal>
       </Fieldset>
     );

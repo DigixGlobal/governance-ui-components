@@ -184,6 +184,14 @@ export const ImageItem = styled.div`
           }
         }
       `}
+
+    ${props =>
+      props.preview &&
+      css`
+        margin-right: 0;
+        border-bottom: 0;
+        padding: 0;
+      `}
 `;
 
 const ButtonStyles = css`
@@ -312,4 +320,13 @@ export const AddMoreButton = styled(Button)`
 export const Note = styled.div`
   padding: 1.5rem 0;
   margin-bottom: 0;
+`;
+
+export const ModalCta = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
 `;

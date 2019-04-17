@@ -10,7 +10,14 @@ import { dijix } from '@digix/gov-ui/utils/dijix';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
 
-import { DetailsContainer, Content, SubTitle, ImageHolder, ImageItem } from './style';
+import {
+  DetailsContainer,
+  Content,
+  SubTitle,
+  ImageHolder,
+  ImageItem,
+  ModalCta,
+} from '@digix/gov-ui/pages/proposals/style';
 
 export default class ProjectDetails extends React.Component {
   constructor(props) {
@@ -96,20 +103,22 @@ export default class ProjectDetails extends React.Component {
           onClose={this.showHideImage()}
           center
           styles={{
-            modal: { maxWidth: '60%', width: '100%' },
+            modal: { maxWidth: '45%', width: '100%' },
           }}
         >
-          <div>
+          <ImageItem preview>
             {selectedImage && selectedImage.type === 'image' && (
               <img alt="" style={{ width: '100%' }} src={selectedImage.src} />
             )}
             {selectedImage && selectedImage.type === 'pdf' && (
               <PDFViewer file={selectedImage.src} />
             )}
-            <Button kind="round" onClick={this.showHideImage()}>
+          </ImageItem>
+          <ModalCta>
+            <Button primary invert onClick={this.showHideImage()}>
               {sidebar.close}
             </Button>
-          </div>
+          </ModalCta>
         </Modal>
       </DetailsContainer>
     );

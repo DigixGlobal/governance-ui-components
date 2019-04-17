@@ -43,6 +43,7 @@ import {
   Delete,
   AddMoreButton,
   Note,
+  ModalCta,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
@@ -375,21 +376,29 @@ class Documents extends React.Component {
             </Centered>
           </FormItem>
         </Fieldset>
-        <Modal open={open} onClose={this.showHideImage()}>
-          <div>
-            {selectedImage && (
-              <Fragment>
-                {selectedImage.type === 'image' ? (
-                  <img alt="" style={{ width: '100%' }} src={selectedImage.source} />
-                ) : (
-                  <PDFViewer file={selectedImage.source} />
-                )}
-                <Button kind="round" data-digix="CLOSE-IMAGE-MODAL" onClick={this.showHideImage()}>
-                  {sidebar.close}
-                </Button>
-              </Fragment>
-            )}
-          </div>
+        <Modal
+          open={open}
+          onClose={this.showHideImage()}
+          showCloseIcon={false}
+          styles={{
+            modal: { maxWidth: '45%', width: '100%' },
+          }}
+        >
+          {selectedImage && (
+            <ImageItem preview>
+              {selectedImage.type === 'image' ? (
+                <img alt="" style={{ width: '100%' }} src={selectedImage.source} />
+              ) : (
+                <PDFViewer file={selectedImage.source} />
+              )}
+            </ImageItem>
+          )}
+
+          <ModalCta>
+            <Button primary invert data-digix="CLOSE-IMAGE-MODAL" onClick={this.showHideImage()}>
+              {sidebar.close}
+            </Button>
+          </ModalCta>
         </Modal>
       </Fragment>
     );

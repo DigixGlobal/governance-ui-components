@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 import { Container } from '@digix/gov-ui/components/common/common-styles';
@@ -79,9 +79,26 @@ export const ImageItem = styled.div`
   ${media.mobile`
     flex: 0 1 100%;
   `}
+
+  ${props =>
+    props.preview &&
+    css`
+      margin-right: 0;
+      border-bottom: 0;
+      padding: 0;
+    `}
 `;
 
 export const CTA = styled.div`
   ${Container};
   justify-content: space-between;
+`;
+
+export const ModalCta = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
 `;

@@ -9,7 +9,15 @@ import Modal from 'react-responsive-modal';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
 
-import { Section, Title, Content, Heading, ImageItem, ImageHolder } from './style';
+import {
+  Section,
+  Title,
+  Content,
+  Heading,
+  ImageItem,
+  ImageHolder,
+  ModalCta,
+} from '@digix/gov-ui/pages/proposals/confirm/style';
 
 export default class MediaAssets extends React.PureComponent {
   constructor(props) {
@@ -57,15 +65,12 @@ export default class MediaAssets extends React.PureComponent {
         >
           <Heading>{`Image ${lastIndex ? lastIndex + i : i + 1}`}</Heading>
           {/* eslint-disable */}
-              {
-                img.type === 'pdf' ?
-                <PDFViewer file={source} /> :
-                <img
-                  alt=""
-                  src={source}
-                />
-              }
-              {/* eslint-enable */}
+          {img.type === 'pdf' ? (
+            <PDFViewer file={source} />
+          ) : (
+            <img alt="" src={source} />
+          )}
+          {/* eslint-enable */}
         </ImageItem>
       );
     });
@@ -93,19 +98,24 @@ export default class MediaAssets extends React.PureComponent {
         <Modal
           open={this.state.open}
           onClose={this.showHideImage()}
-          showCloseIcon={selectedImage && selectedImage.type !== 'pdf'}
+          showCloseIcon={false}
+          styles={{
+            modal: { maxWidth: '45%', width: '100%' },
+          }}
         >
-          <div>
+          <ImageItem preview>
             {selectedImage && selectedImage.type === 'image' && (
               <img style={{ width: '100%' }} alt="" src={selectedImage.src} />
             )}
             {selectedImage && selectedImage.type === 'pdf' && (
               <PDFViewer file={selectedImage.src} />
             )}
-            <Button kind="round" small onClick={this.showHideImage()}>
+          </ImageItem>
+          <ModalCta>
+            <Button primary invert onClick={this.showHideImage()}>
               {sidebar.close}
             </Button>
-          </div>
+          </ModalCta>
         </Modal>
       </Section>
     );

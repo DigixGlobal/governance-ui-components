@@ -29,6 +29,7 @@ import {
   getUserProposalLikeStatus,
   likeProposal,
   unlikeProposal,
+  getTranslations,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import {
@@ -124,14 +125,13 @@ class Proposal extends React.Component {
 
   componentWillMount = () => {
     const {
-      challengeProof,
       clearDaoProposalDetailsAction,
       getAddressDetailsAction,
-      history,
       location,
       addressDetails,
+      getTranslationsAction,
+      Language,
     } = this.props;
-    if (!challengeProof.data) history.push('/');
     if (location.pathname) {
       clearDaoProposalDetailsAction();
       if (this.PROPOSAL_ID) {
@@ -141,6 +141,8 @@ class Proposal extends React.Component {
         this.getProposalLikes();
       }
     }
+
+    getTranslationsAction(Language);
   };
 
   componentDidMount = () => {
@@ -165,15 +167,10 @@ class Proposal extends React.Component {
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   getProposalLikes = () => {
-    const { getUserProposalLikeStatusAction, challengeProof } = this.props;
-    if (challengeProof.data) {
-      getUserProposalLikeStatusAction({
-        proposalId: this.PROPOSAL_ID,
-        client: challengeProof.data.client,
-        token: challengeProof.data['access-token'],
-        uid: challengeProof.data.uid,
-      });
-    }
+    const { getUserProposalLikeStatusAction } = this.props;
+    getUserProposalLikeStatusAction({
+      proposalId: this.PROPOSAL_ID,
+    });
   };
 
   getChangedFundings() {
@@ -336,17 +333,21 @@ class Proposal extends React.Component {
     });
   };
 
-  renderPrlAlert = prl =>
-    prl ? (
+  renderPrlAlert = prl => {
+    const {
+      Translations: {
+        data: {
+          project: { alerts },
+        },
+      },
+    } = this.props;
+    return prl ? (
       <Notifications warning withIcon>
         <WarningIcon kind="warning" />
-        {/* TODO: Add Translatio */}
-        <Message note>
-          This project can no longer claim funding due to Policy, Regulatory or Legal reasons, even
-          if voting passes. Please contact us if you have any queries.
-        </Message>
+        <Message note>{alerts.prl}</Message>
       </Notifications>
     ) : null;
+  };
 
   renderClaimApprovalAlert = () => {
     const {
@@ -530,6 +531,7 @@ class Proposal extends React.Component {
                 hasVoted={liked}
                 likes={likes}
                 translations={cardTranslation}
+                disabled={!userData === null}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
             </InfoItem>
@@ -658,6 +660,7 @@ class Proposal extends React.Component {
                 hasVoted={liked}
                 likes={likes}
                 translations={cardTranslation}
+                disabled={!userData}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
             </InfoItem>
@@ -692,8 +695,13 @@ class Proposal extends React.Component {
   };
 
   render() {
-    const { proposalDetails } = this.props;
-    if (proposalDetails.fetching === null || proposalDetails.fetching || !proposalDetails.data)
+    const { proposalDetails, Translations } = this.props;
+    if (
+      proposalDetails.fetching === null ||
+      proposalDetails.fetching ||
+      !proposalDetails.data ||
+      !Translations.data
+    )
       return <div>Fetching Project Details</div>;
 
     if (proposalDetails.data.isSpecial) {
@@ -703,7 +711,7 @@ class Proposal extends React.Component {
   }
 }
 
-const { object, func } = PropTypes;
+const { object, func, string } = PropTypes;
 
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
@@ -723,12 +731,15 @@ Proposal.propTypes = {
   history: object.isRequired,
   match: object.isRequired,
   Translations: object.isRequired,
+  getTranslationsAction: func.isRequired,
+  Language: string,
 };
 
 Proposal.defaultProps = {
   challengeProof: undefined,
   userData: undefined,
   userProposalLike: undefined,
+  Language: 'en',
 };
 
 export default withFetchUser(
@@ -741,6 +752,7 @@ export default withFetchUser(
         DaoDetails: { data },
       },
       daoServer: { ChallengeProof, UserProposalLike, Translations },
+      govUI: { Language },
     }) => ({
       proposalDetails: ProposalDetails,
       addressDetails: AddressDetails,
@@ -749,6 +761,7 @@ export default withFetchUser(
       daoConfig: DaoConfig,
       userProposalLike: UserProposalLike,
       Translations,
+      Language,
     }),
     {
       getUserProposalLikeStatusAction: getUserProposalLikeStatus,
@@ -756,6 +769,7 @@ export default withFetchUser(
       likeProposalAction: likeProposal,
       unlikeProposalAction: unlikeProposal,
       clearDaoProposalDetailsAction: clearDaoProposalDetails,
+      getTranslationsAction: getTranslations,
     }
   )(withFetchProposal(Proposal))
 );

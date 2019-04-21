@@ -62,6 +62,7 @@ class CommentTextEditor extends React.Component {
     const { content, canPost } = this.state;
     const {
       canComment,
+      cannotView,
       translations: {
         data: {
           project,
@@ -76,12 +77,14 @@ class CommentTextEditor extends React.Component {
     return (
       <EditorContainer>
         <CommentEditor>
-          <Author>
-            <span>{project.commentAs}&nbsp;</span>
-            {renderDisplayName('CommentEditor-DisplayName')}
-          </Author>
+          {!cannotView && (
+            <Author>
+              <span>{project.commentAs}&nbsp;</span>
+              {renderDisplayName('CommentEditor-DisplayName')}
+            </Author>
+          )}
           <CommentEditorContainer error={invalidLink}>
-            {!canComment && (
+            {!canComment && !cannotView && (
               <div>
                 <BannedCommentEditor>
                   <p>You have been banned by the administrators from commenting.</p>
@@ -130,12 +133,14 @@ CommentTextEditor.propTypes = {
   addComment: func.isRequired,
   callback: func, // to call after a comment is submitted
   canComment: bool,
+  cannotView: bool,
   translations: object.isRequired,
 };
 
 CommentTextEditor.defaultProps = {
   callback: undefined,
   canComment: true,
+  cannotView: false,
 };
 
 const mapStateToProps = state => ({

@@ -78,7 +78,7 @@ export class Governance extends React.Component {
             <AuthenticatedRoute
               path="/proposals/:id"
               component={withHeaderAndPanel(Proposals)}
-              isAuthenticated={isAuthenticated}
+              isAuthenticated
             />
             <AuthenticatedRoute
               path="/wallet"

@@ -93,7 +93,15 @@ class Comment extends React.Component {
   };
 
   renderForumAdminActionBar() {
-    if (!this.props.currentUser.isForumAdmin) {
+    const {
+      currentUser,
+      translations: {
+        data: {
+          common: { buttons },
+        },
+      },
+    } = this.props;
+    if ((currentUser && !currentUser.isForumAdmin) || currentUser == null) {
       return null;
     }
 
@@ -105,7 +113,7 @@ class Comment extends React.Component {
         <ButtonGroup first>
           <ActionCommentButton kind="text" admin small onClick={() => this.showComment(true, id)}>
             <Icon kind="restore" />
-            <span>Restore</span>
+            <span>{buttons.restore || 'Restore'}</span>
           </ActionCommentButton>
         </ButtonGroup>
       );
@@ -115,7 +123,7 @@ class Comment extends React.Component {
       <ButtonGroup>
         <ActionCommentButton kind="text" admin small onClick={() => this.showComment(false, id)}>
           <Icon kind="delete" />
-          <span>Remove</span>
+          <span>{buttons.remove || 'Remove'}</span>
         </ActionCommentButton>
       </ButtonGroup>
     );
@@ -135,12 +143,12 @@ class Comment extends React.Component {
     } = this.props;
     const { comment } = this.state;
     const { body, liked, likes, user } = comment;
-    const { canComment, isForumAdmin } = currentUser;
+    const { canComment, isForumAdmin } = currentUser || { canComment: false, isForumAdmin: false };
 
     const isDeleted = !body;
     const canReply = canComment || (isForumAdmin && !isDeleted);
-    const isAuthor = user && currentUser.address === user.address;
-    const likeLabel = likes === 1 ? project.like : project.likes;
+    const isAuthor = user && currentUser != null && currentUser.address === user.address;
+    const likeLabel = likes === 1 && likes != null ? project.like : project.likes;
 
     return (
       <ButtonGroup first>
@@ -150,12 +158,22 @@ class Comment extends React.Component {
             <span>{project.reply}</span>
           </ActionCommentButton>
         )}
-        <ActionCommentButton kind="text" small active={liked} onClick={() => this.toggleLike()}>
-          <Icon active={liked} kind="like" />
-          <span>
-            {likes}&nbsp;{likeLabel}
-          </span>
-        </ActionCommentButton>
+
+        {canComment && (
+          <ActionCommentButton
+            kind="text"
+            small
+            disabled={!canComment}
+            active={liked}
+            onClick={() => this.toggleLike()}
+          >
+            <Icon active={liked} kind="like" />
+            <span>
+              {likes != null ? likes : 0}&nbsp;{likeLabel}
+            </span>
+          </ActionCommentButton>
+        )}
+
         {isAuthor && (
           <ActionCommentButton kind="text" small onClick={() => this.deleteComment()}>
             <Icon kind="trash" />
@@ -170,7 +188,7 @@ class Comment extends React.Component {
     const { currentUser, userPoints, translations } = this.props;
     const { comment } = this.state;
     const { body, isBanned, user } = comment;
-    const { isForumAdmin } = currentUser;
+    const isForumAdmin = currentUser != null ? currentUser : false;
 
     const isDeleted = !body;
     const isHidden = isForumAdmin && isBanned;
@@ -206,7 +224,7 @@ const { func, object } = PropTypes;
 Comment.propTypes = {
   client: object.isRequired,
   comment: object.isRequired,
-  currentUser: object.isRequired,
+  currentUser: object,
   ChallengeProof: object,
   hideEditor: func.isRequired,
   setError: func.isRequired,
@@ -217,6 +235,7 @@ Comment.propTypes = {
 
 Comment.defaultProps = {
   ChallengeProof: undefined,
+  currentUser: null,
 };
 
 const mapStateToProps = state => ({

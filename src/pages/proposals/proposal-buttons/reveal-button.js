@@ -42,7 +42,7 @@ class RevealVoteButton extends React.PureComponent {
       translations: { buttons },
     } = this.props;
 
-    const vote = votes[proposal.proposalId];
+    const vote = votes ? votes[proposal.proposalId] : undefined;
     const votingRound = vote ? vote.votingRound[currentVotingRound || 0] : undefined;
     const hasVoted = votingRound ? votingRound.commit : false;
     const hasRevealed = votingRound ? votingRound.reveal : false;

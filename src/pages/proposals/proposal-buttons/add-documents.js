@@ -43,10 +43,10 @@ class AddDocumentsButton extends React.PureComponent {
   }
 }
 
-const { object, bool } = PropTypes;
+const { object, bool, string } = PropTypes;
 
 AddDocumentsButton.propTypes = {
-  stage: object.isRequired,
+  stage: string.isRequired,
   translations: object.isRequired,
   history: object.isRequired,
   match: object.isRequired,

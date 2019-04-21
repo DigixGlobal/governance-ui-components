@@ -175,7 +175,6 @@ class Documents extends React.Component {
   }
 
   showHideImage = source => () => {
-    console.log({ source });
     this.setState({ open: !this.state.open, selectedImage: source });
   };
 

@@ -27,6 +27,9 @@
       "name": "名称",
       "addressNickname": "昵称",
       "error": "名字是必填项目",
+      "ConnectionError": {
+        "noMetamask": "无法连接到MetaMask钱包.确保您已登入MetaMask钱包."
+      },
       "proofOfControl": {
         "description": "等待 Metamask 签名中",
         "instructions": "请确认您 MetaMask的签名. 点击“取消”来取消签名."
@@ -41,7 +44,8 @@
         "instructions": "选择硬件钱包衍生路径",
         "default": "Ledger (默认)",
         "account": "账户",
-        "custom": "Ledger Live/更改硬件钱包路径"
+        "custom": "Ledger Live/更改硬件钱包路径",
+        "loading": "获取地址中..."
       },
       "selectAddress": {
         "instructions": "选择要激活的地址",
@@ -64,7 +68,8 @@
         "instructions": "选择硬件钱包衍生路径",
         "default": "Trezor (默认)",
         "account": "账户",
-        "custom": "更改硬件钱包路径"
+        "custom": "更改硬件钱包路径",
+        "loading": "获取地址中..."
       },
       "selectAddress": {
         "instructions": "选择要激活的地址",
@@ -87,7 +92,9 @@
     "error": "密码输入错误",
     "proofOfControl": {
       "description": "这个签名用来证明您拥有此以太坊地址. 签名代表您同意您对 DigixDAO上的此地址有使用权."
-    }
+    },
+    "importInstructions": "点此加载文件.",
+    "importError": "不支持此Keystore类型."
   },
   "connectedWallet": {
     "title": "连接钱包",
@@ -110,29 +117,6 @@
         "requiredName": "请提供姓名",
         "invalidNames": "您必须为钱包地址提供一个姓名.",
         "invalidPassword": "密码与用户名不符."
-      }
-    },
-    "Json": {
-      "importInstructions": "点此加载文件.",
-      "importError": "不支持此Keystore类型."
-    },
-    "Metamask": {
-      "ConnectionError": {
-        "noMetamask": "无法连接到MetaMask钱包.确保您已登入MetaMask钱包."
-      }
-    },
-    "Ledger": {
-      "chooseAddress": {
-        "selectPath": {
-          "loading": "获取地址中..."
-        }
-      }
-    },
-    "Trezor": {
-      "chooseAddress": {
-        "selectPath": {
-          "loading": "获取地址中..."
-        }
       }
     }
   }

@@ -27,6 +27,9 @@
       "name": "Name",
       "addressNickname": "Address Nickname",
       "error": "You must provide a name.",
+      "ConnectionError": {
+        "noMetamask": "Cannot connect to MetaMask wallet. Make sure to login to your MetaMask wallet."
+      },
       "proofOfControl": {
         "description": "Waiting for Metamask Sign Confirmation",
         "instructions": "Please confirm your signature in MetaMask. If you wish to cancel, click the 'Cancel' button in MetaMask."
@@ -41,7 +44,8 @@
         "instructions": "Select HD Derivation Path",
         "default": "Ledger (Default)",
         "account": "Account",
-        "custom": "Ledger Live/Custom Wallet HD path"
+        "custom": "Ledger Live/Custom Wallet HD path",
+        "loading": "Getting address info..."
       },
       "selectAddress": {
         "instructions": "Select addresses to enable",
@@ -64,7 +68,8 @@
         "instructions": "Select HD Derivation Path",
         "default": "Trezor (Default)",
         "account": "Account",
-        "custom": "Custom Wallet HD path"
+        "custom": "Custom Wallet HD path",
+        "loading": "Getting address info..."
       },
       "selectAddress": {
         "instructions": "Select addresses to enable",
@@ -87,7 +92,9 @@
     "error": "Key derivation failed - possibly wrong passphrase",
     "proofOfControl": {
       "description": "This signing is to prove to our server that you are in control of the Ethereum account that was loaded. By signing this message, you are proving that you control the selected account for use on DigixDAO."
-    }
+    },
+    "importInstructions": "Click or drag and drop here to load your file.",
+    "importError": "Keystore type not supported."
   },
   "connectedWallet": {
     "title": "Connected Wallet",
@@ -110,29 +117,6 @@
         "requiredName": "You must provide a name.",
         "invalidNames": "You must provide a name for all addresses.",
         "invalidPassword": "Passwords do not match."
-      }
-    },
-    "Json": {
-      "importInstructions": "Click or drag and drop here to load your file.",
-      "importError": "Keystore type not supported."
-    },
-    "Metamask": {
-      "ConnectionError": {
-        "noMetamask": "Cannot connect to MetaMask wallet. Make sure to login to your MetaMask wallet."
-      }
-    },
-    "Ledger": {
-      "chooseAddress": {
-        "selectPath": {
-          "loading": "Getting address info..."
-        }
-      }
-    },
-    "Trezor": {
-      "chooseAddress": {
-        "selectPath": {
-          "loading": "Getting address info..."
-        }
       }
     }
   }

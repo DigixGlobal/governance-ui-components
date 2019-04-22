@@ -103,6 +103,37 @@
       "note2": "Please note that your wallet needs to hold ETH to pay for gas transaction costs.",
       "note3": "Your locked DGD cannot be traded. You will not be able to see the balance of your locked DGD in your wallet. Locked DGD are only visible on this interface as long as your wallet is connected.",
       "note4": "You can lock more (other) DGD anytime."
+    },
+    "common": {
+      "createErrors": {
+        "requiredwalletType": "Please select a wallet type.",
+        "requiredName": "You must provide a name.",
+        "invalidNames": "You must provide a name for all addresses.",
+        "invalidPassword": "Passwords do not match."
+      }
+    },
+    "Json": {
+      "importInstructions": "Click or drag and drop here to load your file.",
+      "importError": "Keystore type not supported."
+    },
+    "Metamask": {
+      "ConnectionError": {
+        "noMetamask": "Cannot connect to MetaMask wallet. Make sure to login to your MetaMask wallet."
+      }
+    },
+    "Ledger": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "Getting address info..."
+        }
+      }
+    },
+    "Trezor": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "Getting address info..."
+        }
+      }
     }
   }
 }

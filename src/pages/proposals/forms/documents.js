@@ -39,10 +39,11 @@ import {
   MediaUploader,
   ImageItem,
   ImageHolder,
+  ErrorNotifications,
   Delete,
   AddMoreButton,
   Note,
-  ErrorMessage,
+  ModalCta,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
@@ -82,6 +83,8 @@ class Documents extends React.Component {
     const { accept } = e.target;
     const supported = [];
     let error;
+    this.setState({ uploadError: false });
+
     accept.split(',').forEach(item => {
       if (item === 'image/*') {
         supported.push('image/png');
@@ -175,7 +178,6 @@ class Documents extends React.Component {
   }
 
   showHideImage = source => () => {
-    console.log({ source });
     this.setState({ open: !this.state.open, selectedImage: source });
   };
 
@@ -264,35 +266,28 @@ class Documents extends React.Component {
   };
 
   renderDocuments = (document, index) => {
-    const {
-      translations: {
-        common: { buttons },
-      },
-    } = this.props;
-
     if (!document) return null;
 
     return (
-      <ImageItem>
+      <ImageItem
+        addUpdates
+        style={{ cursor: 'pointer' }}
+        onClick={this.showHideImage({
+          source: document.base64,
+          type: document.type,
+        })}
+      >
         <Delete kind="text" data-digix="REMOVE-BUTTON" onClick={this.handleRemove(index)}>
-          <Icon kind="trash" /> {buttons.remove}
+          <Icon kind="trash" />
         </Delete>
         {!document.type && null}
         {document.type && document.type === 'image' && (
           // eslint-disable-next-line jsx-a11y/click-events-have-key-events
           // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-          <img
-            src={document.base64}
-            data-digix={`document-${index}`}
-            onClick={this.showHideImage({ source: document.base64, type: document.type })}
-          />
+          <img src={document.base64} data-digix={`document-${index}`} />
         )}
         {document.type && document.type === 'pdf' && (
-          <PDFViewer
-            file={document.base64}
-            data-digix={`document-${index}`}
-            onClick={this.showHideImage({ source: document.base64, type: document.type })}
-          />
+          <PDFViewer file={document.base64} data-digix={`document-${index}`} />
         )}
       </ImageItem>
     );
@@ -321,15 +316,12 @@ class Documents extends React.Component {
               data-digix="UPLOAD-ADDITIONAL-DOCUMENT"
               caption={project.uploadDocument}
               onChange={this.handleUpload(index)}
-            >
-              <Note>{project.uploadImageButtonHelpText}</Note>
-            </Button>
+            />
+            {!uploadError && <Note>{project.uploadImageButtonHelpText}</Note>}
+            {uploadError && <ErrorNotifications error>{uploadError}</ErrorNotifications>}
           </div>
 
-          <ImageHolder>
-            {this.renderDocuments(documents[index], index)}
-            {uploadError && <ErrorMessage>{uploadError}</ErrorMessage>}
-          </ImageHolder>
+          <ImageHolder>{this.renderDocuments(documents[index], index)}</ImageHolder>
         </MediaUploader>
       </FormItem>
     ));
@@ -384,21 +376,29 @@ class Documents extends React.Component {
             </Centered>
           </FormItem>
         </Fieldset>
-        <Modal open={open} onClose={this.showHideImage()}>
-          <div>
-            {selectedImage && (
-              <Fragment>
-                {selectedImage.type === 'image' ? (
-                  <img alt="" style={{ width: '100%' }} src={selectedImage.source} />
-                ) : (
-                  <PDFViewer file={selectedImage.source} />
-                )}
-                <Button kind="round" data-digix="CLOSE-IMAGE-MODAL" onClick={this.showHideImage()}>
-                  {sidebar.close}
-                </Button>
-              </Fragment>
-            )}
-          </div>
+        <Modal
+          open={open}
+          onClose={this.showHideImage()}
+          showCloseIcon={false}
+          styles={{
+            modal: { maxWidth: '45%', width: '100%' },
+          }}
+        >
+          {selectedImage && (
+            <ImageItem preview>
+              {selectedImage.type === 'image' ? (
+                <img alt="" style={{ width: '100%' }} src={selectedImage.source} />
+              ) : (
+                <PDFViewer file={selectedImage.source} />
+              )}
+            </ImageItem>
+          )}
+
+          <ModalCta>
+            <Button primary invert data-digix="CLOSE-IMAGE-MODAL" onClick={this.showHideImage()}>
+              {sidebar.close}
+            </Button>
+          </ModalCta>
         </Modal>
       </Fragment>
     );

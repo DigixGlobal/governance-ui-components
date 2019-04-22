@@ -6,6 +6,7 @@ import {
   FieldsetStyle,
   Label as FormLabel,
   Card,
+  Notifications,
 } from '@digix/gov-ui/components/common/common-styles';
 
 export const CreateWrapper = styled.div``;
@@ -71,14 +72,14 @@ export const MediaUploader = styled(Card)`
   > div {
     &:first-child {
       margin-right: 2rem;
-      flex: 1 0 auto;
+      flex: 1 0 45%;
 
       ${media.tablet`
         width: 100%;
       `}
     }
     &:last-child {
-      // flex: 1 0 0;
+      flex: 0 1 auto;
       margin-top: 5px;
 
       ${media.tablet`
@@ -94,7 +95,7 @@ export const ImageHolder = styled.div`
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   width: 100%;
-  min-height: 200px;
+  min-height: 150px;
   padding: 0;
   display: flex;
   flex-flow: row wrap;
@@ -107,27 +108,37 @@ export const ImageHolder = styled.div`
 `;
 
 export const ImageItem = styled.div`
+  background: #fff;
+  border-bottom: 1px solid ${props => props.theme.card.border.lighter.toString()};
   flex: 0 1 calc(50% - 0.5rem);
   margin-right: 1rem;
   margin-bottom: 1rem;
   position: relative;
-  padding: 0;
+  padding: 1rem;
 
   &:nth-child(even) {
     margin-right: 0;
   }
 
   &:last-child {
-    border-bottom: none;
+    border-bottom: 0;
   }
 
   canvas {
     width: 100%;
   }
 
+  ${media.mobile`
+    flex: 0 1 100%;
+  `}
+
   ${props =>
-    props.removeOption &&
+    props.uploadForm &&
     css`
+      flex: 0 1 100%;
+      margin-right: 0;
+      margin-bottom: 0;
+
       button {
         &:first-child {
           right: 1rem;
@@ -142,9 +153,45 @@ export const ImageItem = styled.div`
       }
     `}
 
-  ${media.mobile`
-    flex: 0 1 auto;
-  `}
+    ${props =>
+      props.addUpdates &&
+      css`
+        flex: 0 1 100%;
+        margin-right: 0;
+        margin-bottom: 0;
+
+        button {
+          border-radius: 50%;
+
+          &:first-child {
+            right: -5.5rem;
+            top: -6rem;
+
+            ${media.tablet`
+              top: -18rem; 
+            `}
+
+            ${media.mobile`
+              top: -20rem; 
+            `}
+          }
+          &:nth-of-type(2) {
+            right: 5.5rem;
+          }
+
+          &:nth-of-type(3) {
+            right: 1rem;
+          }
+        }
+      `}
+
+    ${props =>
+      props.preview &&
+      css`
+        margin-right: 0;
+        border-bottom: 0;
+        padding: 0;
+      `}
 `;
 
 const ButtonStyles = css`
@@ -236,6 +283,15 @@ export const ErrorMessage = styled.span`
   font-size: 1.4rem;
 `;
 
+export const ErrorNotifications = styled(Notifications)`
+  border: 0;
+  box-shadow: none;
+  color: ${props => props.theme.alertMessage.error.base.toString()};
+  font-size: 1.4rem;
+  padding: 1.5rem 2rem;
+  margin-bottom: 0;
+`;
+
 export const AddMoreButton = styled(Button)`
   display: flex;
   flex-direction: column;
@@ -272,5 +328,15 @@ export const AddMoreButton = styled(Button)`
 `;
 
 export const Note = styled.div`
-  margin-bottom: 2rem;
+  padding: 1.5rem 0;
+  margin-bottom: 0;
+`;
+
+export const ModalCta = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
 `;

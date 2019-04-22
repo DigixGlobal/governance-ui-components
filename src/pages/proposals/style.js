@@ -118,6 +118,15 @@ export const CallToAction = styled.div`
   }
 `;
 
+export const ModalCta = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
+`;
+
 export const FundingInfo = styled.div`
   color: ${props => props.theme.textDefault.light.toString()};
   display: flex;
@@ -270,7 +279,6 @@ export const TrackActivity = styled.label`
 
 export const ImageHolder = styled.div`
   border-radius: ${props => props.theme.borderRadius};
-  min-width: 500px;
   width: 100%;
   padding: 0;
   display: flex;
@@ -284,7 +292,7 @@ export const ImageHolder = styled.div`
 `;
 
 export const ImageItem = styled.div`
-  flex: 0 1 calc(33% - 1rem);
+  flex: 0 1 calc(25% - 1rem);
   margin-right: 1rem;
   position: relative;
   padding: 0;
@@ -304,6 +312,14 @@ export const ImageItem = styled.div`
   ${media.mobile`
     flex: 0 1 auto;
   `}
+
+  ${props =>
+    props.preview &&
+    css`
+      margin-right: 0;
+      border-bottom: 0;
+      margin-bottom: 1rem;
+    `}
 `;
 
 export const VotingResultWrapper = styled.div`

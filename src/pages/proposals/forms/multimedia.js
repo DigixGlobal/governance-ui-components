@@ -15,8 +15,10 @@ import {
   MediaUploader,
   ImageItem,
   ImageHolder,
-  ErrorMessage,
+  ErrorNotifications,
+  Note,
   Delete,
+  ModalCta,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
@@ -81,6 +83,8 @@ class Multimedia extends React.Component {
     const { accept } = e.target;
     const supported = [];
     let error;
+    this.setState({ uploadError: false });
+
     accept.split(',').forEach(item => {
       if (item === 'image/*') {
         supported.push('image/png');
@@ -162,11 +166,6 @@ class Multimedia extends React.Component {
   }
 
   renderImages = (proofs, existing) => {
-    const {
-      translations: {
-        common: { buttons },
-      },
-    } = this.props;
     if (!proofs || proofs.length === 0) return null;
     const images = proofs.map((img, i) => {
       let source;
@@ -179,26 +178,34 @@ class Multimedia extends React.Component {
 
       if (img.type === 'pdf')
         return (
-          <ImageItem removeOption key={`img-${i + 1}`}>
+          <ImageItem
+            uploadForm
+            key={`img-${i + 1}`}
+            onClick={this.showHideImage({ src: source, type: img.type })}
+          >
             <Delete
               kind="text"
               onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
             >
-              <Icon kind="trash" /> {buttons.remove}
+              <Icon kind="trash" />
             </Delete>
             <PDFViewer file={source} />
           </ImageItem>
         );
       return (
-        <ImageItem removeOption key={`img-${i + 1}`}>
+        <ImageItem uploadForm key={`img-${i + 1}`}>
           <Delete
             kind="text"
             onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
           >
-            <Icon kind="trash" /> {buttons.remove}
+            <Icon kind="trash" />
           </Delete>
           {/* eslint-disable*/}
-          <img alt="" onClick={this.showHideImage(source)} src={source} />
+          <img
+            alt=""
+            onClick={this.showHideImage({ src: source, type: img.type })}
+            src={source}
+          />
           {/* eslint-enable */}
         </ImageItem>
       );
@@ -230,25 +237,39 @@ class Multimedia extends React.Component {
                 onChange={this.handleUpload}
                 type="file"
                 caption={project.uploadImageButton}
-              >
-                <div>{project.uploadImageButtonHelpText}</div>
-              </Button>
+              />
+
+              {!uploadError && <Note>{project.uploadImageButtonHelpText}</Note>}
+              {uploadError && <ErrorNotifications error>{uploadError}</ErrorNotifications>}
             </div>
 
             <ImageHolder>
               {images && this.renderDocuments(images)}
               {imageHash && this.renderDocuments(files, true)}
-              {uploadError && <ErrorMessage>{uploadError}</ErrorMessage>}
             </ImageHolder>
           </MediaUploader>
         </FormItem>
-        <Modal open={this.state.open} onClose={this.showHideImage()}>
-          <div>
-            <img alt="" style={{ width: '100%' }} src={selectedImage} />
-            <Button kind="round" onClick={this.showHideImage()}>
+        <Modal
+          open={this.state.open}
+          onClose={this.showHideImage()}
+          showCloseIcon={false}
+          styles={{
+            modal: { maxWidth: '45%', width: '100%' },
+          }}
+        >
+          <ImageItem preview>
+            {selectedImage && selectedImage.type === 'image' && (
+              <img alt="" style={{ width: '100%' }} src={selectedImage.src} />
+            )}
+            {selectedImage && selectedImage.type === 'pdf' && (
+              <PDFViewer file={selectedImage.src} />
+            )}
+          </ImageItem>
+          <ModalCta>
+            <Button primary invert onClick={this.showHideImage()}>
               {sidebar.close}
             </Button>
-          </div>
+          </ModalCta>
         </Modal>
       </Fieldset>
     );

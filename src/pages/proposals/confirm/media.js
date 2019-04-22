@@ -5,13 +5,19 @@ import { dijix } from '@digix/gov-ui/utils/dijix';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 
-import { HorizontalBar } from '@digix/gov-ui/components/common/elements/index';
-
 import Modal from 'react-responsive-modal';
 
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
 
-import { Section, Title, Content, Heading, Media, ImageItem, ImageHolder } from './style';
+import {
+  Section,
+  Title,
+  Content,
+  Heading,
+  ImageItem,
+  ImageHolder,
+  ModalCta,
+} from '@digix/gov-ui/pages/proposals/confirm/style';
 
 export default class MediaAssets extends React.PureComponent {
   constructor(props) {
@@ -39,26 +45,35 @@ export default class MediaAssets extends React.PureComponent {
 
   renderImages = (proofs, lastIndex) => {
     if (!proofs) return null;
-    const images = proofs.map((img, i) => (
-      <ImageItem key={`img-${lastIndex ? lastIndex + i : i + 1}`}>
-        <Heading>{`Image ${lastIndex ? lastIndex + i : i + 1}`}</Heading>
-        {/* eslint-disable */}
-              {
-                img.type === 'pdf' ?
-                <PDFViewer file={img.base64 ? img.base64 : `${dijix.config.httpEndpoint}/${img.src}`} /> :
-                <img
-                  alt=""
-                  onClick={this.showHideImage(img.src)}
-                  src={
-                    img.thumbnail
-                      ? `${dijix.config.httpEndpoint}/${img.thumbnail}?q=${Date.now()}`
-                      : img.src
-                  }
-                />
-              }
-              {/* eslint-enable */}
-      </ImageItem>
-    ));
+    const images = proofs.map((img, i) => {
+      let source = img.src;
+
+      if (img.type === 'pdf' && img.base64) {
+        source = img.base64;
+      } else if (img.type === 'pdf' && img.src) {
+        source = `${dijix.config.httpEndpoint}/${img.src}`;
+      }
+
+      if (img.type === 'image' && img.thumbnail) {
+        source = `${dijix.config.httpEndpoint}/${img.thumbnail}`;
+      }
+
+      return (
+        <ImageItem
+          key={`img-${lastIndex ? lastIndex + i : i + 1}`}
+          onClick={this.showHideImage({ src: source, type: img.type })}
+        >
+          <Heading>{`Image ${lastIndex ? lastIndex + i : i + 1}`}</Heading>
+          {/* eslint-disable */}
+          {img.type === 'pdf' ? (
+            <PDFViewer file={source} />
+          ) : (
+            <img alt="" src={source} />
+          )}
+          {/* eslint-enable */}
+        </ImageItem>
+      );
+    });
     return images;
   };
 
@@ -80,13 +95,27 @@ export default class MediaAssets extends React.PureComponent {
               this.renderImages(this.state.files, form.proofs ? form.proofs.length + 1 : 0)}
           </ImageHolder>
         </Content>
-        <Modal open={this.state.open} onClose={this.showHideImage()}>
-          <div>
-            <img style={{ width: '100%' }} alt="" src={selectedImage} />
-            <Button kind="round" small onClick={this.showHideImage()}>
+        <Modal
+          open={this.state.open}
+          onClose={this.showHideImage()}
+          showCloseIcon={false}
+          styles={{
+            modal: { maxWidth: '45%', width: '100%' },
+          }}
+        >
+          <ImageItem preview>
+            {selectedImage && selectedImage.type === 'image' && (
+              <img style={{ width: '100%' }} alt="" src={selectedImage.src} />
+            )}
+            {selectedImage && selectedImage.type === 'pdf' && (
+              <PDFViewer file={selectedImage.src} />
+            )}
+          </ImageItem>
+          <ModalCta>
+            <Button primary invert onClick={this.showHideImage()}>
               {sidebar.close}
             </Button>
-          </div>
+          </ModalCta>
         </Modal>
       </Section>
     );

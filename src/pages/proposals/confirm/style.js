@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 import { Container } from '@digix/gov-ui/components/common/common-styles';
@@ -56,15 +56,16 @@ export const ImageHolder = styled.div`
 `;
 
 export const ImageItem = styled.div`
+  border-bottom: 1px solid ${props => props.theme.card.border.lighter.toString()};
   flex: 0 1 calc(33% - 1rem);
   margin-right: 1rem;
   margin-bottom: 1rem;
   position: relative;
   padding: 0;
-  border-bottom: 1px solid ${props => props.theme.card.border.lighter.toString()};
+  padding-bottom: 1rem;
 
   &:last-child {
-    border-bottom: none;
+    border-bottom: 0;
   }
 
   canvas {
@@ -72,15 +73,32 @@ export const ImageItem = styled.div`
   }
 
   ${media.tablet`
-      flex: 0 1 calc(33% - 1rem);
+      flex: 0 1 calc(50% - 1rem);
   `}
 
   ${media.mobile`
-    flex: 0 1 auto;
+    flex: 0 1 100%;
   `}
+
+  ${props =>
+    props.preview &&
+    css`
+      margin-right: 0;
+      border-bottom: 0;
+      padding: 0;
+    `}
 `;
 
 export const CTA = styled.div`
   ${Container};
   justify-content: space-between;
+`;
+
+export const ModalCta = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
 `;

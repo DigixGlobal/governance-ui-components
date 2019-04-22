@@ -1,16 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Modal from 'react-responsive-modal';
+
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
-import { Content, SubTitle } from '@digix/gov-ui/pages/proposals/style';
 import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 import { dijix } from '@digix/gov-ui/utils/dijix';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
+import {
+  Content,
+  SubTitle,
+  ImageHolder,
+  ImageItem,
+  ModalCta,
+} from '@digix/gov-ui/pages/proposals/style';
 
 export default class AdditionalDocs extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       files: [],
+      selectedImage: undefined,
+      open: false,
     };
   }
   componentWillMount = () => {
@@ -42,14 +53,18 @@ export default class AdditionalDocs extends React.PureComponent {
     }
   };
 
+  showHideImage = source => () => {
+    this.setState({ open: !this.state.open, selectedImage: source });
+  };
+
   render() {
     const {
-      translations: { project },
+      translations: { project, sidebar },
       proposal: {
         data: { proposalVersions },
       },
     } = this.props;
-    const { files } = this.state;
+    const { files, selectedImage } = this.state;
     const latestVersion = proposalVersions[proposalVersions.length - 1];
     const { moreDocs } = latestVersion;
 
@@ -57,16 +72,57 @@ export default class AdditionalDocs extends React.PureComponent {
     return (
       <Content>
         <SubTitle>{project.updates || 'Updates'}</SubTitle>
-        {files.map(data =>
-          data.file.map((f, i) => {
-            const source = `${dijix.config.httpEndpoint}/${f.src}`;
-            if (f.type === 'image') {
-              return <img src={source} alt="" key={`img-${i + 1}`} />;
-            } else if (f.type === 'pdf') return <PDFViewer file={source} key={`pdf-${i + 1}`} />;
+        <ImageHolder>
+          {files.map(data =>
+            data.file.map((f, i) => {
+              const source = `${dijix.config.httpEndpoint}/${f.src}`;
+              if (f.type === 'image') {
+                return (
+                  <ImageItem
+                    key={`img-${i + 1}`}
+                    onClick={this.showHideImage({ src: source, type: f.type })}
+                  >
+                    <img src={source} alt="" style={{ cursor: 'pointer' }} />
+                  </ImageItem>
+                );
+              } else if (f.type === 'pdf')
+                return (
+                  <ImageItem
+                    key={`pdf-${i + 1}`}
+                    style={{ cursor: 'pointer' }}
+                    onClick={this.showHideImage({ src: source, type: f.type })}
+                  >
+                    <PDFViewer file={source} />
+                  </ImageItem>
+                );
 
-            return null;
-          })
-        )}
+              return null;
+            })
+          )}
+        </ImageHolder>
+        <Modal
+          open={this.state.open}
+          onClose={this.showHideImage()}
+          center
+          styles={{
+            modal: { maxWidth: '45%', width: '100%' },
+          }}
+          showCloseIcon={false}
+        >
+          <ImageItem preview>
+            {selectedImage && selectedImage.type === 'image' && (
+              <img alt="" style={{ width: '100%' }} src={selectedImage.src} />
+            )}
+            {selectedImage && selectedImage.type === 'pdf' && (
+              <PDFViewer file={selectedImage.src} />
+            )}
+          </ImageItem>
+          <ModalCta>
+            <Button primary invert onClick={this.showHideImage()}>
+              {sidebar.close}
+            </Button>
+          </ModalCta>
+        </Modal>
       </Content>
     );
   }

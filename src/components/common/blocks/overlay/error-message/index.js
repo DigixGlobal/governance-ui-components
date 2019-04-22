@@ -13,6 +13,7 @@ import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 class ErrorMessageOverlay extends React.Component {
   closeOverlay() {
+    document.body.classList.remove('modal-is-open');
     this.props.showRightPanel({
       show: false,
     });

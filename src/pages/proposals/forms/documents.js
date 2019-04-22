@@ -37,6 +37,8 @@ import {
   FormItem,
   Label,
   MediaUploader,
+  Document,
+  Enlarge,
   ImageItem,
   ImageHolder,
   ErrorNotifications,
@@ -268,27 +270,42 @@ class Documents extends React.Component {
   renderDocuments = (document, index) => {
     if (!document) return null;
 
+    console.log(document);
     return (
-      <ImageItem
-        addUpdates
-        style={{ cursor: 'pointer' }}
-        onClick={this.showHideImage({
-          source: document.base64,
-          type: document.type,
-        })}
-      >
+      <ImageItem addUpdates>
         <Delete kind="text" data-digix="REMOVE-BUTTON" onClick={this.handleRemove(index)}>
           <Icon kind="trash" />
         </Delete>
-        {!document.type && null}
-        {document.type && document.type === 'image' && (
-          // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-          <img src={document.base64} data-digix={`document-${index}`} />
+
+        {document.type && (
+          <Enlarge
+            kind="text"
+            onClick={this.showHideImage({
+              source: document.base64,
+              type: document.type,
+            })}
+          >
+            <Icon kind="magnifier" />
+          </Enlarge>
         )}
-        {document.type && document.type === 'pdf' && (
-          <PDFViewer file={document.base64} data-digix={`document-${index}`} />
-        )}
+
+        <Document
+          onClick={this.showHideImage({
+            source: document.base64,
+            type: document.type,
+          })}
+          style={{ cursor: 'pointer' }}
+        >
+          {!document.type && null}
+          {document.type && document.type === 'image' && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+            <img src={document.base64} data-digix={`document-${index}`} />
+          )}
+          {document.type && document.type === 'pdf' && (
+            <PDFViewer file={document.base64} data-digix={`document-${index}`} showNav={false} />
+          )}
+        </Document>
       </ImageItem>
     );
   };

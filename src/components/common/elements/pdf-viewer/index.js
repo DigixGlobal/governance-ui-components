@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 import PDF from 'react-pdf-js';
 
 import { Icon } from '@digix/gov-ui/components/common/elements/index';
-import { Next, Previous } from '@digix/gov-ui/pages/proposals/forms/style';
+import { Next, Previous, Enlarge } from '@digix/gov-ui/pages/proposals/forms/style';
 
 export default class PdfViewer extends React.PureComponent {
   static propTypes = {
     file: PropTypes.string.isRequired,
+    showNav: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    showNav: true,
   };
 
   constructor(props) {
@@ -49,8 +54,11 @@ export default class PdfViewer extends React.PureComponent {
   };
 
   render() {
+    const { showNav } = this.props;
+
     const { file } = this.props;
     if (!file) return null;
+
     return (
       <Fragment>
         <PDF
@@ -60,7 +68,7 @@ export default class PdfViewer extends React.PureComponent {
           page={this.state.page}
           fillWidth={1024}
         />
-        {this.renderPagination()}
+        {showNav && this.renderPagination()}
       </Fragment>
     );
   }

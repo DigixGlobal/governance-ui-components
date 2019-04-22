@@ -89,6 +89,14 @@ export const ImageItem = styled.div`
     `}
 `;
 
+export const Document = styled.div`
+  position: relative;
+
+  button {
+    right: 1rem;
+  }
+`;
+
 export const CTA = styled.div`
   ${Container};
   justify-content: space-between;

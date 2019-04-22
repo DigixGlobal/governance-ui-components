@@ -270,7 +270,6 @@ class Documents extends React.Component {
   renderDocuments = (document, index) => {
     if (!document) return null;
 
-    console.log(document);
     return (
       <ImageItem addUpdates>
         <Delete kind="text" data-digix="REMOVE-BUTTON" onClick={this.handleRemove(index)}>

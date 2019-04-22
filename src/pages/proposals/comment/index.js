@@ -56,19 +56,21 @@ class CommentThread extends React.Component {
     const { sortBy } = this.state;
     const { ChallengeProof, proposalId, uid } = this.props;
 
-    this.props.getAddressDetails(uid).then(() => {
-      const { address, quarterPoint, reputationPoint } = this.props.addressDetails;
-      const userPoints = {};
-      userPoints[address] = {
-        reputation: reputationPoint,
-        quarterPoints: quarterPoint,
-      };
+    if (uid !== '') {
+      this.props.getAddressDetails(uid).then(() => {
+        const { address, quarterPoint, reputationPoint } = this.props.addressDetails;
+        const userPoints = {};
+        userPoints[address] = {
+          reputation: reputationPoint,
+          quarterPoints: quarterPoint,
+        };
 
-      this.setState({
-        userAddresses: [address],
-        userPoints,
+        this.setState({
+          userAddresses: [address],
+          userPoints,
+        });
       });
-    });
+    }
 
     this.fetchThreads({ sortBy });
     this.fetchCurrentUser();
@@ -322,10 +324,10 @@ class CommentThread extends React.Component {
   }
 }
 
-const { func, object, string } = PropTypes;
+const { func, object, string, oneOfType } = PropTypes;
 
 CommentThread.propTypes = {
-  addressDetails: object,
+  addressDetails: oneOfType([object, string]),
   ChallengeProof: object,
   client: object.isRequired,
   getAddressDetails: func.isRequired,

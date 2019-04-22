@@ -276,6 +276,7 @@ class LandingPage extends React.PureComponent {
               displayName={getProposer(proposal.proposalId, proposal.proposer)}
               userDetails={AddressDetails}
               translations={Translations}
+              data-digix="Proposal-Card"
             />
           ))}
         <Modal

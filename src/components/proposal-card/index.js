@@ -18,7 +18,7 @@ export default class ProposalCard extends React.Component {
         : false;
     const votingStage = withinDeadline ? 'reveal' : proposal.votingStage;
     return (
-      <Container>
+      <Container data-digix="Proposal-Card">
         <Item>
           <Proposal
             displayName={displayName}

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { dijix } from '@digix/gov-ui/utils/dijix';
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 
 import Modal from 'react-responsive-modal';
@@ -14,10 +14,13 @@ import {
   Title,
   Content,
   Heading,
+  Document,
   ImageItem,
   ImageHolder,
   ModalCta,
 } from '@digix/gov-ui/pages/proposals/confirm/style';
+
+import { Enlarge } from '@digix/gov-ui/pages/proposals/forms/style';
 
 export default class MediaAssets extends React.PureComponent {
   constructor(props) {
@@ -62,14 +65,24 @@ export default class MediaAssets extends React.PureComponent {
         <ImageItem
           key={`img-${lastIndex ? lastIndex + i : i + 1}`}
           onClick={this.showHideImage({ src: source, type: img.type })}
+          style={{ cursor: 'pointer' }}
         >
           <Heading>{`Image ${lastIndex ? lastIndex + i : i + 1}`}</Heading>
           {/* eslint-disable */}
-          {img.type === 'pdf' ? (
-            <PDFViewer file={source} />
-          ) : (
-            <img alt="" src={source} />
-          )}
+
+          <Document>
+            <Enlarge
+              kind="text"
+              onClick={this.showHideImage({ src: source, type: img.type })}
+            >
+              <Icon kind="magnifier" />
+            </Enlarge>
+            {img.type === 'pdf' ? (
+              <PDFViewer file={source} showNav={false} />
+            ) : (
+              <img alt="" src={source} />
+            )}
+          </Document>
           {/* eslint-enable */}
         </ImageItem>
       );

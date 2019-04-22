@@ -14,10 +14,12 @@ import {
   Label,
   MediaUploader,
   ImageItem,
+  Document,
   ImageHolder,
   ErrorNotifications,
   Note,
   Delete,
+  Enlarge,
   ModalCta,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
@@ -178,18 +180,23 @@ class Multimedia extends React.Component {
 
       if (img.type === 'pdf')
         return (
-          <ImageItem
-            uploadForm
-            key={`img-${i + 1}`}
-            onClick={this.showHideImage({ src: source, type: img.type })}
-          >
+          <ImageItem uploadForm key={`img-${i + 1}`}>
             <Delete
               kind="text"
               onClick={existing ? this.handleDeleteExisting(i) : this.handleDeleteNewlyUploaded(i)}
             >
               <Icon kind="trash" />
             </Delete>
-            <PDFViewer file={source} />
+            <Enlarge kind="text" onClick={this.showHideImage({ src: source, type: img.type })}>
+              <Icon kind="magnifier" />
+            </Enlarge>
+            <Document
+              uploadForm
+              onClick={this.showHideImage({ src: source, type: img.type })}
+              style={{ cursor: 'pointer' }}
+            >
+              <PDFViewer file={source} showNav={false} />
+            </Document>
           </ImageItem>
         );
       return (
@@ -200,12 +207,20 @@ class Multimedia extends React.Component {
           >
             <Icon kind="trash" />
           </Delete>
+          <Enlarge kind="text" onClick={this.showHideImage({ src: source, type: img.type })}>
+            <Icon kind="magnifier" />
+          </Enlarge>
           {/* eslint-disable*/}
-          <img
-            alt=""
+          <Document
             onClick={this.showHideImage({ src: source, type: img.type })}
-            src={source}
-          />
+            style={{ cursor: 'pointer' }}
+          >
+            <img
+              alt=""
+              onClick={this.showHideImage({ src: source, type: img.type })}
+              src={source}
+            />
+          </Document>
           {/* eslint-enable */}
         </ImageItem>
       );

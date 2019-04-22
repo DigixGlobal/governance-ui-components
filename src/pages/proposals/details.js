@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import Modal from 'react-responsive-modal';
 
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { HR } from '@digix/gov-ui/components/common/common-styles';
 import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 import { dijix } from '@digix/gov-ui/utils/dijix';
@@ -18,6 +18,8 @@ import {
   ImageItem,
   ModalCta,
 } from '@digix/gov-ui/pages/proposals/style';
+
+import { Enlarge } from '@digix/gov-ui/pages/proposals/forms/style';
 
 export default class ProjectDetails extends React.Component {
   constructor(props) {
@@ -59,15 +61,20 @@ export default class ProjectDetails extends React.Component {
       }
       return (
         <ImageItem
+          review
           key={`img-${i + 1}`}
           onClick={this.showHideImage({ src: source, type: img.type })}
+          style={{ cursor: 'pointer' }}
         >
-          {img.type === 'pdf' && <PDFViewer file={source} />}
-          {img.type === 'image' && <img alt="" src={source} style={{ cursor: 'pointer' }} />}
+          <Enlarge kind="text" onClick={this.showHideImage({ src: source, type: img.type })}>
+            <Icon kind="magnifier" />
+          </Enlarge>
+          {img.type === 'pdf' && <PDFViewer file={source} showNav={false} />}
+          {img.type === 'image' && <img alt="" src={source} />}
         </ImageItem>
       );
     });
-    return <ImageHolder preview>{images}</ImageHolder>;
+    return <ImageHolder>{images}</ImageHolder>;
   };
 
   render() {

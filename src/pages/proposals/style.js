@@ -305,6 +305,16 @@ export const ImageItem = styled.div`
     width: 100%;
   }
 
+  ${props =>
+    props.review &&
+    css`
+      button {
+        right: 1rem;
+      }
+    `}
+
+  
+
   ${media.tablet`
       flex: 0 1 calc(50% - 1rem);
   `}

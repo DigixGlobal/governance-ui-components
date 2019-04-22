@@ -6,7 +6,7 @@ import Modal from 'react-responsive-modal';
 import { fetchImages } from '@digix/gov-ui/pages/proposals/image-helper';
 import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 import { dijix } from '@digix/gov-ui/utils/dijix';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import {
   Content,
   SubTitle,
@@ -14,6 +14,8 @@ import {
   ImageItem,
   ModalCta,
 } from '@digix/gov-ui/pages/proposals/style';
+
+import { Enlarge } from '@digix/gov-ui/pages/proposals/forms/style';
 
 export default class AdditionalDocs extends React.PureComponent {
   constructor(props) {
@@ -79,20 +81,40 @@ export default class AdditionalDocs extends React.PureComponent {
               if (f.type === 'image') {
                 return (
                   <ImageItem
+                    review
                     key={`img-${i + 1}`}
                     onClick={this.showHideImage({ src: source, type: f.type })}
                   >
+                    <Enlarge
+                      kind="text"
+                      onClick={this.showHideImage({
+                        src: source,
+                        type: f.type,
+                      })}
+                    >
+                      <Icon kind="magnifier" />
+                    </Enlarge>
                     <img src={source} alt="" style={{ cursor: 'pointer' }} />
                   </ImageItem>
                 );
               } else if (f.type === 'pdf')
                 return (
                   <ImageItem
+                    review
                     key={`pdf-${i + 1}`}
                     style={{ cursor: 'pointer' }}
                     onClick={this.showHideImage({ src: source, type: f.type })}
                   >
-                    <PDFViewer file={source} />
+                    <Enlarge
+                      kind="text"
+                      onClick={this.showHideImage({
+                        src: source,
+                        type: f.type,
+                      })}
+                    >
+                      <Icon kind="magnifier" />
+                    </Enlarge>
+                    <PDFViewer file={source} showNav={false} />
                   </ImageItem>
                 );
 

@@ -107,6 +107,8 @@ export const ImageHolder = styled.div`
   }
 `;
 
+export const Document = styled.div``;
+
 export const ImageItem = styled.div`
   background: #fff;
   border-bottom: 1px solid ${props => props.theme.card.border.lighter.toString()};
@@ -139,15 +141,11 @@ export const ImageItem = styled.div`
       margin-right: 0;
       margin-bottom: 0;
 
-      button {
+      & > button {
         &:first-child {
           right: 1rem;
         }
         &:nth-of-type(2) {
-          right: 10rem;
-        }
-
-        &:nth-of-type(3) {
           right: 5.5rem;
         }
       }
@@ -176,10 +174,6 @@ export const ImageItem = styled.div`
             `}
           }
           &:nth-of-type(2) {
-            right: 5.5rem;
-          }
-
-          &:nth-of-type(3) {
             right: 1rem;
           }
         }
@@ -238,6 +232,11 @@ export const Previous = styled(Button)`
   div {
     transform: rotate(90deg);
   }
+`;
+
+export const Enlarge = styled(Button)`
+  ${ButtonStyles};
+  right: 5.5rem;
 `;
 
 export const CreateMilestone = styled.div`

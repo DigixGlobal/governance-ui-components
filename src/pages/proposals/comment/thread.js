@@ -122,7 +122,12 @@ class ParentThread extends React.Component {
         {replyElements}
         {hasSiblings && (
           <CommentReplyPost>
-            <Button data-digix="Comment-Load-Replies" kind="text" xsmall onClick={() => this.loadMore(replyList.endCursor)}>
+            <Button
+              data-digix="Comment-Load-Replies"
+              kind="text"
+              xsmall
+              onClick={() => this.loadMore(replyList.endCursor)}
+            >
               Load more replies...
             </Button>
           </CommentReplyPost>
@@ -160,7 +165,7 @@ const { func, object } = PropTypes;
 ParentThread.propTypes = {
   ChallengeProof: object,
   client: object.isRequired,
-  currentUser: object.isRequired,
+  currentUser: object,
   queryVariables: object.isRequired,
   setCommentingPrivileges: func.isRequired,
   setError: func.isRequired,
@@ -170,6 +175,7 @@ ParentThread.propTypes = {
 
 ParentThread.defaultProps = {
   ChallengeProof: undefined,
+  currentUser: null,
 };
 
 const mapStateToProps = state => ({

@@ -7,6 +7,11 @@
   "selectWalletType": {
     "title": "加载钱包"
   },
+  "banned": {
+    "title": "DigixDAO isn't available in your country yet",
+    "description": "You don't have permission to view this page.",
+    "details": "Please contact us via the Help button below for any enquiries."
+  },
   "walletType": {
     "metamask": "MetaMask",
     "ledger": "Ledger",

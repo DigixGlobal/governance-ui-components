@@ -47,7 +47,7 @@ export default class ProposalCardMilestone extends React.Component {
   };
 
   render() {
-    const { details, userDetails, translations } = this.props;
+    const { details, translations } = this.props;
     const { currentMilestone } = details;
     const mileStones = currentMilestone ? Object.keys(currentMilestone) : [];
     const {
@@ -68,11 +68,7 @@ export default class ProposalCardMilestone extends React.Component {
           <Data>{determineDeadline(details) || 'N/A'} </Data>
         </Info>
         <Info>
-          <Button
-            primary
-            disabled={!userDetails.data.address}
-            onClick={this.redirectToProposalPage}
-          >
+          <Button primary onClick={this.redirectToProposalPage}>
             {buttons.participate}
           </Button>
         </Info>
@@ -84,6 +80,5 @@ export default class ProposalCardMilestone extends React.Component {
 ProposalCardMilestone.propTypes = {
   details: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
   translations: PropTypes.object.isRequired,
 };

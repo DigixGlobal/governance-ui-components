@@ -122,16 +122,16 @@ class Proposal extends React.PureComponent {
             {cardTranslation.by}{' '}
             <AuthorName style={{ pointerEvents: 'none' }}>{displayName}</AuthorName>
           </Author>
-          {canLike && (
-            <LikeButton
-              kind="text"
-              xsmall
-              hasVoted={likeStatus.liked}
-              likes={!likeStatus.likes ? 0 : likeStatus.likes}
-              onClick={() => this.toggleLike()}
-              translations={cardTranslation}
-            />
-          )}
+
+          <LikeButton
+            kind="text"
+            xsmall
+            disabled={!canLike}
+            hasVoted={likeStatus.liked}
+            likes={!likeStatus.likes ? 0 : likeStatus.likes}
+            onClick={() => this.toggleLike()}
+            translations={cardTranslation}
+          />
         </AboutProposal>
       </Details>
     );

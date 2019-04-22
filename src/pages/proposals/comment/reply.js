@@ -154,7 +154,7 @@ CommentReply.propTypes = {
   ChallengeProof: object,
   client: object.isRequired,
   comment: object.isRequired,
-  currentUser: object.isRequired,
+  currentUser: object,
   queryVariables: object.isRequired,
   renderThreadReplies: func.isRequired,
   setCommentingPrivileges: func.isRequired,
@@ -164,6 +164,7 @@ CommentReply.propTypes = {
 
 CommentReply.defaultProps = {
   ChallengeProof: undefined,
+  currentUser: null,
 };
 
 const mapStateToProps = state => ({

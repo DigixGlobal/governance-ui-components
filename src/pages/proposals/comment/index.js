@@ -279,15 +279,17 @@ class CommentThread extends React.Component {
         },
       },
     } = this.props;
-    const { canComment } = currentUser;
+    const { canComment } = currentUser || { canComment: false };
+    const cannotView = !currentUser;
     const hasComments = threads !== null && threads.edges.length > 0;
 
     return (
       <div>
-        <Title>{project.discussions}</Title>
+        {!cannotView && <Title>{project.discussions}</Title>}
         <CommentTextEditor
           addComment={this.addThread}
           canComment={canComment}
+          cannotView={cannotView}
           translations={{ project, buttons }}
         />
         {!hasComments && <p>{project.noComments}</p>}

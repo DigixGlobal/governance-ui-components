@@ -531,7 +531,7 @@ class Proposal extends React.Component {
                 hasVoted={liked}
                 likes={likes}
                 translations={cardTranslation}
-                disabled={!userData === null}
+                disabled={!userData}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
             </InfoItem>

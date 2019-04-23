@@ -12,7 +12,6 @@ import {
 
 class ClaimApprovalOverlay extends React.Component {
   render() {
-    console.log(this.props.translations);
     const {
       total,
       current,

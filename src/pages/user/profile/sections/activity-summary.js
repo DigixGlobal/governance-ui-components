@@ -31,10 +31,9 @@ class ProfileActivitySummary extends React.Component {
   }
 
   getKycStatus() {
-    // TODO: translate for other languages
     const { kyc } = this.props.userData;
     if (kyc && kyc.status) {
-      return kyc.status.charAt(0) + kyc.status.slice(1).toLowerCase();
+      return kyc.status;
     }
 
     return this.DEFAULT_KYC_STATUS;
@@ -53,7 +52,12 @@ class ProfileActivitySummary extends React.Component {
 
   showErrorOverlay() {
     this.props.showRightPanel({
-      component: <ErrorMessageOverlay errors={[KycErrors.resubmit]} location="Profile" />,
+      component: (
+        <ErrorMessageOverlay
+          errors={[KycErrors.resubmit]}
+          location={this.props.translations.proposalErrors.returnToProfile}
+        />
+      ),
       show: true,
     });
   }
@@ -62,7 +66,7 @@ class ProfileActivitySummary extends React.Component {
     const { refetchUser, translations } = this.props;
 
     this.props.showRightPanel({
-      component: <KycOverlay refetchUser={refetchUser} translations={translations} />,
+      component: <KycOverlay refetchUser={refetchUser} translations={translations.kyc} />,
       large: true,
       show: true,
     });
@@ -89,7 +93,7 @@ class ProfileActivitySummary extends React.Component {
     const showSubmitKycButton = canSubmitKyc || canResubmitKyc;
     const setEmailForKyc = !email && !kyc;
 
-    const t = this.props.translations;
+    const t = this.props.translations.kyc;
     const tOpenKycForm = t.OpenKycForm;
     const tResubmit = t.Errors.resubmit;
     const tKycStatus = t.Statuses[currentKycStatus.toLowerCase()] || currentKycStatus;

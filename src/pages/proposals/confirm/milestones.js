@@ -1,9 +1,15 @@
 import React from 'react';
+import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
 
-import { HorizontalBar } from '../../../components/common/elements/index';
-
-import { Section, Title, Content, Heading, DataContent } from './style';
+import { HorizontalBar } from '@digix/gov-ui/components/common/elements';
+import {
+  Content,
+  DataContent,
+  Heading,
+  Section,
+  Title,
+} from '@digix/gov-ui/pages/proposals/confirm/style';
 
 export default class Milestones extends React.Component {
   render() {
@@ -28,7 +34,9 @@ export default class Milestones extends React.Component {
                 <Heading>
                   {project.milestone} {i + 1}: {signTransaction.common.details}
                 </Heading>
-                <DataContent>{ms.description}</DataContent>
+                <DataContent>
+                  <Markdown source={ms.description} escapeHtml={false} />
+                </DataContent>
               </div>
             ))}
         </Content>

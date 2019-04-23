@@ -94,7 +94,9 @@ class EndorseProjectButton extends React.PureComponent {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
+
     return executeContractFunction(payload);
   };
   render() {
@@ -125,6 +127,7 @@ EndorseProjectButton.propTypes = {
   addresses: array.isRequired,
   history: object.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 EndorseProjectButton.defaultProps = {

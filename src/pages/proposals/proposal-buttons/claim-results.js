@@ -61,7 +61,6 @@ class ClaimResultsButton extends React.PureComponent {
 
   showOverlay = txns => {
     const { history, translations } = this.props;
-    console.log({ trans: translations });
     this.props.showRightPanel({
       component: (
         <MultiStepClaim
@@ -151,7 +150,9 @@ class ClaimResultsButton extends React.PureComponent {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
+
     return executeContractFunction(payload);
   };
 
@@ -260,6 +261,7 @@ ClaimResultsButton.propTypes = {
   addresses: array.isRequired,
   history: object.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 ClaimResultsButton.defaultProps = {

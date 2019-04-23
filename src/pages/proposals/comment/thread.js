@@ -96,7 +96,7 @@ class ParentThread extends React.Component {
   };
 
   renderThreadReplies = replyList => {
-    const { currentUser, setCommentingPrivileges, setError, userPoints } = this.props;
+    const { currentUser, setCommentingPrivileges, setError } = this.props;
     const replies = replyList.edges;
 
     const replyElements = replies.map(reply => {
@@ -111,7 +111,6 @@ class ParentThread extends React.Component {
           setCommentingPrivileges={setCommentingPrivileges}
           setError={setError}
           renderThreadReplies={this.renderThreadReplies}
-          userPoints={userPoints}
         />
       );
     });
@@ -122,7 +121,12 @@ class ParentThread extends React.Component {
         {replyElements}
         {hasSiblings && (
           <CommentReplyPost>
-            <Button data-digix="Comment-Load-Replies" kind="text" xsmall onClick={() => this.loadMore(replyList.endCursor)}>
+            <Button
+              data-digix="Comment-Load-Replies"
+              kind="text"
+              xsmall
+              onClick={() => this.loadMore(replyList.endCursor)}
+            >
               Load more replies...
             </Button>
           </CommentReplyPost>
@@ -132,7 +136,7 @@ class ParentThread extends React.Component {
   };
 
   render() {
-    const { currentUser, setError, userPoints } = this.props;
+    const { currentUser, setError } = this.props;
     const { thread, showEditor } = this.state;
     if (!thread) {
       return null;
@@ -146,7 +150,6 @@ class ParentThread extends React.Component {
           hideEditor={this.hideEditor}
           setError={setError}
           toggleEditor={this.toggleEditor}
-          userPoints={userPoints}
         />
         {showEditor && <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} />}
         {this.renderThreadReplies(thread.replies)}
@@ -160,16 +163,16 @@ const { func, object } = PropTypes;
 ParentThread.propTypes = {
   ChallengeProof: object,
   client: object.isRequired,
-  currentUser: object.isRequired,
+  currentUser: object,
   queryVariables: object.isRequired,
   setCommentingPrivileges: func.isRequired,
   setError: func.isRequired,
   thread: object.isRequired,
-  userPoints: object.isRequired,
 };
 
 ParentThread.defaultProps = {
   ChallengeProof: undefined,
+  currentUser: null,
 };
 
 const mapStateToProps = state => ({

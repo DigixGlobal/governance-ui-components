@@ -1,0 +1,60 @@
+{
+  "common": {
+    "buttons": {
+      "add": "Add",
+      "addMore": "Add More"
+    }
+  },
+  "project": {
+    "uploadDocument": "Upload Document",
+    "document": "Document",
+    "updates": "Updates",
+    "uploadImageButtonHelpText": "Image must be in PDF, JPEG or PNG format & file size must be lesser than 10mb."
+  },
+  "snackbars": {
+    "addDocs": {
+      "title": "Add Updates",
+      "txUiHeader": "Project",
+      "message": "Your Add Updates Transaction is pending confirmation. See More"
+    }
+  },
+  "signTransaction": {
+    "common": {
+      "cancelled": "Cancelled Signing",
+      "cancel": "Cancel Signing"
+    }
+  },
+  "loadWallet": {
+    "common": {
+      "createErrors": {
+        "requiredwalletType": "Please select a wallet type.",
+        "requiredName": "You must provide a name.",
+        "invalidNames": "You must provide a name for all addresses.",
+        "invalidPassword": "Passwords do not match."
+      }
+    },
+    "Json": {
+      "importInstructions": "Click or drag and drop here to load your file.",
+      "importError": "Keystore type not supported."
+    },
+    "Metamask": {
+      "ConnectionError": {
+        "noMetamask": "Cannot connect to MetaMask wallet. Make sure to login to your MetaMask wallet."
+      }
+    },
+    "Ledger": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "Getting address info..."
+        }
+      }
+    },
+    "Trezor": {
+      "chooseAddress": {
+        "selectPath": {
+          "loading": "Getting address info..."
+        }
+      }
+    }
+  }
+}

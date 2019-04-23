@@ -101,6 +101,7 @@ class ParticipationReward extends React.Component {
       onSuccess: txHash => onTransactionSuccess(txHash),
       params: [],
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
       ui,
       web3Params,
     };
@@ -156,6 +157,7 @@ ParticipationReward.propTypes = {
   showTxSigningModal: func.isRequired,
   subscribeToAddress: func.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
   web3Redux: object.isRequired,
 };
 

@@ -9,7 +9,7 @@ import Utility from '@digix/gov-ui/components/common/blocks/navbar/utility';
 class NavBar extends React.Component {
   render() {
     return (
-      <Header>
+      <Header id="nav-wrap">
         <Search />
         <Translator />
         <WalletButton />

@@ -112,6 +112,10 @@ class UnlockDgdOverlay extends React.Component {
         txHash,
       });
 
+      if (this.props.onSuccess) {
+        this.props.onSuccess();
+      }
+
       this.props.showRightPanel({ show: false });
     };
 
@@ -125,6 +129,7 @@ class UnlockDgdOverlay extends React.Component {
       onSuccess: txHash => onTransactionSuccess(txHash),
       params: [unlockAmount * 1e9],
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
       ui,
       web3Params,
     };
@@ -224,20 +229,25 @@ UnlockDgdOverlay.propTypes = {
   DaoConfig: object.isRequired,
   getDaoConfig: func.isRequired,
   maxAmount: number.isRequired,
+  onSuccess: func,
   showRightPanel: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlert: func.isRequired,
   showTxSigningModal: func.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
   web3Redux: object.isRequired,
 };
 
-UnlockDgdOverlay.defaultProps = {};
+UnlockDgdOverlay.defaultProps = {
+  onSuccess: undefined,
+};
 
 const mapStateToProps = state => ({
   addresses: getAddresses(state),
   ChallengeProof: state.daoServer.ChallengeProof.data,
   DaoConfig: state.infoServer.DaoConfig.data,
+  txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 
 export default web3Connect(

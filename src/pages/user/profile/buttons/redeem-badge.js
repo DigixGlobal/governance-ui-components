@@ -117,7 +117,7 @@ class RedeemBadgeButton extends React.PureComponent {
 
     const onTransactionSuccess = txHash => {
       this.props.showHideAlert({
-        message: 'Badge Redeemed',
+        message: t.redeemBadge,
         txHash,
       });
       this.setState({ redeemed: true }, () => {
@@ -138,6 +138,7 @@ class RedeemBadgeButton extends React.PureComponent {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
     return executeContractFunction(payload);
   };
@@ -181,7 +182,8 @@ RedeemBadgeButton.propTypes = {
   history: object.isRequired,
   getAddressDetails: func.isRequired,
   showRightPanel: func.isRequired,
-  translations: func.isRequired,
+  translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -190,6 +192,7 @@ const mapStateToProps = state => ({
   daoInfo: state.infoServer.DaoDetails.data,
   addresses: getAddresses(state),
   translations: state.daoServer.Translations.data.profile.ModeratorRequirements,
+  txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 
 export default web3Connect(

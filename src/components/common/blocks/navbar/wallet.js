@@ -3,18 +3,22 @@ import PropTypes from 'prop-types';
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
 
+import { withAppUser } from '@digix/gov-ui/api/graphql-queries/users';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import {
   NavItem,
-  AddressButton,
-  DropdownMenu,
-  MenuItem,
+  TransButton,
+  Selector,
+  Item,
 } from '@digix/gov-ui/components/common/blocks/navbar/style';
 
 import {
   showHideLockDgdOverlay,
   showHideWalletOverlay,
+  showRightPanel,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
+
+import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
 
 class WalletButton extends React.Component {
   state = {
@@ -35,13 +39,32 @@ class WalletButton extends React.Component {
     this.props.showHideLockDgd(true, null, 'Header');
   };
 
+  showErrorOverlay(errors) {
+    const {
+      common: { proposalErrors },
+    } = this.props.translations;
+    this.props.showRightPanel({
+      component: (
+        <ErrorMessageOverlay
+          errors={[errors]}
+          location={proposalErrors.returnToDashboard}
+          translations={this.props.translations.data}
+        />
+      ),
+      show: true,
+    });
+  }
+
   render() {
-    if (this.props.HasCountdown) {
+    if (this.props.HasCountdown || !this.props.translations.loadWallet) {
       return null;
     }
 
-    const { defaultAddress, canLockDgd } = this.props;
+    const { defaultAddress, canLockDgd, appUser } = this.props;
     const tHeader = this.props.translations.header;
+    const {
+      loadWallet: { banned },
+    } = this.props.translations;
 
     return (
       <Fragment>
@@ -51,7 +74,18 @@ class WalletButton extends React.Component {
               primary
               small
               data-digix="Header-LoadWallet"
-              onClick={() => this.onWalletClick()}
+              onClick={() =>
+                appUser.isUnavailable
+                  ? this.showErrorOverlay({
+                      title: banned.title || "DigixDAO isn't available in your country yet",
+                      details:
+                        banned.details ||
+                        'Please contact us via the Help button below for any enquiries.',
+                      description:
+                        banned.description || "You don't have permission to view this page.",
+                    })
+                  : this.onWalletClick()
+              }
             >
               {tHeader.loadWallet || 'Load Wallet'}
             </Button>
@@ -69,32 +103,29 @@ class WalletButton extends React.Component {
         </NavItem>
 
         {defaultAddress && (
-          <NavItem wallet>
-            <AddressButton
+          <NavItem dropdown wallet>
+            <TransButton
               kind="link"
-              xsmall
               data-digix="Header-Address"
               onClick={() => this.showDropdownMenu()}
             >
-              <span>{defaultAddress.address}</span>
+              <span className="wallet">{defaultAddress.address}</span>
               <Icon kind="arrow" />
-            </AddressButton>
+            </TransButton>
 
-            {this.state.open && (
-              <DropdownMenu>
-                <MenuItem>
-                  <Button
-                    kind="text"
-                    primary
-                    small
-                    data-digix="Header-LoadWallet"
-                    onClick={() => window.location.reload()}
-                  >
-                    {tHeader.logout || 'Logout'}
-                  </Button>
-                </MenuItem>
-              </DropdownMenu>
-            )}
+            <Selector>
+              <Item>
+                <Button
+                  kind="text"
+                  primary
+                  small
+                  data-digix="Header-LoadWallet"
+                  onClick={() => window.location.reload()}
+                >
+                  {tHeader.logout || 'Logout'}
+                </Button>
+              </Item>
+            </Selector>
           </NavItem>
         )}
       </Fragment>
@@ -110,6 +141,8 @@ WalletButton.propTypes = {
   canLockDgd: object,
   HasCountdown: bool.isRequired,
   translations: object,
+  showRightPanel: func.isRequired,
+  appUser: PropTypes.object.isRequired,
 };
 
 WalletButton.defaultProps = {
@@ -133,5 +166,6 @@ export default connect(
   {
     showHideLockDgd: showHideLockDgdOverlay,
     showHideWalletOverlay,
+    showRightPanel,
   }
-)(WalletButton);
+)(withAppUser(WalletButton));

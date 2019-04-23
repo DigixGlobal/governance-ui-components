@@ -88,7 +88,9 @@ class AbortProjectButton extends React.PureComponent {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
+
     return executeContractFunction(payload);
   };
 
@@ -136,6 +138,7 @@ AbortProjectButton.propTypes = {
   addresses: array.isRequired,
   history: object.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 AbortProjectButton.defaultProps = {

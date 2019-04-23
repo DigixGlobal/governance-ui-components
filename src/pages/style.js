@@ -13,9 +13,19 @@ export const ContentWrapper = styled.div`
   margin-left: 15%;
 `;
 
-export const Title = styled(H2)``;
+export const Title = styled(H2)`
+  margin-top: 0;
+  font-family: 'Futura PT Medium', sans-serif;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+`;
 
-export const TosWrapper = styled.div`
+export const Intro = styled.p`
+  margin-top: 3rem;
+  font-size: 1.6rem;
+`;
+
+export const Content = styled.div`
   padding: 1rem 2rem;
 `;
 

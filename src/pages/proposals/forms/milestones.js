@@ -1,12 +1,15 @@
 import React from 'react';
+import ReactQuill from 'react-quill';
 import PropTypes from 'prop-types';
+import Markdown from 'react-markdown';
 
-import { Input, Select, TextArea } from '@digix/gov-ui/components/common/elements/index';
+import { Input, Select } from '@digix/gov-ui/components/common/elements/index';
 import { Notifications } from '@digix/gov-ui/components/common/common-styles';
 import { injectTranslation } from '@digix/gov-ui/utils/helpers';
 
 import {
   CreateMilestone,
+  EditorContainer,
   ErrorMessage,
   Fieldset,
   FormItem,
@@ -19,6 +22,12 @@ class Milestones extends React.Component {
     this.state = {
       milestones: [],
       milestoneCount: 1,
+    };
+
+    this.DEFAULT_MILESTONE_ERRORS = {
+      invalidFunds: false,
+      invalidDescription: false,
+      invalidLink: false,
     };
   }
 
@@ -56,7 +65,7 @@ class Milestones extends React.Component {
         milestones,
       },
       () => {
-        this.props.onChange('milestones', milestones);
+        this.props.onChange('milestones', milestones, false);
       }
     );
   };
@@ -64,7 +73,7 @@ class Milestones extends React.Component {
   handleChange = (e, i, field) => {
     const { milestones } = this.state;
     const { onChange } = this.props;
-    const { value } = e.target;
+    const value = e.target ? e.target.value : e;
 
     let currentField = milestones[i];
     if (currentField) {
@@ -76,7 +85,7 @@ class Milestones extends React.Component {
 
     milestones[i] = currentField;
     this.setState({ milestones: [...milestones] }, () => {
-      onChange('milestones', milestones);
+      onChange('milestones', milestones, true, field, i);
     });
   };
 
@@ -84,27 +93,40 @@ class Milestones extends React.Component {
     const { milestoneCount, milestones } = this.state;
     const {
       form,
-      translations: { project },
+      translations: { common, project },
     } = this.props;
+
+    const errors = this.props.errors.milestones;
     const count = milestoneCount;
     const createdMilestones = form.milestones || milestones;
     const fields = [];
 
     for (let index = 0; index < count; index += 1) {
+      const createMilestone = createdMilestones[index];
+      const fund = createMilestone ? createMilestone.fund : '';
+      const description = createMilestone ? createMilestone.description : '';
+
+      let error = errors ? errors[index] : null;
+      error = error || this.DEFAULT_MILESTONE_ERRORS;
+      const { invalidFunds, invalidDescription, invalidLink } = error;
+      const hasDescriptionError = invalidDescription || invalidLink;
+
       fields.push(
         <CreateMilestone key={index}>
           <FormItem>
-            <Label req>
+            <Label error={invalidFunds} req>
               {project.milestone} - #{index + 1} {project.fundsRequiredForMilestone}
               <span>&nbsp;*</span>
             </Label>
             <Input
               name={index}
               type="number"
-              value={createdMilestones[index] ? createdMilestones[index].fund : ''}
+              value={fund || ''}
+              error={invalidFunds}
               onChange={e => this.handleChange(e, index, 'fund')}
               placeholder={project.milestonePlaceholder}
             />
+            {invalidFunds && <ErrorMessage>{common.errors.fieldIsRequired}</ErrorMessage>}
           </FormItem>
 
           <FormItem>
@@ -112,16 +134,25 @@ class Milestones extends React.Component {
               {project.milestoneDescription}
               <span>&nbsp;*</span>
             </Label>
-            <TextArea
-              name={index}
-              value={createdMilestones[index] ? createdMilestones[index].description : ''}
-              onChange={e => this.handleChange(e, index, 'description')}
-              placeholder={project.milestoneDescriptionPlaceholder}
-            />
+            <EditorContainer error={hasDescriptionError}>
+              <ReactQuill
+                name={index}
+                value={description || ''}
+                onChange={e => this.handleChange(e, index, 'description')}
+                placeholder={project.milestoneDescriptionPlaceholder}
+              />
+            </EditorContainer>
+            {invalidDescription && <ErrorMessage>{common.errors.fieldIsRequired}</ErrorMessage>}
+            {invalidLink && (
+              <ErrorMessage>
+                <Markdown source={common.errors.invalidLink} escapeHtml={false} />
+              </ErrorMessage>
+            )}
           </FormItem>
         </CreateMilestone>
       );
     }
+
     return fields;
   };
 

@@ -6,6 +6,7 @@ import {
   FieldsetStyle,
   Label as FormLabel,
   Card,
+  Notifications,
 } from '@digix/gov-ui/components/common/common-styles';
 
 export const CreateWrapper = styled.div``;
@@ -16,7 +17,7 @@ export const TabPanel = styled.div`
 `;
 export const MenuItem = styled.div`
   flex: 1;
-  font-family: 'Futura PT Medium';
+  font-family: 'Futura PT Medium', sans-serif;
   border-bottom: 1px solid #ccc;
   display: flex;
   justify-content: center;
@@ -64,24 +65,24 @@ export const Label = styled(FormLabel)`
 export const MediaUploader = styled(Card)`
   align-items: flex-start;
 
-  ${media.mobile`
+  ${media.tablet`
     flex-direction: column;
   `}
 
   > div {
     &:first-child {
       margin-right: 2rem;
-      flex: 0 0 auto;
+      flex: 1 0 45%;
 
-      ${media.mobile`
+      ${media.tablet`
         width: 100%;
       `}
     }
     &:last-child {
-      flex: 1 0 0;
+      flex: 0 1 auto;
       margin-top: 5px;
 
-      ${media.tablet`git
+      ${media.tablet`
         margin-top: 2rem;
         width: 100%;
       `}
@@ -94,41 +95,148 @@ export const ImageHolder = styled.div`
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   width: 100%;
-  min-height: 200px;
+  min-height: 150px;
   padding: 0;
+  display: flex;
+  flex-flow: row wrap;
 
-  & > div > img {
+  img {
     height: auto;
     width: 100%;
     margin: 0;
   }
 `;
 
+export const Document = styled.div``;
+
 export const ImageItem = styled.div`
+  background: #fff;
+  border-bottom: 1px solid ${props => props.theme.card.border.lighter.toString()};
+  flex: 0 1 calc(50% - 0.5rem);
+  margin-right: 1rem;
+  margin-bottom: 1rem;
   position: relative;
   padding: 1rem;
-  border-bottom: 1px solid #fff;
+
+  &:nth-child(even) {
+    margin-right: 0;
+  }
 
   &:last-child {
-    border-bottom: none;
+    border-bottom: 0;
   }
+
+  canvas {
+    width: 100%;
+  }
+
+  ${media.mobile`
+    flex: 0 1 100%;
+  `}
+
+  ${props =>
+    props.uploadForm &&
+    css`
+      flex: 0 1 100%;
+      margin-right: 0;
+      margin-bottom: 0;
+
+      & > button {
+        &:first-child {
+          right: 1rem;
+        }
+        &:nth-of-type(2) {
+          right: 5.5rem;
+        }
+      }
+    `}
+
+    ${props =>
+      props.addUpdates &&
+      css`
+        flex: 0 1 100%;
+        margin-right: 0;
+        margin-bottom: 0;
+
+        button {
+          border-radius: 50%;
+
+          &:first-child {
+            right: -5.5rem;
+            top: -6rem;
+
+            ${media.tablet`
+              top: -18rem; 
+            `}
+
+            ${media.mobile`
+              top: -20rem; 
+            `}
+          }
+          &:nth-of-type(2) {
+            right: 1rem;
+          }
+        }
+      `}
+
+    ${props =>
+      props.preview &&
+      css`
+        margin-right: 0;
+        border-bottom: 0;
+        padding: 0;
+      `}
 `;
 
-export const CloseButton = styled(Button)`
+const ButtonStyles = css`
   position: absolute;
-  right: 1rem;
   background: ${props => props.theme.background.white.toString()};
   border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
+  box-shadow: none;
   font-size: 1.2rem;
   margin: 0.5rem;
   padding: 1rem;
+  top: 1rem;
 
   div {
-    svg {
-      fill: ${props => props.theme.icon.default.base.toString()};
-    }
+    margin-right: 0;
+    width: 1.75rem;
+    height: 1.75rem;
   }
+
+  &:hover {
+    background: ${props => props.theme.background.white.toString()};
+    border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  }
+`;
+
+export const Delete = styled(Button)`
+  ${ButtonStyles};
+  right: 1rem;
+`;
+
+export const Next = styled(Button)`
+  ${ButtonStyles};
+  right: 1rem;
+
+  div {
+    transform: rotate(275deg);
+  }
+`;
+
+export const Previous = styled(Button)`
+  ${ButtonStyles};
+  right: 5.5rem;
+
+  div {
+    transform: rotate(90deg);
+  }
+`;
+
+export const Enlarge = styled(Button)`
+  ${ButtonStyles};
+  right: 5.5rem;
 `;
 
 export const CreateMilestone = styled.div`
@@ -147,6 +255,16 @@ export const EditorContainer = styled.div`
     height: 20rem;
   }
 
+  & .ql-toolbar.ql-snow {
+    border-top-left-radius: ${props => props.theme.borderRadius};
+    border-top-right-radius: ${props => props.theme.borderRadius};
+  }
+
+  & .ql-container.ql-snow {
+    border-bottom-left-radius: ${props => props.theme.borderRadius};
+    border-bottom-right-radius: ${props => props.theme.borderRadius};
+  }
+
   ${props =>
     props.error &&
     css`
@@ -162,4 +280,62 @@ export const ErrorMessage = styled.span`
   color: ${props => props.theme.alertMessage.error.default.toString()};
   display: inline-block;
   font-size: 1.4rem;
+`;
+
+export const ErrorNotifications = styled(Notifications)`
+  border: 0;
+  box-shadow: none;
+  color: ${props => props.theme.alertMessage.error.base.toString()};
+  font-size: 1.4rem;
+  padding: 1.5rem 2rem;
+  margin-bottom: 0;
+`;
+
+export const AddMoreButton = styled(Button)`
+  display: flex;
+  flex-direction: column;
+  color: ${props => props.theme.textColor.default.light.toString()};
+  transition: ${props => props.theme.transition};
+
+  & > div {
+    margin-bottom: 1rem;
+    margin-right: 0;
+    border: 1px solid ${props => props.theme.icon.default.light.toString()};
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    transition: ${props => props.theme.transition};
+
+    svg {
+      fill: ${props => props.theme.icon.default.light.toString()};
+      width: 50%;
+    }
+  }
+
+  &:hover {
+    color: ${props => props.theme.textColor.primary.base.toString()};
+
+    & > div {
+      background: ${props => props.theme.textColor.primary.fade.toString()};
+      border: 1px solid ${props => props.theme.icon.primary.base.toString()};
+
+      svg {
+        fill: ${props => props.theme.icon.primary.light.toString()};
+      }
+    }
+  }
+`;
+
+export const Note = styled.div`
+  padding: 1.5rem 0;
+  margin-bottom: 0;
+`;
+
+export const ModalCta = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
 `;

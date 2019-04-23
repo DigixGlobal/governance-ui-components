@@ -8,7 +8,8 @@
     "gasPrice": "Gas Price",
     "modifyInstructions": "You can modify the transaction details using the **Advanced** tab below. Once you are satisfied with the details, please click **Sign Transaction** to confirm the transaction with your ledger device.",
     "sign": "Sign Transaction",
-    "cancelled": "Cancelled Signing"
+    "cancelled": "Cancelled Signing",
+    "cancel": "Cancel Signing"
   },
   "Metamask": {
     "title": "Waiting for MetaMask Transaction Confirmation",
@@ -16,8 +17,7 @@
   },
   "Ledger": {
     "ready": "Ready to Sign Transaction",
-    "firmware": "Firmware {{version}} - replay protection enabled!",
-    "firmwareDisabled": "Firmware {{version}} - replay protection disabled!"
+    "firmware": "Firmware {{version}} - replay protection enabled!"
   },
   "Trezor": {
     "ready": "Ready to Sign Transaction",

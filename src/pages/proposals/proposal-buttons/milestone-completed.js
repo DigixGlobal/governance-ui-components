@@ -88,7 +88,9 @@ class CompleteMilestoneButton extends React.PureComponent {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
+
     return executeContractFunction(payload);
   };
 
@@ -142,6 +144,7 @@ CompleteMilestoneButton.propTypes = {
   addresses: array.isRequired,
   history: object.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 CompleteMilestoneButton.defaultProps = {
@@ -151,6 +154,7 @@ CompleteMilestoneButton.defaultProps = {
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 
 export default web3Connect(

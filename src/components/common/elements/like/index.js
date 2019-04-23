@@ -5,11 +5,16 @@ import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 
 class LikeButton extends React.Component {
   render() {
-    const { hasVoted, onClick, likes, translations } = this.props;
+    const { hasVoted, onClick, likes, translations, disabled } = this.props;
     const likeMessage =
       likes && likes > 0 ? `${likes} ${translations.likes}` : `0 ${translations.likes}`;
     return (
-      <Button kind="text" active={hasVoted} onClick={onClick}>
+      <Button
+        kind="text"
+        active={hasVoted}
+        disabled={disabled ? 'disabled' : undefined}
+        onClick={onClick}
+      >
         <Icon kind="like" active={hasVoted} />
         {likeMessage}
       </Button>
@@ -23,6 +28,7 @@ LikeButton.propTypes = {
   onClick: func,
   hasVoted: bool,
   likes: number,
+  disabled: bool,
   translations: object.isRequired,
 };
 
@@ -30,6 +36,7 @@ LikeButton.defaultProps = {
   hasVoted: false,
   onClick: undefined,
   likes: undefined,
+  disabled: false,
 };
 
 export default LikeButton;

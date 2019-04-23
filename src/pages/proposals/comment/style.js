@@ -34,7 +34,26 @@ export const EditorContainer = styled.div`
 `;
 
 export const CommentEditorContainer = styled.div`
+  margin-top: 0.5em;
   position: relative;
+
+  & .ql-toolbar.ql-snow {
+    border-top-left-radius: ${props => props.theme.borderRadius};
+    border-top-right-radius: ${props => props.theme.borderRadius};
+  }
+
+  & .ql-container.ql-snow {
+    border-bottom-left-radius: ${props => props.theme.borderRadius};
+    border-bottom-right-radius: ${props => props.theme.borderRadius};
+  }
+
+  ${props =>
+    props.error &&
+    css`
+      & .ql-snow {
+        border: 1px solid ${props.theme.alertMessage.error.default.toString()};
+      }
+    `};
 `;
 
 export const CommentEditor = styled.div``;
@@ -97,7 +116,7 @@ export const CommentPost = styled.div`
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   color: ${props => props.theme.textDefault.default.toString()};
-  padding: 2rem 3rem 2rem 3rem;
+  padding: 2rem 3rem 1rem 3rem;
   margin-top: ${props => (props.deleted ? 2 : 0)}rem;
 
   ${props =>
@@ -121,6 +140,7 @@ export const ActionBar = styled.div`
   display: flex;
   justify-content: flex-start;
   border-top: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  padding-bottom: 1rem;
   margin-top: 2rem;
   margin-left: -1rem;
   margin-bottom: -1rem;
@@ -155,4 +175,9 @@ export const ActionCommentButton = styled(Button)`
 export const CommentReplyPost = styled.div`
   margin-left: 5rem;
   margin-top: 1rem;
+`;
+
+export const ErrorMessage = styled.span`
+  color: ${props => props.theme.alertMessage.error.default.toString()};
+  font-size: 1.4rem;
 `;

@@ -120,6 +120,7 @@ class ApproveProposalOverlay extends React.Component {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
 
     return executeContractFunction(payload);
@@ -180,6 +181,7 @@ ApproveProposalOverlay.propTypes = {
   showTxSigningModal: func.isRequired,
   web3Redux: object.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 const mapStateToProps = state => ({

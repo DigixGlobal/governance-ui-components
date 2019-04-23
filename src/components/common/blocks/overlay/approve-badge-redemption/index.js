@@ -92,19 +92,19 @@ class BadgeRedemptionApproval extends React.Component {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
 
     return executeContractFunction(payload);
   };
 
   render() {
+    const t = this.props.translations;
+
     return (
       <IntroContainer>
-        <Header uppercase>Enabling Your DGD BADGE For Use</Header>
-        <p>
-          In order to redeem a DGD Badge, we need your approval in order for our contracts to
-          interact with your DGD Badge.
-        </p>
+        <Header uppercase>{t.title}</Header>
+        <p>{t.instructions}</p>
         <Button
           kind="round"
           secondary
@@ -113,7 +113,7 @@ class BadgeRedemptionApproval extends React.Component {
           onClick={this.handleSubmit}
           data-digix="Approve-Interaction"
         >
-          APPROVE THE INTERACTION
+          {t.button}
         </Button>
       </IntroContainer>
     );
@@ -130,12 +130,16 @@ BadgeRedemptionApproval.propTypes = {
   showHideAlertAction: func.isRequired,
   showRightPanelAction: func.isRequired,
   showTxSigningModal: func.isRequired,
+  translations: object.isRequired,
+  txnTranslations: object.isRequired,
   web3Redux: object.isRequired,
 };
 
 const mapStateToProps = state => ({
   ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  translations: state.daoServer.Translations.data.approveInteraction,
+  txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 
 export default web3Connect(

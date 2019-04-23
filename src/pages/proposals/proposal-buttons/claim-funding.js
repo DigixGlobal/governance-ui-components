@@ -95,7 +95,9 @@ class ClaimFundingButton extends React.PureComponent {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
+
     return executeContractFunction(payload);
   };
 
@@ -149,6 +151,7 @@ ClaimFundingButton.propTypes = {
   addresses: array.isRequired,
   history: object.isRequired,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 ClaimFundingButton.defaultProps = {

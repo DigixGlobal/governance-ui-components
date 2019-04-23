@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import PropTypes from 'prop-types';
+import Markdown from 'react-markdown';
 
 import 'react-quill/dist/quill.snow.css';
 import '@digix/gov-ui/pages/proposals/forms/quill.css';
@@ -20,7 +21,9 @@ class Details extends React.Component {
       onChange,
       translations: { project, common },
     } = this.props;
-    const { invalidDetails } = this.props.errors;
+
+    const { invalidDetails, invalidLink } = this.props.errors;
+    const hasDetailsError = invalidDetails || invalidLink;
 
     return (
       <Fieldset>
@@ -29,7 +32,7 @@ class Details extends React.Component {
             {project.projectInformation}
             <span>&nbsp;*</span>
           </Label>
-          <EditorContainer error={invalidDetails}>
+          <EditorContainer error={hasDetailsError}>
             <ReactQuill
               id="details"
               value={form.details || ''}
@@ -37,6 +40,11 @@ class Details extends React.Component {
             />
           </EditorContainer>
           {invalidDetails && <ErrorMessage>{common.errors.fieldIsRequired}</ErrorMessage>}
+          {invalidLink && (
+            <ErrorMessage>
+              <Markdown source={common.errors.invalidLink} escapeHtml={false} />
+            </ErrorMessage>
+          )}
         </FormItem>
       </Fieldset>
     );

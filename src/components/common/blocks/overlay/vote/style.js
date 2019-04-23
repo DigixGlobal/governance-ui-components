@@ -6,13 +6,14 @@ export const VoteButton = styled(Button)`
   padding: 6rem;
   font-size: 3.6rem;
   font-family: 'Futura PT Heavy';
+  transition: ${props => props.theme.transition};
 
-  background: ${props => props.theme.buttonDefault.background.fade.toString()}
-  color: ${props => props.theme.buttonPrimary.textColor.base.toString()};
+  background-color: ${props => props.theme.buttonDefault.background.fade.toString()};
+  color: ${props => props.theme.buttonDefault.textColor.base.toString()};
 
   &:hover {
-    background-color: ${props => props.theme.buttonInverted.background.base.toString()};
-    color: ${props => props.theme.buttonPrimary.textColor.base.toString()};
+    background-color: ${props => props.theme.buttonSecondary.background.fade.toString()};
+    color: ${props => props.theme.buttonSecondary.textColor.base.toString()};
   }
 
   ${props =>
@@ -21,10 +22,10 @@ export const VoteButton = styled(Button)`
       &,
       &:hover,
       &:focus {
-        color: ${props.theme.buttonSecondary.invert.textColor.base.toString()};
-        background-color: ${props.theme.buttonInverted.background.base.toString()};
-        border: 2px solid ${props.theme.buttonInverted.border.base.toString()};
+        background-color: ${props.theme.buttonSecondary.invert.background.base.toString()};
+        border: 2px solid ${props.theme.buttonSecondary.invert.border.base.toString()};
         box-shadow: none;
+        color: ${props.theme.buttonSecondary.invert.textColor.base.toString()};
       }
     `};
   ${props =>
@@ -34,8 +35,8 @@ export const VoteButton = styled(Button)`
       &:hover,
       &:focus {
         color: ${props.theme.buttonSecondary.invert.textColor.base.toString()};
-        background-color: ${props.theme.buttonInverted.background.base.toString()};
-        border: 2px solid ${props.theme.buttonInverted.border.base.toString()};
+        background-color: ${props.theme.buttonSecondary.invert.background.base.toString()};
+        border: 2px solid ${props.theme.buttonSecondary.invert.border.base.toString()};
         box-shadow: none;
       }
     `};

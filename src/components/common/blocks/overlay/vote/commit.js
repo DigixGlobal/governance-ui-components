@@ -152,6 +152,7 @@ class CommitVote extends React.Component {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
 
     return executeContractFunction(payload);
@@ -275,6 +276,7 @@ CommitVote.propTypes = {
   web3Redux: object.isRequired,
   revoting: bool,
   translations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 CommitVote.defaultProps = {

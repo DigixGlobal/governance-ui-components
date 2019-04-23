@@ -115,7 +115,10 @@ export const fetchProposal = gql`
         created
         milestoneFundings
         finalReward
-        moreDocs
+        moreDocs {
+          docs
+          created
+        }
         totalFunding
         dijixObject {
           title
@@ -263,7 +266,10 @@ const proposalSubscription = gql`
         created
         milestoneFundings
         finalReward
-        moreDocs
+        moreDocs {
+          docs
+          created
+        }
         totalFunding
         dijixObject {
           title

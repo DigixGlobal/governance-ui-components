@@ -90,10 +90,12 @@ export const Container = css`
   flex-direction: ${props => props.column && 'column'};
 `;
 
-export const Message = styled.p`
+export const Message = styled.div`
   font-size: ${props => (props.title ? '1.8rem' : '')};
   text-transform: ${props => (props.uppercase ? 'uppercase' : '')};
   font-family: ${props => (props.title !== undefined ? 'Futura PT Medium, sans-serif' : '')};
+  margin-bottom: 1em;
+  font-weight: 300;
 
   ${props =>
     props.note &&

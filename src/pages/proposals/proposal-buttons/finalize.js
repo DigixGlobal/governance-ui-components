@@ -161,7 +161,7 @@ FinalizeProjectButton.propTypes = {
   stage: string.isRequired,
   endorser: string,
   proposalId: string.isRequired,
-  finalVersionIpfsDoc: string.isRequired,
+  finalVersionIpfsDoc: string,
   isProposer: bool,
   web3Redux: object.isRequired,
   daoConfig: object.isRequired,
@@ -180,8 +180,9 @@ FinalizeProjectButton.propTypes = {
 };
 
 FinalizeProjectButton.defaultProps = {
-  isProposer: false,
   endorser: EMPTY_HASH,
+  finalVersionIpfsDoc: null,
+  isProposer: false,
 };
 
 const mapStateToProps = state => ({

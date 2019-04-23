@@ -469,12 +469,18 @@ class Proposal extends React.Component {
       userData,
       Translations,
     } = this.props;
+
+    const { currentVersion } = this.state;
+    const proposal = proposalDetails.data;
+
+    const proposalVersion = proposal ? proposal.proposalVersions[currentVersion] : undefined;
+
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
     const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
-
+    const hasMoreDocs = proposalVersion ? proposalVersion.moreDocs.length > 0 : false;
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
@@ -547,7 +553,7 @@ class Proposal extends React.Component {
           uintConfigs={proposalDetails.data.uintConfigs}
           translations={translations}
         />
-        <AdditionalDocs translations={translations} propsal={proposalDetails} />
+        {hasMoreDocs && <AdditionalDocs translations={translations} proposal={proposalDetails} />}
         <CommentThread
           proposalId={this.PROPOSAL_ID}
           uid={addressDetails.data.address}

@@ -12,11 +12,9 @@ import ParentThread from '@digix/gov-ui/pages/proposals/comment/thread';
 import { CommentsApi } from '@digix/gov-ui/api/comments';
 import { fetchThreadsQuery } from '@digix/gov-ui/api/graphql-queries/comments';
 import { fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
-import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { getDaoProposalDetails } from '@digix/gov-ui/reducers/dao-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { UsersApi } from '@digix/gov-ui/api/users';
 
 class CommentThread extends React.Component {
   constructor(props) {
@@ -29,8 +27,6 @@ class CommentThread extends React.Component {
       },
       sortBy: 'LATEST',
       threads: null,
-      userAddresses: [],
-      userPoints: {},
     };
 
     this.FILTERS = [
@@ -54,23 +50,7 @@ class CommentThread extends React.Component {
 
   componentDidMount() {
     const { sortBy } = this.state;
-    const { ChallengeProof, proposalId, uid } = this.props;
-
-    if (uid !== '') {
-      this.props.getAddressDetails(uid).then(() => {
-        const { address, quarterPoint, reputationPoint } = this.props.addressDetails;
-        const userPoints = {};
-        userPoints[address] = {
-          reputation: reputationPoint,
-          quarterPoints: quarterPoint,
-        };
-
-        this.setState({
-          userAddresses: [address],
-          userPoints,
-        });
-      });
-    }
+    const { ChallengeProof, proposalId } = this.props;
 
     this.fetchThreads({ sortBy });
     this.fetchCurrentUser();
@@ -195,38 +175,9 @@ class CommentThread extends React.Component {
       })
       .then(result => {
         const threads = result.data.commentThreads;
-        this.setState({ threads }, () => {
-          this.fetchUserPoints(threads);
-        });
+        this.setState({ threads });
       });
   }
-
-  fetchUserPoints = threads => {
-    const { userAddresses } = this.state;
-    const { ChallengeProof, uid } = this.props;
-
-    if (!ChallengeProof.data) {
-      return;
-    }
-
-    const newUniqueAddresses = CommentsApi.getUniqueUsers(userAddresses, threads);
-    this.setState({ userAddresses: newUniqueAddresses });
-    const payload = initializePayload(ChallengeProof);
-
-    UsersApi.getPoints(newUniqueAddresses, payload)
-      .then(userPoints => {
-        const { addressDetails } = this.props;
-        userPoints[uid] = {
-          reputation: addressDetails.reputationPoint,
-          quarterPoints: addressDetails.quarterPoint,
-        };
-
-        this.setState({ userPoints });
-      })
-      .catch(() => {
-        this.setError(UsersApi.ERROR_MESSAGES.getPoints);
-      });
-  };
 
   loadMore = endCursor => {
     const { sortBy, threads } = this.state;
@@ -252,7 +203,7 @@ class CommentThread extends React.Component {
   };
 
   renderThreads(threadList) {
-    const { currentUser, userPoints } = this.state;
+    const { currentUser } = this.state;
 
     return threadList.edges.map(thread => {
       const comment = thread.node;
@@ -265,7 +216,6 @@ class CommentThread extends React.Component {
           setCommentingPrivileges={this.setCommentingPrivileges}
           setError={this.setError}
           thread={comment}
-          userPoints={userPoints}
         />
       );
     });
@@ -324,13 +274,11 @@ class CommentThread extends React.Component {
   }
 }
 
-const { func, object, string, oneOfType } = PropTypes;
+const { func, object, string } = PropTypes;
 
 CommentThread.propTypes = {
-  addressDetails: oneOfType([object, string]),
   ChallengeProof: object,
   client: object.isRequired,
-  getAddressDetails: func.isRequired,
   getDaoProposalDetails: func.isRequired,
   proposalId: string.isRequired,
   rootCommentId: object,
@@ -340,18 +288,12 @@ CommentThread.propTypes = {
 };
 
 CommentThread.defaultProps = {
-  addressDetails: {
-    reputationPoint: 0,
-    quarterPoint: 0,
-  },
-
   ChallengeProof: undefined,
   rootCommentId: undefined,
   uid: '',
 };
 
-const mapStateToProps = ({ daoServer, infoServer }) => ({
-  addressDetails: infoServer.AddressDetails.data,
+const mapStateToProps = ({ daoServer }) => ({
   ChallengeProof: daoServer.ChallengeProof,
   rootCommentId: daoServer.ProposalDaoDetails,
   Translations: daoServer.Translations,
@@ -361,7 +303,6 @@ export default withApollo(
   connect(
     mapStateToProps,
     {
-      getAddressDetails,
       getDaoProposalDetails,
       showHideAlert,
     }

@@ -185,7 +185,7 @@ class Comment extends React.Component {
   }
 
   render() {
-    const { currentUser, userPoints, translations } = this.props;
+    const { currentUser, translations } = this.props;
     const { comment } = this.state;
     const { body, isBanned, user } = comment;
     const isForumAdmin = currentUser != null ? currentUser : false;
@@ -198,12 +198,7 @@ class Comment extends React.Component {
 
     return (
       <CommentListItem>
-        <CommentAuthor
-          hide={isDeleted}
-          user={user}
-          userPoints={userPoints}
-          translations={translations}
-        />
+        <CommentAuthor hide={isDeleted} user={user} translations={translations} />
         <CommentPost isHidden={isHidden} deleted={isDeleted}>
           <Content>
             <Markdown source={commentMessage} escapeHtml={false} />
@@ -230,7 +225,6 @@ Comment.propTypes = {
   hideEditor: func.isRequired,
   setError: func.isRequired,
   toggleEditor: func.isRequired,
-  userPoints: object.isRequired,
   translations: object.isRequired,
 };
 

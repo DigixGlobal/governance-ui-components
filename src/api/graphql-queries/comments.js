@@ -13,6 +13,8 @@ const fragments = {
       user {
         address
         displayName
+        reputationPoint
+        quarterPoint
       }
     }
   `,

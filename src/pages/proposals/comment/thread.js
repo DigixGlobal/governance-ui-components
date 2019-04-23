@@ -96,7 +96,7 @@ class ParentThread extends React.Component {
   };
 
   renderThreadReplies = replyList => {
-    const { currentUser, setCommentingPrivileges, setError, userPoints } = this.props;
+    const { currentUser, setCommentingPrivileges, setError } = this.props;
     const replies = replyList.edges;
 
     const replyElements = replies.map(reply => {
@@ -111,7 +111,6 @@ class ParentThread extends React.Component {
           setCommentingPrivileges={setCommentingPrivileges}
           setError={setError}
           renderThreadReplies={this.renderThreadReplies}
-          userPoints={userPoints}
         />
       );
     });
@@ -137,7 +136,7 @@ class ParentThread extends React.Component {
   };
 
   render() {
-    const { currentUser, setError, userPoints } = this.props;
+    const { currentUser, setError } = this.props;
     const { thread, showEditor } = this.state;
     if (!thread) {
       return null;
@@ -151,7 +150,6 @@ class ParentThread extends React.Component {
           hideEditor={this.hideEditor}
           setError={setError}
           toggleEditor={this.toggleEditor}
-          userPoints={userPoints}
         />
         {showEditor && <CommentTextEditor addComment={this.addReply} callback={this.hideEditor} />}
         {this.renderThreadReplies(thread.replies)}
@@ -170,7 +168,6 @@ ParentThread.propTypes = {
   setCommentingPrivileges: func.isRequired,
   setError: func.isRequired,
   thread: object.isRequired,
-  userPoints: object.isRequired,
 };
 
 ParentThread.defaultProps = {

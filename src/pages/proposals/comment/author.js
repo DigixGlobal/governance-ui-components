@@ -8,31 +8,27 @@ export default class CommentAuthor extends React.Component {
     const {
       hide,
       user,
-      userPoints,
       translations: {
         data: {
           dashboard: { UserStats },
         },
       },
     } = this.props;
+
     if (hide) {
       return null;
     }
-
-    const points = userPoints[user.address];
-    const reputationPoints = points ? points.reputation : 0;
-    const quarterPoints = points ? points.quarterPoints : 0;
 
     return (
       <UserInfo>
         <span data-digix="CommentAuthor-DisplayName">{user.displayName}</span>
         <span>&bull;</span>
         <span data-digix="CommentAuthor-Reputation">
-          {UserStats.reputationPoints}: {reputationPoints}
+          {UserStats.reputationPoints}: {user.reputationPoint}
         </span>
         <span>&bull;</span>
         <span data-digix="CommentAuthor-QuarterPoints">
-          {UserStats.quarterPoints}: {quarterPoints}
+          {UserStats.quarterPoints}: {user.quarterPoint}
         </span>
       </UserInfo>
     );
@@ -44,7 +40,6 @@ const { bool, object } = PropTypes;
 CommentAuthor.propTypes = {
   hide: bool,
   user: object.isRequired,
-  userPoints: object.isRequired,
   translations: object.isRequired,
 };
 

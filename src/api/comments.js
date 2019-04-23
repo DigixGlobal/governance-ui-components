@@ -73,7 +73,7 @@ export const CommentsApi = {
   }),
 
   generateNewComment: (node, currentUser, parentId) => {
-    const { address, displayName } = currentUser;
+    const { address, displayName, quarterPoint, reputationPoint } = currentUser;
 
     return {
       node: {
@@ -87,6 +87,8 @@ export const CommentsApi = {
         user: {
           address,
           displayName,
+          quarterPoint,
+          reputationPoint,
           __typename: 'User',
         },
         replies: {

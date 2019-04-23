@@ -34,6 +34,8 @@ export const fetchUserQuery = gql`
       createdAt
       isForumAdmin
       isKycOfficer
+      reputationPoint
+      quarterPoint
       kyc {
         id
         status

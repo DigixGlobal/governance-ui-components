@@ -11,6 +11,7 @@ export const TextBtn = styled(Button)`
   box-shadow: none;
   padding: 0;
   margin: 0;
+  text-decoration: ${props => (props.underline ? 'underline' : 'inherit')};
 
   color: ${props =>
     props.primary

@@ -13,6 +13,7 @@ import ClaimResultsButton from '@digix/gov-ui/pages/proposals/proposal-buttons/c
 import MilestoneCompletedButton from '@digix/gov-ui/pages/proposals/proposal-buttons/milestone-completed';
 import ClaimFundingButton from '@digix/gov-ui/pages/proposals/proposal-buttons/claim-funding';
 import VoteCommitButton from '@digix/gov-ui/pages/proposals/proposal-buttons/vote-commit';
+import AddDocumentsButton from '@digix/gov-ui/pages/proposals/proposal-buttons/add-documents';
 import RevealButton from '@digix/gov-ui/pages/proposals/proposal-buttons/reveal-button';
 import EditFundingButton from '@digix/gov-ui/pages/proposals/proposal-buttons/edit-funding';
 import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
@@ -28,8 +29,13 @@ class ParticipantButtons extends React.Component {
   }
 
   showErrorOverlay(errors) {
+    const {
+      translations: {
+        common: { proposalErrors },
+      },
+    } = this.props;
     this.props.showRightPanel({
-      component: <ErrorMessageOverlay errors={errors} />,
+      component: <ErrorMessageOverlay errors={errors} location={proposalErrors.returnToProject} />,
       show: true,
     });
   }
@@ -69,6 +75,7 @@ class ParticipantButtons extends React.Component {
       },
     } = this.props;
 
+    const txnTranslations = this.props.translations.signTransaction;
     const checkProposalRequirements = this.checkUnmetRequirements.bind(this);
     const editAction = this.editProject.bind(this);
     const showEditButton =
@@ -85,6 +92,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           checkProposalRequirements={checkProposalRequirements}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         {showEditButton && (
           <Button large onClick={() => checkProposalRequirements(editAction)}>
@@ -98,6 +106,17 @@ class ParticipantButtons extends React.Component {
           isProposer={isProposer}
           checkProposalRequirements={checkProposalRequirements}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
+        />
+        <AddDocumentsButton
+          stage={data.stage}
+          proposal={data}
+          history={history}
+          isProposer={isProposer}
+          checkProposalRequirements={checkProposalRequirements}
+          translations={this.props.translations}
+          match={this.props.match}
+          timeCreated={data.timeCreated}
         />
         <FinalizeButton
           endorser={data.endorser}
@@ -108,6 +127,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           timeCreated={data.timeCreated}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
           checkProposalRequirements={checkProposalRequirements}
         />
         <ClaimApprovalButton
@@ -119,6 +139,7 @@ class ParticipantButtons extends React.Component {
           checkProposalRequirements={checkProposalRequirements}
           match={this.props.match}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <VoteCommitButton
           isParticipant={addressDetails.data.isParticipant}
@@ -128,6 +149,7 @@ class ParticipantButtons extends React.Component {
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <RevealButton
           isParticipant={addressDetails.data.isParticipant}
@@ -137,6 +159,7 @@ class ParticipantButtons extends React.Component {
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <ClaimResultsButton
           checkProposalRequirements={checkProposalRequirements}
@@ -145,6 +168,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           proposal={data}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <ClaimFundingButton
           checkProposalRequirements={checkProposalRequirements}
@@ -152,6 +176,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           proposal={data}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
         <MilestoneCompletedButton
           checkProposalRequirements={checkProposalRequirements}
@@ -159,6 +184,7 @@ class ParticipantButtons extends React.Component {
           history={history}
           proposal={data}
           translations={buttonTranslations}
+          txnTranslations={txnTranslations}
         />
       </Fragment>
     );

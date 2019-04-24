@@ -95,7 +95,7 @@ class CommentReply extends React.Component {
   };
 
   render() {
-    const { currentUser, renderThreadReplies, setError, userPoints } = this.props;
+    const { currentUser, renderThreadReplies, setError } = this.props;
     const { comment, showEditor, translations } = this.state;
 
     if (!comment) {
@@ -115,7 +115,6 @@ class CommentReply extends React.Component {
               setError={setError}
               hideEditor={this.hideEditor}
               toggleEditor={this.toggleEditor}
-              userPoints={userPoints}
               translations={translations}
             />
             {showEditor && (
@@ -154,16 +153,16 @@ CommentReply.propTypes = {
   ChallengeProof: object,
   client: object.isRequired,
   comment: object.isRequired,
-  currentUser: object.isRequired,
+  currentUser: object,
   queryVariables: object.isRequired,
   renderThreadReplies: func.isRequired,
   setCommentingPrivileges: func.isRequired,
   setError: func.isRequired,
-  userPoints: object.isRequired,
 };
 
 CommentReply.defaultProps = {
   ChallengeProof: undefined,
+  currentUser: null,
 };
 
 const mapStateToProps = state => ({

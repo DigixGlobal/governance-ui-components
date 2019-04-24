@@ -14,6 +14,7 @@ import ProposalFundings from '@digix/gov-ui/pages/proposals/fundings';
 import ProposalVersionNav from '@digix/gov-ui/pages/proposals/version-nav';
 import SpecialProjectDetails from '@digix/gov-ui/pages/proposals/special-project-details';
 import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
+import AdditionalDocs from '@digix/gov-ui/pages/proposals/additional-docs';
 import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
@@ -28,6 +29,7 @@ import {
   getUserProposalLikeStatus,
   likeProposal,
   unlikeProposal,
+  getTranslations,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import {
@@ -123,14 +125,13 @@ class Proposal extends React.Component {
 
   componentWillMount = () => {
     const {
-      challengeProof,
       clearDaoProposalDetailsAction,
       getAddressDetailsAction,
-      history,
       location,
       addressDetails,
+      getTranslationsAction,
+      Language,
     } = this.props;
-    if (!challengeProof.data) history.push('/');
     if (location.pathname) {
       clearDaoProposalDetailsAction();
       if (this.PROPOSAL_ID) {
@@ -140,6 +141,8 @@ class Proposal extends React.Component {
         this.getProposalLikes();
       }
     }
+
+    getTranslationsAction(Language);
   };
 
   componentDidMount = () => {
@@ -164,15 +167,10 @@ class Proposal extends React.Component {
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   getProposalLikes = () => {
-    const { getUserProposalLikeStatusAction, challengeProof } = this.props;
-    if (challengeProof.data) {
-      getUserProposalLikeStatusAction({
-        proposalId: this.PROPOSAL_ID,
-        client: challengeProof.data.client,
-        token: challengeProof.data['access-token'],
-        uid: challengeProof.data.uid,
-      });
-    }
+    const { getUserProposalLikeStatusAction } = this.props;
+    getUserProposalLikeStatusAction({
+      proposalId: this.PROPOSAL_ID,
+    });
   };
 
   getChangedFundings() {
@@ -335,17 +333,21 @@ class Proposal extends React.Component {
     });
   };
 
-  renderPrlAlert = prl =>
-    prl ? (
+  renderPrlAlert = prl => {
+    const {
+      Translations: {
+        data: {
+          project: { alerts },
+        },
+      },
+    } = this.props;
+    return prl ? (
       <Notifications warning withIcon>
         <WarningIcon kind="warning" />
-        {/* TODO: Add Translatio */}
-        <Message note>
-          This project can no longer claim funding due to Policy, Regulatory or Legal reasons, even
-          if voting passes. Please contact us if you have any queries.
-        </Message>
+        <Message note>{alerts.prl}</Message>
       </Notifications>
     ) : null;
+  };
 
   renderClaimApprovalAlert = () => {
     const {
@@ -467,12 +469,18 @@ class Proposal extends React.Component {
       userData,
       Translations,
     } = this.props;
+
+    const { currentVersion } = this.state;
+    const proposal = proposalDetails.data;
+
+    const proposalVersion = proposal ? proposal.proposalVersions[currentVersion] : undefined;
+
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
     const liked = userProposalLike.data ? userProposalLike.data.liked : false;
     const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
     const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
-
+    const hasMoreDocs = proposalVersion ? proposalVersion.moreDocs.length > 0 : false;
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
@@ -529,6 +537,7 @@ class Proposal extends React.Component {
                 hasVoted={liked}
                 likes={likes}
                 translations={cardTranslation}
+                disabled={!userData}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
             </InfoItem>
@@ -544,7 +553,7 @@ class Proposal extends React.Component {
           uintConfigs={proposalDetails.data.uintConfigs}
           translations={translations}
         />
-
+        {hasMoreDocs && <AdditionalDocs translations={translations} proposal={proposalDetails} />}
         <CommentThread
           proposalId={this.PROPOSAL_ID}
           uid={addressDetails.data.address}
@@ -580,6 +589,7 @@ class Proposal extends React.Component {
     const liked = proposalLikes ? proposalLikes.liked : false;
     const likes = proposalLikes ? proposalLikes.likes : 0;
     const displayName = proposalLikes ? proposalLikes.user.displayName : '';
+    const hasMoreDocs = proposalVersion.moreDocs.length > 0;
 
     const {
       data: {
@@ -656,6 +666,7 @@ class Proposal extends React.Component {
                 hasVoted={liked}
                 likes={likes}
                 translations={cardTranslation}
+                disabled={!userData}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
               />
             </InfoItem>
@@ -672,6 +683,7 @@ class Proposal extends React.Component {
         />
 
         <ProjectDetails project={dijixObject} translations={translations} />
+        {hasMoreDocs && <AdditionalDocs translations={translations} proposal={proposalDetails} />}
         <Milestones
           milestones={dijixObject.milestones || []}
           milestoneFundings={proposalVersion.milestoneFundings || []}
@@ -689,8 +701,13 @@ class Proposal extends React.Component {
   };
 
   render() {
-    const { proposalDetails } = this.props;
-    if (proposalDetails.fetching === null || proposalDetails.fetching || !proposalDetails.data)
+    const { proposalDetails, Translations } = this.props;
+    if (
+      proposalDetails.fetching === null ||
+      proposalDetails.fetching ||
+      !proposalDetails.data ||
+      !Translations.data
+    )
       return <div>Fetching Project Details</div>;
 
     if (proposalDetails.data.isSpecial) {
@@ -700,7 +717,7 @@ class Proposal extends React.Component {
   }
 }
 
-const { object, func } = PropTypes;
+const { object, func, string } = PropTypes;
 
 Proposal.propTypes = {
   proposalDetails: object.isRequired,
@@ -720,12 +737,15 @@ Proposal.propTypes = {
   history: object.isRequired,
   match: object.isRequired,
   Translations: object.isRequired,
+  getTranslationsAction: func.isRequired,
+  Language: string,
 };
 
 Proposal.defaultProps = {
   challengeProof: undefined,
   userData: undefined,
   userProposalLike: undefined,
+  Language: 'en',
 };
 
 export default withFetchUser(
@@ -738,6 +758,7 @@ export default withFetchUser(
         DaoDetails: { data },
       },
       daoServer: { ChallengeProof, UserProposalLike, Translations },
+      govUI: { Language },
     }) => ({
       proposalDetails: ProposalDetails,
       addressDetails: AddressDetails,
@@ -746,6 +767,7 @@ export default withFetchUser(
       daoConfig: DaoConfig,
       userProposalLike: UserProposalLike,
       Translations,
+      Language,
     }),
     {
       getUserProposalLikeStatusAction: getUserProposalLikeStatus,
@@ -753,6 +775,7 @@ export default withFetchUser(
       likeProposalAction: likeProposal,
       unlikeProposalAction: unlikeProposal,
       clearDaoProposalDetailsAction: clearDaoProposalDetails,
+      getTranslationsAction: getTranslations,
     }
   )(withFetchProposal(Proposal))
 );

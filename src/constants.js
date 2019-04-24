@@ -25,7 +25,7 @@ export const ETHERSCAN_URL =
   (process.env.ENVIRONMENT === 'kovan' && 'https://kovan.etherscan.io/tx/') ||
   'https://kovan.etherscan.io/tx/';
 
-export const DEFAULT_GAS_PRICE = 30 * 1e9;
+export const DEFAULT_GAS_PRICE = 10 * 1e9;
 export const ONE_BILLION = 1000000000;
 
 export const CONVERSIONS = {
@@ -113,4 +113,9 @@ export const KycErrors = {
       'Please contact us via our Zendesk widget for enquiries about changing your KYC information.',
     details: null,
   },
+};
+
+export const CONFIRM_PARTICIPATION_CACHE = {
+  key: 'DAO_PARTICIPATION',
+  value: 't7L6CuJ1pDqY0Cu5',
 };

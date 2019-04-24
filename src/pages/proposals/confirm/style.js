@@ -1,5 +1,7 @@
-import styled from 'styled-components';
-import { Container } from '../../../components/common/common-styles';
+import styled, { css } from 'styled-components';
+
+import { media } from '@digix/gov-ui/components/common/breakpoints';
+import { Container } from '@digix/gov-ui/components/common/common-styles';
 
 export const PreviewWrapper = styled.div``;
 export const Section = styled.div``;
@@ -27,29 +29,84 @@ export const DataContent = styled.div`
   margin-bottom: 1rem;
 `;
 
-export const Media = styled.div`
-  ${Container};
-  justify-content: space-between;
-  align-items: flex-start;
-`;
-
 export const LeftCol = styled.div`
   display: flex;
   align-items: center;
 `;
 export const RightCol = styled.div``;
 
+export const Media = styled.div`
+  ${Container};
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
 export const ImageHolder = styled.div`
-  background-color: ${props => props.theme.backgroundPrimary.default.toString()};
-  border-radius: 3px;
-  min-width: 500px;
-  height: 200px;
-  & > img {
-    max-width: 500px;
-    max-height: 200px;
+  border-radius: ${props => props.theme.borderRadius};
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-flow: row wrap;
+
+  img {
+    height: auto;
+    width: 100%;
+    margin: 0 2rem 0 0;
   }
 `;
+
+export const ImageItem = styled.div`
+  border-bottom: 1px solid ${props => props.theme.card.border.lighter.toString()};
+  flex: 0 1 calc(33% - 1rem);
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  padding: 0;
+  padding-bottom: 1rem;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  canvas {
+    width: 100%;
+  }
+
+  ${media.tablet`
+      flex: 0 1 calc(50% - 1rem);
+  `}
+
+  ${media.mobile`
+    flex: 0 1 100%;
+  `}
+
+  ${props =>
+    props.preview &&
+    css`
+      margin-right: 0;
+      border-bottom: 0;
+      padding: 0;
+    `}
+`;
+
+export const Document = styled.div`
+  position: relative;
+
+  button {
+    right: 1rem;
+  }
+`;
+
 export const CTA = styled.div`
   ${Container};
   justify-content: space-between;
+`;
+
+export const ModalCta = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
 `;

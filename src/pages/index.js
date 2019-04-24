@@ -2,17 +2,20 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from 'react-responsive-modal';
-import util from 'ethereumjs-util';
 
 import CountdownPage from '@digix/gov-ui/components/common/blocks/loader/countdown';
 import ProposalCard from '@digix/gov-ui/components/proposal-card';
 import Timeline from '@digix/gov-ui/components/common/blocks/timeline';
 import UserAddressStats from '@digix/gov-ui/components/common/blocks/user-address-stats/index';
 import ProposalFilter from '@digix/gov-ui/components/common/blocks/filter/index';
+import { CONFIRM_PARTICIPATION_CACHE } from '@digix/gov-ui/constants';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { getHash } from '@digix/gov-ui/utils/helpers';
+import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 
 import {
   getAddressDetails,
+  getDaoConfig,
   getDaoDetails,
   getProposals,
 } from '@digix/gov-ui/reducers/info-server/actions';
@@ -26,8 +29,9 @@ import {
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 import { showCountdownPage } from '@digix/gov-ui/reducers/gov-ui/actions';
 import ToS from '@digix/gov-ui/tos.md';
+import ConfirmParticipation from '@digix/gov-ui/pages/continue-participation';
 
-import { TosWrapper, Title, TosOverlay } from '@digix/gov-ui/pages/style';
+import { Content, Title, TosOverlay } from '@digix/gov-ui/pages/style';
 
 class LandingPage extends React.PureComponent {
   constructor(props) {
@@ -35,6 +39,7 @@ class LandingPage extends React.PureComponent {
     this.state = {
       order: 'latest',
       showTos: true,
+      showParticipateModal: false,
       disableButton: true,
     };
   }
@@ -50,7 +55,7 @@ class LandingPage extends React.PureComponent {
     } = this.props;
 
     const storedHash = localStorage.getItem('GOVERNANCE_UI');
-    const hash = this.hashTos();
+    const hash = getHash(ToS);
     if (storedHash && storedHash === hash) {
       this.setState({ showTos: false });
     }
@@ -72,6 +77,13 @@ class LandingPage extends React.PureComponent {
   };
 
   componentDidMount = () => {
+    const { getAddressDetailsAction } = this.props;
+    const { address } = this.props.defaultAddress;
+
+    Promise.all([getAddressDetailsAction(address), this.props.getDaoConfig]).then(() => {
+      this.showContinueParticipationModal();
+    });
+
     if (window.Cookiebot) {
       try {
         window.Cookiebot.show();
@@ -127,11 +139,6 @@ class LandingPage extends React.PureComponent {
     });
   };
 
-  hashTos = () => {
-    const hash = util.sha256(ToS.toString()).toString('hex');
-    return hash;
-  };
-
   fixScrollbar = ShowWallet => {
     if (ShowWallet && ShowWallet.show) {
       document.body.classList.add('modal-is-open');
@@ -142,12 +149,15 @@ class LandingPage extends React.PureComponent {
 
   handleTosClose = () => {
     this.setState({ showTos: false }, () => {
-      localStorage.setItem('GOVERNANCE_UI', this.hashTos());
+      localStorage.setItem('GOVERNANCE_UI', getHash(ToS));
     });
   };
 
   handleModalClose = () => {
-    this.setState({ showTos: false });
+    this.setState({
+      showParticipateModal: false,
+      showTos: false,
+    });
   };
 
   handleScroll = () => {
@@ -157,8 +167,43 @@ class LandingPage extends React.PureComponent {
     }
   };
 
+  showContinueParticipationModal() {
+    const { ChallengeProof } = this.props;
+    const { CONFIG_MINIMUM_LOCKED_DGD } = this.props.DaoConfig;
+    const { currentQuarter, isGlobalRewardsSet } = this.props.DaoDetails.data;
+    const AddressDetails = this.props.AddressDetails.data;
+    const lastParticipatedQuarter = AddressDetails && AddressDetails.lastParticipatedQuarter;
+
+    const hasLoadedWallet = ChallengeProof.data;
+    const isPastParticipant =
+      lastParticipatedQuarter > 0 && lastParticipatedQuarter < currentQuarter;
+
+    const lockedDgd = Number(AddressDetails && AddressDetails.lockedDgd);
+    const minimumDgd = Number(CONFIG_MINIMUM_LOCKED_DGD);
+    const hasEnoughDgd = lockedDgd >= minimumDgd;
+
+    const { key, value } = CONFIRM_PARTICIPATION_CACHE;
+    const storedHash = localStorage.getItem(key);
+
+    // always include the currentQuarter so that we have unique hashes per quarter
+    const expectedHash = getHash(`${value}_${currentQuarter}_${AddressDetails.address}`);
+    const alreadyParticipating = storedHash && storedHash === expectedHash;
+
+    const showModal =
+      hasLoadedWallet &&
+      isGlobalRewardsSet &&
+      isPastParticipant &&
+      hasEnoughDgd &&
+      !alreadyParticipating;
+
+    if (showModal) {
+      localStorage.removeItem(key, expectedHash);
+      this.setState({ showParticipateModal: true });
+    }
+  }
+
   renderLandingPage() {
-    const { order, showTos, disableButton } = this.state;
+    const { order, showTos, disableButton, showParticipateModal } = this.state;
     this.fixScrollbar(this.props.ShowWallet);
     const {
       history,
@@ -231,6 +276,7 @@ class LandingPage extends React.PureComponent {
               displayName={getProposer(proposal.proposalId, proposal.proposer)}
               userDetails={AddressDetails}
               translations={Translations}
+              data-digix="Proposal-Card"
             />
           ))}
         <Modal
@@ -240,7 +286,7 @@ class LandingPage extends React.PureComponent {
           closeOnEsc={false}
           closeOnOverlayClick={false}
         >
-          <TosWrapper>
+          <Content>
             <Title>Terms and Conditions</Title>
             <TosOverlay id="overlayDiv" onScroll={this.handleScroll}>
               <ToS />
@@ -254,7 +300,10 @@ class LandingPage extends React.PureComponent {
             >
               I have read and agreed
             </Button>
-          </TosWrapper>
+          </Content>
+        </Modal>
+        <Modal open={showParticipateModal} onClose={() => true} showCloseIcon={false}>
+          <ConfirmParticipation closeModal={this.handleModalClose} />
         </Modal>
       </Fragment>
     );
@@ -273,7 +322,9 @@ class LandingPage extends React.PureComponent {
 const { bool, object, func, string } = PropTypes;
 
 LandingPage.propTypes = {
+  DaoConfig: object.isRequired,
   DaoDetails: object.isRequired,
+  defaultAddress: object,
   AddressDetails: object.isRequired,
   Proposals: object.isRequired,
   ChallengeProof: object,
@@ -283,6 +334,7 @@ LandingPage.propTypes = {
   ShowWallet: object,
   history: object.isRequired,
   getAddressDetailsAction: func.isRequired,
+  getDaoConfig: func.isRequired,
   getDaoDetailsAction: func.isRequired,
   getProposalsAction: func.isRequired,
   getProposalLikesByUserAction: func.isRequired,
@@ -295,18 +347,24 @@ LandingPage.propTypes = {
 
 LandingPage.defaultProps = {
   ChallengeProof: undefined,
+  defaultAddress: {
+    address: undefined,
+  },
   UserLikedProposals: undefined,
   ProposalLikes: undefined,
   ShowWallet: undefined,
   Language: 'en',
 };
 
-export default connect(
-  ({
-    infoServer: { DaoDetails, Proposals, AddressDetails },
+const mapStateToProps = state => {
+  const {
+    infoServer: { DaoDetails, Proposals, AddressDetails, DaoConfig },
     daoServer: { ChallengeProof, UserLikedProposals, ProposalLikes, Translations },
     govUI: { HasCountdown, ShowWallet, Language },
-  }) => ({
+  } = state;
+
+  return {
+    DaoConfig: DaoConfig.data,
     DaoDetails,
     Proposals,
     AddressDetails,
@@ -317,9 +375,15 @@ export default connect(
     HasCountdown,
     ShowWallet,
     Language,
-  }),
+    defaultAddress: getDefaultAddress(state),
+  };
+};
+
+export default connect(
+  mapStateToProps,
   {
     getAddressDetailsAction: getAddressDetails,
+    getDaoConfig,
     getDaoDetailsAction: getDaoDetails,
     getProposalsAction: getProposals,
     getProposalLikesByUserAction: getProposalLikesByUser,

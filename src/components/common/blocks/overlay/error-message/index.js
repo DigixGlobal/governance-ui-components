@@ -13,6 +13,7 @@ import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 class ErrorMessageOverlay extends React.Component {
   closeOverlay() {
+    document.body.classList.remove('modal-is-open');
     this.props.showRightPanel({
       show: false,
     });
@@ -45,7 +46,7 @@ class ErrorMessageOverlay extends React.Component {
           data-digix="ProjectError-Return"
           onClick={() => this.closeOverlay()}
         >
-          Return to {location}
+          {location}
         </Button>
       </IntroContainer>
     );
@@ -60,7 +61,7 @@ ErrorMessageOverlay.propTypes = {
 };
 
 ErrorMessageOverlay.defaultProps = {
-  location: 'Project',
+  location: 'Return',
 };
 
 const mapStateToProps = () => ({});

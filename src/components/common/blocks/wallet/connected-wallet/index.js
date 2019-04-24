@@ -186,7 +186,9 @@ class ConnectedWallet extends React.Component {
       web3Params,
       ui,
       showTxSigningModal: this.props.showTxSigningModal,
+      translations: this.props.txnTranslations,
     };
+
     return executeContractFunction(payload);
   };
 
@@ -339,6 +341,7 @@ ConnectedWallet.propTypes = {
   enableLockDgd: object,
   translations: object.isRequired,
   approvalTranslations: object.isRequired,
+  txnTranslations: object.isRequired,
 };
 
 ConnectedWallet.defaultProps = {
@@ -367,6 +370,7 @@ const mapStateToProps = state => ({
   enableLockDgd: state.govUI.CanLockDgd,
   translations: state.daoServer.Translations.data.loadWallet.connectedWallet,
   approvalTranslations: state.daoServer.Translations.data.approveInteraction,
+  txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 
 export default connect(

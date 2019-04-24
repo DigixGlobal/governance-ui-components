@@ -7,6 +7,11 @@
   "selectWalletType": {
     "title": "Load Wallet"
   },
+  "banned": {
+    "title": "DigixDAO isn't available in your country yet",
+    "description": "You don't have permission to view this page.",
+    "details": "Please contact us via the Help button below for any enquiries."
+  },
   "walletType": {
     "metamask": "MetaMask",
     "ledger": "Ledger",
@@ -27,6 +32,9 @@
       "name": "Name",
       "addressNickname": "Address Nickname",
       "error": "You must provide a name.",
+      "ConnectionError": {
+        "noMetamask": "Cannot connect to MetaMask wallet. Make sure to login to your MetaMask wallet."
+      },
       "proofOfControl": {
         "description": "Waiting for Metamask Sign Confirmation",
         "instructions": "Please confirm your signature in MetaMask. If you wish to cancel, click the 'Cancel' button in MetaMask."
@@ -41,7 +49,8 @@
         "instructions": "Select HD Derivation Path",
         "default": "Ledger (Default)",
         "account": "Account",
-        "custom": "Ledger Live/Custom Wallet HD path"
+        "custom": "Ledger Live/Custom Wallet HD path",
+        "loading": "Getting address info..."
       },
       "selectAddress": {
         "instructions": "Select addresses to enable",
@@ -65,7 +74,8 @@
         "instructions": "Select HD Derivation Path",
         "default": "Trezor (Default)",
         "account": "Account",
-        "custom": "Custom Wallet HD path"
+        "custom": "Custom Wallet HD path",
+        "loading": "Getting address info..."
       },
       "selectAddress": {
         "instructions": "Select addresses to enable",
@@ -87,10 +97,10 @@
     "signInstructions": "Enter your password to sign message",
     "error": "Key derivation failed - possibly wrong passphrase",
     "proofOfControl": {
-      "description": "This signing is to prove to our server that you are in control of the Ethereum account that was loaded. By signing this message, you are proving that you control the selected account for use on DigixDAO.",
-      "signing": "Signing message...",
-      "sign": "Sign Message"
-    }
+      "description": "This signing is to prove to our server that you are in control of the Ethereum account that was loaded. By signing this message, you are proving that you control the selected account for use on DigixDAO."
+    },
+    "importInstructions": "Click or drag and drop here to load your file.",
+    "importError": "Keystore type not supported."
   },
   "connectedWallet": {
     "title": "Connected Wallet",
@@ -106,6 +116,14 @@
       "note2": "Please note that your wallet needs to hold ETH to pay for gas transaction costs.",
       "note3": "Your locked DGD cannot be traded. You will not be able to see the balance of your locked DGD in your wallet. Locked DGD are only visible on this interface as long as your wallet is connected.",
       "note4": "You can lock more (other) DGD anytime."
+    },
+    "common": {
+      "createErrors": {
+        "requiredwalletType": "Please select a wallet type.",
+        "requiredName": "You must provide a name.",
+        "invalidNames": "You must provide a name for all addresses.",
+        "invalidPassword": "Passwords do not match."
+      }
     }
   }
 }

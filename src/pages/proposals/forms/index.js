@@ -10,7 +10,7 @@ import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualiza
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { dijix } from '@digix/gov-ui/utils/dijix';
-import { encodeHash, injectTranslation } from '@digix/gov-ui/utils/helpers';
+import { encodeHash, hasInvalidLink, injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
@@ -26,6 +26,7 @@ import Milestones from '@digix/gov-ui/pages/proposals/forms/milestones';
 import Multimedia from '@digix/gov-ui/pages/proposals/forms/multimedia';
 import Overview from '@digix/gov-ui/pages/proposals/forms/overview';
 import Preview from '@digix/gov-ui/pages/proposals/forms/preview';
+
 import Spinner from '@digix/gov-ui/components/common/blocks/loader/spinner';
 
 import {
@@ -65,7 +66,7 @@ class ProposalForms extends React.Component {
     this.FORM_STEPS = [Overview, Details, Multimedia, Milestones];
     this.MAX_FORM_STEP_INDEX = this.FORM_STEPS.length - 1;
     this.NON_EMPTY_STRING = /^(?!\s*$).+/;
-    this.EMPTY_DETAILS = /^((<p>)((<br>)*|(\s*)|)*(<\/p>))*$/;
+    this.EMPTY_HTML = /^((<p>)((<br>)*|(\s*)|)*(<\/p>))*$/;
   }
 
   // will only trigger for Edit Project
@@ -140,7 +141,7 @@ class ProposalForms extends React.Component {
     );
   };
 
-  onFormInput = (e, details) => {
+  onFormInput = (e, details, validateFormItems, fieldChanged, index) => {
     const { form } = this.state;
     let key = e;
     let value = details;
@@ -152,7 +153,7 @@ class ProposalForms extends React.Component {
 
     form[key] = value;
     this.setState({ form: { ...form } }, () => {
-      this.validateForm(key, value);
+      this.validateForm(key, value, validateFormItems, fieldChanged, index);
     });
   };
 
@@ -165,25 +166,26 @@ class ProposalForms extends React.Component {
     this.props.showHideAlert({ message });
   };
 
+  hasErrors = formErrors => Object.values(formErrors).filter(e => !!e).length > 0;
+
   validateOverviewForm(field, value, validateOnChangeForm) {
     const { description, title } = this.state.form;
     let { formErrors } = this.state;
 
     const hasDescription = description && this.NON_EMPTY_STRING.test(description);
     const hasTitle = title && this.NON_EMPTY_STRING.test(title);
-    const validForm = hasDescription && hasTitle;
 
     // do not pass formErrors if validation is due to switching forms
     // if validation is due to user input, only update formErrors for the current input
-    const isValueEmpty = !value || !this.NON_EMPTY_STRING.test(value);
     if (validateOnChangeForm) {
       formErrors = {};
     } else if (field && field === 'description') {
-      formErrors.invalidDescription = isValueEmpty;
+      formErrors.invalidDescription = !hasDescription;
+      formErrors.invalidLink = value && hasInvalidLink(value);
     } else if (field && field === 'title') {
-      formErrors.invalidTitle = isValueEmpty;
+      formErrors.invalidTitle = !hasTitle;
     }
-
+    const validForm = hasDescription && hasTitle && !this.hasErrors(formErrors);
     this.setState({
       formErrors,
       validForm,
@@ -193,21 +195,23 @@ class ProposalForms extends React.Component {
   validateProjectDetailForm(validateOnChangeForm) {
     let { formErrors } = this.state;
     const { details } = this.state.form;
-    const validForm = details && details !== '' && !this.EMPTY_DETAILS.test(details);
+    const hasDetails = details && details !== '' && !this.EMPTY_HTML.test(details);
 
     if (validateOnChangeForm) {
       formErrors = {};
     } else {
-      formErrors.invalidDetails = !validForm;
+      formErrors.invalidDetails = !hasDetails;
+      formErrors.invalidLink = details && hasInvalidLink(details);
     }
 
+    const validForm = hasDetails && !this.hasErrors(formErrors);
     this.setState({
       formErrors,
       validForm,
     });
   }
 
-  validateMilestoneForm(field) {
+  validateMilestoneForm(field, validateForItems, fieldChanged, milestoneIndex) {
     const { form, formErrors } = this.state;
     const { finalReward } = form;
     let { milestones } = form;
@@ -224,17 +228,35 @@ class ProposalForms extends React.Component {
     const hasReward = finalReward && Number(finalReward) > 0;
     const hasMilestones = milestones.length > 0;
     const hasMissingFunds = milestones.filter(m => !m.fund || m.fund === '').length > 0;
-    const milestonesWithMissingDescriptions = milestones.filter(
-      m => !m.description || m.description === '' || !this.NON_EMPTY_STRING.test(m.description)
+    const milestonesWithInvalidDescriptions = milestones.filter(
+      ({ description }) =>
+        !description ||
+        description === '' ||
+        this.EMPTY_HTML.test(description) ||
+        hasInvalidLink(description)
     );
-    const hasMissingDescription = milestonesWithMissingDescriptions.length > 0;
+    const hasInvalidDescription = milestonesWithInvalidDescriptions.length > 0;
 
-    if (field) {
+    formErrors.milestones = {};
+    if (field === 'finalReward') {
       formErrors.invalidReward = !hasReward;
     }
 
+    if (validateForItems && milestones[milestoneIndex]) {
+      const { fund, description } = milestones[milestoneIndex];
+      const invalidFunds = !fund || fund === '';
+      const invalidDescription =
+        !description || description === '' || this.EMPTY_HTML.test(description);
+
+      formErrors.milestones[milestoneIndex] = {
+        invalidFunds: fieldChanged === 'fund' && invalidFunds,
+        invalidDescription: fieldChanged === 'description' && invalidDescription,
+        invalidLink: fieldChanged === 'description' && hasInvalidLink(description),
+      };
+    }
+
     const validForm =
-      hasReward && hasMilestones && !hasMissingFunds && !hasMissingDescription && !exceedsLimit;
+      hasReward && hasMilestones && !hasMissingFunds && !hasInvalidDescription && !exceedsLimit;
 
     this.setState({
       exceedsLimit,
@@ -256,22 +278,22 @@ class ProposalForms extends React.Component {
     return Number(milestones.reduce(milestoneFunds, 0)) + Number(finalReward);
   }
 
-  validateForm(field, value, validateOnChangeForm) {
+  validateForm(field, value, validateFormItems, fieldChanged, index) {
     const { currentStep } = this.state;
 
     switch (currentStep) {
       case 0:
-        this.validateOverviewForm(field, value, validateOnChangeForm);
+        this.validateOverviewForm(field, value, validateFormItems);
         break;
       case 1:
-        this.validateProjectDetailForm(validateOnChangeForm);
+        this.validateProjectDetailForm(validateFormItems);
         break;
       case 2:
         // no validations need for file upload
         this.setState({ validForm: true });
         break;
       case 3:
-        this.validateMilestoneForm(!!field);
+        this.validateMilestoneForm(field, validateFormItems, fieldChanged, index);
         break;
       default:
         this.setState({ validForm: false });
@@ -410,6 +432,7 @@ class ProposalForms extends React.Component {
         web3Params,
         ui,
         showTxSigningModal: this.props.showTxSigningModal,
+        translations: this.props.translations.signTransaction,
       };
 
       return executeContractFunction(payload);
@@ -528,6 +551,7 @@ class ProposalForms extends React.Component {
           <Heading>{project.basicProjectInformation}</Heading>
           {this._renderNavButtons()}
         </Header>
+
         {this._renderStep()}
       </CreateWrapper>
     );

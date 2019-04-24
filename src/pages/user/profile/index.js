@@ -18,7 +18,10 @@ class Profile extends React.Component {
         <Heading>{t.title}</Heading>
         <ProfileUserInfo translations={t.ProfileInfo} />
         <UserAddressStats translations={Translations} />
-        <ProfileActivitySummary translations={t.Kyc} tSetEmail={t.ProfileInfo.SetEmail} />
+        <ProfileActivitySummary
+          translations={{ kyc: t.Kyc, proposalErrors: Translations.data.common.proposalErrors }}
+          tSetEmail={t.ProfileInfo.SetEmail}
+        />
         <ModeratorRequirements history={history} translations={t.ModeratorRequirements} />
       </ProfileWrapper>
     );

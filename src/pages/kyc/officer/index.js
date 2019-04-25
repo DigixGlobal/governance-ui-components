@@ -47,8 +47,8 @@ const columns = [
   },
   {
     Header: 'Last Updated',
-    id: 'lastupdated',
-    accessor: d => moment(d.node.updaedAt).format('YYYY-MM-DD h:mm:ss a'),
+    id: 'updatedAt',
+    accessor: d => moment(d.node.updatedAt).format('YYYY-MM-DD h:mm:ss a'),
   },
 ];
 class KycOfficerDashboard extends React.Component {

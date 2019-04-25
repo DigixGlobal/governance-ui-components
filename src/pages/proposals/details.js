@@ -56,7 +56,6 @@ export default class ProjectDetails extends React.Component {
 
       let source = !preview && img.thumbnail ? `${dijix.config.httpEndpoint}/${img.src}` : img.src;
 
-
       if (img.type === 'pdf') {
         source = !preview ? `${dijix.config.httpEndpoint}/${img.src}` : img.base64;
       }

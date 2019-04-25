@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import PropTypes, { array } from 'prop-types';
 import { inLockingPhase, truncateNumber, injectTranslation } from '@digix/gov-ui/utils/helpers';
-
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
@@ -300,7 +299,6 @@ class LockDgd extends React.Component {
           <span>DGD</span>
         </LockDGD>
         {dgd > 0 && <FormNote>{stakeMessage}</FormNote>}
-
         <Button
           secondary
           large

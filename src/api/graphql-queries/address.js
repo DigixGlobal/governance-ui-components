@@ -37,7 +37,7 @@ export const addressSubscription = gql`
 `;
 
 export const withFetchAddress = Component => props => (
-  <Query query={fetchAddressQuery}>
+  <Query query={fetchAddressQuery} fetchPolicy="network-only">
     {({ loading, error, data, subscribeToMore }) => {
       if (loading || error) {
         return null;

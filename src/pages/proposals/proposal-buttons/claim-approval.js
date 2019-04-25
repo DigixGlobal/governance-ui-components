@@ -91,7 +91,7 @@ class ClaimApprovalButton extends React.PureComponent {
     };
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: 8000000,
       ui,
     };
 

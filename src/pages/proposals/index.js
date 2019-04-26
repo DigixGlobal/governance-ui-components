@@ -616,10 +616,12 @@ class Proposal extends React.Component {
 
           <Header>
             <div>
-              <Button kind="tag" showIcon>
+              <Button kind="tag" showIcon data-digix="Proposal-Status">
                 {proposal.stage}
               </Button>
-              <Title primary>{dijixObject.title}</Title>
+              <Title primary data-digix="Proposal-Title">
+                {dijixObject.title}
+              </Title>
             </div>
             {!isForumAdmin && (
               <CallToAction>
@@ -645,7 +647,7 @@ class Proposal extends React.Component {
             <InfoItem column>
               <ItemTitle>{project.submittedBy}</ItemTitle>
               <Data>
-                <span>{displayName}</span>
+                <span data-digix="Proposal-Author">{displayName}</span>
               </Data>
             </InfoItem>
 

@@ -19,7 +19,7 @@ class CreateProposal extends React.Component {
     return (
       <ProposalForms
         contractMethod="submitPreproposal"
-        dataDigixPrefix="Create-Proposal"
+        data-digix="Create-Proposal"
         history={history}
         submitButtonLabel={buttons.createNow}
         successMessage={snackbars.createProject.message}

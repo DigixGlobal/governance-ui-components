@@ -1,8 +1,18 @@
 import gql from 'graphql-tag';
 
 export const searchKycQuery = gql`
-  query searchKycs($page: PositiveInteger, $pageSize: PositiveInteger, $status: KycStatusEnum) {
-    searchKycs(page: $page, pageSize: $pageSize, status: $status) {
+  query searchKycs(
+    $page: PositiveInteger
+    $pageSize: PositiveInteger
+    $status: KycStatusEnum
+    $sort: SearchKycFieldEnum
+    $sortBy: SortByEnum
+  ) {
+    searchKycs(page: $page, pageSize: $pageSize, status: $status, sort: $sort, sortBy: $sortBy) {
+      hasNextPage
+      hasPreviousPage
+      totalCount
+      totalPage
       edges {
         node {
           id

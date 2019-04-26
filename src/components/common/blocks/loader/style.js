@@ -7,7 +7,8 @@ export const Preloaders = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  height: 100vh;
+  height: ${props => props.height || '100vh'};
+
   z-index: 1001;
   background: #fff;
 
@@ -334,5 +335,5 @@ export const Box = styled.div`
     props.col2 &&
     css`
       grid-column: span 2;
-    `};   
+    `};
 `;

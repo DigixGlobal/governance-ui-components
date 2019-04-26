@@ -92,7 +92,7 @@ export default class ProjectDetails extends React.Component {
       <DetailsContainer>
         <Content>
           <SubTitle>{trans.shortDescription}</SubTitle>
-          <div data-digix="Details-Short-Desc">
+          <div data-digix="Proposal-Short-Desc">
             <ReactMarkdown source={description} escapeHtml={false} />
           </div>
           <HR />

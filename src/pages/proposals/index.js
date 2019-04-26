@@ -654,7 +654,7 @@ class Proposal extends React.Component {
             <InfoItem outlined>
               <ItemTitle>{project.milestones}</ItemTitle>
               <Data>
-                <span data-digix="milestone-label">{dijixObject.milestones.length || 0}</span>
+                <span data-digix="Milestone-Count">{dijixObject.milestones.length || 0}</span>
               </Data>
             </InfoItem>
             <ProposalFundings

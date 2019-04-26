@@ -161,7 +161,7 @@ commitCountdownRenderer = props => {
 
     return (
       <div>
-        <AccordionItem voting>
+        <AccordionItem voting data-digix="Timer-Progress">
           <Header>
             <VotingResultHeader
               votingRound={proposal.currentVotingRound}

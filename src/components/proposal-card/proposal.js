@@ -101,13 +101,17 @@ class Proposal extends React.PureComponent {
       <Details first>
         <AboutProposal>
           <Tags>
-            <Button kind="tag" showIcon>
+            <Button kind="tag" showIcon data-digix="Proposal-Status">
               {status[details.stage.toLowerCase()]}
             </Button>
           </Tags>
           <Desc>
-            <Title>{proposalVersion ? proposalVersion.dijixObject.title : title}</Title>
-            <p>{proposalVersion ? proposalVersion.dijixObject.description : ''}</p>
+            <Title data-digix="Proposal-Title">
+              {proposalVersion ? proposalVersion.dijixObject.title : title}
+            </Title>
+            <p data-digix="Proposal-Short-Desc">
+              {proposalVersion ? proposalVersion.dijixObject.description : ''}
+            </p>
             <ViewLink
               disabled={!canCreate && !isForumAdmin}
               href={`/proposals/${details.proposalId}`}
@@ -120,7 +124,9 @@ class Proposal extends React.PureComponent {
         <AboutProposal>
           <Author>
             {cardTranslation.by}{' '}
-            <AuthorName style={{ pointerEvents: 'none' }}>{displayName}</AuthorName>
+            <AuthorName style={{ pointerEvents: 'none' }} data-digix="Proposal-Author">
+              {displayName}
+            </AuthorName>
           </Author>
 
           <LikeButton

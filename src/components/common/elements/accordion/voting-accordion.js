@@ -39,12 +39,14 @@ class VotingAccordion extends React.PureComponent {
     return (
       <AccordionItem voting key={i}>
         <Header onClick={() => this.onClickItemHandler(i)}>
-          <Title uppercase>{item.title}</Title>
+          <Title uppercase data-digix="Voting-Title">
+            {item.title}
+          </Title>
           <Funding>
             <div style={{ width: '18px', height: '18px' }}>
               <Icons />
               <span>
-                <svg>
+                <svg data-digix="Voting-Arrow-Icon">
                   <use xlinkHref={svgIcon} />
                 </svg>
               </span>
@@ -52,7 +54,7 @@ class VotingAccordion extends React.PureComponent {
           </Funding>
         </Header>
         {show && (
-          <Content>
+          <Content data-digix="Voting-Content">
             <VotingResult voting={item.voting} daoInfo={item.daoInfo} translations={translations} />
           </Content>
         )}

@@ -39,9 +39,9 @@ export default class AccordionSelection extends React.Component {
         <Header onClick={onClickItemHandler} style={{ cursor: 'pointer' }}>
           <Title>{label}</Title>
           <Funding>
-            <Amount>
+            <Amount data-digix="Milestone-Amount">
               {funding}&nbsp;
-              <span>{difference}</span>
+              <span data-digix="Milestone-Difference">{difference}</span>
               &nbsp;ETH
             </Amount>
             <ChevronContainer>
@@ -55,7 +55,7 @@ export default class AccordionSelection extends React.Component {
           </Funding>
         </Header>
         {isOpen && (
-          <Content>
+          <Content data-digix="Milestone-Desc">
             <Markdown source={children} escapeHtml={false} />
           </Content>
         )}

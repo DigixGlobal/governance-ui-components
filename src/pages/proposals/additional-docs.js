@@ -72,7 +72,7 @@ export default class AdditionalDocs extends React.PureComponent {
 
     if (!moreDocs || moreDocs.length === 0) return null;
     return (
-      <Content>
+      <Content data-digix="Add-Updates-Section">
         <SubTitle>{project.updates || 'Updates'}</SubTitle>
         <ImageHolder>
           {files.map(data =>

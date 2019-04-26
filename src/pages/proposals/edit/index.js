@@ -22,7 +22,7 @@ class EditProposal extends React.Component {
     return (
       <ProposalForms
         contractMethod="modifyProposal"
-        dataDigixPrefix="Edit-Proposal"
+        data-digix="Edit-Proposal"
         history={history}
         ProposalDetails={proposalDetails}
         submitButtonLabel={buttons.updateNow}

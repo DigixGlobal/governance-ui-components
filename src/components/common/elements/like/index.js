@@ -10,6 +10,7 @@ class LikeButton extends React.Component {
       likes && likes > 0 ? `${likes} ${translations.likes}` : `0 ${translations.likes}`;
     return (
       <Button
+        data-digix="Proposal-Like"
         kind="text"
         active={hasVoted}
         disabled={disabled ? 'disabled' : undefined}

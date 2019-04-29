@@ -19,14 +19,18 @@ class Snackbar extends React.Component {
     const { alertData } = this.props;
     if (!alertData || !alertData.message) return null;
     return (
-      <SnackbarContainer>
+      <SnackbarContainer data-digix="Snackbar-Container">
         <SnackbarDesc>
-          <TransactionLink to="/history" href="/history">
+          <TransactionLink to="/history" href="/history" data-digix="Snackbar-Message">
             {alertData.message}
           </TransactionLink>
         </SnackbarDesc>
         {alertData.txHash && (
-          <SnackbarAction href={`${ETHERSCAN_URL}${alertData.txHash}`} target="_blank">
+          <SnackbarAction
+            href={`${ETHERSCAN_URL}${alertData.txHash}`}
+            target="_blank"
+            data-digix="Snackbar-Hash"
+          >
             {alertData.txHash}
           </SnackbarAction>
         )}

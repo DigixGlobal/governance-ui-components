@@ -249,6 +249,7 @@ class CommentThread extends React.Component {
           <section>
             <CommentFilter>
               <Select
+                data-digix="Comment-Filter"
                 small
                 id="comment-filter"
                 items={this.FILTERS}

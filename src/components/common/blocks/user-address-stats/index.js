@@ -58,10 +58,10 @@ class UserAddressStats extends React.Component {
         <Item>
           <Label>{dashboard.UserStats.stake}</Label>
           <Data data-digix="Dashboard-Stats-Stake">
-            <span data-digix="Dashboard-DGD-Stake">{stake}</span>
+            <span data-digix="Dashboard-Locked-Stake">{stake}</span>
             <span className="equiv">
               <span>( </span>
-              <span data-digix="Dashboard-DGD-Stake">{dgd}</span>
+              <span data-digix="Dashboard-Locked-DGD">{dgd}</span>
               <span>&nbsp;{dashboard.UserStats.dgdLocked} )</span>
             </span>
           </Data>

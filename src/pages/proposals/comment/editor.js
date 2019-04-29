@@ -85,7 +85,7 @@ class CommentTextEditor extends React.Component {
           )}
           <CommentEditorContainer error={invalidLink}>
             {!canComment && !cannotView && (
-              <div>
+              <div data-digix="Banned-Message">
                 <BannedCommentEditor>
                   <p>You have been banned by the administrators from commenting.</p>
                   <p>

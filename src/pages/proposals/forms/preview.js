@@ -66,7 +66,7 @@ class Preview extends React.Component {
             <InfoItem outlined>
               <ItemTitle>{project.milestones}</ItemTitle>
               <Data>
-                <span data-digix="milestone-label">
+                <span data-digix="Milestone-Count">
                   {form.milestones ? form.milestones.length : 0}
                 </span>
               </Data>

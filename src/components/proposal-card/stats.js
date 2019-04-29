@@ -69,15 +69,15 @@ export default class ProposalCardStats extends React.Component {
       <Details second noPadding>
         <Info>
           {cardTranslation.funding}
-          <span>{funding} ETH</span>
+          <span data-digix="Total-Funding">{funding} ETH</span>
         </Info>
         <Info stage={details.stage} votingStage={votingStage}>
           {cardTranslation.approval}
-          <span>{approvalRating}%</span>
+          <span data-digix="Approval-Rating">{approvalRating}%</span>
         </Info>
         <Info stage={details.stage} votingStage={votingStage}>
           {cardTranslation.participants}
-          <span>{participantCount}</span>
+          <span data-digix="Participant-Count">{participantCount}</span>
         </Info>
       </Details>
     );

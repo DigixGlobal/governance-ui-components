@@ -40,46 +40,60 @@ export class CategoryGroup extends React.Component {
     return (
       <Category stage={stage}>
         <CategoryItem
+          data-digix="Filter-All-Tab"
           onClick={() => this.handleClick('all')}
           active={stage.toLowerCase() === 'all'}
         >
-          {projectStatus.all} <span>{ProposalsCount.data.all || '0'}</span>
+          {projectStatus.all}{' '}
+          <span data-digix="Filter-All-Count">{ProposalsCount.data.all || '0'}</span>
         </CategoryItem>
         <CategoryItem
+          data-digix="Filter-Idea-Tab"
           onClick={() => this.handleClick('idea')}
           active={stage.toLowerCase() === 'idea'}
         >
-          {projectStatus.idea} <span>{ProposalsCount.data.idea || '0'}</span>
+          {projectStatus.idea}{' '}
+          <span data-digix="Filter-Idea-Count">{ProposalsCount.data.idea || '0'}</span>
         </CategoryItem>
         <CategoryItem
+          data-digix="Filter-Draft-Tab"
           onClick={() => this.handleClick('draft')}
           active={stage.toLowerCase() === 'draft'}
         >
-          {projectStatus.draft} <span>{ProposalsCount.data.draft || '0'}</span>
+          {projectStatus.draft}{' '}
+          <span data-digix="Filter-Draft-Count">{ProposalsCount.data.draft || '0'}</span>
         </CategoryItem>
         <CategoryItem
+          data-digix="Filter-Proposal-Tab"
           onClick={() => this.handleClick('proposal')}
           active={stage.toLowerCase() === 'proposal'}
         >
-          {projectStatus.proposal} <span>{ProposalsCount.data.proposal || '0'}</span>
+          {projectStatus.proposal}{' '}
+          <span data-digix="Filter-Proposal-Count">{ProposalsCount.data.proposal || '0'}</span>
         </CategoryItem>
         <CategoryItem
+          data-digix="Filter-OnGoing-Tab"
           onClick={() => this.handleClick('ongoing')}
           active={stage.toLowerCase() === 'ongoing'}
         >
-          {projectStatus.ongoing} <span>{ProposalsCount.data.ongoing || '0'}</span>
+          {projectStatus.ongoing}{' '}
+          <span data-digix="Filter-OnGoing-Count">{ProposalsCount.data.ongoing || '0'}</span>
         </CategoryItem>
         <CategoryItem
+          data-digix="Filter-Review-Tab"
           onClick={() => this.handleClick('review')}
           active={stage.toLowerCase() === 'review'}
         >
-          {projectStatus.review} <span>{ProposalsCount.data.review || 0}</span>
+          {projectStatus.review}{' '}
+          <span data-digix="Filter-Review-Count">{ProposalsCount.data.review || 0}</span>
         </CategoryItem>
         <CategoryItem
+          data-digix="Filter-Archived-Tab"
           onClick={() => this.handleClick('archived')}
           active={stage.toLowerCase() === 'archived'}
         >
-          {projectStatus.archived} <span>{ProposalsCount.data.archived || '0'}</span>
+          {projectStatus.archived}{' '}
+          <span data-digix="Filter-Archived-Count">{ProposalsCount.data.archived || '0'}</span>
         </CategoryItem>
       </Category>
     );

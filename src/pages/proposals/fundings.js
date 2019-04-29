@@ -59,7 +59,7 @@ class ProposalFundings extends React.Component {
 
     let reward = finalReward.original;
     reward = truncateNumber(reward);
-    milestoneFunds = truncateNumber(reward);
+    milestoneFunds = truncateNumber(milestoneFunds);
 
     return {
       milestoneFunds,

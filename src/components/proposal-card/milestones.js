@@ -61,14 +61,16 @@ export default class ProposalCardMilestone extends React.Component {
       <Details noPadding third>
         <Info>
           <Label>{cardTranslation.milestones}</Label>
-          <ul>{mileStones && mileStones.map(milestone => <li key={milestone} />)}</ul>
+          <ul data-digix="Milestone-Count">
+            {mileStones && mileStones.map(milestone => <li key={milestone} />)}
+          </ul>
         </Info>
         <Info>
           <Label>{cardTranslation.votingDeadline}</Label>
-          <Data>{determineDeadline(details) || 'N/A'} </Data>
+          <Data data-digix="Proposal-Deadline">{determineDeadline(details) || 'N/A'} </Data>
         </Info>
         <Info>
-          <Button primary onClick={this.redirectToProposalPage}>
+          <Button primary onClick={this.redirectToProposalPage} data-digix="Participate-Btn">
             {buttons.participate}
           </Button>
         </Info>

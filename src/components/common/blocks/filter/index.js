@@ -134,7 +134,13 @@ class ProposalCardFilter extends React.Component {
         <Heading>
           <H1>{dashboard.title}</H1>
           {canCreate && (
-            <Button primary large showIcon onClick={() => this.redirectToCreateProposal()}>
+            <Button
+              primary
+              large
+              showIcon
+              onClick={() => this.redirectToCreateProposal()}
+              data-digix="Proposal-Create-Btn"
+            >
               <Icon kind="plus" />
               {dashboard.createButton}
             </Button>

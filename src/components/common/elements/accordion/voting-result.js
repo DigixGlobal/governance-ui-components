@@ -25,13 +25,15 @@ const countdownRenderer = ({ date, days, hours, minutes, seconds, completed }) =
 
   if (completed) {
     return (
-      <span>
+      <span data-digix="Vote-Countdown-Ended">
         {'Ended '} <TimeAgo date={pastDate} />
       </span>
     );
   }
 
-  return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
+  return (
+    <span data-digix="Vote-Countdown-Timer">{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>
+  );
 };
 
 class VotingResult extends React.Component {
@@ -97,7 +99,7 @@ class VotingResult extends React.Component {
                   {votingResult.miniumQuorumRequired}: {stats.minimumQuorum}%
                 </span>
                 <QuorumInfoCol>
-                  <span>
+                  <span data-digix="Vote-User-Count">
                     {stats.votes} {votingResult.votes}
                   </span>
 
@@ -126,10 +128,10 @@ class VotingResult extends React.Component {
                   {votingResult.minimumApproval}: {stats.minimumApproval}%
                 </span>
                 <QuorumInfoCol>
-                  <span>
+                  <span data-digix="Vote-Yes-Count">
                     {buttons.yes}:&nbsp;{yesVotes} DGD
                   </span>
-                  <span>
+                  <span data-digix="Vote-No-Count">
                     {buttons.no}:&nbsp;{noVotes} DGD
                   </span>
                 </QuorumInfoCol>

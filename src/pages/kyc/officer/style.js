@@ -47,7 +47,7 @@ export const Value = styled.div`
 `;
 
 export const TabButton = styled(Button)`
-  width: 25%;
+  width: 20%;
   border-radius: 0;
   box-shadow: none;
   border: 1px solid ${props => props.theme.buttonPrimary.border.fade.toString()};

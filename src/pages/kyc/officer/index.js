@@ -17,38 +17,40 @@ import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
 import { KycWrapper, Title, CTAContainer, TabButton } from '@digix/gov-ui/pages/kyc/officer/style';
 
-// import '@digix/gov-ui/pages/kyc/officer/modal_styles.css';
+import Spinner from '@digix/gov-ui/components/common/blocks/loader/spinner';
 
 const columns = [
   {
     Header: 'User Id',
-    id: 'id',
-    accessor: d => d.node.userId, // String-based value accessors!
+    id: 'USER_ID',
+    accessor: d => d.node.userId,
+    sortable: false,
+    filterable: false,
   },
   {
     Header: 'Status',
-    id: 'status',
+    id: 'STATUS',
     accessor: d => showStatusIcon(d.node.status),
   },
   {
     Header: 'Name',
-    id: 'Name', // Required because our accessor is not a string
+    id: 'NAME',
     accessor: d => `${d.node.firstName} ${d.node.lastName}`, // Custom value accessors!
   },
   {
-    Header: 'Country of Residence', // Required because our accessor is not a string
-    id: 'residence',
+    Header: 'Country of Residence',
+    id: 'COUNTRY_OF_RESIDENCE',
     accessor: d => d.node.residenceProof.residence.country,
   },
   {
-    Header: 'Nationality', // Required because our accessor is not a string
-    id: 'nationality',
-    accessor: d => d.node.nationality, // Custom value accessors!
+    Header: 'Nationality',
+    id: 'NATIONALITY',
+    accessor: d => d.node.nationality,
   },
   {
     Header: 'Last Updated',
-    id: 'lastupdated',
-    accessor: d => moment(d.node.updaedAt).format('YYYY-MM-DD h:mm:ss a'),
+    id: 'LAST_UPDATED',
+    accessor: d => moment(d.node.updatedAt).format('YYYY-MM-DD h:mm:ss a'),
   },
 ];
 class KycOfficerDashboard extends React.Component {
@@ -59,6 +61,9 @@ class KycOfficerDashboard extends React.Component {
       selectedIndex: 0,
       filter: 'All',
       reloading: false,
+      page: 1,
+      pageSize: 10,
+      customLoading: false,
     };
   }
 
@@ -84,6 +89,12 @@ class KycOfficerDashboard extends React.Component {
     this.setState({ filter: status, reloading: false });
   };
 
+  handleFetch = (loading, onFetchData, page, pageSize) => {
+    this.setState({ customLoading: loading, page, pageSize }, () =>
+      onFetchData({ page: Number(page), pageSize: Number(pageSize) })
+    );
+  };
+
   renderInfo = () => {
     const { selected } = this.state;
 
@@ -98,7 +109,15 @@ class KycOfficerDashboard extends React.Component {
   };
 
   render() {
-    const { selected, selectedIndex, filter, reloading } = this.state;
+    const {
+      selected,
+      selectedIndex,
+      filter,
+      reloading,
+      page,
+      pageSize,
+      customLoading,
+    } = this.state;
     const { userData, history } = this.props;
     if (!userData || (userData && !userData.isKycOfficer)) history.push('/');
     return (
@@ -146,15 +165,32 @@ class KycOfficerDashboard extends React.Component {
             Rejected KYC Requests
           </TabButton>
         </CTAContainer>
-        {/* <FilterLabel>Showing {filter || 'All'} KYC</FilterLabel> */}
         <Query
           query={searchKycQuery}
           fetchPolicy="network-only"
-          variables={{ status: filter === 'All' ? undefined : filter }}
+          variables={{
+            status: filter === 'All' ? undefined : filter,
+            page,
+            pageSize,
+            sort: 'LAST_UPDATED',
+            sortBy: 'DESC',
+          }}
         >
           {({ data, loading, error, refetch }) => {
             if (loading) {
-              return <div>Loading...</div>;
+              return (
+                <Spinner
+                  translations={{
+                    project: {
+                      spinner: {
+                        pleaseWait: 'Please wait....',
+                        hold: 'Getting KYC data',
+                      },
+                    },
+                  }}
+                  height="100%"
+                />
+              );
             }
 
             if (error) {
@@ -162,11 +198,30 @@ class KycOfficerDashboard extends React.Component {
             }
             if (reloading) refetch();
 
+            const { totalCount, totalPage, edges: rows } = data.searchKycs;
             return (
               <Fragment>
                 <DigixTable
-                  data={data.searchKycs.edges}
+                  data={rows}
                   columns={columns}
+                  loading={loading || customLoading}
+                  manual
+                  totalRows={totalCount}
+                  currentPage={page}
+                  page={page}
+                  defaultPageSize={pageSize}
+                  pages={totalPage}
+                  showPagination
+                  handleLoading={this.handleFetch}
+                  fetchData={refetch}
+                  onSortedChange={newSorted => {
+                    refetch({
+                      page,
+                      pageSize,
+                      sort: newSorted[0].id,
+                      sortBy: newSorted[0].desc ? 'DESC' : 'ASC',
+                    });
+                  }}
                   getTrProps={(state, rowInfo) => {
                     if (rowInfo && rowInfo.row) {
                       return {

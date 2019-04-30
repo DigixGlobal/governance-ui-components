@@ -1,18 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 
-import { Button } from '@digix/gov-ui/components/common/elements/index';
 import LikeButton from '@digix/gov-ui/components/common/elements/like';
-
+import LogDashboard from '@digix/gov-ui/analytics/dashboard';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { initializePayload } from '@digix/gov-ui/api';
+import { getUserStatus } from '@digix/gov-ui/utils/helpers';
+import { UserStatus } from '@digix/gov-ui/constants';
+
 import {
   likeProposal,
   unlikeProposal,
   getUserProposalLikeStatus,
 } from '@digix/gov-ui/reducers/dao-server/actions';
-import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
 import {
   Details,
@@ -63,6 +64,14 @@ class Proposal extends React.PureComponent {
     });
   };
 
+  redirectToProposalPage = () => {
+    const { AddressDetails, details, history } = this.props;
+
+    const userType = getUserStatus(AddressDetails.data, UserStatus);
+    LogDashboard.viewProject(userType);
+    history.push(`/proposals/${details.proposalId}`);
+  };
+
   render() {
     const {
       details,
@@ -70,7 +79,6 @@ class Proposal extends React.PureComponent {
       liked,
       likes,
       title,
-      userData,
       userDetails,
       userProposalLike,
       translations,
@@ -86,10 +94,7 @@ class Proposal extends React.PureComponent {
         ? details.proposalVersions[details.proposalVersions.length - 1]
         : undefined;
 
-    const canCreate = userDetails && userDetails.data.isParticipant;
     const canLike = userDetails && userDetails.data.address;
-    const isForumAdmin = userData && userData.isForumAdmin;
-
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
@@ -112,11 +117,7 @@ class Proposal extends React.PureComponent {
             <p data-digix="Proposal-Short-Desc">
               {proposalVersion ? proposalVersion.dijixObject.description : ''}
             </p>
-            <ViewLink
-              disabled={!canCreate && !isForumAdmin}
-              href={`/proposals/${details.proposalId}`}
-              to={`/proposals/${details.proposalId}`}
-            >
+            <ViewLink role="link" onClick={this.redirectToProposalPage}>
               {cardTranslation.view}
             </ViewLink>
           </Desc>
@@ -143,44 +144,46 @@ class Proposal extends React.PureComponent {
     );
   }
 }
-const { bool, func, object, number, string } = PropTypes;
 
+const { bool, func, object, number, string } = PropTypes;
 Proposal.propTypes = {
+  AddressDetails: object,
   ChallengeProof: object,
   details: object.isRequired,
   liked: bool,
   likes: number,
   title: string,
+  history: object.isRequired,
   displayName: string.isRequired,
   likeProposalAction: func.isRequired,
   unlikeProposalAction: func.isRequired,
   getUserProposalLikeStatusAction: func.isRequired,
-  userData: object,
   userDetails: object.isRequired,
   userProposalLike: object.isRequired,
   translations: object.isRequired,
 };
 
 const mapStateToProps = state => ({
+  AddressDetails: state.infoServer.AddressDetails,
   ChallengeProof: state.daoServer.ChallengeProof,
   userProposalLike: state.daoServer.UserProposalLike,
 });
 
 Proposal.defaultProps = {
+  AddressDetails: {
+    data: undefined,
+  },
   ChallengeProof: undefined,
   liked: false,
   likes: undefined,
   title: '',
-  userData: undefined,
 };
 
-export default withFetchUser(
-  connect(
-    mapStateToProps,
-    {
-      likeProposalAction: likeProposal,
-      unlikeProposalAction: unlikeProposal,
-      getUserProposalLikeStatusAction: getUserProposalLikeStatus,
-    }
-  )(Proposal)
-);
+export default connect(
+  mapStateToProps,
+  {
+    likeProposalAction: likeProposal,
+    unlikeProposalAction: unlikeProposal,
+    getUserProposalLikeStatusAction: getUserProposalLikeStatus,
+  }
+)(Proposal);

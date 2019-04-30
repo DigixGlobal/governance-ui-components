@@ -134,7 +134,7 @@ AbortProjectButton.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   checkProposalRequirements: func.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -145,6 +145,7 @@ AbortProjectButton.propTypes = {
 };
 
 AbortProjectButton.defaultProps = {
+  gasLimitConfig: undefined,
   isProposer: false,
   finalVersionIpfsDoc: EMPTY_HASH_LONG,
 };

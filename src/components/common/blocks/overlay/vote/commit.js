@@ -268,7 +268,7 @@ const { array, func, object, string, bool } = PropTypes;
 CommitVote.propTypes = {
   addresses: array.isRequired,
   ChallengeProof: object.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   history: object.isRequired,
   proposalId: string.isRequired,
   proposal: object.isRequired,
@@ -283,6 +283,7 @@ CommitVote.propTypes = {
 };
 
 CommitVote.defaultProps = {
+  gasLimitConfig: undefined,
   revoting: false,
 };
 

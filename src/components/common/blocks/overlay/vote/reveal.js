@@ -216,7 +216,7 @@ const { array, func, object } = PropTypes;
 RevealVote.propTypes = {
   addresses: array.isRequired,
   ChallengeProof: object.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   history: object.isRequired,
   proposal: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
@@ -226,6 +226,10 @@ RevealVote.propTypes = {
   web3Redux: object.isRequired,
   translations: object.isRequired,
   txnTranslations: object.isRequired,
+};
+
+RevealVote.defaultProps = {
+  gasLimitConfig: undefined,
 };
 
 const mapStateToProps = state => ({

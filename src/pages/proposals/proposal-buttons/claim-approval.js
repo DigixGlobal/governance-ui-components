@@ -226,7 +226,7 @@ ClaimApprovalButton.propTypes = {
   proposalId: string.isRequired,
   daoConfig: object.isRequired,
   daoDetails: object.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   pendingTransactions: object,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
@@ -248,6 +248,7 @@ ClaimApprovalButton.propTypes = {
 
 ClaimApprovalButton.defaultProps = {
   draftVoting: undefined,
+  gasLimitConfig: undefined,
   votingStage: undefined,
   pendingTransactions: undefined,
   transactions: undefined,

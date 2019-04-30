@@ -7,6 +7,7 @@ import ImportKeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/compon
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class V3Keystore extends React.Component {
   render() {
@@ -33,6 +34,7 @@ class V3Keystore extends React.Component {
           updateDefaultAddress
           translations={this.props.translations}
           commonTranslations={this.props.commonTranslations}
+          logLoadWallet={LogLoadWallet}
           trigger={
             <Button kind="round" secondary large showIcon fluid>
               <Icon kind="json" />

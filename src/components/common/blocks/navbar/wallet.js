@@ -19,6 +19,7 @@ import {
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
+import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class WalletButton extends React.Component {
   state = {
@@ -26,6 +27,7 @@ class WalletButton extends React.Component {
   };
 
   onWalletClick = () => {
+    LogLoadWallet.initiate();
     this.props.showHideWalletOverlay(true);
   };
 

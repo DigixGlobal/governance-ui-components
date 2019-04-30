@@ -24,6 +24,7 @@ import {
 import { fetchAddressQuery } from '@digix/gov-ui/api/graphql-queries/address';
 import { fetchDisplayName, fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 import { getChallengeVanilla, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
+import { LogSignMessage } from '@digix/gov-ui/analytics/loadWallet';
 import { withApollo } from 'react-apollo';
 
 class AddressWatcher extends React.PureComponent {
@@ -83,7 +84,12 @@ class AddressWatcher extends React.PureComponent {
       const signMessage = new Promise(resolve =>
         resolve(
           this.props.showMsgSigningModal({
-            txData: { message, caption, translations },
+            txData: {
+              message,
+              caption,
+              translations,
+              logSignMessage: LogSignMessage,
+            },
             network,
           })
         )

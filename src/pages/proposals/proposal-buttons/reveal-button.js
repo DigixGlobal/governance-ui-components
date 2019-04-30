@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
+import LogRevealVote from '@digix/gov-ui/analytics/revealVote';
 import RevealVoteOverlay from '@digix/gov-ui/components/common/blocks/overlay/vote/reveal';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { getUserStatus } from '@digix/gov-ui/utils/helpers';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { VotingStages } from '@digix/gov-ui/constants';
+import { UserStatus, VotingStages } from '@digix/gov-ui/constants';
 
 class RevealVoteButton extends React.PureComponent {
   showOverlay = () => {
     const {
+      AddressDetails,
       history,
       proposalId,
       showRightPanelAction,
@@ -18,6 +21,9 @@ class RevealVoteButton extends React.PureComponent {
       translations,
       txnTranslations,
     } = this.props;
+
+    const userType = getUserStatus(AddressDetails.data, UserStatus);
+    LogRevealVote.initiate(userType);
 
     showRightPanelAction({
       component: (
@@ -75,6 +81,7 @@ class RevealVoteButton extends React.PureComponent {
 const { bool, func, object, string } = PropTypes;
 
 RevealVoteButton.propTypes = {
+  AddressDetails: object.isRequired,
   isParticipant: bool,
   proposal: object.isRequired,
   proposalId: string.isRequired,
@@ -91,7 +98,7 @@ RevealVoteButton.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  addressDetails: state.infoServer.AddressDetails,
+  AddressDetails: state.infoServer.AddressDetails,
 });
 
 export default web3Connect(

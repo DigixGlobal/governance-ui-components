@@ -11,15 +11,12 @@ import { withFetchDaoInfo } from '@digix/gov-ui/api/graphql-queries/dao';
 import {
   MainPhase,
   MainPhaseInfoDivider,
-  MainPhaseStatus,
-  MainPhaseValue,
-  Quarter,
-  LockingPhase,
-  LockingPhaseStatus,
+  Qtr,
+  LockPhase,
   TimelineBar,
-  TimelineDay,
-  TimelineLabel,
-  TimelineWrapper,
+  Wrapper,
+  Label,
+  Progress,
 } from '@digix/gov-ui/components/common/blocks/timeline/style';
 
 class Timeline extends React.Component {
@@ -115,14 +112,19 @@ class Timeline extends React.Component {
     const lockedDgd = this.getLockedDgd();
 
     return (
-      <TimelineWrapper>
-        <Quarter>Q{currentQuarter}</Quarter>
+      <Wrapper>
+        <Qtr>Q{currentQuarter}</Qtr>
         <TimelineBar>
-          <TimelineLabel>
-            <LockingPhase>{dashboard.Timeline.lockingPhase}</LockingPhase>
-            <MainPhase>
+          <LockPhase>
+            <Label locking>{dashboard.Timeline.lockingPhase}</Label>
+            <Progress locking>
+              <ProgressBar variant="determinate" value={lockingPhaseProgress || -1} />
+            </Progress>
+          </LockPhase>
+          <MainPhase>
+            <Label>
               <div>{dashboard.Timeline.mainPhase}</div>
-              <MainPhaseValue>
+              <div>
                 <span data-digix="Dashboard-Timeline-DaysEllpased">
                   {dashboard.Timeline.day} {daysEllapsed}
                 </span>
@@ -131,20 +133,14 @@ class Timeline extends React.Component {
                 <span data-digix="Dashboard-Timeline-TotalStake">
                   {lockedDgd} {dashboard.Timeline.stake}
                 </span>
-              </MainPhaseValue>
-            </MainPhase>
-          </TimelineLabel>
-
-          <TimelineDay>
-            <LockingPhaseStatus>
-              <ProgressBar variant="determinate" value={lockingPhaseProgress || -1} />
-            </LockingPhaseStatus>
-            <MainPhaseStatus>
+              </div>
+            </Label>
+            <Progress main>
               <ProgressBar variant="determinate" value={mainPhaseProgress || -1} />
-            </MainPhaseStatus>
-          </TimelineDay>
+            </Progress>
+          </MainPhase>
         </TimelineBar>
-      </TimelineWrapper>
+      </Wrapper>
     );
   }
 }

@@ -6,7 +6,7 @@ import EmailOverlay from '@digix/gov-ui/components/common/blocks/overlay/profile
 import KycOverlay from '@digix/gov-ui/components/common/blocks/overlay/kyc';
 import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
 import { Button } from '@digix/gov-ui/components/common/elements';
-import { KycErrors, KycStatus } from '@digix/gov-ui/constants';
+import { KycStatus } from '@digix/gov-ui/constants';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
@@ -54,7 +54,7 @@ class ProfileActivitySummary extends React.Component {
     this.props.showRightPanel({
       component: (
         <ErrorMessageOverlay
-          errors={[KycErrors.resubmit]}
+          errors={[this.props.translations.kyc.Errors.resubmit]}
           location={this.props.translations.proposalErrors.returnToProfile}
         />
       ),

@@ -29,9 +29,12 @@ class EmailOverlay extends React.Component {
 
   onEmailUpdate = response => {
     const { errors } = response.changeEmail;
+    const { Errors: tErrors } = this.props.translations;
     if (errors.length) {
-      this.setState({ error: errors[0].message });
-      return;
+      if (errors[0].message === tErrors.emailTaken)
+        return this.setState({ error: tErrors.emailTaken });
+
+      return this.setState({ error: errors[0].message });
     }
 
     this.props.showRightPanel({ show: false });

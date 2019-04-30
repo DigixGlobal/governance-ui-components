@@ -26,7 +26,10 @@ class Comment extends React.Component {
       comment: props.comment,
     };
 
-    this.DELETE_MESSAGE = 'This message has been removed.';
+    const {
+      data: { comment },
+    } = props.translations;
+    this.DELETE_MESSAGE = comment.removed || 'This comment has been removed.';
   }
 
   deleteComment() {

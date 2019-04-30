@@ -135,6 +135,8 @@ class ConnectedWallet extends React.Component {
   handleApprove = () => {
     const { web3Redux, challengeProof, addresses, gasLimitConfig } = this.props;
 
+    const { transaction: t } = this.props.walletTranslations.approveInteraction;
+
     const { abi, address } = getDGDBalanceContract(network);
     const contract = web3Redux
       .web3(network)
@@ -142,8 +144,8 @@ class ConnectedWallet extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Approve Interaction',
-      header: 'DGD Approval',
+      caption: t.title || 'Approve Interaction',
+      header: t.action || 'DGD Approval',
       type: 'txVisualization',
     };
 
@@ -159,7 +161,7 @@ class ConnectedWallet extends React.Component {
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'DGD Approval',
+          title: t.action || 'DGD Approval',
           token: challengeProof.data['access-token'],
           client: challengeProof.data.client,
           uid: challengeProof.data.uid,
@@ -170,7 +172,8 @@ class ConnectedWallet extends React.Component {
     const onTransactionSuccess = txHash => {
       this.setState({ showLockDgd: true }, () => {
         this.props.showHideAlert({
-          message: 'Your DGD Approval Transaction is pending confirmation. See More',
+          message:
+            t.txnSuccess || 'Your DGD Approval Transaction is pending confirmation. See More',
           txHash,
         });
       });
@@ -345,6 +348,7 @@ ConnectedWallet.propTypes = {
   enableLockDgd: object,
   translations: object.isRequired,
   approvalTranslations: object.isRequired,
+  walletTranslations: object.isRequired,
   txnTranslations: object.isRequired,
   gasLimitConfig: object,
   getTxConfig: func.isRequired,
@@ -377,6 +381,7 @@ const mapStateToProps = state => ({
   enableLockDgd: state.govUI.CanLockDgd,
   translations: state.daoServer.Translations.data.loadWallet.connectedWallet,
   approvalTranslations: state.daoServer.Translations.data.approveInteraction,
+  walletTranslations: state.daoServer.Translations.data.wallet,
   txnTranslations: state.daoServer.Translations.data.signTransaction,
   gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });

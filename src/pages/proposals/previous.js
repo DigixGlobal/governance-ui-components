@@ -6,22 +6,23 @@ import { PreviousWrapper } from './style';
 
 export default class PreviousVersion extends React.Component {
   render() {
-    const { disabled } = this.props;
+    const { disabled, translations } = this.props;
     return (
       <PreviousWrapper>
         <Button kind="text" small disabled={disabled} {...this.props}>
           <Icon kind="arrow" />
-          See Previous Version
+          {translations.seePreviousVersion || 'See Previous Version'}
         </Button>
       </PreviousWrapper>
     );
   }
 }
 
-const { bool } = PropTypes;
+const { bool, object } = PropTypes;
 
 PreviousVersion.propTypes = {
   disabled: bool,
+  translations: object.isRequired,
 };
 
 PreviousVersion.defaultProps = {

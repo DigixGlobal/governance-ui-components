@@ -38,12 +38,14 @@ class ProposalVersionNav extends React.Component {
         <PreviousVersion
           data-digix="Previous-Version"
           disabled={disablePrevious}
+          translations={this.props.translations.project}
           onClick={handlePreviousVersionClick}
         />
         <div data-digix="Version-Count">Version {currentVersion + 1}</div>
         <NextVersion
           data-digix="Next-Version"
           disabled={disableNext}
+          translations={this.props.translations.project}
           onClick={handleNextVersionClick}
         />
       </VersionHistory>
@@ -59,6 +61,7 @@ ProposalVersionNav.propTypes = {
   handleNextVersionClick: func.isRequired,
   proposalDetails: object.isRequired,
   versions: array.isRequired,
+  translations: object.isRequired,
 };
 
 export default withFetchAddress(withFetchProposal(ProposalVersionNav));

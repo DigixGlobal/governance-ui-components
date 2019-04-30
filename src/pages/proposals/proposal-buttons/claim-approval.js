@@ -10,12 +10,7 @@ import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import {
-  DEFAULT_GAS,
-  DEFAULT_GAS_PRICE,
-  VotingStages,
-  MAX_PEOPLE_PER_CLAIM,
-} from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE, VotingStages, MAX_PEOPLE_PER_CLAIM } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import MultiStepClaim from '@digix/gov-ui/components/common/blocks/overlay/claim-approval';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
@@ -71,6 +66,7 @@ class ClaimApprovalButton extends React.PureComponent {
 
   handleSubmit = useMaxClaim => () => {
     const {
+      gasLimitConfig,
       web3Redux,
       ChallengeProof,
       addresses,
@@ -89,14 +85,14 @@ class ClaimApprovalButton extends React.PureComponent {
       header: snackbars.claimApproval.txUiHeader,
       type: 'txVisualization',
     };
+
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: 8000000,
+      gas: gasLimitConfig.CLAIM_DRAFT_VOTING || gasLimitConfig.DEFAULT,
       ui,
     };
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
-
     const onTransactionAttempt = txHash => {
       if (ChallengeProof.data) {
         this.props.sendTransactionToDaoServer({
@@ -230,6 +226,7 @@ ClaimApprovalButton.propTypes = {
   proposalId: string.isRequired,
   daoConfig: object.isRequired,
   daoDetails: object.isRequired,
+  gasLimitConfig: object.isRequired,
   pendingTransactions: object,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
@@ -261,6 +258,7 @@ const mapStateToProps = state => ({
   addresses: getAddresses(state),
   daoConfig: state.infoServer.DaoConfig,
   daoDetails: state.infoServer.DaoDetails,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(

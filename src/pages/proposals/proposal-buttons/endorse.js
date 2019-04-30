@@ -12,12 +12,7 @@ import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import {
-  ProposalStages,
-  DEFAULT_GAS,
-  DEFAULT_GAS_PRICE,
-  EMPTY_HASH,
-} from '@digix/gov-ui/constants';
+import { ProposalStages, DEFAULT_GAS_PRICE, EMPTY_HASH } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
@@ -35,6 +30,7 @@ class EndorseProjectButton extends React.PureComponent {
 
   handleSubmit = () => {
     const {
+      gasLimitConfig,
       web3Redux,
       ChallengeProof,
       addresses,
@@ -55,7 +51,7 @@ class EndorseProjectButton extends React.PureComponent {
     };
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.ENDORSE_PROPOSAL || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -121,6 +117,7 @@ EndorseProjectButton.propTypes = {
   isModerator: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  gasLimitConfig: object.isRequired,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -136,8 +133,9 @@ EndorseProjectButton.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  ChallengeProof: state.daoServer.ChallengeProof,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(

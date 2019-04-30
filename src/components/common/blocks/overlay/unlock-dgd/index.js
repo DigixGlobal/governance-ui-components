@@ -8,7 +8,7 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
@@ -73,7 +73,7 @@ class UnlockDgdOverlay extends React.Component {
 
   unlockDgd = unlockAmount => {
     const t = this.props.translations;
-    const { addresses, ChallengeProof, web3Redux } = this.props;
+    const { addresses, ChallengeProof, gasLimitConfig, web3Redux } = this.props;
     const { abi, address } = getContract(DaoStakeLocking, network);
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -90,7 +90,7 @@ class UnlockDgdOverlay extends React.Component {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.UNLOCK_DGD || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -227,6 +227,7 @@ UnlockDgdOverlay.propTypes = {
   addresses: array.isRequired,
   ChallengeProof: object.isRequired,
   DaoConfig: object.isRequired,
+  gasLimitConfig: object.isRequired,
   getDaoConfig: func.isRequired,
   maxAmount: number.isRequired,
   onSuccess: func,
@@ -247,6 +248,7 @@ const mapStateToProps = state => ({
   addresses: getAddresses(state),
   ChallengeProof: state.daoServer.ChallengeProof.data,
   DaoConfig: state.infoServer.DaoConfig.data,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
   txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 

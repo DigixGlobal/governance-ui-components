@@ -12,7 +12,7 @@ import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index'; // '../../elements/buttons';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
@@ -58,7 +58,7 @@ class BadgeRedemptionApproval extends React.Component {
   };
 
   handleSubmit = () => {
-    const { web3Redux, addresses } = this.props;
+    const { addresses, gasLimitConfig, web3Redux } = this.props;
     const { address: daoStakeLockingAddress } = getContract(DaoStakeLocking, network);
     const { abi, address } = getDGDBadgeBalanceContract(network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -76,7 +76,7 @@ class BadgeRedemptionApproval extends React.Component {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -125,6 +125,7 @@ const { array, func, object } = PropTypes;
 BadgeRedemptionApproval.propTypes = {
   addresses: array.isRequired,
   ChallengeProof: object.isRequired,
+  gasLimitConfig: object.isRequired,
   history: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlertAction: func.isRequired,
@@ -136,8 +137,9 @@ BadgeRedemptionApproval.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  ChallengeProof: state.daoServer.ChallengeProof,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
   translations: state.daoServer.Translations.data.approveInteraction,
   txnTranslations: state.daoServer.Translations.data.signTransaction,
 });

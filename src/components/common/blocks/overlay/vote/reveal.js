@@ -18,7 +18,7 @@ import getContract from '@digix/gov-ui/utils/contracts';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
@@ -78,6 +78,7 @@ class RevealVote extends React.Component {
   handleSubmit = () => {
     const { voteObject } = this.state;
     const {
+      gasLimitConfig,
       web3Redux,
       addresses,
       proposal: { currentVotingRound, proposalId, isSpecial },
@@ -97,9 +98,10 @@ class RevealVote extends React.Component {
       type: 'txVisualization',
     };
 
+    const gasLimit = isSpecial ? gasLimitConfig.REVEAL_VOTE_SPECIAL : gasLimitConfig.REVEAL_VOTE;
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimit || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -214,6 +216,7 @@ const { array, func, object } = PropTypes;
 RevealVote.propTypes = {
   addresses: array.isRequired,
   ChallengeProof: object.isRequired,
+  gasLimitConfig: object.isRequired,
   history: object.isRequired,
   proposal: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
@@ -226,8 +229,9 @@ RevealVote.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  ChallengeProof: state.daoServer.ChallengeProof,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(

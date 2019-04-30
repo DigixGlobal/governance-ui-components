@@ -39,6 +39,7 @@
   "like": "Like",
   "seePreviousVersion": "See Previous Version",
   "seeNextVersion": "See Next Version",
+  "versionNumber": "Version {{versionNumber}}",
   "editFundingError": "Sum of Reward Expected and Milestone Fundings must not exceed {{limit}} ETH",
   "fundsRequiredForMilestone": "Funds Required for This Milestone",
   "noShortDescription": "No short description content has been created yet.",

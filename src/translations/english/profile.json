@@ -15,7 +15,8 @@
       "instructions": "Please enter your desired user name",
       "Errors": {
         "invalid": "Username must be between 2-20 characters, can only be composed of alphanumeric and underscore characters, and must not begin with the word 'user'.",
-        "connectionError": "Unable to update username. Please try again."
+        "connectionError": "Unable to update username. Please try again.",
+        "usernameTaken": "Username has already been taken"
       },
       "submit": "Assign Username",
       "txnSuccess": "Username Updated"
@@ -27,7 +28,8 @@
       "Errors": {
         "invalid": "Please enter a valid email address.",
         "unchanged": "Please enter an email address that is different from your current email.",
-        "connectionError": "Unable to update email. Please try again."
+        "connectionError": "Unable to update email. Please try again.",
+        "emailTaken": "Email has already been taken."
       },
       "submit": "Change Email",
       "txnSuccess": "Email Updated"
@@ -42,6 +44,7 @@
   "Kyc": {
     "Status": "KYC Status",
     "Statuses": {
+      "notVerified": "Not Verified",
       "pending": "Pending",
       "rejected": "Rejected",
       "expired": "Expired",
@@ -89,6 +92,7 @@
           "isImage": "Image must be in JPEG or PNG format",
           "size": "Filesize must be less than 10 MB."
         },
+        "phone": "Invalid phone number",
         "required": "This field is required."
       },
       "Labels": {

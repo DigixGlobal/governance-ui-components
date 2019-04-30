@@ -75,6 +75,16 @@
       "title": "Continue Participation",
       "txUiHeader": "User",
       "message": "Your continuation of participation with current lock-up is pending confirmation. See More"
+    },
+    "approveBadgeRedemption": {
+      "title": "Badge Redemption Approval",
+      "txUiHeader": "Approve Badge Redemption",
+      "message": "Your Approve Redeem Badge Transaction is pending confirmation. See More"
+    },
+    "redeemBadge": {
+      "title": "Redeem Badge",
+      "txUiHeader": "Badge",
+      "message": "Your Redeem Badge Transaction is pending confirmation. See More"
     }
   }
 }

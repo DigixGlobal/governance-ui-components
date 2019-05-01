@@ -430,12 +430,16 @@ Documents.propTypes = {
   web3Redux: object.isRequired,
   history: object.isRequired,
   ChallengeProof: object.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
   match: object.isRequired,
   addresses: array.isRequired,
+};
+
+Documents.defaultProps = {
+  gasLimitConfig: undefined,
 };
 
 const mapStateToProps = state => ({

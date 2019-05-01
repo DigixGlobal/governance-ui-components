@@ -161,7 +161,7 @@ FinalizeProjectButton.propTypes = {
   stage: string.isRequired,
   endorser: string,
   proposalId: string.isRequired,
-  finalVersionIpfsDoc: string.isRequired,
+  finalVersionIpfsDoc: string,
   isProposer: bool,
   web3Redux: object.isRequired,
   daoConfig: object.isRequired,
@@ -170,7 +170,7 @@ FinalizeProjectButton.propTypes = {
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   getDaoConfig: func.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
@@ -180,8 +180,10 @@ FinalizeProjectButton.propTypes = {
 };
 
 FinalizeProjectButton.defaultProps = {
-  isProposer: false,
   endorser: EMPTY_HASH,
+  finalVersionIpfsDoc: '',
+  gasLimitConfig: undefined,
+  isProposer: false,
 };
 
 const mapStateToProps = state => ({

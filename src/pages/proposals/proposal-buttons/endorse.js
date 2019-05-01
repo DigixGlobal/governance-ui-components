@@ -117,7 +117,7 @@ EndorseProjectButton.propTypes = {
   isModerator: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -128,8 +128,9 @@ EndorseProjectButton.propTypes = {
 };
 
 EndorseProjectButton.defaultProps = {
-  isModerator: false,
   endorser: EMPTY_HASH,
+  gasLimitConfig: undefined,
+  isModerator: false,
 };
 
 const mapStateToProps = state => ({

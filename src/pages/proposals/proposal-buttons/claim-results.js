@@ -253,7 +253,7 @@ ClaimResultsButton.propTypes = {
   checkProposalRequirements: func.isRequired,
   daoConfig: object.isRequired,
   daoDetails: object.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   pendingTransactions: object,
   showHideAlert: func.isRequired,
   getDaoConfig: func.isRequired,
@@ -269,6 +269,7 @@ ClaimResultsButton.propTypes = {
 };
 
 ClaimResultsButton.defaultProps = {
+  gasLimitConfig: undefined,
   isProposer: false,
   pendingTransactions: undefined,
   transactions: undefined,

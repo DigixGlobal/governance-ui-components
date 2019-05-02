@@ -128,7 +128,7 @@ class Timeline extends React.Component {
                   content={`${timeline.startsOn || `Starts on`} ${' '} ${moment(
                     startOfQuarter
                   ).format('dddd MMMM DD YYYY, h:mm:ss a')} ${timeline.endsOn ||
-                    'and ends on '} ${' '} ${moment(startOfMainphase).format(
+                    'and ends on'} ${' '} ${moment(startOfMainphase).format(
                     'dddd MMMM DD YYYY, h:mm:ss a'
                   )}.`}
                 >
@@ -149,7 +149,7 @@ class Timeline extends React.Component {
                   content={`${timeline.startsOn || `Starts on`} ${' '} ${moment(
                     startOfMainphase
                   ).format('dddd MMMM DD YYYY, h:mm:ss a')} ${timeline.endsOn ||
-                    'and ends on '} ${' '} ${moment(startOfNextQuarter).format(
+                    'and ends on'} ${' '} ${moment(startOfNextQuarter).format(
                     'dddd MMMM DD YYYY, h:mm:ss a'
                   )}`}
                 >

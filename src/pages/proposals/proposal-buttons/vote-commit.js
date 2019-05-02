@@ -7,7 +7,6 @@ import CommitVoteOverlay from '@digix/gov-ui/components/common/blocks/overlay/vo
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { VotingStages } from '@digix/gov-ui/constants';
-import { isatty } from 'tty';
 
 class CommitVoteButton extends React.PureComponent {
   showOverlay = hasVoted => {

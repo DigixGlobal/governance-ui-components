@@ -49,7 +49,7 @@ class RevealVoteButton extends React.PureComponent {
     if (
       !isParticipant ||
       (!proposal.draftVoting && !isSpecial) ||
-      !isActive ||
+      (!isActive || isSpecial) ||
       (proposal.votingStage !== VotingStages.commit && !isSpecial) ||
       hasRevealed ||
       !hasVoted

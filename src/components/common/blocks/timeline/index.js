@@ -8,14 +8,17 @@ import { DEFAULT_LOCKED_DGD } from '@digix/gov-ui/constants';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { withFetchDaoInfo } from '@digix/gov-ui/api/graphql-queries/dao';
+
+import { ToolTip, Icon } from '@digix/gov-ui/components/common/index';
 import {
   MainPhase,
-  MainPhaseInfoDivider,
+  Divider,
   Qtr,
   LockPhase,
   TimelineBar,
   Wrapper,
   Label,
+  Phase,
   Progress,
 } from '@digix/gov-ui/components/common/blocks/timeline/style';
 
@@ -111,25 +114,48 @@ class Timeline extends React.Component {
     const mainPhaseProgress = this.getProgress(startOfMainphase, startOfNextQuarter);
     const lockedDgd = this.getLockedDgd();
 
+    // const TooltipMsg = 'Starts on April 3 at 0:00 UTC and ends on July 3 at 23:59 UTC.';
+
     return (
       <Wrapper>
         <Qtr>Q{currentQuarter}</Qtr>
         <TimelineBar>
           <LockPhase>
-            <Label locking>{dashboard.Timeline.lockingPhase}</Label>
+            <Label locking>
+              <div>
+                <Phase>{dashboard.Timeline.lockingPhase}</Phase>
+                <ToolTip
+                  top
+                  title="Staking Phase"
+                  content="Starts on April 3 at 0:00 UTC and ends on July 12 at 23:59 UTC."
+                >
+                  <Icon kind="info" />
+                </ToolTip>
+              </div>
+            </Label>
             <Progress locking>
               <ProgressBar variant="determinate" value={lockingPhaseProgress || -1} />
             </Progress>
           </LockPhase>
           <MainPhase>
             <Label>
-              <div>{dashboard.Timeline.mainPhase}</div>
+              <div>
+                <Phase>{dashboard.Timeline.mainPhase}</Phase>
+                <ToolTip
+                  top
+                  title="Main Phase"
+                  content="Starts on July 13 at 0:00 UTC and ends on Sep 3 at 23:59 UTC."
+                >
+                  <Icon kind="info" />
+                </ToolTip>
+              </div>
+
               <div>
                 <span data-digix="Dashboard-Timeline-DaysEllpased">
                   {dashboard.Timeline.day} {daysEllapsed}
                 </span>
                 <span>&nbsp;/ {quarterDurationInDays}</span>
-                <MainPhaseInfoDivider>|</MainPhaseInfoDivider>
+                <Divider>|</Divider>
                 <span data-digix="Dashboard-Timeline-TotalStake">
                   {lockedDgd} {dashboard.Timeline.stake}
                 </span>

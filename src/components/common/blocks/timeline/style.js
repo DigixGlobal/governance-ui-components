@@ -1,14 +1,22 @@
 import styled, { css } from 'styled-components';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
-export const MainPhaseInfoDivider = styled.span`
+export const Divider = styled.span`
   margin: 0 1.5em;
+  font-family: 'Futura PT Light', sans-serif;
+
+  ${media.mobile`
+  margin: 0 1em;
+  `}
 `;
 
 export const Wrapper = styled.div`
   display: flex;
   margin-bottom: 5em;
   text-transform: uppercase;
+  ${media.mobile`
+    flex-direction: column;
+  `}
 `;
 
 export const Qtr = styled.div`
@@ -18,9 +26,12 @@ export const Qtr = styled.div`
   line-height: 0.7em;
   flex: 0 1 auto;
   margin-right: 2rem;
+  display: flex;
+  align-items: center;
 
   ${media.mobile`
   margin-right: 1rem;
+  margin-bottom: 3rem;
   `}
 `;
 
@@ -31,6 +42,7 @@ export const TimelineBar = styled.div`
   ${media.mobile`
     flex-direction: column;
     justify-content: space-between;
+    min-height: 90px;
   `}
 `;
 
@@ -38,15 +50,14 @@ export const LockPhase = styled.div`
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
-  flex: 0 1 220px;
+  flex: 0 1 200px;
 
   ${media.mobile`
-  flex: 0 1 auto;
+    flex: 0 1 auto;
   `}
 `;
 
 export const MainPhase = styled.div`
-  color: ${props => props.theme.textPrimary.default.toString()};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -59,6 +70,7 @@ export const MainPhase = styled.div`
 
 export const Label = styled.div`
   display: flex;
+
   justify-content: space-between;
   font-family: 'Futura PT Heavy', sans-serif;
   flex: 1;
@@ -67,15 +79,24 @@ export const Label = styled.div`
     props.locking &&
     css`
       border-right: 1px dashed ${props.theme.borderColor.light.toString()};
-      margin-right: 2rem;
+      margin-right: 1rem;
     `}
 
+  & > div:first-child {
+    display: flex;
+  }
+
   ${media.mobile`
-    font-family: 'Futura PT Book', sans-serif;
-    font-size: 1.2rem;
+    font-family: 'Futura PT Medium', sans-serif;
     border-right: 0;
     margin-bottom: 0.5rem;
   `}
+`;
+
+export const Phase = styled.div`
+  display: flex;
+
+  margin-right: 0.75rem;
 `;
 
 export const Progress = styled.div`
@@ -83,7 +104,7 @@ export const Progress = styled.div`
     height: 10px;
 
     ${media.mobile`
-      height: 5px;
+      height: 8px;
     `}
   }
 `;

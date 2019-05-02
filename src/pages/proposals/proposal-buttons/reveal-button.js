@@ -53,12 +53,12 @@ class RevealVoteButton extends React.PureComponent {
     const hasVoted = votingRound ? votingRound.commit : false;
     const hasRevealed = votingRound ? votingRound.reveal : false;
     if (
-      (!isParticipant ||
-        !proposal.draftVoting ||
-        (proposal.votingStage !== VotingStages.commit && !isSpecial) ||
-        hasRevealed ||
-        !hasVoted) &&
-      (!isSpecial && !isActive)
+      !isParticipant ||
+      (!proposal.draftVoting && !isSpecial) ||
+      (!isActive && isSpecial) ||
+      (proposal.votingStage !== VotingStages.commit && !isSpecial) ||
+      hasRevealed ||
+      !hasVoted
     ) {
       return null;
     }

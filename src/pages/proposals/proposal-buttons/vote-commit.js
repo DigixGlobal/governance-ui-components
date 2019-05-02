@@ -52,12 +52,16 @@ class CommitVoteButton extends React.PureComponent {
       votes,
       translations: { buttons },
     } = this.props;
+
     const vote = votes ? votes[proposal.proposalId] : undefined;
     const votingRound = vote ? vote.votingRound[currentVotingRound || 0] : undefined;
     const hasVoted = votingRound ? votingRound.commit : false;
+
     if (
-      (!isParticipant || !proposal.draftVoting || proposal.votingStage !== VotingStages.commit) &&
-      (!isSpecial && !isActive)
+      !isParticipant ||
+      (!proposal.draftVoting && !isSpecial) ||
+      (!isActive && isSpecial) ||
+      (proposal.votingStage !== VotingStages.commit && !isSpecial)
     ) {
       return null;
     }
@@ -65,6 +69,7 @@ class CommitVoteButton extends React.PureComponent {
     const currentTime = Date.now();
     const withinDeadline =
       currentTime < proposal.votingRounds[isSpecial ? 0 : currentVotingRound].commitDeadline * 1000;
+
     if (!withinDeadline) return null;
 
     return (

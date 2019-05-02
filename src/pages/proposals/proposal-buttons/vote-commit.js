@@ -7,6 +7,7 @@ import CommitVoteOverlay from '@digix/gov-ui/components/common/blocks/overlay/vo
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { VotingStages } from '@digix/gov-ui/constants';
+import { isatty } from 'tty';
 
 class CommitVoteButton extends React.PureComponent {
   showOverlay = hasVoted => {
@@ -42,12 +43,15 @@ class CommitVoteButton extends React.PureComponent {
       votes,
       translations: { buttons },
     } = this.props;
+
     const vote = votes ? votes[proposal.proposalId] : undefined;
     const votingRound = vote ? vote.votingRound[currentVotingRound || 0] : undefined;
     const hasVoted = votingRound ? votingRound.commit : false;
     if (
-      (!isParticipant || !proposal.draftVoting || proposal.votingStage !== VotingStages.commit) &&
-      (!isSpecial && !isActive)
+      !isParticipant ||
+      (!proposal.draftVoting && !isSpecial) ||
+      !isActive ||
+      (proposal.votingStage !== VotingStages.commit && !isSpecial)
     ) {
       return null;
     }
@@ -55,6 +59,7 @@ class CommitVoteButton extends React.PureComponent {
     const currentTime = Date.now();
     const withinDeadline =
       currentTime < proposal.votingRounds[isSpecial ? 0 : currentVotingRound].commitDeadline * 1000;
+
     if (!withinDeadline) return null;
 
     return (

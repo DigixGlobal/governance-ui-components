@@ -30,12 +30,12 @@ export default class ProjectConfirmation extends React.Component {
 
         <CTA>
           <LeftCol>
-            <Button primary onClick={onBack}>
+            <Button primary onClick={onBack} data-digix="Confirm-Back-Btn">
               {buttons.back}
             </Button>
           </LeftCol>
           <RightCol>
-            <Button primary onClick={onSubmit}>
+            <Button primary onClick={onSubmit} data-digix="Confirm-Submit-Btn">
               {buttons.submit}
             </Button>
           </RightCol>

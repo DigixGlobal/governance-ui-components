@@ -15,9 +15,10 @@ class Spinner extends React.Component {
       translations: {
         project: { spinner },
       },
+      height,
     } = this.props;
     return (
-      <Preloaders>
+      <Preloaders height={height}>
         <SpinnerWrapper>
           <Content>
             <Loader />
@@ -31,8 +32,14 @@ class Spinner extends React.Component {
   }
 }
 
+const { object, string } = PropTypes;
 Spinner.propTypes = {
-  translations: PropTypes.object.isRequired,
+  translations: object.isRequired,
+  height: string,
+};
+
+Spinner.defaultProps = {
+  height: undefined,
 };
 
 export default Spinner;

@@ -34,10 +34,18 @@ class ProposalVersionNav extends React.Component {
     const disableNext = currentVersion + 1 === versionCount;
 
     return (
-      <VersionHistory>
-        <PreviousVersion disabled={disablePrevious} onClick={handlePreviousVersionClick} />
-        <div>Version {currentVersion + 1}</div>
-        <NextVersion disabled={disableNext} onClick={handleNextVersionClick} />
+      <VersionHistory data-digix="Proposal-Version-History">
+        <PreviousVersion
+          data-digix="Previous-Version"
+          disabled={disablePrevious}
+          onClick={handlePreviousVersionClick}
+        />
+        <div data-digix="Version-Count">Version {currentVersion + 1}</div>
+        <NextVersion
+          data-digix="Next-Version"
+          disabled={disableNext}
+          onClick={handleNextVersionClick}
+        />
       </VersionHistory>
     );
   }

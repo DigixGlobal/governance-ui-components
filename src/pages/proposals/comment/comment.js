@@ -200,7 +200,7 @@ class Comment extends React.Component {
       <CommentListItem>
         <CommentAuthor hide={isDeleted} user={user} translations={translations} />
         <CommentPost isHidden={isHidden} deleted={isDeleted}>
-          <Content>
+          <Content data-digix="Comment-Message">
             <Markdown source={commentMessage} escapeHtml={false} />
           </Content>
           {showActionBar && canComment && (

@@ -72,10 +72,10 @@ class History extends React.Component {
     const showPendingIcons = this.PENDING_STATUSES.includes(transaction.status);
 
     return (
-      <HistoryCard key={transaction.id}>
+      <HistoryCard key={transaction.id} data-digix="Transaction-Card">
         <TxDetails href={`${ETHERSCAN_URL}${transaction.txhash}`} target="_blank">
-          <TxTitle>{transaction.title}</TxTitle>
-          <TxStatus>
+          <TxTitle data-digix="Transaction-Title">{transaction.title}</TxTitle>
+          <TxStatus data-digix="Transaction-Status">
             {showConfirmations && `${confirmation}/${BLOCK_CONFIRMATIONS} Confirmation(s)`}
           </TxStatus>
           <TxIcon

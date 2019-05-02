@@ -106,8 +106,13 @@ class ForumOfficerDashboard extends React.Component {
     const label = isBanned ? 'Unban' : 'Ban';
     return (
       <Item>
-        <Username>{displayName}</Username>
-        <ButtonBan secondary reverse={isBanned} onClick={() => this.toggleBan(user)}>
+        <Username data-digix="Search-Result-Username">{displayName}</Username>
+        <ButtonBan
+          data-digix="User-Banned-Btn"
+          secondary
+          reverse={isBanned}
+          onClick={() => this.toggleBan(user)}
+        >
           {label}
         </ButtonBan>
       </Item>
@@ -122,18 +127,19 @@ class ForumOfficerDashboard extends React.Component {
         <form>
           <Fieldset>
             <Search
+              data-digix="Search-User-Field"
               className="search"
               placeholder="Search for user..."
               onSubmit={e => this.search(e)}
             />
             <div className="icons-container">
-              <SearchButton onClick={e => this.search(e)}>
+              <SearchButton data-digix="Search-User-Btn" onClick={e => this.search(e)}>
                 <Icon kind="magnifier" />
               </SearchButton>
             </div>
           </Fieldset>
         </form>
-        <SearchResult column>
+        <SearchResult column data-digix="Search-Result">
           {users.length === 0 && <Item>No such user found on the database</Item>}
           {users.map(user => this.renderSearchItem(user))}
         </SearchResult>

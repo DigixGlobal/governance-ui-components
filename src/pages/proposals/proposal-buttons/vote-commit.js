@@ -47,7 +47,6 @@ class CommitVoteButton extends React.PureComponent {
     const votingRound = vote ? vote.votingRound[currentVotingRound || 0] : undefined;
     const hasVoted = votingRound ? votingRound.commit : false;
 
-    console.log({ isActive });
     if (
       !isParticipant ||
       (!proposal.draftVoting && !isSpecial) ||

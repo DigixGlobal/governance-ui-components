@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PDFViewer from '@digix/gov-ui/components/common/elements/pdf-viewer';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Modal from 'react-responsive-modal';
@@ -12,11 +13,11 @@ import Icon from '@digix/gov-ui/components/common/elements/icons';
 import {
   Container,
   Caption,
-  FieldImg,
   Value,
   ValueWrapper,
   UserTitle,
   CloseButton,
+  Enlarge,
 } from '@digix/gov-ui/pages/kyc/officer/style';
 
 const renderIps = ips => (
@@ -44,9 +45,15 @@ class UserInfo extends React.Component {
     this.setState({ approve: value });
   };
 
+  isFileTypePdf = fieldName => fieldName.image.contentType === 'application/pdf';
+
   render() {
     const { user, header } = this.props;
     const { approve, selectedImage } = this.state;
+
+    const isIdProofPdf = this.isFileTypePdf(user.identificationProof);
+    const isResidenceProofPdf = this.isFileTypePdf(user.residenceProof);
+
     return (
       <Container>
         <UserTitle>{`${header} ${user.firstName} ${user.lastName}`}</UserTitle>
@@ -173,11 +180,10 @@ class UserInfo extends React.Component {
             <ValueWrapper>
               <Caption>Webcam Proof</Caption>
               <Value>
-                <FieldImg
-                  src={user.identificationPose.image.dataUrl}
-                  alt=""
-                  onClick={this.showHideImage(user.identificationPose.image.dataUrl)}
-                />
+                <Enlarge kind="text" onClick={this.showHideImage(user.identificationPose.image)}>
+                  <Icon kind="magnifier" />
+                </Enlarge>
+                <img src={user.identificationPose.image.dataUrl} alt="" />
               </Value>
             </ValueWrapper>
             <ValueWrapper>
@@ -195,12 +201,14 @@ class UserInfo extends React.Component {
         {user.residenceProof && user.residenceProof.residence !== undefined && (
           <ValueWrapper>
             <Caption>Residence Proof</Caption>
-            <Value>
-              <FieldImg
-                src={user.residenceProof.image.dataUrl}
-                alt=""
-                onClick={this.showHideImage(user.residenceProof.image.dataUrl)}
-              />
+            <Value preview>
+              <Enlarge kind="text" onClick={this.showHideImage(user.residenceProof.image)}>
+                <Icon kind="magnifier" />
+              </Enlarge>
+              {isResidenceProofPdf && (
+                <PDFViewer file={user.residenceProof.image.dataUrl} showNav={false} />
+              )}
+              {!isResidenceProofPdf && <img src={user.residenceProof.image.dataUrl} alt="" />}
             </Value>
           </ValueWrapper>
         )}
@@ -223,12 +231,14 @@ class UserInfo extends React.Component {
             </ValueWrapper>
             <ValueWrapper>
               <Caption>ID Proof</Caption>
-              <Value>
-                <FieldImg
-                  src={user.identificationProof.image.dataUrl}
-                  alt=""
-                  onClick={this.showHideImage(user.identificationProof.image.dataUrl)}
-                />
+              <Value preview>
+                <Enlarge kind="text" onClick={this.showHideImage(user.identificationProof.image)}>
+                  <Icon kind="magnifier" />
+                </Enlarge>
+                {isIdProofPdf && (
+                  <PDFViewer file={user.identificationProof.image.dataUrl} showNav={false} />
+                )}
+                {!isIdProofPdf && <img src={user.identificationProof.image.dataUrl} alt="" />}
               </Value>
             </ValueWrapper>
           </Fragment>
@@ -262,11 +272,16 @@ class UserInfo extends React.Component {
             )}
           </Fragment>
         )}
-        <Modal open={selectedImage} showCloseIcon onClose={this.showHideImage()} center>
+        <Modal open={selectedImage} showCloseIcon={false} onClose={this.showHideImage()} center>
           <div>
-            <img alt="" style={{ width: '100%' }} src={selectedImage} />
-            <CloseButton onClick={this.showHideImage()} style={{ boxShadow: 'none' }}>
-              <Icon kind="close" style={{ marginRight: 0 }} />
+            {!!selectedImage && selectedImage.contentType === 'application/pdf' && (
+              <PDFViewer file={selectedImage.dataUrl} />
+            )}
+            {!!selectedImage && selectedImage.contentType !== 'application/pdf' && (
+              <img alt="" style={{ width: '100%' }} src={selectedImage.dataUrl} />
+            )}
+            <CloseButton primary onClick={this.showHideImage()}>
+              Close
             </CloseButton>
           </div>
         </Modal>
@@ -274,8 +289,8 @@ class UserInfo extends React.Component {
     );
   }
 }
-const { object, string, func } = PropTypes;
 
+const { object, string, func } = PropTypes;
 UserInfo.propTypes = {
   user: object.isRequired,
   header: string.isRequired,

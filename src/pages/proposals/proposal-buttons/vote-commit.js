@@ -4,13 +4,16 @@ import { connect } from 'react-redux';
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import CommitVoteOverlay from '@digix/gov-ui/components/common/blocks/overlay/vote/commit';
+import LogCommitVote from '@digix/gov-ui/analytics/commitVote';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { getUserStatus } from '@digix/gov-ui/utils/helpers';
 import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { VotingStages } from '@digix/gov-ui/constants';
+import { UserStatus, VotingStages } from '@digix/gov-ui/constants';
 
 class CommitVoteButton extends React.PureComponent {
   showOverlay = hasVoted => {
     const {
+      AddressDetails,
       history,
       proposalId,
       showRightPanelAction,
@@ -18,6 +21,13 @@ class CommitVoteButton extends React.PureComponent {
       translations,
       txnTranslations,
     } = this.props;
+
+    const userType = getUserStatus(AddressDetails.data, UserStatus);
+    if (hasVoted) {
+      LogCommitVote.changeVote(userType);
+    } else {
+      LogCommitVote.initiate(userType);
+    }
 
     showRightPanelAction({
       component: (
@@ -68,6 +78,7 @@ class CommitVoteButton extends React.PureComponent {
 const { bool, func, object, string } = PropTypes;
 
 CommitVoteButton.propTypes = {
+  AddressDetails: object.isRequired,
   isParticipant: bool,
   proposal: object.isRequired,
   proposalId: string.isRequired,
@@ -83,7 +94,9 @@ CommitVoteButton.defaultProps = {
   votes: undefined,
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+  AddressDetails: state.infoServer.AddressDetails,
+});
 
 export default web3Connect(
   connect(

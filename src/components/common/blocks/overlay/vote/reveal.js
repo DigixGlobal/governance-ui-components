@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-
-import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import {
   IntroContainer,
   OverlayHeader as Header,
@@ -13,16 +10,18 @@ import {
   ErrorCaption,
 } from '@digix/gov-ui/components/common/common-styles';
 
+import Button from '@digix/gov-ui/components/common/elements/buttons/index';
 import Dao from '@digix/dao-contracts/build/contracts/DaoVoting.json';
 import getContract from '@digix/gov-ui/utils/contracts';
+import LogRevealVote from '@digix/gov-ui/analytics/revealVote';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-
 import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 const network = SpectrumConfig.defaultNetworks[0];
 
@@ -84,6 +83,8 @@ class RevealVote extends React.Component {
       proposal: { currentVotingRound, proposalId, isSpecial },
       translations: { snackbars },
     } = this.props;
+
+    LogRevealVote.submit(proposalId);
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
@@ -118,6 +119,7 @@ class RevealVote extends React.Component {
       network,
       web3Params,
       ui,
+      logTxn: LogRevealVote.txn,
       showTxSigningModal: this.props.showTxSigningModal,
       translations: this.props.txnTranslations,
     };
@@ -126,6 +128,8 @@ class RevealVote extends React.Component {
   };
 
   handleUpload = e => {
+    LogRevealVote.uploadJson();
+
     let error;
     const {
       translations: {

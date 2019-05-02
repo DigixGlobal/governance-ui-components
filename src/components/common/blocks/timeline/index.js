@@ -96,6 +96,7 @@ class Timeline extends React.Component {
     const { stats, translations } = this.props;
     if (!translations.data) return null;
     const { dashboard } = translations.data;
+    const { Timeline: timeline } = dashboard;
     if (stats.fetching || stats.fetching === null) {
       return null;
     }
@@ -114,8 +115,6 @@ class Timeline extends React.Component {
     const mainPhaseProgress = this.getProgress(startOfMainphase, startOfNextQuarter);
     const lockedDgd = this.getLockedDgd();
 
-    // const TooltipMsg = 'Starts on April 3 at 0:00 UTC and ends on July 3 at 23:59 UTC.';
-
     return (
       <Wrapper>
         <Qtr>Q{currentQuarter}</Qtr>
@@ -125,8 +124,13 @@ class Timeline extends React.Component {
               <div>
                 <Phase>{dashboard.Timeline.lockingPhase}</Phase>
                 <ToolTip
-                  title="Staking Phase"
-                  content="Starts on April 3 at 0:00 UTC and ends on July 12 at 23:59 UTC."
+                  title={timeline.stakinPhase || 'Staking Phase'}
+                  content={`${timeline.startsOn || `Starts on`} ${' '} ${moment(
+                    startOfQuarter
+                  ).format('dddd MMMM DD YYYY, h:mm:ss a')} ${timeline.endsOn ||
+                    'and ends on'} ${' '} ${moment(startOfMainphase).format(
+                    'dddd MMMM DD YYYY, h:mm:ss a'
+                  )}.`}
                 >
                   <Icon kind="info" />
                 </ToolTip>
@@ -141,8 +145,13 @@ class Timeline extends React.Component {
               <div>
                 <Phase>{dashboard.Timeline.mainPhase}</Phase>
                 <ToolTip
-                  title="Main Phase"
-                  content="Starts on July 13 at 0:00 UTC and ends on Sep 3 at 23:59 UTC."
+                  title={timeline.mainPhase || 'Main Phase'}
+                  content={`${timeline.startsOn || `Starts on`} ${' '} ${moment(
+                    startOfMainphase
+                  ).format('dddd MMMM DD YYYY, h:mm:ss a')} ${timeline.endsOn ||
+                    'and ends on'} ${' '} ${moment(startOfNextQuarter).format(
+                    'dddd MMMM DD YYYY, h:mm:ss a'
+                  )}`}
                 >
                   <Icon kind="info" />
                 </ToolTip>

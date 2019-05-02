@@ -125,7 +125,6 @@ class Timeline extends React.Component {
               <div>
                 <Phase>{dashboard.Timeline.lockingPhase}</Phase>
                 <ToolTip
-                  top
                   title="Staking Phase"
                   content="Starts on April 3 at 0:00 UTC and ends on July 12 at 23:59 UTC."
                 >
@@ -142,7 +141,6 @@ class Timeline extends React.Component {
               <div>
                 <Phase>{dashboard.Timeline.mainPhase}</Phase>
                 <ToolTip
-                  top
                   title="Main Phase"
                   content="Starts on July 13 at 0:00 UTC and ends on Sep 3 at 23:59 UTC."
                 >

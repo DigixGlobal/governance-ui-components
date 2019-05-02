@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from './style';
 
-const DeleteIcon = props => (
+const InfoIcon = props => (
   <Container {...props}>
     <svg viewBox="0 0 16 16">
       <path
@@ -13,9 +13,9 @@ const DeleteIcon = props => (
   </Container>
 );
 
-DeleteIcon.defaultProps = {
+InfoIcon.defaultProps = {
   width: '1.5rem',
   height: '1.5rem',
 };
 
-export default DeleteIcon;
+export default InfoIcon;

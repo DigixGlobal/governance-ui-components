@@ -8,18 +8,18 @@ import { DEFAULT_LOCKED_DGD } from '@digix/gov-ui/constants';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { withFetchDaoInfo } from '@digix/gov-ui/api/graphql-queries/dao';
+
+import { ToolTip, Icon } from '@digix/gov-ui/components/common/index';
 import {
   MainPhase,
-  MainPhaseInfoDivider,
-  MainPhaseStatus,
-  MainPhaseValue,
-  Quarter,
-  LockingPhase,
-  LockingPhaseStatus,
+  Divider,
+  Qtr,
+  LockPhase,
   TimelineBar,
-  TimelineDay,
-  TimelineLabel,
-  TimelineWrapper,
+  Wrapper,
+  Label,
+  Phase,
+  Progress,
 } from '@digix/gov-ui/components/common/blocks/timeline/style';
 
 class Timeline extends React.Component {
@@ -114,37 +114,57 @@ class Timeline extends React.Component {
     const mainPhaseProgress = this.getProgress(startOfMainphase, startOfNextQuarter);
     const lockedDgd = this.getLockedDgd();
 
+    // const TooltipMsg = 'Starts on April 3 at 0:00 UTC and ends on July 3 at 23:59 UTC.';
+
     return (
-      <TimelineWrapper>
-        <Quarter>Q{currentQuarter}</Quarter>
+      <Wrapper>
+        <Qtr>Q{currentQuarter}</Qtr>
         <TimelineBar>
-          <TimelineLabel>
-            <LockingPhase>{dashboard.Timeline.lockingPhase}</LockingPhase>
-            <MainPhase>
-              <div>{dashboard.Timeline.mainPhase}</div>
-              <MainPhaseValue>
+          <LockPhase>
+            <Label locking>
+              <div>
+                <Phase>{dashboard.Timeline.lockingPhase}</Phase>
+                <ToolTip
+                  title="Staking Phase"
+                  content="Starts on April 3 at 0:00 UTC and ends on July 12 at 23:59 UTC."
+                >
+                  <Icon kind="info" />
+                </ToolTip>
+              </div>
+            </Label>
+            <Progress locking>
+              <ProgressBar variant="determinate" value={lockingPhaseProgress || -1} />
+            </Progress>
+          </LockPhase>
+          <MainPhase>
+            <Label>
+              <div>
+                <Phase>{dashboard.Timeline.mainPhase}</Phase>
+                <ToolTip
+                  title="Main Phase"
+                  content="Starts on July 13 at 0:00 UTC and ends on Sep 3 at 23:59 UTC."
+                >
+                  <Icon kind="info" />
+                </ToolTip>
+              </div>
+
+              <div>
                 <span data-digix="Dashboard-Timeline-DaysEllpased">
                   {dashboard.Timeline.day} {daysEllapsed}
                 </span>
                 <span>&nbsp;/ {quarterDurationInDays}</span>
-                <MainPhaseInfoDivider>|</MainPhaseInfoDivider>
+                <Divider>|</Divider>
                 <span data-digix="Dashboard-Timeline-TotalStake">
                   {lockedDgd} {dashboard.Timeline.stake}
                 </span>
-              </MainPhaseValue>
-            </MainPhase>
-          </TimelineLabel>
-
-          <TimelineDay>
-            <LockingPhaseStatus>
-              <ProgressBar variant="determinate" value={lockingPhaseProgress || -1} />
-            </LockingPhaseStatus>
-            <MainPhaseStatus>
+              </div>
+            </Label>
+            <Progress main>
               <ProgressBar variant="determinate" value={mainPhaseProgress || -1} />
-            </MainPhaseStatus>
-          </TimelineDay>
+            </Progress>
+          </MainPhase>
         </TimelineBar>
-      </TimelineWrapper>
+      </Wrapper>
     );
   }
 }

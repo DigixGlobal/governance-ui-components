@@ -64,7 +64,10 @@
       },
       "KycForm": {
         "Errors": {
-          "phone": "Invalid phone number."
+          "phone": "Invalid phone number.",
+          "file": {
+            "isValid": "Image must be in JPEG, PNG, or PDF format"
+          }
         }
       }
     }

@@ -90,8 +90,8 @@
         },
         "file": {
           "missing": "上传文件",
-          "isImage": "Image must be in JPEG or PNG format",
           "isValid": "照片格式必须为 JPEG 或 PNG 或 PDF",
+          "isImage": "照片格式必须为 JPEG 或 PNG ",
           "size": "文件必须小于 10 MB."
         },
         "phoneNumber": "Invalid phone number.",

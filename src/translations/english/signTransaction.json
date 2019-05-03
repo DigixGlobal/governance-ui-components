@@ -19,6 +19,7 @@
     "ready": "Ready to Sign Transaction",
     "firmware": "Firmware {{version}} - replay protection enabled!",
     "errors": {
+      "settingsError": "Please use Chrome, Opera or Firefox with a U2F extension. After connecting your Ledger, open the Ethereum app and make sure **Contract Data** is enabled in **Settings**.",
       "outdatedVersion": {
         "title": "Your Ethereum App is outdated!",
         "instructions": "The Ethereum app on your Ledger is not updated. Please update its version to at least **v{{version}}**, and make sure your device firmware is the latest version. Refer [here]({{link}}) for more information."

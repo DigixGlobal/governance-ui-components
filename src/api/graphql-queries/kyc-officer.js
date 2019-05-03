@@ -20,52 +20,72 @@ export const searchKycQuery = gql`
           status
           firstName
           lastName
-          gender
-          birthdate
+
           nationality
-          phoneNumber
-          employmentStatus
-          employmentIndustry
-          email
-          updatedAt
-          createdAt
-          incomeRange
-          ipAddresses
-          ethAddress
-          identificationProof {
-            number
-            expirationDate
-            type
-            image {
-              contentType
-              filename
-              dataUrl
-            }
-          }
           residenceProof {
             type
             residence {
-              address
-              addressDetails
-              city
               country
-              postalCode
-              state
-            }
-            image {
-              contentType
-              filename
-              dataUrl
             }
           }
-          identificationPose {
-            verificationCode
-            image {
-              contentType
-              filename
-              dataUrl
-            }
-          }
+        }
+      }
+    }
+  }
+`;
+
+export const getKycDetail = gql`
+  query getKyc($id: String!) {
+    kyc(id: $id) {
+      id
+      userId
+      status
+      firstName
+      lastName
+      gender
+      birthdate
+      nationality
+      phoneNumber
+      employmentStatus
+      employmentIndustry
+      email
+      updatedAt
+      createdAt
+      incomeRange
+      ipAddresses
+      ethAddress
+      identificationProof {
+        number
+        expirationDate
+        type
+        image {
+          dataUrl
+        }
+      }
+      residenceProof {
+        type
+        residence {
+          address
+          addressDetails
+          city
+          country
+          postalCode
+          state
+        }
+        image {
+          contentType
+          filename
+          fileSize
+          dataUrl
+        }
+      }
+      identificationPose {
+        verificationCode
+        image {
+          contentType
+          filename
+          fileSize
+          dataUrl
         }
       }
     }

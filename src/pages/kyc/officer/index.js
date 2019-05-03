@@ -9,7 +9,7 @@ import { Query } from 'react-apollo';
 import DigixTable from '@digix/gov-ui/components/common/blocks/digix-table';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 
-import { searchKycQuery } from '@digix/gov-ui/api/graphql-queries/kyc-officer';
+import { searchKycQuery, getKycDetail } from '@digix/gov-ui/api/graphql-queries/kyc-officer';
 
 import UserInfo from '@digix/gov-ui/pages/kyc/officer/user-info';
 import { showStatusIcon } from '@digix/gov-ui/pages/kyc/officer/constants';
@@ -97,14 +97,46 @@ class KycOfficerDashboard extends React.Component {
 
   renderInfo = () => {
     const { selected } = this.state;
-
     if (!selected) return null;
     return (
-      <UserInfo
-        user={selected.node}
-        header={selected.node.status === 'PENDING' ? 'User Verification - ' : 'User Detail - '}
-        onCompleted={this.onClose}
-      />
+      <Query
+        query={getKycDetail}
+        fetchPolicy="network-only"
+        variables={{
+          id: selected.node.id,
+        }}
+      >
+        {({ data, loading, error }) => {
+          if (loading) {
+            return (
+              <Spinner
+                translations={{
+                  project: {
+                    spinner: {
+                      pleaseWait: 'Please wait....',
+                      hold: 'Getting KYC data',
+                    },
+                  },
+                }}
+                height="400px"
+              />
+            );
+          }
+
+          if (error) {
+            return null;
+          }
+          return (
+            <UserInfo
+              user={data.kyc}
+              header={
+                selected.node.status === 'PENDING' ? 'User Verification - ' : 'User Detail - '
+              }
+              onCompleted={this.onClose}
+            />
+          );
+        }}
+      </Query>
     );
   };
 

@@ -59,6 +59,9 @@ export const getKycDetail = gql`
         expirationDate
         type
         image {
+          contentType
+          filename
+          fileSize
           dataUrl
         }
       }

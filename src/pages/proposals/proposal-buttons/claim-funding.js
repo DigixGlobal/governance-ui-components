@@ -141,7 +141,7 @@ ClaimFundingButton.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   checkProposalRequirements: func.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -152,6 +152,7 @@ ClaimFundingButton.propTypes = {
 };
 
 ClaimFundingButton.defaultProps = {
+  gasLimitConfig: undefined,
   isProposer: false,
 };
 

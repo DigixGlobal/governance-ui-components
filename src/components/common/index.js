@@ -7,6 +7,7 @@ export { default as Modal } from '@digix/gov-ui/components/common/elements/modal
 export { default as Select } from '@digix/gov-ui/components/common/elements/select/';
 export { default as TextArea } from '@digix/gov-ui/components/common/elements/textarea/';
 export { default as Textfield } from '@digix/gov-ui/components/common/elements/textfield/';
+export { default as ToolTip } from '@digix/gov-ui/components/common/elements/tooltip/';
 
 export { default as ProposalCardFilter } from '@digix/gov-ui/components/common/blocks/filter';
 export { default as NavBar } from '@digix/gov-ui/components/common/blocks/navbar';

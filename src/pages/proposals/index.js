@@ -333,6 +333,11 @@ class Proposal extends React.Component {
     });
   };
 
+  handleBackToProject = () => {
+    const { history } = this.props;
+    history.push(`/`);
+  };
+
   renderPrlAlert = prl => {
     const {
       Translations: {
@@ -491,6 +496,14 @@ class Proposal extends React.Component {
 
     return (
       <ProposalsWrapper>
+        <Button
+          kind="text"
+          data-digix="BACK-TO-DASHBOARD"
+          underline
+          onClick={this.handleBackToProject}
+        >
+          Return To Dashboard
+        </Button>
         <ProjectSummary>
           {this.renderPrlAlert(proposalDetails.data.prl)}
           {this.renderClaimApprovalAlert()}
@@ -601,6 +614,14 @@ class Proposal extends React.Component {
 
     return (
       <ProposalsWrapper>
+        <Button
+          kind="text"
+          data-digix="BACK-TO-DASHBOARD"
+          underline
+          onClick={this.handleBackToProject}
+        >
+          Return To Dashboard
+        </Button>
         <ProjectSummary>
           <ProposalVersionNav
             currentVersion={currentVersion}

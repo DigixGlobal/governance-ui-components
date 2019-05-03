@@ -15,6 +15,7 @@ import User from './User';
 import File from './File';
 import Help from './Help';
 import History from './History';
+import Info from './Info';
 import Home from './Home';
 import ImToken from './ImToken';
 import JsonWallet from './JsonWallet';
@@ -55,6 +56,7 @@ const icons = {
   help: Help,
   history: History,
   home: Home,
+  info: Info,
   imtoken: ImToken,
   json: JsonWallet,
   ledger: Ledger,

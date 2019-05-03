@@ -37,6 +37,8 @@ export const searchKycQuery = gql`
             expirationDate
             type
             image {
+              contentType
+              filename
               dataUrl
             }
           }
@@ -53,7 +55,6 @@ export const searchKycQuery = gql`
             image {
               contentType
               filename
-              fileSize
               dataUrl
             }
           }
@@ -62,7 +63,6 @@ export const searchKycQuery = gql`
             image {
               contentType
               filename
-              fileSize
               dataUrl
             }
           }

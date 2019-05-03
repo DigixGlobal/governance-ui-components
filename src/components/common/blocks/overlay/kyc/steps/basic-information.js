@@ -149,13 +149,15 @@ class KycOverlayBasicInformation extends KycFormStep {
       },
 
       identificationProofDataUrl: {
-        customValidation: this.isImageFileValid,
+        customValidation: this.isFileValid,
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.identificationProofDataUrl ? false : undefined,
-        label: t.identificationProofDataUrl,
+        label: this.LABELS.file,
         pattern: null,
         type: this.FIELD_TYPES.fileInput,
+        alt: 'National I.D. Preview',
+        dataDigix: 'KycForm-NationalIdPreview',
       },
 
       identificationProofExpirationDate: {
@@ -181,7 +183,6 @@ class KycOverlayBasicInformation extends KycFormStep {
   }
 
   render() {
-    const { identificationProofDataUrl } = this.state.formValues;
     const t = this.translations;
 
     return (
@@ -228,17 +229,10 @@ class KycOverlayBasicInformation extends KycFormStep {
             </FieldGroup>
           </FieldItem>
           <FieldItem>
-            <PreviewImage>
-              {identificationProofDataUrl && (
-                <img
-                  src={identificationProofDataUrl}
-                  alt="National I.D. Preview"
-                  data-digix="KycForm-NationalIdPreview"
-                />
-              )}
-            </PreviewImage>
+            <PreviewImage>{this.renderFilePreview('identificationProofDataUrl')}</PreviewImage>
           </FieldItem>
         </FieldGroup>
+        {this.renderFilePreviewModal('identificationProofDataUrl')}
       </FormSection>
     );
   }

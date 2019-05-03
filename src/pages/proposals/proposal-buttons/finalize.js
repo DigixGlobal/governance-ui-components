@@ -170,7 +170,7 @@ FinalizeProjectButton.propTypes = {
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   getDaoConfig: func.isRequired,
-  gasLimitConfig: object.isRequired,
+  gasLimitConfig: object,
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
@@ -182,6 +182,7 @@ FinalizeProjectButton.propTypes = {
 FinalizeProjectButton.defaultProps = {
   endorser: EMPTY_HASH,
   finalVersionIpfsDoc: null,
+  gasLimitConfig: undefined,
   isProposer: false,
 };
 

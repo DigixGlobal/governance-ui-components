@@ -89,14 +89,16 @@
         },
         "file": {
           "missing": "上传文件",
-          "isImage": "照片格式必须为 JPEG 或 PNG ",
+          "isImage": "Image must be in JPEG or PNG format",
+          "isValid": "照片格式必须为 JPEG 或 PNG 或 PDF",
           "size": "文件必须小于 10 MB."
         },
         "phone": "Invalid phone number",
         "required": "必填项."
       },
       "Labels": {
-        "file": "照片格式必须为 JPEG 或 PNG & 文件必须小于 10 MB."
+        "file": "照片格式必须为 JPEG 或 PNG & 文件必须小于 10 MB.",
+        "image": "照片格式必须为 JPEG 或 PNG 或 PDF & 文件必须小于 10 MB."
       },
       "Fields": {
         "BasicInformation": {

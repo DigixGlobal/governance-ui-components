@@ -27,6 +27,13 @@ export const Container = styled.div`
   }
 
   ${props =>
+    props.large &&
+    css`
+      width: 8rem;
+      height: 8rem;
+    `};
+
+  ${props =>
     props.primary &&
     css`
       svg {

@@ -31,6 +31,7 @@ import Padlock from './Padlock';
 import Product from './product-tour';
 import Profile from './Profile';
 import Plus from './Plus';
+import Repair from './Repair';
 import Reply from './Reply';
 import Restore from './Restore';
 import Ribbon from './Ribbon';
@@ -71,6 +72,7 @@ const icons = {
   product: Product,
   profile: Profile,
   plus: Plus,
+  repair: Repair,
   reply: Reply,
   restore: Restore,
   ribbon: Ribbon,

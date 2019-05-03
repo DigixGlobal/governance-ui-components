@@ -445,3 +445,35 @@ export const CloseButton = styled(Button)`
   margin: 0;
   padding: 1rem 1.5rem;
 `;
+
+export const BackButton = styled(Button)`
+  margin-bottom: 5rem;
+  font-family: 'Futura PT Book', sans-serif;
+  font-size: 1.4rem;
+  padding: 0.25rem 0;
+  letter-spacing: 0.05rem;
+  text-decoration: none;
+  position: relative;
+
+  background-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0) 2px,
+    ${props => props.theme.borderColorSecondary.base.toString()} 2px,
+    ${props => props.theme.borderColorSecondary.base.toString()} 2.5px,
+    rgba(0, 0, 0, 0) 2.5px
+  );
+
+  &:hover {
+    color: ${props => props.theme.textColor.default.light.toString()};
+    background-image: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0) 2px,
+      ${props => props.theme.borderColor.light.toString()} 2px,
+      ${props => props.theme.borderColor.light.toString()} 2.5px,
+      rgba(0, 0, 0, 0) 2.5px
+    );
+    text-decoration: none;
+  }
+`;

@@ -60,6 +60,7 @@ class RejectKyc extends React.Component {
               return (
                 <Select
                   name="rejection-reason"
+                  id="rejection-reason"
                   data-digix="KYC-Rejection-Reason"
                   onChange={this.onSelect}
                   items={options}

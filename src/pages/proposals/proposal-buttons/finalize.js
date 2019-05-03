@@ -181,7 +181,7 @@ FinalizeProjectButton.propTypes = {
 
 FinalizeProjectButton.defaultProps = {
   endorser: EMPTY_HASH,
-  finalVersionIpfsDoc: '',
+  finalVersionIpfsDoc: null,
   gasLimitConfig: undefined,
   isProposer: false,
 };

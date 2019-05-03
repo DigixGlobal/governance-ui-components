@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 import { H3 } from '@digix/gov-ui/components/common/common-styles';
 
@@ -52,6 +53,7 @@ export const FormSection = styled.div`
 `;
 
 export const FieldItem = styled.div`
+  position: relative;
   margin: 0 1rem 2rem 1rem;
   flex: 1;
 
@@ -103,15 +105,17 @@ export const PreviewImage = styled.div`
   background: ${props => props.theme.card.border.lighter.toString()};
   border-radius: ${props => props.theme.borderRadius};
   border: 1px solid ${props => props.theme.card.border.lighter.toString()};
-  height: 250px;
-  max-height: ${MAX_PREVIEW_DIMENSION};
+  height: 100%;
   margin-top: 2.5rem;
+  position: relative;
+  width: 100%;
 
+  canvas,
   img {
-    width: auto;
-    max-width: 100%;
     height: auto;
     max-height: 100%;
+    max-width: 100%;
+    width: auto;
   }
 
   ${media.tablet`
@@ -210,4 +214,56 @@ export const ErrorMessage = styled.span`
   color: ${props => props.theme.alertMessage.error.default.toString()};
   display: inline-block;
   font-size: 1.4rem;
+`;
+
+export const FilePreview = styled.div`
+  background: #fff;
+  border-bottom: 0;
+  flex: 0 1 calc(50% - 0.5rem);
+  margin-right: 0;
+  margin-bottom: 1rem;
+  position: relative;
+  padding: 0;
+
+  canvas,
+  img {
+    width: 100%;
+  }
+
+  ${media.mobile`
+    flex: 0 1 100%;
+  `}
+`;
+
+export const ModalCta = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0;
+  }
+`;
+
+export const Enlarge = styled(Button)`
+  background: ${props => props.theme.background.white.toString()};
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  border-radius: ${props => props.theme.borderRadius};
+  box-shadow: none;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  padding: 1rem;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+
+  div {
+    height: 1.75rem;
+    margin-right: 0;
+    width: 1.75rem;
+  }
+
+  &:hover {
+    background: ${props => props.theme.background.white.toString()};
+    border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  }
 `;

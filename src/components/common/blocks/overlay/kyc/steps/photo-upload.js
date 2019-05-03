@@ -60,11 +60,11 @@ class KycOverlayPhotoUpload extends KycFormStep {
     const stateValues = this.state.formValues;
     this.VALIDATION_RULES = {
       identificationPoseDataUrl: {
-        customValidation: this.isImageFileValid,
+        customValidation: this.isFileValid,
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.identificationPoseDataUrl ? false : undefined,
-        label: this.LABELS.imageFile,
+        label: this.LABELS.image,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.fileInput,
       },

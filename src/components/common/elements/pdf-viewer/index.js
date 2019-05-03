@@ -57,7 +57,7 @@ export default class PdfViewer extends React.PureComponent {
     const { showNav } = this.props;
 
     const { file } = this.props;
-    if (!file || !file.startsWith('data:application/pdf')) {
+    if (!file || file.startsWith('data:image')) {
       return null;
     }
 

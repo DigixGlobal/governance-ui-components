@@ -33,6 +33,7 @@ import {
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import {
+  BackButton,
   CallToAction,
   Data,
   FundingInfo,
@@ -496,14 +497,15 @@ class Proposal extends React.Component {
 
     return (
       <ProposalsWrapper>
-        <Button
+        <BackButton
           kind="text"
           data-digix="BACK-TO-DASHBOARD"
+          secondary
           underline
           onClick={this.handleBackToProject}
         >
-          Return To Dashboard
-        </Button>
+          Back To Dashboard
+        </BackButton>
         <ProjectSummary>
           {this.renderPrlAlert(proposalDetails.data.prl)}
           {this.renderClaimApprovalAlert()}
@@ -614,14 +616,15 @@ class Proposal extends React.Component {
 
     return (
       <ProposalsWrapper>
-        <Button
+        <BackButton
           kind="text"
-          data-digix="BACK-TO-DASHBOARD"
           underline
+          secondary
+          data-digix="BACK-TO-DASHBOARD"
           onClick={this.handleBackToProject}
         >
-          Return To Dashboard
-        </Button>
+          Back To Dashboard
+        </BackButton>
         <ProjectSummary>
           <ProposalVersionNav
             currentVersion={currentVersion}

@@ -50,6 +50,8 @@ import {
 
 import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 
+import { BackButton } from '@digix/gov-ui/pages/proposals/style';
+
 registerUIs({ txVisualization: { component: TxVisualization } });
 
 const network = SpectrumConfig.defaultNetworks[0];
@@ -359,14 +361,14 @@ class Documents extends React.Component {
     if (uploading) return <Spinner translations={this.props.translations} />;
     return (
       <Fragment>
-        <Button
+        <BackButton
           kind="text"
           data-digix="BACK-TO-PROJECT"
-          underline
+          secondary
           onClick={this.handleBackToProject}
         >
           {proposalErrors.returnToProject}
-        </Button>
+        </BackButton>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <Header>

@@ -30,8 +30,9 @@ function withHeaderAndPanel(WrappedComponent) {
       !_.isEqual(this.props, nextProps) && !_.isEqual(this.state, nextState);
 
     render() {
-      const { appUser } = this.props;
-      const { isUnderMaintenance } = appUser;
+      const {
+        appUser: { isUnderMaintenance },
+      } = this.props;
       return (
         <Fragment>
           <LockDgdOverlay />

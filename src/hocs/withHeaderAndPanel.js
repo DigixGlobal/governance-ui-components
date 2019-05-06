@@ -10,7 +10,7 @@ import LockDgdOverlay from '@digix/gov-ui/components/common/blocks/lock-dgd';
 import AddressWatcher from '@digix/gov-ui/components/common/blocks/address-watcher';
 import SnackBar from '@digix/gov-ui/components/common/elements/snackbar';
 import RightPanelOverlay from '@digix/gov-ui/components/common/blocks/right-panel-overlay';
-import UnderMaintenance from '@digix/gov-ui/components/common/blocks/loader/maintenance';
+import UnderMaintenance from '@digix/gov-ui/components/common/blocks/loader/under-maintenance';
 
 import { withAppUser } from '@digix/gov-ui/api/graphql-queries/users';
 

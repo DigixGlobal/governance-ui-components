@@ -64,7 +64,7 @@ class SpecialProjectVotingResult extends React.Component {
   };
 
   // eslint-disable-next-line
-countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
+  countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     const { translations } = this.props;
     if (completed) {
       return <span>{translations.project.votingResult.votingIsOver}</span>;
@@ -74,9 +74,9 @@ countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
   };
 
   // eslint-disable-next-line
-commitCountdownRenderer = props => {
+  commitCountdownRenderer = props => {
     // eslint-disable-next-line
-  const { date, total, completed, baseLine } = props;
+    const { date, total, completed, baseLine } = props;
     const duration = date - baseLine;
     if (completed) {
       return <ProgressBar variant="determinate" value={100} />;
@@ -94,6 +94,13 @@ commitCountdownRenderer = props => {
     const yesVotes = truncateNumber(stats.yesVotes);
     const noVotes = truncateNumber(stats.noVotes);
 
+    const {
+      translations: {
+        project: { votingResult },
+        common: { buttons },
+      },
+    } = this.props;
+
     return (
       <div>
         <AccordionItem voting>
@@ -109,7 +116,7 @@ commitCountdownRenderer = props => {
                     <MinimumLabel flexWidth={100 - stats.minimumQuorum}>
                       <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
                       <QuorumInfoCol>
-                        <span>{stats.votes} Votes</span>
+                        <span data-digix="Vote-User-Count">{stats.votes} Votes</span>
 
                         <Countdown
                           date={stats.approvalDeadline}
@@ -134,8 +141,12 @@ commitCountdownRenderer = props => {
                     <MinimumLabel flexWidth={100 - stats.minimumApproval}>
                       <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
                       <QuorumInfoCol>
-                        <span>YES:&nbsp;{yesVotes} DGD</span>
-                        <span>NO:&nbsp;{noVotes} DGD</span>
+                        <span data-digix="Vote-Yes-Count">
+                          {buttons.yes}:&nbsp;{yesVotes} DGD
+                        </span>
+                        <span data-digix="Vote-No-Count">
+                          {buttons.no}:&nbsp;{noVotes} DGD
+                        </span>
                       </QuorumInfoCol>
                     </MinimumLabel>
                   </Label>
@@ -149,8 +160,8 @@ commitCountdownRenderer = props => {
               <VotingResultContainer>
                 <ProgressCol>
                   <Label>
-                    <QuorumLabel>Time Left To End of Commit</QuorumLabel>
-                    <MinimumLabel>
+                    <QuorumLabel>{votingResult.timeLeftToCommit}</QuorumLabel>
+                    <MinimumLabel noMin>
                       <span />
                       <QuorumInfoCol countdown>
                         <Countdown

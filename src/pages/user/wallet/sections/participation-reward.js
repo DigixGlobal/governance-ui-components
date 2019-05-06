@@ -9,7 +9,7 @@ import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualiza
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getAddressDetails, getDaoDetails } from '@digix/gov-ui/reducers/info-server/actions';
@@ -51,7 +51,7 @@ class ParticipationReward extends React.Component {
 
   claimReward = () => {
     const tClaim = this.props.translations.ClaimReward;
-    const { addresses, ChallengeProof, web3Redux } = this.props;
+    const { addresses, ChallengeProof, gasLimitConfig, web3Redux } = this.props;
     const { abi, address } = getContract(DaoRewardsManager, network);
 
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -68,7 +68,7 @@ class ParticipationReward extends React.Component {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.CLAIM_REWARDS || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -152,6 +152,7 @@ ParticipationReward.propTypes = {
   addresses: array.isRequired,
   ChallengeProof: object.isRequired,
   DaoDetails: object.isRequired,
+  gasLimitConfig: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlert: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -166,6 +167,7 @@ const mapStateToProps = state => ({
   CanLockDgd: state.govUI.CanLockDgd,
   ChallengeProof: state.daoServer.ChallengeProof,
   DaoDetails: state.infoServer.DaoDetails,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 const ParticipationRewardComponent = web3Connect(

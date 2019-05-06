@@ -15,7 +15,8 @@
       "instructions": "输入用户名",
       "Errors": {
         "invalid": "用户名长度需在 2-20 个字符之间, 只可以包括字母，数字，下划线, 并且不可以以'user'开头.",
-        "connectionError": "暂时无法更新用户名. 再试一次."
+        "connectionError": "暂时无法更新用户名. 再试一次.",
+        "usernameTaken": "Username has already been taken"
       },
       "submit": "配置用户名",
       "txnSuccess": "用户名已更新"
@@ -27,7 +28,8 @@
       "Errors": {
         "invalid": "请输入有效的邮件地址.",
         "unchanged": "请输入与当前邮件不同的邮件地址.",
-        "connectionError": "暂时无法更新邮件. 再试一次."
+        "connectionError": "暂时无法更新邮件. 再试一次.",
+        "emailTaken": "Email has already been taken."
       },
       "submit": "更新邮件",
       "txnSuccess": "邮件已更新"
@@ -43,6 +45,7 @@
     "Status": "KYC状态",
     "setEmail": "设置邮件以上传KYC",
     "Statuses": {
+      "notVerified": "Not Verified",
       "pending": "审核中",
       "rejected": "拒绝",
       "expired": "过期",
@@ -86,13 +89,16 @@
         },
         "file": {
           "missing": "上传文件",
-          "isImage": "照片格式必须为 JPEG 或 PNG ",
+          "isImage": "Image must be in JPEG or PNG format",
+          "isValid": "照片格式必须为 JPEG 或 PNG 或 PDF",
           "size": "文件必须小于 10 MB."
         },
+        "phone": "Invalid phone number",
         "required": "必填项."
       },
       "Labels": {
-        "file": "照片格式必须为 JPEG 或 PNG & 文件必须小于 10 MB."
+        "file": "照片格式必须为 JPEG 或 PNG & 文件必须小于 10 MB.",
+        "image": "照片格式必须为 JPEG 或 PNG 或 PDF & 文件必须小于 10 MB."
       },
       "Fields": {
         "BasicInformation": {

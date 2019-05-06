@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TxVisualisation from 'spectrum-lightsuite/src/libs/material-ui/components/common/tx_visualisation';
 
+const { object, oneOfType, string } = PropTypes;
+
 export default class LockDgdTx extends Component {
   static propTypes = {
-    address: PropTypes.object.isRequired,
-    network: PropTypes.object.isRequired,
-    txData: PropTypes.object.isRequired,
-    ui: PropTypes.object.isRequired,
+    address: object.isRequired,
+    network: oneOfType([object, string]).isRequired,
+    txData: object.isRequired,
+    ui: object.isRequired,
   };
+
   render() {
     const {
       address,

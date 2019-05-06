@@ -23,7 +23,9 @@
     "cancelSigning": "取消签署",
     "load": "加载",
     "unlock": "解锁钱包",
-    "proofOfControl": "签署控制证明"
+    "proofOfControl": "签署控制证明",
+    "sign": "Sign Message",
+    "sigining": "Signing..."
   },
   "Metamask": {
     "Name": {
@@ -62,6 +64,12 @@
       "proofOfControl": {
         "description": " “可签名“ 信息",
         "firmware": "固件 {{version}} - 重放攻击保护已启用!"
+      },
+      "errors": {
+        "outdatedVersion": {
+          "title": "Your Ethereum App is outdated!",
+          "instructions": "The Ethereum app on your Ledger is not updated. Please update its version to at least **v{{version}}**, and make sure your device firmware is the latest version. Refer [here]({{link}}) for more information."
+        }
       }
     }
   },

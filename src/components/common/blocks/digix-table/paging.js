@@ -47,9 +47,9 @@ class Paging extends React.PureComponent {
   }
 
   onRowsChange = e => {
-    const { fetchData, handleLoading, currentPage } = this.props;
+    const { fetchData, handleLoading } = this.props;
     const { value } = e.target;
-    handleLoading(false, fetchData, Number(currentPage), Number(value));
+    handleLoading(false, fetchData, 1, Number(value));
   };
   onPageChange = e => {
     const { value } = e.target;

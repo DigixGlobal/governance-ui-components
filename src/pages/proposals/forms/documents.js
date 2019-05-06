@@ -48,7 +48,9 @@ import {
   ModalCta,
 } from '@digix/gov-ui/pages/proposals/forms/style';
 
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+
+import { BackButton } from '@digix/gov-ui/pages/proposals/style';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 
@@ -188,6 +190,7 @@ class Documents extends React.Component {
       web3Redux,
       ChallengeProof,
       addresses,
+      gasLimitConfig,
       translations: {
         snackbar: { snackbars },
       },
@@ -209,9 +212,10 @@ class Documents extends React.Component {
           header: snackbars.addDocs.txUiHeader,
           type: 'txVisualization',
         };
+
         const web3Params = {
           gasPrice: DEFAULT_GAS_PRICE,
-          gas: DEFAULT_GAS,
+          gas: gasLimitConfig.ADD_PROPOSAL_DOC || gasLimitConfig.DEFAULT,
           ui,
         };
 
@@ -357,14 +361,14 @@ class Documents extends React.Component {
     if (uploading) return <Spinner translations={this.props.translations} />;
     return (
       <Fragment>
-        <Button
+        <BackButton
           kind="text"
           data-digix="BACK-TO-PROJECT"
-          underline
+          secondary
           onClick={this.handleBackToProject}
         >
           {proposalErrors.returnToProject}
-        </Button>
+        </BackButton>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <Header>
@@ -428,6 +432,7 @@ Documents.propTypes = {
   web3Redux: object.isRequired,
   history: object.isRequired,
   ChallengeProof: object.isRequired,
+  gasLimitConfig: object,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -435,10 +440,15 @@ Documents.propTypes = {
   addresses: array.isRequired,
 };
 
+Documents.defaultProps = {
+  gasLimitConfig: undefined,
+};
+
 const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data,
-  ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  ChallengeProof: state.daoServer.ChallengeProof,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
+  translations: state.daoServer.Translations.data,
 });
 
 export default web3Connect(

@@ -16,12 +16,7 @@ import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualiza
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import Button from '@digix/gov-ui/components/common/elements/buttons/index';
-import {
-  DEFAULT_GAS,
-  DEFAULT_GAS_PRICE,
-  ProposalErrors,
-  ProposalStages,
-} from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE, ProposalErrors, ProposalStages } from '@digix/gov-ui/constants';
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 
@@ -35,6 +30,7 @@ class ClaimFundingButton extends React.PureComponent {
 
   handleSubmit = () => {
     const {
+      gasLimitConfig,
       web3Redux,
       ChallengeProof,
       addresses,
@@ -56,7 +52,7 @@ class ClaimFundingButton extends React.PureComponent {
     };
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.CLAIM_FUNDING || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -145,6 +141,7 @@ ClaimFundingButton.propTypes = {
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
   checkProposalRequirements: func.isRequired,
+  gasLimitConfig: object,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -155,12 +152,14 @@ ClaimFundingButton.propTypes = {
 };
 
 ClaimFundingButton.defaultProps = {
+  gasLimitConfig: undefined,
   isProposer: false,
 };
 
 const mapStateToProps = state => ({
-  ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  ChallengeProof: state.daoServer.ChallengeProof,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(

@@ -13,14 +13,23 @@ export const TextBtn = styled(Button)`
   margin: 0;
   text-decoration: ${props => (props.underline ? 'underline' : 'inherit')};
 
-  color: ${props =>
-    props.primary
-      ? props.theme.icon.default.default.toString()
-      : props.theme.buttonTextDefault.default.toString()};
+  color: ${props => props.theme.textColor.primary.base.toString()};
 
   svg {
     fill: ${props => props.theme.icon.primary.default.toString()};
   }
+
+  ${props =>
+    props.secondary &&
+    css`
+      color: ${props.theme.textColor.secondary.base.toString()};
+    `};
+
+  ${props =>
+    props.tertiary &&
+    css`
+      color: ${props.theme.textColor.default.base.toString()};
+    `};
 
   ${props =>
     props.disabled &&

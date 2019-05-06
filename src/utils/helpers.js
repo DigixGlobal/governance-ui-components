@@ -58,7 +58,7 @@ export const formatPercentage = num => {
 
 export const getUserStatus = (addressDetails, translation) => {
   if (!addressDetails) {
-    return null;
+    return UserStatus.guest;
   }
 
   if (addressDetails.isModerator) {

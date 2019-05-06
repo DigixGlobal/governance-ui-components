@@ -9,6 +9,7 @@ import { showMsgSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { setDaoAuthorization, setInfoAuthorization } from '@digix/gov-ui/api/graphql';
 import {
   getAddressDetailsVanilla,
+  getTxConfig,
   setAddressDetails,
 } from '@digix/gov-ui/reducers/info-server/actions';
 
@@ -23,6 +24,7 @@ import {
 import { fetchAddressQuery } from '@digix/gov-ui/api/graphql-queries/address';
 import { fetchDisplayName, fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
 import { getChallengeVanilla, proveChallenge } from '@digix/gov-ui/reducers/dao-server/actions';
+import { LogSignMessage } from '@digix/gov-ui/analytics/loadWallet';
 import { withApollo } from 'react-apollo';
 
 class AddressWatcher extends React.PureComponent {
@@ -82,7 +84,12 @@ class AddressWatcher extends React.PureComponent {
       const signMessage = new Promise(resolve =>
         resolve(
           this.props.showMsgSigningModal({
-            txData: { message, caption, translations },
+            txData: {
+              message,
+              caption,
+              translations,
+              logSignMessage: LogSignMessage,
+            },
             network,
           })
         )
@@ -114,6 +121,7 @@ class AddressWatcher extends React.PureComponent {
                 this.props.setAuthentationStatus(true),
                 this.props.setAddressDetails(details),
                 this.props.showHideWalletOverlay(false),
+                this.props.getTxConfig(),
                 this.props.client.query({ query: fetchAddressQuery, fetchPolicy: 'network-only' }),
                 this.props.client.query({ query: fetchDisplayName, fetchPolicy: 'network-only' }),
                 this.props.client.query({ query: fetchUserQuery, fetchPolicy: 'network-only' }),
@@ -142,6 +150,7 @@ AddressWatcher.propTypes = {
   setAuthentationStatus: func.isRequired,
   setAddressDetails: func.isRequired,
   getTokenUsdValue: func.isRequired,
+  getTxConfig: func.isRequired,
   showHideAlert: func.isRequired,
   showHideWalletOverlay: func.isRequired,
   showMsgSigningModal: func.isRequired,
@@ -173,6 +182,7 @@ export default withApollo(
     {
       setAddressDetails,
       getTokenUsdValue,
+      getTxConfig,
       showHideAlert,
       showHideWalletOverlay,
       setAuthentationStatus,

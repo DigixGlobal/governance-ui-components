@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+
+import { getTranslations } from '@digix/gov-ui/reducers/dao-server/actions';
+
 import ScreenLoader from '@digix/gov-ui/components/common/blocks/loader/screen';
 import { Icon } from '@digix/gov-ui/components/common/index';
 import {
@@ -10,9 +14,18 @@ import {
 } from '@digix/gov-ui/components/common/blocks/loader/style';
 
 class Maint extends React.Component {
+  componentDidMount = () => {
+    const { Language, getTranslationsAction, Translations } = this.props;
+
+    if (!Translations.data) {
+      getTranslationsAction(Language);
+    }
+  };
+
   render() {
+    if (!this.props.Translations.data) return null;
     const {
-      translations: {
+      Translations: {
         data: {
           common: { maintenance },
         },
@@ -35,14 +48,30 @@ class Maint extends React.Component {
   }
 }
 
-const { object, string } = PropTypes;
+const { object, string, func } = PropTypes;
 Maint.propTypes = {
-  translations: object.isRequired,
+  Translations: object.isRequired,
+  getTranslationsAction: func.isRequired,
+  Language: string,
   height: string,
 };
 
 Maint.defaultProps = {
-  height: undefined,
+  height: '100vh',
+  Language: 'en',
 };
 
-export default Maint;
+const mapStateToProps = state => {
+  const {
+    daoServer: { Translations },
+  } = state;
+
+  return {
+    Translations,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { getTranslationsAction: getTranslations }
+)(Maint);

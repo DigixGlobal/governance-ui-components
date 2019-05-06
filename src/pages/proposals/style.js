@@ -389,7 +389,8 @@ export const QuorumLabel = styled.div`
 
 export const MinimumLabel = styled.div`
   ${LabelStyle};
-  border-left: 1px dashed ${props => props.theme.borderColor.light.toString()};
+  border-left: ${props =>
+    props.noMin ? 'none' : `1px dashed ${props.theme.borderColor.light.toString()}`};
   flex: ${props => props.flexWidth};
   font-family: 'Futura PT Medium', sans-serif;
 
@@ -474,6 +475,5 @@ export const BackButton = styled(Button)`
       ${props => props.theme.borderColor.light.toString()} 2.5px,
       rgba(0, 0, 0, 0) 2.5px
     );
-    text-decoration: none;
   }
 `;

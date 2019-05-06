@@ -501,7 +501,6 @@ class Proposal extends React.Component {
           kind="text"
           data-digix="BACK-TO-DASHBOARD"
           secondary
-          underline
           onClick={this.handleBackToProject}
         >
           Back To Dashboard
@@ -618,7 +617,6 @@ class Proposal extends React.Component {
       <ProposalsWrapper>
         <BackButton
           kind="text"
-          underline
           secondary
           data-digix="BACK-TO-DASHBOARD"
           onClick={this.handleBackToProject}

@@ -27,71 +27,71 @@ import {
 } from '@digix/gov-ui/components/proposal-card/style';
 
 class Proposal extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    const { details, liked, likes, userProposalLike } = props;
+    const proposal = userProposalLike.data;
+    const useProposalData = proposal && proposal.proposalId === details.proposalId;
+    const likeCount = useProposalData ? proposal.likes : likes;
+    const isLiked = useProposalData ? proposal.liked : liked;
+
+    this.state = {
+      likeCount: likeCount || 0,
+      liked: isLiked,
+    };
+  }
+
   toggleLike = () => {
+    const { likeCount, liked } = this.state;
     const {
       ChallengeProof,
       details,
       likeProposalAction,
       unlikeProposalAction,
       getUserProposalLikeStatusAction,
-      userProposalLike,
-      liked,
     } = this.props;
 
-    const isLiked =
-      userProposalLike.data && userProposalLike.data.proposalId === details.proposalId
-        ? userProposalLike.data.liked
-        : liked;
-
     const payload = initializePayload(ChallengeProof);
-
     const options = {
       ...payload,
       proposalId: details.proposalId,
       token: payload.authToken,
     };
 
-    if (!isLiked) {
+    if (!liked) {
       likeProposalAction(options);
+      this.setState({
+        liked: true,
+        likeCount: likeCount + 1,
+      });
     } else {
       unlikeProposalAction(options);
+      this.setState({
+        liked: false,
+        likeCount: likeCount - 1,
+      });
     }
-    getUserProposalLikeStatusAction({
-      proposalId: details.proposalId,
-      client: ChallengeProof.data.client,
-      token: ChallengeProof.data['access-token'],
-      uid: ChallengeProof.data.uid,
-    });
+
+    getUserProposalLikeStatusAction(options);
   };
 
   redirectToProposalPage = () => {
     const { AddressDetails, details, history } = this.props;
-
     const userType = getUserStatus(AddressDetails.data, UserStatus);
+
     LogDashboard.viewProject(userType);
     history.push(`/proposals/${details.proposalId}`);
   };
 
   render() {
-    const {
-      details,
-      displayName,
-      liked,
-      likes,
-      title,
-      userDetails,
-      userProposalLike,
-      translations,
-    } = this.props;
-
-    const likeStatus =
-      userProposalLike.data && userProposalLike.data.proposalId === details.proposalId
-        ? userProposalLike.data
-        : { liked, likes };
+    const { likeCount, liked } = this.state;
+    const { details, displayName, title, translations, userDetails } = this.props;
+    const { proposalVersions } = details;
 
     const proposalVersion =
-      details.proposalVersions && details.proposalVersions.length > 0
-        ? details.proposalVersions[details.proposalVersions.length - 1]
+      proposalVersions && proposalVersions.length
+        ? proposalVersions[proposalVersions.length - 1]
         : undefined;
 
     const canLike = userDetails && userDetails.data.address;
@@ -134,8 +134,8 @@ class Proposal extends React.PureComponent {
             kind="text"
             xsmall
             disabled={!canLike}
-            hasVoted={likeStatus.liked}
-            likes={!likeStatus.likes ? 0 : likeStatus.likes}
+            hasVoted={liked}
+            likes={likeCount}
             onClick={() => this.toggleLike()}
             translations={cardTranslation}
           />

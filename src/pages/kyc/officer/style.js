@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { H1, H3, Card, FieldItem } from '@digix/gov-ui/components/common/common-styles';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 
@@ -44,6 +44,14 @@ export const Caption = styled.div`
 export const Value = styled.div`
   width: 75%;
   padding: 1rem 2rem;
+
+  canvas,
+  img {
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+  }
 `;
 
 export const TabButton = styled(Button)`
@@ -84,17 +92,37 @@ export const FieldItemKYC = styled(FieldItem)`
   }
 `;
 
-export const FieldImg = styled.img`
-  width: 100%;
-  cursor: pointer;
-`;
-
 export const CloseButton = styled(Button)`
-  position: absolute;
-  background: #fff;
   border: 0;
   top: 10px;
   right: 5px;
   margin: 0;
   padding: 1rem 1.5rem;
+  text-align: center;
+  width: 100%;
+  display: block;
+`;
+
+export const Enlarge = styled(Button)`
+  background: ${props => props.theme.background.white.toString()};
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  border-radius: ${props => props.theme.borderRadius};
+  box-shadow: none;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  padding: 1rem;
+  right: 1rem;
+  text-align: right;
+  top: 1rem;
+
+  div {
+    height: 1.75rem;
+    margin-right: 0;
+    width: 1.75rem;
+  }
+
+  &:hover {
+    background: ${props => props.theme.background.white.toString()};
+    border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  }
 `;

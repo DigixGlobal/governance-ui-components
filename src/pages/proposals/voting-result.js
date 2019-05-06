@@ -229,7 +229,7 @@ commitCountdownRenderer = props => {
                   <ProgressCol>
                     <Label>
                       <QuorumLabel>{votingResult.timeLeftToCommit}</QuorumLabel>
-                      <MinimumLabel>
+                      <MinimumLabel noMin>
                         <span />
                         <QuorumInfoCol countdown>
                           <Countdown

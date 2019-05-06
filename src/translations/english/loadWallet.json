@@ -23,7 +23,9 @@
     "cancelSigning": "Cancel Signing",
     "load": "Load",
     "unlock": "Unlock Wallet",
-    "proofOfControl": "Sign Proof of Control"
+    "proofOfControl": "Sign Proof of Control",
+    "sign": "Sign Message",
+    "sigining": "Signing..."
   },
   "Metamask": {
     "Name": {
@@ -62,6 +64,12 @@
       "proofOfControl": {
         "description": "Ready to Sign Message",
         "firmware": "Firmware {{version}} - replay protection enabled!"
+      },
+      "errors": {
+        "outdatedVersion": {
+          "title": "Your Ethereum App is outdated!",
+          "instructions": "The Ethereum app on your Ledger is not updated. Please update its version to at least **v{{version}}**, and make sure your device firmware is the latest version. Refer [here]({{link}}) for more information."
+        }
       }
     }
   },

@@ -18,6 +18,7 @@ export const fetchAppUser = gql`
   query fetchAppUser {
     appUser {
       isUnavailable
+      isUnderMaintenance
     }
   }
 `;

@@ -105,7 +105,7 @@ class ForumOfficerDashboard extends React.Component {
     const { displayName, isBanned } = user;
     const label = isBanned ? 'Unban' : 'Ban';
     return (
-      <Item>
+      <Item key={displayName}>
         <Username data-digix="Search-Result-Username">{displayName}</Username>
         <ButtonBan
           data-digix="User-Banned-Btn"

@@ -15,7 +15,8 @@
       "instructions": "Please enter your desired user name",
       "Errors": {
         "invalid": "Username must be between 2-20 characters, can only be composed of alphanumeric and underscore characters, and must not begin with the word 'user'.",
-        "connectionError": "Unable to update username. Please try again."
+        "connectionError": "Unable to update username. Please try again.",
+        "usernameTaken": "Username has already been taken"
       },
       "submit": "Assign Username",
       "txnSuccess": "Username Updated"
@@ -27,7 +28,8 @@
       "Errors": {
         "invalid": "Please enter a valid email address.",
         "unchanged": "Please enter an email address that is different from your current email.",
-        "connectionError": "Unable to update email. Please try again."
+        "connectionError": "Unable to update email. Please try again.",
+        "emailTaken": "Email has already been taken."
       },
       "submit": "Change Email",
       "txnSuccess": "Email Updated"
@@ -42,6 +44,7 @@
   "Kyc": {
     "Status": "KYC Status",
     "Statuses": {
+      "notVerified": "Not Verified",
       "pending": "Pending",
       "rejected": "Rejected",
       "expired": "Expired",
@@ -86,13 +89,16 @@
         },
         "file": {
           "missing": "Please upload a file.",
-          "isImage": "Image must be in JPEG or PNG format",
+          "isImage": "照片格式必须为 JPEG 或 PNG",
+          "isValid": "Image must be in JPEG, PNG, or PDF format",
           "size": "Filesize must be less than 10 MB."
         },
+        "phone": "Invalid phone number",
         "required": "This field is required."
       },
       "Labels": {
-        "file": "Image must be in JPEG or PNG format & filesize must be less than 10MB."
+        "file": "File must be in JPEG, PNG, or PDF format & filesize must be less than 10MB.",
+        "image": "File must be in JPEG, PNG format & filesize must be less than 10MB."
       },
       "Fields": {
         "BasicInformation": {

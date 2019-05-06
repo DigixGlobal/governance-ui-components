@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
+import LogDashboard from '@digix/gov-ui/analytics/dashboard';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-
 import { Details, Info, Label, Data } from '@digix/gov-ui/components/proposal-card/style';
+import { getUserStatus } from '@digix/gov-ui/utils/helpers';
+import { UserStatus } from '@digix/gov-ui/constants';
 
 const determineDeadline = proposal => {
   let deadline = Date.now();
@@ -40,9 +43,12 @@ const determineDeadline = proposal => {
   return deadline;
 };
 
-export default class ProposalCardMilestone extends React.Component {
+class ProposalCardMilestone extends React.Component {
   redirectToProposalPage = () => {
-    const { details, history } = this.props;
+    const { AddressDetails, details, history } = this.props;
+
+    const userType = getUserStatus(AddressDetails.data, UserStatus);
+    LogDashboard.viewProject(userType);
     history.push(`/proposals/${details.proposalId}`);
   };
 
@@ -79,8 +85,25 @@ export default class ProposalCardMilestone extends React.Component {
   }
 }
 
+const { object } = PropTypes;
 ProposalCardMilestone.propTypes = {
-  details: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  translations: PropTypes.object.isRequired,
+  AddressDetails: object,
+  details: object.isRequired,
+  history: object.isRequired,
+  translations: object.isRequired,
 };
+
+ProposalCardMilestone.defaultProps = {
+  AddressDetails: {
+    data: undefined,
+  },
+};
+
+const mapStateToProps = state => ({
+  AddressDetails: state.infoServer.AddressDetails,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(ProposalCardMilestone);

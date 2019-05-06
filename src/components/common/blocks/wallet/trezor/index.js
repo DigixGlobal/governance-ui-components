@@ -8,6 +8,7 @@ import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/compo
 
 import Button from '@digix/gov-ui/components/common/elements/buttons/';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class Trezor extends React.Component {
   render() {
@@ -38,6 +39,7 @@ class Trezor extends React.Component {
           allowedKeystoreTypes={['trezor']}
           translations={this.props.translations}
           commonTranslations={this.props.commonTranslations}
+          logLoadWallet={LogLoadWallet}
           trigger={
             <Button kind="round" secondary fluid showIcon large>
               <Icon kind="trezor" />

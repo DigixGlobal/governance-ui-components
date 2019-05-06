@@ -1,59 +1,100 @@
 {
+  "comment": {
+    "commentAs": "Comment as",
+    "banned": "You have been banned by the administrators from commenting.",
+    "pleaseContact": "Please contact Digix if you want to request a restoration of your account rights.",
+    "commentPlaceHolder": "Write your comment here.",
+    "postComment": "Post Comment",
+    "removed": "This comment has been removed."
+  },
   "common": {
-    "buttons": {
-      "add": "Add",
-      "addMore": "Add More"
+    "errors": {
+      "invalidLink": "Invalid link. Hyperlinks may only begin with **http://** or **https://** or **mailto:**"
     }
   },
-  "project": {
-    "uploadDocument": "Upload Document",
-    "document": "Document",
-    "updates": "Updates",
-    "uploadImageButtonHelpText": "Image must be in PDF, JPEG or PNG format & file size must be lesser than 10mb."
-  },
-  "snackbars": {
-    "addDocs": {
-      "title": "Add Updates",
-      "txUiHeader": "Project",
-      "message": "Your Add Updates Transaction is pending confirmation. See More"
-    }
-  },
-  "signTransaction": {
-    "common": {
-      "cancelled": "Cancelled Signing",
-      "cancel": "Cancel Signing"
+  "confirmParticipation": {
+    "title": "Confirming Participation For New Quarter",
+    "instructions": "In order to continue participating in the new quarter, we need you to sign a transaction confirming the amount of stake you have on the platform. There are 3 options of transactions you can make:",
+    "options": {
+      "lockDgd": "I want to lock more DGD",
+      "continueCurrentLockup": "I want to continue with my current lock-up of DGD",
+      "unlockDgd": "I want to unlock some DGD"
     }
   },
   "loadWallet": {
+    "banned": {
+      "title": "DigixDAO isn't available in your country yet",
+      "description": "You don't have permission to view this page.",
+      "details": "Please contact us via the Help button below for any enquiries."
+    },
     "common": {
-      "createErrors": {
-        "requiredwalletType": "Please select a wallet type.",
-        "requiredName": "You must provide a name.",
-        "invalidNames": "You must provide a name for all addresses.",
-        "invalidPassword": "Passwords do not match."
-      }
-    },
-    "Json": {
-      "importInstructions": "Click or drag and drop here to load your file.",
-      "importError": "Keystore type not supported."
-    },
-    "Metamask": {
-      "ConnectionError": {
-        "noMetamask": "Cannot connect to MetaMask wallet. Make sure to login to your MetaMask wallet."
-      }
+      "sign": "Sign Message",
+      "sigining": "Signing..."
     },
     "Ledger": {
       "chooseAddress": {
-        "selectPath": {
-          "loading": "Getting address info..."
+        "errors": {
+          "outdatedVersion": {
+            "title": "Your Ethereum App is outdated!",
+            "instructions": "The Ethereum app on your Ledger is not updated. Please update its version to at least **v{{version}}**, and make sure your device firmware is the latest version. Refer [here]({{link}}) for more information."
+          }
+        }
+      }
+    }
+  },
+  "profile": {
+    "ProfileInfo": {
+      "SetUsername": {
+        "Errors": {
+          "usernameTaken": "Username has already been taken."
+        }
+      },
+      "SetEmail": {
+        "Errors": {
+          "emailTaken": "Email has already been taken."
         }
       }
     },
-    "Trezor": {
-      "chooseAddress": {
-        "selectPath": {
-          "loading": "Getting address info..."
+    "Kyc": {
+      "Statuses": {
+        "notVerified": "Not Verified"
+      },
+      "KycForm": {
+        "Errors": {
+          "phone": "Invalid phone number."
         }
+      }
+    }
+  },
+  "project": {
+    "versionNumber": "Version {{versionNumber}}"
+  },
+  "signTransaction": {
+    "Ledger": {
+      "errors": {
+        "outdatedVersion": {
+          "title": "Your Ethereum App is outdated!",
+          "instructions": "The Ethereum app on your Ledger is not updated. Please update its version to at least **v{{version}}**, and make sure your device firmware is the latest version. Refer [here]({{link}}) for more information."
+        }
+      }
+    }
+  },
+  "snackbar": {
+    "snackbars": {
+      "continueParticipation": {
+        "title": "Continue Participation",
+        "txUiHeader": "User",
+        "message": "Your continuation of participation with current lock-up is pending confirmation. See More"
+      },
+      "approveBadgeRedemption": {
+        "title": "Badge Redemption Approval",
+        "txUiHeader": "Approve Badge Redemption",
+        "message": "Your Approve Redeem Badge Transaction is pending confirmation. See More"
+      },
+      "redeemBadge": {
+        "title": "Redeem Badge",
+        "txUiHeader": "Badge",
+        "message": "Your Redeem Badge Transaction is pending confirmation. See More"
       }
     }
   }

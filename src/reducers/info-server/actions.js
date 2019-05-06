@@ -8,6 +8,7 @@ export const actions = {
   GET_PROPOSALS_COUNT: `${REDUX_PREFIX}GET_PROPOSALS_COUNT`,
   GET_PROPOSAL_DETAILS: `${REDUX_PREFIX}GET_PROPOSAL_DETAILS`,
   GET_BLOCK_CONFIG: `${REDUX_PREFIX}GET_BLOCK_CONFIG`,
+  GET_TX_CONFIG: `${REDUX_PREFIX}GET_TX_CONFIG`,
 };
 
 function doFetch(url) {
@@ -80,4 +81,8 @@ export function getProposalDetails(proposalId) {
 
 export function getBlockConfig() {
   return fetchData(`${INFO_SERVER}/config`, actions.GET_BLOCK_CONFIG);
+}
+
+export function getTxConfig() {
+  return fetchData(`${INFO_SERVER}/txConfigs`, actions.GET_TX_CONFIG);
 }

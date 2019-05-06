@@ -17,7 +17,7 @@ import getContract, { getDGDBadgeBalanceContract } from '@digix/gov-ui/utils/con
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
@@ -82,7 +82,7 @@ class RedeemBadgeButton extends React.PureComponent {
 
   handleSubmit = () => {
     const t = this.props.translations;
-    const { web3Redux, challengeProof, addresses } = this.props;
+    const { web3Redux, challengeProof, addresses, gasLimitConfig } = this.props;
 
     const { abi, address } = getContract(DaoStakeLocking, network);
     const contract = web3Redux
@@ -97,7 +97,7 @@ class RedeemBadgeButton extends React.PureComponent {
     };
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -179,6 +179,7 @@ RedeemBadgeButton.propTypes = {
   addresses: array.isRequired,
   daoInfo: object.isRequired,
   addressDetails: object.isRequired,
+  gasLimitConfig: object.isRequired,
   history: object.isRequired,
   getAddressDetails: func.isRequired,
   showRightPanel: func.isRequired,
@@ -191,6 +192,7 @@ const mapStateToProps = state => ({
   addressDetails: state.infoServer.AddressDetails.data,
   daoInfo: state.infoServer.DaoDetails.data,
   addresses: getAddresses(state),
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
   translations: state.daoServer.Translations.data.profile.ModeratorRequirements,
   txnTranslations: state.daoServer.Translations.data.signTransaction,
 });

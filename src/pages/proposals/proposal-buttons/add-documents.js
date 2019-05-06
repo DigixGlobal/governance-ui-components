@@ -33,7 +33,7 @@ class AddDocumentsButton extends React.PureComponent {
     ) {
       return (
         <div>
-          <Button data-digix="ADD-UPDATES" onClick={this.redirectToAddDocuments}>
+          <Button large data-digix="ADD-UPDATES" onClick={this.redirectToAddDocuments}>
             {buttons.addUpdates || 'Add Updates'}
           </Button>
         </div>

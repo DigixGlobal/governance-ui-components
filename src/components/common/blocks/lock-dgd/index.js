@@ -25,7 +25,7 @@ import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/ac
 import TextField from '@digix/gov-ui/components/common/elements/textfield';
 import Button from '@digix/gov-ui/components/common/elements/buttons';
 import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import LogLockDgd from '@digix/gov-ui/analytics/lockDgd';
 
@@ -188,6 +188,7 @@ class LockDgd extends React.Component {
     LogLockDgd.submit(addedDgd);
 
     const {
+      gasLimitConfig,
       web3Redux,
       sendTransactionToDaoServer: sendTransactionToDaoServerAction,
       challengeProof,
@@ -200,7 +201,10 @@ class LockDgd extends React.Component {
       .eth.contract(abi)
       .at(address);
 
-    const web3Params = { gasPrice: DEFAULT_GAS_PRICE, gas: DEFAULT_GAS };
+    const web3Params = {
+      gasPrice: DEFAULT_GAS_PRICE,
+      gas: gasLimitConfig.LOCK_DGD || gasLimitConfig.DEFAULT,
+    };
 
     const ui = {
       dgd,
@@ -351,12 +355,14 @@ LockDgd.propTypes = {
   addresses: array,
   showHideAlert: func.isRequired,
   translations: object,
+  gasLimitConfig: object,
 };
 
 LockDgd.defaultProps = {
   defaultAddress: undefined,
   addresses: undefined,
   addressMaxAllowance: undefined,
+  gasLimitConfig: undefined,
   translations: {
     lockDgd: {},
     wallet: {},
@@ -372,6 +378,7 @@ const mapStateToProps = state => ({
   lockDgdOverlay: state.govUI.lockDgdOverlay,
   addressMaxAllowance: state.govUI.addressMaxAllowance,
   translations: state.daoServer.Translations.data,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(

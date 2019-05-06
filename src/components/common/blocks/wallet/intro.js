@@ -11,11 +11,13 @@ import {
 } from '@digix/gov-ui/components/common/common-styles';
 import { ActionContainer } from '@digix/gov-ui/components/common/blocks/wallet/style.js';
 import { WalletStages } from '@digix/gov-ui/constants';
+import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class Intro extends React.Component {
   handleButtonClick = () => {
     const { onChangeStage } = this.props;
     if (onChangeStage) {
+      LogLoadWallet.proceedToSelection();
       onChangeStage(WalletStages.LoadingWallet);
     }
   };

@@ -30,7 +30,7 @@ class ClaimApprovalOverlay extends React.Component {
 
         <Notifications info centered style={{ display: 'block' }}>
           {overlays.claimApprovalDescription}
-          <span className="highlight">
+          <span className="highlight" data-digix="Confirm-Tx-Count">
             {total} {project.transactions}
           </span>
           <ProgressBar color="secondary" variant="determinate" value={progresss} />

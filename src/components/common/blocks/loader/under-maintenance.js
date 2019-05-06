@@ -13,7 +13,7 @@ import {
   Content,
 } from '@digix/gov-ui/components/common/blocks/loader/style';
 
-class Maint extends React.Component {
+class UnderMaintenance extends React.Component {
   componentDidMount = () => {
     const { Language, getTranslationsAction, Translations } = this.props;
 
@@ -49,14 +49,14 @@ class Maint extends React.Component {
 }
 
 const { object, string, func } = PropTypes;
-Maint.propTypes = {
+UnderMaintenance.propTypes = {
   Translations: object.isRequired,
   getTranslationsAction: func.isRequired,
   Language: string,
   height: string,
 };
 
-Maint.defaultProps = {
+UnderMaintenance.defaultProps = {
   height: '100vh',
   Language: 'en',
 };
@@ -74,4 +74,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { getTranslationsAction: getTranslations }
-)(Maint);
+)(UnderMaintenance);

@@ -220,7 +220,7 @@ class ConnectedWallet extends React.Component {
           <Icon kind="close" onClick={() => this.props.onClose()} />
         </CloseButtonWithHeader>
         <p>{t.instructions}</p>
-        <Button primary fluid large onClick={this.handleApprove}>
+        <Button data-digix="Approve-Interaction" primary fluid large onClick={this.handleApprove}>
           {t.button}
         </Button>
       </Fragment>
@@ -254,16 +254,16 @@ class ConnectedWallet extends React.Component {
         <WalletDetails>
           <Address>
             {t.address}
-            <span>{defaultAddress.address}</span>
+            <span data-digix="User-Address">{defaultAddress.address}</span>
           </Address>
           <Token>
             <Icon kind="ethereum" width="48px" height="48px" />
             <Amount>
               <div>
-                <span>{ethBalance || 0}</span>
+                <span data-digix="Wallet-ETH-Balance">{ethBalance || 0}</span>
                 ETH
               </div>
-              <div>
+              <div data-digix="Wallet-EthUsd-Balance">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                   ethInUsd
                 )}{' '}
@@ -275,9 +275,9 @@ class ConnectedWallet extends React.Component {
             <Icon kind="dgd" width="48px" height="48px" />
             <Amount>
               <div>
-                <span>{dgdBalance || 0}</span> DGD
+                <span data-digix="Wallet-DGD-Balance">{dgdBalance || 0}</span> DGD
               </div>
-              <div>
+              <div data-digix="Wallet-DgdUsd-Balance">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                   dgdInUsd
                 )}{' '}
@@ -294,6 +294,7 @@ class ConnectedWallet extends React.Component {
             large
             disabled={!enableLockDgd.show}
             onClick={this.showLockDgdOverlay}
+            data-digx="Connect-Wallet-Locked-DGD"
           >
             {tLockDgd.button}
           </Button>

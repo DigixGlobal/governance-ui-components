@@ -49,18 +49,18 @@ export const MAX_PEOPLE_PER_CLAIM =
   2;
 
 export const ProposalStages = {
-  idea: 'idea',
-  draft: 'draft',
-  proposal: 'proposal',
-  ongoing: 'ongoing',
-  review: 'review',
-  archived: 'archived',
+  idea: 'IDEA',
+  draft: 'DRAFT',
+  proposal: 'PROPOSAL',
+  ongoing: 'ONGOING',
+  review: 'REVIEW',
+  archived: 'ARCHIVED',
 };
 
 export const VotingStages = {
-  draft: 'draftVoting',
-  commit: 'commit',
-  reveal: 'reveal',
+  draft: 'DRAFT',
+  commit: 'COMMIT',
+  reveal: 'REVEAL',
 };
 
 export const UserStatus = {

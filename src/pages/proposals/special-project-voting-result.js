@@ -112,11 +112,15 @@ class SpecialProjectVotingResult extends React.Component {
               <VotingResultContainer>
                 <ProgressCol>
                   <Label>
-                    <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
+                    <QuorumLabel flexWidth={stats.minimumQuorum}>{votingResult.quorum}</QuorumLabel>
                     <MinimumLabel flexWidth={100 - stats.minimumQuorum}>
-                      <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
+                      <span>
+                        {votingResult.miniumQuorumRequired}: {stats.minimumQuorum}%
+                      </span>
                       <QuorumInfoCol>
-                        <span data-digix="Vote-User-Count">{stats.votes} Votes</span>
+                        <span data-digix="Vote-User-Count">
+                          {stats.votes} {votingResult.votes}
+                        </span>
 
                         <Countdown
                           date={stats.approvalDeadline}
@@ -136,10 +140,12 @@ class SpecialProjectVotingResult extends React.Component {
                 <ProgressCol>
                   <Label>
                     <ApprovalLabel flexWidth={stats.minimumApproval}>
-                      Current Approval Rate
+                      {votingResult.currentApprovalRate}
                     </ApprovalLabel>
                     <MinimumLabel flexWidth={100 - stats.minimumApproval}>
-                      <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
+                      <span>
+                        {votingResult.minimumApproval}: {stats.minimumApproval}%
+                      </span>
                       <QuorumInfoCol>
                         <span data-digix="Vote-Yes-Count">
                           {buttons.yes}:&nbsp;{yesVotes} DGD

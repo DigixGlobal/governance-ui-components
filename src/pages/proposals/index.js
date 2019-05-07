@@ -25,6 +25,8 @@ import { truncateNumber, injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { withFetchProposal } from '@digix/gov-ui/api/graphql-queries/proposal';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
 
+import { VotingStages, ProposalStages } from '@digix/gov-ui/constants';
+
 import {
   clearDaoProposalDetails,
   getUserProposalLikeStatus,
@@ -51,9 +53,9 @@ const getVotingStruct = proposal => {
   let deadline = Date.now();
   const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
   let votingStruct;
-  switch (proposal.stage.toLowerCase()) {
-    case 'draft':
-      if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
+  switch (proposal.stage) {
+    case ProposalStages.draft:
+      if (proposal.votingStage === VotingStages.draft && proposal.draftVoting !== null) {
         votingStruct = {
           yes: proposal.draftVoting.yes,
           no: proposal.draftVoting.no,
@@ -65,7 +67,7 @@ const getVotingStruct = proposal => {
       }
       break;
 
-    case 'proposal':
+    case ProposalStages.proposal:
       if (Date.now() < proposal.votingRounds[0].commitDeadline) {
         deadline = proposal.votingRounds[0].commitDeadline || undefined;
       }
@@ -81,7 +83,7 @@ const getVotingStruct = proposal => {
       };
 
       break;
-    case 'review':
+    case ProposalStages.review:
       if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
         deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
       }
@@ -379,7 +381,7 @@ class Proposal extends React.Component {
         },
       },
     } = this.props;
-    return prl ? (
+    return prl !== 'ACTIVE' ? (
       <Notifications warning withIcon>
         <WarningIcon kind="warning" />
         <Message note>{alerts.prl}</Message>
@@ -407,6 +409,8 @@ class Proposal extends React.Component {
     if (data.claimed) return null;
 
     const votingStruct = getVotingStruct(data);
+
+    console.log({ votingStruct });
     if (!votingStruct) return null;
 
     const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;

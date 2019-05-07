@@ -6,7 +6,9 @@ import { DetailsContainer, Content, SubTitle } from './style';
 const SpecialProjectDetails = props => (
   <DetailsContainer>
     <Content>
-      <SubTitle>Configuration Details</SubTitle>
+      <SubTitle>
+        {props.translations.project.configurationDetails || 'Configuration Details'}
+      </SubTitle>
       {Object.keys(props.uintConfigs).map(key => {
         if (key === '__typename') return null;
         return (
@@ -22,7 +24,9 @@ const SpecialProjectDetails = props => (
   </DetailsContainer>
 );
 
+const { object } = PropTypes;
 SpecialProjectDetails.propTypes = {
-  uintConfigs: PropTypes.object.isRequired,
+  uintConfigs: object.isRequired,
+  translations: object.isRequired,
 };
 export default SpecialProjectDetails;

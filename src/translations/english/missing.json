@@ -67,7 +67,8 @@
     }
   },
   "project": {
-    "versionNumber": "Version {{versionNumber}}"
+    "versionNumber": "Version {{versionNumber}}",
+    "configurationDetails": "Configuration Details"
   },
   "signTransaction": {
     "Ledger": {

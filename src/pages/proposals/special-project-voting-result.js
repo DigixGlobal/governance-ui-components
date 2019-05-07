@@ -67,10 +67,16 @@ class SpecialProjectVotingResult extends React.Component {
 countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     const { translations } = this.props;
     if (completed) {
-      return <span>{translations.project.votingResult.votingIsOver}</span>;
+      return (
+        <span data-digix="Vote-Countdown-Ended">
+          {translations.project.votingResult.votingIsOver}
+        </span>
+      );
     }
 
-    return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
+    return (
+      <span data-digix="Vote-Countdown-Timer">{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>
+    );
   };
 
   // eslint-disable-next-line
@@ -96,7 +102,7 @@ commitCountdownRenderer = props => {
 
     return (
       <div>
-        <AccordionItem voting>
+        <AccordionItem voting data-digix="Timer-Progress">
           <Header>
             <VotingResultHeader votingRound={0} translations={translations} />
           </Header>

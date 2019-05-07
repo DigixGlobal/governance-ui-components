@@ -19,6 +19,7 @@ import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { initializePayload } from '@digix/gov-ui/api';
 import { Message, Notifications } from '@digix/gov-ui/components/common/common-styles';
 import { truncateNumber, injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { withFetchProposal } from '@digix/gov-ui/api/graphql-queries/proposal';
@@ -114,9 +115,12 @@ const getVotingStruct = proposal => {
 class Proposal extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      versions: undefined,
       currentVersion: 0,
+      likeCount: 0,
+      liked: false,
+      versions: undefined,
     };
 
     const path = this.props.location.pathname.split('/');
@@ -168,9 +172,23 @@ class Proposal extends React.Component {
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   getProposalLikes = () => {
-    const { getUserProposalLikeStatusAction } = this.props;
-    getUserProposalLikeStatusAction({
+    const { challengeProof, getUserProposalLikeStatusAction } = this.props;
+    const payload = initializePayload(challengeProof);
+    const options = {
+      ...payload,
       proposalId: this.PROPOSAL_ID,
+      token: payload.authToken,
+    };
+
+    getUserProposalLikeStatusAction(options).then(response => {
+      const proposal = response.payload.data;
+      const likeCount = proposal ? proposal.likes : 0;
+      const isLiked = proposal ? proposal.liked : false;
+
+      this.setState({
+        likeCount,
+        liked: isLiked,
+      });
     });
   };
 
@@ -315,6 +333,13 @@ class Proposal extends React.Component {
   handleLikeClick = e => {
     e.preventDefault();
     const { likeProposalAction, challengeProof } = this.props;
+    const { likeCount } = this.state;
+
+    this.setState({
+      liked: true,
+      likeCount: likeCount + 1 || 0,
+    });
+
     likeProposalAction({
       proposalId: this.PROPOSAL_ID,
       client: challengeProof.data.client,
@@ -326,6 +351,13 @@ class Proposal extends React.Component {
   handleUnlikeClick = e => {
     e.preventDefault();
     const { unlikeProposalAction, challengeProof } = this.props;
+    const { likeCount } = this.state;
+
+    this.setState({
+      liked: false,
+      likeCount: likeCount - 1 || 0,
+    });
+
     unlikeProposalAction({
       proposalId: this.PROPOSAL_ID,
       client: challengeProof.data.client,
@@ -476,15 +508,11 @@ class Proposal extends React.Component {
       Translations,
     } = this.props;
 
-    const { currentVersion } = this.state;
+    const { currentVersion, likeCount, liked } = this.state;
     const proposal = proposalDetails.data;
-
     const proposalVersion = proposal ? proposal.proposalVersions[currentVersion] : undefined;
-
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
-    const liked = userProposalLike.data ? userProposalLike.data.liked : false;
-    const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
     const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
     const hasMoreDocs = proposalVersion ? proposalVersion.moreDocs.length > 0 : false;
     const {
@@ -549,7 +577,7 @@ class Proposal extends React.Component {
             <InfoItem>
               <Like
                 hasVoted={liked}
-                likes={likes}
+                likes={likeCount}
                 translations={cardTranslation}
                 disabled={!userData}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
@@ -578,7 +606,7 @@ class Proposal extends React.Component {
   };
 
   renderNormalProposal = () => {
-    const { currentVersion, versions } = this.state;
+    const { currentVersion, likeCount, liked, versions } = this.state;
     const {
       addressDetails,
       daoInfo,
@@ -600,8 +628,6 @@ class Proposal extends React.Component {
     const { dijixObject } = proposalVersion;
 
     const proposalLikes = userProposalLike.data;
-    const liked = proposalLikes ? proposalLikes.liked : false;
-    const likes = proposalLikes ? proposalLikes.likes : 0;
     const displayName = proposalLikes ? proposalLikes.user.displayName : '';
     const hasMoreDocs = proposalVersion.moreDocs.length > 0;
 
@@ -688,7 +714,7 @@ class Proposal extends React.Component {
             <InfoItem data-digix="Proposal-Like">
               <Like
                 hasVoted={liked}
-                likes={likes}
+                likes={likeCount}
                 translations={cardTranslation}
                 disabled={!userData}
                 onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}

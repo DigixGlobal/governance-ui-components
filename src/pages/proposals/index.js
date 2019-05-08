@@ -410,7 +410,6 @@ class Proposal extends React.Component {
 
     const votingStruct = getVotingStruct(data);
 
-    console.log({ votingStruct });
     if (!votingStruct) return null;
 
     const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;

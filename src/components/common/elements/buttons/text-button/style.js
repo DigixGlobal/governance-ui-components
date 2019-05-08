@@ -34,13 +34,13 @@ export const TextBtn = styled(Button)`
   ${props =>
     props.disabled &&
     css`
-      color: ${props.theme.buttonTextDefault.lighter.toString()};
+      color: ${props.theme.buttonTextDefault.light.toString()};
       svg {
-        fill: ${props.theme.icon.disabled.lighter.toString()};
+        fill: ${props.theme.icon.disabled.light.toString()};
       }
 
       &:hover {
-        color: ${props.theme.buttonTextDefault.lighter.toString()};
+        color: ${props.theme.buttonTextDefault.light.toString()};
         border: none;
       }
     `};

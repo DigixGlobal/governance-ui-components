@@ -127,7 +127,7 @@ class Proposal extends React.PureComponent {
               >
                 {/* TO DO: Should only show the Icon component when 'actionable' prop ^ is present. */}
                 <Icon kind="flag" />
-                Display Actionable Status
+                Actionable Status On Green
               </Button>
             </div>
 

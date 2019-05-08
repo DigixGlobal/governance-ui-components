@@ -6,7 +6,7 @@ export const Container = styled.div`
   justify-content: center;
   width: ${props => props.width || '2.8rem'};
   height: ${props => props.height || '2.8rem'};
-  margin-right: 1rem;
+  margin-right: 0.75rem;
 
   > svg {
     fill: ${props => {

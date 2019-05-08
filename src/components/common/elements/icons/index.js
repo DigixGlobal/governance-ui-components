@@ -11,7 +11,7 @@ import Delete from './Delete';
 import Dgd from './DGD';
 import Dgx from './Dgx';
 import Ethereum from './Ethereum';
-import User from './User';
+import Flag from './Flag';
 import File from './File';
 import Help from './Help';
 import History from './History';
@@ -40,6 +40,7 @@ import Trezor from './Trezor';
 import Wallet from './Wallet';
 import Warning from './Warning';
 import XMark from './XMark';
+import User from './User';
 
 const icons = {
   activity: Activity,
@@ -52,7 +53,7 @@ const icons = {
   dgd: Dgd,
   dgx: Dgx,
   ethereum: Ethereum,
-  user: User,
+  flag: Flag,
   file: File,
   help: Help,
   history: History,
@@ -81,6 +82,7 @@ const icons = {
   wallet: Wallet,
   warning: Warning,
   xmark: XMark,
+  user: User,
 };
 
 const Icon = props => {

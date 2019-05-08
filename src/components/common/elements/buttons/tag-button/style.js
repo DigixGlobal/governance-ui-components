@@ -1,35 +1,48 @@
 import styled, { css } from 'styled-components';
+import { Button } from '../style';
 
-export const TagBtn = styled.button`
-  font-family: 'Futura PT Book', sans-serif;
-  font-size: 1.1rem;
-  padding: 0.5rem 0.75rem;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.075em;
-  border: 0;
+export const TagBtn = styled(Button)`
+  border-radius: ${props => props.theme.borderRadius};
+  color: ${props =>
+    props.outline
+      ? props.theme.tag.default.outline.textColor.base.toString()
+      : props.theme.tag.default.textColor.base.toString()};
+  background: ${props =>
+    props.outline
+      ? props.theme.tag.default.outline.background.fade.toString()
+      : props.theme.tag.default.background.base.toString()};
+  border: 1px solid ${props => props.theme.tag.default.border.base.toString()};
+  font-family: 'Futura PT Medium', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.025em;
+  margin: 0 0.25rem;
+  padding: 0.4rem 0.85rem;
   pointer-events: none;
 
-  ${props =>
-    props.filled &&
-    css`
-      background: ${props.theme.buttonBgTertiaryReverse.default.toString()};
-      border-radius: ${props.theme.borderRadius};
-      color: ${props.theme.buttonTextDefaultReverse.default.toString()};
+  &:first-child {
+    margin-left: 0;
+  }
 
-      margin-right: 1.25rem;
+  svg {
+    fill: ${props => props.theme.tag.default.outline.icon.base.toString()};
+  }
+
+  ${props =>
+    props.actionable &&
+    css`
+      background: ${props.outline
+        ? props.theme.tag.actionable.outline.background.fade.toString()
+        : props.theme.tag.actionable.background.base.toString()};
+      border: 1px dashed
+        ${props.outline
+          ? props.theme.tag.actionable.outline.border.base.toString()
+          : props.theme.tag.actionable.border.base.toString()};
+      color: ${props.outline
+        ? props.theme.tag.actionable.outline.textColor.base.toString()
+        : props.theme.tag.actionable.textColor.base.toString()};
+
+      svg {
+        fill: ${props.theme.tag.actionable.outline.icon.base.toString()};
+      }
     `};
-
-  ${props =>
-    props.showIcon &&
-    css`
-    background: transparent;
-    color: ${props.theme.buttonFlatColor.default.toString()};
-    padding-left: 0;
-
-    ::before {
-      content: '● ';
-      color: ${props.theme.buttonFlatColor.default.toString()};
-      font-size: 140%;
-  `};
 `;

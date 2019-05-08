@@ -173,7 +173,7 @@ class Proposal extends React.Component {
 
   getProposalLikes = () => {
     const { challengeProof, getUserProposalLikeStatusAction } = this.props;
-    const payload = initializePayload(challengeProof);
+    const payload = challengeProof.data ? initializePayload(challengeProof) : { authToken: null };
     const options = {
       ...payload,
       proposalId: this.PROPOSAL_ID,

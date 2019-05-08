@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withApollo } from 'react-apollo';
 
 import LogDashboard from '@digix/gov-ui/analytics/dashboard';
 import { Category, CategoryItem } from '@digix/gov-ui/components/common/blocks/filter/style.js';
+import { fetchProposalList } from '@digix/gov-ui/api/graphql-queries/proposal';
 import { getProposalsCount } from '@digix/gov-ui/reducers/info-server/actions';
 
 export class CategoryGroup extends React.Component {
@@ -15,17 +17,28 @@ export class CategoryGroup extends React.Component {
   }
 
   componentDidMount = () => {
-    this.props.getProposalsCountAction();
+    this.props.getProposalsCount();
+  };
+
+  getProposalList = stage => {
+    const apollo = this.props.client;
+    apollo
+      .query({
+        fetchPolicy: 'network-only',
+        query: fetchProposalList,
+        variables: { stage },
+      })
+      .then(result => {
+        const proposals = result.data.fetchProposals;
+        this.props.setProposalList(proposals);
+      });
   };
 
   handleClick(stage) {
-    const { onStageChange, getProposalsCountAction } = this.props;
-    if (onStageChange) {
-      LogDashboard.filterProjectByStage(stage);
-      this.setState({ stage });
-      onStageChange(stage);
-      getProposalsCountAction();
-    }
+    LogDashboard.filterProjectByStage(stage);
+    this.setState({ stage });
+    this.getProposalList(stage);
+    this.props.getProposalsCount();
   }
 
   render() {
@@ -54,7 +67,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'idea'}
         >
           {projectStatus.idea}{' '}
-          <span data-digix="Filter-Idea-Count">{ProposalsCount.data.idea || '0'}</span>
+          <span data-digix="Filter-Idea-Count">{ProposalsCount.data.IDEA || '0'}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-Draft-Tab"
@@ -62,7 +75,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'draft'}
         >
           {projectStatus.draft}{' '}
-          <span data-digix="Filter-Draft-Count">{ProposalsCount.data.draft || '0'}</span>
+          <span data-digix="Filter-Draft-Count">{ProposalsCount.data.DRAFT || '0'}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-Proposal-Tab"
@@ -70,7 +83,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'proposal'}
         >
           {projectStatus.proposal}{' '}
-          <span data-digix="Filter-Proposal-Count">{ProposalsCount.data.proposal || '0'}</span>
+          <span data-digix="Filter-Proposal-Count">{ProposalsCount.data.PROPOSAL || '0'}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-OnGoing-Tab"
@@ -78,7 +91,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'ongoing'}
         >
           {projectStatus.ongoing}{' '}
-          <span data-digix="Filter-OnGoing-Count">{ProposalsCount.data.ongoing || '0'}</span>
+          <span data-digix="Filter-OnGoing-Count">{ProposalsCount.data.ONGOING || '0'}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-Review-Tab"
@@ -86,7 +99,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'review'}
         >
           {projectStatus.review}{' '}
-          <span data-digix="Filter-Review-Count">{ProposalsCount.data.review || 0}</span>
+          <span data-digix="Filter-Review-Count">{ProposalsCount.data.REVIEW || 0}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-Archived-Tab"
@@ -94,7 +107,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'archived'}
         >
           {projectStatus.archived}{' '}
-          <span data-digix="Filter-Archived-Count">{ProposalsCount.data.archived || '0'}</span>
+          <span data-digix="Filter-Archived-Count">{ProposalsCount.data.ARCHIVED || '0'}</span>
         </CategoryItem>
       </Category>
     );
@@ -104,15 +117,22 @@ export class CategoryGroup extends React.Component {
 const { func, object } = PropTypes;
 
 CategoryGroup.propTypes = {
+  client: object.isRequired,
+  getProposalsCount: func.isRequired,
   ProposalsCount: object.isRequired,
-  onStageChange: func.isRequired,
-  getProposalsCountAction: func.isRequired,
+  setProposalList: func.isRequired,
   translations: object.isRequired,
 };
 
-export default connect(
-  ({ infoServer: { ProposalsCount } }) => ({ ProposalsCount }),
-  {
-    getProposalsCountAction: getProposalsCount,
-  }
-)(CategoryGroup);
+const mapStateToProps = ({ infoServer }) => ({
+  ProposalsCount: infoServer.ProposalsCount,
+});
+
+export default withApollo(
+  connect(
+    mapStateToProps,
+    {
+      getProposalsCount,
+    }
+  )(CategoryGroup)
+);

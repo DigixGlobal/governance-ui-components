@@ -5,6 +5,7 @@ import { withApollo } from 'react-apollo';
 
 import Category from '@digix/gov-ui/components/common/blocks/filter/category.js';
 import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
+import LogDashboard from '@digix/gov-ui/analytics/dashboard';
 import { Button, Icon, Select } from '@digix/gov-ui/components/common/elements/index';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
@@ -86,10 +87,13 @@ class ProposalCardFilter extends React.Component {
     });
   };
 
-  handleChange = e => {
+  changeFilter = e => {
     const { onOrderChange } = this.props;
+    const filter = e.target.value;
+
     if (onOrderChange) {
-      onOrderChange(e.target.value);
+      LogDashboard.filterProject(filter);
+      onOrderChange(filter);
     }
   };
 
@@ -154,7 +158,7 @@ class ProposalCardFilter extends React.Component {
               id="sortBy"
               data-digix="SORT-BY"
               items={filters}
-              onChange={this.handleChange}
+              onChange={this.changeFilter}
             />
           </Pulldown>
         </Filter>

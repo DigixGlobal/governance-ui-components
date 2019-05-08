@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { Category, CategoryItem } from './style';
-
-import { getProposalsCount } from '../../../../reducers/info-server/actions';
+import LogDashboard from '@digix/gov-ui/analytics/dashboard';
+import { Category, CategoryItem } from '@digix/gov-ui/components/common/blocks/filter/style.js';
+import { getProposalsCount } from '@digix/gov-ui/reducers/info-server/actions';
 
 export class CategoryGroup extends React.Component {
   constructor(props) {
@@ -18,11 +18,12 @@ export class CategoryGroup extends React.Component {
     this.props.getProposalsCountAction();
   };
 
-  handleClick(param) {
+  handleClick(stage) {
     const { onStageChange, getProposalsCountAction } = this.props;
     if (onStageChange) {
-      this.setState({ stage: param });
-      onStageChange(param);
+      LogDashboard.filterProjectByStage(stage);
+      this.setState({ stage });
+      onStageChange(stage);
       getProposalsCountAction();
     }
   }

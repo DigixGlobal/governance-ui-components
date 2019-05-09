@@ -11,7 +11,9 @@
     "stake": "Stake",
     "quarterPoints": "Quarter Points",
     "reputationPoints": "Reputation Points",
-    "dgdLocked": "DGD Locked"
+    "dgdLocked": "DGD Locked",
+    "startsOn": "Starts on",
+    "endsOn": "and ends on"
   },
   "UserStats": {
     "quarterPoints": "Quarter Points",

@@ -1,0 +1,116 @@
+{
+  "comment": {
+    "commentAs": "留言",
+    "banned": "您被管理员禁言.",
+    "pleaseContact": "如您想恢复留言资格，请与管理员联系.",
+    "commentPlaceHolder": "请在此处留言.",
+    "postComment": "发送",
+    "removed": "留言已被删除."
+  },
+  "common": {
+    "errors": {
+      "invalidLink": "无效链接. 网页链接格式应如下 **http://** 或者 **https://** 或者 **mailto:**"
+    },
+    "buttons": {
+      "addUpdates": "添加更新"
+    }
+  },
+  "confirmParticipation": {
+    "title": "确认参与新的季度",
+    "instructions": "请确认您的权益数目以继续参与新的季度:",
+    "options": {
+      "lockDgd": "锁定更多DGD",
+      "continueCurrentLockup": "维持当前锁定的DGD",
+      "unlockDgd": "解锁DGD"
+    }
+  },
+  "loadWallet": {
+    "banned": {
+      "title": "目前DigixDAO尚未在此国开放",
+      "description": "您无权浏览此页.",
+      "details": "如有疑问请点击页面下角的帮助窗口."
+    },
+    "common": {
+      "sign": "签名",
+      "sigining": "签名中..."
+    },
+    "Ledger": {
+      "chooseAddress": {
+        "errors": {
+          "outdatedVersion": {
+            "title": "您的以太坊App版本过低!",
+            "instructions": "请更新您Ledger的以太坊App到**v{{版本}}**, 并确保您的固件是最新版本. 点击[这里]({{link}})查看更多."
+          }
+        }
+      }
+    }
+  },
+  "profile": {
+    "ProfileInfo": {
+      "SetUsername": {
+        "Errors": {
+          "usernameTaken": "此用户名已存在."
+        }
+      },
+      "SetEmail": {
+        "Errors": {
+          "emailTaken": "此邮件已存在."
+        }
+      }
+    },
+    "Kyc": {
+      "Statuses": {
+        "notVerified": "未提交"
+      },
+      "KycForm": {
+        "Errors": {
+          "phone": "此电话号码无效.",
+          "file": {
+            "isValid": "图片必须为JPEG, PNG, 或者PDF格式"
+          }
+        }
+      }
+    }
+  },
+  "project": {
+    "versionNumber": "版本 {{versionNumber}}",
+    "special": "特别",
+    "banned": "您被管理员禁言.",
+    "pleaseContact": "如您想恢复留言资格，请与管理员联系."
+  },
+  "signTransaction": {
+    "Ledger": {
+      "errors": {
+        "outdatedVersion": {
+          "title": "您的以太坊App版本过低!",
+          "instructions": "请更新您Ledger的以太坊App到**v{{版本}}**, 并确保您的固件是最新版本. 点击[这里]({{link}})查看更多."
+        }
+      }
+    }
+  },
+  "snackbar": {
+    "snackbars": {
+      "continueParticipation": {
+        "title": "继续参与",
+        "txUiHeader": "用户",
+        "message": "您的继续参与申请审核中. 查看更多"
+      },
+      "badgeRedemption": {
+        "title": "兑换徽章",
+        "txUiHeader": "徽章",
+        "message": "兑换徽章申请审核中. 查看更多"
+      },
+      "redeemBadge": {
+        "title": "兑换徽章",
+        "txUiHeader": "徽章",
+        "message": "兑换徽章申请审核中. 查看更多"
+      }
+    }
+  },
+  "dashboard": {
+    "Timeline": {
+      "startsOn": "起始日期",
+      "endsOn": "终止日期"
+    }
+  }
+}

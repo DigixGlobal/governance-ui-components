@@ -1,8 +1,8 @@
 {
-  "commentAs": "Comment as",
-  "banned": "You have been banned by the administrators from commenting.",
-  "pleaseContact": "Please contact Digix if you want to request a restoration of your account rights.",
-  "commentPlaceHolder": "Write your comment here.",
-  "postComment": "Post Comment",
-  "removed": "This comment has been removed."
+  "commentAs": "留言",
+  "banned": "您被管理员禁言.",
+  "pleaseContact": "如您想恢复留言资格，请与管理员联系.",
+  "commentPlaceHolder": "请在此处留言.",
+  "postComment": "发送",
+  "removed": "留言已被删除."
 }

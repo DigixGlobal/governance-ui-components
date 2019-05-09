@@ -1,9 +1,9 @@
 {
-  "title": "Confirming Participation For New Quarter",
-  "instructions": "In order to continue participating in the new quarter, we need you to sign a transaction confirming the amount of stake you have on the platform. There are 3 options of transactions you can make:",
+  "title": "确认参与新的季度",
+  "instructions": "请确认您的权益数目以继续参与新的季度:",
   "options": {
-    "lockDgd": "I want to lock more DGD",
-    "continueCurrentLockup": "I want to continue with my current lock-up of DGD",
-    "unlockDgd": "I want to unlock some DGD"
+    "lockDgd": "锁定更多DGD",
+    "continueCurrentLockup": "维持当前锁定的DGD",
+    "unlockDgd": "解锁DGD"
   }
 }

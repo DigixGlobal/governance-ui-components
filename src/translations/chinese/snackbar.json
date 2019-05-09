@@ -72,14 +72,19 @@
       "message": "添加更新等待确认中. 更多"
     },
     "continueParticipation": {
-      "title": "Continue Participation",
-      "txUiHeader": "User",
-      "message": "Your continuation of participation with current lock-up is pending confirmation. See More"
+      "title": "继续参与",
+      "txUiHeader": "用户",
+      "message": "您的继续参与申请审核中. 查看更多"
     },
     "badgeRedemption": {
-      "title": "Badge Redemption Approval",
-      "txUiHeader": "Badge",
-      "message": "Your Redeem Badge Transaction is pending confirmation. See More"
+      "title": "兑换徽章",
+      "txUiHeader": "徽章",
+      "message": "兑换徽章申请审核中. 查看更多"
+    },
+    "redeemBadge": {
+      "title": "兑换徽章",
+      "txUiHeader": "徽章",
+      "message": "兑换徽章申请审核中. 查看更多"
     }
   }
 }

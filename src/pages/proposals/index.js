@@ -17,7 +17,7 @@ import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-pr
 import AdditionalDocs from '@digix/gov-ui/pages/proposals/additional-docs';
 import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
 import { Message, Notifications } from '@digix/gov-ui/components/common/common-styles';
@@ -36,6 +36,7 @@ import {
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import {
+  Tags,
   BackButton,
   CallToAction,
   Data,
@@ -540,17 +541,34 @@ class Proposal extends React.Component {
           {this.renderPrlAlert(proposalDetails.data.prl)}
           {this.renderClaimApprovalAlert()}
           {this.renderProposerDidNotPassAlert()}
-          <Header>
+          <Tags>
             <div>
-              <Button kind="tag" filled>
+              <Button kind="tag" special>
                 {/* TODO: Add Translation */}
                 Special
               </Button>
-              <Button kind="tag" showIcon>
+              <Button kind="tag" actionable>
                 {proposalDetails.data.stage}
               </Button>
-              <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
+              <Button kind="tag" outline actionable data-digix="Proposal-Status">
+                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
+                <Icon kind="flag" />
+                Actionable Status On Green
+              </Button>
             </div>
+            <div>
+              <Like
+                hasVoted={liked}
+                likes={likeCount}
+                translations={cardTranslation}
+                disabled={!userData}
+                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
+              />
+            </div>
+          </Tags>
+
+          <Header>
+            <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
             {!isForumAdmin && (
               <CallToAction>
                 <ParticipantButtons
@@ -576,15 +594,6 @@ class Proposal extends React.Component {
               <Data>
                 <span>{displayName}</span>
               </Data>
-            </InfoItem>
-            <InfoItem>
-              <Like
-                hasVoted={liked}
-                likes={likeCount}
-                translations={cardTranslation}
-                disabled={!userData}
-                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
-              />
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
@@ -664,15 +673,30 @@ class Proposal extends React.Component {
           {this.renderPrlAlert(proposal.prl)}
           {this.renderClaimApprovalAlert()}
           {this.renderProposerDidNotPassAlert()}
-
-          <Header>
+          <Tags>
             <div>
-              <Button kind="tag" showIcon data-digix="Proposal-Status">
+              <Button kind="tag" actionable data-digix="Proposal-Status">
                 {proposal.stage}
               </Button>
-              <Title primary data-digix="Proposal-Title">
-                {dijixObject.title}
-              </Title>
+              <Button kind="tag" outline actionable data-digix="Proposal-Status">
+                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
+                <Icon kind="flag" />
+                Actionable Status On Green
+              </Button>
+            </div>
+            <div data-digix="Proposal-Like">
+              <Like
+                hasVoted={liked}
+                likes={likeCount}
+                translations={cardTranslation}
+                disabled={!userData}
+                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
+              />
+            </div>
+          </Tags>
+          <Header>
+            <div>
+              <Title data-digix="Proposal-Title">{dijixObject.title}</Title>
             </div>
             {!isForumAdmin && (
               <CallToAction>
@@ -714,15 +738,6 @@ class Proposal extends React.Component {
               proposalDetails={proposal}
               translations={translations}
             />
-            <InfoItem data-digix="Proposal-Like">
-              <Like
-                hasVoted={liked}
-                likes={likeCount}
-                translations={cardTranslation}
-                disabled={!userData}
-                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
-              />
-            </InfoItem>
           </FundingInfo>
         </ProjectSummary>
 

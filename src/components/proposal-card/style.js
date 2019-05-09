@@ -12,7 +12,7 @@ export const Container = styled.div`
 export const Item = styled.div`
   display: flex;
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-  height: 36.6rem;
+  min-height: 32rem;
   & > div {
     flex: 0 1 auto;
     &:first-child {
@@ -25,11 +25,11 @@ export const Item = styled.div`
 `;
 
 export const Details = styled.div`
-  padding: ${props => (props.noPadding ? 0 : '2.5rem 5rem')};
+  padding: ${props => (props.noPadding ? 0 : '4rem 5rem')};
   display: flex;
   flex-direction: column;
   ${media.mobile`
-    padding: ${props => (props.noPadding ? 0 : '2rem')};
+    padding: ${props => (props.noPadding ? 0 : '4rem')};
   `}
   ${props =>
     props.first &&
@@ -66,8 +66,10 @@ export const Info = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 3rem;
+  padding: 2rem 5rem;
   text-transform: uppercase;
+  font-family: 'Futura PT Book', sans-serif;
+
   ${props =>
     props.stage &&
     (props.stage.toLowerCase() === 'idea' ||
@@ -75,11 +77,12 @@ export const Info = styled.div`
     css`
       color: ${props.theme.textDefault.light.toString()};
     `};
+
   span {
     font-family: 'Futura PT Heavy', sans-serif;
-    font-size: 2.6rem;
+    font-size: 2.2rem;
     display: block;
-    margin-top: 1rem;
+    margin-top: 0rem;
   }
   ul {
     width: 60%;
@@ -98,17 +101,25 @@ export const Info = styled.div`
   }
 `;
 
-export const Tags = styled.div``;
+export const Tags = styled.div`
+  margin-bottom: 2rem;
 
-export const AboutProposal = styled.div`
-  &:last-child {
+  display: flex;
+  justify-content: space-between;
+
+  & > div {
     display: flex;
-    justify-content: space-between;
-    border-top: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
-    padding-top: 1.5em;
+    align-items: center;
   }
 `;
-export const Desc = styled.div`
+
+export const LikeButton = styled(Button)`
+  margin: 0;
+  padding: 0;
+`;
+
+export const AboutProposal = styled.div``;
+export const ShortDescr = styled.div`
   p {
     margin-bottom: 2em;
     color: ${props => props.theme.textColor.default.base.toString()};
@@ -120,12 +131,14 @@ export const Desc = styled.div`
     text-align: justify;
     margin-right: 0;
     padding-right: 1em;
+
     &:before {
       content: '...';
       position: absolute;
       right: 0;
       bottom: 0;
     }
+
     &:after {
       content: '';
       position: absolute;
@@ -139,14 +152,15 @@ export const Desc = styled.div`
 `;
 
 export const Title = styled(H2)`
-  color: ${props => props.theme.textColor.primary.base.toString()};
-  margin-top: 0;
+  color: ${props => props.theme.textColor.default.base.toString()};
   overflow: hidden;
   position: relative;
   line-height: 1.2em;
   max-height: calc(1.2em * 2);
-  margin-right: 0em;
+  margin: 0;
+  margin-bottom: 0.5rem;
   padding-right: 1em;
+
   &:before {
     content: '...';
     position: absolute;
@@ -164,28 +178,22 @@ export const Title = styled(H2)`
   }
 `;
 
-export const Author = styled.div``;
-
-export const AuthorName = styled.a`
-  color: ${props => props.theme.link.secondary.base.toString()};
-  text-decoration: none;
+export const Author = styled.div`
   text-transform: uppercase;
-  font-weight: 600;
+  color: ${props => props.theme.textColor.default.light.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  margin-bottom: 3rem;
+
+  span {
+    color: ${props => props.theme.textColor.default.base.toString()};
+  }
 `;
 
-export const ViewLink = styled.button`
-  background: none;
-  border: none;
-  color: ${props => props.theme.link.secondary.base.toString()};
-  cursor: pointer;
-  display: none;
-  font-family: 'Futura PT Book', sans-serif;
-  text-decoration: underline;
+export const ViewCta = styled(Button)`
+  border-width: 1px;
+  background: transparent;
+  margin: 0;
   text-transform: uppercase;
-
-  &:hover {
-    text-decoration: none;
-  }
 
   ${props =>
     props.disabled &&
@@ -193,10 +201,6 @@ export const ViewLink = styled.button`
       color: ${props.theme.link.disabled.light.toString()};
       pointer-events: none;
     `}
-
-  ${media.tablet`
-    display: inline-block;
-  `};
 `;
 
 export const Label = styled.div`
@@ -209,9 +213,4 @@ export const Data = styled.div`
   text-align: center;
   text-transform: uppercase;
   font-size: 1.3rem;
-`;
-
-export const LikeButton = styled(Button)`
-  margin: 0;
-  padding: 0;
 `;

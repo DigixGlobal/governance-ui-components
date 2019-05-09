@@ -1,10 +1,11 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import LikeButton from '@digix/gov-ui/components/common/elements/like';
 import LogDashboard from '@digix/gov-ui/analytics/dashboard';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { initializePayload } from '@digix/gov-ui/api';
 import { getUserStatus } from '@digix/gov-ui/utils/helpers';
 import { UserStatus } from '@digix/gov-ui/constants';
@@ -20,10 +21,9 @@ import {
   AboutProposal,
   Tags,
   Title,
-  Desc,
+  ShortDescr,
   Author,
-  AuthorName,
-  ViewLink,
+  ViewCta,
 } from '@digix/gov-ui/components/proposal-card/style';
 
 class Proposal extends React.PureComponent {
@@ -32,7 +32,8 @@ class Proposal extends React.PureComponent {
 
     const { details, liked, likes, userProposalLike } = props;
     const proposal = userProposalLike.data;
-    const useProposalData = proposal && proposal.proposalId === details.proposalId;
+    const useProposalData =
+      proposal && proposal.proposalId === details.proposalId;
     const likeCount = useProposalData ? proposal.likes : likes;
     const isLiked = useProposalData ? proposal.liked : liked;
 
@@ -86,7 +87,13 @@ class Proposal extends React.PureComponent {
 
   render() {
     const { likeCount, liked } = this.state;
-    const { details, displayName, title, translations, userDetails } = this.props;
+    const {
+      details,
+      displayName,
+      title,
+      translations,
+      userDetails,
+    } = this.props;
     const { proposalVersions } = details;
 
     const proposalVersion =
@@ -106,39 +113,60 @@ class Proposal extends React.PureComponent {
       <Details first>
         <AboutProposal>
           <Tags>
-            <Button kind="tag" showIcon data-digix="Proposal-Status">
-              {status[details.stage.toLowerCase()]}
-            </Button>
+            <div>
+              {/* TODO: 'actionable' prop makes the tag button green which indicates an action is required. 
+            Without this prop, tag button displays red. */}
+              <Button kind="tag" actionable data-digix="Proposal-Status">
+                {status[details.stage.toLowerCase()]}
+              </Button>
+              <Button
+                kind="tag"
+                outline
+                actionable
+                data-digix="Proposal-Status"
+              >
+                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
+                <Icon kind="flag" />
+                Actionable Status On Green
+              </Button>
+            </div>
+
+            <div>
+              <LikeButton
+                kind="text"
+                xsmall
+                disabled={!canLike}
+                hasVoted={liked}
+                likes={likeCount}
+                onClick={() => this.toggleLike()}
+                translations={cardTranslation}
+              />
+            </div>
           </Tags>
-          <Desc>
-            <Title data-digix="Proposal-Title">
-              {proposalVersion ? proposalVersion.dijixObject.title : title}
-            </Title>
+
+          <Title data-digix="Proposal-Title">
+            {proposalVersion ? proposalVersion.dijixObject.title : title}
+          </Title>
+          <Author>
+            {cardTranslation.by}{' '}
+            <span data-digix="Proposal-Author">{displayName}</span>
+          </Author>
+
+          <ShortDescr>
             <p data-digix="Proposal-Short-Desc">
               {proposalVersion ? proposalVersion.dijixObject.description : ''}
             </p>
-            <ViewLink role="link" onClick={this.redirectToProposalPage}>
-              {cardTranslation.view}
-            </ViewLink>
-          </Desc>
-        </AboutProposal>
-        <AboutProposal>
-          <Author>
-            {cardTranslation.by}{' '}
-            <AuthorName style={{ pointerEvents: 'none' }} data-digix="Proposal-Author">
-              {displayName}
-            </AuthorName>
-          </Author>
+          </ShortDescr>
 
-          <LikeButton
-            kind="text"
-            xsmall
-            disabled={!canLike}
-            hasVoted={liked}
-            likes={likeCount}
-            onClick={() => this.toggleLike()}
-            translations={cardTranslation}
-          />
+          <ViewCta
+            small
+            reverse
+            role="link"
+            onClick={this.redirectToProposalPage}
+            data-digix="Participate-Btn"
+          >
+            {cardTranslation.view}
+          </ViewCta>
         </AboutProposal>
       </Details>
     );
@@ -185,5 +213,5 @@ export default connect(
     likeProposalAction: likeProposal,
     unlikeProposalAction: unlikeProposal,
     getUserProposalLikeStatusAction: getUserProposalLikeStatus,
-  }
+  },
 )(Proposal);

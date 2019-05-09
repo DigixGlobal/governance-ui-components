@@ -81,7 +81,7 @@ const white = {
   fade: whiteHex.fade(0.9),
 };
 
-const redHex = Color('#D0021B');
+const redHex = Color('#D34A4A');
 const red = {
   default: redHex,
   darker: redHex.darken(0.05),
@@ -92,7 +92,7 @@ const red = {
   fade: redHex.fade(0.95),
 };
 
-const greenHex = Color('#417505');
+const greenHex = Color('#76BA7D');
 const green = {
   default: greenHex,
   darker: greenHex.darken(2),
@@ -100,7 +100,7 @@ const green = {
   light: greenHex.lighten(0.5),
   lighter: greenHex.lighten(1),
   lightest: greenHex.lighten(1.9),
-  fade: greenHex.fade(0.8),
+  fade: greenHex.fade(0.95),
 };
 
 const primaryColor = darkBlue;
@@ -328,6 +328,31 @@ const LightTheme = {
     pending: tertiaryColor,
     success: green,
     failed: red,
+  },
+
+  tag: {
+    default: {
+      textColor: white,
+      background: red,
+      border: red,
+      outline: {
+        textColor: red,
+        background: red,
+        border: red,
+        icon: red,
+      },
+    },
+    actionable: {
+      textColor: white,
+      background: green,
+      border: green,
+      outline: {
+        textColor: green,
+        background: green,
+        border: green,
+        icon: green,
+      },
+    },
   },
 };
 

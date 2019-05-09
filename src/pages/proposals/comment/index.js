@@ -237,7 +237,7 @@ class CommentThread extends React.Component {
 
     return (
       <div>
-        {!cannotView && <Title>{project.discussions}</Title>}
+        <Title>{project.discussions}</Title>
         <CommentTextEditor
           addComment={this.addThread}
           canComment={canComment}

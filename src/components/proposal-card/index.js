@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Proposal from '@digix/gov-ui/components/proposal-card/proposal';
-import Milestones from '@digix/gov-ui/components/proposal-card/milestones';
 import Stats from '@digix/gov-ui/components/proposal-card/stats';
 
 import { Container, Item } from '@digix/gov-ui/components/proposal-card/style';
@@ -36,12 +35,6 @@ export default class ProposalCard extends React.Component {
             translations={translations}
           />
           <Stats details={proposal} votingStage={votingStage} translations={translations} />
-          <Milestones
-            details={proposal}
-            history={history}
-            userDetails={userDetails}
-            translations={translations}
-          />
         </Item>
       </Container>
     );

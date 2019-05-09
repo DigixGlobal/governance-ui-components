@@ -17,9 +17,9 @@ export const Author = styled.div`
 `;
 
 export const Title = styled(H2)`
-  font-family: 'Futura PT Book';
-  font-size: 2rem;
-  color: ${props => props.theme.textPrimary.light.toString()};
+  font-family: 'Futura PT Heavy', sans-serif;
+  font-size: 1.8rem;
+  color: ${props => props.theme.textColor.default.base.toString()};
   margin-top: 0;
 `;
 

@@ -87,18 +87,36 @@ export const NextWrapper = styled.div`
   }
 `;
 
-export const Header = styled.div`
+export const Tags = styled.div`
+  margin-bottom: 2rem;
+
   display: flex;
   justify-content: space-between;
 
   ${media.mobile`
+  margin-bottom: 0;
+  `}
+
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+export const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  ${media.mobile`
     flex-direction: column;
+    align-items: flex-start;
   `}
 `;
 
 export const Title = styled(H1)`
-  font-size: 3.2rem;
-  font-family: 'Futura PT Book', sans-serif;
+  font-size: 2.8rem;
+  font-family: 'Futura PT Heavy', sans-serif;
   text-transform: capitalize;
   margin-right: 2rem;
 `;
@@ -106,11 +124,11 @@ export const Title = styled(H1)`
 export const CallToAction = styled.div`
   display: flex;
   flex-wrap: nowrap;
-  margin-top: 2rem;
+  margin-right: -1rem;
 
   ${media.mobile`
     order: -1;
-    margin: 0 -1rem 3rem -1rem;
+    margin: 2rem -1rem 3rem -1rem;
   `}
 
   button {
@@ -164,23 +182,10 @@ export const InfoItem = styled.div`
   }
   &:nth-of-type(3) {
     flex: 0 0 auto;
+    margin-right: 0;
 
     ${media.mobile`
       flex: 0 0 100%;
-    `}
-  }
-
-  &:nth-of-type(4) {
-    flex: 0 0 90px;
-    margin-right: 0rem;
-
-    div {
-      margin-right: 1rem;
-    }
-
-    ${media.mobile`
-      order: -1;
-      margin-bottom: 3rem;
     `}
   }
 
@@ -189,7 +194,7 @@ export const InfoItem = styled.div`
     css`
       border-radius: ${props.theme.borderRadius};
       justify-content: flex-start;
-      padding: 2rem 3rem;
+      padding: 1.5rem 3rem;
       border: 1px solid ${props.theme.borderColor.lighter.toString()};
       margin-right: 2rem;
     `};
@@ -197,16 +202,16 @@ export const InfoItem = styled.div`
 
 export const ItemTitle = styled.div`
   margin-bottom: 0.5rem;
-  font-family: 'Futura PT Medium', sans-serif;
+  font-family: 'Futura PT Book', sans-serif;
   text-transform: uppercase;
 `;
 
 export const Data = styled.div`
   display: flex;
   align-items: flex-end;
-  font-family: 'Futura PT Heavy', sans-serif;
+  font-family: 'Futura PT Medium', sans-serif;
   font-size: 1.6rem;
-  color: ${props => props.theme.textColor.primary.base.toString()};
+  color: ${props => props.theme.textColor.default.base.toString()};
   text-transform: uppercase;
 
   div:first-child {
@@ -248,12 +253,17 @@ export const DetailsContainer = styled.div`
 export const Content = styled.div`
   margin: 1.5rem 0 3rem 0;
   font-size: 1.6rem;
+
+  p,
+  span {
+    background: none !important;
+  }
 `;
 
 export const SubTitle = styled(H2)`
-  font-family: 'Futura PT Book';
-  font-size: 2rem;
-  color: ${props => props.theme.textPrimary.light.toString()};
+  font-family: 'Futura PT Heavy', sans-serif;
+  font-size: 1.8rem;
+  color: ${props => props.theme.textColor.default.base.toString()};
 `;
 
 export const AccordionHeading = styled(H2)`

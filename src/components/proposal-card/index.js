@@ -9,13 +9,18 @@ import { Container, Item } from '@digix/gov-ui/components/proposal-card/style';
 export default class ProposalCard extends React.Component {
   render() {
     const { history, proposal, userDetails, liked, likes, displayName, translations } = this.props;
-    const currentTime = Date.now();
-    const { currentVotingRound } = proposal;
-    const withinDeadline =
-      currentVotingRound > -1
-        ? proposal.votingRounds[currentVotingRound].commitDeadline * 1000 < currentTime &&
-          currentTime < proposal.votingRounds[currentVotingRound].revealDeadline * 1000
-        : false;
+    const { currentVotingRound, votingRounds } = proposal;
+
+    const currentTime = Date.now() / 1000;
+    const hasCurrentVotingRound = currentVotingRound && currentVotingRound > -1;
+    const votingRound = hasCurrentVotingRound ? votingRounds[currentVotingRound] : null;
+
+    let withinDeadline = false;
+    if (votingRound) {
+      const { commitDeadline, revealDeadline } = votingRound;
+      withinDeadline = commitDeadline < currentTime && currentTime < revealDeadline;
+    }
+
     const votingStage = withinDeadline ? 'reveal' : proposal.votingStage;
     return (
       <Container data-digix="Proposal-Card">

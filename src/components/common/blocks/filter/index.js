@@ -126,7 +126,7 @@ class ProposalCardFilter extends React.Component {
   }
 
   render() {
-    const { AddressDetails, translations } = this.props;
+    const { AddressDetails, setProposalList, translations } = this.props;
     const { filters } = this.state;
     const canCreate = AddressDetails && AddressDetails.data.isParticipant;
     const {
@@ -151,7 +151,7 @@ class ProposalCardFilter extends React.Component {
           )}
         </Heading>
         <Filter>
-          <Category {...this.props} translations={translations} />
+          <Category {...this.props} setProposalList={setProposalList} translations={translations} />
           <Pulldown>
             <Select
               small
@@ -178,8 +178,9 @@ ProposalCardFilter.propTypes = {
   history: object.isRequired,
   onOrderChange: func.isRequired,
   showRightPanel: func.isRequired,
-  web3Redux: object.isRequired,
+  setProposalList: func.isRequired,
   translations: object.isRequired,
+  web3Redux: object.isRequired,
 };
 
 const mapStateToProps = ({ infoServer }) => ({

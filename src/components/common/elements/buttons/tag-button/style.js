@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Button } from '@digix/gov-ui/components/common/elements/buttons/tag-button/style';
+import { Button } from '@digix/gov-ui/components/common/elements/buttons/style';
 
 export const TagBtn = styled(Button)`
   border-radius: ${props => props.theme.borderRadius};

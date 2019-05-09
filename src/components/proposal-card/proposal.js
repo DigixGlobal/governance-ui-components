@@ -114,7 +114,7 @@ class Proposal extends React.PureComponent {
         <AboutProposal>
           <Tags>
             <div>
-              {/* TO DO: 'actionable' prop makes the tag button green which indicates an action is required. 
+              {/* TODO: 'actionable' prop makes the tag button green which indicates an action is required. 
             Without this prop, tag button displays red. */}
               <Button kind="tag" actionable data-digix="Proposal-Status">
                 {status[details.stage.toLowerCase()]}
@@ -125,7 +125,7 @@ class Proposal extends React.PureComponent {
                 actionable
                 data-digix="Proposal-Status"
               >
-                {/* TO DO: Should only show the Icon component when 'actionable' prop ^ is present. */}
+                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
                 <Icon kind="flag" />
                 Actionable Status On Green
               </Button>

@@ -676,7 +676,7 @@ class Proposal extends React.Component {
                 {proposal.stage}
               </Button>
               <Button kind="tag" outline actionable data-digix="Proposal-Status">
-                {/* TO DO: Should only show the Icon component when 'actionable' prop ^ is present. */}
+                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
                 <Icon kind="flag" />
                 Actionable Status On Green
               </Button>

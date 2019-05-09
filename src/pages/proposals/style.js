@@ -189,20 +189,6 @@ export const InfoItem = styled.div`
     `}
   }
 
-  // &:nth-of-type(4) {
-  //   flex: 0 0 90px;
-  //   margin-right: 0rem;
-
-  //   div {
-  //     margin-right: 1rem;
-  //   }
-
-  //   ${media.mobile`
-  //     order: -1;
-  //     margin-bottom: 3rem;
-  //   `}
-  // }
-
   ${props =>
     props.outlined &&
     css`

@@ -54,7 +54,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'idea'}
         >
           {projectStatus.idea}{' '}
-          <span data-digix="Filter-Idea-Count">{ProposalsCount.data.idea || '0'}</span>
+          <span data-digix="Filter-Idea-Count">{ProposalsCount.data.IDEA || '0'}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-Draft-Tab"
@@ -62,7 +62,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'draft'}
         >
           {projectStatus.draft}{' '}
-          <span data-digix="Filter-Draft-Count">{ProposalsCount.data.draft || '0'}</span>
+          <span data-digix="Filter-Draft-Count">{ProposalsCount.data.DRAFT || '0'}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-Proposal-Tab"
@@ -70,7 +70,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'proposal'}
         >
           {projectStatus.proposal}{' '}
-          <span data-digix="Filter-Proposal-Count">{ProposalsCount.data.proposal || '0'}</span>
+          <span data-digix="Filter-Proposal-Count">{ProposalsCount.data.PROPOSAL || '0'}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-OnGoing-Tab"
@@ -78,7 +78,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'ongoing'}
         >
           {projectStatus.ongoing}{' '}
-          <span data-digix="Filter-OnGoing-Count">{ProposalsCount.data.ongoing || '0'}</span>
+          <span data-digix="Filter-OnGoing-Count">{ProposalsCount.data.ONGOING || '0'}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-Review-Tab"
@@ -86,7 +86,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'review'}
         >
           {projectStatus.review}{' '}
-          <span data-digix="Filter-Review-Count">{ProposalsCount.data.review || 0}</span>
+          <span data-digix="Filter-Review-Count">{ProposalsCount.data.REVIEW || 0}</span>
         </CategoryItem>
         <CategoryItem
           data-digix="Filter-Archived-Tab"
@@ -94,7 +94,7 @@ export class CategoryGroup extends React.Component {
           active={stage.toLowerCase() === 'archived'}
         >
           {projectStatus.archived}{' '}
-          <span data-digix="Filter-Archived-Count">{ProposalsCount.data.archived || '0'}</span>
+          <span data-digix="Filter-Archived-Count">{ProposalsCount.data.ARCHIVED || '0'}</span>
         </CategoryItem>
       </Category>
     );

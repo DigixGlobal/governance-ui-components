@@ -5,7 +5,8 @@
       "username": "User",
       "status": "Status",
       "email": "Email",
-      "address": "Address"
+      "address": "Address",
+      "notVerified": "Not Verified"
     },
     "SetUsername": {
       "overlayButton": "Set Username",
@@ -29,7 +30,7 @@
         "invalid": "Please enter a valid email address.",
         "unchanged": "Please enter an email address that is different from your current email.",
         "connectionError": "Unable to update email. Please try again.",
-        "emailTaken": "Email has already been taken."
+        "emailTaken": "Email has already been taken"
       },
       "submit": "Change Email",
       "txnSuccess": "Email Updated"
@@ -44,12 +45,12 @@
   "Kyc": {
     "Status": "KYC Status",
     "Statuses": {
-      "notVerified": "Not Verified",
       "pending": "Pending",
       "rejected": "Rejected",
       "expired": "Expired",
       "approving": "Approving",
-      "approved": "Approved"
+      "approved": "Approved",
+      "notVerified": "Not Verified"
     },
     "Submit": {
       "error": "Unable to submit KYC.",
@@ -93,7 +94,7 @@
           "isValid": "Image must be in JPEG, PNG, or PDF format",
           "size": "Filesize must be less than 10 MB."
         },
-        "phone": "Invalid phone number",
+        "phoneNumber": "Invalid phone number.",
         "required": "This field is required."
       },
       "Labels": {

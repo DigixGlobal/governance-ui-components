@@ -6,16 +6,8 @@ import { connect } from 'react-redux';
 import LikeButton from '@digix/gov-ui/components/common/elements/like';
 import LogDashboard from '@digix/gov-ui/analytics/dashboard';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
-import { initializePayload } from '@digix/gov-ui/api';
 import { getUserStatus } from '@digix/gov-ui/utils/helpers';
 import { UserStatus } from '@digix/gov-ui/constants';
-
-import {
-  likeProposal,
-  unlikeProposal,
-  getUserProposalLikeStatus,
-} from '@digix/gov-ui/reducers/dao-server/actions';
-
 import {
   Details,
   AboutProposal,
@@ -27,56 +19,6 @@ import {
 } from '@digix/gov-ui/components/proposal-card/style';
 
 class Proposal extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    const { details, liked, likes, userProposalLike } = props;
-    const proposal = userProposalLike.data;
-    const useProposalData =
-      proposal && proposal.proposalId === details.proposalId;
-    const likeCount = useProposalData ? proposal.likes : likes;
-    const isLiked = useProposalData ? proposal.liked : liked;
-
-    this.state = {
-      likeCount: likeCount || 0,
-      liked: isLiked,
-    };
-  }
-
-  toggleLike = () => {
-    const { likeCount, liked } = this.state;
-    const {
-      ChallengeProof,
-      details,
-      likeProposalAction,
-      unlikeProposalAction,
-      getUserProposalLikeStatusAction,
-    } = this.props;
-
-    const payload = initializePayload(ChallengeProof);
-    const options = {
-      ...payload,
-      proposalId: details.proposalId,
-      token: payload.authToken,
-    };
-
-    if (!liked) {
-      likeProposalAction(options);
-      this.setState({
-        liked: true,
-        likeCount: likeCount + 1,
-      });
-    } else {
-      unlikeProposalAction(options);
-      this.setState({
-        liked: false,
-        likeCount: likeCount - 1,
-      });
-    }
-
-    getUserProposalLikeStatusAction(options);
-  };
-
   redirectToProposalPage = () => {
     const { AddressDetails, details, history } = this.props;
     const userType = getUserStatus(AddressDetails.data, UserStatus);
@@ -86,22 +28,23 @@ class Proposal extends React.PureComponent {
   };
 
   render() {
-    const { likeCount, liked } = this.state;
     const {
+      AddressDetails,
       details,
       displayName,
+      isLiked,
+      likeCount,
       title,
       translations,
-      userDetails,
     } = this.props;
-    const { proposalVersions } = details;
+    const { proposalId, proposalVersions } = details;
 
     const proposalVersion =
       proposalVersions && proposalVersions.length
         ? proposalVersions[proposalVersions.length - 1]
         : undefined;
 
-    const canLike = userDetails && userDetails.data.address;
+    const canLike = AddressDetails.data && AddressDetails.data.address;
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
@@ -136,9 +79,9 @@ class Proposal extends React.PureComponent {
                 kind="text"
                 xsmall
                 disabled={!canLike}
-                hasVoted={liked}
+                hasVoted={isLiked}
                 likes={likeCount}
-                onClick={() => this.toggleLike()}
+                onClick={() => this.props.likeProposal(proposalId)}
                 translations={cardTranslation}
               />
             </div>
@@ -173,21 +116,16 @@ class Proposal extends React.PureComponent {
   }
 }
 
-const { bool, func, object, number, string } = PropTypes;
+const { bool, func, object, oneOfType,number, string } = PropTypes;
 Proposal.propTypes = {
   AddressDetails: object,
-  ChallengeProof: object,
   details: object.isRequired,
-  liked: bool,
-  likes: number,
+  isLiked: bool.isRequired,
+  likeCount: number.isRequired,
+  likeProposal: func.isRequired,
   title: string,
   history: object.isRequired,
-  displayName: string.isRequired,
-  likeProposalAction: func.isRequired,
-  unlikeProposalAction: func.isRequired,
-  getUserProposalLikeStatusAction: func.isRequired,
-  userDetails: object.isRequired,
-  userProposalLike: object.isRequired,
+  displayName: oneOfType([object, string]),
   translations: object.isRequired,
 };
 
@@ -201,17 +139,11 @@ Proposal.defaultProps = {
   AddressDetails: {
     data: undefined,
   },
-  ChallengeProof: undefined,
-  liked: false,
-  likes: undefined,
+  displayName: '',
   title: '',
 };
 
 export default connect(
   mapStateToProps,
-  {
-    likeProposalAction: likeProposal,
-    unlikeProposalAction: unlikeProposal,
-    getUserProposalLikeStatusAction: getUserProposalLikeStatus,
-  },
+  {},
 )(Proposal);

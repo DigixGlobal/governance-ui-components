@@ -259,16 +259,11 @@ export function getProposalLikesByUser(payload) {
   );
 }
 
-export function getProposalLikesStats(payload) {
-  const { client, stage, authToken, uid } = payload;
+export function getProposalLikesStats(stage) {
   return sendData(
     'GET',
     stage ? `${DAO_SERVER}/proposals?stage=${stage}` : `${DAO_SERVER}/proposals`,
-    actions.GET_PROPOSAL_LIKES_STATS,
-    undefined,
-    authToken,
-    client,
-    uid
+    actions.GET_PROPOSAL_LIKES_STATS
   );
 }
 

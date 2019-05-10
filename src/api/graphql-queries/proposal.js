@@ -156,8 +156,8 @@ const ProposalFragment = gql`
 `;
 
 export const fetchProposalList = gql`
-  query fetchProposalList($stage: String!) {
-    fetchProposals(stage: $stage) {
+  query fetchProposalList($stage: String!, $onlyActionable: Boolean) {
+    fetchProposals(stage: $stage, onlyActionable: $onlyActionable) {
       ...proposal
     }
   }

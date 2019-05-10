@@ -6,9 +6,10 @@ import { withApollo } from 'react-apollo';
 import Category from '@digix/gov-ui/components/common/blocks/filter/category.js';
 import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
 import LogDashboard from '@digix/gov-ui/analytics/dashboard';
-import { Button, Icon, Select } from '@digix/gov-ui/components/common/elements/index';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { Button, Icon, Select } from '@digix/gov-ui/components/common/elements/index';
+import { fetchProposalList } from '@digix/gov-ui/api/graphql-queries/proposal';
 import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
 import { getUnmetProposalRequirements } from '@digix/gov-ui/utils/helpers';
 import { H1 } from '@digix/gov-ui/components/common/common-styles';
@@ -31,6 +32,8 @@ class ProposalCardFilter extends React.Component {
     super(props);
     this.state = {
       filters: [],
+      showActionable: false,
+      stage: 'all',
     };
   }
 
@@ -71,6 +74,20 @@ class ProposalCardFilter extends React.Component {
       .then(balance => parseBigNumber(balance, 18, false));
   }
 
+  getActionableProposals = (stage, onlyActionable) => {
+    const apollo = this.props.client;
+    apollo
+      .query({
+        fetchPolicy: 'network-only',
+        query: fetchProposalList,
+        variables: { stage, onlyActionable },
+      })
+      .then(result => {
+        const proposals = result.data.fetchProposals;
+        this.props.setProposalList(proposals);
+      });
+  };
+
   getUnmetCreateRequirements = () => {
     const { DaoDetails, client, translations } = this.props;
     const dataCalls = [
@@ -87,6 +104,14 @@ class ProposalCardFilter extends React.Component {
 
       return errors;
     });
+  };
+
+  setShowActionableItems = showActionable => {
+    this.setState({ showActionable });
+  };
+
+  setStage = stage => {
+    this.setState({ stage });
   };
 
   changeFilter = e => {
@@ -127,12 +152,24 @@ class ProposalCardFilter extends React.Component {
     });
   }
 
+  toggleActionableItems = e => {
+    const { stage } = this.state;
+    const showActionable = !!e.target.checked;
+    LogDashboard.toggleActionableProjects(stage, showActionable);
+    this.setState({ showActionable });
+    this.getActionableProposals(stage, showActionable);
+  };
+
   render() {
-    const { AddressDetails, setProposalList, translations } = this.props;
+    const { AddressDetails, ChallengeProof, setProposalList, translations } = this.props;
     const { filters } = this.state;
+
+    const hasLoadedWallet = !!ChallengeProof.data;
     const canCreate = AddressDetails && AddressDetails.data.isParticipant;
+    const showActionableItems = this.state.showActionable ? 'checked' : '';
+
     const {
-      data: { dashboard },
+      data: { dashboard, project },
     } = translations;
 
     return (
@@ -153,14 +190,29 @@ class ProposalCardFilter extends React.Component {
           )}
         </Heading>
         <Filter>
-          <Category {...this.props} setProposalList={setProposalList} translations={translations} />
+          <Category
+            {...this.props}
+            setShowActionableItems={this.setShowActionableItems}
+            setStage={this.setStage}
+            setProposalList={setProposalList}
+            translations={translations}
+          />
           <SortBy>
-            <Actionable>
-              <input type="checkbox" id="actionable-checkbox" data-digix="" />
-              <label htmlFor="actionable-checkbox" data-digix="">
-                Show Actionable Items Only
-              </label>
-            </Actionable>
+            {hasLoadedWallet && (
+              <Actionable>
+                <input
+                  type="checkbox"
+                  id="actionable-checkbox"
+                  defaultChecked={false}
+                  checked={showActionableItems}
+                  data-digix="TOGGLE-ACTIONABLE-ITEMS"
+                  onClick={e => this.toggleActionableItems(e)}
+                />
+                <label htmlFor="actionable-checkbox" data-digix="">
+                  {project.showActionable}
+                </label>
+              </Actionable>
+            )}
             <Pulldown>
               <span>SORT BY</span>
               <Select
@@ -181,6 +233,7 @@ const { func, object } = PropTypes;
 
 ProposalCardFilter.propTypes = {
   AddressDetails: object.isRequired,
+  ChallengeProof: object.isRequired,
   client: object.isRequired,
   DaoConfig: object.isRequired,
   DaoDetails: object.isRequired,
@@ -193,7 +246,8 @@ ProposalCardFilter.propTypes = {
   web3Redux: object.isRequired,
 };
 
-const mapStateToProps = ({ infoServer }) => ({
+const mapStateToProps = ({ daoServer, infoServer }) => ({
+  ChallengeProof: daoServer.ChallengeProof,
   DaoConfig: infoServer.DaoConfig.data,
   DaoDetails: infoServer.DaoDetails.data,
 });

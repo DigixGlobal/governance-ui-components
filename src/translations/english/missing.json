@@ -1,117 +1,15 @@
 {
-  "comment": {
-    "commentAs": "Comment as",
-    "banned": "You have been banned by the administrators from commenting.",
-    "pleaseContact": "Please contact Digix if you want to request a restoration of your account rights.",
-    "commentPlaceHolder": "Write your comment here.",
-    "postComment": "Post Comment",
-    "removed": "This comment has been removed."
-  },
-  "common": {
-    "errors": {
-      "invalidLink": "Invalid link. Hyperlinks may only begin with **http://** or **https://** or **mailto:**"
-    },
-    "buttons": {
-      "addUpdates": "Add Updates"
-    }
-  },
-  "confirmParticipation": {
-    "title": "Confirming Participation For New Quarter",
-    "instructions": "In order to continue participating in the new quarter, we need you to sign a transaction confirming the amount of stake you have on the platform. There are 3 options of transactions you can make:",
-    "options": {
-      "lockDgd": "I want to lock more DGD",
-      "continueCurrentLockup": "I want to continue with my current lock-up of DGD",
-      "unlockDgd": "I want to unlock some DGD"
-    }
-  },
-  "loadWallet": {
-    "banned": {
-      "title": "DigixDAO isn't available in your country yet",
-      "description": "You don't have permission to view this page.",
-      "details": "Please contact us via the Help button below for any enquiries."
-    },
-    "common": {
-      "sign": "Sign Message",
-      "sigining": "Signing..."
-    },
-    "Ledger": {
-      "chooseAddress": {
-        "errors": {
-          "outdatedVersion": {
-            "title": "Your Ethereum App is outdated!",
-            "instructions": "The Ethereum app on your Ledger is not updated. Please update its version to at least **v{{version}}**, and make sure your device firmware is the latest version. Refer [here]({{link}}) for more information."
-          }
-        }
-      }
-    }
-  },
-  "profile": {
-    "ProfileInfo": {
-      "SetUsername": {
-        "Errors": {
-          "usernameTaken": "Username has already been taken."
-        }
-      },
-      "SetEmail": {
-        "Errors": {
-          "emailTaken": "Email has already been taken."
-        }
-      }
-    },
-    "Kyc": {
-      "Statuses": {
-        "notVerified": "Not Verified"
-      },
-      "KycForm": {
-        "Errors": {
-          "phone": "Invalid phone number.",
-          "file": {
-            "isValid": "Image must be in JPEG, PNG, or PDF format"
-          }
-        }
-      }
-    }
-  },
   "project": {
-    "versionNumber": "Version {{versionNumber}}",
-    "configurationDetails": "Configuration Details",
-    "special": "Special",
-    "banned": "You have been banned by the administrators from commenting.",
-    "pleaseContact": "Please contact Digix if you want to request a restoration of your account rights."
-  },
-  "signTransaction": {
-    "Ledger": {
-      "errors": {
-        "outdatedVersion": {
-          "title": "Your Ethereum App is outdated!",
-          "instructions": "The Ethereum app on your Ledger is not updated. Please update its version to at least **v{{version}}**, and make sure your device firmware is the latest version. Refer [here]({{link}}) for more information."
-        }
-      }
-    }
-  },
-  "snackbar": {
-    "snackbars": {
-      "continueParticipation": {
-        "title": "Continue Participation",
-        "txUiHeader": "User",
-        "message": "Your continuation of participation with current lock-up is pending confirmation. See More"
-      },
-      "badgeRedemption": {
-        "title": "Badge Redemption Approval",
-        "txUiHeader": "Badge",
-        "message": "Your Redeem Badge Transaction is pending confirmation. See More"
-      },
-      "redeemBadge": {
-        "title": "Redeem Badge",
-        "txUiHeader": "Badge",
-        "message": "Your Redeem Badge Transaction is pending confirmation. See More"
-      }
-    }
-  },
-  "dashboard": {
-    "Timeline": {
-      "startsOn": "Starts on",
-      "endsOn": "and ends on"
+    "back": "Back to Dashboard",
+    "showActionable": "Show Actionable Items Only",
+    "actionableStatus": {
+      "NONE": "",
+      "AWAITING_ENDORSEMENT": "Awaiting Endorsement",
+      "MODERATOR_VOTING": "Moderator Voting",
+      "COMMIT_PHASE": "Commit Phase",
+      "REVEAL_PHASE": "Reveal Phase",
+      "CLAIM_FUNDING": "Claim Funding",
+      "CLAIM_VOTING": "Claim Voting"
     }
   }
 }

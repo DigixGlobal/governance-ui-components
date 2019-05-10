@@ -54,6 +54,8 @@
   "special": "Special",
   "banned": "You have been banned by the administrators from commenting.",
   "pleaseContact": "Please contact Digix if you want to request a restoration of your account rights.",
+  "back": "Back to Dashboard",
+  "showActionable": "Show Actionable Items Only",
 
   "spinner": {
     "pleaseWait": "Please wait.",
@@ -113,5 +115,14 @@
     "ongoing": "Ongoing",
     "review": "Review",
     "archived": "Archived"
+  },
+  "actionableStatus": {
+    "NONE": "",
+    "AWAITING_ENDORSEMENT": "Awaiting Endorsement",
+    "MODERATOR_VOTING": "Moderator Voting",
+    "COMMIT_PHASE": "Commit Phase",
+    "REVEAL_PHASE": "Reveal Phase",
+    "CLAIM_FUNDING": "Claim Funding",
+    "CLAIM_VOTING": "Claim Voting"
   }
 }

@@ -54,6 +54,8 @@
   "special": "特别",
   "banned": "您被管理员禁言.",
   "pleaseContact": "如您想恢复留言资格，请与管理员联系.",
+  "back": "Back to Dashboard",
+  "showActionable": "Show Actionable Items Only",
   "spinner": {
     "pleaseWait": "请稍后.",
     "hold": "您的项目正在上载到 IPFS."
@@ -112,5 +114,14 @@
     "ongoing": "进行中",
     "review": "审核",
     "archived": "存档"
+  },
+  "actionableStatus": {
+    "NONE": "",
+    "AWAITING_ENDORSEMENT": "Awaiting Endorsement",
+    "MODERATOR_VOTING": "Moderator Voting",
+    "COMMIT_PHASE": "Commit Phase",
+    "REVEAL_PHASE": "Reveal Phase",
+    "CLAIM_FUNDING": "Claim Funding",
+    "CLAIM_VOTING": "Claim Voting"
   }
 }

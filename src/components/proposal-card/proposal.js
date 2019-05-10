@@ -7,7 +7,7 @@ import LikeButton from '@digix/gov-ui/components/common/elements/like';
 import LogDashboard from '@digix/gov-ui/analytics/dashboard';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { getUserStatus } from '@digix/gov-ui/utils/helpers';
-import { UserStatus } from '@digix/gov-ui/constants';
+import { ProjectActionableStatus, UserStatus } from '@digix/gov-ui/constants';
 import {
   Details,
   AboutProposal,
@@ -37,7 +37,7 @@ class Proposal extends React.PureComponent {
       title,
       translations,
     } = this.props;
-    const { proposalId, proposalVersions } = details;
+    const { actionableStatus, isSpecial, proposalId, proposalVersions } = details;
 
     const proposalVersion =
       proposalVersions && proposalVersions.length
@@ -45,10 +45,12 @@ class Proposal extends React.PureComponent {
         : undefined;
 
     const canLike = AddressDetails.data && AddressDetails.data.address;
+    const isActionable = actionableStatus !== ProjectActionableStatus.NONE;
+    const tActionable = translations.data.project.actionableStatus;
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
-        project: { status },
+        project: { special, status },
       },
     } = translations;
 
@@ -57,36 +59,36 @@ class Proposal extends React.PureComponent {
         <AboutProposal>
           <Tags>
             <div>
-              {/* TODO: 'actionable' prop makes the tag button green which indicates an action is required. 
-            Without this prop, tag button displays red. */}
-              <Button kind="tag" actionable data-digix="Proposal-Status">
+              {isSpecial && (
+                <Button kind="tag" special  data-digix="Proposal-IsSpecial">
+                  {special}
+                </Button>
+              )}
+              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Stage">
                 {status[details.stage.toLowerCase()]}
               </Button>
-              <Button
-                kind="tag"
-                outline
-                actionable
-                data-digix="Proposal-Status"
-              >
-                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
-                <Icon kind="flag" />
-                Actionable Status On Green
-              </Button>
+              {isActionable && (
+                <Button
+                  kind="tag"
+                  outline
+                  actionable
+                  data-digix="Proposal-ActionableStatus"
+                >
+                  <Icon kind="flag" />
+                  {tActionable[actionableStatus]}
+                </Button>
+              )}
             </div>
-
-            <div>
-              <LikeButton
-                kind="text"
-                xsmall
-                disabled={!canLike}
-                hasVoted={isLiked}
-                likes={likeCount}
-                onClick={() => this.props.likeProposal(proposalId)}
-                translations={cardTranslation}
-              />
-            </div>
+            <LikeButton
+              kind="text"
+              xsmall
+              disabled={!canLike}
+              hasVoted={isLiked}
+              likes={likeCount}
+              onClick={() => this.props.likeProposal(proposalId)}
+              translations={cardTranslation}
+            />
           </Tags>
-
           <Title data-digix="Proposal-Title">
             {proposalVersion ? proposalVersion.dijixObject.title : title}
           </Title>

@@ -17,99 +17,76 @@ import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { fetchProposalList } from '@digix/gov-ui/api/graphql-queries/proposal';
 import { getHash } from '@digix/gov-ui/utils/helpers';
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
+import { initializePayload } from '@digix/gov-ui/api';
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 import { showCountdownPage } from '@digix/gov-ui/reducers/gov-ui/actions';
-
 import {
   getAddressDetails,
   getDaoConfig,
   getDaoDetails,
 } from '@digix/gov-ui/reducers/info-server/actions';
-
 import {
   getProposalLikesByUser,
   getProposalLikesStats,
   getTranslations,
+  likeProposal,
+  unlikeProposal,
+  getUserProposalLikeStatus,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 class LandingPage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      displayNames: {},
       disableButton: true,
       order: 'latest',
       proposals: [],
+      proposalLikes: {},
       showParticipateModal: false,
       showTos: true,
+      userLikes: [],
     };
   }
 
   componentWillMount = () => {
-    const { AddressDetails, ChallengeProof, Language } = this.props;
-    const hasAddress = AddressDetails.data.address;
-    const hasChallenge = ChallengeProof.data && ChallengeProof.data.client;
-
+    const { Language } = this.props;
     this.setTosStatus();
     this.setCountdownPageStatus();
     this.getProposalList('all');
-    this.getProposalLikes(undefined, ChallengeProof);
     this.props.getTranslations(Language);
-    if (hasAddress && hasChallenge) {
-      this.getLikeStatus();
-    }
   };
 
   componentDidMount = () => {
-    const { getAddressDetailsAction } = this.props;
+    this.initializeCookieBot();
     const { address } = this.props.defaultAddress;
+    const promises = [this.props.getAddressDetails(address), this.props.getDaoConfig];
 
-    Promise.all([getAddressDetailsAction(address), this.props.getDaoConfig]).then(() => {
+    Promise.all(promises).then(() => {
+      this.getUserLikes();
+      this.getProposalLikes();
       this.showContinueParticipationModal();
     });
-
-    if (window.Cookiebot) {
-      try {
-        window.Cookiebot.show();
-      } catch (error) {
-        console.log('unable to initialize cookiebot');
-      }
-    }
   };
 
   onOrderChange = order => {
     this.setState({ order });
   };
 
-  getLikesCount = proposalId => {
-    const { ProposalLikes } = this.props;
-    if (!ProposalLikes.data) {
-      return 0;
-    }
+  getProposalLikes = () => {
+    this.props.getProposalLikesStats().then(() => {
+      const displayNames = {};
+      const proposalLikes = {};
+      const proposals = this.props.ProposalLikes.data;
 
-    const proposal = ProposalLikes.data.find(p => p.proposalId === proposalId);
-    if (!proposal) {
-      return 0;
-    }
+      proposals.forEach(p => {
+        proposalLikes[p.proposalId] = p.likes;
+        displayNames[p.proposalId] = p.user ? p.user.displayName : '';
+      });
 
-    return proposal.likes;
-  };
-
-  getLikeStatus = () => {
-    const {
-      AddressDetails,
-      getAddressDetailsAction,
-      getProposalLikesByUserAction,
-      ChallengeProof,
-    } = this.props;
-    return Promise.all([getAddressDetailsAction(AddressDetails.data.address)]).then(() => {
-      this.getUserLikes('all', ChallengeProof, getProposalLikesByUserAction);
+      this.setState({ displayNames, proposalLikes });
     });
   };
-
-  getProposalLikes = (param = undefined) =>
-    this.props.getProposalLikesStatsAction({
-      param,
-    });
 
   getProposalList = stage => {
     const apollo = this.props.client;
@@ -125,38 +102,21 @@ class LandingPage extends React.PureComponent {
       });
   };
 
-  getProposer = (proposalId, proposer) => {
-    const { AddressDetails, ProposalLikes } = this.props;
-    if (!ProposalLikes.data) {
-      return '';
+  getUserLikes = () => {
+    if (!this.hasChallenge()) {
+      return;
     }
 
-    const proposal = ProposalLikes.data.find(p => p.proposalId === proposalId);
-    if (!proposal && proposer === AddressDetails.data.address) {
-      return renderDisplayName('Proposer-DisplayName');
-    } else if (!proposal) {
-      return '';
-    }
-
-    return proposal.user.displayName;
-  };
-
-  getUserLikes = (stage, ChallengeProof, getProposalLikesByUserAction) => {
-    const hasChallenge = ChallengeProof && ChallengeProof.data && ChallengeProof.data.client;
-    if (!hasChallenge) {
-      return undefined;
-    }
-
-    return getProposalLikesByUserAction({
-      stage,
-      authToken: ChallengeProof.data['access-token'],
-      client: ChallengeProof.data.client,
-      uid: ChallengeProof.data.uid,
+    const payload = initializePayload(this.props.ChallengeProof);
+    return this.props.getProposalLikesByUser({ ...payload, stage: 'all' }).then(() => {
+      const proposals = this.props.UserLikedProposals.data;
+      const userLikes = proposals.map(proposal => proposal.proposalId);
+      this.setState({ userLikes });
     });
   };
 
   setCountdownPageStatus = () => {
-    this.props.getDaoDetailsAction().then(() => {
+    this.props.getDaoDetails().then(() => {
       const { currentQuarter } = this.props.DaoDetails.data;
       if (currentQuarter === 0) {
         this.props.showCountdownPage({ show: true });
@@ -176,20 +136,6 @@ class LandingPage extends React.PureComponent {
     }
   };
 
-  checkIfLiked = proposalId => {
-    const { UserLikedProposals } = this.props;
-    if (!UserLikedProposals.data) {
-      return false;
-    }
-
-    const proposal = UserLikedProposals.data.find(p => p.proposalId === proposalId);
-    if (!proposal) {
-      return false;
-    }
-
-    return proposal.liked;
-  };
-
   fixScrollbar = ShowWallet => {
     if (ShowWallet && ShowWallet.show) {
       document.body.classList.add('modal-is-open');
@@ -198,10 +144,9 @@ class LandingPage extends React.PureComponent {
     }
   };
 
-  handleTosClose = () => {
-    this.setState({ showTos: false }, () => {
-      localStorage.setItem('GOVERNANCE_UI', getHash(ToS));
-    });
+  hasChallenge = () => {
+    const { ChallengeProof } = this.props;
+    return ChallengeProof && ChallengeProof.data && ChallengeProof.data.client;
   };
 
   handleModalClose = () => {
@@ -216,6 +161,55 @@ class LandingPage extends React.PureComponent {
     if (element.scrollTop + 1000 >= element.scrollHeight) {
       this.setState({ disableButton: false });
     }
+  };
+
+  handleTosClose = () => {
+    this.setState({ showTos: false }, () => {
+      localStorage.setItem('GOVERNANCE_UI', getHash(ToS));
+    });
+  };
+
+  initializeCookieBot = () => {
+    if (!window.Cookiebot) {
+      return;
+    }
+
+    try {
+      window.Cookiebot.show();
+    } catch (error) {
+      console.log('unable to initialize cookiebot');
+    }
+  };
+
+  likeProposal = proposalId => {
+    const { ChallengeProof } = this.props;
+    const payload = initializePayload(ChallengeProof);
+    const options = {
+      ...payload,
+      proposalId,
+      token: payload.authToken,
+    };
+
+    const proposalLikes = { ...this.state.proposalLikes };
+    const userLikes = [...this.state.userLikes];
+    const liked = userLikes.includes(proposalId);
+
+    if (!liked) {
+      this.props.likeProposal(options);
+      proposalLikes[proposalId] += 1;
+      userLikes.push(proposalId);
+    } else {
+      this.props.unlikeProposal(options);
+      proposalLikes[proposalId] -= 1;
+      const index = userLikes.indexOf(proposalId);
+      userLikes.splice(index, 1);
+    }
+
+    this.props.getUserProposalLikeStatus(options);
+    this.setState({
+      proposalLikes,
+      userLikes,
+    });
   };
 
   showContinueParticipationModal() {
@@ -253,6 +247,37 @@ class LandingPage extends React.PureComponent {
     }
   }
 
+  renderProposalCard(proposal) {
+    if (!proposal) {
+      return null;
+    }
+
+    const { AddressDetails, history, Translations } = this.props;
+    const { displayNames } = this.state;
+    const { proposalId, proposer } = proposal;
+
+    const isLiked = this.state.userLikes.includes(proposalId);
+    const likeCount = this.state.proposalLikes[proposalId];
+    const isProposer = proposer === AddressDetails.data.address;
+    const displayName = isProposer
+      ? renderDisplayName('Proposer-DisplayName')
+      : displayNames[proposalId];
+
+    return (
+      <ProposalCard
+        key={proposalId}
+        displayName={displayName}
+        history={history}
+        isLiked={isLiked}
+        likeCount={likeCount}
+        proposal={proposal}
+        likeProposal={this.likeProposal}
+        translations={Translations}
+        data-digix="Proposal-Card"
+      />
+    );
+  }
+
   renderLandingPage() {
     this.fixScrollbar(this.props.ShowWallet);
 
@@ -287,20 +312,7 @@ class LandingPage extends React.PureComponent {
           translations={Translations}
         />
         {!hasProposals && <p>{dashboard.noProjects}</p>}
-        {hasProposals &&
-          orderedProposals.map(proposal => (
-            <ProposalCard
-              history={history}
-              key={proposal.proposalId}
-              liked={this.checkIfLiked(proposal.proposalId)}
-              likes={this.getLikesCount(proposal.proposalId)}
-              proposal={proposal}
-              displayName={this.getProposer(proposal.proposalId, proposal.proposer)}
-              userDetails={AddressDetails}
-              translations={Translations}
-              data-digix="Proposal-Card"
-            />
-          ))}
+        {hasProposals && orderedProposals.map(p => this.renderProposalCard(p))}
         <Modal
           open={showTos}
           onClose={this.handleModalClose}
@@ -355,11 +367,14 @@ LandingPage.propTypes = {
   HasCountdown: bool.isRequired,
   ShowWallet: object,
   history: object.isRequired,
-  getAddressDetailsAction: func.isRequired,
+  getAddressDetails: func.isRequired,
   getDaoConfig: func.isRequired,
-  getDaoDetailsAction: func.isRequired,
-  getProposalLikesByUserAction: func.isRequired,
-  getProposalLikesStatsAction: func.isRequired,
+  getDaoDetails: func.isRequired,
+  getProposalLikesByUser: func.isRequired,
+  getProposalLikesStats: func.isRequired,
+  getUserProposalLikeStatus: func.isRequired,
+  likeProposal: func.isRequired,
+  unlikeProposal: func.isRequired,
   showCountdownPage: func.isRequired,
   getTranslations: func.isRequired,
   Translations: object.isRequired,
@@ -403,12 +418,15 @@ export default withApollo(
   connect(
     mapStateToProps,
     {
-      getAddressDetailsAction: getAddressDetails,
+      getAddressDetails,
       getDaoConfig,
-      getDaoDetailsAction: getDaoDetails,
-      getProposalLikesByUserAction: getProposalLikesByUser,
-      getProposalLikesStatsAction: getProposalLikesStats,
+      getDaoDetails,
+      getProposalLikesByUser,
+      getProposalLikesStats,
       getTranslations,
+      getUserProposalLikeStatus,
+      likeProposal,
+      unlikeProposal,
       showCountdownPage,
     }
   )(LandingPage)

@@ -7,7 +7,15 @@ import { Container, Item } from '@digix/gov-ui/components/proposal-card/style';
 
 export default class ProposalCard extends React.Component {
   render() {
-    const { history, proposal, userDetails, liked, likes, displayName, translations } = this.props;
+    const {
+      displayName,
+      history,
+      isLiked,
+      likeCount,
+      likeProposal,
+      proposal,
+      translations,
+    } = this.props;
     const { currentVotingRound, votingRounds } = proposal;
 
     const currentTime = Date.now() / 1000;
@@ -29,10 +37,10 @@ export default class ProposalCard extends React.Component {
             details={proposal}
             history={history}
             title={proposal.title}
-            userDetails={userDetails}
-            liked={liked}
-            likes={likes}
+            isLiked={isLiked}
+            likeCount={likeCount}
             translations={translations}
+            likeProposal={likeProposal}
           />
           <Stats details={proposal} votingStage={votingStage} translations={translations} />
         </Item>
@@ -41,19 +49,19 @@ export default class ProposalCard extends React.Component {
   }
 }
 
-const { object, bool, number, string } = PropTypes;
+const { bool, func, number, object, oneOfType, string } = PropTypes;
 ProposalCard.propTypes = {
+  displayName: oneOfType([object, string]),
   history: object.isRequired,
+  isLiked: bool,
+  likeCount: number,
+  likeProposal: func.isRequired,
   proposal: object.isRequired,
-  userDetails: object.isRequired,
   translations: object.isRequired,
-  displayName: string,
-  liked: bool,
-  likes: number,
 };
 
 ProposalCard.defaultProps = {
-  liked: false,
-  likes: undefined,
   displayName: '',
+  isLiked: false,
+  likeCount: 0,
 };

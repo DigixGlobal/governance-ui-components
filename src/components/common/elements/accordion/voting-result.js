@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 import TimeAgo from 'react-timeago';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
@@ -38,7 +39,11 @@ const countdownRenderer = ({ date, days, hours, minutes, seconds, completed }) =
 
 class VotingResult extends React.Component {
   getVotingStats = voting => {
-    const { daoInfo } = this.props;
+    const { DaoConfig, daoInfo, isSpecial } = this.props;
+    const {
+      CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR,
+      CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR,
+    } = DaoConfig;
 
     const votingDeadline = new Date(
       voting.votingDeadline ? voting.votingDeadline * 1000 : voting.revealDeadline * 1000
@@ -53,7 +58,12 @@ class VotingResult extends React.Component {
     const yesVotes = Number(voting.yes);
     const noVotes = Number(voting.no);
 
-    const minimumQuorum = formatPercentage(quorum / totalModeratorLockedDgds);
+    let minimumQuorum = formatPercentage(quorum / totalModeratorLockedDgds);
+    if (isSpecial) {
+      minimumQuorum = formatPercentage(
+        CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR / CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR
+      );
+    }
     const quorumProgress = formatPercentage(totalVoterStake / totalModeratorLockedDgds);
 
     const minimumApproval = formatPercentage(quota);
@@ -81,7 +91,6 @@ class VotingResult extends React.Component {
     } = this.props;
 
     const stats = this.getVotingStats(voting);
-
     if (!stats || stats.votingDeadline > Date.now()) return null;
 
     const yesVotes = truncateNumber(stats.yesVotes);
@@ -148,16 +157,26 @@ class VotingResult extends React.Component {
   }
 }
 
-const { object } = PropTypes;
+const { bool, object } = PropTypes;
 
 VotingResult.propTypes = {
-  voting: object,
+  DaoConfig: object.isRequired,
   daoInfo: object.isRequired,
+  isSpecial: bool,
   translations: object.isRequired,
+  voting: object,
 };
 
 VotingResult.defaultProps = {
+  isSpecial: false,
   voting: undefined,
 };
 
-export default VotingResult;
+const mapStateToProps = ({ infoServer }) => ({
+  DaoConfig: infoServer.DaoConfig.data,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(VotingResult);

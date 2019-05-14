@@ -33,6 +33,7 @@ import {
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import {
+  BackButton,
   CallToAction,
   Data,
   FundingInfo,
@@ -333,6 +334,11 @@ class Proposal extends React.Component {
     });
   };
 
+  handleBackToProject = () => {
+    const { history } = this.props;
+    history.push(`/`);
+  };
+
   renderPrlAlert = prl => {
     const {
       Translations: {
@@ -491,6 +497,14 @@ class Proposal extends React.Component {
 
     return (
       <ProposalsWrapper>
+        <BackButton
+          kind="text"
+          data-digix="BACK-TO-DASHBOARD"
+          secondary
+          onClick={this.handleBackToProject}
+        >
+          Back To Dashboard
+        </BackButton>
         <ProjectSummary>
           {this.renderPrlAlert(proposalDetails.data.prl)}
           {this.renderClaimApprovalAlert()}
@@ -543,7 +557,11 @@ class Proposal extends React.Component {
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
-        <VotingAccordion votingResults={this.getPastVotingResults()} translations={translations} />
+        <VotingAccordion
+          isSpecial
+          votingResults={this.getPastVotingResults()}
+          translations={translations}
+        />
         <SpecialProjectVotingResult
           proposal={proposalDetails.data}
           daoInfo={daoInfo}
@@ -601,6 +619,14 @@ class Proposal extends React.Component {
 
     return (
       <ProposalsWrapper>
+        <BackButton
+          kind="text"
+          secondary
+          data-digix="BACK-TO-DASHBOARD"
+          onClick={this.handleBackToProject}
+        >
+          Back To Dashboard
+        </BackButton>
         <ProjectSummary>
           <ProposalVersionNav
             currentVersion={currentVersion}

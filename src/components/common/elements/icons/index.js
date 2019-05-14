@@ -15,6 +15,7 @@ import User from './User';
 import File from './File';
 import Help from './Help';
 import History from './History';
+import Info from './Info';
 import Home from './Home';
 import ImToken from './ImToken';
 import JsonWallet from './JsonWallet';
@@ -30,6 +31,7 @@ import Padlock from './Padlock';
 import Product from './product-tour';
 import Profile from './Profile';
 import Plus from './Plus';
+import Repair from './Repair';
 import Reply from './Reply';
 import Restore from './Restore';
 import Ribbon from './Ribbon';
@@ -55,6 +57,7 @@ const icons = {
   help: Help,
   history: History,
   home: Home,
+  info: Info,
   imtoken: ImToken,
   json: JsonWallet,
   ledger: Ledger,
@@ -69,6 +72,7 @@ const icons = {
   product: Product,
   profile: Profile,
   plus: Plus,
+  repair: Repair,
   reply: Reply,
   restore: Restore,
   ribbon: Ribbon,

@@ -103,19 +103,20 @@ class KycOverlayAddress extends KycFormStep {
       },
 
       residenceProofDataUrl: {
-        customValidation: this.isImageFileValid,
+        customValidation: this.isFileValid,
         defaultErrorMessage: this.ERROR_MESSAGES.required,
         errorMessage: null,
         hasError: stateValues.residenceProofDataUrl ? false : undefined,
-        label: this.LABELS.imageFile,
+        label: this.LABELS.file,
         pattern: this.REGEX.nonEmptyString,
         type: this.FIELD_TYPES.fileInput,
+        alt: 'Residence Proof Preview',
+        dataDigix: 'KycForm-ResidenceProofPreview',
       },
     };
   }
 
   render() {
-    const { residenceProofDataUrl } = this.state.formValues;
     const t = this.translations;
 
     return (
@@ -140,17 +141,10 @@ class KycOverlayAddress extends KycFormStep {
             </FieldGroup>
           </FieldItem>
           <FieldItem>
-            <PreviewImage>
-              {residenceProofDataUrl && (
-                <img
-                  src={residenceProofDataUrl}
-                  alt="Residence Proof Preview"
-                  data-digix="KycForm-ResidenceProofPreview"
-                />
-              )}
-            </PreviewImage>
+            <PreviewImage>{this.renderFilePreview('residenceProofDataUrl')}</PreviewImage>
           </FieldItem>
         </FieldGroup>
+        {this.renderFilePreviewModal('residenceProofDataUrl')}
       </FormSection>
     );
   }

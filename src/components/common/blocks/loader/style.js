@@ -8,6 +8,7 @@ export const Preloaders = styled.div`
   align-items: center;
   position: absolute;
   height: ${props => props.height || '100vh'};
+  width: 100%;
 
   z-index: 1001;
   background: #fff;
@@ -47,12 +48,13 @@ export const LoaderWrapper = styled.div`
   margin-top: 15rem;
 `;
 
-export const SpinnerWrapper = styled.div`
+const LoaderContainer = css`
   display: flex;
   justify-content: center;
   align-items: center;
 
   margin: 0 auto;
+  padding: 3rem;
   width: 100%;
   height: 100vh;
   position: absolute;
@@ -60,7 +62,15 @@ export const SpinnerWrapper = styled.div`
 
   ${media.tablet`
     min-height: 300px;
-  `};
+`};
+`;
+
+export const Maintenance = styled.div`
+  ${LoaderContainer};
+`;
+
+export const SpinnerWrapper = styled.div`
+  ${LoaderContainer};
 `;
 
 export const CountdownWrapper = styled.div`
@@ -78,6 +88,7 @@ export const CountdownWrapper = styled.div`
 
 export const Content = styled.div`
   text-align: center;
+  text-transform: none;
 
   ${props =>
     props.countdown &&
@@ -93,6 +104,10 @@ export const Content = styled.div`
     span {
       color: ${props => props.theme.textColor.primary.light.toString()};
     }
+
+    ${media.mobile`
+      font-size: 3rem;
+    `}
   }
 
   h2 {

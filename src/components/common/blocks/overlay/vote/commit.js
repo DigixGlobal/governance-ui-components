@@ -6,7 +6,6 @@ import secureRandom from 'secure-random';
 import moment from 'moment';
 
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import {
   IntroContainer,
@@ -22,14 +21,13 @@ import {
   DownloadJson,
 } from '@digix/gov-ui/components/common/blocks/overlay/vote/style';
 
-import { buffer2Hex } from '@digix/gov-ui/utils/helpers';
-
 import Dao from '@digix/dao-contracts/build/contracts/DaoVoting.json';
 import getContract from '@digix/gov-ui/utils/contracts';
+import LogCommitVote from '@digix/gov-ui/analytics/commitVote';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { buffer2Hex } from '@digix/gov-ui/utils/helpers';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
@@ -37,7 +35,7 @@ import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/act
 
 const network = SpectrumConfig.defaultNetworks[0];
 
-class CommitVote extends React.Component {
+class CommitVoteOverlay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -90,6 +88,7 @@ class CommitVote extends React.Component {
 
   setVote = vote => {
     const random = secureRandom(32, { type: 'Uint8Array' });
+    LogCommitVote.selectVote(vote);
 
     this.setState({
       hasVoted: true,
@@ -99,22 +98,28 @@ class CommitVote extends React.Component {
   };
 
   handleChangeVote = () => {
+    LogCommitVote.proceedToChangeVote();
     this.setState({ changeVote: true });
   };
 
   handleDownload = () => {
+    LogCommitVote.downloadJson();
     this.setState({ hasDownloaded: true });
   };
 
   handleSubmit = () => {
     const { voteObject } = this.state;
     const {
+      gasLimitConfig,
       web3Redux,
       addresses,
       proposalId,
       proposal: { currentVotingRound = 0, isSpecial },
       translations: { snackbars },
     } = this.props;
+
+    LogCommitVote.submit(proposalId);
+
     const { abi, address } = getContract(Dao, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const hash = web3Utils.soliditySha3(
@@ -134,9 +139,10 @@ class CommitVote extends React.Component {
       type: 'txVisualization',
     };
 
+    const gasLimit = isSpecial ? gasLimitConfig.COMMIT_VOTE_SPECIAL : gasLimitConfig.COMMIT_VOTE;
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimit || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -151,6 +157,7 @@ class CommitVote extends React.Component {
       network,
       web3Params,
       ui,
+      logTxn: LogCommitVote.txn,
       showTxSigningModal: this.props.showTxSigningModal,
       translations: this.props.txnTranslations,
     };
@@ -263,9 +270,10 @@ class CommitVote extends React.Component {
 
 const { array, func, object, string, bool } = PropTypes;
 
-CommitVote.propTypes = {
+CommitVoteOverlay.propTypes = {
   addresses: array.isRequired,
   ChallengeProof: object.isRequired,
+  gasLimitConfig: object,
   history: object.isRequired,
   proposalId: string.isRequired,
   proposal: object.isRequired,
@@ -279,13 +287,15 @@ CommitVote.propTypes = {
   txnTranslations: object.isRequired,
 };
 
-CommitVote.defaultProps = {
+CommitVoteOverlay.defaultProps = {
+  gasLimitConfig: undefined,
   revoting: false,
 };
 
 const mapStateToProps = state => ({
-  ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  ChallengeProof: state.daoServer.ChallengeProof,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(
@@ -297,5 +307,5 @@ export default web3Connect(
       showRightPanelAction: showRightPanel,
       showTxSigningModal,
     }
-  )(CommitVote)
+  )(CommitVoteOverlay)
 );

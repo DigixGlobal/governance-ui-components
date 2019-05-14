@@ -40,8 +40,8 @@ class UserAddressStats extends React.Component {
       <UserStats>
         <Item>
           <Label>{dashboard.UserStats.quarterPoints}</Label>
-          <Data data-digix="Dashboard-Stats-QuarterPoints">
-            <span>{quarterPoint || 0}</span>
+          <Data>
+            <span data-digix="Dashboard-Stats-QuarterPoints">{quarterPoint || 0}</span>
             {isModerator && (
               <span className="equiv">
                 <span>( </span>

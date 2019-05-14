@@ -12,12 +12,7 @@ import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import {
-  ProposalStages,
-  DEFAULT_GAS,
-  DEFAULT_GAS_PRICE,
-  EMPTY_HASH,
-} from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE, EMPTY_HASH, ProposalStages } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
@@ -49,7 +44,14 @@ class FinalizeProjectButton extends React.PureComponent {
     });
 
   handleSubmit = () => {
-    const { web3Redux, challengeProof, addresses, proposalId, translations } = this.props;
+    const {
+      addresses,
+      challengeProof,
+      gasLimitConfig,
+      proposalId,
+      translations,
+      web3Redux,
+    } = this.props;
 
     const { abi, address } = getContract(Dao, network);
     const contract = web3Redux
@@ -64,7 +66,7 @@ class FinalizeProjectButton extends React.PureComponent {
     };
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.FINALIZE_PROPOSAL || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -159,7 +161,7 @@ FinalizeProjectButton.propTypes = {
   stage: string.isRequired,
   endorser: string,
   proposalId: string.isRequired,
-  finalVersionIpfsDoc: string.isRequired,
+  finalVersionIpfsDoc: string,
   isProposer: bool,
   web3Redux: object.isRequired,
   daoConfig: object.isRequired,
@@ -168,6 +170,7 @@ FinalizeProjectButton.propTypes = {
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   getDaoConfig: func.isRequired,
+  gasLimitConfig: object,
   showTxSigningModal: func.isRequired,
   addresses: array.isRequired,
   history: object.isRequired,
@@ -177,14 +180,17 @@ FinalizeProjectButton.propTypes = {
 };
 
 FinalizeProjectButton.defaultProps = {
-  isProposer: false,
   endorser: EMPTY_HASH,
+  finalVersionIpfsDoc: null,
+  gasLimitConfig: undefined,
+  isProposer: false,
 };
 
 const mapStateToProps = state => ({
-  challengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  challengeProof: state.daoServer.ChallengeProof,
   daoConfig: state.infoServer.DaoConfig,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(

@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
@@ -174,25 +173,27 @@ export const AuthorName = styled.a`
   font-weight: 600;
 `;
 
-export const ViewLink = styled(Link)`
+export const ViewLink = styled.button`
+  background: none;
+  border: none;
   color: ${props => props.theme.link.secondary.base.toString()};
-  font-family: 'Futura PT Book', sans-serif;
+  cursor: pointer;
   display: none;
+  font-family: 'Futura PT Book', sans-serif;
   text-decoration: underline;
   text-transform: uppercase;
+
   &:hover {
     text-decoration: none;
   }
-  &:link,
-  &:visited {
-    text-decoration: underline;
-  }
+
   ${props =>
     props.disabled &&
     css`
       color: ${props.theme.link.disabled.light.toString()};
       pointer-events: none;
     `}
+
   ${media.tablet`
     display: inline-block;
   `};

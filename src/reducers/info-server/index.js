@@ -42,6 +42,12 @@ const defaultState = {
     error: null,
     fetching: null,
   },
+  TxConfig: {
+    history: [],
+    data: {},
+    error: null,
+    fetching: null,
+  },
 };
 
 export default function(state = defaultState, action) {
@@ -163,7 +169,24 @@ export default function(state = defaultState, action) {
           ...action.payload,
         },
       };
-
+    case actions.GET_TX_CONFIG:
+      return {
+        ...state,
+        TxConfig: {
+          ...state.TxConfig,
+          ...action.payload,
+          history: !action.payload.data
+            ? state.TxConfig.history
+            : [
+                {
+                  ...action.payload.data,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.TxConfig.history)
+                .slice(0, 100),
+        },
+      };
     default:
       return state;
   }

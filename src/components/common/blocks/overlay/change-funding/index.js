@@ -24,7 +24,7 @@ import getContract from '@digix/gov-ui/utils/contracts';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
@@ -179,6 +179,7 @@ class ChangeFundingOverlay extends React.Component {
 
   handleSubmit = () => {
     const {
+      gasLimitConfig,
       web3Redux,
       addresses,
       proposalDetails,
@@ -202,7 +203,7 @@ class ChangeFundingOverlay extends React.Component {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.CHANGE_FUNDINGS || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -312,6 +313,7 @@ ChangeFundingOverlay.propTypes = {
   addresses: array.isRequired,
   daoConfig: object.isRequired,
   ChallengeProof: object.isRequired,
+  gasLimitConfig: object.isRequired,
   proposalDetails: object.isRequired,
   sendTransactionToDaoServer: func.isRequired,
   showHideAlertAction: func.isRequired,
@@ -324,9 +326,10 @@ ChangeFundingOverlay.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  addresses: getAddresses(state),
   ChallengeProof: state.daoServer.ChallengeProof,
   daoConfig: state.infoServer.DaoConfig,
-  addresses: getAddresses(state),
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
   txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 

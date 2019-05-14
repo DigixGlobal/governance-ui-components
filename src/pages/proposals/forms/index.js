@@ -8,7 +8,7 @@ import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { dijix } from '@digix/gov-ui/utils/dijix';
 import { encodeHash, hasInvalidLink, injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
@@ -340,6 +340,7 @@ class ProposalForms extends React.Component {
       addresses,
       ChallengeProof,
       contractMethod,
+      gasLimitConfig,
       successMessage,
       transactionTitle,
       web3Redux,
@@ -383,9 +384,14 @@ class ProposalForms extends React.Component {
       value = toBigNumber(preProposalCollateral * 1e18);
     }
 
+    const gasLimit =
+      contractMethod !== 'modifyProposal'
+        ? gasLimitConfig.EDIT_PROPOSAL
+        : gasLimitConfig.CREATE_PROPOSAL;
+
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimit || gasLimitConfig.DEFAULT,
       value,
       ui,
     };
@@ -609,6 +615,7 @@ ProposalForms.propTypes = {
   DaoConfig: object.isRequired,
   dataDigixPrefix: string.isRequired,
   getDaoConfig: func.isRequired,
+  gasLimitConfig: object.isRequired,
   history: object.isRequired,
   ProposalDetails: object,
   sendTransactionToDaoServer: func.isRequired,
@@ -630,6 +637,7 @@ const mapStateToProps = state => ({
   addresses: getAddresses(state),
   ChallengeProof: state.daoServer.ChallengeProof,
   DaoConfig: state.infoServer.DaoConfig,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(

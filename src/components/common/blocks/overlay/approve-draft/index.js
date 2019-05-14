@@ -17,7 +17,7 @@ import getContract from '@digix/gov-ui/utils/contracts';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 
-import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
@@ -83,6 +83,7 @@ class ApproveProposalOverlay extends React.Component {
 
   handleSubmit = () => {
     const {
+      gasLimitConfig,
       web3Redux,
       addresses,
       proposalId,
@@ -104,7 +105,7 @@ class ApproveProposalOverlay extends React.Component {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: DEFAULT_GAS,
+      gas: gasLimitConfig.MODERATOR_VOTE || gasLimitConfig.DEFAULT,
       ui,
     };
 
@@ -173,6 +174,7 @@ const { array, func, object, string } = PropTypes;
 ApproveProposalOverlay.propTypes = {
   addresses: array.isRequired,
   ChallengeProof: object.isRequired,
+  gasLimitConfig: object.isRequired,
   history: object.isRequired,
   proposalId: string.isRequired,
   sendTransactionToDaoServer: func.isRequired,
@@ -185,8 +187,9 @@ ApproveProposalOverlay.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  ChallengeProof: state.daoServer.ChallengeProof,
   addresses: getAddresses(state),
+  ChallengeProof: state.daoServer.ChallengeProof,
+  gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
 export default web3Connect(

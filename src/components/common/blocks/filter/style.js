@@ -77,6 +77,7 @@ export const Actionable = styled.div`
       width: 20px;
       height: 20px;
       background: ${props => props.theme.background.white.toString()};
+      box-shadow: 0 0 0 3px ${props => props.theme.background.default.lighter.toString()};
     }
 
     &:hover + label:before {
@@ -92,6 +93,7 @@ export const Actionable = styled.div`
     &:checked + label:before {
       transition: ${props => props.theme.transition};
       background: ${props => props.theme.background.default.light.toString()};
+      box-shadow: 0 0 0 3px ${props => props.theme.background.default.light.toString()};
     }
 
     &:checked + label:after {
@@ -102,7 +104,8 @@ export const Actionable = styled.div`
       background: ${props => props.theme.background.default.light.toString()};
       width: 2px;
       height: 2px;
-      box-shadow: 2px 0 0 white, 4px 0 0 ${props => props.theme.background.white.toString()},
+      box-shadow: 2px 0 0 ${props => props.theme.background.white.toString()},
+        4px 0 0 ${props => props.theme.background.white.toString()},
         4px -2px 0 ${props => props.theme.background.white.toString()},
         4px -4px 0 ${props => props.theme.background.white.toString()},
         4px -6px 0 ${props => props.theme.background.white.toString()},
@@ -128,7 +131,7 @@ export const CategoryItem = styled.a`
 
   background: ${props => props.theme.filter.default.background.toString()};
   border: 1px solid ${props => props.theme.filter.default.border.toString()};
-  border-radius: ${props => props.theme.borderRadius};
+
   color: ${props => props.theme.filter.default.textColor.toString()};
   padding: 1.25rem 2rem;
   font-family: 'Futura PT Book', sans-serif;

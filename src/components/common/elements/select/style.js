@@ -1,52 +1,43 @@
 import styled, { css } from 'styled-components';
 
 const StyledSelect = styled.select`
-  background-image: linear-gradient(
-      45deg,
-      transparent 50%,
-      ${props => props.theme.borderColor.light.toString()} 50%
-    ),
-    linear-gradient(
-      135deg,
-      ${props => props.theme.borderColor.light.toString()} 50%,
-      transparent 50%
-    ),
-    linear-gradient(
-      to right,
-      ${props => props.theme.borderColor.lightest.toString()},
-      ${props => props.theme.borderColor.lightest.toString()}
-    );
-  background-color: ${props => props.theme.backgroundDefault.default.toString()};
-  background-position: calc(100% - 20px) calc(1.5em + 2px), calc(100% - 15px) calc(1.5em + 2px),
-    calc(100% - 3em) 0.5em;
-  background-size: 5px 5px, 5px 5px, 1px 80%;
-  background-repeat: no-repeat;
-
-  color: ${props => props.color || props.theme.textDefault.default.toString()};
-  padding: ${props => (props.small ? '1rem' : '1.75rem')};
-  line-height: 1.6rem;
-  font-size: 1.4rem;
-  width: ${props => props.width || '100%'};
-  outline: none;
-  margin: 0.5rem 0;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
+  display: block;
+  font-size: 1.2rem;
+  color: ${props => props.theme.textColor.default.base.toString()};
   border: none;
-  border-radius: 0;
-  cursor: pointer;
-  text-transform: capitalize;
-  ${props =>
-    props.small &&
-    css`
-      background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
-        calc(100% - 2.5em) 0.5em;
-      max-width: 150px;
-    `};
+  padding: ${props => (props.small ? '1rem' : '0.75rem 2.5rem 0.75rem 0.75rem')};
+  text-transform: uppercase;
+  width: ${props => props.width || 'auto'};
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+
+  background-color: transparent;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'),
+    linear-gradient(to bottom, transparent 0%, transparent 100%);
+  background-repeat: no-repeat, repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
+
+  &::-ms-expand {
+    display: none;
+  }
+
+  &:hover {
+  }
+
+  &:focus {
+    border-color: none;
+    box-shadow: none;
+    outline: 0;
+  }
+
+  & option {
+    margin: 1rem;
+  }
+
+  ${props => props.small && css``};
 
   ${props =>
     props.error &&

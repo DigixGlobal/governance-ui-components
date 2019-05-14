@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
 import Milestones from '@digix/gov-ui/pages/proposals/milestones';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 
 import {
+  ContinueEdit,
   ProposalsWrapper,
   ProjectSummary,
+  Tags,
   Header,
   Title,
   FundingInfo,
@@ -41,19 +43,28 @@ class Preview extends React.Component {
 
     return (
       <ProposalsWrapper>
-        <Button primary onClick={onContinueEditing} data-digix="Preview-Continue">
-          {common.buttons.continueEditing}
-        </Button>
+        <ContinueEdit>
+          <Button primary onClick={onContinueEditing} data-digix="Preview-Continue">
+            {common.buttons.continueEditing}
+          </Button>
+        </ContinueEdit>
         <ProjectSummary>
-          <Header>
+          <Tags>
             <div>
-              <Button kind="tag" showIcon>
+              <Button kind="tag" actionable>
                 {common.projectStatus.idea}
               </Button>
-              <Title primary data-digix="Proposal-Title">
-                {form.title}
-              </Title>
+              <Button kind="tag" outline actionable data-digix="Proposal-Status">
+                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
+                <Icon kind="flag" />
+                Actionable Status On Green
+              </Button>
             </div>
+          </Tags>
+          <Header>
+            <Title primary data-digix="Proposal-Title">
+              {form.title}
+            </Title>
           </Header>
           <FundingInfo>
             <InfoItem column>

@@ -487,3 +487,8 @@ export const BackButton = styled(Button)`
     );
   }
 `;
+
+export const ContinueEdit = styled.div`
+  margin-left: -1rem;
+  margin-bottom: 5rem;
+`;

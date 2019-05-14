@@ -216,6 +216,8 @@ class ProposalCardFilter extends React.Component {
             <Pulldown>
               <span>SORT BY</span>
               <Select
+                simple
+                small
                 id="sortBy"
                 data-digix="SORT-BY"
                 items={filters}

@@ -253,9 +253,11 @@ class CommentThread extends React.Component {
         {hasComments && (
           <section>
             <CommentFilter>
+              <span>Sort By</span>
               <Select
-                data-digix="Comment-Filter"
+                simple
                 small
+                data-digix="Comment-Filter"
                 id="comment-filter"
                 items={filters}
                 value={sortBy}

@@ -26,7 +26,7 @@ export class CategoryGroup extends React.Component {
       .query({
         fetchPolicy: 'network-only',
         query: fetchProposalList,
-        variables: { stage },
+        variables: { stage, onlyActionable: false },
       })
       .then(result => {
         const proposals = result.data.fetchProposals;
@@ -39,6 +39,8 @@ export class CategoryGroup extends React.Component {
     this.setState({ stage });
     this.getProposalList(stage);
     this.props.getProposalsCount();
+    this.props.setStage(stage);
+    this.props.setShowActionableItems(false);
   }
 
   render() {
@@ -121,6 +123,8 @@ CategoryGroup.propTypes = {
   getProposalsCount: func.isRequired,
   ProposalsCount: object.isRequired,
   setProposalList: func.isRequired,
+  setShowActionableItems: func.isRequired,
+  setStage: func.isRequired,
   translations: object.isRequired,
 };
 

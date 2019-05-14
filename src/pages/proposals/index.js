@@ -21,12 +21,10 @@ import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
 import { Message, Notifications } from '@digix/gov-ui/components/common/common-styles';
+import { ProjectActionableStatus, ProposalStages, VotingStages } from '@digix/gov-ui/constants';
 import { truncateNumber, injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { withFetchProposal } from '@digix/gov-ui/api/graphql-queries/proposal';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
-
-import { VotingStages, ProposalStages } from '@digix/gov-ui/constants';
-
 import {
   clearDaoProposalDetails,
   getUserProposalLikeStatus,
@@ -514,11 +512,16 @@ class Proposal extends React.Component {
 
     const { currentVersion, likeCount, liked } = this.state;
     const proposal = proposalDetails.data;
+    const { actionableStatus, stage } = proposal;
+
     const proposalVersion = proposal ? proposal.proposalVersions[currentVersion] : undefined;
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
     const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
     const hasMoreDocs = proposalVersion ? proposalVersion.moreDocs.length > 0 : false;
+    const isActionable = actionableStatus !== ProjectActionableStatus.NONE;
+    const tActionable = Translations.data.project.actionableStatus;
+
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
@@ -535,7 +538,7 @@ class Proposal extends React.Component {
           secondary
           onClick={this.handleBackToProject}
         >
-          Back To Dashboard
+          {project.back}
         </BackButton>
         <ProjectSummary>
           {this.renderPrlAlert(proposalDetails.data.prl)}
@@ -543,18 +546,18 @@ class Proposal extends React.Component {
           {this.renderProposerDidNotPassAlert()}
           <Tags>
             <div>
-              <Button kind="tag" special>
-                {/* TODO: Add Translation */}
-                Special
+              <Button kind="tag" special data-digix="Proposal-IsSpecial">
+                {project.special}
               </Button>
-              <Button kind="tag" actionable>
-                {proposalDetails.data.stage}
+              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Stage">
+                {project.status[stage.toLowerCase()]}
               </Button>
-              <Button kind="tag" outline actionable data-digix="Proposal-Status">
-                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
-                <Icon kind="flag" />
-                Actionable Status On Green
-              </Button>
+              {isActionable && (
+                <Button kind="tag" outline actionable data-digix="Proposal-ActionableStatus">
+                  <Icon kind="flag" />
+                  {tActionable[actionableStatus]}
+                </Button>
+              )}
             </div>
             <div>
               <Like
@@ -635,7 +638,7 @@ class Proposal extends React.Component {
     } = this.props;
 
     const proposal = proposalDetails.data;
-    const { changedFundings } = proposal;
+    const { actionableStatus, changedFundings, stage } = proposal;
 
     const isProposer = addressDetails.data.address === proposal.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
@@ -646,6 +649,8 @@ class Proposal extends React.Component {
     const proposalLikes = userProposalLike.data;
     const displayName = proposalLikes ? proposalLikes.user.displayName : '';
     const hasMoreDocs = proposalVersion.moreDocs.length > 0;
+    const isActionable = actionableStatus !== ProjectActionableStatus.NONE;
+    const tActionable = Translations.data.project.actionableStatus;
 
     const {
       data: {
@@ -663,7 +668,7 @@ class Proposal extends React.Component {
           data-digix="BACK-TO-DASHBOARD"
           onClick={this.handleBackToProject}
         >
-          Back To Dashboard
+          {project.back}
         </BackButton>
         <ProjectSummary>
           <ProposalVersionNav
@@ -679,14 +684,15 @@ class Proposal extends React.Component {
           {this.renderProposerDidNotPassAlert()}
           <Tags>
             <div>
-              <Button kind="tag" actionable data-digix="Proposal-Status">
-                {proposal.stage}
+              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
+                {project.status[stage.toLowerCase()]}
               </Button>
-              <Button kind="tag" outline actionable data-digix="Proposal-Status">
-                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
-                <Icon kind="flag" />
-                Actionable Status On Green
-              </Button>
+              {isActionable && (
+                <Button kind="tag" outline actionable data-digix="Proposal-ActionableStatus">
+                  <Icon kind="flag" />
+                  {tActionable[actionableStatus]}
+                </Button>
+              )}
             </div>
             <div data-digix="Proposal-Like">
               <Like

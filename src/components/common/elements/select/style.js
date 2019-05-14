@@ -8,7 +8,7 @@ const StyledSelect = styled.select`
     ${props => (props.simple ? 'transparent' : props.theme.borderColor.lighter.toString())};
   font-size: ${props => props.theme.fontSize};
   padding: 1.75rem 2rem;
-  text-transform: uppercase;
+  text-transform: ${props => (props.simple ? 'uppercase' : 'capitalize')};
   width: 100%;
   -moz-appearance: none;
   -webkit-appearance: none;

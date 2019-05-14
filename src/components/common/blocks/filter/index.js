@@ -19,6 +19,8 @@ import {
   Heading,
   Filter,
   FilterWrapper,
+  SortBy,
+  Actionable,
   Pulldown,
 } from '@digix/gov-ui/components/common/blocks/filter/style';
 
@@ -152,15 +154,23 @@ class ProposalCardFilter extends React.Component {
         </Heading>
         <Filter>
           <Category {...this.props} setProposalList={setProposalList} translations={translations} />
-          <Pulldown>
-            <Select
-              small
-              id="sortBy"
-              data-digix="SORT-BY"
-              items={filters}
-              onChange={this.changeFilter}
-            />
-          </Pulldown>
+          <SortBy>
+            <Actionable>
+              <input type="checkbox" id="actionable-checkbox" data-digix="" />
+              <label htmlFor="actionable-checkbox" data-digix="">
+                Show Actionable Items Only
+              </label>
+            </Actionable>
+            <Pulldown>
+              <span>SORT BY</span>
+              <Select
+                id="sortBy"
+                data-digix="SORT-BY"
+                items={filters}
+                onChange={this.changeFilter}
+              />
+            </Pulldown>
+          </SortBy>
         </Filter>
       </FilterWrapper>
     );

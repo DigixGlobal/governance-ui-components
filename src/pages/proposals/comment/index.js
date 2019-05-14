@@ -110,7 +110,7 @@ class CommentThread extends React.Component {
 
   handleFilterChange = e => {
     const sortBy = e.target.value;
-    this.fetchThreads({ sortBy });
+    this.fetchThreads({ sortBy: sortBy.toUpperCase() });
     this.setState({ sortBy });
   };
 

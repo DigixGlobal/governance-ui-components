@@ -6,7 +6,14 @@ export const CommentFilter = styled.div`
   border-bottom: 1px solid ${props => props.theme.borderColor.lighter.toString()};
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   margin-bottom: 2rem;
+
+  span {
+    font-family: 'Futura PT Heavy', sans-serif;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+  }
 `;
 
 export const Author = styled.div`
@@ -160,6 +167,34 @@ export const ActionCommentButton = styled(Button)`
   margin-top: 1rem;
   padding: 0.5rem 1rem;
   width: 90px;
+
+  svg {
+    fill: ${props => props.theme.commentPost.icon.base.toString()};
+  }
+
+  &:first-child svg {
+    fill: none;
+    stroke: ${props => props.theme.commentPost.icon.base.toString()};
+    stroke-width: 1.5px;
+  }
+
+  span {
+    color: ${props => props.theme.commentPost.textColor.base.toString()};
+    font-family: 'Futura PT Medium', sans-serif;
+    letter-spacing: 0.05rem;
+  }
+
+  ${props =>
+    props.active &&
+    css`
+      svg {
+        fill: ${props.theme.icon.active.base.toString()};
+      }
+
+      span {
+        color: ${props.theme.icon.active.base.toString()};
+      }
+    `}
 
   ${props =>
     props.admin &&

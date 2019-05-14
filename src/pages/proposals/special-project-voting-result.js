@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Countdown from 'react-countdown-now';
 
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
@@ -29,13 +30,16 @@ import VotingResultHeader from '@digix/gov-ui/pages/proposals/voting-result-head
 
 class SpecialProjectVotingResult extends React.Component {
   getProposalVotingPhaseStats = proposal => {
-    const { daoInfo } = this.props;
+    const { DaoConfig, daoInfo } = this.props;
+    const {
+      CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR,
+      CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR,
+    } = DaoConfig;
     const currentRound = proposal.votingRounds[0];
 
     const commitDeadline = new Date(currentRound.commitDeadline * 1000);
     const approvalDeadline = new Date(currentRound.revealDeadline * 1000);
 
-    const quorum = parseBigNumber(currentRound.quorum, 0, false);
     const quota = parseBigNumber(currentRound.quota, 0, false);
     const totalModeratorLockedDgds = parseBigNumber(daoInfo.totalModeratorLockedDgds, 0, false);
     const totalVoterStake = parseBigNumber(currentRound.totalVoterStake, 0, false);
@@ -44,7 +48,9 @@ class SpecialProjectVotingResult extends React.Component {
     const yesVotes = currentRound.yes;
     const noVotes = currentRound.no;
 
-    const minimumQuorum = formatPercentage(quorum / totalModeratorLockedDgds);
+    const minimumQuorum = formatPercentage(
+      CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR / CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR
+    );
     const quorumProgress = formatPercentage(totalVoterStake / totalModeratorLockedDgds);
 
     const minimumApproval = formatPercentage(quota);
@@ -92,10 +98,10 @@ class SpecialProjectVotingResult extends React.Component {
 
   render() {
     const { proposal, translations } = this.props;
-
     const stats = this.getProposalVotingPhaseStats(proposal);
-
-    if (Date.now() > stats.approvalDeadline) return null;
+    if (Date.now() > stats.approvalDeadline) {
+      return null;
+    }
 
     const yesVotes = truncateNumber(stats.yesVotes);
     const noVotes = truncateNumber(stats.noVotes);
@@ -203,8 +209,9 @@ class SpecialProjectVotingResult extends React.Component {
 const { object } = PropTypes;
 
 SpecialProjectVotingResult.propTypes = {
-  proposal: object,
+  DaoConfig: object.isRequired,
   daoInfo: object.isRequired,
+  proposal: object,
   translations: object.isRequired,
 };
 
@@ -212,4 +219,11 @@ SpecialProjectVotingResult.defaultProps = {
   proposal: undefined,
 };
 
-export default SpecialProjectVotingResult;
+const mapStateToProps = ({ infoServer }) => ({
+  DaoConfig: infoServer.DaoConfig.data,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(SpecialProjectVotingResult);

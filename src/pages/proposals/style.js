@@ -255,7 +255,8 @@ export const Content = styled.div`
   font-size: 1.6rem;
 
   p,
-  span {
+  span,
+  em {
     background: none !important;
   }
 `;

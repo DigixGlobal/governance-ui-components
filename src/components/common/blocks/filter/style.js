@@ -7,15 +7,19 @@ export const FilterWrapper = styled.div`
 `;
 export const Heading = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-direction: flex-start;
+  align-items: center;
+
   h1 {
     margin-right: 2rem;
+    color: ${props => props.theme.textColor.primary.base.toString()};
+    font-family: 'Futura PT Book', sans-serif;
   }
 `;
 export const Filter = styled.div`
   display: flex;
-  margin-top: 1.5em;
+  flex-wrap: wrap;
+
+  margin-top: 5rem;
 
   ${media.tablet`
     flex-direction: column;
@@ -26,9 +30,11 @@ export const Filter = styled.div`
       flex: 1;
       display: flex;
       justify-content: flex-start;
+      margin-right: 10%;
+      margin-bottom: 1.4rem;
 
       ${media.tablet`
-        margin-bottom: 1.5rem;
+        margin-right: 0%;
       `}
     }
 
@@ -128,6 +134,7 @@ export const CategoryItem = styled.a`
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  flex: 1;
 
   background: ${props => props.theme.filter.default.background.toString()};
   border: 1px solid ${props => props.theme.filter.default.border.toString()};

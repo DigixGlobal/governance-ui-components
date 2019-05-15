@@ -14,9 +14,9 @@ export const TagBtn = styled(Button)`
   border: 1px solid ${props => props.theme.tag.default.border.base.toString()};
   font-family: 'Futura PT Medium', sans-serif;
   font-size: 1.2rem;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.05em;
   margin: 0 0.25rem;
-  padding: 0.4rem 0.85rem;
+  padding: 0.3rem 0.75rem;
   pointer-events: none;
 
   &:first-child {
@@ -26,6 +26,14 @@ export const TagBtn = styled(Button)`
   svg {
     fill: ${props => props.theme.tag.default.outline.icon.base.toString()};
   }
+
+  ${props =>
+    props.special &&
+    css`
+      background: ${props.theme.tag.special.background.toString()};
+      border: 1px solid ${props.theme.tag.special.border.toString()};
+      color: ${props.theme.tag.special.textColor.toString()};
+    `};
 
   ${props =>
     props.actionable &&

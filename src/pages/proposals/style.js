@@ -9,8 +9,8 @@ export const ProposalsWrapper = styled.div``;
 export const VersionHistory = styled.div`
   ${Container}
   background: ${props => props.theme.backgroundDefault.default.toString()};
-  border: 1px solid ${props => props.theme.borderColor.lightest.toString()};
-  box-shadow: ${props => props.theme.boxShadow};
+  border: 1px solid ${props => props.theme.borderColor.lighter.toString()};
+  box-shadow: none;
   color: ${props => props.theme.textColor.default.base.toString()};
 
   justify-content: space-between;

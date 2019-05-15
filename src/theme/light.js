@@ -111,7 +111,7 @@ const transparent = 'transparent';
 const baseFontSize = '1.6rem';
 const basePaddingX = 1;
 const basePaddingY = 1;
-const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
+const boxShadowStyle = '0 3px 6px 0 rgba(231, 233, 236, 0.8), 0 1px 4px 0 rgba(231, 233, 236, 0.6)';
 const transitionStyle = 'all .3s ease';
 const borderRadiusStyle = '0.3rem';
 
@@ -366,6 +366,11 @@ const LightTheme = {
         border: green,
         icon: green,
       },
+    },
+    special: {
+      textColor: white.base,
+      background: primaryColor.light,
+      border: primaryColor.light,
     },
   },
 };

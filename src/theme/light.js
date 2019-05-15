@@ -285,8 +285,9 @@ const LightTheme = {
   tooltip: {
     title: secondaryColor,
     content: tertiaryColor,
-    background: tertiaryColor,
+    background: white.base,
     border: tertiaryColor,
+    icon: tertiaryColor,
   },
 
   textHeading: primaryColor,

@@ -78,7 +78,7 @@ export const Button = styled.button`
   ${props =>
     props.showIcon &&
     css`
-      // justify-content: space-between;
+      justify-content: space-between;
     `};
 
   ${props =>

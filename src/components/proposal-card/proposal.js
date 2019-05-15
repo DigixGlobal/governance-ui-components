@@ -64,7 +64,7 @@ class Proposal extends React.PureComponent {
                   {special}
                 </Button>
               )}
-              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Stage">
+              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
                 {status[details.stage.toLowerCase()]}
               </Button>
               {isActionable && (

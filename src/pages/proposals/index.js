@@ -549,7 +549,7 @@ class Proposal extends React.Component {
               <Button kind="tag" special data-digix="Proposal-IsSpecial">
                 {project.special}
               </Button>
-              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Stage">
+              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
                 {project.status[stage.toLowerCase()]}
               </Button>
               {isActionable && (

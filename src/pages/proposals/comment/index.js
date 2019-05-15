@@ -189,7 +189,7 @@ class CommentThread extends React.Component {
     const apollo = this.props.client;
     const variables = this.getQueryVariables({
       endCursor,
-      sortBy,
+      sortBy: sortBy.toUpperCase(),
     });
 
     apollo

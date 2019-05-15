@@ -41,6 +41,7 @@ export const TextBtn = styled(Button)`
 
       &:hover {
         color: ${props.theme.buttonTextDefault.light.toString()};
+        background: transparent;
         border: none;
       }
     `};

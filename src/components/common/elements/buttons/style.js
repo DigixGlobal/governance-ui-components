@@ -67,14 +67,18 @@ export const Button = styled.button`
     props.large &&
     css`
       border-width: 2px;
-      padding: 1.25rem 3rem;
+      padding: 1.25rem 2rem;
       font-size: 1.6rem;
+
+      & > div {
+        margin-right: 1rem;
+      }
     `};
 
   ${props =>
     props.showIcon &&
     css`
-      justify-content: space-between;
+      // justify-content: space-between;
     `};
 
   ${props =>
@@ -92,66 +96,4 @@ export const Button = styled.button`
         color: ${props.theme.buttonDisabled.textColor.light.toString()};
       }
     `};
-`;
-
-// Refactoring WIP: For Deletion in Sprint 5; used by Capsule
-export const ButtonStyles = css`
-  background: ${props =>
-    props.primary
-      ? props.theme.buttonBgPrimary.default.toString()
-      : props.theme.buttonBgSecondary.default.toString()};
-
-  border: 2px solid
-    ${props =>
-      props.primary
-        ? props.theme.buttonBorderPrimary.default.toString()
-        : props.theme.buttonBorderSecondary.default.toString()};
-
-  color: #c00;
-  text-align: center;
-
-  &:hover {
-    background: ${props =>
-      props.primary
-        ? props.theme.buttonBgSecondary.default.toString()
-        : props.theme.buttonBgPrimary.default.toString()};
-
-    color: ${props =>
-      props.primary
-        ? props.theme.buttonTextPrimaryReverse.default.toString()
-        : props.theme.buttonTextSecondaryReverse.toString()};
-  }
-`;
-
-// used by Capusule and Labeled Icon
-export const GhostBtn = css`
-  background-color: transparent;
-
-  color: ${props =>
-    props.primary
-      ? props.theme.buttonTextPrimary.default.toString()
-      : props.theme.buttonTextSecondary.default.toString()};
-
-  &:hover {
-    background: ${props =>
-      props.primary
-        ? props.theme.buttonBgSecondary.default.toString()
-        : props.theme.buttonBgPrimary.default.toString()};
-
-    color: ${props =>
-      props.primary
-        ? props.theme.buttonTextPrimaryReverse.default.toString()
-        : props.theme.buttonTextSecondaryReverse.toString()};
-  }
-`;
-
-export const DisabledBtn = css`
-  background-color: transparent;
-  border-color: ${props => props.theme.buttonBorderDisabled.toString()};
-  color: ${props => props.theme.textDefault.lighter.toString()};
-  &:hover {
-    background-color: transparent;
-    border-color: ${props => props.theme.buttonBorderDisabled.toString()};
-    color: ${props => props.theme.textDefault.lighter.toString()};
-  }
 `;

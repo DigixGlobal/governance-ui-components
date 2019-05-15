@@ -196,14 +196,6 @@ const LightTheme = {
     },
   },
 
-  // TODO: To be deleted once regression testing is done
-  // buttonInverted: {
-  //   textColor: primaryColor,
-  //   background: white,
-  //   border: primaryColor,
-  //   iconColor: primaryColor,
-  // },
-
   buttonDisabled: {
     textColor: tertiaryColor,
     background: white.base,

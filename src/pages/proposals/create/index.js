@@ -7,6 +7,7 @@ class CreateProposal extends React.Component {
   render() {
     const {
       history,
+      addressDetails: { isDigix },
       Translations: {
         data,
         data: {
@@ -25,6 +26,7 @@ class CreateProposal extends React.Component {
         successMessage={snackbars.createProject.message}
         transactionTitle={snackbars.createProject.title}
         translations={data}
+        isDigix={isDigix}
       />
     );
   }
@@ -34,10 +36,12 @@ const { object } = PropTypes;
 CreateProposal.propTypes = {
   history: object.isRequired,
   Translations: object.isRequired,
+  addressDetails: object.isRequired,
 };
 
 const mapStateToProps = state => ({
   Translations: state.daoServer.Translations,
+  addressDetails: state.infoServer.AddressDetails.data,
 });
 
 export default connect(mapStateToProps)(CreateProposal);

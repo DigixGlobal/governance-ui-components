@@ -10,6 +10,9 @@ class EditProposal extends React.Component {
     const {
       history,
       proposalDetails,
+      proposalDetails: {
+        data: { isDigix },
+      },
       Translations: {
         data,
         data: {
@@ -28,6 +31,7 @@ class EditProposal extends React.Component {
         submitButtonLabel={buttons.updateNow}
         successMessage={snackbars.editProject.message}
         transactionTitle={snackbars.editProject.title}
+        isDigix={isDigix}
         translations={data}
       />
     );

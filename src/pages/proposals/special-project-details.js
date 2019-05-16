@@ -7,8 +7,8 @@ import { DetailsContainer, Content, SubTitle } from './style';
 
 const SpecialProjectDetails = props => (
   <DetailsContainer>
-    <Content>
-      <h2>Preamble</h2>
+    <Content special>
+      <SubTitle>Preamble</SubTitle>
       <p>
         We have decided to submit a project to change certain configurations of the DigixDAO
         platform to improve efficiency of the governance process and encourage more participation.
@@ -26,7 +26,7 @@ const SpecialProjectDetails = props => (
         with changing certain voting round durations to improve the efficiency of future project
         funding.
       </p>
-      <h2>Description</h2>
+      <SubTitle>Description</SubTitle>
       <p>The current configuration of the voting durations is as such:</p>
       <ul>
         <li>A Moderator voting round takes 10 days</li>
@@ -39,7 +39,6 @@ const SpecialProjectDetails = props => (
           end of the quarter, for the proposer to claim the result of the voting.
         </li>
       </ul>
-
       <p>
         With this current configuration, as has been raised by some in the community, the voting
         rounds are seemingly longer than needed, which lead to some concerns:
@@ -91,10 +90,14 @@ const SpecialProjectDetails = props => (
         channel.
       </p>
       <p>
-        <img height="" src={DigixDAOConfigChange02} alt="Participant Voting - Special Project" />
+        <img
+          src={DigixDAOConfigChange02}
+          alt="Participant Voting - Special Project"
+          width="800px"
+        />
       </p>
       <p>
-        <img height="" src={DigixDAOConfigChange01} alt="Participant Voting - Normal Project" />
+        <img src={DigixDAOConfigChange01} alt="Participant Voting - Normal Project" width="800px" />
       </p>
 
       {/* TODO: re-instate this later once special proposals need to be displayed */}

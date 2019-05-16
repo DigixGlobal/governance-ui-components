@@ -245,15 +245,29 @@ export const DetailsContainer = styled.div`
   margin-top: 2rem;
 `;
 
-export const Content = styled.div`
-  margin: 1.5rem 0 3rem 0;
-  font-size: 1.6rem;
-`;
-
 export const SubTitle = styled(H2)`
   font-family: 'Futura PT Book';
   font-size: 2rem;
   color: ${props => props.theme.textPrimary.light.toString()};
+`;
+
+export const Content = styled.div`
+  margin: 1.5rem 0 3rem 0;
+  font-size: 1.6rem;
+
+  ${props =>
+    props.special &&
+    css`
+      p {
+        margin: 2rem 0;
+      }
+
+      ul {
+        li {
+          list-style-position: inside;
+        }
+      }
+    `}
 `;
 
 export const AccordionHeading = styled(H2)`

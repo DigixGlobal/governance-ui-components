@@ -93,18 +93,10 @@ const SpecialProjectDetails = props => (
         channel.
       </p>
       <p>
-        <img
-          src={DigixDAOConfigChange02}
-          alt="Participant Voting - Special Project"
-          width="800px"
-        />
+        <img src={DigixDAOConfigChange02} alt="Participant Voting - Special Project" width="100%" />
       </p>
       <p>
-        <img
-          src={DigixDAOConfigChange01}
-          alt="Participant Voting - Normal Project"
-          width="1200px"
-        />
+        <img src={DigixDAOConfigChange01} alt="Participant Voting - Normal Project" width="100%" />
       </p>
       {/* TODO: re-instate this later once special proposals need to be displayed */}
       {/* <SubTitle>Configuration Details</SubTitle>

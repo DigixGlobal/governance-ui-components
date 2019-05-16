@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 
 import DigixDAOConfigChange02 from '@digix/gov-ui/assets/images/DigixDAOConfigchange-02-web.png';
 import DigixDAOConfigChange01 from '@digix/gov-ui/assets/images/DigixDAOConfigchange-01-web.png';
-import { DetailsContainer, Content, SubTitle } from './style';
+import { DetailsContainer, Content, Title, SubTitle } from './style';
 
 const SpecialProjectDetails = props => (
   <DetailsContainer>
     <Content special>
+      <Title>
+        Title: <span>Configuration change - Shortening Voting Durations for voting rounds</span>
+      </Title>
       <SubTitle>Preamble</SubTitle>
       <p>
         We have decided to submit a project to change certain configurations of the DigixDAO

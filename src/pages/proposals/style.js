@@ -101,6 +101,10 @@ export const Title = styled(H1)`
   font-family: 'Futura PT Book', sans-serif;
   text-transform: capitalize;
   margin-right: 2rem;
+
+  span {
+    font-family: 'Futura PT Medium', sans-serif;
+  }
 `;
 
 export const CallToAction = styled.div`

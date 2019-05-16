@@ -119,6 +119,10 @@ export const Title = styled(H1)`
   font-family: 'Futura PT Heavy', sans-serif;
   text-transform: capitalize;
   margin-right: 2rem;
+
+  span {
+    font-family: 'Futura PT Medium', sans-serif;
+  }
 `;
 
 export const CallToAction = styled.div`
@@ -259,6 +263,20 @@ export const Content = styled.div`
   em {
     background: none !important;
   }
+
+  ${props =>
+    props.special &&
+    css`
+      p {
+        margin: 2rem 0;
+      }
+
+      ul {
+        li {
+          list-style-position: inside;
+        }
+      }
+    `}
 `;
 
 export const SubTitle = styled(H2)`

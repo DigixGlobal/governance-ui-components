@@ -21,8 +21,8 @@
     "errors": {
       "settingsError": "Please use Chrome, Opera or Firefox with a U2F extension. After connecting your Ledger, open the Ethereum app and make sure **Contract Data** is enabled in **Settings**.",
       "outdatedVersion": {
-        "title": "Your Ethereum App is outdated!",
-        "instructions": "The Ethereum app on your Ledger is not updated. Please update its version to at least **v{{version}}**, and make sure your device firmware is the latest version. Refer [here]({{link}}) for more information."
+        "title": "您的以太坊App版本过低!",
+        "instructions": "请更新您Ledger的以太坊App到**v{{版本}}**, 并确保您的固件是最新版本. 点击[这里]({{link}})查看更多."
       }
     }
   },

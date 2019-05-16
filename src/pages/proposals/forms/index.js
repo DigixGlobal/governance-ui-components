@@ -217,13 +217,15 @@ class ProposalForms extends React.Component {
     let { milestones } = form;
     const config = this.props.DaoConfig.data;
 
+    const { isDigix } = this.props;
+
     if (!milestones) {
       milestones = [];
     }
 
     const totalFunds = this.computeTotalFunds();
     const milestoneFundsLimit = config.CONFIG_MAX_FUNDING_FOR_NON_DIGIX;
-    const exceedsLimit = totalFunds > Number(milestoneFundsLimit);
+    const exceedsLimit = isDigix ? false : totalFunds > Number(milestoneFundsLimit);
 
     const hasReward = finalReward && Number(finalReward) > 0;
     const hasMilestones = milestones.length > 0;
@@ -532,6 +534,7 @@ class ProposalForms extends React.Component {
 
   _renderStep() {
     const { currentStep, exceedsLimit, form, formErrors } = this.state;
+    const { isDigix } = this.props;
     const Step = this.FORM_STEPS[currentStep];
 
     return (
@@ -542,6 +545,7 @@ class ProposalForms extends React.Component {
         form={form}
         onChange={this.onFormInput}
         translations={this.props.translations}
+        isDigix={isDigix}
       />
     );
   }
@@ -607,7 +611,7 @@ class ProposalForms extends React.Component {
   }
 }
 
-const { array, func, object, string } = PropTypes;
+const { array, func, object, string, bool } = PropTypes;
 ProposalForms.propTypes = {
   addresses: array,
   ChallengeProof: object.isRequired,
@@ -626,11 +630,13 @@ ProposalForms.propTypes = {
   transactionTitle: string.isRequired,
   web3Redux: object.isRequired,
   translations: object.isRequired,
+  isDigix: bool,
 };
 
 ProposalForms.defaultProps = {
   addresses: undefined,
   ProposalDetails: undefined,
+  isDigix: false,
 };
 
 const mapStateToProps = state => ({

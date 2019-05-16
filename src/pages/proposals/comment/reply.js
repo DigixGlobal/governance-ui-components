@@ -102,6 +102,12 @@ class CommentReply extends React.Component {
       return null;
     }
 
+    const {
+      translations: {
+        data: { project },
+      },
+    } = this.props;
+
     const { replies } = comment;
     const hasChildren = replies && replies.hasNextPage && !replies.edges.length;
 
@@ -137,7 +143,7 @@ class CommentReply extends React.Component {
                 xsmall
                 onClick={() => this.loadMore(replies.endCursor)}
               >
-                Load more comments...
+                {project.loadMoreComments || 'Load more comments...'}
               </Button>
             </CommentReplyPost>
           </CommentReplyPost>
@@ -158,6 +164,7 @@ CommentReply.propTypes = {
   renderThreadReplies: func.isRequired,
   setCommentingPrivileges: func.isRequired,
   setError: func.isRequired,
+  translations: object.isRequired,
 };
 
 CommentReply.defaultProps = {

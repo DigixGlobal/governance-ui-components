@@ -39,6 +39,7 @@
   "like": "赞",
   "seePreviousVersion": "查看之前版本",
   "seeNextVersion": "查看下一版本",
+  "versionNumber": "版本 {{versionNumber}}",
   "editFundingError": "总奖励金额和里程碑的募资不可超过{{limit}} ETH",
   "fundsRequiredForMilestone": "里程碑所需资金",
   "noShortDescription": "未创建概述.",
@@ -48,10 +49,13 @@
   "reviewVote1results": "查看投票1结果",
   "reviewVote2results": "查看投票2结果",
   "loadMoreComments": "更多留言...",
+  "configurationDetails": "Configuration Details",
   "transactions": "交易",
-  "special": "Special",
-  "banned": "You have been banned by the administrators from commenting.",
-  "pleaseContact": "Please contact Digix if you want to request a restoration of your account rights.",
+  "special": "特别",
+  "banned": "您被管理员禁言.",
+  "pleaseContact": "如您想恢复留言资格，请与管理员联系.",
+  "back": "Back to Dashboard",
+  "showActionable": "Show Actionable Items Only",
   "spinner": {
     "pleaseWait": "请稍后.",
     "hold": "您的项目正在上载到 IPFS."
@@ -110,5 +114,14 @@
     "ongoing": "进行中",
     "review": "审核",
     "archived": "存档"
+  },
+  "actionableStatus": {
+    "NONE": "",
+    "AWAITING_ENDORSEMENT": "Awaiting Endorsement",
+    "MODERATOR_VOTING": "Moderator Voting",
+    "COMMIT_PHASE": "Commit Phase",
+    "REVEAL_PHASE": "Reveal Phase",
+    "CLAIM_FUNDING": "Claim Funding",
+    "CLAIM_VOTING": "Claim Voting"
   }
 }

@@ -67,10 +67,6 @@ export function setAddressDetails(details) {
   };
 }
 
-export function getProposals(stage = 'all') {
-  return fetchData(`${INFO_SERVER}/proposals/${stage}`, actions.GET_PROPOSALS);
-}
-
 export function getProposalsCount() {
   return fetchData(`${INFO_SERVER}/proposals/count`, actions.GET_PROPOSALS_COUNT);
 }

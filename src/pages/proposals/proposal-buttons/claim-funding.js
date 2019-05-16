@@ -100,7 +100,7 @@ class ClaimFundingButton extends React.PureComponent {
   claimFunding() {
     const errors = [];
     const { proposal } = this.props;
-    if (proposal.prl) {
+    if (proposal.prl !== 'ACTIVE') {
       errors.push(ProposalErrors.blockedByPRL);
     }
 

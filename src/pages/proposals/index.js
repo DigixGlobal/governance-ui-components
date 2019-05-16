@@ -17,13 +17,14 @@ import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-pr
 import AdditionalDocs from '@digix/gov-ui/pages/proposals/additional-docs';
 import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import { initializePayload } from '@digix/gov-ui/api';
 import { Message, Notifications } from '@digix/gov-ui/components/common/common-styles';
+import { ProjectActionableStatus, ProposalStages, VotingStages } from '@digix/gov-ui/constants';
 import { truncateNumber, injectTranslation } from '@digix/gov-ui/utils/helpers';
 import { withFetchProposal } from '@digix/gov-ui/api/graphql-queries/proposal';
 import { withFetchUser } from '@digix/gov-ui/api/graphql-queries/users';
-
 import {
   clearDaoProposalDetails,
   getUserProposalLikeStatus,
@@ -33,6 +34,7 @@ import {
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
 import {
+  Tags,
   BackButton,
   CallToAction,
   Data,
@@ -50,9 +52,9 @@ const getVotingStruct = proposal => {
   let deadline = Date.now();
   const mileStone = proposal.currentMilestone > 0 ? proposal.currentMilestone : 0;
   let votingStruct;
-  switch (proposal.stage.toLowerCase()) {
-    case 'draft':
-      if (proposal.votingStage === 'draftVoting' && proposal.draftVoting !== null) {
+  switch (proposal.stage) {
+    case ProposalStages.draft:
+      if (proposal.votingStage === VotingStages.draft && proposal.draftVoting !== null) {
         votingStruct = {
           yes: proposal.draftVoting.yes,
           no: proposal.draftVoting.no,
@@ -64,7 +66,7 @@ const getVotingStruct = proposal => {
       }
       break;
 
-    case 'proposal':
+    case ProposalStages.proposal:
       if (Date.now() < proposal.votingRounds[0].commitDeadline) {
         deadline = proposal.votingRounds[0].commitDeadline || undefined;
       }
@@ -80,7 +82,7 @@ const getVotingStruct = proposal => {
       };
 
       break;
-    case 'review':
+    case ProposalStages.review:
       if (Date.now() < proposal.votingRounds[mileStone].commitDeadline) {
         deadline = proposal.votingRounds[mileStone].commitDeadline || undefined;
       }
@@ -114,9 +116,12 @@ const getVotingStruct = proposal => {
 class Proposal extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      versions: undefined,
       currentVersion: 0,
+      likeCount: 0,
+      liked: false,
+      versions: undefined,
     };
 
     const path = this.props.location.pathname.split('/');
@@ -168,9 +173,23 @@ class Proposal extends React.Component {
     !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
 
   getProposalLikes = () => {
-    const { getUserProposalLikeStatusAction } = this.props;
-    getUserProposalLikeStatusAction({
+    const { challengeProof, getUserProposalLikeStatusAction } = this.props;
+    const payload = challengeProof.data ? initializePayload(challengeProof) : { authToken: null };
+    const options = {
+      ...payload,
       proposalId: this.PROPOSAL_ID,
+      token: payload.authToken,
+    };
+
+    getUserProposalLikeStatusAction(options).then(response => {
+      const proposal = response.payload.data;
+      const likeCount = proposal ? proposal.likes : 0;
+      const isLiked = proposal ? proposal.liked : false;
+
+      this.setState({
+        likeCount,
+        liked: isLiked,
+      });
     });
   };
 
@@ -315,6 +334,13 @@ class Proposal extends React.Component {
   handleLikeClick = e => {
     e.preventDefault();
     const { likeProposalAction, challengeProof } = this.props;
+    const { likeCount } = this.state;
+
+    this.setState({
+      liked: true,
+      likeCount: likeCount + 1 || 0,
+    });
+
     likeProposalAction({
       proposalId: this.PROPOSAL_ID,
       client: challengeProof.data.client,
@@ -326,6 +352,13 @@ class Proposal extends React.Component {
   handleUnlikeClick = e => {
     e.preventDefault();
     const { unlikeProposalAction, challengeProof } = this.props;
+    const { likeCount } = this.state;
+
+    this.setState({
+      liked: false,
+      likeCount: likeCount - 1 || 0,
+    });
+
     unlikeProposalAction({
       proposalId: this.PROPOSAL_ID,
       client: challengeProof.data.client,
@@ -347,7 +380,7 @@ class Proposal extends React.Component {
         },
       },
     } = this.props;
-    return prl ? (
+    return prl !== 'ACTIVE' ? (
       <Notifications warning withIcon>
         <WarningIcon kind="warning" />
         <Message note>{alerts.prl}</Message>
@@ -375,6 +408,7 @@ class Proposal extends React.Component {
     if (data.claimed) return null;
 
     const votingStruct = getVotingStruct(data);
+
     if (!votingStruct) return null;
 
     const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;
@@ -476,17 +510,18 @@ class Proposal extends React.Component {
       Translations,
     } = this.props;
 
-    const { currentVersion } = this.state;
+    const { currentVersion, likeCount, liked } = this.state;
     const proposal = proposalDetails.data;
+    const { actionableStatus, stage } = proposal;
 
     const proposalVersion = proposal ? proposal.proposalVersions[currentVersion] : undefined;
-
     const isProposer = addressDetails.data.address === proposalDetails.data.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
-    const liked = userProposalLike.data ? userProposalLike.data.liked : false;
-    const likes = userProposalLike.data ? userProposalLike.data.likes : 0;
     const displayName = userProposalLike.data ? userProposalLike.data.user.displayName : '';
     const hasMoreDocs = proposalVersion ? proposalVersion.moreDocs.length > 0 : false;
+    const isActionable = actionableStatus !== ProjectActionableStatus.NONE;
+    const tActionable = Translations.data.project.actionableStatus;
+
     const {
       data: {
         dashboard: { ProposalCard: cardTranslation },
@@ -503,23 +538,40 @@ class Proposal extends React.Component {
           secondary
           onClick={this.handleBackToProject}
         >
-          Back To Dashboard
+          {project.back}
         </BackButton>
         <ProjectSummary>
           {this.renderPrlAlert(proposalDetails.data.prl)}
           {this.renderClaimApprovalAlert()}
           {this.renderProposerDidNotPassAlert()}
-          <Header>
+          <Tags>
             <div>
-              <Button kind="tag" filled>
-                {/* TODO: Add Translation */}
-                Special
+              <Button kind="tag" special data-digix="Proposal-IsSpecial">
+                {project.special}
               </Button>
-              <Button kind="tag" showIcon>
-                {proposalDetails.data.stage}
+              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
+                {project.status[stage.toLowerCase()]}
               </Button>
-              <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
+              {isActionable && (
+                <Button kind="tag" outline actionable data-digix="Proposal-ActionableStatus">
+                  <Icon kind="flag" />
+                  {tActionable[actionableStatus]}
+                </Button>
+              )}
             </div>
+            <div>
+              <Like
+                hasVoted={liked}
+                likes={likeCount}
+                translations={cardTranslation}
+                disabled={!userData}
+                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
+              />
+            </div>
+          </Tags>
+
+          <Header>
+            <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
             {!isForumAdmin && (
               <CallToAction>
                 <ParticipantButtons
@@ -546,18 +598,13 @@ class Proposal extends React.Component {
                 <span>{displayName}</span>
               </Data>
             </InfoItem>
-            <InfoItem>
-              <Like
-                hasVoted={liked}
-                likes={likes}
-                translations={cardTranslation}
-                disabled={!userData}
-                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
-              />
-            </InfoItem>
           </FundingInfo>
         </ProjectSummary>
-        <VotingAccordion votingResults={this.getPastVotingResults()} translations={translations} />
+        <VotingAccordion
+          isSpecial
+          votingResults={this.getPastVotingResults()}
+          translations={translations}
+        />
         <SpecialProjectVotingResult
           proposal={proposalDetails.data}
           daoInfo={daoInfo}
@@ -578,7 +625,7 @@ class Proposal extends React.Component {
   };
 
   renderNormalProposal = () => {
-    const { currentVersion, versions } = this.state;
+    const { currentVersion, likeCount, liked, versions } = this.state;
     const {
       addressDetails,
       daoInfo,
@@ -591,7 +638,7 @@ class Proposal extends React.Component {
     } = this.props;
 
     const proposal = proposalDetails.data;
-    const { changedFundings } = proposal;
+    const { actionableStatus, changedFundings, stage } = proposal;
 
     const isProposer = addressDetails.data.address === proposal.proposer;
     const isForumAdmin = userData && userData.isForumAdmin;
@@ -600,10 +647,10 @@ class Proposal extends React.Component {
     const { dijixObject } = proposalVersion;
 
     const proposalLikes = userProposalLike.data;
-    const liked = proposalLikes ? proposalLikes.liked : false;
-    const likes = proposalLikes ? proposalLikes.likes : 0;
     const displayName = proposalLikes ? proposalLikes.user.displayName : '';
     const hasMoreDocs = proposalVersion.moreDocs.length > 0;
+    const isActionable = actionableStatus !== ProjectActionableStatus.NONE;
+    const tActionable = Translations.data.project.actionableStatus;
 
     const {
       data: {
@@ -621,7 +668,7 @@ class Proposal extends React.Component {
           data-digix="BACK-TO-DASHBOARD"
           onClick={this.handleBackToProject}
         >
-          Back To Dashboard
+          {project.back}
         </BackButton>
         <ProjectSummary>
           <ProposalVersionNav
@@ -635,15 +682,31 @@ class Proposal extends React.Component {
           {this.renderPrlAlert(proposal.prl)}
           {this.renderClaimApprovalAlert()}
           {this.renderProposerDidNotPassAlert()}
-
+          <Tags>
+            <div>
+              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
+                {project.status[stage.toLowerCase()]}
+              </Button>
+              {isActionable && (
+                <Button kind="tag" outline actionable data-digix="Proposal-ActionableStatus">
+                  <Icon kind="flag" />
+                  {tActionable[actionableStatus]}
+                </Button>
+              )}
+            </div>
+            <div data-digix="Proposal-Like">
+              <Like
+                hasVoted={liked}
+                likes={likeCount}
+                translations={cardTranslation}
+                disabled={!userData}
+                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
+              />
+            </div>
+          </Tags>
           <Header>
             <div>
-              <Button kind="tag" showIcon data-digix="Proposal-Status">
-                {proposal.stage}
-              </Button>
-              <Title primary data-digix="Proposal-Title">
-                {dijixObject.title}
-              </Title>
+              <Title data-digix="Proposal-Title">{dijixObject.title}</Title>
             </div>
             {!isForumAdmin && (
               <CallToAction>
@@ -685,15 +748,6 @@ class Proposal extends React.Component {
               proposalDetails={proposal}
               translations={translations}
             />
-            <InfoItem data-digix="Proposal-Like">
-              <Like
-                hasVoted={liked}
-                likes={likes}
-                translations={cardTranslation}
-                disabled={!userData}
-                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
-              />
-            </InfoItem>
           </FundingInfo>
         </ProjectSummary>
 

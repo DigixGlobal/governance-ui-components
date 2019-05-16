@@ -135,6 +135,8 @@ class ConnectedWallet extends React.Component {
   handleApprove = () => {
     const { web3Redux, challengeProof, addresses, gasLimitConfig } = this.props;
 
+    const { transaction: t } = this.props.walletTranslations.approveInteraction;
+
     const { abi, address } = getDGDBalanceContract(network);
     const contract = web3Redux
       .web3(network)
@@ -142,8 +144,8 @@ class ConnectedWallet extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Approve Interaction',
-      header: 'DGD Approval',
+      caption: t.title || 'Approve Interaction',
+      header: t.action || 'DGD Approval',
       type: 'txVisualization',
     };
 
@@ -159,7 +161,7 @@ class ConnectedWallet extends React.Component {
       if (challengeProof.data) {
         this.props.sendTransactionToDaoServer({
           txHash,
-          title: 'DGD Approval',
+          title: t.action || 'DGD Approval',
           token: challengeProof.data['access-token'],
           client: challengeProof.data.client,
           uid: challengeProof.data.uid,
@@ -170,7 +172,8 @@ class ConnectedWallet extends React.Component {
     const onTransactionSuccess = txHash => {
       this.setState({ showLockDgd: true }, () => {
         this.props.showHideAlert({
-          message: 'Your DGD Approval Transaction is pending confirmation. See More',
+          message:
+            t.txnSuccess || 'Your DGD Approval Transaction is pending confirmation. See More',
           txHash,
         });
       });
@@ -220,7 +223,7 @@ class ConnectedWallet extends React.Component {
           <Icon kind="close" onClick={() => this.props.onClose()} />
         </CloseButtonWithHeader>
         <p>{t.instructions}</p>
-        <Button primary fluid large onClick={this.handleApprove}>
+        <Button data-digix="Approve-Interaction" primary fluid large onClick={this.handleApprove}>
           {t.button}
         </Button>
       </Fragment>
@@ -254,16 +257,16 @@ class ConnectedWallet extends React.Component {
         <WalletDetails>
           <Address>
             {t.address}
-            <span>{defaultAddress.address}</span>
+            <span data-digix="User-Address">{defaultAddress.address}</span>
           </Address>
           <Token>
             <Icon kind="ethereum" width="48px" height="48px" />
             <Amount>
               <div>
-                <span>{ethBalance || 0}</span>
+                <span data-digix="Wallet-ETH-Balance">{ethBalance || 0}</span>
                 ETH
               </div>
-              <div>
+              <div data-digix="Wallet-EthUsd-Balance">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                   ethInUsd
                 )}{' '}
@@ -275,9 +278,9 @@ class ConnectedWallet extends React.Component {
             <Icon kind="dgd" width="48px" height="48px" />
             <Amount>
               <div>
-                <span>{dgdBalance || 0}</span> DGD
+                <span data-digix="Wallet-DGD-Balance">{dgdBalance || 0}</span> DGD
               </div>
-              <div>
+              <div data-digix="Wallet-DgdUsd-Balance">
                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
                   dgdInUsd
                 )}{' '}
@@ -294,6 +297,7 @@ class ConnectedWallet extends React.Component {
             large
             disabled={!enableLockDgd.show}
             onClick={this.showLockDgdOverlay}
+            data-digx="Connect-Wallet-Locked-DGD"
           >
             {tLockDgd.button}
           </Button>
@@ -344,6 +348,7 @@ ConnectedWallet.propTypes = {
   enableLockDgd: object,
   translations: object.isRequired,
   approvalTranslations: object.isRequired,
+  walletTranslations: object.isRequired,
   txnTranslations: object.isRequired,
   gasLimitConfig: object,
   getTxConfig: func.isRequired,
@@ -376,6 +381,7 @@ const mapStateToProps = state => ({
   enableLockDgd: state.govUI.CanLockDgd,
   translations: state.daoServer.Translations.data.loadWallet.connectedWallet,
   approvalTranslations: state.daoServer.Translations.data.approveInteraction,
+  walletTranslations: state.daoServer.Translations.data.wallet,
   txnTranslations: state.daoServer.Translations.data.signTransaction,
   gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });

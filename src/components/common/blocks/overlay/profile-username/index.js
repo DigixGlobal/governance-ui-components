@@ -35,9 +35,12 @@ class UsernameOverlay extends React.Component {
 
   onUsernameUpdate = response => {
     const { errors } = response.changeUsername;
+    const { Errors: tErrors } = this.props.translations;
     if (errors.length) {
-      this.setState({ error: errors[0].message });
-      return;
+      if (errors[0].message === tErrors.usernameTaken)
+        return this.setState({ error: tErrors.usernameTaken });
+
+      return this.setState({ error: errors[0].message });
     }
 
     this.props.showRightPanel({ show: false });

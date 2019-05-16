@@ -14,6 +14,7 @@ class KycOverlayBasicInformation extends KycFormStep {
     super(props);
 
     const t = props.translations.KycForm.Fields.BasicInformation;
+    const { Errors: basicInfoErrors } = props.translations.KycForm;
     this.translations = t;
 
     const { formValues } = props;
@@ -100,7 +101,7 @@ class KycOverlayBasicInformation extends KycFormStep {
 
       phoneNumber: {
         customValidation: null,
-        defaultErrorMessage: 'Invalid phone number.',
+        defaultErrorMessage: basicInfoErrors.phoneNumber,
         errorMessage: null,
         hasError: stateValues.phoneNumber ? false : undefined,
         label: t.phoneNumber,

@@ -106,25 +106,6 @@ export default function(state = defaultState, action) {
                 .slice(0, 100),
         },
       };
-
-    case actions.GET_PROPOSALS:
-      return {
-        ...state,
-        Proposals: {
-          ...state.Proposals,
-          ...action.payload,
-          history: !action.payload.data
-            ? state.Proposals.history
-            : [
-                {
-                  ...action.payload.data,
-                  updated: action.payload.updated,
-                },
-              ]
-                .concat(state.Proposals.history)
-                .slice(0, 100),
-        },
-      };
     case actions.GET_PROPOSALS_COUNT:
       return {
         ...state,

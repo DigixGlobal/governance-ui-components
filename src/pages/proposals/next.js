@@ -6,11 +6,11 @@ import { NextWrapper } from './style';
 
 export default class NextVersion extends React.Component {
   render() {
-    const { disabled } = this.props;
+    const { disabled, translations } = this.props;
     return (
       <NextWrapper disabled={disabled}>
         <Button kind="text" small {...this.props}>
-          See Next Version
+          {translations.seeNextVersion || 'See Next Version'}
           <Icon kind="arrow" style={{ marginRight: 0, marginLeft: '1rem' }} />
         </Button>
       </NextWrapper>
@@ -18,10 +18,11 @@ export default class NextVersion extends React.Component {
   }
 }
 
-const { bool } = PropTypes;
+const { bool, object } = PropTypes;
 
 NextVersion.propTypes = {
   disabled: bool,
+  translations: object.isRequired,
 };
 
 NextVersion.defaultProps = {

@@ -16,7 +16,7 @@ import { withSearchTransactions } from '@digix/gov-ui/api/graphql-queries/transa
 
 import getContract from '@digix/gov-ui/utils/contracts';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
-import { DEFAULT_GAS_PRICE, MAX_PEOPLE_PER_CLAIM } from '@digix/gov-ui/constants';
+import { DEFAULT_GAS_PRICE, MAX_PEOPLE_PER_CLAIM, ProposalStages } from '@digix/gov-ui/constants';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import MultiStepClaim from '@digix/gov-ui/components/common/blocks/overlay/claim-approval';
 import { showHideAlert, showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
@@ -45,8 +45,11 @@ class ClaimResultsButton extends React.PureComponent {
     Promise.all([this.props.getDaoConfig()]);
     const isMultiStep = Number(daoDetails.nParticipants) > MAX_PEOPLE_PER_CLAIM;
     const nParticipants =
-      proposal.stage === 'review' ? 2 * daoDetails.nParticipants : daoDetails.nParticipants;
+      proposal.stage === ProposalStages.review
+        ? 2 * daoDetails.nParticipants
+        : daoDetails.nParticipants;
     const totalTransactions = Math.ceil(nParticipants / MAX_PEOPLE_PER_CLAIM);
+
     this.setState({ isMultiStep, totalTransactions });
   };
 

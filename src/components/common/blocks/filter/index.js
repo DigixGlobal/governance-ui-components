@@ -206,7 +206,7 @@ class ProposalCardFilter extends React.Component {
                   defaultChecked={false}
                   checked={showActionableItems}
                   data-digix="TOGGLE-ACTIONABLE-ITEMS"
-                  onClick={e => this.toggleActionableItems(e)}
+                  onChange={e => this.toggleActionableItems(e)}
                 />
                 <label htmlFor="actionable-checkbox" data-digix="">
                   {project.showActionable}

@@ -4,7 +4,7 @@ import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
 import Milestones from '@digix/gov-ui/pages/proposals/milestones';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
-
+import { ProjectActionableStatus } from '@digix/gov-ui/constants';
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 
 import {
@@ -35,11 +35,12 @@ class Preview extends React.Component {
       acc.push(Number(currentValue.fund));
       return acc;
     };
-    const milestoneFundings = form.milestones ? form.milestones.reduce(milestoneFunds, []) : [];
 
+    const milestoneFundings = form.milestones ? form.milestones.reduce(milestoneFunds, []) : [];
     const totalFunding = form.milestones ? getTotalFunds(form.milestones) : 0;
     const funding = truncateNumber(totalFunding);
     const reward = truncateNumber(form.finalReward);
+    const actionableStatus = ProjectActionableStatus.AWAITING_ENDORSEMENT;
 
     return (
       <ProposalsWrapper>
@@ -55,9 +56,8 @@ class Preview extends React.Component {
                 {common.projectStatus.idea}
               </Button>
               <Button kind="tag" outline actionable data-digix="Proposal-Status">
-                {/* TODO: Should only show the Icon component when 'actionable' prop ^ is present. */}
                 <Icon kind="flag" />
-                Actionable Status On Green
+                {project.actionableStatus[actionableStatus]}
               </Button>
             </div>
           </Tags>

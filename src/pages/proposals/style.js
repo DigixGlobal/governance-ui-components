@@ -285,25 +285,6 @@ export const SubTitle = styled(H2)`
   color: ${props => props.theme.textColor.default.base.toString()};
 `;
 
-export const Content = styled.div`
-  margin: 1.5rem 0 3rem 0;
-  font-size: 1.6rem;
-
-  ${props =>
-    props.special &&
-    css`
-      p {
-        margin: 2rem 0;
-      }
-
-      ul {
-        li {
-          list-style-position: inside;
-        }
-      }
-    `}
-`;
-
 export const AccordionHeading = styled(H2)`
   font-family: 'Futura PT Medium', sans-serif;
   font-size: 1.6rem;

@@ -3,10 +3,10 @@ import { Container } from './style';
 
 const ReplyIcon = props => (
   <Container {...props}>
-    <svg width="13px" height="14px" viewBox="0 0 13 14">
+    <svg viewBox="0 0 13 14">
       <path
-        d="M10,0.8H3c-1.2,0-2.2,1-2.2,2.2v4.9c0,1.2,1,2.2,2.2,2.2h1.5v2.7l5.2-2.7H10c1.2,0,2.2-1,2.2-2.2V3
-	C12.2,1.8,11.2,0.8,10,0.8z"
+        d="M12.2,3v4.9c0,1.2-1,2.2-2.2,2.2H9.7l-5.2,2.7v-2.7H3c-1.2,0-2.2-1-2.2-2.2V3c0-1.2,1-2.2,2.2-2.2h7
+	C11.2,0.8,12.2,1.8,12.2,3z"
       />
     </svg>
   </Container>

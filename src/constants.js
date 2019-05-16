@@ -49,18 +49,18 @@ export const MAX_PEOPLE_PER_CLAIM =
   2;
 
 export const ProposalStages = {
-  idea: 'idea',
-  draft: 'draft',
-  proposal: 'proposal',
-  ongoing: 'ongoing',
-  review: 'review',
-  archived: 'archived',
+  idea: 'IDEA',
+  draft: 'DRAFT',
+  proposal: 'PROPOSAL',
+  ongoing: 'ONGOING',
+  review: 'REVIEW',
+  archived: 'ARCHIVED',
 };
 
 export const VotingStages = {
-  draft: 'draftVoting',
-  commit: 'commit',
-  reveal: 'reveal',
+  draft: 'DRAFT',
+  commit: 'COMMIT',
+  reveal: 'REVEAL',
 };
 
 export const UserStatus = {
@@ -118,4 +118,14 @@ export const KycErrors = {
 export const CONFIRM_PARTICIPATION_CACHE = {
   key: 'DAO_PARTICIPATION',
   value: 't7L6CuJ1pDqY0Cu5',
+};
+
+export const ProjectActionableStatus = {
+  NONE: 'NONE',
+  AWAITING_ENDORSEMENT: 'AWAITING_ENDORSEMENT',
+  MODERATOR_VOTING: 'MODERATOR_VOTING',
+  COMMIT_PHASE: 'COMMIT_PHASE',
+  REVEAL_PHASE: 'REVEAL_PHASE',
+  CLAIM_FUNDING: 'CLAIM_FUNDING',
+  CLAIM_VOTING: 'CLAIM_VOTING',
 };

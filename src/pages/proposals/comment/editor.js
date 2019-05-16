@@ -87,10 +87,13 @@ class CommentTextEditor extends React.Component {
             {!canComment && !cannotView && (
               <div data-digix="Banned-Message">
                 <BannedCommentEditor>
-                  <p>You have been banned by the administrators from commenting.</p>
                   <p>
-                    Please contact Digix if you want to request a restoration of your account
-                    rights.
+                    {project.banned ||
+                      'You have been banned by the administrators from commenting.'}
+                  </p>
+                  <p>
+                    {project.pleaseContact ||
+                      'Please contact Digix if you want to request a restoration of your account rights.'}
                   </p>
                 </BannedCommentEditor>
                 <CommentTextArea disabled={!canComment} data-digix="Thread-Field" />

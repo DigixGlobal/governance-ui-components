@@ -5,7 +5,7 @@
   },
   "errors": {
     "fieldIsRequired": "必填项.",
-    "invalidLink": "Invalid link. Hyperlinks may only begin with **http://** or **https://** or **mailto:**"
+    "invalidLink": "无效链接. 网页链接格式应如下 **http://** 或者 **https://** 或者 **mailto:**"
   },
   "projectStatus": {
     "all": "全部",
@@ -88,7 +88,7 @@
     "editFunding": "编辑资金",
     "close": "关闭",
     "redeemBadge": "换取徽章",
-    "addUpdates": "Add Updates",
+    "addUpdates": "添加更新",
     "add": "添加",
     "addMore": "添加"
   },

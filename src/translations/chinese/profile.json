@@ -5,7 +5,8 @@
       "username": "用户",
       "status": "状态",
       "email": "邮件",
-      "address": "地址"
+      "address": "地址",
+      "notVerified": "Not Verified"
     },
     "SetUsername": {
       "overlayButton": "设置用户名",
@@ -16,7 +17,7 @@
       "Errors": {
         "invalid": "用户名长度需在 2-20 个字符之间, 只可以包括字母，数字，下划线, 并且不可以以'user'开头.",
         "connectionError": "暂时无法更新用户名. 再试一次.",
-        "usernameTaken": "Username has already been taken"
+        "usernameTaken": "此用户名已存在."
       },
       "submit": "配置用户名",
       "txnSuccess": "用户名已更新"
@@ -29,7 +30,7 @@
         "invalid": "请输入有效的邮件地址.",
         "unchanged": "请输入与当前邮件不同的邮件地址.",
         "connectionError": "暂时无法更新邮件. 再试一次.",
-        "emailTaken": "Email has already been taken."
+        "emailTaken": "此邮件已存在."
       },
       "submit": "更新邮件",
       "txnSuccess": "邮件已更新"
@@ -45,12 +46,12 @@
     "Status": "KYC状态",
     "setEmail": "设置邮件以上传KYC",
     "Statuses": {
-      "notVerified": "Not Verified",
       "pending": "审核中",
       "rejected": "拒绝",
       "expired": "过期",
       "approving": "批准中",
-      "approved": "已批准"
+      "approved": "已批准",
+      "notVerified": "未提交"
     },
     "Submit": {
       "error": "无法提交KYC.",
@@ -89,11 +90,11 @@
         },
         "file": {
           "missing": "上传文件",
-          "isImage": "Image must be in JPEG or PNG format",
-          "isValid": "照片格式必须为 JPEG 或 PNG 或 PDF",
+          "isValid": "图片必须为JPEG, PNG, 或者PDF格式",
+          "isImage": "照片格式必须为 JPEG 或 PNG ",
           "size": "文件必须小于 10 MB."
         },
-        "phone": "Invalid phone number",
+        "phoneNumber": "此电话号码无效.",
         "required": "必填项."
       },
       "Labels": {

@@ -73,10 +73,16 @@ class SpecialProjectVotingResult extends React.Component {
   countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     const { translations } = this.props;
     if (completed) {
-      return <span>{translations.project.votingResult.votingIsOver}</span>;
+      return (
+        <span data-digix="Vote-Countdown-Ended">
+          {translations.project.votingResult.votingIsOver}
+        </span>
+      );
     }
 
-    return <span>{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>;
+    return (
+      <span data-digix="Vote-Countdown-Timer">{`${days}D:${hours}H:${minutes}M:${seconds}S`}</span>
+    );
   };
 
   // eslint-disable-next-line
@@ -109,7 +115,7 @@ class SpecialProjectVotingResult extends React.Component {
 
     return (
       <div>
-        <AccordionItem voting>
+        <AccordionItem voting data-digix="Timer-Progress">
           <Header>
             <VotingResultHeader votingRound={0} translations={translations} />
           </Header>
@@ -118,11 +124,15 @@ class SpecialProjectVotingResult extends React.Component {
               <VotingResultContainer>
                 <ProgressCol>
                   <Label>
-                    <QuorumLabel flexWidth={stats.minimumQuorum}>Quorum</QuorumLabel>
+                    <QuorumLabel flexWidth={stats.minimumQuorum}>{votingResult.quorum}</QuorumLabel>
                     <MinimumLabel flexWidth={100 - stats.minimumQuorum}>
-                      <span>Minimum Quorum Needed: {stats.minimumQuorum}%</span>
+                      <span>
+                        {votingResult.miniumQuorumRequired}: {stats.minimumQuorum}%
+                      </span>
                       <QuorumInfoCol>
-                        <span data-digix="Vote-User-Count">{stats.votes} Votes</span>
+                        <span data-digix="Vote-User-Count">
+                          {stats.votes} {votingResult.votes}
+                        </span>
 
                         <Countdown
                           date={stats.approvalDeadline}
@@ -142,10 +152,12 @@ class SpecialProjectVotingResult extends React.Component {
                 <ProgressCol>
                   <Label>
                     <ApprovalLabel flexWidth={stats.minimumApproval}>
-                      Current Approval Rate
+                      {votingResult.currentApprovalRate}
                     </ApprovalLabel>
                     <MinimumLabel flexWidth={100 - stats.minimumApproval}>
-                      <span>Minimum Approval Needed: {stats.minimumApproval}%</span>
+                      <span>
+                        {votingResult.minimumApproval}: {stats.minimumApproval}%
+                      </span>
                       <QuorumInfoCol>
                         <span data-digix="Vote-Yes-Count">
                           {buttons.yes}:&nbsp;{yesVotes} DGD

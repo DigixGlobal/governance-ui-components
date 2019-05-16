@@ -27,12 +27,16 @@ const network = SpectrumConfig.defaultNetworks[0];
 
 class BadgeRedemptionApproval extends React.Component {
   onTransactionAttempt = txHash => {
-    const { ChallengeProof, showRightPanelAction } = this.props;
+    const {
+      ChallengeProof,
+      showRightPanelAction,
+      snackbarTranslations: { badgeRedemption },
+    } = this.props;
 
     if (ChallengeProof.data) {
       this.props.sendTransactionToDaoServer({
         client: ChallengeProof.data.client,
-        title: 'Badge Redemption Approval',
+        title: badgeRedemption.title || 'Badge Redemption Approval',
         token: ChallengeProof.data['access-token'],
         txHash,
         uid: ChallengeProof.data.uid,
@@ -43,9 +47,15 @@ class BadgeRedemptionApproval extends React.Component {
   };
 
   onTransactionSuccess = txHash => {
-    const { history, showHideAlertAction } = this.props;
+    const {
+      history,
+      showHideAlertAction,
+      snackbarTranslations: { badgeRedemption },
+    } = this.props;
     showHideAlertAction({
-      message: 'Your Approve Redeem Badge Transaction is pending confirmation. See More',
+      message:
+        badgeRedemption.message ||
+        'Your Approve Redeem Badge Transaction is pending confirmation. See More',
       txHash,
     });
 
@@ -58,7 +68,12 @@ class BadgeRedemptionApproval extends React.Component {
   };
 
   handleSubmit = () => {
-    const { addresses, gasLimitConfig, web3Redux } = this.props;
+    const {
+      web3Redux,
+      addresses,
+      gasLimitConfig,
+      snackbarTranslations: { badgeRedemption },
+    } = this.props;
     const { address: daoStakeLockingAddress } = getContract(DaoStakeLocking, network);
     const { abi, address } = getDGDBadgeBalanceContract(network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
@@ -69,8 +84,8 @@ class BadgeRedemptionApproval extends React.Component {
       .at(address);
 
     const ui = {
-      caption: 'Approve Badge Redemption',
-      header: 'Badge',
+      caption: badgeRedemption.title || 'Approve Badge Redemption',
+      header: badgeRedemption.txUiHeader || 'Badge',
       type: 'txVisualization',
     };
 
@@ -133,6 +148,7 @@ BadgeRedemptionApproval.propTypes = {
   showTxSigningModal: func.isRequired,
   translations: object.isRequired,
   txnTranslations: object.isRequired,
+  snackbarTranslations: object.isRequired,
   web3Redux: object.isRequired,
 };
 
@@ -142,6 +158,7 @@ const mapStateToProps = state => ({
   gasLimitConfig: state.infoServer.TxConfig.data.gas,
   translations: state.daoServer.Translations.data.approveInteraction,
   txnTranslations: state.daoServer.Translations.data.signTransaction,
+  snackbarTranslations: state.daoServer.Translations.data.snackbar.snackbars,
 });
 
 export default web3Connect(

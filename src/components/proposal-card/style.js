@@ -14,9 +14,11 @@ export const Item = styled.div`
   border: 1px solid ${props => props.theme.cardBorderColor.lighter.toString()};
   min-height: 32rem;
   & > div {
-    flex: 0 1 auto;
     &:first-child {
       flex: 1;
+    }
+    &:last-child {
+      flex: 0 1 200px;
     }
   }
   ${media.mobile`
@@ -66,7 +68,7 @@ export const Info = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem 5rem;
+  padding: 2rem;
   text-transform: uppercase;
   font-family: 'Futura PT Book', sans-serif;
 

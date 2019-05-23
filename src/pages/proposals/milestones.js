@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Accordion from '@digix/gov-ui/components/common/elements/accordion/index';
+import { HR } from '@digix/gov-ui/components/common/common-styles';
 import { Content, SubTitle } from '@digix/gov-ui/pages/proposals/style';
 
 export default class Milestones extends React.Component {
@@ -60,6 +61,7 @@ export default class Milestones extends React.Component {
       <Content>
         <SubTitle>{project.milestones}</SubTitle>
         <Accordion allowMultipleOpen>{milestoneElements}</Accordion>
+        <HR />
       </Content>
     );
   }

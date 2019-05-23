@@ -81,7 +81,7 @@ const white = {
   fade: whiteHex.fade(0.9),
 };
 
-const redHex = Color('#D0021B');
+const redHex = Color('#D34A4A');
 const red = {
   default: redHex,
   darker: redHex.darken(0.05),
@@ -92,7 +92,7 @@ const red = {
   fade: redHex.fade(0.95),
 };
 
-const greenHex = Color('#417505');
+const greenHex = Color('#76BA7D');
 const green = {
   default: greenHex,
   darker: greenHex.darken(2),
@@ -100,7 +100,7 @@ const green = {
   light: greenHex.lighten(0.5),
   lighter: greenHex.lighten(1),
   lightest: greenHex.lighten(1.9),
-  fade: greenHex.fade(0.8),
+  fade: greenHex.fade(0.95),
 };
 
 const primaryColor = darkBlue;
@@ -111,8 +111,8 @@ const transparent = 'transparent';
 const baseFontSize = '1.6rem';
 const basePaddingX = 1;
 const basePaddingY = 1;
-const boxShadowStyle = '0 4px 8px 0 rgba(231, 233, 236, 0.8), 0 2px 4px 0 rgba(231, 233, 236, 0.6)';
-const transitionStyle = 'all .25s ease';
+const boxShadowStyle = '0 3px 6px 0 rgba(231, 233, 236, 0.8), 0 1px 4px 0 rgba(231, 233, 236, 0.6)';
+const transitionStyle = 'all .3s ease';
 const borderRadiusStyle = '0.3rem';
 
 const LightTheme = {
@@ -196,14 +196,6 @@ const LightTheme = {
     },
   },
 
-  // TODO: To be deleted once regression testing is done
-  // buttonInverted: {
-  //   textColor: primaryColor,
-  //   background: white,
-  //   border: primaryColor,
-  //   iconColor: primaryColor,
-  // },
-
   buttonDisabled: {
     textColor: tertiaryColor,
     background: white.base,
@@ -285,8 +277,9 @@ const LightTheme = {
   tooltip: {
     title: secondaryColor,
     content: tertiaryColor,
-    background: tertiaryColor,
+    background: white.base,
     border: tertiaryColor,
+    icon: tertiaryColor,
   },
 
   textHeading: primaryColor,
@@ -297,6 +290,20 @@ const LightTheme = {
 
   filterActive: secondaryColor.default,
   filterCount: tertiaryColor,
+
+  filter: {
+    default: {
+      border: tertiaryColor.lighter,
+      background: white.base,
+      backgroundHover: tertiaryColor.lighter,
+      textColor: tertiaryColor.base,
+    },
+    active: {
+      border: tertiaryColor.light,
+      background: tertiaryColor.light,
+      textColor: white.base,
+    },
+  },
 
   timelineBgColor: tertiaryColor,
   timelineCurrentBgColor: primaryColor,
@@ -328,6 +335,36 @@ const LightTheme = {
     pending: tertiaryColor,
     success: green,
     failed: red,
+  },
+
+  tag: {
+    default: {
+      textColor: white,
+      background: red,
+      border: red,
+      outline: {
+        textColor: red,
+        background: red,
+        border: red,
+        icon: red,
+      },
+    },
+    actionable: {
+      textColor: white,
+      background: green,
+      border: green,
+      outline: {
+        textColor: green,
+        background: green,
+        border: green,
+        icon: green,
+      },
+    },
+    special: {
+      textColor: white.base,
+      background: primaryColor.light,
+      border: primaryColor.light,
+    },
   },
 };
 

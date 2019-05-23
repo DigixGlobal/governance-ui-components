@@ -25,20 +25,10 @@ class CommentThread extends React.Component {
         displayName: '',
         isForumAdmin: false,
       },
+      filters: [],
       sortBy: 'LATEST',
       threads: null,
     };
-
-    this.FILTERS = [
-      {
-        text: 'Latest',
-        value: 'LATEST',
-      },
-      {
-        text: 'Oldest',
-        value: 'OLDEST',
-      },
-    ];
 
     // for invalidating comments cache in apollo
     this.CACHED_COMMENT_KEYS = /^(Comment|\$Comment|commentThreads|\$ROOT_QUERY\.commentThreads)/;
@@ -63,6 +53,21 @@ class CommentThread extends React.Component {
       this.setError(CommentsApi.ERROR_MESSAGES.fetch);
     });
   }
+
+  componentWillReceiveProps = nextProps => {
+    const { Translations } = nextProps;
+    if (Translations.data) {
+      const {
+        data: {
+          dashboard: { sortOptions },
+        },
+      } = Translations;
+      const options = Object.keys(sortOptions);
+
+      const filters = options.map(o => ({ text: sortOptions[o], value: o }));
+      this.setState({ filters });
+    }
+  };
 
   // NOTE: there's no method for partial cache invalidation in apollo so we have to do it manually here.
   // Ref: https://github.com/apollographql/apollo-feature-requests/issues/4
@@ -105,7 +110,7 @@ class CommentThread extends React.Component {
 
   handleFilterChange = e => {
     const sortBy = e.target.value;
-    this.fetchThreads({ sortBy });
+    this.fetchThreads({ sortBy: sortBy.toUpperCase() });
     this.setState({ sortBy });
   };
 
@@ -184,7 +189,7 @@ class CommentThread extends React.Component {
     const apollo = this.props.client;
     const variables = this.getQueryVariables({
       endCursor,
-      sortBy,
+      sortBy: sortBy.toUpperCase(),
     });
 
     apollo
@@ -222,7 +227,7 @@ class CommentThread extends React.Component {
   }
 
   render() {
-    const { currentUser, sortBy, threads } = this.state;
+    const { currentUser, sortBy, threads, filters } = this.state;
     const {
       Translations: {
         data: {
@@ -237,7 +242,7 @@ class CommentThread extends React.Component {
 
     return (
       <div>
-        {!cannotView && <Title>{project.discussions}</Title>}
+        <Title>{project.discussions}</Title>
         <CommentTextEditor
           addComment={this.addThread}
           canComment={canComment}
@@ -248,11 +253,13 @@ class CommentThread extends React.Component {
         {hasComments && (
           <section>
             <CommentFilter>
+              <span>Sort By</span>
               <Select
-                data-digix="Comment-Filter"
+                simple
                 small
+                data-digix="Comment-Filter"
                 id="comment-filter"
-                items={this.FILTERS}
+                items={filters}
                 value={sortBy}
                 onChange={this.handleFilterChange}
               />

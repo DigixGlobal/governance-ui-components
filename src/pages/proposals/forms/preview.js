@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
 import Milestones from '@digix/gov-ui/pages/proposals/milestones';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
-
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
+import { ProjectActionableStatus } from '@digix/gov-ui/constants';
 import { renderDisplayName } from '@digix/gov-ui/api/graphql-queries/users';
 
 import {
+  ContinueEdit,
   ProposalsWrapper,
   ProjectSummary,
+  Tags,
   Header,
   Title,
   FundingInfo,
@@ -33,27 +35,36 @@ class Preview extends React.Component {
       acc.push(Number(currentValue.fund));
       return acc;
     };
-    const milestoneFundings = form.milestones ? form.milestones.reduce(milestoneFunds, []) : [];
 
+    const milestoneFundings = form.milestones ? form.milestones.reduce(milestoneFunds, []) : [];
     const totalFunding = form.milestones ? getTotalFunds(form.milestones) : 0;
     const funding = truncateNumber(totalFunding);
     const reward = truncateNumber(form.finalReward);
+    const actionableStatus = ProjectActionableStatus.AWAITING_ENDORSEMENT;
 
     return (
       <ProposalsWrapper>
-        <Button primary onClick={onContinueEditing} data-digix="Preview-Continue">
-          {common.buttons.continueEditing}
-        </Button>
+        <ContinueEdit>
+          <Button primary onClick={onContinueEditing} data-digix="Preview-Continue">
+            {common.buttons.continueEditing}
+          </Button>
+        </ContinueEdit>
         <ProjectSummary>
-          <Header>
+          <Tags>
             <div>
-              <Button kind="tag" showIcon>
+              <Button kind="tag" actionable>
                 {common.projectStatus.idea}
               </Button>
-              <Title primary data-digix="Proposal-Title">
-                {form.title}
-              </Title>
+              <Button kind="tag" outline actionable data-digix="Proposal-Status">
+                <Icon kind="flag" />
+                {project.actionableStatus[actionableStatus]}
+              </Button>
             </div>
+          </Tags>
+          <Header>
+            <Title primary data-digix="Proposal-Title">
+              {form.title}
+            </Title>
           </Header>
           <FundingInfo>
             <InfoItem column>

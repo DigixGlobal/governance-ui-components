@@ -117,7 +117,7 @@ class Paging extends React.PureComponent {
             data-digix="ROWS-PER-PAGE"
             onChange={e => this.onRowsChange(e)}
             value={rowsPerPage}
-            width="200px"
+            style={{ width: '200px', margin: '0.5rem 0' }}
             items={rows}
           />
           <Next disabled={isLastPage} onClick={this.handleNextPage} data-digix="NEXT-PAGE">

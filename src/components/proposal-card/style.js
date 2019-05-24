@@ -126,58 +126,25 @@ export const ShortDescr = styled.div`
     margin-bottom: 2em;
     color: ${props => props.theme.textColor.default.base.toString()};
     font-size: 1.6rem;
-    overflow: hidden;
     position: relative;
-    line-height: 1.2em;
-    max-height: calc(1.2em * 4);
-    text-align: justify;
-    margin-right: 0;
-    padding-right: 1em;
 
-    &:before {
-      content: '...';
-      position: absolute;
-      right: 0;
-      bottom: 0;
-    }
-
-    &:after {
-      content: '';
-      position: absolute;
-      right: 0;
-      width: 1em;
-      height: 1em;
-      margin-top: 0.2em;
-      background: #fff;
-    }
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 `;
 
 export const Title = styled(H2)`
   color: ${props => props.theme.textColor.default.base.toString()};
-  overflow: hidden;
   position: relative;
-  line-height: 1.2em;
-  max-height: calc(1.2em * 2);
-  margin: 0;
-  margin-bottom: 0.5rem;
-  padding-right: 1em;
 
-  &:before {
-    content: '...';
-    position: absolute;
-    right: 2rem;
-    bottom: 0;
-  }
-  &:after {
-    content: '';
-    position: absolute;
-    right: 2rem;
-    width: 1em;
-    height: 1em;
-    margin-top: 0.2em;
-    background: #fff;
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 export const Author = styled.div`

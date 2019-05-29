@@ -147,7 +147,7 @@ export const withAppUser = Component => props => (
 );
 
 export const withFetchUser = Component => props => (
-  <Query query={fetchUserQuery}>
+  <Query query={fetchUserQuery} fetchPolicy="network-only">
     {({ loading, error, data, refetch, subscribeToMore }) => {
       if (loading || error) {
         return null;

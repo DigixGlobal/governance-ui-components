@@ -139,9 +139,9 @@ class CollapsibleMenu extends React.Component {
   };
 
   renderAdminMenuItem = menu => (
-    <Query query={fetchUserQuery} key={menu.title}>
+    <Query query={fetchUserQuery} key={menu.title} fetchPolicy="cache-only">
       {({ loading, error, data }) => {
-        if (loading || error) {
+        if (loading || error || !data.currentUser) {
           return null;
         }
 

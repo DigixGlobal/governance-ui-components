@@ -83,11 +83,8 @@ class ProfileActivitySummary extends React.Component {
   }
 
   renderKyc() {
-    if (!this.props.userData) {
-      return null;
-    }
-
     const { email, kyc } = this.props.userData;
+
     const currentKycStatus = this.getKycStatus();
     const hasPendingKyc = kyc && kyc.status === KycStatus.pending;
 

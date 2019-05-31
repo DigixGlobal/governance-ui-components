@@ -77,7 +77,7 @@ export const getUserStatus = (addressDetails, translation) => {
 };
 
 export const isKycApproved = apolloClient =>
-  apolloClient.query({ query: fetchUserQuery, fetchPolicy: 'network-only' }).then(response => {
+  apolloClient.query({ query: fetchUserQuery }).then(response => {
     const { kyc } = response.data.currentUser;
     return kyc && kyc.status === KycStatus.approved;
   });

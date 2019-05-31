@@ -119,7 +119,7 @@ export const UserMutations = {
 };
 
 export const renderDisplayName = (dataDigixAttribute, welcome) => (
-  <Query query={fetchDisplayName}>
+  <Query query={fetchDisplayName} fetchPolicy="cache-only">
     {({ loading, error, data }) => {
       if (loading || error || !data.currentUser) {
         return null;

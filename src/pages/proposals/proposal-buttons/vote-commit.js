@@ -54,7 +54,9 @@ class CommitVoteButton extends React.PureComponent {
     } = this.props;
 
     const vote = votes ? votes[proposal.proposalId] : undefined;
-    const votingRound = vote ? vote.votingRound[currentVotingRound || 0] : undefined;
+    const votingRound = vote
+      ? vote.votingRound[currentVotingRound || 0]
+      : undefined;
     const hasVoted = votingRound ? votingRound.commit : false;
 
     if (
@@ -68,7 +70,13 @@ class CommitVoteButton extends React.PureComponent {
 
     const currentTime = Date.now();
     const withinDeadline =
-      currentTime < proposal.votingRounds[isSpecial ? 0 : currentVotingRound].commitDeadline * 1000;
+      currentTime <
+        proposal.votingRounds[isSpecial ? 0 : currentVotingRound]
+          .commitDeadline *
+          1000 &&
+      currentTime >
+        proposal.votingRounds[isSpecial ? 0 : currentVotingRound].startTime *
+          1000;
 
     if (!withinDeadline) return null;
 
@@ -108,6 +116,6 @@ export default web3Connect(
     mapStateToProps,
     {
       showRightPanelAction: showRightPanel,
-    }
-  )(CommitVoteButton)
+    },
+  )(CommitVoteButton),
 );

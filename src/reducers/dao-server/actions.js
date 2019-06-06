@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { REDUX_PREFIX, DAO_SERVER } from './constants';
 
 export const actions = {
@@ -29,12 +30,17 @@ function fetchData(url, type, authToken, client, uid) {
       mode: 'cors', // no-cors, cors, *same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'access-token': authToken,
-        client,
-        uid,
-      },
+      headers: new Headers(
+        _.pickBy(
+          {
+            'Content-Type': 'application/json',
+            'access-token': authToken,
+            client,
+            uid,
+          },
+          Boolean
+        )
+      ),
     })
       .then(res =>
         res
@@ -71,12 +77,17 @@ function sendData(method, url, type, data, authToken, client, uid) {
       mode: 'cors', // no-cors, cors, *same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'access-token': authToken,
-        client,
-        uid,
-      },
+      headers: new Headers(
+        _.pickBy(
+          {
+            'Content-Type': 'application/json',
+            'access-token': authToken,
+            client,
+            uid,
+          },
+          Boolean
+        )
+      ),
       redirect: 'follow', // manual, *follow, error
       referrer: 'no-referrer', // no-referrer, *client
       body: JSON.stringify(data), // body data type must match "Content-Type" header

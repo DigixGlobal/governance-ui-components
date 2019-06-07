@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export function requestOptions(options) {
   const { authToken, client, method, uid } = options;
   const payload = {
@@ -5,12 +7,15 @@ export function requestOptions(options) {
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      'access-token': authToken,
-      client,
-      uid,
-    },
+    headers: _.pickBy(
+      {
+        'Content-Type': 'application/json; charset=utf-8',
+        'access-token': authToken,
+        client,
+        uid,
+      },
+      Boolean
+    ),
     redirect: 'follow',
     referrer: 'no-referrer',
   };

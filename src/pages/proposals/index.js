@@ -157,8 +157,12 @@ class Proposal extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     const { proposalDetails } = nextProps;
-
-    if (!proposalDetails.fetching && proposalDetails.data && proposalDetails.data.proposalId) {
+    if (
+      !proposalDetails.fetching &&
+      proposalDetails.data &&
+      proposalDetails.data.proposalId &&
+      proposalDetails.data.proposalId === this.PROPOSAL_ID
+    ) {
       const currentVersion = proposalDetails.data.proposalVersions
         ? proposalDetails.data.proposalVersions.length - 1
         : 0;
@@ -169,8 +173,14 @@ class Proposal extends React.Component {
     }
   };
 
-  shouldComponentUpdate = (nextProps, nextState) =>
-    !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
+  shouldComponentUpdate = (nextProps, nextState) => {
+    const proposalDetails = nextProps.proposalDetails.data;
+    const stateHasChanged = !_.isEqual(nextState, this.state);
+    const propsHaveChanged = !_.isEqual(nextProps, this.props);
+    const isProposalIdSame = proposalDetails && proposalDetails.id === this.PROPOSAL_ID;
+
+    return stateHasChanged || (propsHaveChanged && isProposalIdSame);
+  };
 
   getProposalLikes = () => {
     const { challengeProof, getUserProposalLikeStatusAction } = this.props;
@@ -830,7 +840,6 @@ export default withFetchUser(
   connect(
     ({
       infoServer: {
-        ProposalDetails,
         AddressDetails,
         DaoConfig,
         DaoDetails: { data },
@@ -838,7 +847,6 @@ export default withFetchUser(
       daoServer: { ChallengeProof, UserProposalLike, Translations },
       govUI: { Language },
     }) => ({
-      proposalDetails: ProposalDetails,
       addressDetails: AddressDetails,
       challengeProof: ChallengeProof,
       daoInfo: data,

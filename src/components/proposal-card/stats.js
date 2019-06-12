@@ -11,7 +11,11 @@ import { Details, Info } from '@digix/gov-ui/components/proposal-card/style';
 export default class ProposalCardStats extends React.Component {
   getVotingRoundDetails = proposal => {
     const { votingStage } = this.props;
-    const { currentVotingRound, draftVoting, votingRounds } = proposal;
+    const { currentVotingRound, draftVoting, votingRounds, isSpecial } = proposal;
+
+    if (isSpecial === true) {
+      return votingRounds[0];
+    }
 
     switch (votingStage) {
       case VotingStages.draft:

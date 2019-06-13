@@ -58,7 +58,6 @@ class LandingPage extends React.PureComponent {
   };
 
   componentDidMount = () => {
-    this.initializeCookieBot();
     const { address } = this.props.defaultAddress;
     const promises = [this.props.getAddressDetails(address), this.props.getDaoConfig];
 
@@ -167,18 +166,6 @@ class LandingPage extends React.PureComponent {
     this.setState({ showTos: false }, () => {
       localStorage.setItem('GOVERNANCE_UI', getHash(ToS));
     });
-  };
-
-  initializeCookieBot = () => {
-    if (!window.Cookiebot) {
-      return;
-    }
-
-    try {
-      window.Cookiebot.show();
-    } catch (error) {
-      console.log('unable to initialize cookiebot');
-    }
   };
 
   likeProposal = proposalId => {

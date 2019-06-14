@@ -13,7 +13,7 @@ class ProposalFundings extends React.Component {
     let difference = null;
 
     const updatedMilestoneFunds = milestones.reduce(
-      (acc, milestone) => Number(acc.updated) + Number(milestone.updated)
+      (acc, milestone) => Number(acc.updated || acc) + Number(milestone.updated)
     );
 
     difference = updatedMilestoneFunds - milestoneFunds;
@@ -50,7 +50,7 @@ class ProposalFundings extends React.Component {
 
     const { finalReward, milestones } = proposal.changedFundings;
     let milestoneFunds = milestones.reduce(
-      (acc, milestone) => Number(acc.original) + Number(milestone.original)
+      (acc, milestone) => Number(acc.original || acc) + Number(milestone.original)
     );
 
     // NOTE: these are already truncated

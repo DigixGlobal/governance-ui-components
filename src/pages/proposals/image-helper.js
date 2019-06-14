@@ -11,7 +11,7 @@ export const fetchImages = proofs => {
   ).then(images => {
     if (!images[0]) return undefined;
     const files = images.map(image => {
-      if (image.type === 'pdf') {
+      if (image && image.type === 'pdf') {
         return {
           src: image.data.src,
           type: image.type,
@@ -20,7 +20,7 @@ export const fetchImages = proofs => {
       return {
         thumbnail: image ? image.data.thumbnails[thumbnailSize] : undefined,
         src: image ? image.data.src : undefined,
-        type: image.type,
+        type: image ? image.type : undefined,
       };
     });
     return files;

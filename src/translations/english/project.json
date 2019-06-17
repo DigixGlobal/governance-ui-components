@@ -72,7 +72,7 @@
     "DlJsonDescription": "In the case you change your mind or make another commit, this file is no longer valid.",
     "DlJsonButton": "Download Json File",
     "revealVoteHeader": "Vote on Project (Reveal)",
-    "revealVoteDescription": "The Reveal phase is to verify the choice you made in the Commit phsae. Please upload the JSON file that you received in the Commit phase. Your choice will then be verified and counted in as a vote.\nPlease note that if this step is not carried out, your vote will be voided and will not be counted.",
+    "revealVoteDescription": "The Reveal phase is to verify the choice you made in the Commit phase. Please upload the JSON file that you received in the Commit phase. Your choice will then be verified and counted in as a vote.\nPlease note that if this step is not carried out, your vote will be voided and will not be counted.",
     "yourVoteIs": "Your vote is",
     "yourVoteIsOnlyValid": "Your vote is only valid and counted as activity on the DigixDAO after your confirmation.",
     "hasVoted": "You have already committed for this proposal. This action will overwrite the previous commit.",

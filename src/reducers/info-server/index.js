@@ -13,6 +13,12 @@ const defaultState = {
     error: null,
     fetching: null,
   },
+  PriceInfo: {
+    history: [],
+    data: {},
+    error: null,
+    fetching: null,
+  },
   AddressDetails: {
     history: [],
     data: {},
@@ -85,6 +91,24 @@ export default function(state = defaultState, action) {
                 },
               ]
                 .concat(state.DaoDetails.history)
+                .slice(0, 100),
+        },
+      };
+    case actions.GET_PRICE_INFO:
+      return {
+        ...state,
+        PriceInfo: {
+          ...state.PriceInfo,
+          ...action.payload,
+          history: !action.payload.data
+            ? state.PriceInfo.history
+            : [
+                {
+                  ...action.payload.data,
+                  updated: action.payload.updated,
+                },
+              ]
+                .concat(state.PriceInfo.history)
                 .slice(0, 100),
         },
       };

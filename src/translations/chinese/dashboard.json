@@ -8,7 +8,10 @@
     "lockingPhase": "锁定期",
     "mainPhase": "表决期",
     "day": "天",
+    "remainingDays": "剩余天数",
     "stake": "权益",
+    "totalLockedStakes": "总锁定金额",
+    "currentDigixDAOFunding": "目前DigixDao资金",
     "startsOn": "起始日期",
     "endsOn": "终止日期"
   },

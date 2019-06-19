@@ -46,28 +46,30 @@ class Trezor extends React.Component {
         />
       ),
       (
-        <KeystoreModal
-          createKeystore={this.props.createKeystore}
-          onSuccess={() => this.props.onSuccess()}
-          showBalances
-          key="trezor-popup"
-          submitFunc={this.props.createKeystore}
-          form={KeystoreCreationForm}
-          creatingKeyStore
-          data={{ type: 'trezor', updateDefaultAddress: true }}
-          header="Load Trezor Wallet"
-          hideSelector
-          allowedKeystoreTypes={['trezor']}
-          translations={this.props.translations}
-          commonTranslations={this.props.commonTranslations}
-          logLoadWallet={LogLoadWallet}
-          trigger={
-            <Button kind="round" secondary fluid showIcon large disabled={blocked}>
-              <Icon kind="trezor" />
-              Trezor
-            </Button>
-          }
-        />
+        <div style={blocked ? { pointerEvents: 'none' } : null}>
+          <KeystoreModal
+            createKeystore={this.props.createKeystore}
+            onSuccess={() => this.props.onSuccess()}
+            showBalances
+            key="trezor-popup"
+            submitFunc={this.props.createKeystore}
+            form={KeystoreCreationForm}
+            creatingKeyStore
+            data={{ type: 'trezor', updateDefaultAddress: true }}
+            header="Load Trezor Wallet"
+            hideSelector
+            allowedKeystoreTypes={['trezor']}
+            translations={this.props.translations}
+            commonTranslations={this.props.commonTranslations}
+            logLoadWallet={LogLoadWallet}
+            trigger={
+              <Button kind="round" secondary fluid showIcon large disabled={blocked}>
+                <Icon kind="trezor" />
+                Trezor
+              </Button>
+            }
+          />
+        </div>
       )
     );
   }

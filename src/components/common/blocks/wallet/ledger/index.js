@@ -46,28 +46,30 @@ class Ledger extends React.Component {
         />
       ),
       (
-        <KeystoreModal
-          createKeystore={this.props.createKeystore}
-          onSuccess={() => this.props.onSuccess()}
-          showBalances
-          key="keystore-popup"
-          submitFunc={this.props.createKeystore}
-          form={KeystoreCreationForm}
-          creatingKeyStore
-          data={{ type: 'ledger', updateDefaultAddress: true }}
-          header="Load Ledger Wallet"
-          hideSelector
-          allowedKeystoreTypes={['ledger']}
-          translations={this.props.translations}
-          commonTranslations={this.props.commonTranslations}
-          logLoadWallet={LogLoadWallet}
-          trigger={
-            <Button kind="round" secondary large showIcon fluid disabled={blocked}>
-              <Icon kind="ledger" />
-              Ledger
-            </Button>
-          }
-        />
+        <div style={blocked ? { pointerEvents: 'none' } : null}>
+          <KeystoreModal
+            createKeystore={this.props.createKeystore}
+            onSuccess={() => this.props.onSuccess()}
+            showBalances
+            key="keystore-popup"
+            submitFunc={this.props.createKeystore}
+            form={KeystoreCreationForm}
+            creatingKeyStore
+            data={{ type: 'ledger', updateDefaultAddress: true }}
+            header="Load Ledger Wallet"
+            hideSelector
+            allowedKeystoreTypes={['ledger']}
+            translations={this.props.translations}
+            commonTranslations={this.props.commonTranslations}
+            logLoadWallet={LogLoadWallet}
+            trigger={
+              <Button kind="round" secondary large showIcon fluid disabled={blocked}>
+                <Icon kind="ledger" />
+                Ledger
+              </Button>
+            }
+          />
+        </div>
       )
     );
   }

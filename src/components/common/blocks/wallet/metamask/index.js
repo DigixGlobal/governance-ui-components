@@ -50,37 +50,39 @@ class Metamask extends React.Component {
         />
       ),
       (
-        <KeystoreModal
-          createKeystore={this.props.createKeystore}
-          onSuccess={() => this.props.onSuccess()}
-          key="metamask-popup"
-          submitFunc={this.props.createKeystore}
-          form={KeystoreCreationForm}
-          creatingKeyStore
-          data={{ type: 'metamask', updateDefaultAddress: true }}
-          keystoreType="metamask"
-          header="Load MetaMask Wallet"
-          skipConfirmation={this.state.skipConfirmation}
-          hideSelector
-          allowedKeystoreTypes={['metamask']}
-          translations={this.props.translations}
-          commonTranslations={this.props.commonTranslations}
-          logLoadWallet={LogLoadWallet}
-          trigger={
-            <Button
-              kind="round"
-              secondary
-              fluid
-              large
-              showIcon
-              onClick={this.handleClick}
-              disabled={blocked}
-            >
-              <Icon kind="metamask" />
-              Metamask
-            </Button>
-          }
-        />
+        <div style={blocked ? { pointerEvents: 'none' } : null}>
+          <KeystoreModal
+            createKeystore={this.props.createKeystore}
+            onSuccess={() => this.props.onSuccess()}
+            key="metamask-popup"
+            submitFunc={this.props.createKeystore}
+            form={KeystoreCreationForm}
+            creatingKeyStore
+            data={{ type: 'metamask', updateDefaultAddress: true }}
+            keystoreType="metamask"
+            header="Load MetaMask Wallet"
+            skipConfirmation={this.state.skipConfirmation}
+            hideSelector
+            allowedKeystoreTypes={['metamask']}
+            translations={this.props.translations}
+            commonTranslations={this.props.commonTranslations}
+            logLoadWallet={LogLoadWallet}
+            trigger={
+              <Button
+                kind="round"
+                secondary
+                fluid
+                large
+                showIcon
+                onClick={this.handleClick}
+                disabled={blocked}
+              >
+                <Icon kind="metamask" />
+                Metamask
+              </Button>
+            }
+          />
+        </div>
       )
     );
   }

@@ -15,13 +15,28 @@ class Metamask extends React.Component {
     super(props);
     this.state = {
       skipConfirmation: false,
+      blocked: false,
     };
   }
+
+  componentDidMount = () => {
+    this.getBlockList();
+  };
+
+  getBlockList = () => {
+    const { blockList } = this.props;
+    if (blockList.includes('METAMASK')) {
+      this.setState({
+        blocked: true,
+      });
+    }
+  };
 
   handleClick = () => {
     this.setState({ skipConfirmation: true });
   };
   render() {
+    const { blocked } = this.state;
     return (
       (
         <DefaultAddressSelector
@@ -52,7 +67,15 @@ class Metamask extends React.Component {
           commonTranslations={this.props.commonTranslations}
           logLoadWallet={LogLoadWallet}
           trigger={
-            <Button kind="round" secondary fluid large showIcon onClick={this.handleClick}>
+            <Button
+              kind="round"
+              secondary
+              fluid
+              large
+              showIcon
+              onClick={this.handleClick}
+              disabled={blocked}
+            >
               <Icon kind="metamask" />
               Metamask
             </Button>
@@ -63,13 +86,14 @@ class Metamask extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, array } = PropTypes;
 
 Metamask.propTypes = {
   commonTranslations: object.isRequired,
   createKeystore: func,
   onSuccess: func.isRequired,
   translations: object.isRequired,
+  blockList: array.isRequired,
 };
 
 Metamask.defaultProps = {

@@ -11,7 +11,28 @@ import Icon from '@digix/gov-ui/components/common/elements/icons';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class Ledger extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      blocked: false,
+    };
+  }
+
+  componentDidMount = () => {
+    this.getBlockList();
+  };
+
+  getBlockList = () => {
+    const { blockList } = this.props;
+    if (blockList.includes('LEDGER')) {
+      this.setState({
+        blocked: true,
+      });
+    }
+  };
+
   render() {
+    const { blocked } = this.state;
     return (
       (
         <DefaultAddressSelector
@@ -41,7 +62,7 @@ class Ledger extends React.Component {
           commonTranslations={this.props.commonTranslations}
           logLoadWallet={LogLoadWallet}
           trigger={
-            <Button kind="round" secondary large showIcon fluid>
+            <Button kind="round" secondary large showIcon fluid disabled={blocked}>
               <Icon kind="ledger" />
               Ledger
             </Button>
@@ -52,13 +73,14 @@ class Ledger extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, array } = PropTypes;
 
 Ledger.propTypes = {
   commonTranslations: object.isRequired,
   createKeystore: func,
   onSuccess: func.isRequired,
   translations: object.isRequired,
+  blockList: array.isRequired,
 };
 
 Ledger.defaultProps = {

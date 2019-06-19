@@ -11,7 +11,28 @@ import Icon from '@digix/gov-ui/components/common/elements/icons';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class Trezor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      blocked: false,
+    };
+  }
+
+  componentDidMount = () => {
+    this.getBlockList();
+  };
+
+  getBlockList = () => {
+    const { blockList } = this.props;
+    if (blockList.includes('TREZOR')) {
+      this.setState({
+        blocked: true,
+      });
+    }
+  };
+
   render() {
+    const { blocked } = this.state;
     return (
       (
         <DefaultAddressSelector
@@ -41,7 +62,7 @@ class Trezor extends React.Component {
           commonTranslations={this.props.commonTranslations}
           logLoadWallet={LogLoadWallet}
           trigger={
-            <Button kind="round" secondary fluid showIcon large>
+            <Button kind="round" secondary fluid showIcon large disabled={blocked}>
               <Icon kind="trezor" />
               Trezor
             </Button>
@@ -52,13 +73,14 @@ class Trezor extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, array } = PropTypes;
 
 Trezor.propTypes = {
   commonTranslations: object.isRequired,
   createKeystore: func,
   onSuccess: func.isRequired,
   translations: object.isRequired,
+  blockList: array.isRequired,
 };
 
 Trezor.defaultProps = {

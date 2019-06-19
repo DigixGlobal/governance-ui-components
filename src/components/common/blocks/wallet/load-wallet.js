@@ -19,10 +19,6 @@ import Trezor from './trezor';
 import ImToken from './imtoken';
 
 class LoadWallet extends React.Component {
-  componentDidMount = () => {
-    console.log(browserDetection());
-  };
-
   handleCloseButtonClick = () => {
     const { onChangeStage } = this.props;
     if (onChangeStage) {

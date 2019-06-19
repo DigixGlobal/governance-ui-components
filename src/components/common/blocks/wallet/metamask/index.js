@@ -11,6 +11,16 @@ import Icon from '@digix/gov-ui/components/common/elements/icons';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class Metamask extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      skipConfirmation: false,
+    };
+  }
+
+  handleClick = () => {
+    this.setState({ skipConfirmation: true });
+  };
   render() {
     return (
       (
@@ -35,13 +45,14 @@ class Metamask extends React.Component {
           data={{ type: 'metamask', updateDefaultAddress: true }}
           keystoreType="metamask"
           header="Load MetaMask Wallet"
+          skipConfirmation={this.state.skipConfirmation}
           hideSelector
           allowedKeystoreTypes={['metamask']}
           translations={this.props.translations}
           commonTranslations={this.props.commonTranslations}
           logLoadWallet={LogLoadWallet}
           trigger={
-            <Button kind="round" secondary fluid large showIcon>
+            <Button kind="round" secondary fluid large showIcon onClick={this.handleClick}>
               <Icon kind="metamask" />
               Metamask
             </Button>

@@ -5,15 +5,17 @@ import { connect } from 'react-redux';
 
 import ProgressBar from '@digix/gov-ui/components/common/blocks/progress-bar';
 import { DEFAULT_LOCKED_DGD } from '@digix/gov-ui/constants';
-import { getDaoConfig } from '@digix/gov-ui/reducers/info-server/actions';
+import { getDaoConfig, getPriceInfo } from '@digix/gov-ui/reducers/info-server/actions';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { withFetchDaoInfo } from '@digix/gov-ui/api/graphql-queries/dao';
 
 import { ToolTip, Icon } from '@digix/gov-ui/components/common/index';
 import {
   MainPhase,
-  Divider,
   Qtr,
+  Stats,
+  Item,
+  Data,
   LockPhase,
   TimelineBar,
   Wrapper,
@@ -38,7 +40,7 @@ class Timeline extends React.Component {
       subscribeToDao();
       this.hasSubscribed = true;
     }
-
+    this.props.getPriceInfo();
     this.props.getDaoConfig().then(() => {
       let quarterDuration = Number(this.props.DaoConfig.CONFIG_QUARTER_DURATION);
       quarterDuration = moment.duration(quarterDuration, 'seconds');
@@ -68,6 +70,14 @@ class Timeline extends React.Component {
     return now.diff(startOfQuarter, 'days') + 1;
   }
 
+  getRemainingPrice() {
+    const { remainingFunds } = this.props.stats.data;
+    const { ethusd } = this.props.PriceInfo;
+    const fund = Number(remainingFunds);
+    const price = fund * ethusd;
+    return this.priceFormatter(price);
+  }
+
   getLockedDgd() {
     const { daoInfo, stats } = this.props;
     let lockedDgd = DEFAULT_LOCKED_DGD;
@@ -92,6 +102,16 @@ class Timeline extends React.Component {
     return 100 * (timeEllapsed / duration);
   };
 
+  priceFormatter = num => {
+    if (Math.abs(num) > 999 && Math.abs(num) < 999999) {
+      return `${Math.sign(num) * (Math.abs(num) / 1000).toFixed(2)}K`;
+    } else if (Math.abs(num) > 999999) {
+      return `${Math.sign(num) * (Math.abs(num) / 1000000).toFixed(2)}M`;
+    }
+
+    return Math.sign(num) * Math.abs(num);
+  };
+
   render() {
     const { stats, translations } = this.props;
     if (!translations.data) return null;
@@ -103,7 +123,7 @@ class Timeline extends React.Component {
 
     const { quarterDurationInDays } = this.state;
     const { currentQuarter } = stats.data;
-    let { startOfMainphase, startOfNextQuarter, startOfQuarter } = stats.data;
+    let { startOfMainphase, startOfNextQuarter, startOfQuarter, remainingFunds } = stats.data;
 
     // convert to ms
     startOfMainphase *= 1000;
@@ -111,14 +131,41 @@ class Timeline extends React.Component {
     startOfQuarter *= 1000;
 
     const daysEllapsed = this.getDaysEllapsed();
+    const remainingPrice = this.getRemainingPrice();
     const lockingPhaseProgress = this.getProgress(startOfQuarter, startOfMainphase);
     const mainPhaseProgress = this.getProgress(startOfMainphase, startOfNextQuarter);
     const lockedDgd = this.getLockedDgd();
 
     return (
       <Wrapper>
-        <Qtr>Q{currentQuarter}</Qtr>
+        <Qtr>Q{currentQuarter} Overview</Qtr>
         <TimelineBar>
+          <Stats>
+            <Item>
+              <Data data-digix="Dashboard-Timeline-DaysEllpased">
+                {dashboard.Timeline.day} {daysEllapsed} of {quarterDurationInDays}
+              </Data>
+              <span className="equiv">
+                <span>{dashboard.Timeline.remainingDays}</span>
+              </span>
+            </Item>
+            <Item>
+              <Data data-digix="Dashboard-Timeline-TotalStake">
+                {lockedDgd} {dashboard.Timeline.stake}
+              </Data>
+              <span className="equiv">
+                <span>{dashboard.Timeline.totalLockedStakes}</span>
+              </span>
+            </Item>
+            <Item>
+              <Data data-digix="Dashboard-Timeline-RemainingFunds">
+                {remainingFunds} ETH (US${remainingPrice})
+              </Data>
+              <span className="equiv">
+                <span>{dashboard.Timeline.currentDigixDAOFunding}</span>
+              </span>
+            </Item>
+          </Stats>
           <LockPhase>
             <Label locking>
               <div>
@@ -156,17 +203,6 @@ class Timeline extends React.Component {
                   <Icon kind="info" />
                 </ToolTip>
               </div>
-
-              <div>
-                <span data-digix="Dashboard-Timeline-DaysEllpased">
-                  {dashboard.Timeline.day} {daysEllapsed}
-                </span>
-                <span>&nbsp;/ {quarterDurationInDays}</span>
-                <Divider>|</Divider>
-                <span data-digix="Dashboard-Timeline-TotalStake">
-                  {lockedDgd} {dashboard.Timeline.stake}
-                </span>
-              </div>
             </Label>
             <Progress main>
               <ProgressBar variant="determinate" value={mainPhaseProgress || -1} />
@@ -182,7 +218,9 @@ const { func, object } = PropTypes;
 
 Timeline.propTypes = {
   DaoConfig: object.isRequired,
+  PriceInfo: object.isRequired,
   getDaoConfig: func.isRequired,
+  getPriceInfo: func.isRequired,
   daoInfo: object,
   stats: object.isRequired,
   translations: object.isRequired,
@@ -197,12 +235,14 @@ Timeline.defaultProps = {
 const mapStateToProps = ({ infoServer }) => ({
   DaoConfig: infoServer.DaoConfig.data,
   DaoDetails: infoServer.DaoDetails.data,
+  PriceInfo: infoServer.PriceInfo.data,
 });
 
 const TimelineComponent = connect(
   mapStateToProps,
   {
     getDaoConfig,
+    getPriceInfo,
   }
 )(Timeline);
 

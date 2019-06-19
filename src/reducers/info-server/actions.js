@@ -3,6 +3,7 @@ import { REDUX_PREFIX, INFO_SERVER } from './constants';
 export const actions = {
   GET_DAO_CONFIG: `${REDUX_PREFIX}GET_DAO_CONFIG`,
   GET_DAO_DETAILS: `${REDUX_PREFIX}GET_DAO_DETAILS`,
+  GET_PRICE_INFO: `${REDUX_PREFIX}GET_PRICE_INFO`,
   GET_ADDRESS_DETAILS: `${REDUX_PREFIX}GET_ADDRESS_DETAILS`,
   GET_PROPOSALS: `${REDUX_PREFIX}GET_PROPOSALS`,
   GET_PROPOSALS_COUNT: `${REDUX_PREFIX}GET_PROPOSALS_COUNT`,
@@ -51,6 +52,10 @@ export function getDaoConfig() {
 
 export function getDaoDetails() {
   return fetchData(`${INFO_SERVER}/daoinfo`, actions.GET_DAO_DETAILS);
+}
+
+export function getPriceInfo() {
+  return fetchData(`${INFO_SERVER}/priceinfo`, actions.GET_PRICE_INFO);
 }
 
 export function getAddressDetails(address) {

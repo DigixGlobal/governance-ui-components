@@ -11,7 +11,32 @@ import Icon from '@digix/gov-ui/components/common/elements/icons';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class Metamask extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      skipConfirmation: false,
+      blocked: false,
+    };
+  }
+
+  componentDidMount = () => {
+    this.getBlockList();
+  };
+
+  getBlockList = () => {
+    const { blockList } = this.props;
+    if (blockList.includes('METAMASK')) {
+      this.setState({
+        blocked: true,
+      });
+    }
+  };
+
+  handleClick = () => {
+    this.setState({ skipConfirmation: true });
+  };
   render() {
+    const { blocked } = this.state;
     return (
       (
         <DefaultAddressSelector
@@ -25,40 +50,52 @@ class Metamask extends React.Component {
         />
       ),
       (
-        <KeystoreModal
-          createKeystore={this.props.createKeystore}
-          onSuccess={() => this.props.onSuccess()}
-          key="metamask-popup"
-          submitFunc={this.props.createKeystore}
-          form={KeystoreCreationForm}
-          creatingKeyStore
-          data={{ type: 'metamask', updateDefaultAddress: true }}
-          keystoreType="metamask"
-          header="Load MetaMask Wallet"
-          hideSelector
-          allowedKeystoreTypes={['metamask']}
-          translations={this.props.translations}
-          commonTranslations={this.props.commonTranslations}
-          logLoadWallet={LogLoadWallet}
-          trigger={
-            <Button kind="round" secondary fluid large showIcon>
-              <Icon kind="metamask" />
-              Metamask
-            </Button>
-          }
-        />
+        <div style={blocked ? { pointerEvents: 'none' } : null}>
+          <KeystoreModal
+            createKeystore={this.props.createKeystore}
+            onSuccess={() => this.props.onSuccess()}
+            key="metamask-popup"
+            submitFunc={this.props.createKeystore}
+            form={KeystoreCreationForm}
+            creatingKeyStore
+            data={{ type: 'metamask', updateDefaultAddress: true }}
+            keystoreType="metamask"
+            header="Load MetaMask Wallet"
+            skipConfirmation={this.state.skipConfirmation}
+            hideSelector
+            allowedKeystoreTypes={['metamask']}
+            translations={this.props.translations}
+            commonTranslations={this.props.commonTranslations}
+            logLoadWallet={LogLoadWallet}
+            trigger={
+              <Button
+                kind="round"
+                secondary
+                fluid
+                large
+                showIcon
+                onClick={this.handleClick}
+                disabled={blocked}
+              >
+                <Icon kind="metamask" />
+                Metamask
+              </Button>
+            }
+          />
+        </div>
       )
     );
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, array } = PropTypes;
 
 Metamask.propTypes = {
   commonTranslations: object.isRequired,
   createKeystore: func,
   onSuccess: func.isRequired,
   translations: object.isRequired,
+  blockList: array.isRequired,
 };
 
 Metamask.defaultProps = {

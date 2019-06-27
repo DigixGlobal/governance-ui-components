@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import PropTypes, { bool } from 'prop-types';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
@@ -244,7 +244,7 @@ class Timeline extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, bool } = PropTypes;
 
 Timeline.propTypes = {
   DaoConfig: object.isRequired,

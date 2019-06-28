@@ -149,7 +149,8 @@ class ConfirmParticipation extends React.Component {
         >
           {tOptions.lockDgd}
         </Button>
-        <Button
+        {/* HOTIFIX: hide button until contract for it is fixed */}
+        {/* <Button
           fluid
           large
           reverse
@@ -158,7 +159,7 @@ class ConfirmParticipation extends React.Component {
           onClick={() => this.continueParticipation()}
         >
           {tOptions.continueCurrentLockup}
-        </Button>
+        </Button> */}
         <Button
           fluid
           large

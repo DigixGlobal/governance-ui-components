@@ -9,7 +9,6 @@ import CountdownPage from '@digix/gov-ui/components/common/blocks/loader/countdo
 import ProposalCard from '@digix/gov-ui/components/proposal-card';
 import Timeline from '@digix/gov-ui/components/common/blocks/timeline';
 import ToS from '@digix/gov-ui/tos.md';
-import UserAddressStats from '@digix/gov-ui/components/common/blocks/user-address-stats/index';
 import ProposalFilter from '@digix/gov-ui/components/common/blocks/filter/index';
 import { Content, Title, TosOverlay } from '@digix/gov-ui/pages/style';
 import { CONFIRM_PARTICIPATION_CACHE } from '@digix/gov-ui/constants';
@@ -289,8 +288,7 @@ class LandingPage extends React.PureComponent {
 
     return (
       <Fragment>
-        <Timeline stats={DaoDetails} translations={Translations} />
-        {isWalletLoaded && <UserAddressStats translations={Translations} />}
+        <Timeline stats={DaoDetails} translations={Translations} isWalletLoaded={isWalletLoaded} />
         <ProposalFilter
           setProposalList={this.setProposalList}
           onOrderChange={this.onOrderChange}

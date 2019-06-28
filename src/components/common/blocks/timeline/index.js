@@ -176,7 +176,7 @@ class Timeline extends React.Component {
               </Item>
               <Item>
                 <Data data-digix="Dashboard-Timeline-TotalStake">
-                  <span data-digix="Dashboard-Timeline-LockedDGD">{lockedDgd}</span>{' '}
+                  <span data-digix="Dashboard-Timeline-LockedStakes">{lockedDgd}</span>{' '}
                   {dashboard.Timeline.stake}
                 </Data>
                 <span className="equiv">

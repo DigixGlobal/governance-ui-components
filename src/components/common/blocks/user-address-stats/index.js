@@ -37,8 +37,9 @@ class UserAddressStats extends React.Component {
           <Data>
             <span data-digix="Dashboard-Stats-QuarterPoints">{quarterPoint || 0}</span>
             {isModerator && (
-              <span data-digix="Dashboard-Mod-QtrPts" className="small-info">
-                ({moderatorQuarterPoint} {dashboard.UserStats.moderatorPoints})
+              <span className="small-info">
+                (<span data-digix="Dashboard-Stats-ModQtrPts">{moderatorQuarterPoint}</span>{' '}
+                {dashboard.UserStats.moderatorPoints})
               </span>
             )}
           </Data>
@@ -55,8 +56,9 @@ class UserAddressStats extends React.Component {
         <Item>
           <Data>
             <span data-digix="Dashboard-Stats-Stake">{stake}</span> ETH
-            <span data-digix="Dashboard-Locked-DGD" className="small-info">
-              ({dgd} {dashboard.UserStats.dgdLocked})
+            <span className="small-info">
+              (<span data-digix="Dashboard-Stats-LockedDGD">{dgd}</span>{' '}
+              {dashboard.UserStats.dgdLocked})
             </span>
           </Data>
           <span className="equiv">

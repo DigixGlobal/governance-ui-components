@@ -32,6 +32,35 @@ export const Qtr = styled.div`
   display: flex;
   align-items: left;
   margin-bottom: 5rem;
+  ${media.mobile`
+    margin-bottom: 2.5rem;
+  `};
+`;
+
+export const Toggle = styled.a`
+  color: ${props => props.theme.textColor.secondary.base.toString()};
+  font-family: 'Futura PT Book', sans-serif;
+  font-size: 1.4em;
+  text-transform: uppercase;
+  position: absolute;
+  right: 5rem;
+  top: 6rem;
+  > div {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-left: 1rem;
+
+    svg {
+      transform: rotate(-90deg);
+    }
+    
+  ${media.mobile`
+    position: relative;
+    text-align: right;
+    right: 0;
+    top: 0;
+    margin-bottom: 2.5rem;
+  `};
 `;
 
 export const Stats = styled(Card)`
@@ -78,7 +107,7 @@ export const Data = styled.div`
   justify-content: flex-start;
   align-items: flex-end;
   font-family: 'Futura PT Medium';
-  font-size: 1.8em;
+  font-size: 2.5rem;
   text-align: left;
   margin-bottom: 0.5em;
 

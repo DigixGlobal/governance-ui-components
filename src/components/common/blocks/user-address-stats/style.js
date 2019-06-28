@@ -2,10 +2,11 @@ import styled, { css } from 'styled-components';
 import { Card } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
-export const UserStats = styled(Card)`
+export const Stats = styled(Card)`
   text-transform: uppercase;
   padding: 0;
-
+  background-color: ${props => props.theme.backgroundTertiary.lightest.toString()};
+  box-shadow: none;
   ${props =>
     props.dashboard &&
     css`
@@ -13,8 +14,8 @@ export const UserStats = styled(Card)`
     `};
 
   ${media.mobile`
-    padding: 3rem 5rem;
-      flex-direction: column;
+    padding: 3rem 3rem;
+    flex-direction: column;
   `};
 `;
 
@@ -31,7 +32,7 @@ export const Item = styled.div`
   ${media.mobile`
     border-right: none;
     margin-bottom: 2rem;
-    padding: 0;
+    padding: 0 0 1rem 0;
     
     &:last-child {
       margin-bottom: 0;
@@ -39,24 +40,20 @@ export const Item = styled.div`
   `};
 `;
 
-export const Label = styled.div`
-  text-align: left;
-  font-family: 'Futura PT Heavy', sans-serif;
-`;
-
 export const Data = styled.div`
-  margin-top: 1rem;
   display: flex;
+  text-transform: none;
   justify-content: flex-start;
   align-items: flex-end;
-  font-family: 'Futura PT Heavy';
-  font-size: 3.8rem;
+  font-family: 'Futura PT Medium';
+  font-size: 2.5rem;
   text-align: left;
+  margin-bottom: 0.5em;
 
   span {
     &.equiv {
       font-family: 'Futura PT Light', sans-serif;
-      font-size: 1.6rem;
+      font-size: 1.2em;
       color: ${props => props.theme.textColor.default.base.toString()};
       margin-left: 1rem;
       margin-bottom: 0.75rem;
@@ -67,6 +64,13 @@ export const Data = styled.div`
       ${media.mobile`
         margin-left: 1rem;
       `};
+    }
+    &.small-info {
+      font-family: 'Futura PT Light', sans-serif;
+      font-size: 0.75em;
+      margin-bottom: 0.2em;
+      margin-left: 0.5em;
+      color: ${props => props.theme.textColor.default.base.toString()};
     }
   }
 

@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { withFetchAddress } from '@digix/gov-ui/api/graphql-queries/address';
 
-import {
-  Data,
-  Item,
-  Label,
-  UserStats,
-} from '@digix/gov-ui/components/common/blocks/user-address-stats/style';
+import { Data, Item, Stats } from '@digix/gov-ui/components/common/blocks/user-address-stats/style';
 
 class UserAddressStats extends React.Component {
   componentDidMount() {
@@ -37,36 +32,38 @@ class UserAddressStats extends React.Component {
     const stake = truncateNumber(lockedDgdStake || 0);
     const dgd = truncateNumber(lockedDgd || 0);
     return (
-      <UserStats>
+      <Stats>
         <Item>
-          <Label>{dashboard.UserStats.quarterPoints}</Label>
-          <Data>
-            <span data-digix="Dashboard-Stats-QuarterPoints">{quarterPoint || 0}</span>
+          <Data data-digix="Dashboard-Stats-QuarterPoints">
+            {quarterPoint || 0} Points
             {isModerator && (
-              <span className="equiv">
-                <span>( </span>
-                <span data-digix="Dashboard-Mod-QtrPts">{moderatorQuarterPoint}</span>
-                <span>&nbsp; {dashboard.UserStats.moderatorPoints} )</span>
+              <span data-digix="Dashboard-Mod-QtrPts" className="small-info">
+                ({moderatorQuarterPoint} {dashboard.UserStats.moderatorPoints})
               </span>
             )}
           </Data>
+          <span className="equiv">
+            <span>{dashboard.UserStats.quarterPoints}</span>
+          </span>
         </Item>
         <Item>
-          <Label>{dashboard.UserStats.reputationPoints}</Label>
-          <Data data-digix="Dashboard-Stats-ReputationPoints">{reputationPoint || 0}</Data>
+          <Data data-digix="Dashboard-Stats-ReputationPoints">{reputationPoint || 0} Points</Data>
+          <span className="equiv">
+            <span>{dashboard.UserStats.reputationPoints}</span>
+          </span>
         </Item>
         <Item>
-          <Label>{dashboard.UserStats.stake}</Label>
           <Data data-digix="Dashboard-Stats-Stake">
-            <span data-digix="Dashboard-Locked-Stake">{stake}</span>
-            <span className="equiv">
-              <span>( </span>
-              <span data-digix="Dashboard-Locked-DGD">{dgd}</span>
-              <span>&nbsp;{dashboard.UserStats.dgdLocked} )</span>
+            {stake} ETH
+            <span data-digix="Dashboard-Locked-DGD" className="small-info">
+              ({dgd} {dashboard.UserStats.dgdLocked})
             </span>
           </Data>
+          <span className="equiv">
+            <span>{dashboard.UserStats.stake}</span>
+          </span>
         </Item>
-      </UserStats>
+      </Stats>
     );
   }
 }

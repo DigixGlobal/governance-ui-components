@@ -13,7 +13,10 @@
     "totalLockedStakes": "总锁定金额",
     "currentDigixDAOFunding": "目前DigixDao资金",
     "startsOn": "起始日期",
-    "endsOn": "终止日期"
+    "endsOn": "终止日期",
+    "yourStakesAndReward": "您锁定的金额&奖励",
+    "overview": "总览",
+    "quarter": "季度"
   },
   "UserStats": {
     "quarterPoints": "季度积分",

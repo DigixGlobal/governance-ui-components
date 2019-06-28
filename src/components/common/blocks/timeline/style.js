@@ -68,11 +68,6 @@ export const Stats = styled(Card)`
   padding: 0;
   background-color: ${props => props.theme.backgroundTertiary.lightest.toString()};
   box-shadow: none;
-  ${props =>
-    props.dashboard &&
-    css`
-      margin-bottom: 8rem;
-    `};
 
   ${media.mobile`
     padding: 3rem 3rem;
@@ -150,6 +145,7 @@ export const TimelineBar = styled.div`
 `;
 
 export const LockPhase = styled.div`
+  margin-top: 5rem;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;

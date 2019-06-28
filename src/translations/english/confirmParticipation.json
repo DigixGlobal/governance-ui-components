@@ -1,6 +1,6 @@
 {
   "title": "Confirming Participation For New Quarter",
-  "instructions": "In order to continue participating in the new quarter, we need you to sign a transaction confirming the amount of stake you have on the platform. There are 3 options of transactions you can make:",
+  "instructions": "In order to continue participating in the new quarter, we need you to sign a transaction confirming the amount of stake you have on the platform. If you want to keep the same amount of locked DGDs, you will need to unlock some and lock back the same amount.",
   "options": {
     "lockDgd": "I want to lock more DGD",
     "continueCurrentLockup": "I want to continue with my current lock-up of DGD",

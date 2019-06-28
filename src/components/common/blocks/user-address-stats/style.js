@@ -14,6 +14,7 @@ export const Stats = styled(Card)`
     css`
       background-color: ${props.theme.backgroundDefault.default.toString()};
       box-shadow: ${props.theme.boxShadow};
+      margin-bottom: 5rem;
     `};
 
   ${props =>

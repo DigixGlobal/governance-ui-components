@@ -107,7 +107,7 @@ export const Data = styled.div`
   justify-content: flex-start;
   align-items: flex-end;
   font-family: 'Futura PT Medium';
-  font-size: 1.8em;
+  font-size: 2.5rem;
   text-align: left;
   margin-bottom: 0.5em;
 

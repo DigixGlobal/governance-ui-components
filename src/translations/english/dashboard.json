@@ -16,7 +16,10 @@
     "reputationPoints": "Reputation Points",
     "dgdLocked": "DGD Locked",
     "startsOn": "Starts on",
-    "endsOn": "and ends on"
+    "endsOn": "and ends on",
+    "yourStakesAndReward": "Your Stakes & Rewards",
+    "overview": "Overview",
+    "quarter": "Quarter"
   },
   "UserStats": {
     "quarterPoints": "Quarter Points",

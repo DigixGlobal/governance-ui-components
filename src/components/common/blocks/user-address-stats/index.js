@@ -32,7 +32,7 @@ class UserAddressStats extends React.Component {
     const stake = truncateNumber(lockedDgdStake || 0);
     const dgd = truncateNumber(lockedDgd || 0);
     return (
-      <Stats>
+      <Stats className="stats">
         <Item>
           <Data data-digix="Dashboard-Stats-QuarterPoints">
             {quarterPoint || 0} Points

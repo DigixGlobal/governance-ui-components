@@ -7,6 +7,14 @@ export const Stats = styled(Card)`
   padding: 0;
   background-color: ${props => props.theme.backgroundTertiary.lightest.toString()};
   box-shadow: none;
+
+  ${props =>
+    props.white &&
+    css`
+      background-color: ${props.theme.backgroundDefault.default.toString()};
+      box-shadow: ${props.theme.boxShadow};
+    `};
+
   ${props =>
     props.dashboard &&
     css`

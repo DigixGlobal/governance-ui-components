@@ -3,12 +3,7 @@ import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { H1, Card, CardItem } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
 
-export const ProfileWrapper = styled.div`
-  .stats {
-    background-color: white;
-    box-shadow: ${props => props.theme.boxShadow};
-  }
-`;
+export const ProfileWrapper = styled.div``;
 export const Heading = styled(H1)`
   margin-bottom: 1rem;
 `;

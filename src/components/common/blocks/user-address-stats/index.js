@@ -11,7 +11,7 @@ class UserAddressStats extends React.Component {
   }
 
   render() {
-    const { AddressDetails, translations } = this.props;
+    const { AddressDetails, translations, white } = this.props;
     if (!AddressDetails.address) {
       return null;
     }
@@ -32,10 +32,10 @@ class UserAddressStats extends React.Component {
     const stake = truncateNumber(lockedDgdStake || 0);
     const dgd = truncateNumber(lockedDgd || 0);
     return (
-      <Stats className="stats">
+      <Stats white={white}>
         <Item>
           <Data data-digix="Dashboard-Stats-QuarterPoints">
-            {quarterPoint || 0} Points
+            {quarterPoint || 0}
             {isModerator && (
               <span data-digix="Dashboard-Mod-QtrPts" className="small-info">
                 ({moderatorQuarterPoint} {dashboard.UserStats.moderatorPoints})
@@ -47,7 +47,7 @@ class UserAddressStats extends React.Component {
           </span>
         </Item>
         <Item>
-          <Data data-digix="Dashboard-Stats-ReputationPoints">{reputationPoint || 0} Points</Data>
+          <Data data-digix="Dashboard-Stats-ReputationPoints">{reputationPoint || 0}</Data>
           <span className="equiv">
             <span>{dashboard.UserStats.reputationPoints}</span>
           </span>
@@ -68,12 +68,17 @@ class UserAddressStats extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, bool } = PropTypes;
 
 UserAddressStats.propTypes = {
   AddressDetails: object.isRequired,
   subscribeToAddress: func.isRequired,
   translations: object.isRequired,
+  white: bool,
+};
+
+UserAddressStats.defaultProps = {
+  white: false,
 };
 
 export default withFetchAddress(UserAddressStats);

@@ -32,7 +32,7 @@ class UserAddressStats extends React.Component {
     const stake = truncateNumber(lockedDgdStake || 0);
     const dgd = truncateNumber(lockedDgd || 0);
     return (
-      <Stats white={white}>
+      <Stats white={white} data-digix="User-Address-Stats">
         <Item>
           <Data>
             <span>

@@ -53,7 +53,7 @@ export const Toggle = styled.a`
     svg {
       transform: rotate(-90deg);
     }
-    
+  }
   ${media.mobile`
     position: relative;
     text-align: right;

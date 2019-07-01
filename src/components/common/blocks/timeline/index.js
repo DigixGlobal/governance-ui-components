@@ -161,9 +161,9 @@ class Timeline extends React.Component {
             <Icon kind="arrow" />
           </Toggle>
         )}
-        <TimelineBar data-digix="Quarter-Overview">
+        <TimelineBar>
           {isQuarterOverview ? (
-            <Stats>
+            <Stats data-digix="Quarter-Overview">
               <Item>
                 <Data>
                   <span>

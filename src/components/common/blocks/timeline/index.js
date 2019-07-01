@@ -154,7 +154,7 @@ class Timeline extends React.Component {
             : `${dashboard.Timeline.yourStakesAndReward}`}
         </Qtr>
         {isWalletLoaded && (
-          <Toggle onClick={toggleTimeline}>
+          <Toggle onClick={toggleTimeline} data-digix="Stat-Toggle">
             {isQuarterOverview
               ? `${dashboard.Timeline.yourStakesAndReward}`
               : `${dashboard.Timeline.quarter} ${dashboard.Timeline.overview}`}
@@ -163,7 +163,7 @@ class Timeline extends React.Component {
         )}
         <TimelineBar>
           {isQuarterOverview ? (
-            <Stats>
+            <Stats data-digix="Quarter-Overview">
               <Item>
                 <Data>
                   <span>

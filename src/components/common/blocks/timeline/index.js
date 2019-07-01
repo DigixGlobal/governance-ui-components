@@ -165,24 +165,35 @@ class Timeline extends React.Component {
           {isQuarterOverview ? (
             <Stats>
               <Item>
-                <Data data-digix="Dashboard-Timeline-DaysEllpased">
-                  {dashboard.Timeline.day} {daysEllapsed} of {quarterDurationInDays}
+                <Data>
+                  <span>
+                    {dashboard.Timeline.day}{' '}
+                    <span data-digix="Dashboard-Timeline-DaysEllpased">{daysEllapsed}</span> of{' '}
+                    {quarterDurationInDays}
+                  </span>
                 </Data>
                 <span className="equiv">
                   <span>{dashboard.Timeline.remainingDays}</span>
                 </span>
               </Item>
               <Item>
-                <Data data-digix="Dashboard-Timeline-TotalStake">
-                  {lockedDgd} {dashboard.Timeline.stake}
+                <Data>
+                  <span>
+                    <span data-digix="Dashboard-Timeline-LockedStakes">{lockedDgd}</span>{' '}
+                    {dashboard.Timeline.stake}
+                  </span>
                 </Data>
                 <span className="equiv">
                   <span>{dashboard.Timeline.totalLockedStakes}</span>
                 </span>
               </Item>
               <Item>
-                <Data data-digix="Dashboard-Timeline-RemainingFunds">
-                  {remainingFunds} ETH (US${remainingPrice})
+                <Data>
+                  <span>
+                    <span data-digix="Dashboard-Timeline-RemainingFunds">{remainingFunds}</span>
+                    ETH ( US$
+                    <span data-digix="Dashboard-Timeline-RemainingPrice">{remainingPrice}</span>)
+                  </span>
                 </Data>
                 <span className="equiv">
                   <span>{dashboard.Timeline.currentDigixDAOFunding}</span>

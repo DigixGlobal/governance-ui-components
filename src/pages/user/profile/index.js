@@ -17,7 +17,7 @@ class Profile extends React.Component {
       <ProfileWrapper>
         <Heading>{t.title}</Heading>
         <ProfileUserInfo translations={t.ProfileInfo} />
-        <UserAddressStats translations={Translations} />
+        <UserAddressStats translations={Translations} white />
         <ProfileActivitySummary
           translations={{ kyc: t.Kyc, proposalErrors: Translations.data.common.proposalErrors }}
           tSetEmail={t.ProfileInfo.SetEmail}

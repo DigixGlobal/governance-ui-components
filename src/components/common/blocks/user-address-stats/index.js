@@ -11,7 +11,7 @@ class UserAddressStats extends React.Component {
   }
 
   render() {
-    const { AddressDetails, translations } = this.props;
+    const { AddressDetails, translations, white } = this.props;
     if (!AddressDetails.address) {
       return null;
     }
@@ -32,31 +32,39 @@ class UserAddressStats extends React.Component {
     const stake = truncateNumber(lockedDgdStake || 0);
     const dgd = truncateNumber(lockedDgd || 0);
     return (
-      <Stats>
+      <Stats white={white}>
         <Item>
-          <Data data-digix="Dashboard-Stats-QuarterPoints">
-            {quarterPoint || 0} Points
-            {isModerator && (
-              <span data-digix="Dashboard-Mod-QtrPts" className="small-info">
-                ({moderatorQuarterPoint} {dashboard.UserStats.moderatorPoints})
-              </span>
-            )}
+          <Data>
+            <span>
+              <span data-digix="Dashboard-Stats-QuarterPoints">{quarterPoint || 0}</span>
+              {isModerator && (
+                <span className="small-info">
+                  (<span data-digix="Dashboard-Stats-ModQtrPts">{moderatorQuarterPoint}</span>{' '}
+                  {dashboard.UserStats.moderatorPoints})
+                </span>
+              )}
+            </span>
           </Data>
           <span className="equiv">
             <span>{dashboard.UserStats.quarterPoints}</span>
           </span>
         </Item>
         <Item>
-          <Data data-digix="Dashboard-Stats-ReputationPoints">{reputationPoint || 0} Points</Data>
+          <Data data-digix="Dashboard-Stats-ReputationPoints">
+            <span>{reputationPoint || 0}</span>
+          </Data>
           <span className="equiv">
             <span>{dashboard.UserStats.reputationPoints}</span>
           </span>
         </Item>
         <Item>
-          <Data data-digix="Dashboard-Stats-Stake">
-            {stake} ETH
-            <span data-digix="Dashboard-Locked-DGD" className="small-info">
-              ({dgd} {dashboard.UserStats.dgdLocked})
+          <Data>
+            <span>
+              <span data-digix="Dashboard-Stats-Stake">{stake}</span> {dashboard.Timeline.stake}
+              <span className="small-info">
+                (<span data-digix="Dashboard-Stats-LockedDGD">{dgd}</span>{' '}
+                {dashboard.UserStats.dgdLocked})
+              </span>
             </span>
           </Data>
           <span className="equiv">
@@ -68,12 +76,17 @@ class UserAddressStats extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, bool } = PropTypes;
 
 UserAddressStats.propTypes = {
   AddressDetails: object.isRequired,
   subscribeToAddress: func.isRequired,
   translations: object.isRequired,
+  white: bool,
+};
+
+UserAddressStats.defaultProps = {
+  white: false,
 };
 
 export default withFetchAddress(UserAddressStats);

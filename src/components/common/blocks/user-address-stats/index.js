@@ -55,7 +55,7 @@ class UserAddressStats extends React.Component {
         </Item>
         <Item>
           <Data>
-            <span data-digix="Dashboard-Stats-Stake">{stake}</span> ETH
+            <span data-digix="Dashboard-Stats-Stake">{stake}</span> {dashboard.Timeline.stake}
             <span className="small-info">
               (<span data-digix="Dashboard-Stats-LockedDGD">{dgd}</span>{' '}
               {dashboard.UserStats.dgdLocked})

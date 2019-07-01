@@ -68,6 +68,7 @@ export const Stats = styled(Card)`
   padding: 0;
   background-color: ${props => props.theme.backgroundTertiary.lightest.toString()};
   box-shadow: none;
+
   ${props =>
     props.dashboard &&
     css`
@@ -112,7 +113,9 @@ export const Data = styled.div`
   margin-bottom: 0.5em;
 
   span {
+    padding: 0 0.25rem;
     &.equiv {
+      padding: 0;
       font-family: 'Futura PT Light', sans-serif;
       font-size: 1.2em;
       color: ${props => props.theme.textColor.default.base.toString()};

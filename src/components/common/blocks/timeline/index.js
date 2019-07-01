@@ -166,9 +166,11 @@ class Timeline extends React.Component {
             <Stats>
               <Item>
                 <Data>
-                  {dashboard.Timeline.day}{' '}
-                  <span data-digix="Dashboard-Timeline-DaysEllpased">{daysEllapsed}</span> of{' '}
-                  {quarterDurationInDays}
+                  <span>
+                    {dashboard.Timeline.day}{' '}
+                    <span data-digix="Dashboard-Timeline-DaysEllpased">{daysEllapsed}</span> of{' '}
+                    {quarterDurationInDays}
+                  </span>
                 </Data>
                 <span className="equiv">
                   <span>{dashboard.Timeline.remainingDays}</span>
@@ -176,8 +178,10 @@ class Timeline extends React.Component {
               </Item>
               <Item>
                 <Data>
-                  <span data-digix="Dashboard-Timeline-LockedStakes">{lockedDgd}</span>{' '}
-                  {dashboard.Timeline.stake}
+                  <span>
+                    <span data-digix="Dashboard-Timeline-LockedStakes">{lockedDgd}</span>{' '}
+                    {dashboard.Timeline.stake}
+                  </span>
                 </Data>
                 <span className="equiv">
                   <span>{dashboard.Timeline.totalLockedStakes}</span>
@@ -185,9 +189,11 @@ class Timeline extends React.Component {
               </Item>
               <Item>
                 <Data>
-                  <span data-digix="Dashboard-Timeline-RemainingFunds">{remainingFunds}</span>
-                  ETH ( US$
-                  <span data-digix="Dashboard-Timeline-RemainingPrice">{remainingPrice}</span>)
+                  <span>
+                    <span data-digix="Dashboard-Timeline-RemainingFunds">{remainingFunds}</span>
+                    ETH ( US$
+                    <span data-digix="Dashboard-Timeline-RemainingPrice">{remainingPrice}</span>)
+                  </span>
                 </Data>
                 <span className="equiv">
                   <span>{dashboard.Timeline.currentDigixDAOFunding}</span>

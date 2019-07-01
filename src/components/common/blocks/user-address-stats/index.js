@@ -35,30 +35,36 @@ class UserAddressStats extends React.Component {
       <Stats white={white}>
         <Item>
           <Data>
-            <span data-digix="Dashboard-Stats-QuarterPoints">{quarterPoint || 0}</span>
-            {isModerator && (
-              <span className="small-info">
-                (<span data-digix="Dashboard-Stats-ModQtrPts">{moderatorQuarterPoint}</span>{' '}
-                {dashboard.UserStats.moderatorPoints})
-              </span>
-            )}
+            <span>
+              <span data-digix="Dashboard-Stats-QuarterPoints">{quarterPoint || 0}</span>
+              {isModerator && (
+                <span className="small-info">
+                  (<span data-digix="Dashboard-Stats-ModQtrPts">{moderatorQuarterPoint}</span>{' '}
+                  {dashboard.UserStats.moderatorPoints})
+                </span>
+              )}
+            </span>
           </Data>
           <span className="equiv">
             <span>{dashboard.UserStats.quarterPoints}</span>
           </span>
         </Item>
         <Item>
-          <Data data-digix="Dashboard-Stats-ReputationPoints">{reputationPoint || 0}</Data>
+          <Data data-digix="Dashboard-Stats-ReputationPoints">
+            <span>{reputationPoint || 0}</span>
+          </Data>
           <span className="equiv">
             <span>{dashboard.UserStats.reputationPoints}</span>
           </span>
         </Item>
         <Item>
           <Data>
-            <span data-digix="Dashboard-Stats-Stake">{stake}</span> {dashboard.Timeline.stake}
-            <span className="small-info">
-              (<span data-digix="Dashboard-Stats-LockedDGD">{dgd}</span>{' '}
-              {dashboard.UserStats.dgdLocked})
+            <span>
+              <span data-digix="Dashboard-Stats-Stake">{stake}</span> {dashboard.Timeline.stake}
+              <span className="small-info">
+                (<span data-digix="Dashboard-Stats-LockedDGD">{dgd}</span>{' '}
+                {dashboard.UserStats.dgdLocked})
+              </span>
             </span>
           </Data>
           <span className="equiv">

@@ -41,7 +41,7 @@ class SpecialProjectVotingResult extends React.Component {
     const approvalDeadline = new Date(currentRound.revealDeadline * 1000);
 
     const quota = parseBigNumber(currentRound.quota, 0, false);
-    const totalModeratorLockedDgds = parseBigNumber(daoInfo.totalModeratorLockedDgds, 0, false);
+    const totalLockedDgds = parseBigNumber(daoInfo.totalLockedDgds, 0, false);
     const totalVoterStake = parseBigNumber(currentRound.totalVoterStake, 0, false);
 
     const votes = currentRound.totalVoterCount;
@@ -51,8 +51,8 @@ class SpecialProjectVotingResult extends React.Component {
     const minimumQuorum = formatPercentage(
       CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR / CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR
     );
-    const quorumProgress = formatPercentage(totalVoterStake / totalModeratorLockedDgds);
 
+    const quorumProgress = formatPercentage(totalVoterStake / totalLockedDgds);
     const minimumApproval = formatPercentage(quota);
     const approvalProgress = formatPercentage(currentRound.yes / totalVoterStake);
 

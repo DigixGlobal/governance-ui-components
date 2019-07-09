@@ -622,7 +622,7 @@ class Proposal extends React.Component {
           daoInfo={daoInfo}
           translations={translations}
         />
-        {proposal.id === '0xd75d13bc6e254db93f313ad7c880c195637ef3568e6495425d2e9b2842dff584' ? (
+        {proposal.id !== '0xd75d13bc6e254db93f313ad7c880c195637ef3568e6495425d2e9b2842dff584' ? (
           <SpecialProjectDetails
             uintConfigs={proposalDetails.data.uintConfigs}
             translations={translations}

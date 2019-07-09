@@ -34,13 +34,15 @@ class SpecialProjectVotingResult extends React.Component {
     const {
       CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR,
       CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR,
+      CONFIG_SPECIAL_QUOTA_NUMERATOR,
+      CONFIG_SPECIAL_QUOTA_DENOMINATOR,
     } = DaoConfig;
     const currentRound = proposal.votingRounds[0];
 
     const commitDeadline = new Date(currentRound.commitDeadline * 1000);
     const approvalDeadline = new Date(currentRound.revealDeadline * 1000);
 
-    const quota = parseBigNumber(currentRound.quota, 0, false);
+    // const quota = parseBigNumber(currentRound.quota, 0, false);
     const totalLockedDgds = parseBigNumber(daoInfo.totalLockedDgds, 0, false);
     const totalVoterStake = parseBigNumber(currentRound.totalVoterStake, 0, false);
 
@@ -53,7 +55,11 @@ class SpecialProjectVotingResult extends React.Component {
     );
 
     const quorumProgress = formatPercentage(totalVoterStake / totalLockedDgds);
-    const minimumApproval = formatPercentage(quota);
+    // TODO: This should come from info-server but there seems to be a problem with it so we'll use a different source for now
+    // const minimumApproval = formatPercentage(quota);
+    const minimumApproval = formatPercentage(
+      CONFIG_SPECIAL_QUOTA_NUMERATOR / CONFIG_SPECIAL_QUOTA_DENOMINATOR
+    );
     const approvalProgress = formatPercentage(currentRound.yes / totalVoterStake);
 
     return {

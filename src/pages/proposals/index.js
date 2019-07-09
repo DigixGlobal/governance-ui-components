@@ -20,7 +20,11 @@ import AdditionalDocs from '@digix/gov-ui/pages/proposals/additional-docs';
 import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
-import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import {
+  getAddressDetails,
+  getDaoConfig,
+  getDaoDetails,
+} from '@digix/gov-ui/reducers/info-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
 import { Message, Notifications } from '@digix/gov-ui/components/common/common-styles';
 import { ProjectActionableStatus, ProposalStages, VotingStages } from '@digix/gov-ui/constants';
@@ -135,6 +139,8 @@ class Proposal extends React.Component {
     const {
       clearDaoProposalDetailsAction,
       getAddressDetailsAction,
+      getDaoConfigAction,
+      getDaoDetailsAction,
       location,
       addressDetails,
       getTranslationsAction,
@@ -146,6 +152,8 @@ class Proposal extends React.Component {
         if (addressDetails.data.address) {
           getAddressDetailsAction(addressDetails.data.address);
         }
+        getDaoConfigAction();
+        getDaoDetailsAction();
         this.getProposalLikes();
       }
     }
@@ -823,6 +831,8 @@ Proposal.propTypes = {
   getUserProposalLikeStatusAction: func.isRequired,
   clearDaoProposalDetailsAction: func.isRequired,
   getAddressDetailsAction: func.isRequired,
+  getDaoConfigAction: func.isRequired,
+  getDaoDetailsAction: func.isRequired,
   likeProposalAction: func.isRequired,
   unlikeProposalAction: func.isRequired,
   addressDetails: object.isRequired,
@@ -867,6 +877,8 @@ export default withFetchUser(
     {
       getUserProposalLikeStatusAction: getUserProposalLikeStatus,
       getAddressDetailsAction: getAddressDetails,
+      getDaoConfigAction: getDaoConfig,
+      getDaoDetailsAction: getDaoDetails,
       likeProposalAction: likeProposal,
       unlikeProposalAction: unlikeProposal,
       clearDaoProposalDetailsAction: clearDaoProposalDetails,

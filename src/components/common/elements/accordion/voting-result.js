@@ -43,6 +43,8 @@ class VotingResult extends React.Component {
     const {
       CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR,
       CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR,
+      CONFIG_SPECIAL_QUOTA_NUMERATOR,
+      CONFIG_SPECIAL_QUOTA_DENOMINATOR,
     } = DaoConfig;
 
     const votingDeadline = new Date(
@@ -62,16 +64,21 @@ class VotingResult extends React.Component {
     let minimumQuorum = formatPercentage(
       quorum / (isSpecial ? totalLockedDgds : totalModeratorLockedDgds)
     );
+
+    let minimumApproval = formatPercentage(quota);
     if (isSpecial) {
       minimumQuorum = formatPercentage(
         CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR / CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR
+      );
+      minimumApproval = formatPercentage(
+        CONFIG_SPECIAL_QUOTA_NUMERATOR / CONFIG_SPECIAL_QUOTA_DENOMINATOR
       );
     }
     const quorumProgress = formatPercentage(
       totalVoterStake / (isSpecial ? totalLockedDgds : totalModeratorLockedDgds)
     );
 
-    const minimumApproval = formatPercentage(quota);
+    // const minimumApproval = formatPercentage(quota);
     const approvalProgress = formatPercentage(voting.yes / totalVoterStake);
 
     return {

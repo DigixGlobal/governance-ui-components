@@ -190,8 +190,8 @@ class Timeline extends React.Component {
               <Item>
                 <Data>
                   <span>
-                    <span data-digix="Dashboard-Timeline-RemainingFunds">{remainingFunds}</span>
-                    ETH ( US$
+                    <span data-digix="Dashboard-Timeline-RemainingFunds">{remainingFunds}</span> ETH
+                    (US$
                     <span data-digix="Dashboard-Timeline-RemainingPrice">{remainingPrice}</span>)
                   </span>
                 </Data>
@@ -210,7 +210,7 @@ class Timeline extends React.Component {
                   <div>
                     <Phase>{dashboard.Timeline.lockingPhase}</Phase>
                     <ToolTip
-                      title={timeline.stakinPhase || 'Staking Phase'}
+                      title={timeline.stakingPhase || 'Staking Phase'}
                       content={`${timeline.startsOn || `Starts on`} ${' '} ${moment(
                         startOfQuarter
                       ).format('dddd MMMM DD YYYY, h:mm:ss a')} ${timeline.endsOn ||

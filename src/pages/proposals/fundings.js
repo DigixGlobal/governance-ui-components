@@ -39,7 +39,7 @@ class ProposalFundings extends React.Component {
 
   getChangedFundings() {
     const proposal = this.props.proposalDetails.data;
-    if (!proposal.isFundingChanged) {
+    if (!proposal.isFundingChanged || !proposal.changedFundings) {
       return {
         milestoneFunds: null,
         milestoneFundDifference: null,

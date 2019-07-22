@@ -220,7 +220,7 @@ class Proposal extends React.Component {
     let reward = null;
     let rewardDifference = null;
 
-    if (!proposal.isFundingChanged) {
+    if (!proposal.isFundingChanged || !proposal.changedFundings) {
       return {
         milestoneFunds,
         milestoneFundDifference,

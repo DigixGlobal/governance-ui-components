@@ -95,7 +95,7 @@
 
   "maintenance": {
     "title": "Sorry, we're down for maintenance.",
-    "descriptionline1": "We'll be back by 6: 00pm SGT (GMT + 8 ) 25/07/2019 . Thank you for your patience.",
-    "descriptionline2": "We are currently doing a full resync of the Ethereum blockchain into our info server in order to clear up some corrupted data that we received from our Infura (link to https://infura.io) endpoint."
+    "descriptionLineFirst": "We'll be back by 6: 00pm SGT (GMT + 8 ) 25/07/2019 . Thank you for your patience.",
+    "descriptionLineSecond": "We are currently doing a full resync of the Ethereum blockchain into our info server in order to clear up some corrupted data that we received from our [Infura](https://twitter.com/DigixGlobal/status/1137895228667379712) endpoint."
   }
 }

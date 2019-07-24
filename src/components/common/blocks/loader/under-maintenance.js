@@ -38,7 +38,8 @@ class UnderMaintenance extends React.Component {
           <Content>
             <Icon kind="repair" large style={{ marginBottom: '2rem' }} />
             <h1>{maintenance.title}</h1>
-            <p>{maintenance.description}</p>
+            <p>{maintenance.descriptionline1}</p>
+            <p>{maintenance.descriptionline2}</p>
           </Content>
         </Maintenance>
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -42,7 +43,10 @@ class UnderMaintenance extends React.Component {
             <p>
               We are currently doing a full resync of the Ethereum blockchain into our info server
               in order to clear up some corrupted data that we received from our{' '}
-              <a href="https://infura.io">Infura</a> endpoint.
+              <a target="_blank" href="https://infura.io">
+                Infura
+              </a>{' '}
+              endpoint.
             </p>
           </Content>
         </Maintenance>

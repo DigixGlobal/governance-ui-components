@@ -38,7 +38,13 @@ class UnderMaintenance extends React.Component {
           <Content>
             <Icon kind="repair" large style={{ marginBottom: '2rem' }} />
             <h1>{maintenance.title}</h1>
-            <p>{maintenance.description}</p>
+            <p>We'll be back by 6: 00pm SGT (GMT + 8 ) 25/07/2019 . Thank you for your patience.</p>
+            <p>
+              We are currently doing a full resync of the Ethereum blockchain into our info server
+              in order to clear up some corrupted data that we received from our{' '}
+              <a href="https://twitter.com/DigixGlobal/status/1137895228667379712">Infura</a>{' '}
+              endpoint.
+            </p>
           </Content>
         </Maintenance>
 

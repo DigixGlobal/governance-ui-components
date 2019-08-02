@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import LikeButton from '@digix/gov-ui/components/common/elements/like';
 import LogDashboard from '@digix/gov-ui/analytics/dashboard';
@@ -19,12 +20,10 @@ import {
 } from '@digix/gov-ui/components/proposal-card/style';
 
 class Proposal extends React.PureComponent {
-  redirectToProposalPage = () => {
-    const { AddressDetails, details, history } = this.props;
+  logClickToProposalPage = () => {
+    const { AddressDetails, details } = this.props;
     const userType = getUserStatus(AddressDetails.data, UserStatus);
-
     LogDashboard.viewProject(userType);
-    history.push(`/proposals/${details.proposalId}`);
   };
 
   render() {
@@ -103,15 +102,16 @@ class Proposal extends React.PureComponent {
             </p>
           </ShortDescr>
 
-          <ViewCta
-            small
-            reverse
-            role="link"
-            onClick={this.redirectToProposalPage}
-            data-digix="Participate-Btn"
-          >
-            {cardTranslation.view}
-          </ViewCta>
+          <Link to={`/proposals/${details.proposalId}`} onClick={this.logClickToProposalPage}>
+            <ViewCta
+              small
+              reverse
+              role="link"
+              data-digix="Participate-Btn"
+            >
+              {cardTranslation.view}
+            </ViewCta>
+          </Link>
         </AboutProposal>
       </Details>
     );

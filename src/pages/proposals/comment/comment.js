@@ -190,7 +190,7 @@ class Comment extends React.Component {
   render() {
     const { currentUser, translations } = this.props;
     const { comment } = this.state;
-    const { body, isBanned, user } = comment;
+    const { body, isBanned, user, createdAt } = comment;
     const isForumAdmin = currentUser != null ? currentUser : false;
 
     const isDeleted = !body;
@@ -201,7 +201,12 @@ class Comment extends React.Component {
 
     return (
       <CommentListItem>
-        <CommentAuthor hide={isDeleted} user={user} translations={translations} />
+        <CommentAuthor
+          hide={isDeleted}
+          user={user}
+          translations={translations}
+          createdAt={createdAt}
+        />
         <CommentPost isHidden={isHidden} deleted={isDeleted}>
           <Content data-digix="Comment-Message">
             <Markdown source={commentMessage} escapeHtml={false} />

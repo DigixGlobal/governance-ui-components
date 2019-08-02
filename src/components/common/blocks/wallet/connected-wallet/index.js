@@ -57,11 +57,11 @@ class ConnectedWallet extends React.Component {
   }
 
   componentDidMount() {
-    const { defaultAddress, AddressDetails } = this.props;
+    const { AddressDetails } = this.props;
     this.props.getTxConfig();
     this._isMounted = true;
 
-    if (defaultAddress.address && AddressDetails.data) {
+    if (this.getDefaultAddressAddress() && AddressDetails.data) {
       const address = AddressDetails.data;
       const hasParticipated = address.isParticipant || address.lastParticipatedQuarter > 0;
 
@@ -87,7 +87,7 @@ class ConnectedWallet extends React.Component {
   }
 
   getMaxAllowance = () => {
-    const { defaultAddress, web3Redux } = this.props;
+    const { web3Redux } = this.props;
 
     const { abi, address } = getDGDBalanceContract(network);
     const { address: DaoStakingContract } = getContract(DaoStakeLocking, network);
@@ -95,17 +95,21 @@ class ConnectedWallet extends React.Component {
       .web3(network)
       .eth.contract(abi)
       .at(address);
-    return this.props.fetchMaxAllowance(contract, defaultAddress.address, DaoStakingContract);
+    return this.props.fetchMaxAllowance(
+      contract,
+      this.getDefaultAddressAddress(),
+      DaoStakingContract
+    );
   };
 
   getDgdBalance() {
-    const { defaultAddress, web3Redux } = this.props;
+    const { web3Redux } = this.props;
     const { address: contractAddress, abi } = getDGDBalanceContract(network);
     const { web3 } = web3Redux.networks[network];
     const contract = web3.eth.contract(abi).at(contractAddress);
 
     return this.props.getDaoDetails().then(() =>
-      contract.balanceOf.call(defaultAddress.address).then(balance => {
+      contract.balanceOf.call(this.getDefaultAddressAddress()).then(balance => {
         const { isGlobalRewardsSet } = this.props.DaoDetails.data;
         const parsedBalance = parseBigNumber(balance, 9);
         const hasBalance = parseInt(parsedBalance, 0) > 0;
@@ -119,12 +123,19 @@ class ConnectedWallet extends React.Component {
   getEthBalance() {
     const { defaultAddress, web3Redux } = this.props;
     const { web3 } = web3Redux.networks[network];
-    if (defaultAddress && defaultAddress.address) {
+    const defaultAddressAddress = this.getDefaultAddressAddress();
+
+    if (defaultAddressAddress) {
       return web3.eth
-        .getBalance(defaultAddress.address)
+        .getBalance(defaultAddressAddress)
         .then(balance => parseBigNumber(balance, 18));
     }
   }
+
+  getDefaultAddressAddress = () => {
+    const { defaultAddress } = this.props;
+    return defaultAddress && defaultAddress.address;
+  };
 
   setError = error => {
     this.props.showHideAlert({
@@ -231,7 +242,7 @@ class ConnectedWallet extends React.Component {
   }
 
   renderDefault = () => {
-    const { defaultAddress, enableLockDgd, tokenUsdValues } = this.props;
+    const { enableLockDgd, tokenUsdValues } = this.props;
     const { dgdBalance, ethBalance } = this.state;
 
     const tokensInUsd = tokenUsdValues && tokenUsdValues.data ? tokenUsdValues.data : undefined;
@@ -248,6 +259,8 @@ class ConnectedWallet extends React.Component {
     const tLockDgd = t.lockDgd;
     const tNotes = t.notes;
 
+    const defaultAddressAddress = this.getDefaultAddressAddress();
+
     return (
       <Fragment>
         <CloseButtonWithHeader>
@@ -257,7 +270,7 @@ class ConnectedWallet extends React.Component {
         <WalletDetails>
           <Address>
             {t.address}
-            <span data-digix="User-Address">{defaultAddress.address}</span>
+            <span data-digix="User-Address">{defaultAddressAddress}</span>
           </Address>
           <Token>
             <Icon kind="ethereum" width="48px" height="48px" />

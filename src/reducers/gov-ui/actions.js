@@ -1,5 +1,6 @@
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { REDUX_PREFIX, CMC_ENDPOINT } from './constants';
+import { updateMomentLocale } from '@digix/gov-ui/utils/timeDateUtils';
 
 export const actions = {
   SHOW_LOCK_DGD_OVERLAY: `${REDUX_PREFIX}SHOW_LOCK_DGD_OVERLAY`,
@@ -138,6 +139,8 @@ export function getTokenUsdValue() {
 }
 
 export function setLanguageTranslation(payload = 'en') {
+  updateMomentLocale(payload);
+
   return dispatch => {
     dispatch({ type: actions.SET_TRANSLATION_LANGUAGE, payload });
   };

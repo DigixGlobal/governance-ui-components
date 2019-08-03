@@ -121,7 +121,6 @@ export default function(state = defaultState, action) {
         Language: action.payload,
       };
     case actions.SET_ACTIVE_PROJECT_TAB:
-      console.log('SET_ACTIVE_PROJECT_TAB: ', action.payload);
       return {
         ...state,
         activeProjectTab: action.payload,

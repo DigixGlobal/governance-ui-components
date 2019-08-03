@@ -145,7 +145,6 @@ export function setLanguageTranslation(payload = 'en') {
 }
 
 export function setActiveProjectTab(payload = 'all') {
-  console.log('setActiveProjectTab payload: ', payload);
   return dispatch => {
     dispatch({ type: actions.SET_ACTIVE_PROJECT_TAB, payload });
   };

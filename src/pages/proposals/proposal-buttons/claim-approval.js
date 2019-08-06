@@ -147,7 +147,7 @@ class ClaimApprovalButton extends React.PureComponent {
     if (!transactions.edges || transactions.edges.length === 0) return false;
 
     const transaction = transactions.edges.find(
-      p => p.node.project === proposalId && p.node.status.toLowerCase() !== 'confirmed'
+      p => p.node.project === proposalId && p.node.status.toLowerCase() === 'confirmed'
     );
     return transaction !== undefined;
   };

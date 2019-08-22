@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
 import { media } from '@digix/gov-ui/components/common/breakpoints';
@@ -158,17 +159,41 @@ export const Author = styled.div`
   }
 `;
 
-export const ViewCta = styled(Button)`
-  border-width: 1px;
+export const ViewCta = styled(Link)`
   background: transparent;
+  border-width: 1px;
+  border-color: ${props => props.theme.buttonPrimary.invert.border.base.toString()};
+  border-radius: ${props => props.theme.borderRadius};
+
+  box-shadow: none;
+  color: ${props => props.theme.buttonPrimary.invert.textColor.base.toString()};
+  cursor: pointer;
+
+  font-family: 'Futura PT Medium', sans-serif;
+  font-size: 1.2rem;
+  outline: none;
+  padding: 0.75rem 1rem;
   margin: 0;
+  transition: ${props => props.theme.transition};
   text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  width: ${props => (props.width ? '' : 'auto')};
+
+  &:hover {
+    color: ${props => props.theme.buttonPrimary.textColor.base.toString()};
+  }
 
   ${props =>
     props.disabled &&
     css`
-      color: ${props.theme.link.disabled.light.toString()};
+      border-color: ${props.theme.buttonDisabled.border.lighter.toString()};
+      color: ${props.theme.buttonDisabled.textColor.lighter.toString()};
       pointer-events: none;
+
+      &:hover {
+        color: ${props.theme.buttonDisabled.textColor.lighter.toString()};
+      }
     `}
 `;
 

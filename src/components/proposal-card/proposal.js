@@ -19,12 +19,11 @@ import {
 } from '@digix/gov-ui/components/proposal-card/style';
 
 class Proposal extends React.PureComponent {
-  redirectToProposalPage = () => {
-    const { AddressDetails, details, history } = this.props;
+  logClickToProposalPage = () => {
+    const { AddressDetails, details } = this.props;
     const userType = getUserStatus(AddressDetails.data, UserStatus);
 
     LogDashboard.viewProject(userType);
-    history.push(`/proposals/${details.proposalId}`);
   };
 
   render() {
@@ -37,7 +36,12 @@ class Proposal extends React.PureComponent {
       title,
       translations,
     } = this.props;
-    const { actionableStatus, isSpecial, proposalId, proposalVersions } = details;
+    const {
+      actionableStatus,
+      isSpecial,
+      proposalId,
+      proposalVersions,
+    } = details;
 
     const proposalVersion =
       proposalVersions && proposalVersions.length
@@ -60,11 +64,15 @@ class Proposal extends React.PureComponent {
           <Tags>
             <div>
               {isSpecial && (
-                <Button kind="tag" special  data-digix="Proposal-IsSpecial">
+                <Button kind="tag" special data-digix="Proposal-IsSpecial">
                   {special}
                 </Button>
               )}
-              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
+              <Button
+                kind="tag"
+                actionable={isActionable}
+                data-digix="Proposal-Status"
+              >
                 {status[details.stage.toLowerCase()]}
               </Button>
               {isActionable && (
@@ -104,10 +112,8 @@ class Proposal extends React.PureComponent {
           </ShortDescr>
 
           <ViewCta
-            small
-            reverse
-            role="link"
-            onClick={this.redirectToProposalPage}
+            to={`/proposals/${details.proposalId}`}
+            onClick={this.logClickToProposalPage}
             data-digix="Participate-Btn"
           >
             {cardTranslation.view}
@@ -118,7 +124,7 @@ class Proposal extends React.PureComponent {
   }
 }
 
-const { bool, func, object, oneOfType,number, string } = PropTypes;
+const { bool, func, object, oneOfType, number, string } = PropTypes;
 Proposal.propTypes = {
   AddressDetails: object,
   details: object.isRequired,
@@ -126,7 +132,7 @@ Proposal.propTypes = {
   likeCount: number.isRequired,
   likeProposal: func.isRequired,
   title: string,
-  history: object.isRequired,
+  // history: object.isRequired,
   displayName: oneOfType([object, string]),
   translations: object.isRequired,
 };

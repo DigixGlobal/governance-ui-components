@@ -62,7 +62,12 @@ class ProposalFundings extends React.Component {
     let reward;
     if (typeof finalReward === 'undefined') {
       reward = 0;
-      return;
+      return {
+        milestoneFunds,
+        milestoneFundDifference,
+        reward,
+        rewardDifference,
+      };
     }
     reward = finalReward.original;
     reward = truncateNumber(reward);

@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import { truncateNumber } from '@digix/gov-ui/utils/helpers';
 import { withFetchAddress } from '@digix/gov-ui/api/graphql-queries/address';
 
-import {
-  Data,
-  Item,
-  Label,
-  UserStats,
-} from '@digix/gov-ui/components/common/blocks/user-address-stats/style';
+import { Data, Item, Stats } from '@digix/gov-ui/components/common/blocks/user-address-stats/style';
 
 class UserAddressStats extends React.Component {
   componentDidMount() {
@@ -16,7 +11,7 @@ class UserAddressStats extends React.Component {
   }
 
   render() {
-    const { AddressDetails, translations } = this.props;
+    const { AddressDetails, translations, white } = this.props;
     if (!AddressDetails.address) {
       return null;
     }
@@ -37,46 +32,61 @@ class UserAddressStats extends React.Component {
     const stake = truncateNumber(lockedDgdStake || 0);
     const dgd = truncateNumber(lockedDgd || 0);
     return (
-      <UserStats>
+      <Stats white={white} data-digix="User-Address-Stats">
         <Item>
-          <Label>{dashboard.UserStats.quarterPoints}</Label>
           <Data>
-            <span data-digix="Dashboard-Stats-QuarterPoints">{quarterPoint || 0}</span>
-            {isModerator && (
-              <span className="equiv">
-                <span>( </span>
-                <span data-digix="Dashboard-Mod-QtrPts">{moderatorQuarterPoint}</span>
-                <span>&nbsp; {dashboard.UserStats.moderatorPoints} )</span>
-              </span>
-            )}
-          </Data>
-        </Item>
-        <Item>
-          <Label>{dashboard.UserStats.reputationPoints}</Label>
-          <Data data-digix="Dashboard-Stats-ReputationPoints">{reputationPoint || 0}</Data>
-        </Item>
-        <Item>
-          <Label>{dashboard.UserStats.stake}</Label>
-          <Data data-digix="Dashboard-Stats-Stake">
-            <span data-digix="Dashboard-Locked-Stake">{stake}</span>
-            <span className="equiv">
-              <span>( </span>
-              <span data-digix="Dashboard-Locked-DGD">{dgd}</span>
-              <span>&nbsp;{dashboard.UserStats.dgdLocked} )</span>
+            <span>
+              <span data-digix="Dashboard-Stats-QuarterPoints">{quarterPoint || 0}</span>
+              {isModerator && (
+                <span className="small-info">
+                  (<span data-digix="Dashboard-Stats-ModQtrPts">{moderatorQuarterPoint}</span>{' '}
+                  {dashboard.UserStats.moderatorPoints})
+                </span>
+              )}
             </span>
           </Data>
+          <span className="equiv">
+            <span>{dashboard.UserStats.quarterPoints}</span>
+          </span>
         </Item>
-      </UserStats>
+        <Item>
+          <Data data-digix="Dashboard-Stats-ReputationPoints">
+            <span>{reputationPoint || 0}</span>
+          </Data>
+          <span className="equiv">
+            <span>{dashboard.UserStats.reputationPoints}</span>
+          </span>
+        </Item>
+        <Item>
+          <Data>
+            <span>
+              <span data-digix="Dashboard-Stats-Stake">{stake}</span> {dashboard.Timeline.stake}
+              <span className="small-info">
+                (<span data-digix="Dashboard-Stats-LockedDGD">{dgd}</span>{' '}
+                {dashboard.UserStats.dgdLocked})
+              </span>
+            </span>
+          </Data>
+          <span className="equiv">
+            <span>{dashboard.UserStats.stake}</span>
+          </span>
+        </Item>
+      </Stats>
     );
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, bool } = PropTypes;
 
 UserAddressStats.propTypes = {
   AddressDetails: object.isRequired,
   subscribeToAddress: func.isRequired,
   translations: object.isRequired,
+  white: bool,
+};
+
+UserAddressStats.defaultProps = {
+  white: false,
 };
 
 export default withFetchAddress(UserAddressStats);

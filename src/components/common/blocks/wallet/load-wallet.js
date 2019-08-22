@@ -10,6 +10,7 @@ import {
 } from '@digix/gov-ui/components/common/common-styles';
 import { ActionContainer } from '@digix/gov-ui/components/common/blocks/wallet/style.js';
 import { WalletStages } from '@digix/gov-ui/constants';
+import { browserDetection } from './browser-detect';
 
 import V3 from './json';
 import Metamask from './metamask';
@@ -32,6 +33,7 @@ class LoadWallet extends React.Component {
   render() {
     const { createKeystore } = this.props;
     const t = this.props.translations.loadWallet.selectWalletType;
+    const blockList = browserDetection();
 
     return (
       <IntroContainer>
@@ -40,11 +42,27 @@ class LoadWallet extends React.Component {
         </CloseButton>
         <Header uppercase>{t.title} </Header>
         <ActionContainer>
-          <Metamask createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
-          <Ledger createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
-          <Trezor createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
-          {/* <ImToken createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} /> */}
-          <V3 createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} />
+          <Metamask
+            createKeystore={createKeystore}
+            onSuccess={this.handleKeystoreLoad}
+            blockList={blockList}
+          />
+          <Ledger
+            createKeystore={createKeystore}
+            onSuccess={this.handleKeystoreLoad}
+            blockList={blockList}
+          />
+          <Trezor
+            createKeystore={createKeystore}
+            onSuccess={this.handleKeystoreLoad}
+            blockList={blockList}
+          />
+          {/* <ImToken createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} blockList={blockList} /> */}
+          <V3
+            createKeystore={createKeystore}
+            onSuccess={this.handleKeystoreLoad}
+            blockList={blockList}
+          />
         </ActionContainer>
       </IntroContainer>
     );

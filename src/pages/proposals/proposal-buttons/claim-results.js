@@ -137,7 +137,9 @@ class ClaimResultsButton extends React.PureComponent {
       this.props.showRightPanel({
         show: false,
       });
-      this.setState({ claimingStep: proposal.votingRounds[currentVotingRound].currentClaimStep });
+      this.setState({
+        claimingStep: proposal.votingRounds[currentVotingRound].currentClaimStep,
+      });
     };
 
     const payload = {
@@ -170,7 +172,7 @@ class ClaimResultsButton extends React.PureComponent {
     if (!transactions.edges || transactions.edges.length === 0) return false;
 
     const transaction = transactions.edges.find(
-      p => p.node.project === proposalId && p.node.status.toLowerCase() !== 'confirmed'
+      p => p.node.project === proposalId && p.node.status.toLowerCase() === 'pending'
     );
     return transaction !== undefined;
   };
@@ -183,12 +185,15 @@ class ClaimResultsButton extends React.PureComponent {
     const {
       isProposer,
       proposal,
-      proposal: { currentVotingRound = 0 },
       daoConfig,
       translations: { buttons },
     } = this.props;
 
     const { isMultiStep, claimingStep, totalTransactions } = this.state;
+
+    let { currentVotingRound } = proposal;
+
+    if (!currentVotingRound || currentVotingRound === null) currentVotingRound = 0;
 
     if (
       !isProposer ||
@@ -237,9 +242,7 @@ class ClaimResultsButton extends React.PureComponent {
         data-digix="ProposalAction-Results"
       >
         {withinDeadline && tentativePassed
-          ? `${claimCaption} ${
-              proposal.votingRounds[currentVotingRound].currentClaimStep
-            }/${totalTransactions}`
+          ? `${claimCaption} ${proposal.votingRounds[currentVotingRound].currentClaimStep}/${totalTransactions}`
           : buttons.claimFailedProject}
       </Button>
     );

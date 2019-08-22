@@ -12,13 +12,19 @@ import ParticipantButtons from '@digix/gov-ui/pages/proposals/proposal-buttons/p
 import ProjectDetails from '@digix/gov-ui/pages/proposals/details';
 import ProposalFundings from '@digix/gov-ui/pages/proposals/fundings';
 import ProposalVersionNav from '@digix/gov-ui/pages/proposals/version-nav';
-import SpecialProjectDetails from '@digix/gov-ui/pages/proposals/special-project-details';
+import SpecialProjectDetails, {
+  ShortenedProposal,
+} from '@digix/gov-ui/pages/proposals/special-project-details';
 import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
 import AdditionalDocs from '@digix/gov-ui/pages/proposals/additional-docs';
 import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
 import VotingResult from '@digix/gov-ui/pages/proposals/voting-result';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
-import { getAddressDetails } from '@digix/gov-ui/reducers/info-server/actions';
+import {
+  getAddressDetails,
+  getDaoConfig,
+  getDaoDetails,
+} from '@digix/gov-ui/reducers/info-server/actions';
 import { initializePayload } from '@digix/gov-ui/api';
 import { Message, Notifications } from '@digix/gov-ui/components/common/common-styles';
 import { ProjectActionableStatus, ProposalStages, VotingStages } from '@digix/gov-ui/constants';
@@ -133,6 +139,8 @@ class Proposal extends React.Component {
     const {
       clearDaoProposalDetailsAction,
       getAddressDetailsAction,
+      getDaoConfigAction,
+      getDaoDetailsAction,
       location,
       addressDetails,
       getTranslationsAction,
@@ -144,6 +152,8 @@ class Proposal extends React.Component {
         if (addressDetails.data.address) {
           getAddressDetailsAction(addressDetails.data.address);
         }
+        getDaoConfigAction();
+        getDaoDetailsAction();
         this.getProposalLikes();
       }
     }
@@ -210,7 +220,7 @@ class Proposal extends React.Component {
     let reward = null;
     let rewardDifference = null;
 
-    if (!proposal.isFundingChanged) {
+    if (!proposal.isFundingChanged || !proposal.changedFundings) {
       return {
         milestoneFunds,
         milestoneFundDifference,
@@ -620,10 +630,17 @@ class Proposal extends React.Component {
           daoInfo={daoInfo}
           translations={translations}
         />
-        <SpecialProjectDetails
-          uintConfigs={proposalDetails.data.uintConfigs}
-          translations={translations}
-        />
+        {proposal.id !== '0xd75d13bc6e254db93f313ad7c880c195637ef3568e6495425d2e9b2842dff584' ? (
+          <SpecialProjectDetails
+            uintConfigs={proposalDetails.data.uintConfigs}
+            translations={translations}
+          />
+        ) : (
+          <ShortenedProposal
+            uintConfigs={proposalDetails.data.uintConfigs}
+            translations={translations}
+          />
+        )}
         {hasMoreDocs && <AdditionalDocs translations={translations} proposal={proposalDetails} />}
         <CommentThread
           proposalId={this.PROPOSAL_ID}
@@ -814,6 +831,8 @@ Proposal.propTypes = {
   getUserProposalLikeStatusAction: func.isRequired,
   clearDaoProposalDetailsAction: func.isRequired,
   getAddressDetailsAction: func.isRequired,
+  getDaoConfigAction: func.isRequired,
+  getDaoDetailsAction: func.isRequired,
   likeProposalAction: func.isRequired,
   unlikeProposalAction: func.isRequired,
   addressDetails: object.isRequired,
@@ -858,6 +877,8 @@ export default withFetchUser(
     {
       getUserProposalLikeStatusAction: getUserProposalLikeStatus,
       getAddressDetailsAction: getAddressDetails,
+      getDaoConfigAction: getDaoConfig,
+      getDaoDetailsAction: getDaoDetails,
       likeProposalAction: likeProposal,
       unlikeProposalAction: unlikeProposal,
       clearDaoProposalDetailsAction: clearDaoProposalDetails,

@@ -50,19 +50,21 @@ class ChangeFundingOverlay extends React.Component {
   componentWillMount = () => {
     const { proposalDetails } = this.props;
     const { form } = this.state;
-    if (proposalDetails) {
-      if (!proposalDetails.isFundingChanged) {
-        const currentVersion =
-          proposalDetails.proposalVersions[proposalDetails.proposalVersions.length - 1];
-        form.expectedReward = currentVersion.finalReward;
-        form.milestoneFundings = currentVersion.milestoneFundings;
-      } else {
-        const { changedFundings } = proposalDetails;
-        form.expectedReward = changedFundings.finalReward.updated;
-        form.milestoneFundings = changedFundings.milestones.map(ms => ms.updated);
-      }
-      this.setState({ form: { ...form } });
+    if (!proposalDetails) {
+      return;
     }
+
+    const { changedFundings, isFundingChanged, proposalVersions } = proposalDetails;
+    if (!isFundingChanged && !!proposalVersions) {
+      const currentVersion = proposalVersions[proposalVersions.length - 1];
+      form.expectedReward = currentVersion.finalReward;
+      form.milestoneFundings = currentVersion.milestoneFundings;
+    } else if (changedFundings) {
+      form.expectedReward = changedFundings.finalReward.updated;
+      form.milestoneFundings = changedFundings.milestones.map(ms => ms.updated);
+    }
+
+    this.setState({ form: { ...form } });
   };
 
   onExpectedRewardChange = e => {

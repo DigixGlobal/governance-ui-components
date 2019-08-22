@@ -54,17 +54,19 @@ class AddressWatcher extends React.PureComponent {
         .then(({ json: { result } }) => result)
         .then(details => {
           const hasDgdLocked = Number(details.lockedDgd) > 0;
-          if (
-            !details.isParticipant &&
-            !details.isKycOfficer &&
-            !details.isForumAdmin &&
-            !hasDgdLocked
-          ) {
+          const isValidUser =
+            details.isParticipant ||
+            details.isKycOfficer ||
+            details.isForumAdmin ||
+            details.isPrl ||
+            hasDgdLocked;
+
+          if (!isValidUser) {
             this.props.setUserAddress(address);
             this.setState({ verifyingUser: false });
-
             return undefined;
           }
+
           return this.getChallengeAndProof({ nextProps, details });
         });
     }

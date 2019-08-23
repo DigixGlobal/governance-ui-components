@@ -15,7 +15,7 @@ import { getUnmetProposalRequirements } from '@digix/gov-ui/utils/helpers';
 import { H1 } from '@digix/gov-ui/components/common/common-styles';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { ProposalErrors } from '@digix/gov-ui/constants';
-import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { showRightPanel, setActiveProjectTab } from '@digix/gov-ui/reducers/gov-ui/actions';
 import {
   Heading,
   Filter,
@@ -33,7 +33,6 @@ class ProposalCardFilter extends React.Component {
     this.state = {
       filters: [],
       showActionable: false,
-      stage: 'all',
     };
   }
 
@@ -111,7 +110,7 @@ class ProposalCardFilter extends React.Component {
   };
 
   setStage = stage => {
-    this.setState({ stage });
+    this.props.setActiveProjectTab(stage);
   };
 
   changeFilter = e => {
@@ -153,7 +152,7 @@ class ProposalCardFilter extends React.Component {
   }
 
   toggleActionableItems = e => {
-    const { stage } = this.state;
+    const stage = this.props.activeProjectTab;
     const showActionable = !!e.target.checked;
     LogDashboard.toggleActionableProjects(stage, showActionable);
     this.setState({ showActionable });
@@ -231,7 +230,7 @@ class ProposalCardFilter extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func, object, string } = PropTypes;
 
 ProposalCardFilter.propTypes = {
   AddressDetails: object.isRequired,
@@ -246,12 +245,15 @@ ProposalCardFilter.propTypes = {
   setProposalList: func.isRequired,
   translations: object.isRequired,
   web3Redux: object.isRequired,
+  setActiveProjectTab: func.isRequired,
+  activeProjectTab: string.isRequired,
 };
 
-const mapStateToProps = ({ daoServer, infoServer }) => ({
+const mapStateToProps = ({ daoServer, infoServer, govUI }) => ({
   ChallengeProof: daoServer.ChallengeProof,
   DaoConfig: infoServer.DaoConfig.data,
   DaoDetails: infoServer.DaoDetails.data,
+  activeProjectTab: govUI.activeProjectTab,
 });
 
 export default withApollo(
@@ -261,6 +263,7 @@ export default withApollo(
       {
         getDaoConfig,
         showRightPanel,
+        setActiveProjectTab
       }
     )(ProposalCardFilter)
   )

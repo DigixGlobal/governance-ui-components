@@ -18,6 +18,7 @@ export const actions = {
   GET_TOKEN_USD_VALUE: `${REDUX_PREFIX}GET_TOKEN_USD_VALUE`,
 
   SET_TRANSLATION_LANGUAGE: `${REDUX_PREFIX}SET_TRANSLATION_LANGUAGE`,
+  SET_ACTIVE_PROJECT_TAB: `${REDUX_PREFIX}SET_ACTIVE_PROJECT_TAB`,
 };
 
 function fetchData(url, type) {
@@ -140,5 +141,11 @@ export function getTokenUsdValue() {
 export function setLanguageTranslation(payload = 'en') {
   return dispatch => {
     dispatch({ type: actions.SET_TRANSLATION_LANGUAGE, payload });
+  };
+}
+
+export function setActiveProjectTab(payload = 'all') {
+  return dispatch => {
+    dispatch({ type: actions.SET_ACTIVE_PROJECT_TAB, payload });
   };
 }

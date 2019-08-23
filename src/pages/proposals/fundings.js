@@ -60,7 +60,7 @@ class ProposalFundings extends React.Component {
     milestoneFunds = truncateNumber(milestoneFunds);
 
     let reward;
-    if (typeof finalReward === 'undefined') {
+    if (!finalReward) {
       reward = 0;
       return {
         milestoneFunds,
@@ -100,7 +100,7 @@ class ProposalFundings extends React.Component {
       const { finalReward, milestoneFundings } = proposalVersion;
       milestoneFunds = milestoneFundings.reduce((total, milestone) => total + Number(milestone), 0);
       milestoneFunds = truncateNumber(milestoneFunds);
-      if (typeof finalReward === 'undefined') {
+      if (!finalReward) {
         reward = 0;
         return;
       }

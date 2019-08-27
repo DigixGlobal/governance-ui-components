@@ -57,14 +57,12 @@ class ProposalFundings extends React.Component {
     const milestoneFundDifference = this.getMilestonFundDifference(milestoneFunds);
     const rewardDifference = this.getRewardDifference();
 
-    let reward = finalReward.original;
-    reward = truncateNumber(reward);
     milestoneFunds = truncateNumber(milestoneFunds);
 
     return {
       milestoneFunds,
       milestoneFundDifference,
-      reward,
+      reward: finalReward ? truncateNumber(finalReward.original) : 0,
       rewardDifference,
     };
   }
@@ -89,7 +87,7 @@ class ProposalFundings extends React.Component {
       const { finalReward, milestoneFundings } = proposalVersion;
       milestoneFunds = milestoneFundings.reduce((total, milestone) => total + Number(milestone), 0);
       milestoneFunds = truncateNumber(milestoneFunds);
-      reward = truncateNumber(finalReward);
+      reward = finalReward ? truncateNumber(finalReward) : 0;
     }
 
     return (

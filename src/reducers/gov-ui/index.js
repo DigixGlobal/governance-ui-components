@@ -23,7 +23,6 @@ const defaultState = {
   isAuthenticated: false,
   tokenUsdValues: undefined,
   Language: 'en',
-  activeProjectTab: 'all',
 };
 
 export default function(state = defaultState, action) {
@@ -119,11 +118,6 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         Language: action.payload,
-      };
-    case actions.SET_ACTIVE_PROJECT_TAB:
-      return {
-        ...state,
-        activeProjectTab: action.payload,
       };
 
     default:

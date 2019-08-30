@@ -49,10 +49,10 @@ class LandingPage extends React.PureComponent {
   }
 
   componentWillMount = () => {
-    const { Language, activeProjectTab } = this.props;
+    const { Language } = this.props;
     this.setTosStatus();
     this.setCountdownPageStatus();
-    this.getProposalList(activeProjectTab);
+    this.getProposalList('all');
     this.props.getTranslations(Language);
   };
 
@@ -72,7 +72,7 @@ class LandingPage extends React.PureComponent {
   };
 
   getProposalLikes = () => {
-    this.props.getProposalLikesStats(this.props.activeProjectTab).then(() => {
+    this.props.getProposalLikesStats().then(() => {
       const displayNames = {};
       const proposalLikes = {};
       const proposals = this.props.ProposalLikes.data;
@@ -341,7 +341,6 @@ class LandingPage extends React.PureComponent {
 const { bool, object, func, string } = PropTypes;
 
 LandingPage.propTypes = {
-  activeProjectTab: string.isRequired,
   client: object.isRequired,
   DaoConfig: object.isRequired,
   DaoDetails: object.isRequired,
@@ -382,7 +381,7 @@ const mapStateToProps = state => {
   const {
     infoServer: { DaoDetails, AddressDetails, DaoConfig },
     daoServer: { ChallengeProof, UserLikedProposals, ProposalLikes, Translations },
-    govUI: { HasCountdown, ShowWallet, Language, activeProjectTab },
+    govUI: { HasCountdown, ShowWallet, Language },
   } = state;
 
   return {
@@ -396,7 +395,6 @@ const mapStateToProps = state => {
     HasCountdown,
     ShowWallet,
     Language,
-    activeProjectTab,
     defaultAddress: getDefaultAddress(state),
   };
 };

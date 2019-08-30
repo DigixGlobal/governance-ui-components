@@ -9,6 +9,13 @@ import { fetchProposalList } from '@digix/gov-ui/api/graphql-queries/proposal';
 import { getProposalsCount } from '@digix/gov-ui/reducers/info-server/actions';
 
 export class CategoryGroup extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stage: 'all',
+    };
+  }
+
   componentDidMount = () => {
     this.props.getProposalsCount();
   };
@@ -29,6 +36,7 @@ export class CategoryGroup extends React.Component {
 
   handleClick(stage) {
     LogDashboard.filterProjectByStage(stage);
+    this.setState({ stage });
     this.getProposalList(stage);
     this.props.getProposalsCount();
     this.props.setStage(stage);
@@ -36,8 +44,8 @@ export class CategoryGroup extends React.Component {
   }
 
   render() {
-    const { ProposalsCount, translations, activeProjectTab } = this.props;
-    const stage = activeProjectTab;
+    const { stage } = this.state;
+    const { ProposalsCount, translations } = this.props;
 
     const {
       data: {
@@ -108,7 +116,7 @@ export class CategoryGroup extends React.Component {
   }
 }
 
-const { func, object, string } = PropTypes;
+const { func, object } = PropTypes;
 
 CategoryGroup.propTypes = {
   client: object.isRequired,
@@ -118,7 +126,6 @@ CategoryGroup.propTypes = {
   setShowActionableItems: func.isRequired,
   setStage: func.isRequired,
   translations: object.isRequired,
-  activeProjectTab: string.isRequired,
 };
 
 const mapStateToProps = ({ infoServer }) => ({

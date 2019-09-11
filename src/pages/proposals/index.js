@@ -15,6 +15,7 @@ import ProposalVersionNav from '@digix/gov-ui/pages/proposals/version-nav';
 import SpecialProjectDetails, {
   ShortenedProposal,
 } from '@digix/gov-ui/pages/proposals/special-project-details';
+import SpecialProject2Details from '@digix/gov-ui/pages/proposals/special-project2-details';
 import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
 import AdditionalDocs from '@digix/gov-ui/pages/proposals/additional-docs';
 import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
@@ -630,13 +631,14 @@ class Proposal extends React.Component {
           daoInfo={daoInfo}
           translations={translations}
         />
-        {proposal.id !== '0xd75d13bc6e254db93f313ad7c880c195637ef3568e6495425d2e9b2842dff584' ? (
-          <SpecialProjectDetails
+        {proposal.id === '0xd75d13bc6e254db93f313ad7c880c195637ef3568e6495425d2e9b2842dff584' && (
+          <ShortenedProposal
             uintConfigs={proposalDetails.data.uintConfigs}
             translations={translations}
           />
-        ) : (
-          <ShortenedProposal
+        )}
+        {proposal.id === '0x23a4966f3eb1c8c49c8b48261e12cbaab3a506c9b8ef963bd1f0583d7e94ca84' && (
+          <SpecialProject2Details
             uintConfigs={proposalDetails.data.uintConfigs}
             translations={translations}
           />

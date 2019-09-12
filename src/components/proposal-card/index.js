@@ -4,6 +4,7 @@ import Proposal from '@digix/gov-ui/components/proposal-card/proposal';
 import Stats from '@digix/gov-ui/components/proposal-card/stats';
 
 import { Container, Item } from '@digix/gov-ui/components/proposal-card/style';
+import { VotingStages } from '@digix/gov-ui/constants';
 
 export default class ProposalCard extends React.Component {
   render() {
@@ -28,7 +29,7 @@ export default class ProposalCard extends React.Component {
       withinDeadline = commitDeadline < currentTime && currentTime < revealDeadline;
     }
 
-    const votingStage = withinDeadline ? 'reveal' : proposal.votingStage;
+    const votingStage = withinDeadline ? VotingStages.reveal : proposal.votingStage;
     return (
       <Container data-digix="Proposal-Card">
         <Item>

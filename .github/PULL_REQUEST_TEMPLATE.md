@@ -17,6 +17,8 @@ Ref: <!-- add links to issues and PRs here -->
 
 ### Test Plan
 <!-- Add steps to MANUALLY test the changes. This will be used for QA purposes -->
+<!-- If the change is mainly in governance-ui, please add the test plan there instead. -->
+
 <!-- Make sure to include the following in the test plan, when necessary: -->
 <!-- [x] Packages to install or remove, and any other additional setup instructions -->
 <!-- [x] Services/dependencies/scripts to run. By default, it is already assumed that electron-core needs to be up and running. -->

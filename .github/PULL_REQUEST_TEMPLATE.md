@@ -1,5 +1,3 @@
-<!-- BEFORE CREATING A PR, make sure you: -->
-
 <!-- TITLE: Provide a general summary of your changes in the Title above -->
 <!-- Prepend the title with any of the following tags to describe the type of change: -->
 <!-- [FEATURE] | [DESIGN] | [REFACTOR] | [CONFIG] | [DOCS] | [FIX] | [HOTFIX] -->

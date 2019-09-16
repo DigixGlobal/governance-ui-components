@@ -626,6 +626,7 @@ class Proposal extends React.Component {
           isSpecial
           votingResults={this.getPastVotingResults()}
           translations={translations}
+          proposal={proposal}
         />
         <SpecialProjectVotingResult
           proposal={proposalDetails.data}
@@ -785,7 +786,11 @@ class Proposal extends React.Component {
           </FundingInfo>
         </ProjectSummary>
 
-        <VotingAccordion votingResults={this.getPastVotingResults()} translations={translations} />
+        <VotingAccordion
+          votingResults={this.getPastVotingResults()}
+          translations={translations}
+          proposal={proposal}
+        />
 
         <VotingResult
           proposal={proposalDetails.data}

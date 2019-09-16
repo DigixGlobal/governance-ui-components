@@ -60,6 +60,7 @@ class VotingAccordion extends React.PureComponent {
               isSpecial={isSpecial}
               translations={translations}
               voting={item.voting}
+              proposal={this.props.proposal}
             />
           </Content>
         )}

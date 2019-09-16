@@ -39,7 +39,7 @@ const countdownRenderer = ({ date, days, hours, minutes, seconds, completed }) =
 
 class VotingResult extends React.Component {
   getVotingStats = voting => {
-    const { DaoConfig, daoInfo, isSpecial } = this.props;
+    const { DaoConfig, daoInfo, isSpecial, proposal } = this.props;
     const {
       CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR,
       CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR,
@@ -47,22 +47,25 @@ class VotingResult extends React.Component {
       CONFIG_SPECIAL_QUOTA_DENOMINATOR,
     } = DaoConfig;
 
+    // const proposalDetails = this.props.proposal;
+
     const votingDeadline = new Date(
       voting.votingDeadline ? voting.votingDeadline * 1000 : voting.revealDeadline * 1000
     );
 
     const quorum = parseBigNumber(voting.quorum, 0, false);
     const quota = parseBigNumber(voting.quota, 0, false);
-    const totalModeratorLockedDgds = parseBigNumber(daoInfo.totalModeratorLockedDgds, 0, false);
     const totalLockedDgds = parseBigNumber(daoInfo.totalLockedDgds, 0, false);
+    const totalModeratorLockedDgds = parseBigNumber(daoInfo.totalModeratorLockedDgds, 0, false);
     const totalVoterStake = parseBigNumber(voting.totalVoterStake, 0, false);
 
     const votes = Number(voting.totalVoterCount);
     const yesVotes = Number(voting.yes);
     const noVotes = Number(voting.no);
 
+    const isModVoting = proposal.currentVotingRound < 0;
     let minimumQuorum = formatPercentage(
-      quorum / (isSpecial ? totalLockedDgds : totalModeratorLockedDgds)
+      quorum / (isModVoting ? totalModeratorLockedDgds : totalLockedDgds)
     );
 
     let minimumApproval = formatPercentage(quota);
@@ -173,6 +176,7 @@ const { bool, object } = PropTypes;
 
 VotingResult.propTypes = {
   DaoConfig: object.isRequired,
+  proposal: object.isRequired,
   daoInfo: object.isRequired,
   isSpecial: bool,
   translations: object.isRequired,

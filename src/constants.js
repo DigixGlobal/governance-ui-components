@@ -25,6 +25,8 @@ export const ETHERSCAN_URL =
   (process.env.ENVIRONMENT === 'kovan' && 'https://kovan.etherscan.io/tx/') ||
   'https://kovan.etherscan.io/tx/';
 
+export const ETH_GAS_STATION_API = 'https://ethgasstation.info/json/ethgasAPI.json';
+
 export const DEFAULT_GAS_PRICE = 10 * 1e9;
 export const ONE_BILLION = 1000000000;
 

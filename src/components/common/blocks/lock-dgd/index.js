@@ -46,7 +46,6 @@ import {
 } from '@digix/gov-ui/components/common/common-styles';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
 import LockDgdTx from '@digix/gov-ui/components/common/blocks/lock-dgd/tx-ui';
-import GasPrice from '@digix/gov-ui/components/common/blocks/gas-price';
 
 const network = SpectrumConfig.defaultNetworks[0];
 
@@ -61,7 +60,6 @@ class LockDgd extends React.Component {
       error: '',
       disableLockDgdButton: true,
       openError: false,
-      gasPrice: DEFAULT_GAS_PRICE,
     };
   }
 
@@ -117,10 +115,6 @@ class LockDgd extends React.Component {
       dgd: value,
       disableLockDgdButton,
     });
-  };
-
-  onGasPriceChange = gasPrice => {
-    this.setState({ gasPrice });
   };
 
   getMaxAllowance = () => {
@@ -188,7 +182,7 @@ class LockDgd extends React.Component {
 
   handleButtonClick = () => {
     const t = this.props.translations.lockDgd;
-    const { dgd, gasPrice } = this.state;
+    const { dgd } = this.state;
     const addedStake = this.getStake(dgd);
     const addedDgd = Number(dgd);
     LogLockDgd.submit(addedDgd);
@@ -208,7 +202,7 @@ class LockDgd extends React.Component {
       .at(address);
 
     const web3Params = {
-      gasPrice,
+      gasPrice: DEFAULT_GAS_PRICE,
       gas: gasLimitConfig.LOCK_DGD || gasLimitConfig.DEFAULT,
     };
 
@@ -309,10 +303,6 @@ class LockDgd extends React.Component {
           <span>DGD</span>
         </LockDGD>
         {dgd > 0 && <FormNote>{stakeMessage}</FormNote>}
-        <GasPrice
-          gas={gasLimitConfig.LOCK_DGD || gasLimitConfig.DEFAULT}
-          onGasPriceChange={this.onGasPriceChange}
-        />
         <Button
           secondary
           large

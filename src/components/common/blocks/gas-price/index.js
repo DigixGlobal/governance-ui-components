@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import web3Utils from 'web3-utils';
 
+import lightTheme from '@digix/gov-ui/theme/light';
+
 import Slider from '@digix/gov-ui/components/common/elements/slider';
+
+import { ETH_GAS_STATION_API } from '@digix/gov-ui/constants';
+
 import {
   AdvancedOption,
   CardText,
@@ -17,8 +22,8 @@ import {
   ValueText,
 } from '@digix/gov-ui/components/common/blocks/gas-price/style';
 
-const GAS_PRICE_MIN = 1;
-const GAS_PRICE_MAX = 50;
+const MIN_GWEI = 1;
+const MAX_GWEI = 100;
 
 const GWEI = 'GWEI';
 const FASTEST = 'fastest';
@@ -50,7 +55,7 @@ class GasPrice extends React.Component {
   }
 
   componentDidMount() {
-    fetch('https://ethgasstation.info/json/ethgasAPI.json')
+    fetch(ETH_GAS_STATION_API)
       .then(res => res.json())
       .then(
         result => {
@@ -73,7 +78,7 @@ class GasPrice extends React.Component {
               ...gasData,
             },
             () => {
-              this.props.onGasPriceChange(web3Utils.toWei(String(value), 'gwei'));
+              this.props.onGasPriceChange(value);
             }
           );
         },
@@ -84,16 +89,12 @@ class GasPrice extends React.Component {
   }
 
   _onSliderChange = value => {
-    this.setState({ gasOption: '', value }, () =>
-      this.props.onGasPriceChange(web3Utils.toWei(String(value), 'gwei'))
-    );
+    this.setState({ gasOption: '', value }, () => this.props.onGasPriceChange(value));
   };
 
   _onSelectOption = gasOption => {
     const value = this.state[gasOption] / 10;
-    this.setState({ gasOption, value }, () =>
-      this.props.onGasPriceChange(web3Utils.toWei(String(value), 'gwei'))
-    );
+    this.setState({ gasOption, value }, () => this.props.onGasPriceChange(value));
   };
 
   _toggleAdvanced = () => {
@@ -101,9 +102,12 @@ class GasPrice extends React.Component {
   };
 
   render() {
-    const { gas } = this.props;
+    const { gas, theme } = this.props;
     const { gasOption, showAdvanced, value } = this.state;
-    const transactionFee = web3Utils.fromWei(web3Utils.toWei(String(value * gas), 'gwei'), 'ether');
+    const transactionFee = web3Utils.fromWei(
+      web3Utils.toWei(String(value * web3Utils.hexToNumber(gas)), 'gwei'),
+      'ether'
+    );
 
     return (
       <React.Fragment>
@@ -119,6 +123,7 @@ class GasPrice extends React.Component {
         {showAdvanced && (
           <GasPriceSelect>
             <GasPriceOption
+              theme={theme}
               isActive={gasOption === FASTEST}
               onClick={() => this._onSelectOption(FASTEST)}
             >
@@ -128,6 +133,7 @@ class GasPrice extends React.Component {
             </GasPriceOption>
 
             <GasPriceOption
+              theme={theme}
               isActive={gasOption === FAST}
               onClick={() => this._onSelectOption(FAST)}
             >
@@ -137,6 +143,7 @@ class GasPrice extends React.Component {
             </GasPriceOption>
 
             <GasPriceOption
+              theme={theme}
               isActive={gasOption === AVERAGE}
               onClick={() => this._onSelectOption(AVERAGE)}
             >
@@ -146,6 +153,7 @@ class GasPrice extends React.Component {
             </GasPriceOption>
 
             <GasPriceOption
+              theme={theme}
               isActive={gasOption === SAFE_LOW}
               onClick={() => this._onSelectOption(SAFE_LOW)}
             >
@@ -154,27 +162,26 @@ class GasPrice extends React.Component {
               <span>{formatTime(this.state.safeLowWait)}</span>
             </GasPriceOption>
 
-            <GasPriceOption>
-              <AdvancedOption onClick={this._toggleAdvanced}>Advanced Options</AdvancedOption>
+            <GasPriceOption theme={theme}>
+              <AdvancedOption theme={theme} onClick={this._toggleAdvanced}>
+                Advanced Options
+              </AdvancedOption>
             </GasPriceOption>
           </GasPriceSelect>
         )}
 
         {!showAdvanced && (
-          <SliderCard>
+          <SliderCard theme={theme}>
             <CardText>
               <ValueText>{value} GWEI</ValueText> (Gas Price)
               {this.state[FAST] && (
-                <DefaultOption onClick={this._toggleAdvanced}>Default Options</DefaultOption>
+                <DefaultOption theme={theme} onClick={this._toggleAdvanced}>
+                  Default Options
+                </DefaultOption>
               )}
             </CardText>
 
-            <Slider
-              min={GAS_PRICE_MIN}
-              max={GAS_PRICE_MAX}
-              value={value}
-              onChange={this._onSliderChange}
-            />
+            <Slider min={MIN_GWEI} max={MAX_GWEI} value={value} onChange={this._onSliderChange} />
           </SliderCard>
         )}
       </React.Fragment>
@@ -182,11 +189,16 @@ class GasPrice extends React.Component {
   }
 }
 
-const { func, number } = PropTypes;
+const { func, object, string } = PropTypes;
 
 GasPrice.propTypes = {
-  gas: number.isRequired,
+  gas: string.isRequired,
   onGasPriceChange: func.isRequired,
+  theme: object,
+};
+
+GasPrice.defaultProps = {
+  theme: lightTheme,
 };
 
 export default GasPrice;

@@ -9,10 +9,19 @@ export const SliderCard = styled(Card)`
   flex-direction: column;
   margin-top: 2rem;
   margin-bottom: 0;
+
+  .rc-slider-track {
+    background-color: ${props => props.theme.textSecondary.default.toString()};
+  }
+
+  .rc-slider-handle {
+    border: none;
+    background-color: ${props => props.theme.textSecondary.default.toString()};
+  }
 `;
 
 export const DefaultOption = styled.a`
-  color: #c09f57;
+  color: ${props => props.theme.textSecondary.default.toString()};
   float: right;
   text-decoration: underline;
 `;

@@ -18,6 +18,8 @@ import {
   GasPriceSelect,
   HeaderText,
   SliderCard,
+  TimeText,
+  Title,
   TransactionFeeText,
   ValueText,
 } from '@digix/gov-ui/components/common/blocks/gas-price/style';
@@ -25,7 +27,6 @@ import {
 const MIN_GWEI = 1;
 const MAX_GWEI = 100;
 
-const GWEI = 'GWEI';
 const FASTEST = 'fastest';
 const FAST = 'fast';
 const AVERAGE = 'average';
@@ -127,9 +128,11 @@ class GasPrice extends React.Component {
               isActive={gasOption === FASTEST}
               onClick={() => this._onSelectOption(FASTEST)}
             >
-              <span>Fastest</span>
-              <span>{`${this.state[FASTEST] / 10} ${GWEI}`}</span>
-              <span>{formatTime(this.state.fastestWait)}</span>
+              <Title>Fastest</Title>
+              <ValueText>
+                <span>{this.state[FASTEST] / 10}</span> GWEI
+              </ValueText>
+              <TimeText>{formatTime(this.state.fastestWait)}</TimeText>
             </GasPriceOption>
 
             <GasPriceOption
@@ -137,9 +140,11 @@ class GasPrice extends React.Component {
               isActive={gasOption === FAST}
               onClick={() => this._onSelectOption(FAST)}
             >
-              <span>Fast</span>
-              <span>{`${this.state[FAST] / 10} ${GWEI}`}</span>
-              <span>{formatTime(this.state.fastWait)}</span>
+              <Title>Fast</Title>
+              <ValueText>
+                <span>{this.state[FAST] / 10}</span> GWEI
+              </ValueText>
+              <TimeText>{formatTime(this.state.fastWait)}</TimeText>
             </GasPriceOption>
 
             <GasPriceOption
@@ -147,9 +152,11 @@ class GasPrice extends React.Component {
               isActive={gasOption === AVERAGE}
               onClick={() => this._onSelectOption(AVERAGE)}
             >
-              <span>Average</span>
-              <span>{`${this.state[AVERAGE] / 10} ${GWEI}`}</span>
-              <span>{formatTime(this.state.avgWait)}</span>
+              <Title>Average</Title>
+              <ValueText>
+                <span>{this.state[AVERAGE] / 10}</span> GWEI
+              </ValueText>
+              <TimeText>{formatTime(this.state.avgWait)}</TimeText>
             </GasPriceOption>
 
             <GasPriceOption
@@ -157,9 +164,11 @@ class GasPrice extends React.Component {
               isActive={gasOption === SAFE_LOW}
               onClick={() => this._onSelectOption(SAFE_LOW)}
             >
-              <span>Safe Low</span>
-              <span>{`${this.state[SAFE_LOW] / 10} ${GWEI}`}</span>
-              <span>{formatTime(this.state.safeLowWait)}</span>
+              <Title>Safe Low</Title>
+              <ValueText>
+                <span>{this.state[SAFE_LOW] / 10}</span> GWEI
+              </ValueText>
+              <TimeText>{formatTime(this.state.safeLowWait)}</TimeText>
             </GasPriceOption>
 
             <GasPriceOption theme={theme}>

@@ -32,6 +32,10 @@ export const CardText = styled.div`
 
 export const ValueText = styled.span`
   font-family: 'Futura PT Medium', sans-serif;
+
+  & span {
+    font-size: 2rem;
+  }
 `;
 
 export const EstimateText = styled.div`
@@ -60,21 +64,38 @@ export const GasPriceOption = styled(Card)`
   border: 1px solid
     ${props =>
       props.isActive
-        ? props.theme.alertMessage.info.default.toString()
+        ? props.theme.borderColorSecondary.default.toString()
         : props.theme.borderColor.lighter.toString()};
   color: ${props =>
     props.isActive
-      ? props.theme.alertMessage.info.default.toString()
+      ? props.theme.textSecondary.default.toString()
       : props.theme.textColor.default.base.toString()};
+  background-color: ${props =>
+    props.isActive ? props.theme.backgroundSecondary.fade.toString() : ''};
   margin-bottom: 0;
   width: 18%;
   flex-direction: column;
   flex-grow: 0;
   justify-content: center;
+
+  &:hover {
+    border: 1px solid ${props => props.theme.borderColorSecondary.default.toString()};
+    color: ${props => props.theme.textSecondary.default.toString()};
+    background-color: ${props => props.theme.backgroundSecondary.fade.toString()};
+  }
+`;
+
+export const Title = styled.p`
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+`;
+
+export const TimeText = styled.span`
+  color: ${props => props.theme.textColor.default.base.toString()};
 `;
 
 export const AdvancedOption = styled.p`
-  color: ${props => props.theme.alertMessage.info.default.toString()};
+  color: ${props => props.theme.textSecondary.default.toString()};
   margin-bottom: 0;
   text-align: center;
 `;

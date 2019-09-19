@@ -132,7 +132,7 @@ class GasPrice extends React.Component {
               <ValueText>
                 <span>{this.state[FASTEST] / 10}</span> GWEI
               </ValueText>
-              <TimeText>{formatTime(this.state.fastestWait)}</TimeText>
+              <TimeText theme={theme}>{formatTime(this.state.fastestWait)}</TimeText>
             </GasPriceOption>
 
             <GasPriceOption
@@ -144,7 +144,7 @@ class GasPrice extends React.Component {
               <ValueText>
                 <span>{this.state[FAST] / 10}</span> GWEI
               </ValueText>
-              <TimeText>{formatTime(this.state.fastWait)}</TimeText>
+              <TimeText theme={theme}>{formatTime(this.state.fastWait)}</TimeText>
             </GasPriceOption>
 
             <GasPriceOption
@@ -156,7 +156,7 @@ class GasPrice extends React.Component {
               <ValueText>
                 <span>{this.state[AVERAGE] / 10}</span> GWEI
               </ValueText>
-              <TimeText>{formatTime(this.state.avgWait)}</TimeText>
+              <TimeText theme={theme}>{formatTime(this.state.avgWait)}</TimeText>
             </GasPriceOption>
 
             <GasPriceOption
@@ -168,7 +168,7 @@ class GasPrice extends React.Component {
               <ValueText>
                 <span>{this.state[SAFE_LOW] / 10}</span> GWEI
               </ValueText>
-              <TimeText>{formatTime(this.state.safeLowWait)}</TimeText>
+              <TimeText theme={theme}>{formatTime(this.state.safeLowWait)}</TimeText>
             </GasPriceOption>
 
             <GasPriceOption theme={theme}>

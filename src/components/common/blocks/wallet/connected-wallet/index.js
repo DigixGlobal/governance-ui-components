@@ -107,10 +107,9 @@ class ConnectedWallet extends React.Component {
     return this.props.getDaoDetails().then(() =>
       contract.balanceOf.call(defaultAddress.address).then(balance => {
         const { isGlobalRewardsSet } = this.props.DaoDetails.data;
-        const parsedBalance = parseBigNumber(balance, 9);
-        const hasBalance = Number(parsedBalance.replace(/,/g, '')) > 0;
+        const hasBalance = parseBigNumber(balance, 9, false) > 0;
         this.props.canLockDgd(hasBalance && isGlobalRewardsSet);
-        return parsedBalance;
+        return parseBigNumber(balance, 9);
       })
     );
   }

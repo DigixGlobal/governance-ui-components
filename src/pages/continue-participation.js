@@ -144,7 +144,7 @@ class ConfirmParticipation extends React.Component {
     return (
       <Content>
         <Title>{t.title}</Title>
-        <Intro>{t.instructions}</Intro>
+        <Intro>{isLockingPhase ? t.instructions.lockingPhase : t.instructions.mainPhase}</Intro>
         <Button
           fluid
           large

@@ -1,6 +1,9 @@
 {
   "title": "Confirming Participation For New Quarter",
-  "instructions": "In order to continue participating in the new quarter, we need you to sign a transaction confirming the amount of stake you have on the platform. If you want to keep the same amount of locked DGDs, you will need to unlock some and lock back the same amount.",
+  "instructions": {
+    "lockingPhase": "In order to continue participating in the new quarter, we need you to sign a transaction confirming the amount of stake you have on the platform. This transaction will also calculate your reward accrued in the previous quarter and make it available for withdrawal. There are 3 options in the type of transaction you can make:",
+    "mainPhase": "You are now in the main phase of the quarter and will not be able to unlock your stake in the platform.\n\nIn order to continue participating in the new quarter, we need you to sign a transaction to lock more DGD on the platform (You can lock a nominal amount of 0.000000001 DGD). This transaction will also calculate your reward accrued in the previous quarter and make it available for withdrawal."
+  },
   "options": {
     "lockDgd": "I want to lock more DGD",
     "continueCurrentLockup": "I want to continue with my current lock-up of DGD",

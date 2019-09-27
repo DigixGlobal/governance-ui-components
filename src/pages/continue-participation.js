@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -13,7 +13,7 @@ import { Content, Title, Intro } from '@digix/gov-ui/pages/style';
 import { CONFIRM_PARTICIPATION_CACHE, DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
-import { getHash } from '@digix/gov-ui/utils/helpers';
+import { getHash, inLockingPhase } from '@digix/gov-ui/utils/helpers';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { sendTransactionToDaoServer } from '@digix/gov-ui/reducers/dao-server/actions';
 import {
@@ -28,6 +28,11 @@ registerUIs({ txVisualization: { component: TxVisualization } });
 const network = SpectrumConfig.defaultNetworks[0];
 
 class ConfirmParticipation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.CONTINUE_PARTICIPATION_FEE = 1;
+  }
+
   setError = error => {
     this.props.showHideAlert({
       message: JSON.stringify(error && error.message) || error,
@@ -93,12 +98,12 @@ class ConfirmParticipation extends React.Component {
     const payload = {
       address: sourceAddress,
       contract,
-      func: contract.confirmContinuedParticipation,
+      func: contract.withdrawDGD,
       network,
       onFailure: this.setError,
       onFinally: txHash => onTransactionAttempt(txHash),
       onSuccess: txHash => onTransactionSuccess(txHash),
-      params: undefined,
+      params: [this.CONTINUE_PARTICIPATION_FEE],
       showTxSigningModal: this.props.showTxSigningModal,
       translations: this.props.txnTranslations,
       ui,
@@ -131,14 +136,15 @@ class ConfirmParticipation extends React.Component {
   }
 
   render() {
+    const { DaoInfo } = this.props;
     const t = this.props.translations;
     const tOptions = this.props.translations.options;
+    const isLockingPhase = inLockingPhase(DaoInfo);
 
     return (
       <Content>
         <Title>{t.title}</Title>
-        <Intro>{t.instructions}</Intro>
-
+        <Intro>{isLockingPhase ? t.instructions.lockingPhase : t.instructions.mainPhase}</Intro>
         <Button
           fluid
           large
@@ -149,27 +155,30 @@ class ConfirmParticipation extends React.Component {
         >
           {tOptions.lockDgd}
         </Button>
-        {/* HOTIFIX: hide button until contract for it is fixed */}
-        {/* <Button
-          fluid
-          large
-          reverse
-          data-digix="Confirm-Participation-Continue-Lock-Up"
-          style={{ marginLeft: '0' }}
-          onClick={() => this.continueParticipation()}
-        >
-          {tOptions.continueCurrentLockup}
-        </Button> */}
-        <Button
-          fluid
-          large
-          reverse
-          data-digix="Confirm-Participation-Unlock-Dgd"
-          style={{ marginLeft: '0' }}
-          onClick={() => this.showUnlockDgdOverlay()}
-        >
-          {tOptions.unlockDgd}
-        </Button>
+        {isLockingPhase && (
+          <Fragment>
+            <Button
+              fluid
+              large
+              reverse
+              data-digix="Confirm-Participation-Continue-Lock-Up"
+              style={{ marginLeft: '0' }}
+              onClick={() => this.continueParticipation()}
+            >
+              {tOptions.continueCurrentLockup}
+            </Button>
+            <Button
+              fluid
+              large
+              reverse
+              data-digix="Confirm-Participation-Unlock-Dgd"
+              style={{ marginLeft: '0' }}
+              onClick={() => this.showUnlockDgdOverlay()}
+            >
+              {tOptions.unlockDgd}
+            </Button>
+          </Fragment>
+        )}
       </Content>
     );
   }

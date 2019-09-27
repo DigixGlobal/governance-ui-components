@@ -202,7 +202,9 @@ class LandingPage extends React.PureComponent {
     const { ChallengeProof } = this.props;
     const { CONFIG_MINIMUM_LOCKED_DGD } = this.props.DaoConfig;
     const { currentQuarter, isGlobalRewardsSet } = this.props.DaoDetails.data;
+
     const AddressDetails = this.props.AddressDetails.data;
+    const isParticipant = AddressDetails && AddressDetails.isParticipant;
     const lastParticipatedQuarter = AddressDetails && AddressDetails.lastParticipatedQuarter;
 
     const hasLoadedWallet = ChallengeProof.data;
@@ -218,14 +220,15 @@ class LandingPage extends React.PureComponent {
 
     // always include the currentQuarter so that we have unique hashes per quarter
     const expectedHash = getHash(`${value}_${currentQuarter}_${AddressDetails.address}`);
-    const alreadyParticipating = storedHash && storedHash === expectedHash;
+    const alreadyChoseModalOption = storedHash && storedHash === expectedHash;
 
     const showModal =
       hasLoadedWallet &&
       isGlobalRewardsSet &&
       isPastParticipant &&
       hasEnoughDgd &&
-      !alreadyParticipating;
+      isParticipant === false &&
+      !alreadyChoseModalOption;
 
     if (showModal) {
       localStorage.removeItem(key, expectedHash);

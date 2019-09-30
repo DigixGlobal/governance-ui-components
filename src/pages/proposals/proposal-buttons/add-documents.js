@@ -48,7 +48,7 @@ class AddDocumentsButton extends React.PureComponent {
   }
 }
 
-const { object, bool, string } = PropTypes;
+const { func, object, bool, string } = PropTypes;
 
 AddDocumentsButton.propTypes = {
   checkProposalRequirements: func.isRequired,

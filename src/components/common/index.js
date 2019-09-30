@@ -19,3 +19,5 @@ export {
 export {
   default as UserAddressStats,
 } from '@digix/gov-ui/components/common/blocks/user-address-stats/style';
+
+export { default as GasPrice } from '@digix/gov-ui/components/common/blocks/gas-price';

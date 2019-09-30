@@ -46,6 +46,7 @@ class CommitVoteButton extends React.PureComponent {
 
   render() {
     const {
+      checkProposalRequirements,
       isParticipant,
       proposal,
       proposal: { currentVotingRound, isSpecial, isActive },
@@ -75,7 +76,11 @@ class CommitVoteButton extends React.PureComponent {
     if (!withinDeadline) return null;
 
     return (
-      <Button kind="round" large onClick={() => this.showOverlay(hasVoted)}>
+      <Button
+        kind="round"
+        large
+        onClick={() => checkProposalRequirements(this.showOverlay(hasVoted))}
+      >
         {hasVoted ? buttons.changeVote : buttons.vote}
       </Button>
     );
@@ -85,6 +90,7 @@ class CommitVoteButton extends React.PureComponent {
 const { bool, func, object, string } = PropTypes;
 
 CommitVoteButton.propTypes = {
+  checkProposalRequirements: func.isRequired,
   AddressDetails: object.isRequired,
   isParticipant: bool,
   proposal: object.isRequired,

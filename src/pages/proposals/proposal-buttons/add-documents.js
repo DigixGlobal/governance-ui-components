@@ -18,6 +18,7 @@ class AddDocumentsButton extends React.PureComponent {
 
   render() {
     const {
+      checkProposalRequirements,
       stage,
       isProposer,
       proposal,
@@ -33,7 +34,11 @@ class AddDocumentsButton extends React.PureComponent {
     ) {
       return (
         <div>
-          <Button large data-digix="ADD-UPDATES" onClick={this.redirectToAddDocuments}>
+          <Button
+            large
+            data-digix="ADD-UPDATES"
+            onClick={() => checkProposalRequirements(this.redirectToAddDocuments)}
+          >
             {buttons.addUpdates || 'Add Updates'}
           </Button>
         </div>
@@ -46,6 +51,7 @@ class AddDocumentsButton extends React.PureComponent {
 const { object, bool, string } = PropTypes;
 
 AddDocumentsButton.propTypes = {
+  checkProposalRequirements: func.isRequired,
   stage: string.isRequired,
   translations: object.isRequired,
   history: object.isRequired,

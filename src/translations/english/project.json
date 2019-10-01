@@ -104,7 +104,7 @@
     "claimModeratorApproval": "The voting result shows that your project passes the voting. Please click the button to send transaction(s) to claim this result on the blockchain. You need to do this action before {{dateTime}}, or your project will auto fail.",
     "claimVotingresult": "The voting result shows that your project passes the voting. Please click the button to send transaction(s) to claim this result on the blockchain. You need to do this action before {{dateTime}}, or your project will auto fail.",
     "prl": "This project can no longer claim funding due to Policy, Regulatory or Legal reasons, even if voting passes. Please contact us if you have any queries.",
-    "unclaimed": "The voting result was not claimed before the claiming deadline. This project will beauto failed.",
+    "unclaimed": "The voting result was not claimed before the claiming deadline. This project will be auto failed.",
     "failedVoting": "Your project fails the voting, either by voting results or its already past the deadline for claiming voting results."
   },
   "status": {

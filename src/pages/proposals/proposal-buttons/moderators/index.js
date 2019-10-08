@@ -16,7 +16,7 @@ class ModeratorButtons extends React.Component {
   checkUnmetRequirements(proposalAction, customErrors) {
     const { client, DaoDetails, translations } = this.props;
 
-    getUnmetProposalRequirements(client, DaoDetails, translations).then(errors => {
+    getUnmetProposalRequirements(client, DaoDetails, translations, true).then(errors => {
       let totalErrors = errors;
       if (customErrors) {
         totalErrors = errors.concat(customErrors);

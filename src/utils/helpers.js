@@ -88,7 +88,12 @@ export const inLockingPhase = DaoDetails => {
 };
 
 // checks general conditions that should be met when doing any proposal action
-export const getUnmetProposalRequirements = (apolloClient, DaoDetails, translations) => {
+export const getUnmetProposalRequirements = (
+  apolloClient,
+  DaoDetails,
+  translations,
+  skipKycCheck
+) => {
   const errors = [];
 
   const {
@@ -96,7 +101,7 @@ export const getUnmetProposalRequirements = (apolloClient, DaoDetails, translati
   } = translations;
 
   return isKycApproved(apolloClient).then(kycApproved => {
-    if (!kycApproved) {
+    if (!kycApproved && !skipKycCheck) {
       errors.push(proposalErrors.invalidKyc);
     }
 

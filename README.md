@@ -35,5 +35,4 @@ Please visit out [wiki](https://github.com/DigixGlobal/governance-ui-components/
 Copyright DIGIXGLOBAL PRIVATE LIMITED
 
 The code in this repository is licensed under the
-[BSD-3 Clause](https://opensource.org/licenses/BSD-3-Clause)
-BSD-3-clause, 2017
+[BSD-3 Clause](https://opensource.org/licenses/BSD-3-Clause), 2017

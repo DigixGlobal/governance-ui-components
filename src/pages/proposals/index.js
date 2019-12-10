@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
@@ -526,6 +526,7 @@ class Proposal extends React.Component {
   renderSpecialProposal = () => {
     const {
       proposalDetails,
+      proposalDetails: { data },
       addressDetails,
       history,
       daoInfo,
@@ -564,76 +565,79 @@ class Proposal extends React.Component {
         >
           {project.back}
         </BackButton>
-        <ProjectSummary>
-          {this.renderPrlAlert(proposalDetails.data.prl)}
-          {this.renderClaimApprovalAlert()}
-          {this.renderProposerDidNotPassAlert()}
-          <Tags>
-            <div>
-              <Button kind="tag" special data-digix="Proposal-IsSpecial">
-                {project.special}
-              </Button>
-              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
-                {project.status[stage.toLowerCase()]}
-              </Button>
-              {isActionable && (
-                <Button kind="tag" outline actionable data-digix="Proposal-ActionableStatus">
-                  <Icon kind="flag" />
-                  {tActionable[actionableStatus]}
-                </Button>
-              )}
-            </div>
-            <div>
-              <Like
-                hasVoted={liked}
-                likes={likeCount}
-                translations={cardTranslation}
-                disabled={!userData}
-                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
-              />
-            </div>
-          </Tags>
-
-          <Header>
-            <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
-            {!isForumAdmin && (
-              <CallToAction>
-                <ParticipantButtons
-                  isProposer={isProposer}
-                  proposal={proposalDetails}
-                  addressDetails={addressDetails}
-                  match={this.props.match}
-                  history={history}
-                  translations={translations}
-                />
-                <ModeratorButtons
-                  proposal={proposalDetails}
-                  addressDetails={addressDetails}
-                  history={history}
-                  translations={translations}
-                />
-              </CallToAction>
-            )}
-          </Header>
-          <FundingInfo>
-            <InfoItem>
-              <ItemTitle>{project.submittedBy}</ItemTitle>
-              <Data>
-                <span>{displayName}</span>
-              </Data>
-            </InfoItem>
-          </FundingInfo>
-        </ProjectSummary>
-        <VotingAccordion
-          isSpecial
-          votingResults={this.getPastVotingResults()}
-          translations={translations}
-        />
-        <SpecialProjectVotingResult
-          proposal={proposalDetails.data}
-          daoInfo={daoInfo}
-          translations={translations}
-        />
+        {data.votingRounds && (
+          <Fragment>
+            <ProjectSummary>
+              {this.renderPrlAlert(proposalDetails.data.prl)}
+              {this.renderClaimApprovalAlert()}
+              {this.renderProposerDidNotPassAlert()}
+              <Tags>
+                <div>
+                  <Button kind="tag" special data-digix="Proposal-IsSpecial">
+                    {project.special}
+                  </Button>
+                  <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
+                    {project.status[stage.toLowerCase()]}
+                  </Button>
+                  {isActionable && (
+                    <Button kind="tag" outline actionable data-digix="Proposal-ActionableStatus">
+                      <Icon kind="flag" />
+                      {tActionable[actionableStatus]}
+                    </Button>
+                  )}
+                </div>
+                <div>
+                  <Like
+                    hasVoted={liked}
+                    likes={likeCount}
+                    translations={cardTranslation}
+                    disabled={!userData}
+                    onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
+                  />
+                </div>
+              </Tags>
+              <Header>
+                <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
+                {!isForumAdmin && (
+                  <CallToAction>
+                    <ParticipantButtons
+                      isProposer={isProposer}
+                      proposal={proposalDetails}
+                      addressDetails={addressDetails}
+                      match={this.props.match}
+                      history={history}
+                      translations={translations}
+                    />
+                    <ModeratorButtons
+                      proposal={proposalDetails}
+                      addressDetails={addressDetails}
+                      history={history}
+                      translations={translations}
+                    />
+                  </CallToAction>
+                )}
+              </Header>
+              <FundingInfo>
+                <InfoItem>
+                  <ItemTitle>{project.submittedBy}</ItemTitle>
+                  <Data>
+                    <span>{displayName}</span>
+                  </Data>
+                </InfoItem>
+              </FundingInfo>
+            </ProjectSummary>
+            <VotingAccordion
+              isSpecial
+              votingResults={this.getPastVotingResults()}
+              translations={translations}
+            />
+            <SpecialProjectVotingResult
+              proposal={proposalDetails.data}
+              daoInfo={daoInfo}
+              translations={translations}
+            />
+          </Fragment>
+        )}
         {proposal.id === '0xd75d13bc6e254db93f313ad7c880c195637ef3568e6495425d2e9b2842dff584' ? (
           <ShortenedProposal
             uintConfigs={proposalDetails.data.uintConfigs}

@@ -565,67 +565,72 @@ class Proposal extends React.Component {
         >
           {project.back}
         </BackButton>
-        {data.votingRounds && (
-          <Fragment>
-            <ProjectSummary>
+        <ProjectSummary>
+          {data.votingRounds && (
+            <Fragment>
               {this.renderPrlAlert(proposalDetails.data.prl)}
               {this.renderClaimApprovalAlert()}
               {this.renderProposerDidNotPassAlert()}
-              <Tags>
-                <div>
-                  <Button kind="tag" special data-digix="Proposal-IsSpecial">
-                    {project.special}
-                  </Button>
-                  <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
-                    {project.status[stage.toLowerCase()]}
-                  </Button>
-                  {isActionable && (
-                    <Button kind="tag" outline actionable data-digix="Proposal-ActionableStatus">
-                      <Icon kind="flag" />
-                      {tActionable[actionableStatus]}
-                    </Button>
-                  )}
-                </div>
-                <div>
-                  <Like
-                    hasVoted={liked}
-                    likes={likeCount}
-                    translations={cardTranslation}
-                    disabled={!userData}
-                    onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
-                  />
-                </div>
-              </Tags>
-              <Header>
-                <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
-                {!isForumAdmin && (
-                  <CallToAction>
-                    <ParticipantButtons
-                      isProposer={isProposer}
-                      proposal={proposalDetails}
-                      addressDetails={addressDetails}
-                      match={this.props.match}
-                      history={history}
-                      translations={translations}
-                    />
-                    <ModeratorButtons
-                      proposal={proposalDetails}
-                      addressDetails={addressDetails}
-                      history={history}
-                      translations={translations}
-                    />
-                  </CallToAction>
-                )}
-              </Header>
-              <FundingInfo>
-                <InfoItem>
-                  <ItemTitle>{project.submittedBy}</ItemTitle>
-                  <Data>
-                    <span>{displayName}</span>
-                  </Data>
-                </InfoItem>
-              </FundingInfo>
-            </ProjectSummary>
+            </Fragment>
+          )}
+          <Tags>
+            <div>
+              <Button kind="tag" special data-digix="Proposal-IsSpecial">
+                {project.special}
+              </Button>
+              <Button kind="tag" actionable={isActionable} data-digix="Proposal-Status">
+                {project.status[stage.toLowerCase()]}
+              </Button>
+              {isActionable && (
+                <Button kind="tag" outline actionable data-digix="Proposal-ActionableStatus">
+                  <Icon kind="flag" />
+                  {tActionable[actionableStatus]}
+                </Button>
+              )}
+            </div>
+            <div>
+              <Like
+                hasVoted={liked}
+                likes={likeCount}
+                translations={cardTranslation}
+                disabled={!userData}
+                onClick={liked ? this.handleUnlikeClick : this.handleLikeClick}
+              />
+            </div>
+          </Tags>
+
+          <Header>
+            <Title data-digix="Proposal-Title">{proposalDetails.data.title}</Title>
+            {!isForumAdmin && (
+              <CallToAction>
+                <ParticipantButtons
+                  isProposer={isProposer}
+                  proposal={proposalDetails}
+                  addressDetails={addressDetails}
+                  match={this.props.match}
+                  history={history}
+                  translations={translations}
+                />
+                <ModeratorButtons
+                  proposal={proposalDetails}
+                  addressDetails={addressDetails}
+                  history={history}
+                  translations={translations}
+                />
+              </CallToAction>
+            )}
+          </Header>
+          <FundingInfo>
+            <InfoItem>
+              <ItemTitle>{project.submittedBy}</ItemTitle>
+              <Data>
+                <span>{displayName}</span>
+              </Data>
+            </InfoItem>
+          </FundingInfo>
+        </ProjectSummary>
+        {data.votingRounds && (
+          <Fragment>
             <VotingAccordion
               isSpecial
               votingResults={this.getPastVotingResults()}

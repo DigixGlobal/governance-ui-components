@@ -658,7 +658,7 @@ class Proposal extends React.Component {
             uintConfigs={proposalDetails.data.uintConfigs}
             translations={translations}
           />
-        ) : proposal.id === '0xaaabbbccc' ? (
+        ) : proposal.id === '0xe7d5d8aefc5f73c4c8bbc716f0c3c2dd52d5282d18217db331da4435b8e6966e' ? (
           <SpecialProject4Details
             uintConfigs={proposalDetails.data.uintConfigs}
             translations={translations}

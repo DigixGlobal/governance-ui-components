@@ -40,10 +40,10 @@ class ParticipantButtons extends React.Component {
     });
   }
 
-  checkUnmetRequirements(proposalAction, customErrors) {
+  checkUnmetRequirements(skipKycCheck, proposalAction, customErrors) {
     const { client, DaoDetails, translations } = this.props;
 
-    getUnmetProposalRequirements(client, DaoDetails, translations).then(errors => {
+    getUnmetProposalRequirements(client, DaoDetails, translations, skipKycCheck).then(errors => {
       let totalErrors = errors;
       if (customErrors) {
         totalErrors = errors.concat(customErrors);
@@ -148,7 +148,7 @@ class ParticipantButtons extends React.Component {
           proposalId={data.proposalId}
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
-          checkProposalRequirements={checkProposalRequirements}
+          checkProposalRequirements={checkProposalRequirements(true)}
           translations={buttonTranslations}
           txnTranslations={txnTranslations}
         />
@@ -160,7 +160,7 @@ class ParticipantButtons extends React.Component {
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
           translations={buttonTranslations}
-          checkProposalRequirements={checkProposalRequirements}
+          checkProposalRequirements={checkProposalRequirements(true)}
           txnTranslations={txnTranslations}
         />
         <ClaimResultsButton

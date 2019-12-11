@@ -148,7 +148,7 @@ class ParticipantButtons extends React.Component {
           proposalId={data.proposalId}
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
-          checkProposalRequirements={checkProposalRequirements(undefined, undefined, true)}
+          checkProposalRequirements={checkProposalRequirements}
           translations={buttonTranslations}
           txnTranslations={txnTranslations}
         />
@@ -160,7 +160,7 @@ class ParticipantButtons extends React.Component {
           votingStage={data.votingStage}
           votes={addressDetails.data.votes}
           translations={buttonTranslations}
-          checkProposalRequirements={checkProposalRequirements(undefined, undefined, true)}
+          checkProposalRequirements={checkProposalRequirements}
           txnTranslations={txnTranslations}
         />
         <ClaimResultsButton

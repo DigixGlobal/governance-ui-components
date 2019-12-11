@@ -79,7 +79,7 @@ class CommitVoteButton extends React.PureComponent {
       <Button
         kind="round"
         large
-        onClick={() => checkProposalRequirements(this.showOverlay(hasVoted), undefined, true)}
+        onClick={() => checkProposalRequirements(() => this.showOverlay(hasVoted), undefined, true)}
       >
         {hasVoted ? buttons.changeVote : buttons.vote}
       </Button>

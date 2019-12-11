@@ -75,7 +75,7 @@ class RevealVoteButton extends React.PureComponent {
       <Button
         kind="round"
         large
-        onClick={() => checkProposalRequirements(this.showOverlay)}
+        onClick={() => checkProposalRequirements(this.showOverlay, undefined, true)}
         data-digix="Proposal-Reveal-Vote"
       >
         {buttons.revealVote}

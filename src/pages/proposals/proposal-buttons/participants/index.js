@@ -40,10 +40,10 @@ class ParticipantButtons extends React.Component {
     });
   }
 
-  checkUnmetRequirements(proposalAction, customErrors) {
+  checkUnmetRequirements(proposalAction, customErrors, skipKycCheck) {
     const { client, DaoDetails, translations } = this.props;
 
-    getUnmetProposalRequirements(client, DaoDetails, translations).then(errors => {
+    getUnmetProposalRequirements(client, DaoDetails, translations, skipKycCheck).then(errors => {
       let totalErrors = errors;
       if (customErrors) {
         totalErrors = errors.concat(customErrors);

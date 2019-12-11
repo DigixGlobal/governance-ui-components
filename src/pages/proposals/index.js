@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
@@ -18,6 +18,7 @@ import SpecialProjectDetails, {
 } from '@digix/gov-ui/pages/proposals/special-project-details';
 import SpecialProject2Details from '@digix/gov-ui/pages/proposals/special-project2-details';
 import SpecialProject3Details from '@digix/gov-ui/pages/proposals/special-project3-details';
+import SpecialProject4Details from '@digix/gov-ui/pages/proposals/special-project4-details';
 import SpecialProjectVotingResult from '@digix/gov-ui/pages/proposals/special-project-voting-result';
 import AdditionalDocs from '@digix/gov-ui/pages/proposals/additional-docs';
 import VotingAccordion from '@digix/gov-ui/components/common/elements/accordion/voting-accordion';
@@ -525,6 +526,7 @@ class Proposal extends React.Component {
   renderSpecialProposal = () => {
     const {
       proposalDetails,
+      proposalDetails: { data },
       addressDetails,
       history,
       daoInfo,
@@ -564,9 +566,13 @@ class Proposal extends React.Component {
           {project.back}
         </BackButton>
         <ProjectSummary>
-          {this.renderPrlAlert(proposalDetails.data.prl)}
-          {this.renderClaimApprovalAlert()}
-          {this.renderProposerDidNotPassAlert()}
+          {data.votingRounds && (
+            <Fragment>
+              {this.renderPrlAlert(proposalDetails.data.prl)}
+              {this.renderClaimApprovalAlert()}
+              {this.renderProposerDidNotPassAlert()}
+            </Fragment>
+          )}
           <Tags>
             <div>
               <Button kind="tag" special data-digix="Proposal-IsSpecial">
@@ -623,16 +629,20 @@ class Proposal extends React.Component {
             </InfoItem>
           </FundingInfo>
         </ProjectSummary>
-        <VotingAccordion
-          isSpecial
-          votingResults={this.getPastVotingResults()}
-          translations={translations}
-        />
-        <SpecialProjectVotingResult
-          proposal={proposalDetails.data}
-          daoInfo={daoInfo}
-          translations={translations}
-        />
+        {data.votingRounds && (
+          <Fragment>
+            <VotingAccordion
+              isSpecial
+              votingResults={this.getPastVotingResults()}
+              translations={translations}
+            />
+            <SpecialProjectVotingResult
+              proposal={proposalDetails.data}
+              daoInfo={daoInfo}
+              translations={translations}
+            />
+          </Fragment>
+        )}
         {proposal.id === '0xd75d13bc6e254db93f313ad7c880c195637ef3568e6495425d2e9b2842dff584' ? (
           <ShortenedProposal
             uintConfigs={proposalDetails.data.uintConfigs}
@@ -645,6 +655,11 @@ class Proposal extends React.Component {
           />
         ) : proposal.id === '0xb7eb4b563ffa038169786b2a2e37f8c42edf60b83cea79e9fb97b425e570b833' ? (
           <SpecialProject3Details
+            uintConfigs={proposalDetails.data.uintConfigs}
+            translations={translations}
+          />
+        ) : proposal.id === '0xe7d5d8aefc5f73c4c8bbc716f0c3c2dd52d5282d18217db331da4435b8e6966e' ? (
+          <SpecialProject4Details
             uintConfigs={proposalDetails.data.uintConfigs}
             translations={translations}
           />

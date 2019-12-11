@@ -18,7 +18,7 @@ export const Item = styled.div`
       flex: 1;
     }
     &:last-child {
-      flex: 0 1 200px;
+      flex: ${props => (props.hasVoting ? '0 1 200px' : '0 1 0px')};
     }
   }
   ${media.mobile`

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { toBigNumber, parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
@@ -14,6 +14,9 @@ export default class ProposalCardStats extends React.Component {
     const { currentVotingRound, draftVoting, votingRounds, isSpecial } = proposal;
 
     if (isSpecial === true) {
+      if (!votingRounds) {
+        return;
+      }
       return votingRounds[0];
     }
 
@@ -85,19 +88,23 @@ export default class ProposalCardStats extends React.Component {
     } = translations;
 
     return (
-      <Details second noPadding>
-        <Info>
-          {cardTranslation.funding}
-          <span data-digix="Total-Funding">{funding} ETH</span>
-        </Info>
-        <Info stage={details.stage} votingStage={votingStage}>
-          {cardTranslation.approval}
-          <span data-digix="Approval-Rating">{approvalRating}%</span>
-        </Info>
-        <Info stage={details.stage} votingStage={votingStage}>
-          {cardTranslation.participants}
-          <span data-digix="Participant-Count">{participantCount}</span>
-        </Info>
+      <Details second noPadding hasVoting={!!details.votingRounds}>
+        {details.votingRounds && (
+          <Fragment>
+            <Info>
+              {cardTranslation.funding}
+              <span data-digix="Total-Funding">{funding} ETH</span>
+            </Info>
+            <Info stage={details.stage} votingStage={votingStage}>
+              {cardTranslation.approval}
+              <span data-digix="Approval-Rating">{approvalRating}%</span>
+            </Info>
+            <Info stage={details.stage} votingStage={votingStage}>
+              {cardTranslation.participants}
+              <span data-digix="Participant-Count">{participantCount}</span>
+            </Info>
+          </Fragment>
+        )}
       </Details>
     );
   }

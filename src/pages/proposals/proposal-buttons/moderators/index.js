@@ -1,10 +1,48 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/jsx-no-bind */
 
-import EndorseButton from '../endorse';
-import ApproveButton from '../approve';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withApollo } from 'react-apollo';
+
+import EndorseButton from '@digix/gov-ui/pages/proposals/proposal-buttons/endorse';
+import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
+import ApproveButton from '@digix/gov-ui/pages/proposals/proposal-buttons/approve';
+import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { getUnmetProposalRequirements } from '@digix/gov-ui/utils/helpers';
+import { showRightPanel } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 class ModeratorButtons extends React.Component {
+  checkUnmetRequirements(proposalAction, customErrors) {
+    const { client, DaoDetails, translations } = this.props;
+
+    getUnmetProposalRequirements(client, DaoDetails, translations, true).then(errors => {
+      let totalErrors = errors;
+      if (customErrors) {
+        totalErrors = errors.concat(customErrors);
+      }
+
+      if (totalErrors.length) {
+        this.showErrorOverlay(totalErrors);
+      } else {
+        proposalAction();
+      }
+    });
+  }
+
+  showErrorOverlay(errors) {
+    const {
+      translations: {
+        common: { proposalErrors },
+      },
+    } = this.props;
+
+    this.props.showRightPanel({
+      component: <ErrorMessageOverlay errors={errors} location={proposalErrors.returnToProject} />,
+      show: true,
+    });
+  }
+
   render() {
     const {
       addressDetails,
@@ -19,6 +57,7 @@ class ModeratorButtons extends React.Component {
 
     const txnTranslations = this.props.translations.signTransaction;
     const buttonTranslations = { buttons, project, snackbars };
+    const checkProposalRequirements = this.checkUnmetRequirements.bind(this);
 
     return (
       <Fragment>
@@ -28,6 +67,7 @@ class ModeratorButtons extends React.Component {
           endorser={data.endorser}
           proposalId={data.proposalId}
           history={history}
+          checkProposalRequirements={checkProposalRequirements}
           translations={buttonTranslations}
           txnTranslations={txnTranslations}
         />
@@ -36,6 +76,7 @@ class ModeratorButtons extends React.Component {
           isModerator={addressDetails.data.isModerator}
           proposal={data}
           proposalId={data.proposalId}
+          checkProposalRequirements={checkProposalRequirements}
           translations={buttonTranslations}
           txnTranslations={txnTranslations}
         />
@@ -43,12 +84,29 @@ class ModeratorButtons extends React.Component {
     );
   }
 }
-const { object } = PropTypes;
+const { func, object } = PropTypes;
 
 ModeratorButtons.propTypes = {
-  proposal: object.isRequired,
   addressDetails: object.isRequired,
+  client: object.isRequired,
+  DaoDetails: object.isRequired,
   history: object.isRequired,
+  proposal: object.isRequired,
+  showRightPanel: func.isRequired,
   translations: object.isRequired,
 };
-export default ModeratorButtons;
+
+const mapStateToProps = ({ infoServer }) => ({
+  DaoDetails: infoServer.DaoDetails.data,
+});
+
+export default withApollo(
+  web3Connect(
+    connect(
+      mapStateToProps,
+      {
+        showRightPanel,
+      }
+    )(ModeratorButtons)
+  )
+);

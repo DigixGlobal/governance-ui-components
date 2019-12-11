@@ -27,6 +27,7 @@ class ApproveProjectButton extends React.PureComponent {
 
   render() {
     const {
+      checkProposalRequirements,
       isModerator,
       proposal,
       translations: { buttons },
@@ -42,7 +43,7 @@ class ApproveProjectButton extends React.PureComponent {
     }
 
     return (
-      <Button large onClick={this.showOverlay}>
+      <Button large onClick={() => checkProposalRequirements(this.showOverlay)}>
         {buttons.moderatorVote}
       </Button>
     );
@@ -52,6 +53,7 @@ class ApproveProjectButton extends React.PureComponent {
 const { bool, func, object, string } = PropTypes;
 
 ApproveProjectButton.propTypes = {
+  checkProposalRequirements: func.isRequired,
   isModerator: bool,
   proposal: object.isRequired,
   proposalId: string.isRequired,

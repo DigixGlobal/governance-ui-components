@@ -41,6 +41,7 @@ class RevealVoteButton extends React.PureComponent {
 
   render() {
     const {
+      checkProposalRequirements,
       isParticipant,
       proposal,
       proposal: { currentVotingRound, isSpecial, isActive },
@@ -71,7 +72,12 @@ class RevealVoteButton extends React.PureComponent {
       currentTime < proposal.votingRounds[isSpecial ? 0 : currentVotingRound].revealDeadline * 1000;
     if (!withinDeadline) return null;
     return (
-      <Button kind="round" large onClick={this.showOverlay} data-digix="Proposal-Reveal-Vote">
+      <Button
+        kind="round"
+        large
+        onClick={() => checkProposalRequirements(this.showOverlay)}
+        data-digix="Proposal-Reveal-Vote"
+      >
         {buttons.revealVote}
       </Button>
     );
@@ -82,6 +88,7 @@ const { bool, func, object, string } = PropTypes;
 
 RevealVoteButton.propTypes = {
   AddressDetails: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   isParticipant: bool,
   proposal: object.isRequired,
   proposalId: string.isRequired,

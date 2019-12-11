@@ -95,13 +95,14 @@ class EndorseProjectButton extends React.PureComponent {
 
     return executeContractFunction(payload);
   };
+
   render() {
-    const { stage, isModerator, endorser, translations } = this.props;
+    const { checkProposalRequirements, stage, isModerator, endorser, translations } = this.props;
     if (stage !== ProposalStages.idea || !isModerator || (endorser && endorser !== EMPTY_HASH))
       return null;
 
     return (
-      <Button kind="round" large onClick={this.handleSubmit}>
+      <Button kind="round" large onClick={() => checkProposalRequirements(this.handleSubmit)}>
         {translations.buttons.endorse}
       </Button>
     );
@@ -117,6 +118,7 @@ EndorseProjectButton.propTypes = {
   isModerator: bool,
   web3Redux: object.isRequired,
   ChallengeProof: object.isRequired,
+  checkProposalRequirements: func.isRequired,
   gasLimitConfig: object,
   showHideAlert: func.isRequired,
   sendTransactionToDaoServer: func.isRequired,

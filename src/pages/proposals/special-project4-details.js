@@ -206,7 +206,7 @@ const SpecialProject4Details = () => (
           </td>
         </tr>
         <tr>
-          <th>ETH in DigixDAO Treasury (Addresses)</th>
+          <th>Number of Active Projects</th>
           <td>
             <p>
               All Projects - Archived Projects, found on{' '}

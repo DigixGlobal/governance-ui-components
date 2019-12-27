@@ -348,4 +348,4 @@ By participating in DigixDAO, you agree that you do not use DigixDAO to engage i
 
 **F. DIGIXDAO USER GUIDE**
 
-[Click to see the PDF](./DIGIXDAO%20USER%20GUIDE.pdf)
+<a href="./DIGIXDAO USER GUIDE.pdf" target="_blank">Click to see the PDF</a>

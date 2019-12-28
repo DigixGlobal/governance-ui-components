@@ -345,3 +345,7 @@ By participating in DigixDAO, you agree that you do not use DigixDAO to engage i
     (xv) Otherwise attempt to gain unauthorised access to DigixDAO, other Addresses, computer systems or networks connected to DigixDAO; and/or
 
     (xvi) Engage in transactions involving items that infringe or violate any copyright, trademark, right of publicity or privacy or any other proprietary right under the law.
+
+**F. DIGIXDAO USER GUIDE**
+
+[Click to see the PDF](https://assets.digix.global/docs/digixdao_user_guide.pdf)

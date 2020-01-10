@@ -38,8 +38,10 @@ const countdownRenderer = ({ date, days, hours, minutes, seconds, completed }) =
 };
 
 class VotingResult extends React.Component {
+  // NOTE: The "voting" argument can be from votingRounds or draftVoting
+  // See Proposal::getPastVotingResults
   getVotingStats = voting => {
-    const { DaoConfig, daoInfo, isSpecial } = this.props;
+    const { DaoConfig, daoInfo, isModeratorVote, isSpecial } = this.props;
     const {
       CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR,
       CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR,
@@ -61,11 +63,12 @@ class VotingResult extends React.Component {
     const yesVotes = Number(voting.yes);
     const noVotes = Number(voting.no);
 
-    let minimumQuorum = formatPercentage(
-      quorum / (isSpecial ? totalLockedDgds : totalModeratorLockedDgds)
-    );
+    let minimumQuorum = formatPercentage(quorum / totalLockedDgds);
+    let quorumProgress = formatPercentage(totalVoterStake / totalLockedDgds);
 
     let minimumApproval = formatPercentage(quota);
+    const approvalProgress = formatPercentage(yesVotes / totalVoterStake);
+
     if (isSpecial) {
       minimumQuorum = formatPercentage(
         CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR / CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR
@@ -74,12 +77,11 @@ class VotingResult extends React.Component {
         CONFIG_SPECIAL_QUOTA_NUMERATOR / CONFIG_SPECIAL_QUOTA_DENOMINATOR
       );
     }
-    const quorumProgress = formatPercentage(
-      totalVoterStake / (isSpecial ? totalLockedDgds : totalModeratorLockedDgds)
-    );
 
-    // const minimumApproval = formatPercentage(quota);
-    const approvalProgress = formatPercentage(voting.yes / totalVoterStake);
+    if (isModeratorVote) {
+      minimumQuorum = formatPercentage(quorum / totalModeratorLockedDgds);
+      quorumProgress = formatPercentage(totalVoterStake / totalModeratorLockedDgds);
+    }
 
     return {
       votes,
@@ -174,12 +176,14 @@ const { bool, object } = PropTypes;
 VotingResult.propTypes = {
   DaoConfig: object.isRequired,
   daoInfo: object.isRequired,
+  isModeratorVote: bool,
   isSpecial: bool,
   translations: object.isRequired,
   voting: object,
 };
 
 VotingResult.defaultProps = {
+  isModeratorVote: false,
   isSpecial: false,
   voting: undefined,
 };
@@ -188,7 +192,4 @@ const mapStateToProps = ({ infoServer }) => ({
   DaoConfig: infoServer.DaoConfig.data,
 });
 
-export default connect(
-  mapStateToProps,
-  {}
-)(VotingResult);
+export default connect(mapStateToProps, {})(VotingResult);

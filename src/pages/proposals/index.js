@@ -281,6 +281,7 @@ class Proposal extends React.Component {
     if (proposalDetails.data.currentVotingRound === -1) {
       pastVotes.push({
         title: votingResult.moderatorApprovalResults,
+        isModeratorVote: true,
         voting: proposalDetails.data.draftVoting,
         daoInfo,
       });
@@ -289,6 +290,7 @@ class Proposal extends React.Component {
     if (proposalDetails.data.currentVotingRound === 0) {
       pastVotes.push({
         title: votingResult.moderatorApprovalResults,
+        isModeratorVote: true,
         voting: proposalDetails.data.draftVoting,
         daoInfo,
       });
@@ -301,6 +303,7 @@ class Proposal extends React.Component {
     if (proposalDetails.data.currentVotingRound === 1) {
       pastVotes.push({
         title: votingResult.moderatorApprovalResults,
+        isModeratorVote: true,
         voting: proposalDetails.data.draftVoting,
         daoInfo,
       });
@@ -320,6 +323,7 @@ class Proposal extends React.Component {
     if (proposalDetails.data.currentVotingRound === 2) {
       pastVotes.push({
         title: votingResult.moderatorApprovalResults,
+        isModeratorVote: true,
         voting: proposalDetails.data.draftVoting,
         daoInfo,
       });

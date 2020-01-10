@@ -80,15 +80,15 @@ class VotingResult extends React.Component {
 
     const quorum = parseBigNumber(currentRound.quorum, 0, false);
     const quota = parseBigNumber(currentRound.quota, 0, false);
-    const totalModeratorLockedDgds = parseBigNumber(daoInfo.totalModeratorLockedDgds, 0, false);
+    const totalLockedDgds = parseBigNumber(daoInfo.totalLockedDgds, 0, false);
     const totalVoterStake = parseBigNumber(currentRound.totalVoterStake, 0, false);
 
     const votes = currentRound.totalVoterCount;
     const yesVotes = currentRound.yes;
     const noVotes = currentRound.no;
 
-    const minimumQuorum = formatPercentage(quorum / totalModeratorLockedDgds);
-    const quorumProgress = formatPercentage(totalVoterStake / totalModeratorLockedDgds);
+    const minimumQuorum = formatPercentage(quorum / totalLockedDgds);
+    const quorumProgress = formatPercentage(totalVoterStake / totalLockedDgds);
 
     const minimumApproval = formatPercentage(quota);
     const approvalProgress = formatPercentage(currentRound.yes / totalVoterStake);

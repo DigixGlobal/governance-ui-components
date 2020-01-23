@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { H2 } from '@digix/gov-ui/components/common/common-styles';
+import { Button } from '@digix/gov-ui/components/common/elements/index';
 
 export const Container = styled.div`
   display: flex;
@@ -48,3 +49,22 @@ export const TosOverlay = styled.div`
     font-family: 'Futura PT Medium', sans-serif;
   }
 `;
+
+export const SpProposal = {
+  SpContainer: styled.div`
+    padding: 3.2rem 2.4rem 2.4rem 2.4rem;
+  `,
+  SpTitle: styled.h1`
+    color: ${props => props.theme.textColor.primary.light.toString()};
+    font-size: 2.4rem;
+    margin-bottom: 2.4rem;
+  `,
+  SpParagraph: styled.p`
+    line-height: 1.5;
+    word-break: break-all;
+  `,
+  SpButton: styled(Button)`
+    margin: 2.4rem 0 0 0;
+    width: 100%;
+  `,
+};

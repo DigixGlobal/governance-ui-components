@@ -9,8 +9,9 @@ import CountdownPage from '@digix/gov-ui/components/common/blocks/loader/countdo
 import ProposalCard from '@digix/gov-ui/components/proposal-card';
 import Timeline from '@digix/gov-ui/components/common/blocks/timeline';
 import ToS from '@digix/gov-ui/tos.md';
+import RagnarokSpProposal from '@digix/gov-ui/pages/sp-ragnarok';
 import ProposalFilter from '@digix/gov-ui/components/common/blocks/filter/index';
-import { Content, Title, TosOverlay } from '@digix/gov-ui/pages/style';
+import { Content, Title, TosOverlay, SpProposal } from '@digix/gov-ui/pages/style';
 import { CONFIRM_PARTICIPATION_CACHE } from '@digix/gov-ui/constants';
 import { Button } from '@digix/gov-ui/components/common/elements/index';
 import { fetchProposalList } from '@digix/gov-ui/api/graphql-queries/proposal';
@@ -33,6 +34,8 @@ import {
   getUserProposalLikeStatus,
 } from '@digix/gov-ui/reducers/dao-server/actions';
 
+const { SpContainer, SpTitle, SpParagraph, SpButton } = SpProposal;
+
 class LandingPage extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -43,6 +46,7 @@ class LandingPage extends React.PureComponent {
       proposals: [],
       proposalLikes: {},
       showParticipateModal: false,
+      showRagnarokModal: true,
       showTos: true,
       userLikes: [],
     };
@@ -167,6 +171,12 @@ class LandingPage extends React.PureComponent {
     });
   };
 
+  handleRagnarokClose = () => {
+    this.setState({
+      showRagnarokModal: false,
+    });
+  };
+
   likeProposal = proposalId => {
     const { ChallengeProof } = this.props;
     const payload = initializePayload(ChallengeProof);
@@ -270,7 +280,14 @@ class LandingPage extends React.PureComponent {
   renderLandingPage() {
     this.fixScrollbar(this.props.ShowWallet);
 
-    const { disableButton, order, proposals, showParticipateModal, showTos } = this.state;
+    const {
+      disableButton,
+      order,
+      proposals,
+      showParticipateModal,
+      showRagnarokModal,
+      showTos,
+    } = this.state;
     const { AddressDetails, DaoDetails, history, Translations } = this.props;
     if (!Translations.data) {
       return null;
@@ -323,6 +340,16 @@ class LandingPage extends React.PureComponent {
               I have read and agreed
             </Button>
           </Content>
+        </Modal>
+
+        <Modal
+          open={!showTos && showRagnarokModal}
+          onClose={this.handleRagnarokClose}
+          showCloseIcon={false}
+          closeOnEsc={false}
+          closeOnOverlayClick={false}
+        >
+          <RagnarokSpProposal closeModal={this.handleRagnarokClose} />
         </Modal>
         <Modal open={showParticipateModal} onClose={() => true} showCloseIcon={false}>
           <ConfirmParticipation closeModal={this.handleModalClose} />
@@ -403,19 +430,16 @@ const mapStateToProps = state => {
 };
 
 export default withApollo(
-  connect(
-    mapStateToProps,
-    {
-      getAddressDetails,
-      getDaoConfig,
-      getDaoDetails,
-      getProposalLikesByUser,
-      getProposalLikesStats,
-      getTranslations,
-      getUserProposalLikeStatus,
-      likeProposal,
-      unlikeProposal,
-      showCountdownPage,
-    }
-  )(LandingPage)
+  connect(mapStateToProps, {
+    getAddressDetails,
+    getDaoConfig,
+    getDaoDetails,
+    getProposalLikesByUser,
+    getProposalLikesStats,
+    getTranslations,
+    getUserProposalLikeStatus,
+    likeProposal,
+    unlikeProposal,
+    showCountdownPage,
+  })(LandingPage)
 );

@@ -1,5 +1,6 @@
 {
   "loadWallet": "加载钱包",
   "lockDgd": "锁定DGD",
+  "unlockDgd": "解锁DGD",
   "logout": "登出"
 }

@@ -67,7 +67,7 @@ class LandingPage extends React.PureComponent {
     Promise.all(promises).then(() => {
       this.getUserLikes();
       this.getProposalLikes();
-      this.showContinueParticipationModal();
+      // this.showContinueParticipationModal();
     });
   };
 

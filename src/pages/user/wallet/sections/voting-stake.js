@@ -73,14 +73,14 @@ class VotingStake extends React.Component {
           </Data>
           <Desc>{t.instructions}</Desc>
           <Actions>
-            <Button
+            {/* <Button
               primary
               data-digix="Wallet-LockDgd"
               disabled={!canLockDgd}
               onClick={() => this.showLockDgdOverlay()}
             >
               {t.lockDgd}
-            </Button>
+            </Button> */}
             <Button
               primary
               disabled={!canUnlockDgd}
@@ -123,14 +123,11 @@ const mapStateToProps = state => ({
 });
 
 const VotingStakeComponent = web3Connect(
-  connect(
-    mapStateToProps,
-    {
-      showHideAlert,
-      showRightPanel,
-      showHideLockDgdOverlay,
-    }
-  )(VotingStake)
+  connect(mapStateToProps, {
+    showHideAlert,
+    showRightPanel,
+    showHideLockDgdOverlay,
+  })(VotingStake)
 );
 
 export default withFetchAddress(VotingStakeComponent);

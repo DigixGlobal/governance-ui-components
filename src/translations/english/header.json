@@ -1,5 +1,6 @@
 {
   "loadWallet": "Load Wallet",
   "lockDgd": "Lock DGD",
+  "unlockDgd": "Unlock DGD",
   "logout": "Logout"
 }

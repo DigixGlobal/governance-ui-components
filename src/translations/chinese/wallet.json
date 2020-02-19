@@ -4,7 +4,7 @@
   "LockedDgd": {
     "title": "已锁定DGD",
     "currentLockup": "当前锁定",
-    "instructions": "您可以锁定更多DGD来获取更大的投票权或者在季度末解锁DGD并把DGD转回钱包.",
+    "instructions": "您可以度末解锁DGD并把DGD转回钱包.",
     "lockDgd": "锁定DGD",
     "UnlockDgd": {
       "overlayButton": "解锁DGD",

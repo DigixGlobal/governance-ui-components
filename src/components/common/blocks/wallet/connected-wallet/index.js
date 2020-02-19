@@ -287,7 +287,7 @@ class ConnectedWallet extends React.Component {
             </Amount>
           </Token>
           <HR style={{ marginBottom: '4rem' }} />
-          <Header uppercase>{tLockDgd.title}</Header>
+          {/* <Header uppercase>{tLockDgd.title}</Header>
           <p>{tLockDgd.description}</p>
           <Button
             secondary
@@ -298,7 +298,7 @@ class ConnectedWallet extends React.Component {
             data-digx="Connect-Wallet-Locked-DGD"
           >
             {tLockDgd.button}
-          </Button>
+          </Button> */}
           <Notes>
             <NotesTitle>{tNotes.title}</NotesTitle>
             <ul>
@@ -384,17 +384,14 @@ const mapStateToProps = state => ({
   gasLimitConfig: state.infoServer.TxConfig.data.gas,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    showHideAlert,
-    showHideWalletOverlay,
-    showHideLockDgdOverlayAction: showHideLockDgdOverlay,
-    canLockDgd,
-    getDaoDetails,
-    getTxConfig,
-    fetchMaxAllowance,
-    showTxSigningModal,
-    sendTransactionToDaoServer,
-  }
-)(ConnectedWallet);
+export default connect(mapStateToProps, {
+  showHideAlert,
+  showHideWalletOverlay,
+  showHideLockDgdOverlayAction: showHideLockDgdOverlay,
+  canLockDgd,
+  getDaoDetails,
+  getTxConfig,
+  fetchMaxAllowance,
+  showTxSigningModal,
+  sendTransactionToDaoServer,
+})(ConnectedWallet);

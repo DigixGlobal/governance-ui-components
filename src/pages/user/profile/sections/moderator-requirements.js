@@ -81,13 +81,13 @@ class ModeratorRequirements extends React.Component {
         </Criteria>
         <Actions>
           <RedeemBadge history={this.props.history} />
-          <Button
+          {/* <Button
             primary
             data-digix="Profile-LockMoreDgd-Cta"
             onClick={() => this.showLockDgdOverlay()}
           >
             {t.lockDgd}
-          </Button>
+          </Button> */}
         </Actions>
       </Moderation>
     );
@@ -116,11 +116,8 @@ const mapStateToProps = ({ infoServer }) => ({
 });
 
 export default withFetchAddress(
-  connect(
-    mapStateToProps,
-    {
-      getDaoConfig,
-      showHideLockDgdOverlay,
-    }
-  )(ModeratorRequirements)
+  connect(mapStateToProps, {
+    getDaoConfig,
+    showHideLockDgdOverlay,
+  })(ModeratorRequirements)
 );

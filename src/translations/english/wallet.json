@@ -4,7 +4,7 @@
   "LockedDgd": {
     "title": "Your Locked DGD",
     "currentLockup": "Your Current Lock-Up",
-    "instructions": "You can lock more DGD to increase your voting power or unlock after a quarter to move your DGD back into your wallet.",
+    "instructions": "You can unlock your DGD and move your it back into your wallet after a quarter has passed.",
     "lockDgd": "Lock DGD",
     "UnlockDgd": {
       "overlayButton": "Unlock DGD",

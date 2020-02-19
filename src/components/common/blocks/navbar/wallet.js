@@ -18,6 +18,7 @@ import {
   showRightPanel,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
+import UnlockDgdOverlay from '@digix/gov-ui/components/common/blocks/overlay/unlock-dgd';
 import ErrorMessageOverlay from '@digix/gov-ui/components/common/blocks/overlay/error-message';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
@@ -40,6 +41,18 @@ class WalletButton extends React.Component {
   showLockDgdOverlay = () => {
     this.props.showHideLockDgd(true, null, 'Header');
   };
+
+  showUnlockDgdOverlay() {
+    const {
+      data: { lockedDgd },
+    } = this.props.addressDetails;
+    const tUnlock = this.props.translations.wallet.LockedDgd.UnlockDgd;
+
+    this.props.showRightPanel({
+      component: <UnlockDgdOverlay maxAmount={Number(lockedDgd)} translations={tUnlock} />,
+      show: true,
+    });
+  }
 
   showErrorOverlay(errors) {
     const {
@@ -68,6 +81,10 @@ class WalletButton extends React.Component {
       loadWallet: { banned },
     } = this.props.translations;
 
+    const {
+      data: { lockedDgd },
+    } = this.props.addressDetails;
+
     return (
       <Fragment>
         <NavItem cta>
@@ -92,7 +109,7 @@ class WalletButton extends React.Component {
               {tHeader.loadWallet || 'Load Wallet'}
             </Button>
           )}
-          {canLockDgd && canLockDgd.show && (
+          {/* {canLockDgd && canLockDgd.show && (
             <Button
               primary
               xsmall
@@ -100,6 +117,17 @@ class WalletButton extends React.Component {
               onClick={() => this.showLockDgdOverlay()}
             >
               {tHeader.lockDgd || 'Lock DGD'}
+            </Button>
+          )} */}
+          {defaultAddress && (
+            <Button
+              disabled={Number(lockedDgd) <= 0}
+              primary
+              xsmall
+              data-digix="Header-UnlockDgd"
+              onClick={() => this.showUnlockDgdOverlay()}
+            >
+              {tHeader.unlockDgd || 'Unlock DGD'}
             </Button>
           )}
         </NavItem>
@@ -137,6 +165,7 @@ class WalletButton extends React.Component {
 
 const { bool, func, string, object, oneOfType } = PropTypes;
 WalletButton.propTypes = {
+  addressDetails: object,
   showHideLockDgd: func.isRequired,
   showHideWalletOverlay: func.isRequired,
   defaultAddress: oneOfType([string, object]),
@@ -148,6 +177,12 @@ WalletButton.propTypes = {
 };
 
 WalletButton.defaultProps = {
+  addressDetails: {
+    data: {
+      address: undefined,
+      lockDgd: undefined,
+    },
+  },
   defaultAddress: undefined,
   canLockDgd: undefined,
   translations: {
@@ -163,11 +198,8 @@ const mapStateToProps = state => ({
   translations: state.daoServer.Translations.data,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    showHideLockDgd: showHideLockDgdOverlay,
-    showHideWalletOverlay,
-    showRightPanel,
-  }
-)(withAppUser(WalletButton));
+export default connect(mapStateToProps, {
+  showHideLockDgd: showHideLockDgdOverlay,
+  showHideWalletOverlay,
+  showRightPanel,
+})(withAppUser(WalletButton));

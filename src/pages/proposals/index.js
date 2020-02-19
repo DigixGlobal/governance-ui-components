@@ -419,7 +419,7 @@ class Proposal extends React.Component {
   renderClaimApprovalAlert = () => {
     const {
       proposalDetails: {
-        data: { proposer },
+        data: { id, proposer },
         data,
       },
       addressDetails: {
@@ -438,6 +438,11 @@ class Proposal extends React.Component {
     const votingStruct = getVotingStruct(data);
 
     if (!votingStruct) return null;
+
+    const isRagnarok = id === '0xe7d5d8aefc5f73c4c8bbc716f0c3c2dd52d5282d18217db331da4435b8e6966e';
+    if (isRagnarok) {
+      return null;
+    }
 
     const voteClaimingDeadline = daoConfig.data.CONFIG_VOTE_CLAIMING_DEADLINE;
     const currentTime = Date.now();

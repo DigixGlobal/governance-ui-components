@@ -11,7 +11,7 @@ import { ApolloProvider } from 'react-apollo';
 import PropTypes from 'prop-types';
 
 import ActionCable from 'actioncable';
-import ActionCableLink from 'graphql-ruby-client/subscriptions/ActionCableLink';
+import ActionCableLink from 'graphql-ruby-client/dist/subscriptions/ActionCableLink';
 
 import SubscriptionClient from '@digix/gov-ui/api/webSocketClient';
 import WebSocketLink from '@digix/gov-ui/api/webSocketLink';

@@ -73,7 +73,7 @@ export const GasPriceOption = styled(Card)`
   background-color: ${props =>
     props.isActive ? props.theme.backgroundSecondary.fade.toString() : ''};
   margin-bottom: 0;
-  width: 18%;
+  width: 24%;
   flex-direction: column;
   flex-grow: 0;
   justify-content: center;

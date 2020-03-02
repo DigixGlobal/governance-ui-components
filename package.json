@@ -72,11 +72,10 @@
   },
   "lint-staged": {
     "*.js": [
-      "npm run lint:eslint:fix",
+      "npm run lint:eslint",
       "git add --force"
     ],
     "*.json": [
-      "prettier --write",
       "git add --force"
     ]
   },

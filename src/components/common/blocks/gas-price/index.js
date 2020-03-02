@@ -159,7 +159,7 @@ class GasPrice extends React.Component {
               <TimeText theme={theme}>{formatTime(this.state.avgWait)}</TimeText>
             </GasPriceOption>
 
-            <GasPriceOption
+            {/* <GasPriceOption
               theme={theme}
               isActive={gasOption === SAFE_LOW}
               onClick={() => this._onSelectOption(SAFE_LOW)}
@@ -169,10 +169,9 @@ class GasPrice extends React.Component {
                 <span>{this.state[SAFE_LOW] / 10}</span> GWEI
               </ValueText>
               <TimeText theme={theme}>{formatTime(this.state.safeLowWait)}</TimeText>
-            </GasPriceOption>
-
-            <GasPriceOption theme={theme}>
-              <AdvancedOption theme={theme} onClick={this._toggleAdvanced}>
+            </GasPriceOption> */}
+            <GasPriceOption theme={theme} onClick={this._toggleAdvanced}>
+              <AdvancedOption theme={theme}>
                 Advanced Options
               </AdvancedOption>
             </GasPriceOption>

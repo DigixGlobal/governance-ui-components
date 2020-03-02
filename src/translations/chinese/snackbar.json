@@ -1,5 +1,16 @@
 {
+  "close": "Close",
+  "view": "View",
+  "status": {
+    "error": "Error",
+    "success": "Success"
+  },
   "snackbars": {
+    "dissolutionUnlock": {
+      "title": "Unlock DGD",
+      "txUiHeader": "DGD",
+      "message": "Unlocking all DGD"
+    },
     "createProject": {
       "title": "提交",
       "txUiHeader": "项目",

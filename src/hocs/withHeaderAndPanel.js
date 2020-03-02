@@ -42,7 +42,7 @@ function withHeaderAndPanel(WrappedComponent) {
           <RightPanelOverlay />
           <NavBar />
           <Container id="App" style={{ height: '100%' }}>
-            <LeftMenu location={this.props.location} />
+            {/* <LeftMenu location={this.props.location} /> */}
             <ContentWrapper id="page-wrap">
               {isUnderMaintenance && <UnderMaintenance />}
               {!isUnderMaintenance && <WrappedComponent {...this.props} />}

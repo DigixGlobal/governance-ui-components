@@ -1,0 +1,32 @@
+{
+  "Modal": {
+    "title": "Ragnarok: Steps to Proceed",
+    "content": "The last Quarter of DigixDAO has ended. This site will enable you to unlock DGDs you have on our platform, as well as claim your ETH. If you have DGD but have not participated on our platform before, you will still be able to claim your DGD.",
+    "ethRecommendation": "We strongly encourage you to have at least **0.1 ETH** in your wallet so that you can make the necessary transactions in order for the claim to happen successfully",
+    "button": "Proceed"
+  },
+  "LoadWallet": {
+    "title": "Hello there!",
+    "unlock": "We will need you to load your wallet to unlock DGD you have on our platform, as well as claim your ETH.",
+    "nonParticipant": "If you have DGD but have not participated on our platform before, you will still be able to claim your ETH.",
+    "ethRcommendation": "We strongly encourage you to have at least **0.1 ETH** in your wallet so that you can make the necessary transactions in order for the claim to happen successfully.",
+    "button": "Load A Wallet"
+  },
+  "Nav": {
+    "steps": "Step **{{currentStep}}** of **{{maxStep}}**",
+    "nextStep": "Next Step",
+    "logOut": "Log Out"
+  },
+  "Unlock": {
+    "title": "Your Current Lock-Up",
+    "button": "Unlock DGD"
+  },
+  "Approve": {
+    "instructions": "You will need to approve this contract in order to burn your DGD and claim ETH.",
+    "button": "Approve Contract Interaction"
+  },
+  "Burn": {
+    "title": "Your DGD gives an ETH claim of:",
+    "button": "Burn DGD for ETH"
+  }
+}

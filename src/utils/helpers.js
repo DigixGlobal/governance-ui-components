@@ -1,12 +1,33 @@
 import React from 'react';
+import LoadWallet from '@digix/gov-ui/translations/english/loadWallet.json';
+import LoadWalletCN from '@digix/gov-ui/translations/chinese/loadWallet.json';
 import Markdown from 'react-markdown';
+import SignTransaction from '@digix/gov-ui/translations/english/signTransaction.json';
+import SignTransactionCN from '@digix/gov-ui/translations/chinese/signTransaction.json';
 import multihash from '@digix/multi-hash';
 import util from 'ethereumjs-util';
-
 import { fetchUserQuery } from '@digix/gov-ui/api/graphql-queries/users';
-import { KycStatus, UserStatus } from '@digix/gov-ui/constants';
 import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { renderToString } from 'react-dom/server';
+import { KycStatus, UserStatus } from '@digix/gov-ui/constants';
+
+export function getLoadWalletTranslation() {
+  const storedLng = localStorage.getItem('i18nextLng');
+  if (storedLng === 'zh-CN') {
+    return LoadWalletCN;
+  }
+
+  return LoadWallet;
+}
+
+export function getSignTransactionTranslation() {
+  const storedLng = localStorage.getItem('i18nextLng');
+  if (storedLng === 'zh-CN') {
+    return SignTransactionCN;
+  }
+
+  return SignTransaction;
+}
 
 export function encodeHash(hash) {
   // eslint-disable-line import/prefer-default-export

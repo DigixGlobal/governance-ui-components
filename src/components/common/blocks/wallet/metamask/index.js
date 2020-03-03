@@ -1,13 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
-import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
-import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
-import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
-
 import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
+import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { getLoadWalletTranslation } from '@digix/gov-ui/utils/helpers';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class Metamask extends React.Component {
@@ -35,16 +33,21 @@ class Metamask extends React.Component {
   handleClick = () => {
     this.setState({ skipConfirmation: true });
   };
+
   render() {
     const { blocked } = this.state;
+    const loadWalletTrans = getLoadWalletTranslation();
+    const tCommon = loadWalletTrans.common;
+    const tMetaMask = loadWalletTrans.Metamask;
+
     return (
       (
         <DefaultAddressSelector
           inverted
           key="metamask-address-selector"
-          renderBottom={false}
-          name="from"
           keystoreType="metamask"
+          name="from"
+          renderBottom={false}
           renderNoAccounts={() => null}
           showAddressOnly
         />
@@ -64,18 +67,18 @@ class Metamask extends React.Component {
             skipConfirmation={this.state.skipConfirmation}
             hideSelector
             allowedKeystoreTypes={['metamask']}
-            translations={this.props.translations}
-            commonTranslations={this.props.commonTranslations}
+            translations={tMetaMask}
+            commonTranslations={tCommon}
             logLoadWallet={LogLoadWallet}
             trigger={
               <Button
-                kind="round"
-                secondary
-                fluid
-                large
-                showIcon
-                onClick={this.handleClick}
                 disabled={blocked}
+                fluid
+                kind="round"
+                large
+                onClick={this.handleClick}
+                showIcon
+                secondary
               >
                 <Icon kind="metamask" />
                 Metamask
@@ -88,13 +91,11 @@ class Metamask extends React.Component {
   }
 }
 
-const { func, object, array } = PropTypes;
+const { func, array } = PropTypes;
 
 Metamask.propTypes = {
-  commonTranslations: object.isRequired,
   createKeystore: func,
   onSuccess: func.isRequired,
-  translations: object.isRequired,
   blockList: array.isRequired,
 };
 
@@ -102,9 +103,4 @@ Metamask.defaultProps = {
   createKeystore: undefined,
 };
 
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data.loadWallet.Metamask,
-  commonTranslations: state.daoServer.Translations.data.loadWallet.common,
-});
-
-export default connect(mapStateToProps)(Metamask);
+export default Metamask;

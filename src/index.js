@@ -2,9 +2,11 @@ import 'babel-polyfill';
 import '@digix/gov-ui/global-styles';
 import Analytics from '@digix/gov-ui/analytics';
 import Dissolution from '@digix/gov-ui/pages/dissolution';
+import { I18nextProvider } from 'react-i18next';
 import React from 'react';
 import ReactGA from 'react-ga';
 import daoServerReducer from '@digix/gov-ui/reducers/dao-server';
+import i18n from '@digix/gov-ui/translations/i18n';
 import govUiReducer from '@digix/gov-ui/reducers/gov-ui';
 import infoServerReducer from '@digix/gov-ui/reducers/info-server';
 import lightTheme from '@digix/gov-ui/theme/light';
@@ -32,9 +34,11 @@ export class Governance extends React.Component {
     return (
       <GraphqlProvider>
         <ThemeProvider theme={lightTheme}>
-          <Switch>
-            <Route path="/" component={withHeaderAndPanel(Dissolution)} />
-          </Switch>
+          <I18nextProvider i18n={i18n}>
+            <Switch>
+              <Route path="/" component={withHeaderAndPanel(Dissolution)} />
+            </Switch>
+          </I18nextProvider>
         </ThemeProvider>
       </GraphqlProvider>
     );

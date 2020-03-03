@@ -1,19 +1,21 @@
-import { Button } from '@digix/gov-ui/components/common/elements';
 import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
-import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
-import PropTypes, { array } from 'prop-types';
 import React from 'react';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
-import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
+import getContract from '@digix/gov-ui/utils/contracts';
+import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { Button } from '@digix/gov-ui/components/common/elements';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
+import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
-import getContract from '@digix/gov-ui/utils/contracts';
+import { getSignTransactionTranslation } from '@digix/gov-ui/utils/helpers';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { withTranslation } from 'react-i18next';
+import PropTypes, { array } from 'prop-types';
 
 const {
   Content,
@@ -34,13 +36,7 @@ class UnlockStep extends React.PureComponent {
   }
 
   unlockDgd = (unlockAmount) => {
-    const {
-      addresses,
-      translations,
-      txnTranslations,
-      web3Redux,
-    } = this.props;
-
+    const { addresses, t, web3Redux } = this.props;
     const { abi, address } = getContract(DaoStakeLocking, network); // TODO: replace?
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const contract = web3Redux
@@ -48,10 +44,8 @@ class UnlockStep extends React.PureComponent {
       .eth.contract(abi)
       .at(address);
 
-    const t = translations.snackbar.snackbars.dissolutionUnlock;
-    const tStatus = translations.snackbar.status;
     const ui = {
-      caption: t.title,
+      caption: t('snackbars.dissolutionUnlock.title'),
       header: 'User',
       type: 'txVisualization',
     };
@@ -68,9 +62,9 @@ class UnlockStep extends React.PureComponent {
 
     const onTransactionSuccess = (txHash) => {
       this.props.showHideAlert({
-        message: t.success,
+        message: t('snackbars.dissolutionUnlock.success'),
         status: 'success',
-        statusMessage: tStatus.success,
+        statusMessage: t('status.success'),
         txHash,
       });
     };
@@ -78,12 +72,13 @@ class UnlockStep extends React.PureComponent {
     const onFailure = (error) => {
       const message = JSON.stringify(error && error.message) || error;
       this.props.showHideAlert({
-        message: `${t.fail}: ${message}`,
+        message: `${t('snackbars.dissolutionUnlock.fail')}: ${message}`,
         status: 'error',
-        statusMessage: tStatus.error,
+        statusMessage: t('status.error'),
       });
     };
 
+    const txnTranslations = getSignTransactionTranslation();
     const payload = {
       address: sourceAddress,
       contract,
@@ -103,12 +98,11 @@ class UnlockStep extends React.PureComponent {
   };
 
   render() {
-    const { addresses, translations } = this.props;
-    const t = translations.dissolution;
+    const { addresses, t } = this.props;
 
     return (
       <Container>
-        <Title>{t.Unlock.title}</Title>
+        <Title>{t('Unlock.title')}</Title>
         <Content>
           <Currency>
             <CurrencyValue>435.234</CurrencyValue>
@@ -120,7 +114,7 @@ class UnlockStep extends React.PureComponent {
           onClick={() => this.unlockDgd(0.1)} // TODO: fetch locked DGD
           secondary
         >
-          {t.Unlock.button}
+          {t('Unlock.button')}
         </Button>
       </Container>
     );
@@ -133,8 +127,7 @@ UnlockStep.propTypes = {
   addresses: array,
   showHideAlert: func.isRequired,
   showTxSigningModal: func.isRequired,
-  translations: object.isRequired,
-  txnTranslations: object.isRequired,
+  t: func.isRequired,
   web3Redux: object.isRequired,
 };
 
@@ -144,11 +137,11 @@ UnlockStep.defaultProps = {
 
 const mapStateToProps = state => ({
   addresses: getAddresses(state),
-  translations: state.daoServer.Translations.data,
-  txnTranslations: state.daoServer.Translations.data.signTransaction,
 });
 
-export default web3Connect(connect(mapStateToProps, {
-  showHideAlert,
-  showTxSigningModal,
-})(UnlockStep));
+export default withTranslation(['Dissolution', 'Snackbars'])(
+  web3Connect(connect(mapStateToProps, {
+    showHideAlert,
+    showTxSigningModal,
+  })(UnlockStep))
+);

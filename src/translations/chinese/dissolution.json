@@ -9,7 +9,7 @@
     "title": "Hello there!",
     "unlock": "We will need you to load your wallet to unlock DGD you have on our platform, as well as claim your ETH.",
     "nonParticipant": "If you have DGD but have not participated on our platform before, you will still be able to claim your ETH.",
-    "ethRcommendation": "We strongly encourage you to have at least **0.1 ETH** in your wallet so that you can make the necessary transactions in order for the claim to happen successfully.",
+    "ethRecommendation": "We strongly encourage you to have at least **0.1 ETH** in your wallet so that you can make the necessary transactions in order for the claim to happen successfully.",
     "button": "Load A Wallet"
   },
   "Nav": {

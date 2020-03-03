@@ -1,14 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
-import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
-import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
-import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
-
 import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
+import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
+import { getLoadWalletTranslation } from '@digix/gov-ui/utils/helpers';
 
 class Trezor extends React.Component {
   constructor(props) {
@@ -33,14 +31,18 @@ class Trezor extends React.Component {
 
   render() {
     const { blocked } = this.state;
+    const loadWalletTrans = getLoadWalletTranslation();
+    const tCommon = loadWalletTrans.common;
+    const tTrezor = loadWalletTrans.Trezor;
+
     return (
       (
         <DefaultAddressSelector
           inverted
           key="trezor-address-selector"
-          renderBottom={false}
-          name="from"
           keystoreType="trezor"
+          name="from"
+          renderBottom={false}
           renderNoAccounts={() => null}
           showAddressOnly
         />
@@ -48,22 +50,29 @@ class Trezor extends React.Component {
       (
         <div style={blocked ? { pointerEvents: 'none' } : null}>
           <KeystoreModal
+            allowedKeystoreTypes={['trezor']}
+            commonTranslations={tCommon}
             createKeystore={this.props.createKeystore}
-            onSuccess={() => this.props.onSuccess()}
-            showBalances
-            key="trezor-popup"
-            submitFunc={this.props.createKeystore}
-            form={KeystoreCreationForm}
             creatingKeyStore
             data={{ type: 'trezor', updateDefaultAddress: true }}
+            form={KeystoreCreationForm}
+            key="trezor-popup"
             header="Load Trezor Wallet"
             hideSelector
-            allowedKeystoreTypes={['trezor']}
-            translations={this.props.translations}
-            commonTranslations={this.props.commonTranslations}
             logLoadWallet={LogLoadWallet}
+            onSuccess={() => this.props.onSuccess()}
+            showBalances
+            submitFunc={this.props.createKeystore}
+            translations={tTrezor}
             trigger={
-              <Button kind="round" secondary fluid showIcon large disabled={blocked}>
+              <Button
+                disabled={blocked}
+                fluid
+                kind="round"
+                large
+                secondary
+                showIcon
+              >
                 <Icon kind="trezor" />
                 Trezor
               </Button>
@@ -75,13 +84,11 @@ class Trezor extends React.Component {
   }
 }
 
-const { func, object, array } = PropTypes;
+const { func, array } = PropTypes;
 
 Trezor.propTypes = {
-  commonTranslations: object.isRequired,
   createKeystore: func,
   onSuccess: func.isRequired,
-  translations: object.isRequired,
   blockList: array.isRequired,
 };
 
@@ -89,9 +96,4 @@ Trezor.defaultProps = {
   createKeystore: undefined,
 };
 
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data.loadWallet.Trezor,
-  commonTranslations: state.daoServer.Translations.data.loadWallet.common,
-});
-
-export default connect(mapStateToProps)(Trezor);
+export default Trezor;

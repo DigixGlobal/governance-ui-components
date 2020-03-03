@@ -1,7 +1,7 @@
-import { Button } from '@digix/gov-ui/components/common/elements';
 import PropTypes from 'prop-types';
+import { Button } from '@digix/gov-ui/components/common/elements';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
-import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 import React from 'react';
 
 const {
@@ -19,12 +19,11 @@ class BurnStep extends React.PureComponent {
   }
 
   render() {
-    const { translations } = this.props;
-    const t = translations.dissolution;
+    const { t } = this.props;
 
     return (
       <Container>
-        <Title>{t.Burn.title}</Title>
+        <Title>{t('Burn.title')}</Title>
         <Content>
           <Currency>
             <CurrencyValue>435.234</CurrencyValue>
@@ -35,22 +34,15 @@ class BurnStep extends React.PureComponent {
             <CurrencyLabel>ETH</CurrencyLabel>
           </Currency>
         </Content>
-        <Button secondary>{t.Burn.title}</Button>
+        <Button secondary>{t('Burn.button')}</Button>
       </Container>
     );
   }
 }
 
-const { object } = PropTypes;
-
+const { func } = PropTypes;
 BurnStep.propTypes = {
-  translations: object.isRequired,
+  t: func.isRequired,
 };
 
-BurnStep.defaultProps = {};
-
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data,
-});
-
-export default connect(mapStateToProps, {})(BurnStep);
+export default withTranslation('Dissolution')(BurnStep);

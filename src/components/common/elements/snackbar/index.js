@@ -84,11 +84,12 @@ class Snackbar extends React.Component {
 Snackbar.propTypes = {
   alertData: PropTypes.object,
   showHideAlert: PropTypes.func.isRequired,
-  translations: PropTypes.object.isRequired,
+  translations: PropTypes.object,
 };
 
 Snackbar.defaultProps = {
   alertData: undefined,
+  translations: undefined,
 };
 
 const mapStateToProps = ({

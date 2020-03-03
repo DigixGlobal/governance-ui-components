@@ -1,22 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import Ledger from '@digix/gov-ui/components/common/blocks/wallet/ledger';
+import Metamask from '@digix/gov-ui/components/common/blocks/wallet/metamask';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Trezor from '@digix/gov-ui/components/common/blocks/wallet/trezor';
+import V3 from '@digix/gov-ui/components/common/blocks/wallet/json';
+import { ActionContainer } from '@digix/gov-ui/components/common/blocks/wallet/style';
+import { WalletStages } from '@digix/gov-ui/constants';
+import { browserDetection } from '@digix/gov-ui/components/common/blocks/wallet/browser-detect';
+import { withTranslation } from 'react-i18next';
 import {
   CloseButton,
   IntroContainer,
   OverlayHeader as Header,
 } from '@digix/gov-ui/components/common/common-styles';
-import { ActionContainer } from '@digix/gov-ui/components/common/blocks/wallet/style.js';
-import { WalletStages } from '@digix/gov-ui/constants';
-import { browserDetection } from './browser-detect';
-
-import V3 from './json';
-import Metamask from './metamask';
-import Ledger from './ledger';
-import Trezor from './trezor';
-import ImToken from './imtoken';
 
 class LoadWallet extends React.Component {
   handleCloseButtonClick = () => {
@@ -31,8 +28,7 @@ class LoadWallet extends React.Component {
   };
 
   render() {
-    const { createKeystore } = this.props;
-    const t = this.props.translations.loadWallet.selectWalletType;
+    const { createKeystore, t } = this.props;
     const blockList = browserDetection();
 
     return (
@@ -40,7 +36,7 @@ class LoadWallet extends React.Component {
         <CloseButton>
           <Icon kind="close" onClick={this.handleCloseButtonClick} />
         </CloseButton>
-        <Header uppercase>{t.title} </Header>
+        <Header uppercase>{t('selectWalletType.title')} </Header>
         <ActionContainer>
           <Metamask
             createKeystore={createKeystore}
@@ -57,7 +53,6 @@ class LoadWallet extends React.Component {
             onSuccess={this.handleKeystoreLoad}
             blockList={blockList}
           />
-          {/* <ImToken createKeystore={createKeystore} onSuccess={this.handleKeystoreLoad} blockList={blockList} /> */}
           <V3
             createKeystore={createKeystore}
             onSuccess={this.handleKeystoreLoad}
@@ -69,26 +64,12 @@ class LoadWallet extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func } = PropTypes;
 
 LoadWallet.propTypes = {
   onChangeStage: func.isRequired,
   createKeystore: func.isRequired,
-  translations: object,
+  t: func.isRequired,
 };
 
-LoadWallet.defaultProps = {
-  translations: {
-    loadWallet: {
-      selectWalletType: {
-        title: 'Load Wallet',
-      },
-    },
-  },
-};
-
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data,
-});
-
-export default connect(mapStateToProps)(LoadWallet);
+export default withTranslation('LoadWallet')(LoadWallet);

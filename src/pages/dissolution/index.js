@@ -4,11 +4,11 @@ import DissolutionModal from '@digix/gov-ui/pages/dissolution/modal';
 import UnlockStep from '@digix/gov-ui/pages/dissolution/steps/unlock';
 import Modal from 'react-responsive-modal';
 import PropTypes from 'prop-types';
+import ReactMarkdown from 'react-markdown';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
-import { getTranslations } from '@digix/gov-ui/reducers/dao-server/actions';
-import { injectTranslation } from '@digix/gov-ui/utils/helpers';
+import { withTranslation } from 'react-i18next';
 import React, { Fragment } from 'react';
 
 const {
@@ -37,11 +37,6 @@ class Dissolution extends React.PureComponent {
     };
   }
 
-  componentWillMount = () => {
-    const { Language } = this.props;
-    this.props.getTranslations(Language);
-  };
-
   closeModal = () => {
     this.setState({
       showModal: false,
@@ -60,14 +55,8 @@ class Dissolution extends React.PureComponent {
 
   render() {
     const { showModal, step } = this.state;
-    const { translations } = this.props;
-    if (!translations) {
-      return null;
-    }
-
-    const t = translations.dissolution;
-    // TODO: reduce by one for non-participants
-    const stepLabel = injectTranslation(t.Nav.steps, {
+    const { t } = this.props;
+    const stepLabel = t('Nav.steps', {
       currentStep: step > 3 ? 3 : step,
       maxStep: 3,
     });
@@ -76,7 +65,12 @@ class Dissolution extends React.PureComponent {
       <Fragment>
         <Wrapper wide={step >= STEPS.burn}>
           <Stepper>
-            {stepLabel}
+            {/* TODO: reduce by one for non-participants */}
+            <ReactMarkdown
+              escapeHtml={false}
+              renderers={{ paragraph: 'span' }}
+              source={stepLabel}
+            />
           </Stepper>
           {step === STEPS.unlock && <UnlockStep />}
           {step === STEPS.approve && <ApproveStep />}
@@ -87,7 +81,7 @@ class Dissolution extends React.PureComponent {
               primary
               width="100%"
             >
-              {t.Nav.nextStep}
+              {t('Nav.nextStep')}
             </NavButton>
           )}
           {step === STEPS.success && (
@@ -96,7 +90,7 @@ class Dissolution extends React.PureComponent {
               primary
               width="100%"
             >
-              {t.Nav.logOut}
+              {t('Nav.logOut')}
             </NavButton>
           )}
         </Wrapper>
@@ -114,27 +108,23 @@ class Dissolution extends React.PureComponent {
   }
 }
 
-const { object, func, string } = PropTypes;
+const { object, func } = PropTypes;
 
 Dissolution.propTypes = {
   defaultAddress: object,
-  getTranslations: func.isRequired,
-  translations: object,
-  Language: string,
+  t: func.isRequired,
 };
 
 Dissolution.defaultProps = {
   defaultAddress: {
     address: undefined,
   },
-  Language: 'en',
-  translations: undefined,
 };
 
 const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
-  Language: state.govUI.Language,
-  translations: state.daoServer.Translations.data,
 });
 
-export default connect(mapStateToProps, { getTranslations })(Dissolution);
+export default withTranslation('Dissolution')(
+  connect(mapStateToProps, {})(Dissolution)
+);

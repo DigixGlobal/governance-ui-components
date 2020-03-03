@@ -1,10 +1,11 @@
-import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
-import { Modal } from '@digix/gov-ui/pages/dissolution/style';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
+import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
+import { Modal } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
-import React, { Fragment } from 'react';
 import { showHideWalletOverlay } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { withTranslation } from 'react-i18next';
+import React, { Fragment } from 'react';
 
 const {
   Container,
@@ -21,26 +22,25 @@ class DissolutionModal extends React.Component {
   };
 
   render() {
-    const { translations } = this.props;
-    const t = translations.dissolution;
+    const { t } = this.props;
 
     return (
       <Fragment>
         <Container>
-          <Title>{t.Modal.title}</Title>
-          <Paragraph>{t.Modal.content}</Paragraph>
+          <Title>{t('Modal.title')}</Title>
+          <Paragraph>{t('Modal.content')}</Paragraph>
           <Paragraph>
             <ReactMarkdown
               escapeHtml={false}
               renderers={{ paragraph: 'span' }}
-              source={t.Modal.ethRecommendation}
+              source={t('Modal.ethRecommendation')}
             />
           </Paragraph>
           <Button
             onClick={this.openLoadWalletPanel}
             primary
           >
-            {t.Modal.button}
+            {t('Modal.button')}
           </Button>
         </Container>
       </Fragment>
@@ -48,15 +48,18 @@ class DissolutionModal extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func } = PropTypes;
 DissolutionModal.propTypes = {
   closeModal: func.isRequired,
   showHideWalletOverlay: func.isRequired,
-  translations: object.isRequired,
+  t: func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data,
+const mapStateToProps = () => ({
 });
 
-export default connect(mapStateToProps, { showHideWalletOverlay })(DissolutionModal);
+export default withTranslation('Dissolution')(
+  connect(mapStateToProps, {
+    showHideWalletOverlay
+  })(DissolutionModal)
+);

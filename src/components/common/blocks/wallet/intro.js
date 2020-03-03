@@ -1,13 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import ReactMarkdown from 'react-markdown';
-
 import Button from '@digix/gov-ui/components/common/elements/buttons/';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import { ActionContainer } from '@digix/gov-ui/components/common/blocks/wallet/style.js';
 import { WalletStages } from '@digix/gov-ui/constants';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
+import { withTranslation } from 'react-i18next';
 import {
   CloseButton,
   IntroContainer,
@@ -24,26 +23,31 @@ class Intro extends React.Component {
   };
 
   render() {
-    const { onClose, translations } = this.props;
-
-    if (!translations) {
-      return null;
-    }
-
-    const t = translations.dissolution;
+    const { onClose, t } = this.props;
 
     return (
       <IntroContainer>
         <CloseButton>
           <Icon kind="close" onClick={onClose} />
         </CloseButton>
-        <Header>{t.LoadWallet.title}</Header>
-        <p>{t.LoadWallet.unlock}</p>
-        <p>{t.LoadWallet.nonParticipant}</p>
-        <ReactMarkdown escapeHtml={false} source={t.Modal.ethRecommendation} />
+        <Header>
+          {t('LoadWallet.title')}
+        </Header>
+        <p>{t('LoadWallet.unlock')}</p>
+        <p>{t('LoadWallet.nonParticipant')}</p>
+        <ReactMarkdown
+          escapeHtml={false}
+          source={t('Modal.ethRecommendation')}
+        />
         <ActionContainer>
-          <Button kind="round" secondary fluid large onClick={this.handleButtonClick}>
-            {t.LoadWallet.button}
+          <Button
+            fluid
+            kind="round"
+            large
+            onClick={this.handleButtonClick}
+            secondary
+          >
+            {t('LoadWallet.button')}
           </Button>
         </ActionContainer>
       </IntroContainer>
@@ -51,16 +55,11 @@ class Intro extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
-
+const { func } = PropTypes;
 Intro.propTypes = {
   onChangeStage: func.isRequired,
   onClose: func.isRequired,
-  translations: object.isRequired,
+  t: func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data,
-});
-
-export default connect(mapStateToProps)(Intro);
+export default withTranslation('Dissolution')(Intro);

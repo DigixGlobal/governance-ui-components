@@ -1,7 +1,7 @@
-import { Button } from '@digix/gov-ui/components/common/elements';
 import PropTypes from 'prop-types';
+import { Button } from '@digix/gov-ui/components/common/elements';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
-import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 import React from 'react';
 
 const {
@@ -17,32 +17,24 @@ class ApproveStep extends React.PureComponent {
   }
 
   render() {
-    const { translations } = this.props;
-    const t = translations.dissolution;
+    const { t } = this.props;
 
     return (
       <Container>
         <Content>
-          <Text>{t.Approve.instructions}</Text>
+          <Text>{t('Approve.instructions')}</Text>
         </Content>
         <Button secondary>
-          {t.Approve.button}
+          {t('Approve.button')}
         </Button>
       </Container>
     );
   }
 }
 
-const { object } = PropTypes;
-
+const { func } = PropTypes;
 ApproveStep.propTypes = {
-  translations: object.isRequired,
+  t: func.isRequired,
 };
 
-ApproveStep.defaultProps = {};
-
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data,
-});
-
-export default connect(mapStateToProps, {})(ApproveStep);
+export default withTranslation('Dissolution')(ApproveStep);

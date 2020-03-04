@@ -3,7 +3,6 @@ import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
 import { showHideWalletOverlay } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { withAppUser } from '@digix/gov-ui/api/graphql-queries/users';
 import { withTranslation } from 'react-i18next';
 import {
   Button,
@@ -106,5 +105,5 @@ const mapStateToProps = state => ({
 export default withTranslation('Header')(
   connect(
     mapStateToProps, { showHideWalletOverlay }
-  )(withAppUser(WalletButton))
+  )(WalletButton)
 );

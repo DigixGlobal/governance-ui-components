@@ -12,7 +12,6 @@ import infoServerReducer from '@digix/gov-ui/reducers/info-server';
 import lightTheme from '@digix/gov-ui/theme/light';
 import registerReducers from 'spectrum-lightsuite/src/helpers/registerReducers';
 import withHeaderAndPanel from '@digix/gov-ui/hocs/withHeaderAndPanel';
-import { Provider as GraphqlProvider } from '@digix/gov-ui/api/graphql';
 import { ThemeProvider } from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -32,15 +31,13 @@ export class Governance extends React.Component {
 
   render() {
     return (
-      <GraphqlProvider>
-        <ThemeProvider theme={lightTheme}>
-          <I18nextProvider i18n={i18n}>
-            <Switch>
-              <Route path="/" component={withHeaderAndPanel(Dissolution)} />
-            </Switch>
-          </I18nextProvider>
-        </ThemeProvider>
-      </GraphqlProvider>
+      <ThemeProvider theme={lightTheme}>
+        <I18nextProvider i18n={i18n}>
+          <Switch>
+            <Route path="/" component={withHeaderAndPanel(Dissolution)} />
+          </Switch>
+        </I18nextProvider>
+      </ThemeProvider>
     );
   }
 }

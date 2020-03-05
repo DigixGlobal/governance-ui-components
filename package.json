@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@digix/acid-contracts": "0.1.0",
     "@digix/dao-contracts": "0.0.7",
     "@digix/multi-hash": "0.0.2",
     "@digix/react-webcam": "^0.2.5",

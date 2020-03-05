@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
 
 export const executeContractFunction = payload => {
@@ -6,7 +8,7 @@ export const executeContractFunction = payload => {
     contract,
     func,
     params,
-    onSuccess,
+    // onSuccess,
     onFailure,
     onFinally,
     network,
@@ -44,9 +46,9 @@ export const executeContractFunction = payload => {
           logTxn.completeTransaction(true);
         }
 
-        if (typeof onSuccess === 'function') {
-          onSuccess(txHash);
-        }
+        // if (typeof onSuccess === 'function') {
+        //   onSuccess(txHash);
+        // }
 
         if (typeof onFinally === 'function') {
           onFinally(txHash);
@@ -79,9 +81,9 @@ export const executeContractFunction = payload => {
           logTxn.completeTransaction(true);
         }
 
-        if (typeof onSuccess === 'function') {
-          onSuccess(txHash);
-        }
+        // if (typeof onSuccess === 'function') {
+        //   onSuccess(txHash);
+        // }
 
         if (typeof onFinally === 'function') {
           onFinally(txHash);
@@ -113,9 +115,9 @@ export const executeContractFunction = payload => {
         logTxn.completeTransaction(true);
       }
 
-      if (typeof onSuccess === 'function') {
-        onSuccess(txHash);
-      }
+      // if (typeof onSuccess === 'function') {
+      //   onSuccess(txHash);
+      // }
 
       if (typeof onFinally === 'function') {
         onFinally(txHash);

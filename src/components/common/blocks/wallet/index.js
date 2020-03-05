@@ -49,7 +49,7 @@ export class Wallet extends React.PureComponent {
 
     this.setState({ stage });
     if (stage === Stage.WalletLoaded) {
-      this.props.setLockedDgd(435.234); // [TODO]: get locked dgd balance
+      this.props.setLockedDgd(0.1); // [TODO]: get locked dgd balance
       this.props.setIsBurnApproved(false); // [TODO]: get burn approve status
       this.handleCloseWallet();
     }

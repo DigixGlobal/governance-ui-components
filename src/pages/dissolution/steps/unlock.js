@@ -39,12 +39,8 @@ class UnlockStep extends React.PureComponent {
   }
 
   unlockDgd = (unlockAmount) => {
-    this.props.setLockedDgd(0);
-    return;
-
-    // [TODO]
     const { addresses, t, web3Redux } = this.props;
-    const { abi, address } = getContract(DaoStakeLocking, network); // [TODO]: replace?
+    const { abi, address } = getContract(DaoStakeLocking, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const contract = web3Redux
       .web3(network)
@@ -59,14 +55,20 @@ class UnlockStep extends React.PureComponent {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: 2000000, // [TODO]: confirm
+      gas: 2000000,
       ui,
     };
 
     const onTransactionAttempt = (txHash) => {
       console.log('Attempting Unlock DGD with txHash', txHash);
+      this.props.showHideAlert({
+        message: t('snackbars.dissolutionUnlock.message'),
+        status: 'pending',
+        txHash,
+      });
     };
 
+    // [TODO] call when confirmed on the blockchain
     const onTransactionSuccess = (txHash) => {
       this.props.setLockedDgd(0);
       this.props.showHideAlert({

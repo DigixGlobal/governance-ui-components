@@ -6,6 +6,7 @@ import Alarm from '@digix/gov-ui/components/common/elements/icons/Alarm';
 import Arrow from '@digix/gov-ui/components/common/elements/icons/Arrow';
 import Check from '@digix/gov-ui/components/common/elements/icons/Check';
 import Close from '@digix/gov-ui/components/common/elements/icons/Close';
+import ConversionArrow from '@digix/gov-ui/components/common/elements/icons/ConversionArrow';
 import Dashboard from '@digix/gov-ui/components/common/elements/icons/Dashboard';
 import Delete from '@digix/gov-ui/components/common/elements/icons/Delete';
 import Dgd from '@digix/gov-ui/components/common/elements/icons/DGD';
@@ -21,6 +22,7 @@ import ImToken from '@digix/gov-ui/components/common/elements/icons/ImToken';
 import JsonWallet from '@digix/gov-ui/components/common/elements/icons/JsonWallet';
 import Ledger from '@digix/gov-ui/components/common/elements/icons/Ledger';
 import Like from '@digix/gov-ui/components/common/elements/icons/Like';
+import Loading from '@digix/gov-ui/components/common/elements/icons/Loading';
 import DigixLogo from '@digix/gov-ui/components/common/elements/icons/Brand';
 import Magnifier from '@digix/gov-ui/components/common/elements/icons/Magnifier';
 import Menu from '@digix/gov-ui/components/common/elements/icons/Menu';
@@ -48,6 +50,7 @@ const icons = {
   arrow: Arrow,
   check: Check,
   close: Close,
+  conversionArrow: ConversionArrow,
   dashboard: Dashboard,
   delete: Delete,
   dgd: Dgd,
@@ -64,6 +67,7 @@ const icons = {
   ledger: Ledger,
   logo: DigixLogo,
   like: Like,
+  loading: Loading,
   magnifier: Magnifier,
   menu: Menu,
   metamask: Metamask,

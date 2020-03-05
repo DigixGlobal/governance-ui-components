@@ -1,9 +1,17 @@
+import Acid from '@digix/acid-contracts/build/contracts/Acid.json';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
+import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
+import getContract from '@digix/gov-ui/utils/contracts';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
+import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
+import { getSignTransactionTranslation } from '@digix/gov-ui/utils/helpers';
+import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements';
@@ -18,6 +26,9 @@ const {
   Text,
 } = Step;
 
+registerUIs({ txVisualization: { component: TxVisualization } });
+const network = SpectrumConfig.defaultNetworks[0];
+
 class ApproveStep extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -25,8 +36,72 @@ class ApproveStep extends React.PureComponent {
   }
 
   approveBurn = () => {
-    // [TODO]
-    this.props.setIsBurnApproved(true);
+    const { addresses, t, web3Redux } = this.props;
+    const { abi, address } = getContract(Acid, network);
+    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+    const contract = web3Redux
+      .web3(network)
+      .eth.contract(abi)
+      .at(address);
+
+    const ui = {
+      caption: t('snackbars.dissolutionApprove.title'),
+      header: 'User',
+      type: 'txVisualization',
+    };
+
+    const web3Params = {
+      gasPrice: DEFAULT_GAS_PRICE,
+      gas: 1000000,
+      ui,
+    };
+
+    const onTransactionAttempt = (txHash) => {
+      console.log('Attempting Approve Contract Interaction with txHash', txHash);
+      this.props.showHideAlert({
+        message: t('snackbars.dissolutionApprove.message'),
+        status: 'pending',
+        txHash,
+      });
+    };
+
+    // [TODO] call when confirmed on the blockchain
+    const onTransactionSuccess = (txHash) => {
+      this.props.setIsBurnApproved(true);
+      this.props.showHideAlert({
+        message: t('snackbars.dissolutionApprove.success'),
+        status: 'success',
+        statusMessage: t('status.success'),
+        txHash,
+      });
+    };
+
+    const onFailure = (error) => {
+      const message = JSON.stringify(error && error.message) || error;
+      this.props.showHideAlert({
+        message: `${t('snackbars.dissolutionApprove.fail')}: ${message}`,
+        status: 'error',
+        statusMessage: t('status.error'),
+      });
+    };
+
+    const txnTranslations = getSignTransactionTranslation();
+    const payload = {
+      address: sourceAddress,
+      contract,
+      func: contract.dgdTokenContract,
+      network,
+      onFailure,
+      onFinally: txHash => onTransactionAttempt(txHash),
+      onSuccess: txHash => onTransactionSuccess(txHash),
+      params: [],
+      showTxSigningModal: this.props.showTxSigningModal,
+      translations: txnTranslations,
+      ui,
+      web3Params,
+    };
+
+    return executeContractFunction(payload);
   }
 
   render() {

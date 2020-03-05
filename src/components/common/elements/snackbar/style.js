@@ -1,4 +1,4 @@
-import { Button } from '@digix/gov-ui/components/common/elements';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Card } from '../../common-styles';
@@ -50,4 +50,11 @@ export const SnackbarTag = styled(Button)`
   margin-right: 1rem;
   margin-top: 2rem;
   text-transform: uppercase;
+`;
+
+export const SnackbarLoader = styled(Icon)`
+  position: relative;
+  top: 3rem;
+  width: 3rem;
+  margin-right: 2rem;
 `;

@@ -1,14 +1,15 @@
-import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { ETHERSCAN_URL } from '@digix/gov-ui/constants';
 import { connect } from 'react-redux';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { withTranslation } from 'react-i18next';
 import {
   SnackbarAction,
-  SnackbarLink,
-  SnackbarDesc,
   SnackbarContainer,
+  SnackbarDesc,
+  SnackbarLink,
+  SnackbarLoader,
   SnackbarTag,
 } from '@digix/gov-ui/components/common/elements/snackbar/style';
 
@@ -46,6 +47,9 @@ class Snackbar extends React.Component {
     } = alertData;
     return (
       <SnackbarContainer data-digix="Snackbar-Container">
+        {status === 'pending' && (
+          <SnackbarLoader kind="loading" />
+        )}
         {status && statusMessage && (
           <SnackbarTag
             actionable={status === 'success'}

@@ -95,7 +95,7 @@ export const Step = {
   Arrow: styled(Icon)`
     left: 2.5rem;
     position: relative;
-    top: 3.5rem;
-    transform: rotate(-90deg);
+    top: 5.5rem;
+    width: 5rem;
   `
 };

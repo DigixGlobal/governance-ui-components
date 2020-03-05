@@ -29,6 +29,7 @@ const translationsCN = {
 };
 
 const translations = {
+  'en-US': translationsEN,
   en: translationsEN,
   cn: translationsCN,
 };

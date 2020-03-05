@@ -13,7 +13,7 @@ import { KycStatus, UserStatus } from '@digix/gov-ui/constants';
 
 export function getLoadWalletTranslation() {
   const storedLng = localStorage.getItem('i18nextLng');
-  if (storedLng === 'zh-CN') {
+  if (storedLng === 'cn') {
     return LoadWalletCN;
   }
 
@@ -22,7 +22,7 @@ export function getLoadWalletTranslation() {
 
 export function getSignTransactionTranslation() {
   const storedLng = localStorage.getItem('i18nextLng');
-  if (storedLng === 'zh-CN') {
+  if (storedLng === 'cn') {
     return SignTransactionCN;
   }
 

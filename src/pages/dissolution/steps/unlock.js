@@ -102,7 +102,7 @@ class UnlockStep extends React.PureComponent {
 
     return (
       <Container>
-        <Title>{t('Unlock.title')}</Title>
+        <Title>{t('Dissolution:Unlock.title')}</Title>
         <Content>
           <Currency>
             <CurrencyValue>435.234</CurrencyValue>
@@ -114,7 +114,7 @@ class UnlockStep extends React.PureComponent {
           onClick={() => this.unlockDgd(0.1)} // TODO: fetch locked DGD
           secondary
         >
-          {t('Unlock.button')}
+          {t('Dissolution:Unlock.button')}
         </Button>
       </Container>
     );
@@ -139,7 +139,7 @@ const mapStateToProps = state => ({
   addresses: getAddresses(state),
 });
 
-export default withTranslation(['Dissolution', 'Snackbars'])(
+export default withTranslation(['Snackbar', 'Dissolution'])(
   web3Connect(connect(mapStateToProps, {
     showHideAlert,
     showTxSigningModal,

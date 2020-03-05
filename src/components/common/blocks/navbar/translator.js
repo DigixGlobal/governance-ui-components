@@ -13,8 +13,8 @@ const LANGUAGES = [
     name: 'ENGLISH',
   },
   {
-    code: 'zh-CN',
-    name: 'CHINESE',
+    code: 'cn',
+    name: '中文',
   },
 ];
 

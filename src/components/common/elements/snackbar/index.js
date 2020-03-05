@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
+import { withTranslation } from 'react-i18next';
 import {
   SnackbarAction,
   SnackbarLink,
@@ -31,7 +32,7 @@ class Snackbar extends React.Component {
   }
 
   render() {
-    const { alertData, translations } = this.props;
+    const { alertData, t } = this.props;
     if (!alertData || !alertData.message) {
       return null;
     }
@@ -43,8 +44,6 @@ class Snackbar extends React.Component {
       timer,
       txHash,
     } = alertData;
-    const t = translations.snackbar;
-
     return (
       <SnackbarContainer data-digix="Snackbar-Container">
         {status && statusMessage && (
@@ -64,7 +63,7 @@ class Snackbar extends React.Component {
             target="_blank"
             data-digix="Snackbar-Hash"
           >
-            {t.view}
+            {t('view')}
           </SnackbarLink>
         )}
         {!timer && (
@@ -73,7 +72,7 @@ class Snackbar extends React.Component {
             onClick={this.closeSnackbar}
             data-digix="Snackbar-Close"
           >
-            {t.close}
+            {t('close')}
           </SnackbarAction>
         )}
       </SnackbarContainer>
@@ -81,26 +80,24 @@ class Snackbar extends React.Component {
   }
 }
 
+const { func, object } = PropTypes;
+
 Snackbar.propTypes = {
-  alertData: PropTypes.object,
-  showHideAlert: PropTypes.func.isRequired,
-  translations: PropTypes.object,
+  alertData: object,
+  showHideAlert: func.isRequired,
+  t: func.isRequired,
 };
 
 Snackbar.defaultProps = {
   alertData: undefined,
-  translations: undefined,
 };
 
-const mapStateToProps = ({
-  daoServer,
-  govUI: { Alert: alertData },
-}) => ({
+const mapStateToProps = ({ govUI: { Alert: alertData } }) => ({
   alertData,
-  translations: daoServer.Translations.data,
 });
-
-export default connect(
-  mapStateToProps,
-  { showHideAlert }
-)(Snackbar);
+export default withTranslation('Snackbar')(
+  connect(
+    mapStateToProps,
+    { showHideAlert }
+  )(Snackbar)
+);

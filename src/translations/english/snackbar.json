@@ -11,7 +11,21 @@
       "txUiHeader": "DGD",
       "message": "Unlocking all DGD",
       "fail": "Unlocking all DGD unsuccessful",
-      "success": "Unlocking all DGD successful"
+      "success": "Unlocking all DGD successful!"
+    },
+    "dissolutionApprove": {
+      "title": "Approve",
+      "txUiHeader": "ETH",
+      "message": "Approving contract interaction",
+      "fail": "Approving contract interaction unsuccessful",
+      "success": "Approving contract interaction successful!"
+    },
+    "dissolutionBurn": {
+      "title": "Conversion",
+      "txUiHeader": "ETH",
+      "message": "Receiving ETH for DGD",
+      "fail": "Receiving ETH for DGD unsuccessful",
+      "success": "Receiving ETH for DGD successful!"
     },
     "createProject": {
       "title": "Submit Project",

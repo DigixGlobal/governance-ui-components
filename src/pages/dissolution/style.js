@@ -16,7 +16,6 @@ export const Modal = {
 
   Paragraph: styled.p`
     line-height: 1.5;
-    word-break: break-all;
   `,
 
   Button: styled(Button)`

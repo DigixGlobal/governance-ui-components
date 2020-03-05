@@ -1,3 +1,4 @@
+import DissolutionApi from '@digix/gov-ui/pages/dissolution/api';
 import Intro from '@digix/gov-ui/components/common/blocks/wallet/intro';
 import LoadWallet from '@digix/gov-ui/components/common/blocks/wallet/load-wallet';
 import PropTypes from 'prop-types';
@@ -6,7 +7,10 @@ import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { Container } from '@digix/gov-ui/components/common/blocks/wallet/style';
 import { Stage } from '@digix/gov-ui/components/common/blocks/wallet/constants';
 import { connect } from 'react-redux';
-import { getDefaultNetworks } from 'spectrum-lightsuite/src/selectors';
+import {
+  getDefaultAddress,
+  getDefaultNetworks,
+} from 'spectrum-lightsuite/src/selectors';
 import {
   DrawerContainer,
   TransparentOverlay,
@@ -20,6 +24,7 @@ import {
   setAuthentationStatus,
   showHideAlert,
   showHideWalletOverlay,
+  setIsAddressLoaded,
   setIsBurnApproved,
   setLockedDgd,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
@@ -48,10 +53,9 @@ export class Wallet extends React.PureComponent {
     }
 
     this.setState({ stage });
+
     if (stage === Stage.WalletLoaded) {
-      this.props.setLockedDgd(0.1); // [TODO]: get locked dgd balance
-      this.props.setIsBurnApproved(false); // [TODO]: get burn approve status
-      this.handleCloseWallet();
+      this.handleLoadedWallet();
     }
   };
 
@@ -60,9 +64,24 @@ export class Wallet extends React.PureComponent {
     document.body.classList.remove('modal-is-open');
   };
 
+  handleLoadedWallet = () => {
+    const { defaultAddress: { address } } = this.props;
+    DissolutionApi.getAddressInfo(address)
+      .then((response) => {
+        if (response.result !== 'notFound') {
+          const { lockedDgd } = response.result;
+          this.props.setLockedDgd(lockedDgd);
+        }
+
+        this.props.setIsBurnApproved(false); // [TODO]: get burn approve status
+        this.props.setIsAddressLoaded(true);
+        this.handleCloseWallet();
+      });
+  }
+
   render() {
     const { stage, lockingDgd } = this.state;
-    const { showWallet, isAuthenticated, ...rest } = this.props;
+    const { showWallet, ...rest } = this.props;
 
     if (!showWallet || !showWallet.show || lockingDgd) {
       return null;
@@ -72,13 +91,14 @@ export class Wallet extends React.PureComponent {
       <Container>
         <TransparentOverlay />
         <DrawerContainer>
-          {stage === Stage.Intro && !isAuthenticated && (
+          {(stage === Stage.Intro || stage === Stage.WalletLoaded) && (
             <Intro
+              currentStage={stage}
               onClose={() => this.handleCloseWallet()}
               onChangeStage={this.updateStage}
             />
           )}
-          {stage === Stage.LoadingWallet && !isAuthenticated && (
+          {stage === Stage.LoadingWallet && (
             <LoadWallet
               {...rest}
               onChangeStage={this.updateStage}
@@ -92,16 +112,18 @@ export class Wallet extends React.PureComponent {
 }
 
 const {
+  array,
+  bool,
   func,
   object,
-  bool,
-  array,
 } = PropTypes;
 
 Wallet.propTypes = {
+  defaultAddress: object,
   defaultNetworks: array.isRequired,
   isAuthenticated: bool,
   showHideAlert: func.isRequired,
+  setIsAddressLoaded: func.isRequired,
   setIsBurnApproved: func.isRequired,
   setLockedDgd: func.isRequired,
   showHideWalletOverlay: func.isRequired,
@@ -110,6 +132,9 @@ Wallet.propTypes = {
 };
 
 Wallet.defaultProps = {
+  defaultAddress: {
+    address: undefined,
+  },
   isAuthenticated: false,
   showWallet: undefined,
   signingModal: undefined,
@@ -121,12 +146,14 @@ const actions = {
   updateKeystore,
   setAuthentationStatus,
   showHideAlert,
+  setIsAddressLoaded,
   setIsBurnApproved,
   setLockedDgd,
   showHideWalletOverlay,
 };
 
 const mapStateToProps = state => ({
+  defaultAddress: getDefaultAddress(state),
   defaultNetworks: getDefaultNetworks(state),
   isAuthenticated: state.govUI.isAuthenticated,
   showWallet: state.govUI.ShowWallet,

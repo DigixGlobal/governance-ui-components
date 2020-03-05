@@ -4,6 +4,7 @@ import { actions } from '@digix/gov-ui/reducers/gov-ui/actions';
 const defaultState = {
   Dissolution: {
     lockedDgd: 0,
+    isAddressLoaded: false,
     isBurnApproved: false,
   },
   lockDgdOverlay: {
@@ -31,7 +32,23 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
+    case actions.SET_IS_ADDRESS_LOADED:
+      return {
+        ...state,
+        Dissolution: {
+          ...state.Dissolution,
+          ...action.payload,
+        },
+      };
     case actions.SET_LOCKED_DGD:
+      return {
+        ...state,
+        Dissolution: {
+          ...state.Dissolution,
+          ...action.payload,
+        },
+      };
+    case actions.SET_IS_BURN_APPROVED:
       return {
         ...state,
         Dissolution: {

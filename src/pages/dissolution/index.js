@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
-import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { withTranslation } from 'react-i18next';
 import React, { Fragment } from 'react';
 
@@ -28,40 +27,41 @@ class Dissolution extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    const isDgdUnlocked = this.isDgdUnlocked();
-    const step = isDgdUnlocked
-      ? STEPS.approve
-      : STEPS.unlock;
-
-    this.stepOffset = isDgdUnlocked
-      ? -1
-      : 0;
-
     this.state = {
-      showModal: !this.hasLoadedWallet(),
-      step,
+      showModal: !props.isAddressLoaded,
+      step: STEPS.unlock,
+      stepOffset: 0,
     };
   }
 
-  hasLoadedWallet = () => {
-    const { defaultAddress } = this.props;
-    return defaultAddress && defaultAddress.address;
+  componentWillReceiveProps(nextProps) {
+    const { isAddressLoaded, lockedDgd } = nextProps;
+
+    if (!this.props.isAddressLoaded && isAddressLoaded) {
+      const isDgdUnlocked = isAddressLoaded && lockedDgd === 0;
+      const stepOffset = isDgdUnlocked ? -1 : 0;
+      const step = isDgdUnlocked
+        ? STEPS.approve
+        : STEPS.unlock;
+
+      this.setState({ step, stepOffset });
+    }
   }
 
   isDgdUnlocked = () => {
-    const { lockedDgd } = this.props;
-    return this.hasLoadedWallet() && lockedDgd === 0;
+    const { isAddressLoaded, lockedDgd } = this.props;
+    return isAddressLoaded && lockedDgd === 0;
   }
 
   isNavButtonEnabled = () => {
     const { step } = this.state;
-    const { isBurnApproved } = this.props;
+    const { isAddressLoaded, isBurnApproved } = this.props;
 
     switch (step) {
       case STEPS.unlock:
         return this.isDgdUnlocked();
       case STEPS.approve:
-        return this.hasLoadedWallet() && isBurnApproved;
+        return isAddressLoaded && isBurnApproved;
       default:
         return true;
     }
@@ -84,14 +84,18 @@ class Dissolution extends React.PureComponent {
   };
 
   render() {
-    const { showModal, step } = this.state;
+    const {
+      showModal,
+      step,
+      stepOffset
+    } = this.state;
     const { t } = this.props;
 
     const isNavButtonEnabled = this.isNavButtonEnabled();
     const currentStep = step > 3 ? 3 : step;
     const stepLabel = t('Nav.steps', {
-      currentStep: currentStep + this.stepOffset,
-      maxStep: 3 + this.stepOffset,
+      currentStep: currentStep + stepOffset,
+      maxStep: 3 + stepOffset,
     });
 
     return (
@@ -147,24 +151,17 @@ const {
   bool,
   func,
   number,
-  object,
 } = PropTypes;
 
 Dissolution.propTypes = {
+  isAddressLoaded: bool.isRequired,
   isBurnApproved: bool.isRequired,
-  defaultAddress: object,
   lockedDgd: number.isRequired,
   t: func.isRequired,
 };
 
-Dissolution.defaultProps = {
-  defaultAddress: {
-    address: undefined,
-  },
-};
-
 const mapStateToProps = state => ({
-  defaultAddress: getDefaultAddress(state),
+  isAddressLoaded: state.govUI.Dissolution.isAddressLoaded,
   isBurnApproved: state.govUI.Dissolution.isBurnApproved,
   lockedDgd: state.govUI.Dissolution.lockedDgd,
 });

@@ -23,7 +23,11 @@ class Intro extends React.Component {
   };
 
   render() {
-    const { onClose, t } = this.props;
+    const {
+      currentStage,
+      onClose,
+      t,
+    } = this.props;
 
     return (
       <IntroContainer>
@@ -39,24 +43,27 @@ class Intro extends React.Component {
           escapeHtml={false}
           source={t('Modal.ethRecommendation')}
         />
-        <ActionContainer>
-          <Button
-            fluid
-            kind="round"
-            large
-            onClick={this.handleButtonClick}
-            secondary
-          >
-            {t('LoadWallet.button')}
-          </Button>
-        </ActionContainer>
+        {currentStage === WalletStages.Intro && (
+          <ActionContainer>
+            <Button
+              fluid
+              kind="round"
+              large
+              onClick={this.handleButtonClick}
+              secondary
+            >
+              {t('LoadWallet.button')}
+            </Button>
+          </ActionContainer>
+        )}
       </IntroContainer>
     );
   }
 }
 
-const { func } = PropTypes;
+const { func, number } = PropTypes;
 Intro.propTypes = {
+  currentStage: number.isRequired,
   onChangeStage: func.isRequired,
   onClose: func.isRequired,
   t: func.isRequired,

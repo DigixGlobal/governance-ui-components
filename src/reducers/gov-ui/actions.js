@@ -19,6 +19,8 @@ export const actions = {
 
   SET_TRANSLATION_LANGUAGE: `${REDUX_PREFIX}SET_TRANSLATION_LANGUAGE`,
   SET_LOCKED_DGD: `${REDUX_PREFIX}SET_LOCKED_DGD`,
+  SET_IS_BURN_APPROVED: `${REDUX_PREFIX}SET_IS_BURN_APPROVED`,
+  SET_IS_ADDRESS_LOADED: `${REDUX_PREFIX}SET_IS_ADDRESS_LOADED`,
 };
 
 function fetchData(url, type) {
@@ -156,8 +158,17 @@ export function setLockedDgd(lockedDgd = 0) {
 export function setIsBurnApproved(isBurnApproved = false) {
   return (dispatch) => {
     dispatch({
-      type: actions.SET_LOCKED_DGD,
+      type: actions.SET_IS_BURN_APPROVED,
       payload: { isBurnApproved },
+    });
+  };
+}
+
+export function setIsAddressLoaded(isAddressLoaded = false) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_IS_ADDRESS_LOADED,
+      payload: { isAddressLoaded },
     });
   };
 }

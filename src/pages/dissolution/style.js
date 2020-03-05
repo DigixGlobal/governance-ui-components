@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from '@digix/gov-ui/components/common/elements/index';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { Card } from '@digix/gov-ui/components/common/common-styles';
 
 export const Modal = {
@@ -91,4 +91,11 @@ export const Step = {
     margin: 0;
     width: 100%;
   `,
+
+  Arrow: styled(Icon)`
+    left: 2.5rem;
+    position: relative;
+    top: 3.5rem;
+    transform: rotate(-90deg);
+  `
 };

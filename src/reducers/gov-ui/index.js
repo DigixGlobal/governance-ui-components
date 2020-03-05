@@ -2,6 +2,10 @@ import LogLockDgd from '@digix/gov-ui/analytics/lockDgd';
 import { actions } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 const defaultState = {
+  Dissolution: {
+    lockedDgd: 0,
+    isBurnApproved: false,
+  },
   lockDgdOverlay: {
     show: false,
   },
@@ -27,6 +31,14 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
+    case actions.SET_LOCKED_DGD:
+      return {
+        ...state,
+        Dissolution: {
+          ...state.Dissolution,
+          ...action.payload,
+        },
+      };
     case actions.SHOW_LOCK_DGD_OVERLAY:
       LogLockDgd.toggleOverlay(action.payload);
       return {

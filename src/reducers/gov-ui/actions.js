@@ -18,6 +18,7 @@ export const actions = {
   GET_TOKEN_USD_VALUE: `${REDUX_PREFIX}GET_TOKEN_USD_VALUE`,
 
   SET_TRANSLATION_LANGUAGE: `${REDUX_PREFIX}SET_TRANSLATION_LANGUAGE`,
+  SET_LOCKED_DGD: `${REDUX_PREFIX}SET_LOCKED_DGD`,
 };
 
 function fetchData(url, type) {
@@ -140,5 +141,23 @@ export function getTokenUsdValue() {
 export function setLanguageTranslation(payload = 'en') {
   return dispatch => {
     dispatch({ type: actions.SET_TRANSLATION_LANGUAGE, payload });
+  };
+}
+
+export function setLockedDgd(lockedDgd = 0) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_LOCKED_DGD,
+      payload: { lockedDgd },
+    });
+  };
+}
+
+export function setIsBurnApproved(isBurnApproved = false) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_LOCKED_DGD,
+      payload: { isBurnApproved },
+    });
   };
 }

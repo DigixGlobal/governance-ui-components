@@ -21,7 +21,6 @@ function withHeaderAndPanel(WrappedComponent) {
       !_.isEqual(this.props, nextProps) && !_.isEqual(this.state, nextState);
 
     render() {
-      // TODO: remove sign proof
       return (
         <Fragment>
           <SnackBar />

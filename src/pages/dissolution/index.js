@@ -28,13 +28,43 @@ class Dissolution extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    const { defaultAddress } = this.props;
-    const hasLoadedWallet = defaultAddress && defaultAddress.address;
+    const isDgdUnlocked = this.isDgdUnlocked();
+    const step = isDgdUnlocked
+      ? STEPS.approve
+      : STEPS.unlock;
+
+    this.stepOffset = isDgdUnlocked
+      ? -1
+      : 0;
 
     this.state = {
-      showModal: !hasLoadedWallet,
-      step: STEPS.unlock,
+      showModal: !this.hasLoadedWallet(),
+      step,
     };
+  }
+
+  hasLoadedWallet = () => {
+    const { defaultAddress } = this.props;
+    return defaultAddress && defaultAddress.address;
+  }
+
+  isDgdUnlocked = () => {
+    const { lockedDgd } = this.props;
+    return this.hasLoadedWallet() && lockedDgd === 0;
+  }
+
+  isNavButtonEnabled = () => {
+    const { step } = this.state;
+    const { isBurnApproved } = this.props;
+
+    switch (step) {
+      case STEPS.unlock:
+        return this.isDgdUnlocked();
+      case STEPS.approve:
+        return this.hasLoadedWallet() && isBurnApproved;
+      default:
+        return true;
+    }
   }
 
   closeModal = () => {
@@ -56,16 +86,18 @@ class Dissolution extends React.PureComponent {
   render() {
     const { showModal, step } = this.state;
     const { t } = this.props;
+
+    const isNavButtonEnabled = this.isNavButtonEnabled();
+    const currentStep = step > 3 ? 3 : step;
     const stepLabel = t('Nav.steps', {
-      currentStep: step > 3 ? 3 : step,
-      maxStep: 3,
+      currentStep: currentStep + this.stepOffset,
+      maxStep: 3 + this.stepOffset,
     });
 
     return (
       <Fragment>
         <Wrapper wide={step >= STEPS.burn}>
           <Stepper>
-            {/* TODO: reduce by one for non-participants */}
             <ReactMarkdown
               escapeHtml={false}
               renderers={{ paragraph: 'span' }}
@@ -74,9 +106,12 @@ class Dissolution extends React.PureComponent {
           </Stepper>
           {step === STEPS.unlock && <UnlockStep />}
           {step === STEPS.approve && <ApproveStep />}
-          {step >= STEPS.burn && <BurnStep />}
+          {step >= STEPS.burn && (
+            <BurnStep goToNext={this.goToNext} />
+          )}
           {step < STEPS.burn && (
             <NavButton
+              disabled={!isNavButtonEnabled}
               onClick={this.goToNext}
               primary
               width="100%"
@@ -108,10 +143,17 @@ class Dissolution extends React.PureComponent {
   }
 }
 
-const { object, func } = PropTypes;
+const {
+  bool,
+  func,
+  number,
+  object,
+} = PropTypes;
 
 Dissolution.propTypes = {
+  isBurnApproved: bool.isRequired,
   defaultAddress: object,
+  lockedDgd: number.isRequired,
   t: func.isRequired,
 };
 
@@ -123,6 +165,8 @@ Dissolution.defaultProps = {
 
 const mapStateToProps = state => ({
   defaultAddress: getDefaultAddress(state),
+  isBurnApproved: state.govUI.Dissolution.isBurnApproved,
+  lockedDgd: state.govUI.Dissolution.lockedDgd,
 });
 
 export default withTranslation('Dissolution')(

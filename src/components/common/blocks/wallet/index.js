@@ -20,6 +20,8 @@ import {
   setAuthentationStatus,
   showHideAlert,
   showHideWalletOverlay,
+  setIsBurnApproved,
+  setLockedDgd,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 export class Wallet extends React.PureComponent {
@@ -47,6 +49,8 @@ export class Wallet extends React.PureComponent {
 
     this.setState({ stage });
     if (stage === Stage.WalletLoaded) {
+      this.props.setLockedDgd(435.234); // [TODO]: get locked dgd balance
+      this.props.setIsBurnApproved(false); // [TODO]: get burn approve status
       this.handleCloseWallet();
     }
   };
@@ -98,6 +102,8 @@ Wallet.propTypes = {
   defaultNetworks: array.isRequired,
   isAuthenticated: bool,
   showHideAlert: func.isRequired,
+  setIsBurnApproved: func.isRequired,
+  setLockedDgd: func.isRequired,
   showHideWalletOverlay: func.isRequired,
   showWallet: object,
   signingModal: object,
@@ -115,6 +121,8 @@ const actions = {
   updateKeystore,
   setAuthentationStatus,
   showHideAlert,
+  setIsBurnApproved,
+  setLockedDgd,
   showHideWalletOverlay,
 };
 

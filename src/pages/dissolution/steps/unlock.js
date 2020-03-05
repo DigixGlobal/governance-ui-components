@@ -4,7 +4,6 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import getContract from '@digix/gov-ui/utils/contracts';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-import { Button } from '@digix/gov-ui/components/common/elements';
 import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
@@ -12,10 +11,14 @@ import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getSignTransactionTranslation } from '@digix/gov-ui/utils/helpers';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
-import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
-import PropTypes, { array } from 'prop-types';
+import PropTypes from 'prop-types';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements';
+import {
+  showHideAlert,
+  setLockedDgd,
+} from '@digix/gov-ui/reducers/gov-ui/actions';
 
 const {
   Content,
@@ -36,8 +39,12 @@ class UnlockStep extends React.PureComponent {
   }
 
   unlockDgd = (unlockAmount) => {
+    this.props.setLockedDgd(0);
+    return;
+
+    // [TODO]
     const { addresses, t, web3Redux } = this.props;
-    const { abi, address } = getContract(DaoStakeLocking, network); // TODO: replace?
+    const { abi, address } = getContract(DaoStakeLocking, network); // [TODO]: replace?
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const contract = web3Redux
       .web3(network)
@@ -52,7 +59,7 @@ class UnlockStep extends React.PureComponent {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: 2000000, // TODO: confirm
+      gas: 2000000, // [TODO]: confirm
       ui,
     };
 
@@ -61,6 +68,7 @@ class UnlockStep extends React.PureComponent {
     };
 
     const onTransactionSuccess = (txHash) => {
+      this.props.setLockedDgd(0);
       this.props.showHideAlert({
         message: t('snackbars.dissolutionUnlock.success'),
         status: 'success',
@@ -98,34 +106,49 @@ class UnlockStep extends React.PureComponent {
   };
 
   render() {
-    const { addresses, t } = this.props;
+    const {
+      lockedDgd,
+      t,
+    } = this.props;
+
+    const isButtonEnabled = lockedDgd > 0;
+    const buttonLabel = isButtonEnabled
+      ? t('Dissolution:Unlock.button')
+      : <Icon kind="check" />;
 
     return (
       <Container>
         <Title>{t('Dissolution:Unlock.title')}</Title>
         <Content>
           <Currency>
-            <CurrencyValue>435.234</CurrencyValue>
+            <CurrencyValue>{lockedDgd}</CurrencyValue>
             <CurrencyLabel>DGD</CurrencyLabel>
           </Currency>
         </Content>
         <Button
-          disabled={!addresses.length}
-          onClick={() => this.unlockDgd(0.1)} // TODO: fetch locked DGD
+          disabled={!isButtonEnabled}
+          onClick={() => this.unlockDgd(lockedDgd)}
           secondary
         >
-          {t('Dissolution:Unlock.button')}
+          {buttonLabel}
         </Button>
       </Container>
     );
   }
 }
 
-const { func, object } = PropTypes;
+const {
+  array,
+  func,
+  number,
+  object,
+} = PropTypes;
 
 UnlockStep.propTypes = {
   addresses: array,
+  lockedDgd: number.isRequired,
   showHideAlert: func.isRequired,
+  setLockedDgd: func.isRequired,
   showTxSigningModal: func.isRequired,
   t: func.isRequired,
   web3Redux: object.isRequired,
@@ -137,11 +160,13 @@ UnlockStep.defaultProps = {
 
 const mapStateToProps = state => ({
   addresses: getAddresses(state),
+  lockedDgd: state.govUI.Dissolution.lockedDgd,
 });
 
 export default withTranslation(['Snackbar', 'Dissolution'])(
   web3Connect(connect(mapStateToProps, {
     showHideAlert,
+    setLockedDgd,
     showTxSigningModal,
   })(UnlockStep))
 );

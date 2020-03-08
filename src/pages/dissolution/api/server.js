@@ -62,10 +62,18 @@ const setupDissolutionServer = () => {
     dissolutionAuthHttpLink,
   );
 
+  const queries = new RegExp([
+    'approval',
+    'approvals',
+    'users',
+    'user',
+  ].join('|'));
+
   return {
     absintheSocket,
     link: dissolutionLink,
     socket: dissolutionSocketLink,
+    queries,
   };
 };
 

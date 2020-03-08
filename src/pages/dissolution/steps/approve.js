@@ -15,6 +15,10 @@ import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { withTranslation } from 'react-i18next';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements';
+import {
+  fetchApproval,
+  withApolloClient,
+} from '@digix/gov-ui/pages/dissolution/api/queries';
 import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
 import {
   showHideAlert,
@@ -34,6 +38,23 @@ class ApproveStep extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentWillMount = () => {
+    this.props.client.query({
+      query: fetchApproval,
+      variables: {
+        id: '16952', // [TODO]: replace with approval id
+      },
+    })
+      .then((response) => {
+        console.log('Fetched APPROVAL');
+        console.log(response);
+
+        if (response.data.approval) {
+          this.props.setIsBurnApproved(true);
+        }
+      });
   }
 
   approveBurn = () => {
@@ -59,6 +80,7 @@ class ApproveStep extends React.PureComponent {
     };
 
     const onTransactionAttempt = (txHash) => {
+      localStorage.setItem('DissolutionApprovalTxHash', txHash);
       console.log('Attempting Approve Contract Interaction with txHash', txHash);
       this.props.showHideAlert({
         message: t('snackbars.dissolutionApprove.message'),
@@ -140,6 +162,7 @@ const {
 
 ApproveStep.propTypes = {
   addresses: array,
+  client: object.isRequired,
   isBurnApproved: bool.isRequired,
   showHideAlert: func.isRequired,
   setIsBurnApproved: func.isRequired,
@@ -158,9 +181,11 @@ const mapStateToProps = state => ({
 });
 
 export default withTranslation(['Snackbar', 'Dissolution'])(
-  web3Connect(connect(mapStateToProps, {
-    showHideAlert,
-    setIsBurnApproved,
-    showTxSigningModal,
-  })(ApproveStep))
+  withApolloClient(
+    web3Connect(connect(mapStateToProps, {
+      showHideAlert,
+      setIsBurnApproved,
+      showTxSigningModal,
+    })(ApproveStep))
+  )
 );

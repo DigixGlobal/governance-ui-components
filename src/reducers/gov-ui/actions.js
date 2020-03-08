@@ -21,6 +21,7 @@ export const actions = {
   SET_LOCKED_DGD: `${REDUX_PREFIX}SET_LOCKED_DGD`,
   SET_IS_BURN_APPROVED: `${REDUX_PREFIX}SET_IS_BURN_APPROVED`,
   SET_IS_ADDRESS_LOADED: `${REDUX_PREFIX}SET_IS_ADDRESS_LOADED`,
+  SET_LOAD_WALLET_BALANCE: `${REDUX_PREFIX}SET_LOAD_WALLET_BALANCE`,
 };
 
 function fetchData(url, type) {
@@ -169,6 +170,15 @@ export function setIsAddressLoaded(isAddressLoaded = false) {
     dispatch({
       type: actions.SET_IS_ADDRESS_LOADED,
       payload: { isAddressLoaded },
+    });
+  };
+}
+
+export function setLoadWalletBalance(loadWalletBalance = 0) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_LOAD_WALLET_BALANCE,
+      payload: { loadWalletBalance },
     });
   };
 }

@@ -6,8 +6,8 @@
   "dependencies": {
     "@absinthe/socket": "^0.2.1",
     "@absinthe/socket-apollo-link": "^0.2.1",
-    "@digix/acid-contracts": "0.1.0",
-    "@digix/dao-contracts": "0.0.7",
+    "@digix/acid-contracts": "file:../acid-solidity",
+    "@digix/dao-contracts": "file:../dao-contracts",
     "@digix/multi-hash": "0.0.2",
     "@digix/react-webcam": "^0.2.5",
     "@jumpn/utils-graphql": "^0.6.0",
@@ -18,6 +18,7 @@
     "apollo-client": "^2.5.1",
     "apollo-link": "^1.2.8",
     "apollo-link-context": "^1.0.12",
+    "apollo-link-dedup": "^1.0.20",
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
     "apollo-link-ws": "^1.0.14",

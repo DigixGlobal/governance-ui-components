@@ -3,12 +3,13 @@ import BurnStep from '@digix/gov-ui/pages/dissolution/steps/burn';
 import DissolutionModal from '@digix/gov-ui/pages/dissolution/modal';
 import UnlockStep from '@digix/gov-ui/pages/dissolution/steps/unlock';
 import Modal from 'react-responsive-modal';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import React, { Fragment } from 'react';
+import { fetchUsers, withApolloClient } from '@digix/gov-ui/pages/dissolution/api/queries';
 
 const {
   NavButton,
@@ -34,10 +35,28 @@ class Dissolution extends React.PureComponent {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { isAddressLoaded, lockedDgd } = nextProps;
+  componentDidMount() {
+    this.props.client.query({
+      query: fetchUsers,
+      variables: {
+        first: 50,
+      },
+    })
+      .then((response) => {
+        console.log('Fetched USERS');
+        console.log(response);
+      });
+  }
 
-    if (!this.props.isAddressLoaded && isAddressLoaded) {
+  componentWillReceiveProps(nextProps) {
+    const { isAddressLoaded, lockedDgd, loadWalletBalance } = nextProps;
+
+    if (loadWalletBalance === 0) {
+      this.setState({
+        step: STEPS.success,
+        stepOffset: 0,
+      });
+    } else if (!this.props.isAddressLoaded && isAddressLoaded) {
       const isDgdUnlocked = isAddressLoaded && lockedDgd === 0;
       const stepOffset = isDgdUnlocked ? -1 : 0;
       const step = isDgdUnlocked
@@ -156,6 +175,8 @@ const {
 Dissolution.propTypes = {
   isAddressLoaded: bool.isRequired,
   isBurnApproved: bool.isRequired,
+  client: object.isRequired,
+  loadWalletBalance: number.isRequired,
   lockedDgd: number.isRequired,
   t: func.isRequired,
 };
@@ -163,9 +184,12 @@ Dissolution.propTypes = {
 const mapStateToProps = state => ({
   isAddressLoaded: state.govUI.Dissolution.isAddressLoaded,
   isBurnApproved: state.govUI.Dissolution.isBurnApproved,
+  loadWalletBalance: state.govUI.Dissolution.loadWalletBalance,
   lockedDgd: state.govUI.Dissolution.lockedDgd,
 });
 
 export default withTranslation('Dissolution')(
-  connect(mapStateToProps, {})(Dissolution)
+  withApolloClient(
+    connect(mapStateToProps, {})(Dissolution)
+  )
 );

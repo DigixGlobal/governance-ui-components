@@ -1,4 +1,3 @@
-import DissolutionApi from '@digix/gov-ui/pages/dissolution/api';
 import Intro from '@digix/gov-ui/components/common/blocks/wallet/intro';
 import LoadWallet from '@digix/gov-ui/components/common/blocks/wallet/load-wallet';
 import PropTypes from 'prop-types';
@@ -7,6 +6,10 @@ import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { Container } from '@digix/gov-ui/components/common/blocks/wallet/style';
 import { Stage } from '@digix/gov-ui/components/common/blocks/wallet/constants';
 import { connect } from 'react-redux';
+import {
+  fetchUser,
+  withApolloClient,
+} from '@digix/gov-ui/pages/dissolution/api/queries';
 import {
   getDefaultAddress,
   getDefaultNetworks,
@@ -26,6 +29,7 @@ import {
   showHideWalletOverlay,
   setIsAddressLoaded,
   setIsBurnApproved,
+  setLoadWalletBalance,
   setLockedDgd,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
@@ -66,13 +70,20 @@ export class Wallet extends React.PureComponent {
 
   handleLoadedWallet = () => {
     const { defaultAddress: { address } } = this.props;
-    DissolutionApi.getAddressInfo(address)
+    this.props.client.query({
+      query: fetchUser,
+      variables: {
+        // [TODO]: replace with user address
+        id: '0x000ee102d3ca744851a94c25c3eea1cfea5bc5a8',
+      },
+    })
       .then((response) => {
-        if (response.result !== 'notFound') {
-          const { lockedDgd } = response.result;
-          this.props.setLockedDgd(lockedDgd);
-        }
+        console.log('Fetched LOCKED DGD');
+        console.log(response);
 
+        const { dgdLocked, dgdBalance } = response.data.user;
+        this.props.setLockedDgd(Number(dgdLocked));
+        this.props.setLoadWalletBalance(Number(dgdBalance));
         this.props.setIsBurnApproved(false); // [TODO]: get burn approve status
         this.props.setIsAddressLoaded(true);
         this.handleCloseWallet();
@@ -119,12 +130,14 @@ const {
 } = PropTypes;
 
 Wallet.propTypes = {
+  client: object.isRequired,
   defaultAddress: object,
   defaultNetworks: array.isRequired,
   isAuthenticated: bool,
   showHideAlert: func.isRequired,
   setIsAddressLoaded: func.isRequired,
   setIsBurnApproved: func.isRequired,
+  setLoadWalletBalance: func.isRequired,
   setLockedDgd: func.isRequired,
   showHideWalletOverlay: func.isRequired,
   showWallet: object,
@@ -148,6 +161,7 @@ const actions = {
   showHideAlert,
   setIsAddressLoaded,
   setIsBurnApproved,
+  setLoadWalletBalance,
   setLockedDgd,
   showHideWalletOverlay,
 };
@@ -159,6 +173,8 @@ const mapStateToProps = state => ({
   showWallet: state.govUI.ShowWallet,
 });
 
-export default web3Connect(
-  connect(mapStateToProps, actions)(Wallet)
+export default withApolloClient(
+  web3Connect(
+    connect(mapStateToProps, actions)(Wallet)
+  )
 );

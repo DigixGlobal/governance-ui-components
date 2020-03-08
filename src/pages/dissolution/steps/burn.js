@@ -16,6 +16,10 @@ import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements';
+import {
+  fetchUser,
+  withApolloClient,
+} from '@digix/gov-ui/pages/dissolution/api/queries';
 
 const {
   Arrow,
@@ -37,6 +41,26 @@ class BurnStep extends React.PureComponent {
       dgd: 435.234,
       eth: 84.000,
     };
+  }
+
+  componentWillMount = () => {
+    const { addresses } = this.props;
+    const address = addresses.find(({ isDefault }) => isDefault);
+
+    this.props.client.query({
+      query: fetchUser,
+      variables: {
+        // [TODO]: replace with user address
+        id: '0x000ee102d3ca744851a94c25c3eea1cfea5bc5a8',
+      },
+    })
+      .then((response) => {
+        console.log('Fetched BALANCE');
+        console.log(response);
+
+        const { dgdBalance } = response.data.user;
+        this.setState({ dgd: Number(dgdBalance) });
+      });
   }
 
   burnDgd() {
@@ -154,6 +178,7 @@ const {
 
 BurnStep.propTypes = {
   addresses: array,
+  client: object.isRequired,
   goToNext: func.isRequired,
   showHideAlert: func.isRequired,
   showTxSigningModal: func.isRequired,
@@ -170,8 +195,10 @@ const mapStateToProps = state => ({
 });
 
 export default withTranslation(['Snackbar', 'Dissolution'])(
-  web3Connect(connect(mapStateToProps, {
-    showHideAlert,
-    showTxSigningModal,
-  })(BurnStep))
+  withApolloClient(
+    web3Connect(connect(mapStateToProps, {
+      showHideAlert,
+      showTxSigningModal,
+    })(BurnStep))
+  )
 );

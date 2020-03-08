@@ -1,4 +1,5 @@
 import Acid from '@digix/acid-contracts/build/contracts/Acid.json';
+import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
@@ -59,13 +60,14 @@ class ApproveStep extends React.PureComponent {
 
   approveBurn = () => {
     const { addresses, t, web3Redux } = this.props;
-    const AcidContract = getContract(Acid, network);
-    const { address: contractAddress, abi } = getDGDBalanceContract(network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+
+    const { abi, address } = getContract(Acid, network);
+    const { address: daoStakeLockingAddress } = getContract(DaoStakeLocking, network);
     const contract = web3Redux
       .web3(network)
       .eth.contract(abi)
-      .at(contractAddress);
+      .at(address);
 
     const ui = {
       caption: t('snackbars.dissolutionApprove.title'),
@@ -118,7 +120,7 @@ class ApproveStep extends React.PureComponent {
       onFailure,
       onFinally: txHash => onTransactionAttempt(txHash),
       onSuccess: txHash => onTransactionSuccess(txHash),
-      params: [AcidContract.address, toBigNumber(2 ** 255)],
+      params: [daoStakeLockingAddress, toBigNumber(2 ** 255)],
       showTxSigningModal: this.props.showTxSigningModal,
       translations: txnTranslations,
       ui,

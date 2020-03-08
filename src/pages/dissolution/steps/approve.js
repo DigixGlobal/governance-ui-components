@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
-import getContract from '@digix/gov-ui/utils/contracts';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
@@ -13,8 +12,10 @@ import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getSignTransactionTranslation } from '@digix/gov-ui/utils/helpers';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
+import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { withTranslation } from 'react-i18next';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements';
+import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
 import {
   showHideAlert,
   setIsBurnApproved,
@@ -37,12 +38,13 @@ class ApproveStep extends React.PureComponent {
 
   approveBurn = () => {
     const { addresses, t, web3Redux } = this.props;
-    const { abi, address } = getContract(Acid, network);
+    const AcidContract = getContract(Acid, network);
+    const { address: contractAddress, abi } = getDGDBalanceContract(network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const contract = web3Redux
       .web3(network)
       .eth.contract(abi)
-      .at(address);
+      .at(contractAddress);
 
     const ui = {
       caption: t('snackbars.dissolutionApprove.title'),
@@ -89,12 +91,12 @@ class ApproveStep extends React.PureComponent {
     const payload = {
       address: sourceAddress,
       contract,
-      func: contract.dgdTokenContract,
+      func: contract.approve,
       network,
       onFailure,
       onFinally: txHash => onTransactionAttempt(txHash),
       onSuccess: txHash => onTransactionSuccess(txHash),
-      params: [],
+      params: [AcidContract.address, toBigNumber(2 ** 255)],
       showTxSigningModal: this.props.showTxSigningModal,
       translations: txnTranslations,
       ui,

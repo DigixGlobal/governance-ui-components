@@ -92,7 +92,7 @@ export const Step = {
   `,
 
   Arrow: styled(Icon)`
-    left: 2.5rem;
+    left: 1rem;
     position: relative;
     top: 5.5rem;
     width: 5rem;

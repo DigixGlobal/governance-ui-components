@@ -73,18 +73,19 @@ export class Wallet extends React.PureComponent {
     this.props.client.query({
       query: fetchUser,
       variables: {
-        id: address,
+        id: address.toLowerCase(),
       },
     })
       .then((response) => {
         console.log('Fetched LOCKED DGD');
         console.log(response);
 
-        if (!response.data.user) {
+        const { user } = response.data;
+        if (!user) {
           this.props.setLockedDgd(0);
           this.props.setLoadWalletBalance(0);
         } else {
-          const { dgdLocked, dgdBalance } = response.data.user;
+          const { dgdLocked, dgdBalance } = user;
           this.props.setLockedDgd(Number(dgdLocked));
           this.props.setLoadWalletBalance(Number(dgdBalance));
         }

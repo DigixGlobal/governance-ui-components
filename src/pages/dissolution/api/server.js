@@ -15,11 +15,11 @@ const isStaging = process.env.ENVIRONMENT === 'kovan';
 export const DISSOLUTION_SERVER = () => {
   const http = (isProduction && 'https://api.thegraph.com/subgraphs/name/francismurillodigix/dissolutionsubgraph')
     || (isStaging && 'https://api.thegraph.com/subgraphs/name/francismurillodigix/dissolutionsubgraph')
-    || 'https://localhost:8000/graphql';
+    || 'https://localhost:8000/subgraphs/name/DigixGlobal/DissolutionSubgraph';
 
   const webSocket = (isProduction && 'wss://api.thegraph.com/subgraphs/name/francismurillodigix/dissolutionsubgraph')
     || (isStaging && 'wss://api.thegraph.com/subgraphs/name/francismurillodigix/dissolutionsubgraph')
-    || 'wss://localhost:8000/socket';
+    || 'wss://localhost:8000/subgraphs/name/DigixGlobal/DissolutionSubgraph';
 
   return {
     http,

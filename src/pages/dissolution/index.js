@@ -47,22 +47,24 @@ class Dissolution extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { isAddressLoaded, lockedDgd, loadWalletBalance } = nextProps;
+    const { loadWalletBalance } = nextProps;
 
     if (loadWalletBalance === 0) {
       this.setState({
-        step: STEPS.success,
-        stepOffset: 0,
+        step: STEPS.burn,
+        stepOffset: -1,
       });
-    } else if (!this.props.isAddressLoaded && isAddressLoaded) {
-      const isDgdUnlocked = isAddressLoaded && lockedDgd === 0;
-      const stepOffset = isDgdUnlocked ? -1 : 0;
-      const step = isDgdUnlocked
-        ? STEPS.burn
-        : STEPS.unlock;
-
-      this.setState({ step, stepOffset });
     }
+
+    // if (!this.props.isAddressLoaded && isAddressLoaded) {
+    //   const isDgdUnlocked = isAddressLoaded && lockedDgd === 0;
+    //   const stepOffset = isDgdUnlocked ? -1 : 0;
+    //   const step = isDgdUnlocked
+    //     ? STEPS.approve
+    //     : STEPS.unlock;
+
+    //   this.setState({ step, stepOffset });
+    // }
   }
 
   isDgdUnlocked = () => {
@@ -109,10 +111,13 @@ class Dissolution extends React.PureComponent {
     const { t } = this.props;
 
     const isNavButtonEnabled = this.isNavButtonEnabled();
-    const currentStep = step > 2 ? 2 : step;
+    const currentStep = step > STEPS.burn
+      ? STEPS.burn
+      : step;
+
     const stepLabel = t('Nav.steps', {
       currentStep: currentStep + stepOffset,
-      maxStep: 2 + stepOffset,
+      maxStep: STEPS.burn + stepOffset,
     });
 
     return (

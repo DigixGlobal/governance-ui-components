@@ -18,11 +18,11 @@ const Loading = props => (
             <rect id="Rectangle-3" x="0" y="0" width="1440" height="1483" rx="13"></rect>
           </g>
           <g id="Rectangle-25-Copy-2">
-            <use fill="black" fill-opacity="1" filter="url(#filter-2)"></use>
+            <use fill="black" fillOpacity="1" filter="url(#filter-2)"></use>
             <use fill="#111E34" fillRule="evenodd"></use>
           </g>
-          <rect id="Rectangle" fill-opacity="0.2" fill="#FFFFFF" transform="translate(74.949747, 1138.949747) rotate(-315.000000) translate(-74.949747, -1138.949747) " x="71.4497475" y="1135.44975" width="7" height="7"></rect>
-          <rect id="Rectangle-Copy" fill-opacity="0.5" fill="#FFFFFF" transform="translate(95.949747, 1138.949747) rotate(-315.000000) translate(-95.949747, -1138.949747) " x="92.4497475" y="1135.44975" width="7" height="7"></rect>
+          <rect id="Rectangle" fillOpacity="0.2" fill="#FFFFFF" transform="translate(74.949747, 1138.949747) rotate(-315.000000) translate(-74.949747, -1138.949747) " x="71.4497475" y="1135.44975" width="7" height="7"></rect>
+          <rect id="Rectangle-Copy" fillOpacity="0.5" fill="#FFFFFF" transform="translate(95.949747, 1138.949747) rotate(-315.000000) translate(-95.949747, -1138.949747) " x="92.4497475" y="1135.44975" width="7" height="7"></rect>
           <rect id="Rectangle-Copy-2" fill="#FFFFFF" transform="translate(116.949747, 1138.949747) rotate(-315.000000) translate(-116.949747, -1138.949747) " x="113.449747" y="1135.44975" width="7" height="7"></rect>
         </g>
       </g>

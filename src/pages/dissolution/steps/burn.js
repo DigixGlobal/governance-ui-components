@@ -18,6 +18,7 @@ import { withTranslation } from 'react-i18next';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements';
 import {
   fetchUser,
+  refundSubscription,
   withApolloClient,
 } from '@digix/gov-ui/pages/dissolution/api/queries';
 
@@ -38,27 +39,43 @@ class BurnStep extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      dgd: 435.234,
-      eth: 84.000,
+      dgd: 0,
+      eth: 0,
+      isTxBroadcasted: false,
     };
   }
 
   componentWillMount = () => {
-    const { addresses } = this.props;
-    const address = addresses.find(({ isDefault }) => isDefault);
+    const {
+      addresses,
+      client,
+      goToNext,
+    } = this.props;
+    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    this.props.client.query({
+    client.query({
       query: fetchUser,
       variables: {
-        id: address,
+        id: sourceAddress.address.toLowerCase(),
       },
     })
       .then((response) => {
         console.log('Fetched BALANCE');
         console.log(response);
 
-        const { dgdBalance } = response.data.user;
-        this.setState({ dgd: Number(dgdBalance) });
+        const { user } = response.data;
+        const dgd = user
+          ? Number(user.dgdBalance) / 10e8
+          : 0;
+
+        const eth = user
+          ? Number(user.ethRefund) / 10e16
+          : 0;
+
+        this.setState({ dgd, eth });
+        if (dgd === 0) {
+          goToNext();
+        }
       });
   }
 
@@ -83,16 +100,6 @@ class BurnStep extends React.PureComponent {
       ui,
     };
 
-    const onTransactionAttempt = (txHash) => {
-      console.log('Attempting Burn DGD with txHash', txHash);
-      this.props.showHideAlert({
-        message: t('snackbars.dissolutionBurn.message'),
-        status: 'pending',
-        txHash,
-      });
-    };
-
-    // [TODO] call when confirmed on the blockchain
     const onTransactionSuccess = (txHash) => {
       this.setState({ dgd: 0, eth: 0 }, () => {
         this.props.goToNext();
@@ -115,6 +122,30 @@ class BurnStep extends React.PureComponent {
       });
     };
 
+    const onTransactionAttempt = (txHash) => {
+      console.log('Attempting Burn DGD with txHash', txHash);
+      this.setState({ isTxBroadcasted: true });
+      this.props.showHideAlert({
+        message: t('snackbars.dissolutionBurn.message'),
+        status: 'pending',
+        txHash,
+      });
+
+      // this.props.client.subscribe({
+      //   query: refundSubscription,
+      //   variables: { id: txHash.toLowerCase() },
+      // }).subscribe({
+      //   next(data) {
+      //     console.log('SUBSCRIPTION DATA', data);
+      //     onTransactionSuccess();
+      //   },
+      //   error(error) {
+      //     console.error('SUBSCRIPTION ERROR', error);
+      //     onFailure(error);
+      //   },
+      // });
+    };
+
     const txnTranslations = getSignTransactionTranslation();
     const payload = {
       address: sourceAddress,
@@ -135,7 +166,7 @@ class BurnStep extends React.PureComponent {
   }
 
   render() {
-    const { dgd, eth } = this.state;
+    const { dgd, eth, isTxBroadcasted } = this.state;
     const { t } = this.props;
 
     const isButtonEnabled = dgd > 0;
@@ -148,17 +179,17 @@ class BurnStep extends React.PureComponent {
         <Title>{t('Dissolution:Burn.title')}</Title>
         <Content>
           <Currency>
-            <CurrencyValue>{dgd}</CurrencyValue>
+            <CurrencyValue>{dgd.toFixed(3)}</CurrencyValue>
             <CurrencyLabel>DGD</CurrencyLabel>
           </Currency>
           <Arrow kind="conversionArrow" />
           <Currency>
-            <CurrencyValue>{eth}</CurrencyValue>
+            <CurrencyValue>{eth.toFixed(3)}</CurrencyValue>
             <CurrencyLabel>ETH</CurrencyLabel>
           </Currency>
         </Content>
         <Button
-          disabled={!isButtonEnabled}
+          disabled={isTxBroadcasted || !isButtonEnabled}
           onClick={() => this.burnDgd()}
           secondary
         >

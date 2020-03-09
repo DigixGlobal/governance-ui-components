@@ -35,7 +35,9 @@ const network = SpectrumConfig.defaultNetworks[0];
 class UnlockStep extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isTxBroadcasted: false,
+    };
   }
 
   unlockDgd = (unlockAmount) => {
@@ -61,6 +63,7 @@ class UnlockStep extends React.PureComponent {
 
     const onTransactionAttempt = (txHash) => {
       console.log('Attempting Unlock DGD with txHash', txHash);
+      this.setState({ isTxBroadcasted: true });
       this.props.showHideAlert({
         message: t('snackbars.dissolutionUnlock.message'),
         status: 'pending',
@@ -108,11 +111,13 @@ class UnlockStep extends React.PureComponent {
   };
 
   render() {
+    const { isTxBroadcasted } = this.state;
     const {
       lockedDgd,
       t,
     } = this.props;
 
+    const lockedAmount = lockedDgd / 10e8;
     const isButtonEnabled = lockedDgd > 0;
     const buttonLabel = isButtonEnabled
       ? t('Dissolution:Unlock.button')
@@ -123,13 +128,13 @@ class UnlockStep extends React.PureComponent {
         <Title>{t('Dissolution:Unlock.title')}</Title>
         <Content>
           <Currency>
-            <CurrencyValue>{lockedDgd}</CurrencyValue>
+            <CurrencyValue>{lockedAmount.toFixed(3)}</CurrencyValue>
             <CurrencyLabel>DGD</CurrencyLabel>
           </Currency>
         </Content>
         <Button
-          disabled={!isButtonEnabled}
-          onClick={() => this.unlockDgd(lockedDgd)}
+          disabled={isTxBroadcasted || !isButtonEnabled}
+          onClick={() => this.unlockDgd(lockedAmount)}
           secondary
         >
           {buttonLabel}

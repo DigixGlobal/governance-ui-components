@@ -9,6 +9,7 @@ export const fetchUser = gql`
       address
       dgdBalance
       dgdLocked
+      ethRefund
     }
   }
 `;
@@ -42,6 +43,28 @@ export const fetchApprovals = gql`
       from
       to
       dgd
+    }
+  }
+`;
+
+export const unlockSubscription = gql`
+  subscription($id: ID!) {
+    unlock (id: $id) {
+      id
+      address
+      dgd
+      eth
+    }
+  }
+`;
+
+export const refundSubscription = gql`
+  subscription($id: ID!) {
+    refund (id: $id) {
+      id
+      address
+      dgd
+      eth
     }
   }
 `;

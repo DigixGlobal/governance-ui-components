@@ -13,14 +13,14 @@ const ConversionArrow = props => (
               <feColorMatrix values="0 0 0 0 0.953125   0 0 0 0 0.953125   0 0 0 0 0.953125  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
           </filter>
       </defs>
-      <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-          <g id="Rag06b.-Burn" transform="translate(-698.000000, -557.000000)" fill-rule="nonzero">
+      <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+          <g id="Rag06b.-Burn" transform="translate(-698.000000, -557.000000)" fillRule="nonzero">
               <g id="Main-BG" fill="#F1F1F1" opacity="0.400000006">
                   <rect id="Rectangle-3" x="0" y="0" width="1440" height="1483" rx="13"></rect>
               </g>
               <g id="Rectangle-2-Copy">
                   <use fill="black" fill-opacity="1" filter="url(#filter-2)"></use>
-                  <rect stroke="#EEEEEE" stroke-width="1" stroke-linejoin="square" fill="#FCFCFC" fill-rule="evenodd" x="268.5" y="380.5" width="903" height="390"></rect>
+                  <rect stroke="#EEEEEE" strokeWidth="1" stroke-linejoin="square" fill="#FCFCFC" fillRule="evenodd" x="268.5" y="380.5" width="903" height="390"></rect>
               </g>
               <path id="Line-2" d="M732.5,557.5 L741.5,562 L732.5,566.5 L732.5,562.5 L698.5,562.5 L698.5,561.5 L732.5,561.5 L732.5,557.5 Z" fill="#131F35"></path>
           </g>

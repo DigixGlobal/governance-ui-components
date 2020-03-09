@@ -173,9 +173,13 @@ Dissolution.propTypes = {
   isAddressLoaded: bool.isRequired,
   isBurnApproved: bool.isRequired,
   client: object.isRequired,
-  loadWalletBalance: number.isRequired,
+  loadWalletBalance: number,
   lockedDgd: number.isRequired,
   t: func.isRequired,
+};
+
+Dissolution.defaultProps = {
+  loadWalletBalance: undefined,
 };
 
 const mapStateToProps = state => ({

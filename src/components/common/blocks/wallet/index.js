@@ -80,9 +80,15 @@ export class Wallet extends React.PureComponent {
         console.log('Fetched LOCKED DGD');
         console.log(response);
 
-        const { dgdLocked, dgdBalance } = response.data.user;
-        this.props.setLockedDgd(Number(dgdLocked));
-        this.props.setLoadWalletBalance(Number(dgdBalance));
+        if (!response.data.user) {
+          this.props.setLockedDgd(0);
+          this.props.setLoadWalletBalance(0);
+        } else {
+          const { dgdLocked, dgdBalance } = response.data.user;
+          this.props.setLockedDgd(Number(dgdLocked));
+          this.props.setLoadWalletBalance(Number(dgdBalance));
+        }
+
         this.props.setIsAddressLoaded(true);
         this.handleCloseWallet();
       });

@@ -1,4 +1,3 @@
-import ApproveStep from '@digix/gov-ui/pages/dissolution/steps/approve';
 import BurnStep from '@digix/gov-ui/pages/dissolution/steps/burn';
 import DissolutionModal from '@digix/gov-ui/pages/dissolution/modal';
 import UnlockStep from '@digix/gov-ui/pages/dissolution/steps/unlock';
@@ -19,9 +18,8 @@ const {
 
 const STEPS = {
   unlock: 1,
-  approve: 2,
-  burn: 3,
-  success: 4,
+  burn: 2,
+  success: 3,
 };
 
 class Dissolution extends React.PureComponent {
@@ -60,7 +58,7 @@ class Dissolution extends React.PureComponent {
       const isDgdUnlocked = isAddressLoaded && lockedDgd === 0;
       const stepOffset = isDgdUnlocked ? -1 : 0;
       const step = isDgdUnlocked
-        ? STEPS.approve
+        ? STEPS.burn
         : STEPS.unlock;
 
       this.setState({ step, stepOffset });
@@ -111,10 +109,10 @@ class Dissolution extends React.PureComponent {
     const { t } = this.props;
 
     const isNavButtonEnabled = this.isNavButtonEnabled();
-    const currentStep = step > 3 ? 3 : step;
+    const currentStep = step > 2 ? 2 : step;
     const stepLabel = t('Nav.steps', {
       currentStep: currentStep + stepOffset,
-      maxStep: 3 + stepOffset,
+      maxStep: 2 + stepOffset,
     });
 
     return (
@@ -128,7 +126,6 @@ class Dissolution extends React.PureComponent {
             />
           </Stepper>
           {step === STEPS.unlock && <UnlockStep />}
-          {step === STEPS.approve && <ApproveStep />}
           {step >= STEPS.burn && (
             <BurnStep goToNext={this.goToNext} />
           )}

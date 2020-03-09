@@ -73,8 +73,7 @@ export class Wallet extends React.PureComponent {
     this.props.client.query({
       query: fetchUser,
       variables: {
-        // [TODO]: replace with user address
-        id: '0x000ee102d3ca744851a94c25c3eea1cfea5bc5a8',
+        id: address,
       },
     })
       .then((response) => {
@@ -84,7 +83,6 @@ export class Wallet extends React.PureComponent {
         const { dgdLocked, dgdBalance } = response.data.user;
         this.props.setLockedDgd(Number(dgdLocked));
         this.props.setLoadWalletBalance(Number(dgdBalance));
-        this.props.setIsBurnApproved(false); // [TODO]: get burn approve status
         this.props.setIsAddressLoaded(true);
         this.handleCloseWallet();
       });

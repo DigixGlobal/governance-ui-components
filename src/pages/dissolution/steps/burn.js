@@ -50,8 +50,7 @@ class BurnStep extends React.PureComponent {
     this.props.client.query({
       query: fetchUser,
       variables: {
-        // [TODO]: replace with user address
-        id: '0x000ee102d3ca744851a94c25c3eea1cfea5bc5a8',
+        id: address,
       },
     })
       .then((response) => {

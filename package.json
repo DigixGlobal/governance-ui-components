@@ -6,8 +6,8 @@
   "dependencies": {
     "@absinthe/socket": "^0.2.1",
     "@absinthe/socket-apollo-link": "^0.2.1",
-    "@digix/acid-contracts": "file:../acid-solidity",
-    "@digix/dao-contracts": "file:../dao-contracts",
+    "@digix/acid-contracts": "0.1.1",
+    "@digix/dao-contracts": "0.0.7",
     "@digix/multi-hash": "0.0.2",
     "@digix/react-webcam": "^0.2.5",
     "@jumpn/utils-graphql": "^0.6.0",

@@ -10,10 +10,11 @@ Make sure to clone the following in the same directory:
 - [governance-ui-components](https://github.com/DigixGlobal/governance-ui-components)
 
 ### Backend Setup
-
 Follow the setup instructions in the **dissolution-subgraph** [README](https://github.com/DigixGlobal/dissolution-subgraph).
 
 Then run `docker-compose up` to run the backend services.
+
+You can access graphiql through https://localhost:8000/subgraphs/name/DigixGlobal/DissolutionSubgraph/graphql
 
 #### Accessing Truffle
 
@@ -53,7 +54,7 @@ web3.eth.sendTransaction({ from: accounts[0], to: <address>, value: web3.toWei(1
 - Run `npm install` on `governance-ui`.
 - In `governance-ui`, run `npm run start`. This will start the app in development mode.
 - App can be viewed in https://localhost:3000/#/
-  - [HACK] If the page does not load and you encounter an error with `EventEmitter3` in the console logs, edit `governance-ui-components/node_modules/subscriptions-transport-ws/dist/client.js` and change line 43 to `this.eventEmitter = new eventemitter3_1();`. This is an issue with peer dependencies for npm packages; will fix soon but do this for now to make it work.
+  - **[HACK]** If the page does not load and you encounter an error with `EventEmitter3` in the console logs, edit `governance-ui-components/node_modules/subscriptions-transport-ws/dist/client.js` and change line 43 to `this.eventEmitter = new eventemitter3_1();`. This is an issue with peer dependencies for npm packages; will fix soon but do this for now to make it work. [Ref](https://github.com/apollographql/subscriptions-transport-ws/issues/267)
 - Check that the page loads fine before proceeding to the next steps.
 
 ## Testing
@@ -74,3 +75,18 @@ You can use the local test accounts (`account4`, `account8`, etc.), same as the 
 - User should be able to see their DGD balance and the ETH they'll get after conversion.
 - To burn, just click on the button then sign with your wallet.
 - When the transaction is successful, you should see the logout button.
+
+### Deployment
+Make sure to update `package.json` with the correct version of `@digix/acid-contracts` and `@digix/dao-contracts`.
+
+**LOCAL:**
+- `file:../acid-solidity`
+- `file:../dao-contracts`
+
+**KOVAN:**
+- `@digix/acid-contracts@0.1.1`
+- `@digix/dao-contracts@0.0.7`
+
+**PRODUCTION:**
+- `@digix/acid-contracts@1.0.0`
+- `@digix/dao-contracts@1.1.0`

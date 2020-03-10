@@ -43,6 +43,14 @@ class BurnStep extends React.PureComponent {
       eth: 0,
       isTxBroadcasted: false,
     };
+
+    this.subscription = undefined;
+  }
+
+  componentWillMount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   componentWillMount = () => {
@@ -131,13 +139,15 @@ class BurnStep extends React.PureComponent {
         txHash,
       });
 
-      this.props.client.subscribe({
+      this.subscription = this.props.client.subscribe({
         query: burnSubscription,
         variables: { address: sourceAddress.address.toLowerCase() },
       }).subscribe({
-        next(data) {
-          console.log('SUBSCRIPTION DATA', data);
-          onTransactionSuccess(txHash);
+        next(response) {
+          console.log('SUBSCRIPTION DATA::BURN', response);
+          if (response.data.byAddress.length) {
+            onTransactionSuccess(txHash);
+          }
         },
         error(error) {
           console.error('SUBSCRIPTION ERROR', error);

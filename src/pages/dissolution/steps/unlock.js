@@ -42,6 +42,14 @@ class UnlockStep extends React.PureComponent {
     this.state = {
       isTxBroadcasted: false,
     };
+
+    this.subscription = undefined;
+  }
+
+  componentWillMount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   unlockDgd = (unlockAmount) => {
@@ -95,13 +103,15 @@ class UnlockStep extends React.PureComponent {
         txHash,
       });
 
-      this.props.client.subscribe({
+      this.subscription = this.props.client.subscribe({
         query: unlockSubscription,
         variables: { address: sourceAddress.address.toLowerCase() },
       }).subscribe({
-        next(data) {
-          console.log('SUBSCRIPTION DATA', data);
-          onTransactionSuccess(txHash);
+        next(response) {
+          console.log('SUBSCRIPTION DATA::UNLOCK', response);
+          if (response.data.byAddress.length) {
+            onTransactionSuccess(txHash);
+          }
         },
         error(error) {
           console.error('SUBSCRIPTION ERROR', error);

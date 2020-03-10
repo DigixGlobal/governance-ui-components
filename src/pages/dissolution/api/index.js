@@ -66,13 +66,10 @@ const createDefaultClient = ({ ssr, fetch } = {}) => {
     ssrMode: ssr,
   });
 
-  return {
-    absintheSocket: DissolutionServer.absintheSocket,
-    client,
-  };
+  return client;
 };
 
-const dissolutionClient = createDefaultClient().client;
+const dissolutionClient = createDefaultClient();
 export default {
   dissolutionClient,
   getAddressInfo,

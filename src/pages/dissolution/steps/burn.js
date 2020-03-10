@@ -17,8 +17,8 @@ import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements';
 import {
+  burnSubscription,
   fetchUser,
-  refundSubscription,
   withApolloClient,
 } from '@digix/gov-ui/pages/dissolution/api/queries';
 
@@ -131,19 +131,19 @@ class BurnStep extends React.PureComponent {
         txHash,
       });
 
-      // this.props.client.subscribe({
-      //   query: refundSubscription,
-      //   variables: { id: txHash.toLowerCase() },
-      // }).subscribe({
-      //   next(data) {
-      //     console.log('SUBSCRIPTION DATA', data);
-      //     onTransactionSuccess();
-      //   },
-      //   error(error) {
-      //     console.error('SUBSCRIPTION ERROR', error);
-      //     onFailure(error);
-      //   },
-      // });
+      this.props.client.subscribe({
+        query: burnSubscription,
+        variables: { address: sourceAddress.address.toLowerCase() },
+      }).subscribe({
+        next(data) {
+          console.log('SUBSCRIPTION DATA', data);
+          onTransactionSuccess(txHash);
+        },
+        error(error) {
+          console.error('SUBSCRIPTION ERROR', error);
+          onFailure(error);
+        },
+      });
     };
 
     const txnTranslations = getSignTransactionTranslation();

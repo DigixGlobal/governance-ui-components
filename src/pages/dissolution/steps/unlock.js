@@ -19,6 +19,10 @@ import {
   showHideAlert,
   setLockedDgd,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
+import {
+  unlockSubscription,
+  withApolloClient,
+} from '@digix/gov-ui/pages/dissolution/api/queries';
 
 const {
   Content,
@@ -61,16 +65,6 @@ class UnlockStep extends React.PureComponent {
       ui,
     };
 
-    const onTransactionAttempt = (txHash) => {
-      console.log('Attempting Unlock DGD with txHash', txHash);
-      this.setState({ isTxBroadcasted: true });
-      this.props.showHideAlert({
-        message: t('snackbars.dissolutionUnlock.message'),
-        status: 'pending',
-        txHash,
-      });
-    };
-
     // [TODO] call when confirmed on the blockchain
     const onTransactionSuccess = (txHash) => {
       this.props.setLockedDgd(0);
@@ -88,6 +82,31 @@ class UnlockStep extends React.PureComponent {
         message: `${t('snackbars.dissolutionUnlock.fail')}: ${message}`,
         status: 'error',
         statusMessage: t('status.error'),
+      });
+    };
+
+
+    const onTransactionAttempt = (txHash) => {
+      console.log('Attempting Unlock DGD with txHash', txHash);
+      this.setState({ isTxBroadcasted: true });
+      this.props.showHideAlert({
+        message: t('snackbars.dissolutionUnlock.message'),
+        status: 'pending',
+        txHash,
+      });
+
+      this.props.client.subscribe({
+        query: unlockSubscription,
+        variables: { address: sourceAddress.address.toLowerCase() },
+      }).subscribe({
+        next(data) {
+          console.log('SUBSCRIPTION DATA', data);
+          onTransactionSuccess(txHash);
+        },
+        error(error) {
+          console.error('SUBSCRIPTION ERROR', error);
+          onFailure(error);
+        },
       });
     };
 
@@ -153,6 +172,7 @@ const {
 
 UnlockStep.propTypes = {
   addresses: array,
+  client: object.isRequired,
   lockedDgd: number.isRequired,
   showHideAlert: func.isRequired,
   setLockedDgd: func.isRequired,
@@ -171,9 +191,11 @@ const mapStateToProps = state => ({
 });
 
 export default withTranslation(['Snackbar', 'Dissolution'])(
-  web3Connect(connect(mapStateToProps, {
-    showHideAlert,
-    setLockedDgd,
-    showTxSigningModal,
-  })(UnlockStep))
+  withApolloClient(
+    web3Connect(connect(mapStateToProps, {
+      showHideAlert,
+      setLockedDgd,
+      showTxSigningModal,
+    })(UnlockStep))
+  )
 );

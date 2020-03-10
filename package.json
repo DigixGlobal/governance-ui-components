@@ -6,8 +6,8 @@
   "dependencies": {
     "@absinthe/socket": "^0.2.1",
     "@absinthe/socket-apollo-link": "^0.2.1",
-    "@digix/acid-contracts": "0.1.1",
-    "@digix/dao-contracts": "0.0.7",
+    "@digix/acid-contracts": "file:../acid-solidity",
+    "@digix/dao-contracts": "file:../dao-contracts",
     "@digix/multi-hash": "0.0.2",
     "@digix/react-webcam": "^0.2.5",
     "@jumpn/utils-graphql": "^0.6.0",
@@ -21,7 +21,7 @@
     "apollo-link-dedup": "^1.0.20",
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
-    "apollo-link-ws": "^1.0.14",
+    "apollo-link-ws": "^1.0.19",
     "apollo-utilities": "^1.3.3",
     "babel-polyfill": "^6.26.0",
     "babel-preset-stage-0": "^6.24.1",
@@ -31,7 +31,7 @@
     "dijix-attestation": "0.0.9",
     "dijix-image": "0.0.10",
     "dijix-pdf": "0.0.8",
-    "eventemitter3": "2.0.3",
+    "eventemitter3": "^2.0.3",
     "graphql": "14.1.1",
     "graphql-ruby-client": "^1.6.3",
     "graphql-tag": "^2.10.0",
@@ -60,6 +60,7 @@
     "react-toggle-component": "^1.0.5",
     "secure-random": "^1.1.1",
     "styled-components": "^3.4.9",
+    "subscriptions-transport-ws": "^0.9.16",
     "web3-utils": "^1.0.0-beta.37"
   },
   "moduleDirectories": [

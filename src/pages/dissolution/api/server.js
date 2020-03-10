@@ -1,13 +1,7 @@
-import * as AbsintheSocket from '@absinthe/socket';
-import { Socket as PhoenixSocket } from 'phoenix';
-import { createAbsintheSocketLink } from '@absinthe/socket-apollo-link';
+import { WebSocketLink } from 'apollo-link-ws';
 import { createHttpLink } from 'apollo-link-http';
-import { hasSubscription } from '@jumpn/utils-graphql';
 import { onError } from 'apollo-link-error';
-import {
-  from,
-  split,
-} from 'apollo-link';
+import { from } from 'apollo-link';
 
 const isProduction = process.env.ENVIRONMENT === 'production';
 const isStaging = process.env.ENVIRONMENT === 'kovan';
@@ -19,7 +13,7 @@ export const DISSOLUTION_SERVER = () => {
 
   const webSocket = (isProduction && 'wss://api.thegraph.com/subgraphs/name/francismurillodigix/dissolutionsubgraph')
     || (isStaging && 'wss://api.thegraph.com/subgraphs/name/francismurillodigix/dissolutionsubgraph')
-    || 'wss://localhost:8000/subgraphs/name/DigixGlobal/DissolutionSubgraph';
+    || 'wss://localhost:8001/subgraphs/name/DigixGlobal/DissolutionSubgraph';
 
   return {
     http,
@@ -33,34 +27,23 @@ const onErrorLink = onError(({ networkError }) => {
   }
 });
 
-const phoenixSocket = new PhoenixSocket(DISSOLUTION_SERVER().webSocket, {
-  params: () => ({}),
+const wsLink = new WebSocketLink({
+  uri: DISSOLUTION_SERVER().webSocket,
+  options: {
+    reconnect: true
+  },
 });
 
-const closeDissolutionSocket = () => {
-  if (phoenixSocket.conn) {
-    phoenixSocket.conn.close();
-  }
-};
-
 const setupDissolutionServer = () => {
-  let dissolutionLink = createHttpLink({
+  const httpLink = createHttpLink({
     fetch,
     uri: DISSOLUTION_SERVER().http,
   });
 
-  const dissolutionAuthHttpLink = from([
+  const link = from([
     onErrorLink,
-    dissolutionLink,
+    httpLink,
   ]);
-
-  const absintheSocket = AbsintheSocket.create(phoenixSocket);
-  const dissolutionSocketLink = createAbsintheSocketLink(absintheSocket);
-  dissolutionLink = split(
-    operation => hasSubscription(operation.query),
-    dissolutionSocketLink,
-    dissolutionAuthHttpLink,
-  );
 
   const queries = new RegExp([
     'approval',
@@ -70,15 +53,13 @@ const setupDissolutionServer = () => {
   ].join('|'));
 
   return {
-    absintheSocket,
-    link: dissolutionLink,
-    socket: dissolutionSocketLink,
+    link,
     queries,
+    socket: wsLink,
   };
 };
 
 export default setupDissolutionServer;
 export {
-  closeDissolutionSocket,
   setupDissolutionServer,
 };

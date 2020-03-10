@@ -48,19 +48,25 @@ export const fetchApprovals = gql`
 `;
 
 export const unlockSubscription = gql`
-  subscription($id: ID!) {
-    unlock (id: $id) {
+  subscription($address: String!) {
+    byAddress: withdraws(
+      first: 1
+      where: { address: $address }
+    ) {
       id
       address
       dgd
-      eth
+      stake
     }
   }
 `;
 
-export const refundSubscription = gql`
-  subscription($id: ID!) {
-    refund (id: $id) {
+export const burnSubscription = gql`
+  subscription($address: String!) {
+    byAddress: refunds(
+      first: 1
+      where: { address: $address }
+    ) {
       id
       address
       dgd

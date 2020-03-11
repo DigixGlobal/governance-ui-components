@@ -40,7 +40,9 @@ const network = SpectrumConfig.defaultNetworks[0];
 class ApproveStep extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isTxBroadcasted: false,
+    };
     this.subscription = undefined;
   }
 
@@ -111,8 +113,10 @@ class ApproveStep extends React.PureComponent {
     };
 
     const onTransactionAttempt = (txHash) => {
-      localStorage.setItem('DissolutionApprovalTxHash', txHash);
       console.log('Attempting Approve Contract Interaction with txHash', txHash);
+      localStorage.setItem('DissolutionApprovalTxHash', txHash);
+      this.setState({ isTxBroadcasted: true });
+
       this.props.showHideAlert({
         message: t('snackbars.dissolutionApprove.message'),
         status: 'pending',
@@ -156,6 +160,7 @@ class ApproveStep extends React.PureComponent {
   }
 
   render() {
+    const { isTxBroadcasted } = this.state;
     const { isBurnApproved, t } = this.props;
 
     const isButtonEnabled = !isBurnApproved;
@@ -169,7 +174,7 @@ class ApproveStep extends React.PureComponent {
           <Text>{t('Dissolution:Approve.instructions')}</Text>
         </Content>
         <Button
-          disabled={!isButtonEnabled}
+          disabled={isTxBroadcasted || !isButtonEnabled}
           onClick={() => this.approveBurn()}
           secondary
         >

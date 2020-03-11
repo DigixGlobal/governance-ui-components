@@ -1,3 +1,4 @@
+import ApproveStep from '@digix/gov-ui/pages/dissolution/steps/approve';
 import BurnStep from '@digix/gov-ui/pages/dissolution/steps/burn';
 import DissolutionModal from '@digix/gov-ui/pages/dissolution/modal';
 import UnlockStep from '@digix/gov-ui/pages/dissolution/steps/unlock';
@@ -18,8 +19,9 @@ const {
 
 const STEPS = {
   unlock: 1,
-  burn: 2,
-  success: 3,
+  approve: 2,
+  burn: 3,
+  success: 4,
 };
 
 class Dissolution extends React.PureComponent {
@@ -47,7 +49,11 @@ class Dissolution extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { loadWalletBalance } = nextProps;
+    const {
+      isAddressLoaded,
+      lockedDgd,
+      loadWalletBalance,
+    } = nextProps;
 
     if (loadWalletBalance === 0) {
       this.setState({
@@ -56,15 +62,15 @@ class Dissolution extends React.PureComponent {
       });
     }
 
-    // if (!this.props.isAddressLoaded && isAddressLoaded) {
-    //   const isDgdUnlocked = isAddressLoaded && lockedDgd === 0;
-    //   const stepOffset = isDgdUnlocked ? -1 : 0;
-    //   const step = isDgdUnlocked
-    //     ? STEPS.approve
-    //     : STEPS.unlock;
+    if (!this.props.isAddressLoaded && isAddressLoaded) {
+      const isDgdUnlocked = isAddressLoaded && lockedDgd === 0;
+      const stepOffset = isDgdUnlocked ? -1 : 0;
+      const step = isDgdUnlocked
+        ? STEPS.approve
+        : STEPS.unlock;
 
-    //   this.setState({ step, stepOffset });
-    // }
+      this.setState({ step, stepOffset });
+    }
   }
 
   isDgdUnlocked = () => {
@@ -131,6 +137,7 @@ class Dissolution extends React.PureComponent {
             />
           </Stepper>
           {step === STEPS.unlock && <UnlockStep />}
+          {step === STEPS.approve && <ApproveStep />}
           {step >= STEPS.burn && (
             <BurnStep goToNext={this.goToNext} />
           )}

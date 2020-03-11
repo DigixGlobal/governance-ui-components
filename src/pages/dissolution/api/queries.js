@@ -61,6 +61,20 @@ export const unlockSubscription = gql`
   }
 `;
 
+export const approveSubscription = gql`
+  subscription($address: String!) {
+    byAddress: approvals(
+      first: 1
+      where: { from: $address }
+    ) {
+      id
+      from
+      to
+      dgd
+    }
+  }
+`;
+
 export const burnSubscription = gql`
   subscription($address: String!) {
     byAddress: refunds(

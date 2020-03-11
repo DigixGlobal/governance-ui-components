@@ -1,9 +1,10 @@
 import Acid from '@digix/acid-contracts/build/contracts/Acid.json';
-import DaoStakeLocking from '@digix/dao-contracts/build/contracts/DaoStakeLocking.json';
+import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
+import getContract from '@digix/gov-ui/utils/contracts';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
@@ -17,10 +18,10 @@ import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { withTranslation } from 'react-i18next';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements';
 import {
+  approveSubscription,
   fetchApproval,
   withApolloClient,
 } from '@digix/gov-ui/pages/dissolution/api/queries';
-import getContract, { getDGDBalanceContract } from '@digix/gov-ui/utils/contracts';
 import {
   showHideAlert,
   setIsBurnApproved,
@@ -39,31 +40,39 @@ class ApproveStep extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
+    this.subscription = undefined;
   }
 
-  componentWillMount = () => {
-    this.props.client.query({
-      query: fetchApproval,
-      variables: {
-        id: '16952', // [TODO]: replace with approval id
-      },
-    })
-      .then((response) => {
-        console.log('Fetched APPROVAL');
-        console.log(response);
-
-        if (response.data.approval) {
-          this.props.setIsBurnApproved(true);
-        }
-      });
+  componentWillMount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
+
+  // [TODO] get approval status before loading component
+  // componentWillMount = () => {
+  //   this.props.client.query({
+  //     query: fetchApproval,
+  //     variables: {
+  //       id: '16952', // [TODO]: replace with approval id
+  //     },
+  //   })
+  //     .then((response) => {
+  //       console.log('Fetched APPROVAL');
+  //       console.log(response);
+
+  //       if (response.data.approval) {
+  //         this.props.setIsBurnApproved(true);
+  //       }
+  //     });
+  // }
 
   approveBurn = () => {
     const { addresses, t, web3Redux } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-    const { abi, address } = getContract(Acid, network);
-    const { address: daoStakeLockingAddress } = getContract(DaoStakeLocking, network);
+    const acidContract = getContract(Acid, network);
+    const { abi, address } = getContract(DgdToken, network);
     const contract = web3Redux
       .web3(network)
       .eth.contract(abi)
@@ -77,21 +86,10 @@ class ApproveStep extends React.PureComponent {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: 1000000,
+      gas: 2000000,
       ui,
     };
 
-    const onTransactionAttempt = (txHash) => {
-      localStorage.setItem('DissolutionApprovalTxHash', txHash);
-      console.log('Attempting Approve Contract Interaction with txHash', txHash);
-      this.props.showHideAlert({
-        message: t('snackbars.dissolutionApprove.message'),
-        status: 'pending',
-        txHash,
-      });
-    };
-
-    // [TODO] call when confirmed on the blockchain
     const onTransactionSuccess = (txHash) => {
       this.props.setIsBurnApproved(true);
       this.props.showHideAlert({
@@ -111,6 +109,32 @@ class ApproveStep extends React.PureComponent {
       });
     };
 
+    const onTransactionAttempt = (txHash) => {
+      localStorage.setItem('DissolutionApprovalTxHash', txHash);
+      console.log('Attempting Approve Contract Interaction with txHash', txHash);
+      this.props.showHideAlert({
+        message: t('snackbars.dissolutionApprove.message'),
+        status: 'pending',
+        txHash,
+      });
+
+      this.subscription = this.props.client.subscribe({
+        query: approveSubscription,
+        variables: { address: sourceAddress.address.toLowerCase() },
+      }).subscribe({
+        next(response) {
+          console.log('SUBSCRIPTION DATA::APPROVE', response);
+          if (response.data.byAddress.length) {
+            onTransactionSuccess(txHash);
+          }
+        },
+        error(error) {
+          console.error('SUBSCRIPTION ERROR', error);
+          onFailure(error);
+        },
+      });
+    };
+
     const txnTranslations = getSignTransactionTranslation();
     const payload = {
       address: sourceAddress,
@@ -120,7 +144,7 @@ class ApproveStep extends React.PureComponent {
       onFailure,
       onFinally: txHash => onTransactionAttempt(txHash),
       onSuccess: txHash => onTransactionSuccess(txHash),
-      params: [daoStakeLockingAddress, toBigNumber(2 ** 255)],
+      params: [acidContract.address, toBigNumber(2 ** 255)],
       showTxSigningModal: this.props.showTxSigningModal,
       translations: txnTranslations,
       ui,

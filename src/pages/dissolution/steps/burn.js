@@ -30,6 +30,7 @@ const {
   CurrencyLabel,
   CurrencyValue,
   Title,
+  SuccessIcon,
 } = Step;
 
 registerUIs({ txVisualization: { component: TxVisualization } });
@@ -182,7 +183,7 @@ class BurnStep extends React.PureComponent {
     const isButtonEnabled = dgd > 0;
     const buttonLabel = isButtonEnabled
       ? t('Dissolution:Burn.button')
-      : <Icon kind="check" />;
+      : <SuccessIcon kind="check" />;
 
     return (
       <Container>

@@ -31,6 +31,7 @@ const {
   Content,
   Container,
   Text,
+  SuccessIcon,
 } = Step;
 
 registerUIs({ txVisualization: { component: TxVisualization } });
@@ -160,7 +161,7 @@ class ApproveStep extends React.PureComponent {
     const isButtonEnabled = !isBurnApproved;
     const buttonLabel = isButtonEnabled
       ? t('Dissolution:Approve.button')
-      : <Icon kind="check" />;
+      : <SuccessIcon kind="check" />;
 
     return (
       <Container>

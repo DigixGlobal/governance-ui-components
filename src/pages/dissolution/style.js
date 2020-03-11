@@ -96,5 +96,11 @@ export const Step = {
     position: relative;
     top: 5.5rem;
     width: 5rem;
+  `,
+
+  SuccessIcon: styled(Icon)`
+    svg {
+      fill: ${props => props.theme.transaction.success.default.toString()};
+    }
   `
 };

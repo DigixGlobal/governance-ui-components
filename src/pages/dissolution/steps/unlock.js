@@ -31,6 +31,7 @@ const {
   CurrencyLabel,
   CurrencyValue,
   Title,
+  SuccessIcon,
 } = Step;
 
 registerUIs({ txVisualization: { component: TxVisualization } });
@@ -150,7 +151,7 @@ class UnlockStep extends React.PureComponent {
     const isButtonEnabled = lockedDgd > 0;
     const buttonLabel = isButtonEnabled
       ? t('Dissolution:Unlock.button')
-      : <Icon kind="check" />;
+      : <SuccessIcon kind="check" />;
 
     return (
       <Container>

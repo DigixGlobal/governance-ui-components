@@ -14,17 +14,6 @@ export const fetchUser = gql`
   }
 `;
 
-export const fetchApproval = gql`
-  query($id: ID!) {
-    approval(id: $id) {
-      id
-      from
-      to
-      dgd
-    }
-  }
-`;
-
 export const fetchUsers = gql`
   query($first: Int!) {
     users(first: $fetch) {
@@ -36,9 +25,12 @@ export const fetchUsers = gql`
   }
 `;
 
-export const fetchApprovals = gql`
-  query($first: Int!) {
-    approvals(first: $fetch) {
+export const fetchApproval = gql`
+  query($from: String!) {
+    approvals(
+      first: 1,
+      where: { from: $from }
+    ) {
       id
       from
       to

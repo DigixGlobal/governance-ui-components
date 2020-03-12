@@ -52,23 +52,28 @@ class ApproveStep extends React.PureComponent {
     }
   }
 
-  // [TODO] get approval status before loading component
-  // componentWillMount = () => {
-  //   this.props.client.query({
-  //     query: fetchApproval,
-  //     variables: {
-  //       id: '16952', // [TODO]: replace with approval id
-  //     },
-  //   })
-  //     .then((response) => {
-  //       console.log('Fetched APPROVAL');
-  //       console.log(response);
+  componentWillMount = () => {
+    const {
+      addresses,
+      client,
+    } = this.props;
+    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
-  //       if (response.data.approval) {
-  //         this.props.setIsBurnApproved(true);
-  //       }
-  //     });
-  // }
+    client.query({
+      query: fetchApproval,
+      variables: {
+        from: sourceAddress.address.toLowerCase(),
+      },
+    })
+      .then((response) => {
+        console.log('Fetched APPROVAL');
+        console.log(response);
+
+        if (response.data.approvals.length) {
+          this.props.setIsBurnApproved(true);
+        }
+      });
+  }
 
   approveBurn = () => {
     const { addresses, t, web3Redux } = this.props;

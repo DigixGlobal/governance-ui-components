@@ -35,19 +35,6 @@ class Dissolution extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
-    this.props.client.query({
-      query: fetchUsers,
-      variables: {
-        first: 50,
-      },
-    })
-      .then((response) => {
-        console.log('Fetched USERS');
-        console.log(response);
-      });
-  }
-
   componentWillReceiveProps(nextProps) {
     const {
       isAddressLoaded,

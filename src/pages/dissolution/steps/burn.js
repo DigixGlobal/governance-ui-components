@@ -48,12 +48,6 @@ class BurnStep extends React.PureComponent {
     this.subscription = undefined;
   }
 
-  componentWillMount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
   componentWillMount = () => {
     const {
       addresses,
@@ -78,7 +72,7 @@ class BurnStep extends React.PureComponent {
           : 0;
 
         const eth = user
-          ? Number(user.ethRefund) / 10e16
+          ? Number(user.ethRefund) / 10e18
           : 0;
 
         this.setState({ dgd, eth });
@@ -86,6 +80,12 @@ class BurnStep extends React.PureComponent {
           goToNext();
         }
       });
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   burnDgd() {

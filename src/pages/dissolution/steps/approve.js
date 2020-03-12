@@ -46,12 +46,6 @@ class ApproveStep extends React.PureComponent {
     this.subscription = undefined;
   }
 
-  componentWillMount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
   componentWillMount = () => {
     const {
       addresses,
@@ -73,6 +67,12 @@ class ApproveStep extends React.PureComponent {
           this.props.setIsBurnApproved(true);
         }
       });
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   approveBurn = () => {

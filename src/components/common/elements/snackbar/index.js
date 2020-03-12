@@ -50,7 +50,7 @@ class Snackbar extends React.Component {
         {status === 'pending' && (
           <SnackbarLoader kind="loading" />
         )}
-        {status && statusMessage && (
+        {['success', 'error'].includes(status) && statusMessage && (
           <SnackbarTag
             actionable={status === 'success'}
             kind="tag"

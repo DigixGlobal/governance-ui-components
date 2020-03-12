@@ -82,7 +82,7 @@ class BurnStep extends React.PureComponent {
           : 0;
 
         this.setState({ dgd, eth });
-        if (dgd === 0) {
+        if (dgd <= 0) {
           goToNext();
         }
       });

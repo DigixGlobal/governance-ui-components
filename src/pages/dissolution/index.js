@@ -55,7 +55,7 @@ class Dissolution extends React.PureComponent {
       loadWalletBalance,
     } = nextProps;
 
-    if (loadWalletBalance === 0) {
+    if (loadWalletBalance <= 0) {
       this.setState({
         step: STEPS.burn,
         stepOffset: -1,
@@ -63,7 +63,7 @@ class Dissolution extends React.PureComponent {
     }
 
     if (!this.props.isAddressLoaded && isAddressLoaded) {
-      const isDgdUnlocked = isAddressLoaded && lockedDgd === 0;
+      const isDgdUnlocked = isAddressLoaded && lockedDgd <= 0;
       const stepOffset = isDgdUnlocked ? -1 : 0;
       const step = isDgdUnlocked
         ? STEPS.approve
@@ -75,7 +75,7 @@ class Dissolution extends React.PureComponent {
 
   isDgdUnlocked = () => {
     const { isAddressLoaded, lockedDgd } = this.props;
-    return isAddressLoaded && lockedDgd === 0;
+    return isAddressLoaded && lockedDgd <= 0;
   }
 
   isNavButtonEnabled = () => {

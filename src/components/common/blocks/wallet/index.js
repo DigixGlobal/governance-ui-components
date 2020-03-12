@@ -77,9 +77,6 @@ export class Wallet extends React.PureComponent {
       },
     })
       .then((response) => {
-        console.log('Fetched LOCKED DGD');
-        console.log(response);
-
         const { user } = response.data;
         if (!user) {
           this.props.setLockedDgd(0);

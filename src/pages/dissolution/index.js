@@ -9,7 +9,7 @@ import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import React, { Fragment } from 'react';
-import { fetchUsers, withApolloClient } from '@digix/gov-ui/pages/dissolution/api/queries';
+import { withApolloClient } from '@digix/gov-ui/pages/dissolution/api/queries';
 
 const {
   NavButton,

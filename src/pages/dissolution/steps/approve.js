@@ -14,9 +14,8 @@ import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { getSignTransactionTranslation } from '@digix/gov-ui/utils/helpers';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
-import { toBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { withTranslation } from 'react-i18next';
-import { Button, Icon } from '@digix/gov-ui/components/common/elements';
+import { Button } from '@digix/gov-ui/components/common/elements';
 import {
   approveSubscription,
   fetchApproval,
@@ -60,9 +59,6 @@ class ApproveStep extends React.PureComponent {
       },
     })
       .then((response) => {
-        console.log('Fetched APPROVAL');
-        console.log(response);
-
         if (response.data.approvals.length) {
           this.props.setIsBurnApproved(true);
         }
@@ -118,7 +114,6 @@ class ApproveStep extends React.PureComponent {
     };
 
     const onTransactionAttempt = (txHash) => {
-      console.log('Attempting Approve Contract Interaction with txHash', txHash);
       localStorage.setItem('DissolutionApprovalTxHash', txHash);
       this.setState({ isTxBroadcasted: true });
 
@@ -133,13 +128,11 @@ class ApproveStep extends React.PureComponent {
         variables: { address: sourceAddress.address.toLowerCase() },
       }).subscribe({
         next(response) {
-          console.log('SUBSCRIPTION DATA::APPROVE', response);
           if (response.data.byAddress.length) {
             onTransactionSuccess(txHash);
           }
         },
         error(error) {
-          console.error('SUBSCRIPTION ERROR', error);
           onFailure(error);
         },
       });

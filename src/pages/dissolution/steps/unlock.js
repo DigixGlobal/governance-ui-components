@@ -14,7 +14,7 @@ import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { Button, Icon } from '@digix/gov-ui/components/common/elements';
+import { Button } from '@digix/gov-ui/components/common/elements';
 import {
   showHideAlert,
   setLockedDgd,
@@ -96,7 +96,6 @@ class UnlockStep extends React.PureComponent {
 
 
     const onTransactionAttempt = (txHash) => {
-      console.log('Attempting Unlock DGD with txHash', txHash);
       this.setState({ isTxBroadcasted: true });
       this.props.showHideAlert({
         message: t('snackbars.dissolutionUnlock.message'),
@@ -109,13 +108,11 @@ class UnlockStep extends React.PureComponent {
         variables: { address: sourceAddress.address.toLowerCase() },
       }).subscribe({
         next(response) {
-          console.log('SUBSCRIPTION DATA::UNLOCK', response);
           if (response.data.byAddress.length) {
             onTransactionSuccess(txHash);
           }
         },
         error(error) {
-          console.error('SUBSCRIPTION ERROR', error);
           onFailure(error);
         },
       });

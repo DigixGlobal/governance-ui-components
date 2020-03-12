@@ -15,7 +15,7 @@ import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
-import { Button, Icon } from '@digix/gov-ui/components/common/elements';
+import { Button } from '@digix/gov-ui/components/common/elements';
 import {
   burnSubscription,
   fetchUser,
@@ -63,9 +63,6 @@ class BurnStep extends React.PureComponent {
       },
     })
       .then((response) => {
-        console.log('Fetched BALANCE');
-        console.log(response);
-
         const { user } = response.data;
         const dgd = user
           ? Number(user.dgdBalance) / 10e8
@@ -132,7 +129,6 @@ class BurnStep extends React.PureComponent {
     };
 
     const onTransactionAttempt = (txHash) => {
-      console.log('Attempting Burn DGD with txHash', txHash);
       this.setState({ isTxBroadcasted: true });
       this.props.showHideAlert({
         message: t('snackbars.dissolutionBurn.message'),
@@ -145,13 +141,11 @@ class BurnStep extends React.PureComponent {
         variables: { address: sourceAddress.address.toLowerCase() },
       }).subscribe({
         next(response) {
-          console.log('SUBSCRIPTION DATA::BURN', response);
           if (response.data.byAddress.length) {
             onTransactionSuccess(txHash);
           }
         },
         error(error) {
-          console.error('SUBSCRIPTION ERROR', error);
           onFailure(error);
         },
       });

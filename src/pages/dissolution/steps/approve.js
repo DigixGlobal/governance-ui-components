@@ -51,11 +51,13 @@ class ApproveStep extends React.PureComponent {
       client,
     } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+    const acidContract = getContract(Acid, network);
 
     client.query({
       query: fetchApproval,
       variables: {
         from: sourceAddress.address.toLowerCase(),
+        to: acidContract.address.toLowerCase(),
       },
     })
       .then((response) => {

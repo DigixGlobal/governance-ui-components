@@ -44,8 +44,8 @@ class Dissolution extends React.PureComponent {
 
     if (loadWalletBalance <= 0) {
       this.setState({
-        step: STEPS.burn,
-        stepOffset: -1,
+        step: STEPS.success,
+        stepOffset: -2,
       });
     }
 

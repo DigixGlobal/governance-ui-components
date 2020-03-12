@@ -105,7 +105,7 @@ class BurnStep extends React.PureComponent {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: 1500000,
+      gas: 300000,
       ui,
     };
 

@@ -89,7 +89,7 @@ class ApproveStep extends React.PureComponent {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: 2000000,
+      gas: 300000,
       ui,
     };
 
@@ -149,7 +149,7 @@ class ApproveStep extends React.PureComponent {
       onFailure,
       onFinally: txHash => onTransactionAttempt(txHash),
       onSuccess: txHash => onTransactionSuccess(txHash),
-      params: [acidContract.address, toBigNumber(2 ** 255)],
+      params: [acidContract.address, (2000000 * 1e9)],
       showTxSigningModal: this.props.showTxSigningModal,
       translations: txnTranslations,
       ui,

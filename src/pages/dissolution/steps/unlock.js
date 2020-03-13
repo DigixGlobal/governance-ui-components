@@ -45,6 +45,17 @@ class UnlockStep extends React.PureComponent {
     };
 
     this.subscription = undefined;
+    this.checker = undefined;
+  }
+
+  componentWillMount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    if (this.checker) {
+      this.checker();
+    }
   }
 
   unlockDgd = (unlockAmount) => {
@@ -94,6 +105,13 @@ class UnlockStep extends React.PureComponent {
         this.subscription = undefined;
       }
 
+      if (this.checker) {
+        this.checker();
+        this.checker = undefined;
+      }
+
+      this.setState({ isTxBroadcasted: false });
+
       const message = JSON.stringify(error && error.message) || error;
       this.props.showHideAlert({
         message: `${t('snackbars.dissolutionUnlock.fail')}: ${message}`,
@@ -111,7 +129,37 @@ class UnlockStep extends React.PureComponent {
         txHash,
       });
 
-      const subscription = this.props.client.subscribe({
+      const checkTx = (monitoredTx, web3, onDrop, pollInterval = 5000) => {
+        let timer = null;
+        const cancelTimer = () => {
+          if (timer) {
+            clearInterval(timer);
+          }
+        };
+
+        const poll = () => {
+          web3.eth.getTransaction(monitoredTx)
+            .then((tx) => {
+              if (!tx) {
+                cancelTimer();
+
+                onDrop(new Error('Transaction dropped'));
+              } else if (tx.blockNumber) {
+                cancelTimer();
+              } else {
+                // NOOP
+              }
+            });
+        };
+
+        timer = setInterval(poll, pollInterval);
+
+        return cancelTimer;
+      };
+
+      this.checker = checkTx(txHash, web3Redux.web3(network), onFailure);
+
+      this.subscription = this.props.client.subscribe({
         query: unlockSubscription,
         variables: { address: sourceAddress.address.toLowerCase() },
       }).subscribe({
@@ -210,12 +258,8 @@ const mapStateToProps = state => ({
   lockedDgd: state.govUI.Dissolution.lockedDgd,
 });
 
-export default withTranslation(['Snackbar', 'Dissolution'])(
-  withApolloClient(
-    web3Connect(connect(mapStateToProps, {
-      showHideAlert,
-      setLockedDgd,
-      showTxSigningModal,
-    })(UnlockStep))
-  )
-);
+export default withTranslation(['Snackbar', 'Dissolution'])(withApolloClient(web3Connect(connect(mapStateToProps, {
+  showHideAlert,
+  setLockedDgd,
+  showTxSigningModal,
+})(UnlockStep))));

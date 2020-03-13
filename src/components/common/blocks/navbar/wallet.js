@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { ETHERSCAN_BALANCE_URL } from '@digix/gov-ui/constants';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 import { getDefaultAddress } from 'spectrum-lightsuite/src/selectors';
 import { connect } from 'react-redux';
@@ -62,6 +63,15 @@ class WalletButton extends React.Component {
             </TransButton>
 
             <Selector>
+              <Item>
+                <a
+                  href={`${ETHERSCAN_BALANCE_URL}${defaultAddress.address}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('viewBalance')}
+                </a>
+              </Item>
               <Item>
                 <Button
                   kind="text"

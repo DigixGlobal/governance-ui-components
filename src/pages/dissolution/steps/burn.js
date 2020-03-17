@@ -5,6 +5,7 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import getContract from '@digix/gov-ui/utils/contracts';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import web3Utils from 'web3-utils';
 import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
@@ -30,6 +31,7 @@ const {
   CurrencyLabel,
   CurrencyValue,
   Title,
+  Subtitle,
   SuccessIcon,
 } = Step;
 
@@ -41,6 +43,7 @@ class BurnStep extends React.PureComponent {
     super(props);
     this.state = {
       dgd: 0,
+      dgdToWei: 0,
       eth: 0,
       isTxBroadcasted: false,
     };
@@ -64,6 +67,7 @@ class BurnStep extends React.PureComponent {
     })
       .then((response) => {
         const { user } = response.data;
+        const { dgdToWei } = user;
         const dgd = user
           ? Number(user.dgdBalance) / 10e8
           : 0;
@@ -72,7 +76,7 @@ class BurnStep extends React.PureComponent {
           ? Number(user.ethRefund) / 10e18
           : 0;
 
-        this.setState({ dgd, eth });
+        this.setState({ dgd, dgdToWei, eth });
         if (dgd <= 0) {
           goToNext();
         }
@@ -171,7 +175,12 @@ class BurnStep extends React.PureComponent {
   }
 
   render() {
-    const { dgd, eth, isTxBroadcasted } = this.state;
+    const {
+      dgd,
+      dgdToWei,
+      eth,
+      isTxBroadcasted,
+    } = this.state;
     const { t } = this.props;
 
     const isButtonEnabled = dgd > 0;
@@ -179,9 +188,15 @@ class BurnStep extends React.PureComponent {
       ? t('Dissolution:Burn.button')
       : <SuccessIcon kind="check" />;
 
+    console.log('dgdToWei', dgdToWei);
+    const dgdToEth = Number(dgdToWei) > 0
+      ? web3Utils.fromWei(dgdToWei, 'ether')
+      : 0;
+
     return (
       <Container>
         <Title>{t('Dissolution:Burn.title')}</Title>
+        <Subtitle>1 DGD = {dgdToEth} ETH</Subtitle>
         <Content>
           <Currency>
             <CurrencyValue>{dgd.toFixed(3)}</CurrencyValue>

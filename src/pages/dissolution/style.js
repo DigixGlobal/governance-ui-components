@@ -50,6 +50,12 @@ export const Step = {
     text-transform: uppercase;
   `,
 
+  Subtitle: styled.p`
+    font-family: 'Futura PT Medium', sans-serif;
+    margin: 1rem auto;
+    text-transform: uppercase;
+  `,
+
   Text: styled.p`
     color: ${props => props.theme.textColor.primary.base.toString()};
     font-family: 'Futura PT Medium', sans-serif;

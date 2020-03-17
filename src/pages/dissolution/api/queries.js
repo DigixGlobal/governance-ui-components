@@ -10,6 +10,7 @@ export const fetchUser = gql`
       dgdBalance
       dgdLocked
       ethRefund
+      dgdToWei
     }
   }
 `;

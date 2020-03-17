@@ -47,8 +47,6 @@ class BurnStep extends React.PureComponent {
       eth: 0,
       isTxBroadcasted: false,
     };
-
-    this.subscription = undefined;
   }
 
   componentWillMount = () => {
@@ -83,15 +81,15 @@ class BurnStep extends React.PureComponent {
       });
   }
 
-  componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
   burnDgd() {
-    const { addresses, t, web3Redux } = this.props;
+    const {
+      addresses,
+      setCurrentSubscription,
+      t,
+      web3Redux
+    } = this.props;
     const { abi, address } = getContract(Acid, network);
+
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const contract = web3Redux
       .web3(network)
@@ -140,7 +138,7 @@ class BurnStep extends React.PureComponent {
         txHash,
       });
 
-      this.subscription = this.props.client.subscribe({
+      const subscription = this.props.client.subscribe({
         query: burnSubscription,
         variables: { address: sourceAddress.address.toLowerCase() },
       }).subscribe({
@@ -153,6 +151,8 @@ class BurnStep extends React.PureComponent {
           onFailure(error);
         },
       });
+
+      setCurrentSubscription(subscription);
     };
 
     const txnTranslations = getSignTransactionTranslation();
@@ -188,7 +188,6 @@ class BurnStep extends React.PureComponent {
       ? t('Dissolution:Burn.button')
       : <SuccessIcon kind="check" />;
 
-    console.log('dgdToWei', dgdToWei);
     const dgdToEth = Number(dgdToWei) > 0
       ? web3Utils.fromWei(dgdToWei, 'ether')
       : 0;
@@ -231,6 +230,7 @@ BurnStep.propTypes = {
   client: object.isRequired,
   goToNext: func.isRequired,
   showHideAlert: func.isRequired,
+  setCurrentSubscription: func.isRequired,
   showTxSigningModal: func.isRequired,
   t: func.isRequired,
   web3Redux: object.isRequired,

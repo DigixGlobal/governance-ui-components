@@ -42,7 +42,6 @@ class ApproveStep extends React.PureComponent {
     this.state = {
       isTxBroadcasted: false,
     };
-    this.subscription = undefined;
   }
 
   componentWillMount = () => {
@@ -67,14 +66,13 @@ class ApproveStep extends React.PureComponent {
       });
   }
 
-  componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
   approveBurn = () => {
-    const { addresses, t, web3Redux } = this.props;
+    const {
+      addresses,
+      setCurrentSubscription,
+      t,
+      web3Redux
+    } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
 
     const acidContract = getContract(Acid, network);
@@ -125,7 +123,7 @@ class ApproveStep extends React.PureComponent {
         txHash,
       });
 
-      this.subscription = this.props.client.subscribe({
+      const subscription = this.props.client.subscribe({
         query: approveSubscription,
         variables: { address: sourceAddress.address.toLowerCase() },
       }).subscribe({
@@ -138,6 +136,8 @@ class ApproveStep extends React.PureComponent {
           onFailure(error);
         },
       });
+
+      setCurrentSubscription(subscription);
     };
 
     const txnTranslations = getSignTransactionTranslation();
@@ -198,6 +198,7 @@ ApproveStep.propTypes = {
   isBurnApproved: bool.isRequired,
   showHideAlert: func.isRequired,
   setIsBurnApproved: func.isRequired,
+  setCurrentSubscription: func.isRequired,
   showTxSigningModal: func.isRequired,
   t: func.isRequired,
   web3Redux: object.isRequired,

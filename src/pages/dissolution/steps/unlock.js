@@ -43,18 +43,15 @@ class UnlockStep extends React.PureComponent {
     this.state = {
       isTxBroadcasted: false,
     };
-
-    this.subscription = undefined;
-  }
-
-  componentWillMount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   unlockDgd = (unlockAmount) => {
-    const { addresses, t, web3Redux } = this.props;
+    const {
+      addresses,
+      setCurrentSubscription,
+      t,
+      web3Redux
+    } = this.props;
     const { abi, address } = getContract(DaoStakeLocking, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const contract = web3Redux
@@ -103,7 +100,7 @@ class UnlockStep extends React.PureComponent {
         txHash,
       });
 
-      this.subscription = this.props.client.subscribe({
+      const subscription = this.props.client.subscribe({
         query: unlockSubscription,
         variables: { address: sourceAddress.address.toLowerCase() },
       }).subscribe({
@@ -116,6 +113,8 @@ class UnlockStep extends React.PureComponent {
           onFailure(error);
         },
       });
+
+      setCurrentSubscription(subscription);
     };
 
     const txnTranslations = getSignTransactionTranslation();
@@ -184,6 +183,7 @@ UnlockStep.propTypes = {
   lockedDgd: number.isRequired,
   showHideAlert: func.isRequired,
   setLockedDgd: func.isRequired,
+  setCurrentSubscription: func.isRequired,
   showTxSigningModal: func.isRequired,
   t: func.isRequired,
   web3Redux: object.isRequired,

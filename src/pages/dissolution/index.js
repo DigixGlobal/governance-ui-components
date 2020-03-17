@@ -29,6 +29,7 @@ class Dissolution extends React.PureComponent {
     super(props);
 
     this.state = {
+      currentSubscription: undefined,
       showModal: !props.isAddressLoaded,
       step: STEPS.unlock,
       stepOffset: 0,
@@ -60,6 +61,10 @@ class Dissolution extends React.PureComponent {
     }
   }
 
+  setCurrentSubscription = (currentSubscription) => {
+    this.setState({ currentSubscription });
+  }
+
   isDgdUnlocked = () => {
     const { isAddressLoaded, lockedDgd } = this.props;
     return isAddressLoaded && lockedDgd <= 0;
@@ -86,6 +91,13 @@ class Dissolution extends React.PureComponent {
   };
 
   goToNext = () => {
+    const { currentSubscription } = this.state;
+
+    if (currentSubscription) {
+      currentSubscription.unsubscribe();
+      this.setState({ currentSubscription: undefined });
+    }
+
     this.setState(({ step }) => ({
       step: step + 1,
     }));
@@ -123,10 +135,21 @@ class Dissolution extends React.PureComponent {
               source={stepLabel}
             />
           </Stepper>
-          {step === STEPS.unlock && <UnlockStep />}
-          {step === STEPS.approve && <ApproveStep />}
+          {step === STEPS.unlock && (
+            <UnlockStep
+              setCurrentSubscription={this.setCurrentSubscription}
+            />
+          )}
+          {step === STEPS.approve && (
+            <ApproveStep
+              setCurrentSubscription={this.setCurrentSubscription}
+            />
+          )}
           {step >= STEPS.burn && (
-            <BurnStep goToNext={this.goToNext} />
+            <BurnStep
+              goToNext={this.goToNext}
+              setCurrentSubscription={this.setCurrentSubscription}
+            />
           )}
           {step < STEPS.burn && (
             <NavButton

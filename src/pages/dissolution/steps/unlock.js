@@ -50,6 +50,7 @@ class UnlockStep extends React.PureComponent {
   unlockDgd = (unlockAmount) => {
     const {
       addresses,
+      confirmMinedTx,
       setCurrentSubscription,
       t,
       web3Redux
@@ -90,6 +91,7 @@ class UnlockStep extends React.PureComponent {
 
     const onFailure = (error) => {
       if (this.subscription) {
+        this.setState({ isTxBroadcasted: false });
         this.subscription.unsubscribe();
         this.subscription = undefined;
       }
@@ -102,7 +104,6 @@ class UnlockStep extends React.PureComponent {
       });
     };
 
-
     const onTransactionAttempt = (txHash) => {
       this.setState({ isTxBroadcasted: true });
       this.props.showHideAlert({
@@ -111,6 +112,7 @@ class UnlockStep extends React.PureComponent {
         txHash,
       });
 
+      confirmMinedTx(txHash, web3Redux.web3(network), onFailure);
       const subscription = this.props.client.subscribe({
         query: unlockSubscription,
         variables: { address: sourceAddress.address.toLowerCase() },
@@ -192,6 +194,7 @@ const {
 UnlockStep.propTypes = {
   addresses: array,
   client: object.isRequired,
+  confirmMinedTx: func.isRequired,
   lockedDgd: number.isRequired,
   showHideAlert: func.isRequired,
   setLockedDgd: func.isRequired,

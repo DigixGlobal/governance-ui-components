@@ -5,6 +5,7 @@
     "error": "Error",
     "success": "Success"
   },
+  "transactionDropped": "Transaction was dropped from the blockchain. Please try again.",
   "snackbars": {
     "dissolutionUnlock": {
       "title": "Unlock DGD",

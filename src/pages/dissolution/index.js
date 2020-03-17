@@ -90,6 +90,33 @@ class Dissolution extends React.PureComponent {
     });
   };
 
+  confirmMinedTx = (txHash, web3, onDrop, pollInterval = 5000) => {
+    const { t } = this.props;
+    let timer = null;
+    const cancelTimer = () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+
+    const poll = () => {
+      web3.eth.getTransaction(txHash)
+        .then((tx) => {
+          if (!tx) {
+            cancelTimer();
+            onDrop(t('Snackbar:transactionDropped'));
+          } else if (tx.blockNumber) {
+            cancelTimer();
+          } else {
+            // NOOP
+          }
+        });
+    };
+
+    timer = setInterval(poll, pollInterval);
+    return cancelTimer;
+  };
+
   goToNext = () => {
     const { currentSubscription } = this.state;
 
@@ -120,7 +147,7 @@ class Dissolution extends React.PureComponent {
       ? STEPS.burn
       : step;
 
-    const stepLabel = t('Nav.steps', {
+    const stepLabel = t('Dissolution:Nav.steps', {
       currentStep: currentStep + stepOffset,
       maxStep: STEPS.burn + stepOffset,
     });
@@ -137,16 +164,19 @@ class Dissolution extends React.PureComponent {
           </Stepper>
           {step === STEPS.unlock && (
             <UnlockStep
+              confirmMinedTx={this.confirmMinedTx}
               setCurrentSubscription={this.setCurrentSubscription}
             />
           )}
           {step === STEPS.approve && (
             <ApproveStep
+              confirmMinedTx={this.confirmMinedTx}
               setCurrentSubscription={this.setCurrentSubscription}
             />
           )}
           {step >= STEPS.burn && (
             <BurnStep
+              confirmMinedTx={this.confirmMinedTx}
               goToNext={this.goToNext}
               setCurrentSubscription={this.setCurrentSubscription}
             />
@@ -158,7 +188,7 @@ class Dissolution extends React.PureComponent {
               primary
               width="100%"
             >
-              {t('Nav.nextStep')}
+              {t('Dissolution:Nav.nextStep')}
             </NavButton>
           )}
           {step === STEPS.success && (
@@ -167,7 +197,7 @@ class Dissolution extends React.PureComponent {
               primary
               width="100%"
             >
-              {t('Nav.logOut')}
+              {t('Dissolution:Nav.logOut')}
             </NavButton>
           )}
         </Wrapper>
@@ -211,7 +241,7 @@ const mapStateToProps = state => ({
   lockedDgd: state.govUI.Dissolution.lockedDgd,
 });
 
-export default withTranslation('Dissolution')(
+export default withTranslation(['Dissolution', 'Snackbar'])(
   withApolloClient(
     connect(mapStateToProps, {})(Dissolution)
   )

@@ -71,6 +71,7 @@ class ApproveStep extends React.PureComponent {
   approveBurn = () => {
     const {
       addresses,
+      confirmMinedTx,
       setCurrentSubscription,
       t,
       web3Redux
@@ -113,6 +114,7 @@ class ApproveStep extends React.PureComponent {
 
     const onFailure = (error) => {
       if (this.subscription) {
+        this.setState({ isTxBroadcasted: false });
         this.subscription.unsubscribe();
         this.subscription = undefined;
       }
@@ -135,6 +137,7 @@ class ApproveStep extends React.PureComponent {
         txHash,
       });
 
+      confirmMinedTx(txHash, web3Redux.web3(network), onFailure);
       const subscription = this.props.client.subscribe({
         query: approveSubscription,
         variables: { address: sourceAddress.address.toLowerCase() },
@@ -208,6 +211,7 @@ const {
 ApproveStep.propTypes = {
   addresses: array,
   client: object.isRequired,
+  confirmMinedTx: func.isRequired,
   isBurnApproved: bool.isRequired,
   showHideAlert: func.isRequired,
   setIsBurnApproved: func.isRequired,

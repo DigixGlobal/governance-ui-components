@@ -86,6 +86,7 @@ class BurnStep extends React.PureComponent {
   burnDgd() {
     const {
       addresses,
+      confirmMinedTx,
       setCurrentSubscription,
       t,
       web3Redux
@@ -130,6 +131,7 @@ class BurnStep extends React.PureComponent {
 
     const onFailure = (error) => {
       if (this.subscription) {
+        this.setState({ isTxBroadcasted: false });
         this.subscription.unsubscribe();
         this.subscription = undefined;
       }
@@ -150,6 +152,7 @@ class BurnStep extends React.PureComponent {
         txHash,
       });
 
+      confirmMinedTx(txHash, web3Redux.web3(network), onFailure);
       const subscription = this.props.client.subscribe({
         query: burnSubscription,
         variables: { address: sourceAddress.address.toLowerCase() },
@@ -241,6 +244,7 @@ const {
 BurnStep.propTypes = {
   addresses: array,
   client: object.isRequired,
+  confirmMinedTx: func.isRequired,
   goToNext: func.isRequired,
   showHideAlert: func.isRequired,
   setCurrentSubscription: func.isRequired,

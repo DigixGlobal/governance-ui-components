@@ -47,6 +47,8 @@ class BurnStep extends React.PureComponent {
       eth: 0,
       isTxBroadcasted: false,
     };
+
+    this.subscription = undefined;
   }
 
   componentWillMount = () => {
@@ -109,6 +111,11 @@ class BurnStep extends React.PureComponent {
     };
 
     const onTransactionSuccess = (txHash) => {
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+        this.subscription = undefined;
+      }
+
       this.setState({ dgd: 0, eth: 0 }, () => {
         this.props.goToNext();
       });
@@ -122,6 +129,11 @@ class BurnStep extends React.PureComponent {
     };
 
     const onFailure = (error) => {
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+        this.subscription = undefined;
+      }
+
       const message = JSON.stringify(error && error.message) || error;
       this.props.showHideAlert({
         message: `${t('snackbars.dissolutionBurn.fail')}: ${message}`,
@@ -152,6 +164,7 @@ class BurnStep extends React.PureComponent {
         },
       });
 
+      this.subscription = subscription;
       setCurrentSubscription(subscription);
     };
 

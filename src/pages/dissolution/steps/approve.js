@@ -42,6 +42,8 @@ class ApproveStep extends React.PureComponent {
     this.state = {
       isTxBroadcasted: false,
     };
+
+    this.subscription = undefined;
   }
 
   componentWillMount = () => {
@@ -95,6 +97,11 @@ class ApproveStep extends React.PureComponent {
     };
 
     const onTransactionSuccess = (txHash) => {
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+        this.subscription = undefined;
+      }
+
       this.props.setIsBurnApproved(true);
       this.props.showHideAlert({
         message: t('snackbars.dissolutionApprove.success'),
@@ -105,6 +112,11 @@ class ApproveStep extends React.PureComponent {
     };
 
     const onFailure = (error) => {
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+        this.subscription = undefined;
+      }
+
       const message = JSON.stringify(error && error.message) || error;
       this.props.showHideAlert({
         message: `${t('snackbars.dissolutionApprove.fail')}: ${message}`,
@@ -137,6 +149,7 @@ class ApproveStep extends React.PureComponent {
         },
       });
 
+      this.subscription = subscription;
       setCurrentSubscription(subscription);
     };
 

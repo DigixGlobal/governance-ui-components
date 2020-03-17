@@ -43,6 +43,8 @@ class UnlockStep extends React.PureComponent {
     this.state = {
       isTxBroadcasted: false,
     };
+
+    this.subscription = undefined;
   }
 
   unlockDgd = (unlockAmount) => {
@@ -71,8 +73,12 @@ class UnlockStep extends React.PureComponent {
       ui,
     };
 
-    // [TODO] call when confirmed on the blockchain
     const onTransactionSuccess = (txHash) => {
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+        this.subscription = undefined;
+      }
+
       this.props.setLockedDgd(0);
       this.props.showHideAlert({
         message: t('snackbars.dissolutionUnlock.success'),
@@ -83,6 +89,11 @@ class UnlockStep extends React.PureComponent {
     };
 
     const onFailure = (error) => {
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+        this.subscription = undefined;
+      }
+
       const message = JSON.stringify(error && error.message) || error;
       this.props.showHideAlert({
         message: `${t('snackbars.dissolutionUnlock.fail')}: ${message}`,
@@ -114,6 +125,7 @@ class UnlockStep extends React.PureComponent {
         },
       });
 
+      this.subscription = subscription;
       setCurrentSubscription(subscription);
     };
 

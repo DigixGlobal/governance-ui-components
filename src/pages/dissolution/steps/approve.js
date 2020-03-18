@@ -140,7 +140,10 @@ class ApproveStep extends React.PureComponent {
       confirmMinedTx(txHash, web3Redux.web3(network), onFailure);
       const subscription = this.props.client.subscribe({
         query: approveSubscription,
-        variables: { address: sourceAddress.address.toLowerCase() },
+        variables: {
+          from: sourceAddress.address.toLowerCase(),
+          to: acidContract.address.toLowerCase(),
+        },
       }).subscribe({
         next(response) {
           if (response.data.byAddress.length) {

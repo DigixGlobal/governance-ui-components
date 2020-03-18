@@ -58,10 +58,13 @@ export const unlockSubscription = gql`
 `;
 
 export const approveSubscription = gql`
-  subscription($address: String!) {
+  subscription($from: String!, $to: String!) {
     byAddress: approvals(
       first: 1
-      where: { from: $address }
+      where: {
+        from: $from,
+        to: $to
+      }
     ) {
       id
       from

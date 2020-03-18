@@ -5,7 +5,7 @@
     "error": "拒绝",
     "success": "批准"
   },
-  "transactionDropped": "Transaction was dropped from the blockchain. Please try again.",
+  "transactionDropped": "交易意外中断，请您再试一次",
   "snackbars": {
     "dissolutionUnlock": {
       "title": "解锁DGD",

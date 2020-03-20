@@ -48,6 +48,8 @@ class Dissolution extends React.PureComponent {
         step: STEPS.success,
         stepOffset: -2,
       });
+
+      return;
     }
 
     if (!this.props.isAddressLoaded && isAddressLoaded) {

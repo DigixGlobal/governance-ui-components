@@ -127,9 +127,15 @@ class Dissolution extends React.PureComponent {
       this.setState({ currentSubscription: undefined });
     }
 
-    this.setState(({ step }) => ({
-      step: step + 1,
-    }));
+    this.setState(({ step }) => {
+      if (step < 4) {
+        return {
+          step: step + 1,
+        };
+      }
+
+      return {};
+    });
   };
 
   logOut = () => {

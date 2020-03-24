@@ -1,11 +1,16 @@
+import DaoInformation from '@digix/dao-contracts/build/contracts/DaoInformation.json';
+import DgdToken from '@digix/acid-contracts/build/contracts/DGDInterface.json';
 import Intro from '@digix/gov-ui/components/common/blocks/wallet/intro';
 import LoadWallet from '@digix/gov-ui/components/common/blocks/wallet/load-wallet';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
+import getContract from '@digix/gov-ui/utils/contracts';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
 import { Container } from '@digix/gov-ui/components/common/blocks/wallet/style';
 import { Stage } from '@digix/gov-ui/components/common/blocks/wallet/constants';
 import { connect } from 'react-redux';
+import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import {
   fetchUser,
   withApolloClient,
@@ -33,6 +38,8 @@ import {
   setLockedDgd,
 } from '@digix/gov-ui/reducers/gov-ui/actions';
 
+const network = SpectrumConfig.defaultNetworks[0];
+
 export class Wallet extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -49,6 +56,28 @@ export class Wallet extends React.PureComponent {
 
   componentWillUnmount() {
     this._isMounted = false;
+  }
+
+  getDgdBalance(userAddress) {
+    const { web3Redux } = this.props;
+    const { abi, address } = getContract(DgdToken, network);
+    const { web3 } = web3Redux.networks[network];
+    const contract = web3.eth.contract(abi).at(address);
+
+    return contract.balanceOf
+      .call(userAddress)
+      .then(balance => parseBigNumber(balance, 9, false));
+  }
+
+  getLockedDgd(userAddress) {
+    const { web3Redux } = this.props;
+    const { abi, address } = getContract(DaoInformation, network);
+    const { web3 } = web3Redux.networks[network];
+    const contract = web3.eth.contract(abi).at(address);
+
+    return contract.readUserInfo
+      .call(userAddress)
+      .then(result => parseBigNumber(result[7], 9, false));
   }
 
   updateStage = (stage) => {
@@ -68,7 +97,7 @@ export class Wallet extends React.PureComponent {
     document.body.classList.remove('modal-is-open');
   };
 
-  handleLoadedWallet = () => {
+  handleLoadedWallet = async () => {
     const { defaultAddress: { address } } = this.props;
     this.props.client.query({
       query: fetchUser,
@@ -81,14 +110,20 @@ export class Wallet extends React.PureComponent {
         if (!user) {
           this.props.setLockedDgd(0);
           this.props.setLoadWalletBalance(0);
-        } else {
-          const { dgdLocked, dgdBalance } = user;
-          this.props.setLockedDgd(Number(dgdLocked));
-          this.props.setLoadWalletBalance(Number(dgdBalance));
+          this.props.setIsAddressLoaded(true);
+          this.handleCloseWallet();
+          return;
         }
 
-        this.props.setIsAddressLoaded(true);
-        this.handleCloseWallet();
+        this.getLockedDgd(address).then((dgdLocked) => {
+          this.props.setLockedDgd(Number(dgdLocked));
+          this.getDgdBalance(address)
+            .then((dgdBalance) => {
+              this.props.setLoadWalletBalance(Number(dgdBalance));
+              this.props.setIsAddressLoaded(true);
+              this.handleCloseWallet();
+            });
+        });
       });
   }
 
@@ -144,6 +179,7 @@ Wallet.propTypes = {
   showHideWalletOverlay: func.isRequired,
   showWallet: object,
   signingModal: object,
+  web3Redux: object.isRequired,
 };
 
 Wallet.defaultProps = {

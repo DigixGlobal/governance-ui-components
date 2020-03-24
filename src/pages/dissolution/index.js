@@ -3,13 +3,13 @@ import BurnStep from '@digix/gov-ui/pages/dissolution/steps/burn';
 import DissolutionModal from '@digix/gov-ui/pages/dissolution/modal';
 import UnlockStep from '@digix/gov-ui/pages/dissolution/steps/unlock';
 import Modal from 'react-responsive-modal';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import React, { Fragment } from 'react';
 import { withApolloClient } from '@digix/gov-ui/pages/dissolution/api/queries';
+import React, { Fragment } from 'react';
 
 const {
   NavButton,
@@ -43,17 +43,17 @@ class Dissolution extends React.PureComponent {
       loadWalletBalance,
     } = nextProps;
 
-    if (loadWalletBalance <= 0) {
-      this.setState({
-        step: STEPS.success,
-        stepOffset: -2,
-      });
-
-      return;
-    }
-
     if (!this.props.isAddressLoaded && isAddressLoaded) {
       const isDgdUnlocked = isAddressLoaded && lockedDgd <= 0;
+      if (isDgdUnlocked && loadWalletBalance <= 0) {
+        this.setState({
+          step: STEPS.success,
+          stepOffset: -2,
+        });
+
+        return;
+      }
+
       const stepOffset = isDgdUnlocked ? -1 : 0;
       const step = isDgdUnlocked
         ? STEPS.approve
@@ -232,7 +232,6 @@ const {
 Dissolution.propTypes = {
   isAddressLoaded: bool.isRequired,
   isBurnApproved: bool.isRequired,
-  client: object.isRequired,
   loadWalletBalance: number,
   lockedDgd: number.isRequired,
   t: func.isRequired,

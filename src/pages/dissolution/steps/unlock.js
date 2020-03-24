@@ -9,12 +9,15 @@ import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
-import { getSignTransactionTranslation } from '@digix/gov-ui/utils/helpers';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Button } from '@digix/gov-ui/components/common/elements';
+import {
+  getSignTransactionTranslation,
+  truncateNumber,
+} from '@digix/gov-ui/utils/helpers';
 import {
   showHideAlert,
   setLockedDgd,
@@ -157,7 +160,6 @@ class UnlockStep extends React.PureComponent {
       t,
     } = this.props;
 
-    const lockedAmount = lockedDgd / 10e8;
     const isButtonEnabled = lockedDgd > 0;
     const buttonLabel = isButtonEnabled
       ? t('Dissolution:Unlock.button')
@@ -168,13 +170,13 @@ class UnlockStep extends React.PureComponent {
         <Title>{t('Dissolution:Unlock.title')}</Title>
         <Content>
           <Currency>
-            <CurrencyValue>{lockedAmount.toFixed(3)}</CurrencyValue>
+            <CurrencyValue>{truncateNumber(lockedDgd)}</CurrencyValue>
             <CurrencyLabel>DGD</CurrencyLabel>
           </Currency>
         </Content>
         <Button
           disabled={isTxBroadcasted || !isButtonEnabled}
-          onClick={() => this.unlockDgd(lockedAmount)}
+          onClick={() => this.unlockDgd(lockedDgd)}
           secondary
         >
           {buttonLabel}

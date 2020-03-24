@@ -1,28 +1,25 @@
 import Acid from '@digix/acid-contracts/build/contracts/Acid.json';
-import DgdToken from '@digix/acid-contracts/build/contracts/DGDInterface.json';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import getContract from '@digix/gov-ui/utils/contracts';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
+import web3Utils from 'web3-utils';
 import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
-import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
+import { getSignTransactionTranslation } from '@digix/gov-ui/utils/helpers';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
 import { Button } from '@digix/gov-ui/components/common/elements';
 import {
-  getSignTransactionTranslation,
-  truncateNumber,
-} from '@digix/gov-ui/utils/helpers';
-import {
   burnSubscription,
+  fetchUser,
   withApolloClient,
 } from '@digix/gov-ui/pages/dissolution/api/queries';
 
@@ -40,13 +37,13 @@ const {
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 const network = SpectrumConfig.defaultNetworks[0];
-const DGD_TO_ETH_RATIO = 0.193054178;
 
 class BurnStep extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       dgd: 0,
+      dgdToWei: 0,
       eth: 0,
       isTxBroadcasted: false,
     };
@@ -55,34 +52,38 @@ class BurnStep extends React.PureComponent {
   }
 
   componentWillMount = () => {
-    const { addresses, goToNext } = this.props;
+    const {
+      addresses,
+      client,
+      goToNext,
+    } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     if (!sourceAddress) {
       return;
     }
 
-    let dgd = 0;
-    this.getDgdBalance().then((dgdBalance) => {
-      dgd = dgdBalance;
-      const eth = dgd * DGD_TO_ETH_RATIO;
+    client.query({
+      query: fetchUser,
+      variables: {
+        id: sourceAddress.address.toLowerCase(),
+      },
+    })
+      .then((response) => {
+        const { user } = response.data;
+        const { dgdToWei } = user;
+        const dgd = user
+          ? Number(user.dgdBalance) / 10e8
+          : 0;
 
-      this.setState({ dgd, eth });
-      if (dgd <= 0) {
-        goToNext();
-      }
-    });
-  }
+        const eth = user
+          ? Number(user.ethRefund) / 10e17
+          : 0;
 
-  getDgdBalance() {
-    const { addresses, web3Redux } = this.props;
-    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
-    const { abi, address } = getContract(DgdToken, network);
-    const { web3 } = web3Redux.networks[network];
-    const contract = web3.eth.contract(abi).at(address);
-
-    return contract.balanceOf
-      .call(sourceAddress.address)
-      .then(balance => parseBigNumber(balance, 9, false));
+        this.setState({ dgd, dgdToWei, eth });
+        if (dgd <= 0) {
+          goToNext();
+        }
+      });
   }
 
   burnDgd() {
@@ -195,6 +196,7 @@ class BurnStep extends React.PureComponent {
   render() {
     const {
       dgd,
+      dgdToWei,
       eth,
       isTxBroadcasted,
     } = this.state;
@@ -205,18 +207,22 @@ class BurnStep extends React.PureComponent {
       ? t('Dissolution:Burn.button')
       : <SuccessIcon kind="check" />;
 
+    const dgdToEth = Number(dgdToWei) > 0
+      ? web3Utils.fromWei(dgdToWei, 'ether')
+      : 0;
+
     return (
       <Container>
         <Title>{t('Dissolution:Burn.title')}</Title>
-        <Subtitle>1 DGD = {DGD_TO_ETH_RATIO} ETH</Subtitle>
+        <Subtitle>1 DGD = 0.193054178 ETH</Subtitle>
         <Content>
           <Currency>
-            <CurrencyValue>{truncateNumber(dgd)}</CurrencyValue>
+            <CurrencyValue>{dgd.toFixed(3)}</CurrencyValue>
             <CurrencyLabel>DGD</CurrencyLabel>
           </Currency>
           <Arrow kind="conversionArrow" />
           <Currency>
-            <CurrencyValue>{truncateNumber(eth)}</CurrencyValue>
+            <CurrencyValue>{eth.toFixed(3)}</CurrencyValue>
             <CurrencyLabel>ETH</CurrencyLabel>
           </Currency>
         </Content>

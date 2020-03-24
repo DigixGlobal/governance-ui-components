@@ -31,7 +31,7 @@ class Translator extends React.Component {
 
   render() {
     const storedLng = localStorage.getItem('i18nextLng');
-    const selectedLanguage = LANGUAGES.find(l => l.code === storedLng);
+    const selectedLanguage = LANGUAGES.find(l => l.code === storedLng) || LANGUAGES[0];
     const options = LANGUAGES.filter(l => l.code !== storedLng);
 
     return (

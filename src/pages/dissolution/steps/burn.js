@@ -214,7 +214,7 @@ class BurnStep extends React.PureComponent {
     return (
       <Container>
         <Title>{t('Dissolution:Burn.title')}</Title>
-        <Subtitle>1 DGD = {dgdToEth} ETH</Subtitle>
+        <Subtitle>1 DGD = 0.193054178 ETH</Subtitle>
         <Content>
           <Currency>
             <CurrencyValue>{dgd.toFixed(3)}</CurrencyValue>

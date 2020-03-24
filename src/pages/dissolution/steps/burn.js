@@ -72,11 +72,11 @@ class BurnStep extends React.PureComponent {
         const { user } = response.data;
         const { dgdToWei } = user;
         const dgd = user
-          ? Number(user.dgdBalance) / 10e9
+          ? Number(user.dgdBalance) / 10e8
           : 0;
 
         const eth = user
-          ? Number(user.ethRefund) / 10e18
+          ? Number(user.ethRefund) / 10e17
           : 0;
 
         this.setState({ dgd, dgdToWei, eth });

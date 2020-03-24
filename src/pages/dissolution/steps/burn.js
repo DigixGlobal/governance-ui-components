@@ -58,6 +58,9 @@ class BurnStep extends React.PureComponent {
       goToNext,
     } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
+    if (!sourceAddress) {
+      return;
+    }
 
     client.query({
       query: fetchUser,

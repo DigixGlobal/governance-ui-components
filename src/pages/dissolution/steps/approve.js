@@ -1,5 +1,5 @@
 import Acid from '@digix/acid-contracts/build/contracts/Acid.json';
-import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
+import DgdToken from '@digix/acid-contracts/build/contracts/DGDInterface.json';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
@@ -53,6 +53,9 @@ class ApproveStep extends React.PureComponent {
     } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const acidContract = getContract(Acid, network);
+    if (!sourceAddress) {
+      return;
+    }
 
     client.query({
       query: fetchApproval,

@@ -3,13 +3,13 @@ import BurnStep from '@digix/gov-ui/pages/dissolution/steps/burn';
 import DissolutionModal from '@digix/gov-ui/pages/dissolution/modal';
 import UnlockStep from '@digix/gov-ui/pages/dissolution/steps/unlock';
 import Modal from 'react-responsive-modal';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { withApolloClient } from '@digix/gov-ui/pages/dissolution/api/queries';
 import React, { Fragment } from 'react';
+import { withApolloClient } from '@digix/gov-ui/pages/dissolution/api/queries';
 
 const {
   NavButton,
@@ -232,6 +232,7 @@ const {
 Dissolution.propTypes = {
   isAddressLoaded: bool.isRequired,
   isBurnApproved: bool.isRequired,
+  client: object.isRequired,
   loadWalletBalance: number,
   lockedDgd: number.isRequired,
   t: func.isRequired,

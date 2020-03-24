@@ -160,6 +160,7 @@ class UnlockStep extends React.PureComponent {
       t,
     } = this.props;
 
+    const lockedAmount = lockedDgd / 10e8;
     const isButtonEnabled = lockedDgd > 0;
     const buttonLabel = isButtonEnabled
       ? t('Dissolution:Unlock.button')
@@ -170,13 +171,13 @@ class UnlockStep extends React.PureComponent {
         <Title>{t('Dissolution:Unlock.title')}</Title>
         <Content>
           <Currency>
-            <CurrencyValue>{truncateNumber(lockedDgd)}</CurrencyValue>
+            <CurrencyValue>{truncateNumber(lockedAmount)}</CurrencyValue>
             <CurrencyLabel>DGD</CurrencyLabel>
           </Currency>
         </Content>
         <Button
           disabled={isTxBroadcasted || !isButtonEnabled}
-          onClick={() => this.unlockDgd(lockedDgd)}
+          onClick={() => this.unlockDgd(lockedAmount)}
           secondary
         >
           {buttonLabel}

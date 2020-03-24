@@ -1,5 +1,4 @@
 import Acid from '@digix/acid-contracts/build/contracts/Acid.json';
-import DgdToken from '@digix/acid-contracts/build/contracts/DGDInterface.json';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
@@ -11,7 +10,6 @@ import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
-import { parseBigNumber } from 'spectrum-lightsuite/src/helpers/stringUtils';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
@@ -23,6 +21,7 @@ import {
 } from '@digix/gov-ui/utils/helpers';
 import {
   burnSubscription,
+  fetchUser,
   withApolloClient,
 } from '@digix/gov-ui/pages/dissolution/api/queries';
 
@@ -55,34 +54,37 @@ class BurnStep extends React.PureComponent {
   }
 
   componentWillMount = () => {
-    const { addresses, goToNext } = this.props;
+    const {
+      addresses,
+      client,
+      goToNext,
+    } = this.props;
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     if (!sourceAddress) {
       return;
     }
 
-    let dgd = 0;
-    this.getDgdBalance().then((dgdBalance) => {
-      dgd = dgdBalance;
-      const eth = dgd * DGD_TO_ETH_RATIO;
+    client.query({
+      query: fetchUser,
+      variables: {
+        id: sourceAddress.address.toLowerCase(),
+      },
+    })
+      .then((response) => {
+        const { user } = response.data;
+        const dgd = user
+          ? Number(user.dgdBalance) / 10e8
+          : 0;
 
-      this.setState({ dgd, eth });
-      if (dgd <= 0) {
-        goToNext();
-      }
-    });
-  }
+        const eth = user
+          ? Number(user.ethRefund) / 10e17
+          : 0;
 
-  getDgdBalance() {
-    const { addresses, web3Redux } = this.props;
-    const sourceAddress = addresses.find(({ isDefault }) => isDefault);
-    const { abi, address } = getContract(DgdToken, network);
-    const { web3 } = web3Redux.networks[network];
-    const contract = web3.eth.contract(abi).at(address);
-
-    return contract.balanceOf
-      .call(sourceAddress.address)
-      .then(balance => parseBigNumber(balance, 9, false));
+        this.setState({ dgd, eth });
+        if (dgd <= 0) {
+          goToNext();
+        }
+      });
   }
 
   burnDgd() {

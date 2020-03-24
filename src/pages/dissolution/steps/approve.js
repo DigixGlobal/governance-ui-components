@@ -1,5 +1,5 @@
 import Acid from '@digix/acid-contracts/build/contracts/Acid.json';
-import DgdToken from '@digix/dao-contracts/build/contracts/MockDgd.json';
+import DgdToken from '@digix/acid-contracts/build/contracts/DGDInterface.json';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';

@@ -5,18 +5,20 @@ import SpectrumConfig from 'spectrum-lightsuite/spectrum.config';
 import TxVisualization from '@digix/gov-ui/components/common/blocks/tx-visualization';
 import getContract from '@digix/gov-ui/utils/contracts';
 import web3Connect from 'spectrum-lightsuite/src/helpers/web3/connect';
-import web3Utils from 'web3-utils';
 import { DEFAULT_GAS_PRICE } from '@digix/gov-ui/constants';
 import { Step } from '@digix/gov-ui/pages/dissolution/style';
 import { connect } from 'react-redux';
 import { executeContractFunction } from '@digix/gov-ui/utils/web3Helper';
 import { getAddresses } from 'spectrum-lightsuite/src/selectors';
-import { getSignTransactionTranslation } from '@digix/gov-ui/utils/helpers';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showHideAlert } from '@digix/gov-ui/reducers/gov-ui/actions';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
 import { Button } from '@digix/gov-ui/components/common/elements';
+import {
+  getSignTransactionTranslation,
+  truncateNumber,
+} from '@digix/gov-ui/utils/helpers';
 import {
   burnSubscription,
   fetchUser,
@@ -37,13 +39,13 @@ const {
 
 registerUIs({ txVisualization: { component: TxVisualization } });
 const network = SpectrumConfig.defaultNetworks[0];
+const DGD_TO_ETH_RATIO = 0.193054178;
 
 class BurnStep extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       dgd: 0,
-      dgdToWei: 0,
       eth: 0,
       isTxBroadcasted: false,
     };
@@ -70,7 +72,6 @@ class BurnStep extends React.PureComponent {
     })
       .then((response) => {
         const { user } = response.data;
-        const { dgdToWei } = user;
         const dgd = user
           ? Number(user.dgdBalance) / 10e8
           : 0;
@@ -79,7 +80,7 @@ class BurnStep extends React.PureComponent {
           ? Number(user.ethRefund) / 10e17
           : 0;
 
-        this.setState({ dgd, dgdToWei, eth });
+        this.setState({ dgd, eth });
         if (dgd <= 0) {
           goToNext();
         }
@@ -196,7 +197,6 @@ class BurnStep extends React.PureComponent {
   render() {
     const {
       dgd,
-      dgdToWei,
       eth,
       isTxBroadcasted,
     } = this.state;
@@ -207,22 +207,18 @@ class BurnStep extends React.PureComponent {
       ? t('Dissolution:Burn.button')
       : <SuccessIcon kind="check" />;
 
-    const dgdToEth = Number(dgdToWei) > 0
-      ? web3Utils.fromWei(dgdToWei, 'ether')
-      : 0;
-
     return (
       <Container>
         <Title>{t('Dissolution:Burn.title')}</Title>
-        <Subtitle>1 DGD = 0.193054178 ETH</Subtitle>
+        <Subtitle>1 DGD = {DGD_TO_ETH_RATIO} ETH</Subtitle>
         <Content>
           <Currency>
-            <CurrencyValue>{dgd.toFixed(3)}</CurrencyValue>
+            <CurrencyValue>{truncateNumber(dgd)}</CurrencyValue>
             <CurrencyLabel>DGD</CurrencyLabel>
           </Currency>
           <Arrow kind="conversionArrow" />
           <Currency>
-            <CurrencyValue>{eth.toFixed(3)}</CurrencyValue>
+            <CurrencyValue>{truncateNumber(eth)}</CurrencyValue>
             <CurrencyLabel>ETH</CurrencyLabel>
           </Currency>
         </Content>

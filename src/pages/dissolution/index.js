@@ -43,17 +43,17 @@ class Dissolution extends React.PureComponent {
       loadWalletBalance,
     } = nextProps;
 
-    if (loadWalletBalance <= 0) {
-      this.setState({
-        step: STEPS.success,
-        stepOffset: -2,
-      });
-
-      return;
-    }
-
     if (!this.props.isAddressLoaded && isAddressLoaded) {
       const isDgdUnlocked = isAddressLoaded && lockedDgd <= 0;
+      if (isDgdUnlocked && loadWalletBalance <= 0) {
+        this.setState({
+          step: STEPS.success,
+          stepOffset: -2,
+        });
+
+        return;
+      }
+
       const stepOffset = isDgdUnlocked ? -1 : 0;
       const step = isDgdUnlocked
         ? STEPS.approve

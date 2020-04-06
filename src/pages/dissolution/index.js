@@ -30,6 +30,7 @@ class Dissolution extends React.PureComponent {
 
     this.state = {
       currentSubscription: undefined,
+      hasUnlocked: false,
       showModal: !props.isAddressLoaded,
       step: STEPS.unlock,
       stepOffset: 0,
@@ -67,8 +68,18 @@ class Dissolution extends React.PureComponent {
     this.setState({ currentSubscription });
   }
 
+  setHasUnlocked = (hasUnlocked) => {
+    this.setState({ hasUnlocked });
+  }
+
   isDgdUnlocked = () => {
     const { isAddressLoaded, lockedDgd } = this.props;
+    const { hasUnlocked } = this.state;
+
+    if (hasUnlocked) {
+      return true;
+    }
+
     return isAddressLoaded && lockedDgd <= 0;
   }
 
@@ -174,6 +185,7 @@ class Dissolution extends React.PureComponent {
             <UnlockStep
               confirmMinedTx={this.confirmMinedTx}
               setCurrentSubscription={this.setCurrentSubscription}
+              setHasUnlocked={this.setHasUnlocked}
             />
           )}
           {step === STEPS.approve && (

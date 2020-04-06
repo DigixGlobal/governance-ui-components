@@ -82,7 +82,6 @@
   },
   "lint-staged": {
     "*.js": [
-      "npm run lint:eslint",
       "git add --force"
     ],
     "*.json": [

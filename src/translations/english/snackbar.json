@@ -10,9 +10,9 @@
     "dissolutionUnlock": {
       "title": "Unlock DGD",
       "txUiHeader": "DGD",
-      "message": "Unlocking all DGD",
-      "fail": "Unlocking all DGD unsuccessful",
-      "success": "Unlocking all DGD successful!"
+      "message": "Unlocking DGD",
+      "fail": "Unlocking DGD unsuccessful",
+      "success": "Unlocking DGD successful!"
     },
     "dissolutionApprove": {
       "title": "Approve",

@@ -45,15 +45,48 @@ class UnlockStep extends React.PureComponent {
     super(props);
     this.state = {
       isTxBroadcasted: false,
+      unlockAmount: 0,
     };
 
     this.subscription = undefined;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { lockedDgd } = this.props;
+    const nextLockedDgd = nextProps.lockedDgd;
+
+    if (lockedDgd !== nextLockedDgd) {
+      this.getCurrentTimeInQuarter()
+        .then((currentTimeInQuarter) => {
+          const unlockAmount = this.getUnlockableAmount(nextLockedDgd, currentTimeInQuarter);
+          this.setState({ unlockAmount });
+        });
+    }
+  }
+
+  getCurrentTimeInQuarter() {
+    const { web3Redux } = this.props;
+    const { abi, address } = getContract(DaoStakeLocking, network);
+    const { web3 } = web3Redux.networks[network];
+    const contract = web3.eth.contract(abi).at(address);
+
+    return contract.currentTimeInQuarter
+      .call()
+      .then(time => (Number(time.toString())));
+  }
+
+  getUnlockableAmount = (lockedDGDAmount, currentTimeInQuarter) => {
+    const daysSinceTime = Math.floor(currentTimeInQuarter / 60 / 60 / 24) - 10;
+    const unlockableAmount = ((80 - daysSinceTime - 1) / 80) * lockedDGDAmount;
+
+    return unlockableAmount;
   }
 
   unlockDgd = (unlockAmount) => {
     const {
       addresses,
       confirmMinedTx,
+      lockedDgd,
       setCurrentSubscription,
       t,
       web3Redux
@@ -83,7 +116,8 @@ class UnlockStep extends React.PureComponent {
         this.subscription = undefined;
       }
 
-      this.props.setLockedDgd(0);
+      this.props.setHasUnlocked(true);
+      this.props.setLockedDgd(lockedDgd - unlockAmount);
       this.props.showHideAlert({
         message: t('snackbars.dissolutionUnlock.success'),
         status: 'success',
@@ -154,7 +188,7 @@ class UnlockStep extends React.PureComponent {
   };
 
   render() {
-    const { isTxBroadcasted } = this.state;
+    const { isTxBroadcasted, unlockAmount } = this.state;
     const {
       lockedDgd,
       t,
@@ -170,13 +204,13 @@ class UnlockStep extends React.PureComponent {
         <Title>{t('Dissolution:Unlock.title')}</Title>
         <Content>
           <Currency>
-            <CurrencyValue>{truncateNumber(lockedDgd)}</CurrencyValue>
-            <CurrencyLabel>DGD</CurrencyLabel>
+            <CurrencyValue>{truncateNumber(unlockAmount)}</CurrencyValue>
+            <CurrencyLabel>Unlockable DGD</CurrencyLabel>
           </Currency>
         </Content>
         <Button
           disabled={isTxBroadcasted || !isButtonEnabled}
-          onClick={() => this.unlockDgd(lockedDgd)}
+          onClick={() => this.unlockDgd(unlockAmount)}
           secondary
         >
           {buttonLabel}
@@ -199,6 +233,7 @@ UnlockStep.propTypes = {
   confirmMinedTx: func.isRequired,
   lockedDgd: number.isRequired,
   showHideAlert: func.isRequired,
+  setHasUnlocked: func.isRequired,
   setLockedDgd: func.isRequired,
   setCurrentSubscription: func.isRequired,
   showTxSigningModal: func.isRequired,

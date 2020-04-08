@@ -7,6 +7,7 @@ const defaultState = {
     loadWalletBalance: undefined,
     isAddressLoaded: false,
     isBurnApproved: false,
+    smartGasRatio: 1
   },
   lockDgdOverlay: {
     show: false,
@@ -33,6 +34,14 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
+    case actions.SET_SMART_GAS_RATIO:
+      return {
+        ...state,
+        Dissolution: {
+          ...state.Dissolution,
+          ...action.payload,
+        },
+      };
     case actions.SET_LOAD_WALLET_BALANCE:
       return {
         ...state,

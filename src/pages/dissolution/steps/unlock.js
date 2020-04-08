@@ -106,7 +106,7 @@ class UnlockStep extends React.PureComponent {
 
     const web3Params = {
       gasPrice: DEFAULT_GAS_PRICE,
-      gas: 4000000,
+      gas: 2000000,
       ui,
     };
 

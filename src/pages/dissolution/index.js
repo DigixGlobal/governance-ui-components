@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { withApolloClient } from '@digix/gov-ui/pages/dissolution/api/queries';
 import React, { Fragment } from 'react';
+import { setSmartGasRatio } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 const {
   NavButton,
@@ -37,6 +38,10 @@ class Dissolution extends React.PureComponent {
     };
   }
 
+  componentWillMount() {
+    this.props.setSmartGasRatio(3);
+  }
+
   componentWillReceiveProps(nextProps) {
     const {
       isAddressLoaded,
@@ -47,6 +52,7 @@ class Dissolution extends React.PureComponent {
     if (!this.props.isAddressLoaded && isAddressLoaded) {
       const isDgdUnlocked = isAddressLoaded && lockedDgd <= 0;
       if (isDgdUnlocked && loadWalletBalance <= 0) {
+        this.props.setSmartGasRatio(1);
         this.setState({
           step: STEPS.success,
           stepOffset: -2,
@@ -60,6 +66,7 @@ class Dissolution extends React.PureComponent {
         ? STEPS.approve
         : STEPS.unlock;
 
+      this.props.setSmartGasRatio(isDgdUnlocked ? 1 : 3);
       this.setState({ step, stepOffset });
     }
   }
@@ -139,6 +146,7 @@ class Dissolution extends React.PureComponent {
     }
 
     this.setState(({ step }) => {
+      this.props.setSmartGasRatio(1);
       if (step < 4) {
         return {
           step: step + 1,
@@ -246,6 +254,7 @@ Dissolution.propTypes = {
   isBurnApproved: bool.isRequired,
   loadWalletBalance: number,
   lockedDgd: number.isRequired,
+  setSmartGasRatio: func.isRequired,
   t: func.isRequired,
 };
 
@@ -262,6 +271,8 @@ const mapStateToProps = state => ({
 
 export default withTranslation(['Dissolution', 'Snackbar'])(
   withApolloClient(
-    connect(mapStateToProps, {})(Dissolution)
+    connect(mapStateToProps, {
+      setSmartGasRatio,
+    })(Dissolution)
   )
 );

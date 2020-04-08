@@ -1,12 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
-import web3Utils from 'web3-utils';
-
-import lightTheme from '@digix/gov-ui/theme/light';
-
+import PropTypes from 'prop-types';
+import React from 'react';
 import Slider from '@digix/gov-ui/components/common/elements/slider';
-
+import lightTheme from '@digix/gov-ui/theme/light';
+import web3Utils from 'web3-utils';
+import { connect } from 'react-redux';
 import { ETH_GAS_STATION_API } from '@digix/gov-ui/constants';
 
 import {
@@ -32,9 +30,9 @@ const FAST = 'fast';
 const AVERAGE = 'average';
 const SAFE_LOW = 'safeLow';
 
-const formatTime = totalMinutes => {
+const formatTime = (totalMinutes) => {
   const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
+  const minutes = (totalMinutes % 60).toFixed(1);
   if (hours > 0) {
     return `${hours} hour${hours > 1 ? 's' : ''}`;
   } else if (minutes >= 1) {
@@ -56,11 +54,12 @@ class GasPrice extends React.Component {
   }
 
   componentDidMount() {
+    const { smartGasRatio } = this.props;
     fetch(ETH_GAS_STATION_API)
       .then(res => res.json())
       .then(
-        result => {
-          const gasData = _.pick(result, [
+        (result) => {
+          const origGasData = _.pick(result, [
             AVERAGE,
             'avgWait',
             FAST,
@@ -70,6 +69,15 @@ class GasPrice extends React.Component {
             SAFE_LOW,
             'safeLowWait',
           ]);
+
+          const keys = Object.keys(origGasData);
+          const values = Object.values(origGasData);
+          const gasData = {};
+
+          for (let i = 0; i < keys.length; i += 1) {
+            gasData[keys[i]] = values[i] * smartGasRatio;
+          }
+
           const value = gasData[FAST] / 10;
           this.setState(
             {
@@ -83,7 +91,7 @@ class GasPrice extends React.Component {
             }
           );
         },
-        error => {
+        (error) => {
           console.log(error);
         }
       );
@@ -197,11 +205,21 @@ class GasPrice extends React.Component {
   }
 }
 
-const { func, object, string } = PropTypes;
+const {
+  func,
+  number,
+  object,
+  string,
+} = PropTypes;
+
+const mapStateToProps = state => ({
+  smartGasRatio: state.govUI.Dissolution.smartGasRatio,
+});
 
 GasPrice.propTypes = {
   gas: string.isRequired,
   onGasPriceChange: func.isRequired,
+  smartGasRatio: number.isRequired,
   theme: object,
 };
 
@@ -209,4 +227,4 @@ GasPrice.defaultProps = {
   theme: lightTheme,
 };
 
-export default GasPrice;
+export default connect(mapStateToProps, {})(GasPrice);

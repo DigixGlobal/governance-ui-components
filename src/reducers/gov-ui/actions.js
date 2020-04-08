@@ -22,6 +22,7 @@ export const actions = {
   SET_IS_BURN_APPROVED: `${REDUX_PREFIX}SET_IS_BURN_APPROVED`,
   SET_IS_ADDRESS_LOADED: `${REDUX_PREFIX}SET_IS_ADDRESS_LOADED`,
   SET_LOAD_WALLET_BALANCE: `${REDUX_PREFIX}SET_LOAD_WALLET_BALANCE`,
+  SET_SMART_GAS_RATIO: `${REDUX_PREFIX}SET_SMART_GAS_RATIO`,
 };
 
 function fetchData(url, type) {
@@ -179,6 +180,17 @@ export function setLoadWalletBalance(loadWalletBalance = 0) {
     dispatch({
       type: actions.SET_LOAD_WALLET_BALANCE,
       payload: { loadWalletBalance },
+    });
+  };
+}
+
+export function setSmartGasRatio(smartGasRatio = 1) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_SMART_GAS_RATIO,
+      payload: {
+        smartGasRatio: Number(smartGasRatio),
+      },
     });
   };
 }

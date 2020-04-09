@@ -12,7 +12,7 @@ import { getAddresses } from 'spectrum-lightsuite/src/selectors';
 import { registerUIs } from 'spectrum-lightsuite/src/helpers/uiRegistry';
 import { showTxSigningModal } from 'spectrum-lightsuite/src/actions/session';
 import { withTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
+import PropTypes, { bool } from 'prop-types';
 import { Button } from '@digix/gov-ui/components/common/elements';
 import {
   getSignTransactionTranslation,
@@ -33,7 +33,10 @@ const {
   Currency,
   CurrencyLabel,
   CurrencyValue,
+  ErrorMessage,
+  TextInput,
   Title,
+  Subtitle,
   SuccessIcon,
 } = Step;
 
@@ -44,7 +47,9 @@ class UnlockStep extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      errorMessage: '',
       isTxBroadcasted: false,
+      maxUnlockAmount: 0,
       unlockAmount: 0,
     };
 
@@ -52,16 +57,27 @@ class UnlockStep extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { lockedDgd } = this.props;
+    const { hasUnlocked, lockedDgd } = this.props;
     const nextLockedDgd = nextProps.lockedDgd;
 
     if (lockedDgd !== nextLockedDgd) {
       this.getCurrentTimeInQuarter()
         .then((currentTimeInQuarter) => {
-          const unlockAmount = this.getUnlockableAmount(nextLockedDgd, currentTimeInQuarter);
-          this.setState({ unlockAmount });
+          const maxUnlockAmount = this.getUnlockableAmount(nextLockedDgd, currentTimeInQuarter);
+          const unlockAmount = hasUnlocked ? 0 : maxUnlockAmount
+          this.setState({
+            maxUnlockAmount,
+            unlockAmount,
+          });
         });
     }
+  }
+
+  onDgdInputChange = (e) => {
+    this.setState({
+      errorMessage: '',
+      unlockAmount: e.target.value,
+    });
   }
 
   getCurrentTimeInQuarter() {
@@ -82,7 +98,7 @@ class UnlockStep extends React.PureComponent {
     return unlockableAmount;
   }
 
-  unlockDgd = (unlockAmount) => {
+  unlockDgd = () => {
     const {
       addresses,
       confirmMinedTx,
@@ -91,6 +107,25 @@ class UnlockStep extends React.PureComponent {
       t,
       web3Redux
     } = this.props;
+    const {
+      maxUnlockAmount,
+      unlockAmount,
+    } = this.state;
+
+    if (unlockAmount <= 0) {
+      this.setState({
+        errorMessage: 'You must unlock an amount greater than zero.',
+      });
+      return;
+    }
+
+    if (unlockAmount > maxUnlockAmount) {
+      this.setState({
+        errorMessage: `You can only unlock a maximum amount of ${truncateNumber(maxUnlockAmount)} DGD.`,
+      });
+      return;
+    }
+
     const { abi, address } = getContract(DaoStakeLocking, network);
     const sourceAddress = addresses.find(({ isDefault }) => isDefault);
     const contract = web3Redux
@@ -118,6 +153,7 @@ class UnlockStep extends React.PureComponent {
 
       this.props.setHasUnlocked(true);
       this.props.setLockedDgd(lockedDgd - unlockAmount);
+      this.setState({ unlockAmount: 0 });
       this.props.showHideAlert({
         message: t('snackbars.dissolutionUnlock.success'),
         status: 'success',
@@ -188,29 +224,50 @@ class UnlockStep extends React.PureComponent {
   };
 
   render() {
-    const { isTxBroadcasted, unlockAmount } = this.state;
     const {
+      errorMessage,
+      isTxBroadcasted,
+      maxUnlockAmount,
+      unlockAmount,
+    } = this.state;
+    const {
+      hasUnlocked,
       lockedDgd,
       t,
     } = this.props;
 
-    const isButtonEnabled = lockedDgd > 0;
-    const buttonLabel = isButtonEnabled
-      ? t('Dissolution:Unlock.button')
-      : <SuccessIcon kind="check" />;
+    const canUnlock = lockedDgd > 0
+      && unlockAmount > 0
+      && errorMessage.length === 0;
+    const buttonLabel = lockedDgd === 0 || hasUnlocked
+      ? <SuccessIcon kind="check" />
+      : t('Dissolution:Unlock.button');
 
     return (
       <Container>
         <Title>{t('Dissolution:Unlock.title')}</Title>
+        <Subtitle>Please input the amount of DGD you wish to unlock.</Subtitle>
         <Content>
           <Currency>
-            <CurrencyValue>{truncateNumber(unlockAmount)}</CurrencyValue>
-            <CurrencyLabel>Unlockable DGD</CurrencyLabel>
+            <TextInput
+              type="number"
+              autoFocus
+              data-digix="UnlockDgd-Amount"
+              onChange={this.onDgdInputChange}
+              value={unlockAmount}
+            />
+            <CurrencyLabel small>
+              Max Unlockable DGD:&nbsp;
+              {truncateNumber(maxUnlockAmount)}
+            </CurrencyLabel>
+            {errorMessage.length > 0 && (
+              <ErrorMessage>{errorMessage}</ErrorMessage>
+            )}
           </Currency>
         </Content>
         <Button
-          disabled={isTxBroadcasted || !isButtonEnabled}
-          onClick={() => this.unlockDgd(unlockAmount)}
+          disabled={isTxBroadcasted || !canUnlock}
+          onClick={this.unlockDgd}
           secondary
         >
           {buttonLabel}
@@ -231,6 +288,7 @@ UnlockStep.propTypes = {
   addresses: array,
   client: object.isRequired,
   confirmMinedTx: func.isRequired,
+  hasUnlocked: bool.isRequired,
   lockedDgd: number.isRequired,
   showHideAlert: func.isRequired,
   setHasUnlocked: func.isRequired,

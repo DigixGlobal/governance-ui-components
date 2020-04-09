@@ -163,6 +163,7 @@ class Dissolution extends React.PureComponent {
 
   render() {
     const {
+      hasUnlocked,
       showModal,
       step,
       stepOffset
@@ -192,6 +193,7 @@ class Dissolution extends React.PureComponent {
           {step === STEPS.unlock && (
             <UnlockStep
               confirmMinedTx={this.confirmMinedTx}
+              hasUnlocked={hasUnlocked}
               setCurrentSubscription={this.setCurrentSubscription}
               setHasUnlocked={this.setHasUnlocked}
             />

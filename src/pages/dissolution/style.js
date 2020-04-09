@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 import { Card } from '@digix/gov-ui/components/common/common-styles';
+import { TextBox } from '@digix/gov-ui/components/common/blocks/overlay/unlock-dgd/style';
+import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
 
 export const Modal = {
   Container: styled.div`
@@ -87,9 +88,26 @@ export const Step = {
   CurrencyLabel: styled.div`
     color: ${props => props.theme.textColor.primary.base.toString()};
     font-family: 'Futura PT Medium', sans-serif;
-    font-size: 3rem;
+    font-size: ${props => props.small ? '1.4rem' : '3rem'};
     margin: 0 auto;
     text-transform: uppercase;
+  `,
+
+  TextInput: styled(TextBox)`
+    border-bottom: 1px solid black;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    text-align: center;
+    width: 150px;
+
+    &:focus {
+      border-bottom: 1px solid black;
+    }
+  `,
+
+  ErrorMessage: styled.p`
+    color: ${props => props.theme.errorBorder.toString()};
+    margin-top: 1rem;
   `,
 
   NavButton: styled(Button)`

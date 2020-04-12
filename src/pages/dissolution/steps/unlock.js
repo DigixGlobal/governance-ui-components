@@ -63,8 +63,9 @@ class UnlockStep extends React.PureComponent {
     if (lockedDgd !== nextLockedDgd) {
       this.getCurrentTimeInQuarter()
         .then((currentTimeInQuarter) => {
+          console.log('Value of DaoStakeLocking.currentTimeInQuarter:', currentTimeInQuarter);
           const maxUnlockAmount = this.getUnlockableAmount(nextLockedDgd, currentTimeInQuarter);
-          const unlockAmount = hasUnlocked ? 0 : maxUnlockAmount
+          const unlockAmount = hasUnlocked ? 0 : maxUnlockAmount;
           this.setState({
             maxUnlockAmount,
             unlockAmount,
@@ -94,6 +95,7 @@ class UnlockStep extends React.PureComponent {
   getUnlockableAmount = (lockedDGDAmount, currentTimeInQuarter) => {
     const daysSinceTime = Math.floor(currentTimeInQuarter / 60 / 60 / 24) - 10;
     const unlockableAmount = ((80 - daysSinceTime - 1) / 80) * lockedDGDAmount;
+    console.log('Value of Max Unlockable DGD:', unlockableAmount);
 
     return unlockableAmount;
   }

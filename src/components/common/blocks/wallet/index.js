@@ -106,6 +106,7 @@ export class Wallet extends React.PureComponent {
       },
     })
       .then((response) => {
+        console.log('Address:', address.toLowerCase());
         const { user } = response.data;
         if (!user) {
           this.props.setLockedDgd(0);
@@ -116,6 +117,7 @@ export class Wallet extends React.PureComponent {
         }
 
         this.getLockedDgd(address).then((dgdLocked) => {
+          console.log('Value of DaoStakeLocking.lockedDGDAmount:', dgdLocked);
           this.props.setLockedDgd(Number(dgdLocked));
           this.getDgdBalance(address)
             .then((dgdBalance) => {

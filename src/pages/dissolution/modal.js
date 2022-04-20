@@ -9,9 +9,13 @@ import React, { Fragment } from 'react';
 
 const {
   Container,
+  Instruction,
   Title,
   Paragraph,
   Button,
+  ButtonRagnarok,
+  Steps,
+  StepItem
 } = Modal;
 
 class DissolutionModal extends React.Component {
@@ -28,20 +32,57 @@ class DissolutionModal extends React.Component {
       <Fragment>
         <Container>
           <Title>{t('Modal.title')}</Title>
-          <Paragraph>{t('Modal.content')}</Paragraph>
-          <Paragraph>
-            <ReactMarkdown
-              escapeHtml={false}
-              renderers={{ paragraph: 'span' }}
-              source={t('Modal.ethRecommendation')}
-            />
-          </Paragraph>
+          <Paragraph
+            escapeHtml={false}
+            source={t('Modal.message')}
+          />
+          <Steps>
+            <StepItem>
+              <Paragraph
+                escapeHtml={false}
+                source={t('Modal.step1')}
+              />
+            </StepItem>
+            <StepItem>
+              <Paragraph
+                escapeHtml={false}
+                source={t('Modal.step2')}
+              />
+              <Instruction>
+                {t('Modal.approveContract')} <br />
+                {t('Modal.approveGasLimit')} <br />
+                {t('Modal.approveTxnAmount')} <br />
+                {t('Modal.approveTxnData')}
+              </Instruction>
+            </StepItem>
+            <StepItem>
+              <Paragraph
+                escapeHtml={false}
+                source={t('Modal.step3')}
+              />
+              <Instruction>
+                {t('Modal.burnContract')} <br />
+                {t('Modal.burnGasLimit')} <br />
+                {t('Modal.burnTxnAmount')} <br />
+                {t('Modal.burnTxnData')}
+              </Instruction>
+            </StepItem>
+          </Steps>
+          <Paragraph
+            escapeHtml={false}
+            source={t('Modal.message2')}
+          />
           <Button
-            onClick={this.openLoadWalletPanel}
+            onClick={() => window.open('https://app.mycrypto.com/interact-with-contracts', '_blank')}
             primary
           >
-            {t('Modal.button')}
+            {t('Modal.button1')}
           </Button>
+          <ButtonRagnarok
+            onClick={this.openLoadWalletPanel}
+          >
+            {t('Modal.button2')}
+          </ButtonRagnarok>
         </Container>
       </Fragment>
     );

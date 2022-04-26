@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ReactMarkdown from 'react-markdown';
 import { Card } from '@digix/gov-ui/components/common/common-styles';
 import { TextBox } from '@digix/gov-ui/components/common/blocks/overlay/unlock-dgd/style';
 import { Button, Icon } from '@digix/gov-ui/components/common/elements/index';
@@ -12,16 +13,58 @@ export const Modal = {
     color: ${props => props.theme.textColor.primary.light.toString()};
     font-size: 2.4rem;
     margin-bottom: 2.4rem;
-    text-transform: uppercase;
   `,
 
-  Paragraph: styled.p`
+  Paragraph: styled(ReactMarkdown)`
     line-height: 1.5;
+
+    strong {
+      font-family: 'Futura PT Medium', sans-serif;
+    }
+  `,
+
+  Steps: styled.ul`
+    list-style: none;
+  `,
+
+  StepItem: styled.li`
+    margin-bottom: 1.2rem;
+
+    strong {
+      font-family: 'Futura PT Medium', sans-serif;
+    }
+
+    div code {
+      color: #BB8C22;
+      font-weight: 400;
+      font-size: 1.2rem;
+    }
+  `,
+
+  Instruction: styled.code`
+    background: #fbfbfb;
+    border: 1px solid #dfdfdf;
+    border-radius: 0.5rem;
+    color: rgb(70, 78, 91);
+    display: block;
+    font-size: 1.1rem;
+    padding: 0.8rem 1.2rem;
+    margin: 1rem 0;
+    overflow-wrap: break-word;
   `,
 
   Button: styled(Button)`
     margin: 2.4rem 0 0 0;
-    width: 100%;
+    width: auto;
+  `,
+
+  ButtonRagnarok: styled(Button)`
+    margin: 2.4rem 0 0 1.6rem;
+    background-color: #fff;
+    border: 2px solid #131F34;
+    color: #131F34;
+    box-shadow: none;
+    width: auto;
   `,
 };
 

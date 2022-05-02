@@ -15,7 +15,8 @@
     "burnTxnData": "Transaction Data: 0x44df8e70",
     "message2": "If you wish to unlock your DGD on our platform, you can click the **Redeem on Ragnarok** button below. We strongly encourage you to have at least 0.1 ETH in your wallet so that you can make the necessary transactions in order for the claim to happen successfully.",
     "button1": "Redeem on MyCrypto.com",
-    "button2": "Redeem on Ragnarok"
+    "button2": "Redeem on Ragnarok",
+    "ethRecommendation": "We strongly encourage you to have at least **0.1 ETH** in your wallet so that you can make the necessary transactions in order for the claim to happen successfully."
   },
   "ModalRagnarok": {
     "title": "Ragnarok: Steps to Proceed",

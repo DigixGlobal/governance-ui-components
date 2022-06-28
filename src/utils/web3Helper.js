@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import sanitizeData from 'spectrum-lightsuite/src/helpers/txUtils';
 
 export const executeContractFunction = payload => {
@@ -6,7 +8,7 @@ export const executeContractFunction = payload => {
     contract,
     func,
     params,
-    onSuccess,
+    // onSuccess,
     onFailure,
     onFinally,
     network,
@@ -44,9 +46,9 @@ export const executeContractFunction = payload => {
           logTxn.completeTransaction(true);
         }
 
-        if (typeof onSuccess === 'function') {
-          onSuccess(txHash);
-        }
+        // if (typeof onSuccess === 'function') {
+        //   onSuccess(txHash);
+        // }
 
         if (typeof onFinally === 'function') {
           onFinally(txHash);
@@ -56,11 +58,6 @@ export const executeContractFunction = payload => {
         onFailure(error);
         if (logTxn) {
           logTxn.completeTransaction(false, error);
-        }
-
-        if (typeof onFinally === 'function' && error.data) {
-          const txHash = Object.keys(error.data)[0];
-          onFinally(txHash);
         }
       });
   }
@@ -79,9 +76,9 @@ export const executeContractFunction = payload => {
           logTxn.completeTransaction(true);
         }
 
-        if (typeof onSuccess === 'function') {
-          onSuccess(txHash);
-        }
+        // if (typeof onSuccess === 'function') {
+        //   onSuccess(txHash);
+        // }
 
         if (typeof onFinally === 'function') {
           onFinally(txHash);
@@ -91,12 +88,6 @@ export const executeContractFunction = payload => {
         onFailure(error);
         if (logTxn) {
           logTxn.completeTransaction(false, error);
-        }
-
-        if (typeof onFinally === 'function') {
-          const data = error.data ? Object.keys(error.data) : undefined;
-          const txHash = data ? data[0] : undefined;
-          onFinally(txHash);
         }
       });
 
@@ -113,9 +104,9 @@ export const executeContractFunction = payload => {
         logTxn.completeTransaction(true);
       }
 
-      if (typeof onSuccess === 'function') {
-        onSuccess(txHash);
-      }
+      // if (typeof onSuccess === 'function') {
+      //   onSuccess(txHash);
+      // }
 
       if (typeof onFinally === 'function') {
         onFinally(txHash);
@@ -125,12 +116,6 @@ export const executeContractFunction = payload => {
       onFailure(error);
       if (logTxn) {
         logTxn.completeTransaction(false, error);
-      }
-
-      if (typeof onFinally === 'function') {
-        const data = error.data ? Object.keys(error.data) : undefined;
-        const txHash = data ? data[0] : undefined;
-        onFinally(txHash);
       }
     });
 };

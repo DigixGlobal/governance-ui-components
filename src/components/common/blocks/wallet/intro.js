@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
 import Button from '@digix/gov-ui/components/common/elements/buttons/';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import { ActionContainer } from '@digix/gov-ui/components/common/blocks/wallet/style.js';
+import { WalletStages } from '@digix/gov-ui/constants';
+import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
+import { withTranslation } from 'react-i18next';
 import {
   CloseButton,
   IntroContainer,
   OverlayHeader as Header,
 } from '@digix/gov-ui/components/common/common-styles';
-import { ActionContainer } from '@digix/gov-ui/components/common/blocks/wallet/style.js';
-import { WalletStages } from '@digix/gov-ui/constants';
-import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
 
 class Intro extends React.Component {
   handleButtonClick = () => {
@@ -23,49 +23,50 @@ class Intro extends React.Component {
   };
 
   render() {
-    const { onClose } = this.props;
-    const t = this.props.translations.loadWallet.introOverlay;
+    const {
+      currentStage,
+      onClose,
+      t,
+    } = this.props;
 
     return (
       <IntroContainer>
         <CloseButton>
           <Icon kind="close" onClick={onClose} />
         </CloseButton>
-        <Header>{t.title}</Header>
-        <p>{t.instructions}</p>
-        <ActionContainer>
-          <Button kind="round" secondary fluid large onClick={this.handleButtonClick}>
-            {t.button}
-          </Button>
-        </ActionContainer>
+        <Header>
+          {t('LoadWallet.title')}
+        </Header>
+        <p>{t('LoadWallet.unlock')}</p>
+        <p>{t('LoadWallet.nonParticipant')}</p>
+        <ReactMarkdown
+          escapeHtml={false}
+          source={t('Modal.ethRecommendation')}
+        />
+        {currentStage === WalletStages.Intro && (
+          <ActionContainer>
+            <Button
+              fluid
+              kind="round"
+              large
+              onClick={this.handleButtonClick}
+              secondary
+            >
+              {t('LoadWallet.button')}
+            </Button>
+          </ActionContainer>
+        )}
       </IntroContainer>
     );
   }
 }
 
-const { func, object } = PropTypes;
-
+const { func, number } = PropTypes;
 Intro.propTypes = {
+  currentStage: number.isRequired,
   onChangeStage: func.isRequired,
   onClose: func.isRequired,
-  translations: object,
+  t: func.isRequired,
 };
 
-Intro.defaultProps = {
-  translations: {
-    loadWallet: {
-      introOverlay: {
-        title: 'Hello there!',
-        instructions:
-          'You will need to load a wallet and lock some DGD in before you can browse projects and vote in DigixDAO.',
-        button: 'Load Wallet',
-      },
-    },
-  },
-};
-
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data,
-});
-
-export default connect(mapStateToProps)(Intro);
+export default withTranslation('Dissolution')(Intro);

@@ -18,6 +18,11 @@ export const actions = {
   GET_TOKEN_USD_VALUE: `${REDUX_PREFIX}GET_TOKEN_USD_VALUE`,
 
   SET_TRANSLATION_LANGUAGE: `${REDUX_PREFIX}SET_TRANSLATION_LANGUAGE`,
+  SET_LOCKED_DGD: `${REDUX_PREFIX}SET_LOCKED_DGD`,
+  SET_IS_BURN_APPROVED: `${REDUX_PREFIX}SET_IS_BURN_APPROVED`,
+  SET_IS_ADDRESS_LOADED: `${REDUX_PREFIX}SET_IS_ADDRESS_LOADED`,
+  SET_LOAD_WALLET_BALANCE: `${REDUX_PREFIX}SET_LOAD_WALLET_BALANCE`,
+  SET_SMART_GAS_RATIO: `${REDUX_PREFIX}SET_SMART_GAS_RATIO`,
 };
 
 function fetchData(url, type) {
@@ -140,5 +145,52 @@ export function getTokenUsdValue() {
 export function setLanguageTranslation(payload = 'en') {
   return dispatch => {
     dispatch({ type: actions.SET_TRANSLATION_LANGUAGE, payload });
+  };
+}
+
+export function setLockedDgd(lockedDgd = 0) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_LOCKED_DGD,
+      payload: { lockedDgd },
+    });
+  };
+}
+
+export function setIsBurnApproved(isBurnApproved = false) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_IS_BURN_APPROVED,
+      payload: { isBurnApproved },
+    });
+  };
+}
+
+export function setIsAddressLoaded(isAddressLoaded = false) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_IS_ADDRESS_LOADED,
+      payload: { isAddressLoaded },
+    });
+  };
+}
+
+export function setLoadWalletBalance(loadWalletBalance = 0) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_LOAD_WALLET_BALANCE,
+      payload: { loadWalletBalance },
+    });
+  };
+}
+
+export function setSmartGasRatio(smartGasRatio = 1) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.SET_SMART_GAS_RATIO,
+      payload: {
+        smartGasRatio: Number(smartGasRatio),
+      },
+    });
   };
 }

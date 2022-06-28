@@ -1,14 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
-import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
-import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
-import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
-
 import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import KeystoreCreationForm from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_creation_form';
+import KeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/keystore_modal';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
+import { getLoadWalletTranslation } from '@digix/gov-ui/utils/helpers';
 
 class Ledger extends React.Component {
   constructor(props) {
@@ -33,14 +31,18 @@ class Ledger extends React.Component {
 
   render() {
     const { blocked } = this.state;
+    const loadWalletTrans = getLoadWalletTranslation();
+    const tCommon = loadWalletTrans.common;
+    const tLedger = loadWalletTrans.Ledger;
+
     return (
       (
         <DefaultAddressSelector
           inverted
           key="addressSelector"
-          renderBottom={false}
-          name="from"
           keystoreType="ledger"
+          name="from"
+          renderBottom={false}
           renderNoAccounts={() => null}
           showAddressOnly
         />
@@ -48,22 +50,29 @@ class Ledger extends React.Component {
       (
         <div style={blocked ? { pointerEvents: 'none' } : null}>
           <KeystoreModal
+            allowedKeystoreTypes={['ledger']}
+            commonTranslations={tCommon}
             createKeystore={this.props.createKeystore}
-            onSuccess={() => this.props.onSuccess()}
-            showBalances
-            key="keystore-popup"
-            submitFunc={this.props.createKeystore}
-            form={KeystoreCreationForm}
             creatingKeyStore
             data={{ type: 'ledger', updateDefaultAddress: true }}
-            header="Load Ledger Wallet"
+            form={KeystoreCreationForm}
             hideSelector
-            allowedKeystoreTypes={['ledger']}
-            translations={this.props.translations}
-            commonTranslations={this.props.commonTranslations}
+            header="Load Ledger Wallet"
+            key="keystore-popup"
             logLoadWallet={LogLoadWallet}
+            onSuccess={() => this.props.onSuccess()}
+            showBalances
+            submitFunc={this.props.createKeystore}
+            translations={tLedger}
             trigger={
-              <Button kind="round" secondary large showIcon fluid disabled={blocked}>
+              <Button
+                disabled={blocked}
+                fluid
+                kind="round"
+                large
+                secondary
+                showIcon
+              >
                 <Icon kind="ledger" />
                 Ledger
               </Button>
@@ -75,13 +84,11 @@ class Ledger extends React.Component {
   }
 }
 
-const { func, object, array } = PropTypes;
+const { func, array } = PropTypes;
 
 Ledger.propTypes = {
-  commonTranslations: object.isRequired,
   createKeystore: func,
   onSuccess: func.isRequired,
-  translations: object.isRequired,
   blockList: array.isRequired,
 };
 
@@ -89,9 +96,4 @@ Ledger.defaultProps = {
   createKeystore: undefined,
 };
 
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data.loadWallet.Ledger,
-  commonTranslations: state.daoServer.Translations.data.loadWallet.common,
-});
-
-export default connect(mapStateToProps)(Ledger);
+export default Ledger;

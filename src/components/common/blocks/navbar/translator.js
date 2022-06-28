@@ -1,52 +1,54 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import { connect } from 'react-redux';
-
 import { Icon } from '@digix/gov-ui/components/common/elements/index';
-
-import { setLanguageTranslation } from '@digix/gov-ui/reducers/gov-ui/actions';
-import { getTranslations } from '@digix/gov-ui/reducers/dao-server/actions';
-
-import { NavItem, Selector, TransButton, Item } from './style.js';
+import {
+  Item,
+  NavItem,
+  Selector,
+  TransButton,
+} from './style.js';
 
 const LANGUAGES = [
   {
-    code: 'en',
+    code: 'en-US',
     name: 'ENGLISH',
   },
   {
     code: 'cn',
-    name: 'CHINESE',
+    name: '中文',
   },
 ];
+
 class Translator extends React.Component {
   handleLanguageChange = lang => () => {
-    const { setLanguage, getTranslation } = this.props;
     if (!lang) {
-      setLanguage('en');
+      localStorage.setItem('i18nextLng', 'en-US');
     } else {
-      setLanguage(lang);
+      localStorage.setItem('i18nextLng', lang);
     }
-    getTranslation(lang);
+
+    window.location.reload();
   };
 
   render() {
-    const { language } = this.props;
-
-    const selectedLanguage = LANGUAGES.find(l => l.code === language);
-
-    const options = LANGUAGES.filter(l => l.code !== language);
+    const storedLng = localStorage.getItem('i18nextLng');
+    const selectedLanguage = LANGUAGES.find(l => l.code === storedLng) || LANGUAGES[0];
+    const options = LANGUAGES.filter(l => l.code !== storedLng);
 
     return (
       <NavItem dropdown>
-        <TransButton kind="link" onClick={this.handleLanguageChange(selectedLanguage.code)}>
+        <TransButton
+          kind="link"
+          onClick={this.handleLanguageChange(selectedLanguage.code)}
+        >
           <span>{selectedLanguage.name}</span>
           <Icon kind="arrow" />
         </TransButton>
         <Selector>
           {options.map(l => (
-            <Item key={l.code} onClick={this.handleLanguageChange(l.code)}>
+            <Item
+              key={l.code}
+              onClick={this.handleLanguageChange(l.code)}
+            >
               {l.name}
             </Item>
           ))}
@@ -56,17 +58,4 @@ class Translator extends React.Component {
   }
 }
 
-Translator.propTypes = {
-  setLanguage: PropTypes.func.isRequired,
-  getTranslation: PropTypes.func.isRequired,
-  language: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = state => ({
-  language: state.govUI.Language,
-});
-
-export default connect(
-  mapStateToProps,
-  { setLanguage: setLanguageTranslation, getTranslation: getTranslations }
-)(Translator);
+export default Translator;

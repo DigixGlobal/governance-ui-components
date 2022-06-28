@@ -1,5 +1,33 @@
 {
+  "close": "关闭",
+  "view": "查看",
+  "status": {
+    "error": "拒绝",
+    "success": "批准"
+  },
+  "transactionDropped": "交易意外中断，请您再试一次",
   "snackbars": {
+    "dissolutionUnlock": {
+      "title": "解锁DGD",
+      "txUiHeader": "DGD",
+      "message": "正在解锁所有DGD",
+      "fail": "解锁DGD失败",
+      "success": "解锁DGD成功！"
+    },
+    "dissolutionApprove": {
+      "title": "批",
+      "txUiHeader": "ETH",
+      "message": "正在根据合同内容执行",
+      "fail": "合同执行失败",
+      "success": "合同执行成功!"
+    },
+    "dissolutionBurn": {
+      "title": "转换",
+      "txUiHeader": "ETH",
+      "message": "正在接收ETH",
+      "fail": "接收ETH失败",
+      "success": "在接收ETH成功!"
+    },
     "createProject": {
       "title": "提交",
       "txUiHeader": "项目",

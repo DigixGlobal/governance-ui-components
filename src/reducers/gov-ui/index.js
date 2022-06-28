@@ -2,6 +2,13 @@ import LogLockDgd from '@digix/gov-ui/analytics/lockDgd';
 import { actions } from '@digix/gov-ui/reducers/gov-ui/actions';
 
 const defaultState = {
+  Dissolution: {
+    lockedDgd: 0,
+    loadWalletBalance: undefined,
+    isAddressLoaded: false,
+    isBurnApproved: false,
+    smartGasRatio: 1
+  },
   lockDgdOverlay: {
     show: false,
   },
@@ -27,6 +34,46 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
+    case actions.SET_SMART_GAS_RATIO:
+      return {
+        ...state,
+        Dissolution: {
+          ...state.Dissolution,
+          ...action.payload,
+        },
+      };
+    case actions.SET_LOAD_WALLET_BALANCE:
+      return {
+        ...state,
+        Dissolution: {
+          ...state.Dissolution,
+          ...action.payload,
+        },
+      };
+    case actions.SET_IS_ADDRESS_LOADED:
+      return {
+        ...state,
+        Dissolution: {
+          ...state.Dissolution,
+          ...action.payload,
+        },
+      };
+    case actions.SET_LOCKED_DGD:
+      return {
+        ...state,
+        Dissolution: {
+          ...state.Dissolution,
+          ...action.payload,
+        },
+      };
+    case actions.SET_IS_BURN_APPROVED:
+      return {
+        ...state,
+        Dissolution: {
+          ...state.Dissolution,
+          ...action.payload,
+        },
+      };
     case actions.SHOW_LOCK_DGD_OVERLAY:
       LogLockDgd.toggleOverlay(action.payload);
       return {

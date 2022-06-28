@@ -1,0 +1,32 @@
+{
+  "Modal": {
+    "title": "Ragnarok项目：DigixDAO解散后DGD兑换ETH的操作流程",
+    "content": "DigixDAO最后一个季度已经结束了，完成这个步骤会帮您解锁在此平台上的DGD，同时提取您的ETH，如果您有DGD在这个平台上，即使从来没有参与过任何投票，仍然可以提取ETH。",
+    "ethRecommendation": "强烈建议：请在您注册的钱包内留下至少**0.1个ETH**作为手续费以让交易可以成功进行。",
+    "button": "下一步"
+  },
+  "LoadWallet": {
+    "title": "你好！",
+    "unlock": "在这个步骤里，我们需要连接您的钱包，以方便您解锁DGD并提取ETH。 如果您有DGD在这个平台上，即使从来没有参与过任何投票，仍然可以提取ETH。",
+    "nonParticipant": "DGD持有者即便未曾在我们的平台投过票，您照样可以兑换ETH。",
+    "ethRecommendation": "强烈建议：请在您注册的钱包内留下至少**0.1个ETH**作为手续费以让交易可以成功进行。",
+    "button": "加载钱包"
+  },
+  "Nav": {
+    "steps": "第**{{currentStep}}/{{maxStep}}**步",
+    "nextStep": "下一步",
+    "logOut": "登出"
+  },
+  "Unlock": {
+    "title": "您锁定的DGD数量",
+    "button": "解锁DGD"
+  },
+  "Approve": {
+    "instructions": "请认真阅读此合同，您正在将您的DGD转换成ETH",
+    "button": "准批合同"
+  },
+  "Burn": {
+    "title": "可转换ETH的数量:",
+    "button": "把DGD转换成ETH"
+  }
+}

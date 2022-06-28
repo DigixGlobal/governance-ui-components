@@ -1,42 +1,50 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
-import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
-import ImportKeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/import_keystore_modal';
-
 import Button from '@digix/gov-ui/components/common/elements/buttons/';
+import DefaultAddressSelector from 'spectrum-lightsuite/src/libs/material-ui/components/common/default_address_selector';
 import Icon from '@digix/gov-ui/components/common/elements/icons';
+import ImportKeystoreModal from 'spectrum-lightsuite/src/libs/material-ui/components/keystores/import_keystore_modal';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { LogLoadWallet } from '@digix/gov-ui/analytics/loadWallet';
+import { getLoadWalletTranslation } from '@digix/gov-ui/utils/helpers';
 
 class V3Keystore extends React.Component {
   render() {
+    const loadWalletTrans = getLoadWalletTranslation();
+    const tCommon = loadWalletTrans.common;
+    const tJson = loadWalletTrans.Json;
+
     return (
       (
         <DefaultAddressSelector
           inverted
           key="v3-keystore"
-          renderBottom={false}
-          name="from"
           keystoreType="v3"
+          name="from"
+          renderBottom={false}
           renderNoAccounts={() => null}
           showAddressOnly
         />
       ),
       (
         <ImportKeystoreModal
+          commonTranslations={tCommon}
           createKeystore={this.props.createKeystore}
-          key="v3-popup"
-          submitFunc={this.props.createKeystore}
           header="Import Wallet"
-          skipConfirmation
-          onSuccess={() => this.props.onSuccess()}
-          updateDefaultAddress
-          translations={this.props.translations}
-          commonTranslations={this.props.commonTranslations}
+          key="v3-popup"
           logLoadWallet={LogLoadWallet}
+          onSuccess={() => this.props.onSuccess()}
+          skipConfirmation
+          submitFunc={this.props.createKeystore}
+          translations={tJson}
+          updateDefaultAddress
           trigger={
-            <Button kind="round" secondary large showIcon fluid>
+            <Button
+              fluid
+              kind="round"
+              large
+              secondary
+              showIcon
+            >
               <Icon kind="json" />
               Json File
             </Button>
@@ -47,22 +55,15 @@ class V3Keystore extends React.Component {
   }
 }
 
-const { func, object } = PropTypes;
+const { func } = PropTypes;
 
 V3Keystore.propTypes = {
-  commonTranslations: object.isRequired,
   createKeystore: func,
   onSuccess: func.isRequired,
-  translations: object.isRequired,
 };
 
 V3Keystore.defaultProps = {
   createKeystore: undefined,
 };
 
-const mapStateToProps = state => ({
-  translations: state.daoServer.Translations.data.loadWallet.Json,
-  commonTranslations: state.daoServer.Translations.data.loadWallet.common,
-});
-
-export default connect(mapStateToProps)(V3Keystore);
+export default V3Keystore;

@@ -1,0 +1,51 @@
+{
+  "Modal": {
+    "title": "DGD Redemption for Advanced Users",
+    "message": "Advanced users now have the option to redeem DGD balances via [MyEtherWallet app](https://www.myetherwallet.com). Follow these simple steps on how to unlock your DGDs and claim your ETH.",
+      "step0": "**Step 0: Create account (OPTIONAL).** To ensure a smoother experience, the preferred wallet is a JSON Keystore. While other wallets types may work, prefer to transfer the DGDs and some ETH to a new JSON wallet and transfer the refunded ETH afterwards.",
+    "step1": "**Step 1: Unlock account.** Unlock your account wallet.",
+    "step2": "**Step 2: Approve transfer.** On Send section with advanced options, fill in the form with the details below. Review and verify the details before sending the transaction.",
+    "step3": "**Step 3: Burn token.** Once the transfer is approved, repeat the previous step with the details below.",
+    "approveContract": "Contract Address (To Address): 0xE0B7927c4aF23765Cb51314A0E0521A9645F0E2A",
+    "approveGasLimit": "Gas Limit: 1000000",
+    "approveTxnAmount": "Transaction Amount: 0",
+    "approveTxnData": "Transaction Data: 0x095ea7b300000000000000000000000023Ea10CC1e6EBdB499D24E45369A35f43627062f00000000000000000000000000000000000000000000000000071afd498d0000",
+    "burnContract": "Contract Address (Recipient): 0x23Ea10CC1e6EBdB499D24E45369A35f43627062f",
+    "burnGasLimit": "Gas Limit: 1500000",
+    "burnTxnAmount": "Transaction Amount: 0",
+    "burnTxnData": "Transaction Data: 0x44df8e70",
+    "message2": "If you wish to unlock your DGD on our platform, you can click the **Redeem on Ragnarok** button below. We strongly encourage you to have at least 0.1 ETH in your wallet so that you can make the necessary transactions in order for the claim to happen successfully.",
+    "button1": "Redeem on MyEtherWallet",
+    "button2": "Redeem on Ragnarok"
+  },
+  "ModalRagnarok": {
+    "title": "Ragnarok: Steps to Proceed",
+    "content": "The last Quarter of DigixDAO has ended. This site will enable you to unlock DGDs you have on our platform, as well as claim your ETH. If you have DGD but have not participated on our platform before, you will still be able to claim your ETH.",
+    "ethRecommendation": "We strongly encourage you to have at least **0.1 ETH** in your wallet so that you can make the necessary transactions in order for the claim to happen successfully.",
+    "button": "Proceed"
+  },
+  "LoadWallet": {
+    "title": "Hello there!",
+    "unlock": "We will need you to load your wallet to unlock DGD you have on our platform, as well as claim your ETH.",
+    "nonParticipant": "If you have DGD but have not participated on our platform before, you will still be able to claim your ETH.",
+    "ethRecommendation": "We strongly encourage you to have at least **0.1 ETH** in your wallet so that you can make the necessary transactions in order for the claim to happen successfully.",
+    "button": "Load A Wallet"
+  },
+  "Nav": {
+    "steps": "Step **{{currentStep}}** of **{{maxStep}}**",
+    "nextStep": "Next Step",
+    "logOut": "Log Out"
+  },
+  "Unlock": {
+    "title": "Your Current Lock-Up",
+    "button": "Unlock DGD"
+  },
+  "Approve": {
+    "instructions": "You will need to approve this contract in order to receive ETH for your DGD.",
+    "button": "Approve Contract Interaction"
+  },
+  "Burn": {
+    "title": "Your DGD gives an ETH claim of:",
+    "button": "Burn DGD for ETH"
+  }
+}
